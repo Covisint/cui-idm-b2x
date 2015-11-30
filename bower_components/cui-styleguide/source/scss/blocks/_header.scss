@@ -1,0 +1,87 @@
+/*
+Header
+
+Markup: <header class="cui-header">
+          <div class="cui-header__top">
+            <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
+            <div class="cui-header__user" onclick="toggle_visibility('cui-avatar__popup--header');">
+            <span class="cui-header__user--name">Bill Murray</span>
+            <div class="cui-chevron--left"></div>
+            <cui-avatar class="cui-header__user--avatar cui-avatar">
+              <div id="cui-avatar__popup--header" class="cui-avatar--popup" style="opacity:0">
+                <span class="cui-avatar--popup__greet">
+                  Hello, Bill!<br/>
+                  <span class="small">Logged in as Bill Murray</span>
+                </span>
+                <span class="cui-avatar--popup__greet">You should login.<br/>
+                </span>
+                <hr/>
+              </div>
+            </cui-avatar>
+          </div>
+          </div>
+          <cui-top-menu ng-if="cuiTopMenu"></cui-top-menu>
+          <!-- TODO : Search bar? -->
+        </header>
+
+Styleguide 2.2
+*/
+
+.cui-header {
+  background: white;
+  padding: $header-padding;
+  &__user {
+    flex-grow: 1;
+    height: 50px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    &--avatar {
+      background-size: contain;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 50px;
+      width: 50px;
+    }
+
+    &--name {
+      color: #AAA;
+      cursor: pointer;
+      margin-right: 15px;
+      @media all and (max-width:600px){
+        display: none;
+      }
+    }
+
+    @media all and (max-width:600px){
+      > .cui-chevron--left {
+        display: none;
+      }
+    }
+  }
+
+  &__svg-logo {
+    height: 45px;
+    width: 200px;
+    margin-left:20px;
+  }
+
+  &__top {
+    align-items: center;
+    display: flex;
+    height: 80px;
+    padding: $header-top-padding;
+    border-bottom:1px solid #EEE;
+  }
+
+  &__bottom {
+    align-items: center;
+    display: flex;
+    height: 60px;
+    padding: $header-bottom-padding;
+  }
+}
+
+
+

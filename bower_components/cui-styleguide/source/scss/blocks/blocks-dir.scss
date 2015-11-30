@@ -1,0 +1,18 @@
+/*
+Blocks
+
+A logically and functionally independent page component, the equivalent of a component in Web Components. Blocks being independent allows for their re-use, as well as facilitating the project development and support process.
+
+Styleguide 2.
+*/
+
+@import 'wizard';
+@import 'header';
+@import 'avatar';
+@import 'container';
+@import 'off-canvas-nav';
+@import 'snap';
+@import 'desktop-menu';
+@import 'expandable';
+@import 'tables';
+@import 'popover';

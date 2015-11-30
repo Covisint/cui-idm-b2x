@@ -1,0 +1,11 @@
+#!/bin/bash
+
+IMAGE_NAME=cui-styleguide
+SRC_SSH_VOLUME=$HOME/.ssh/id_rsa
+DEST_SSH_VOLUME=/root/.ssh/id_rsa
+CMD="scripts/build"
+
+docker run --volume=${SRC_SSH_VOLUME}:${DEST_SSH_VOLUME} \
+           --rm \
+           ${IMAGE_NAME} \
+           ${CMD}

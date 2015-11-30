@@ -1,0 +1,44 @@
+/* 
+Buttons
+
+Styles for button elements
+
+:focus                      - Focus styling
+:active                     - Selected styling
+.cui-button--error          - Error styling 
+.cui-button--error:active   - Error selected styling
+
+Markup: <button class="cui-button {{modifier_class}}">Button</button>
+
+Styleguide 1.6
+*/
+
+.cui-button {
+  background-color: $cui-primary-colors--medium-light;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  font-size: em(12);
+  height: 37px;
+  width: 160px;
+
+  &:focus,
+  &.pseudo-class-focus {
+    box-shadow: 0 0 3px $cui-greyscale--medium-light, 0 0 7px $cui-greyscale--medium-light;
+    outline: 0;
+  }
+
+  &:active,
+  &.pseudo-class-active {
+    background-color: $cui-primary-colors--medium-dark;
+  }
+
+  &--error {
+    background-color: #dbdbdb;
+    cursor: default;
+    &:active,
+    &.pseudo-class-active {
+      background-color: $cui-greyscale--medium-light;
+    }
+  }
+}

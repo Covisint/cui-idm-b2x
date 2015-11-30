@@ -1,0 +1,108 @@
+//DESKTOP MENU CSS
+
+.desktop-menu{
+  background:$cui-primary-colors--medium;
+  left: 0;
+  position: absolute;
+  top:0;
+  margin-top: 80px;
+  bottom: 0;
+  width: $desktop-menu-width;
+  transition: all 150ms ease-in-out;
+
+  @if $snap-menu == true{
+    display: none;
+    @media screen and (min-width:$snap-menu-breaking-point){
+        display: inline-block;
+    }
+  }
+  &--collapse{
+    left:(-$desktop-menu-width);
+  }
+}
+
+.desktop-menu--option {
+  background:$cui-primary-colors--medium-dark;
+  color:white;
+  cursor: pointer;
+  display:block;
+  margin:10px 0;
+  padding: 10px 20px;
+
+  &:hover {
+    color: $cui-secondary-colors--medium;
+  }
+
+  &:first-of-type {
+    margin-top: 30px;
+  }
+}
+
+
+// MENU TOGGLE
+
+.menu-toggle--button,
+.cui-menu__toggle-button {
+    background: $cui-primary-colors--medium-light;
+    border: none;
+    width: 40px;
+    height: 7px;
+    position: relative;
+    transition: background 200ms ease-in-out;
+    
+    &:before {
+        background: $cui-primary-colors--medium-light;
+        content: '';
+        height: 7px;
+        left: 0;
+        position: absolute;
+        width: 40px;
+        top: -12px;
+        transition: background 200ms ease-in-out;
+    }
+
+    &:after {
+        background: $cui-primary-colors--medium-light;
+        content:'';
+        bottom: -12px;
+        height: 7px;
+        left: 0;
+        position: absolute;
+        width: 40px;
+        transition: background 200ms ease-in-out;
+    }
+}
+
+.cui-menu__toggle-button:focus {
+  box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+  outline: 0;
+
+  &:before,
+  &:after {
+    box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+    outline: 0;
+  }
+}
+
+.menu-toggle,
+.cui-menu__toggle-button-container {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  &.active {
+    .menu-toggle--button,
+    .cui-menu__toggle-button {
+      background: $cui-primary-colors--medium;
+
+      &:before{
+        background: $cui-primary-colors--medium;
+      }
+
+      &:after{
+        background: $cui-primary-colors--medium;
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+/*
+Popover
+
+Markup:
+<div class="cui-wizard__field-container cui-wizard__field-container--half ">
+                  <div class="cui-input__password-holder">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" class="cui-input cui-input__password cui-input--error" placeholder="" required="required">
+<div class="cui-error__password">
+  <p class="">Passwords must:</p>
+  <div class="cui-error__message">have at least 1 lower case letter</div>
+  <div class="cui-error__message">have at least 1 upper case letter</div>
+</div>
+</div>
+
+Styleguide 2.7
+*/

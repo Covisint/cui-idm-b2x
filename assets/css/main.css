@@ -1,0 +1,1845 @@
+@charset "UTF-8";
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0; }
+
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block; }
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */ }
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+[hidden],
+template {
+  display: none; }
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+a {
+  background-color: transparent; }
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+a:active,
+a:hover {
+  outline: 0; }
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+b,
+strong {
+  font-weight: bold; }
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+dfn {
+  font-style: italic; }
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+small {
+  font-size: 80%; }
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+img {
+  border: 0; }
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+figure {
+  margin: 1em 40px; }
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0; }
+
+/**
+ * Contain overflow in all browsers.
+ */
+pre {
+  overflow: auto; }
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */ }
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+button {
+  overflow: visible; }
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+button,
+select {
+  text-transform: none; }
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+input {
+  line-height: normal; }
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box; }
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+textarea {
+  overflow: auto; }
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+optgroup {
+  font-weight: bold; }
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td,
+th {
+  padding: 0; }
+
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+fieldset {
+  border: 0;
+  margin: 0; }
+
+.cui-radio, .cui-checkbox__legend {
+  left: -999em;
+  position: absolute; }
+
+/*
+Elements
+
+A constituent part of a block that can't be used outside of it.
+
+Styleguide 1.
+*/
+.cui-background, .cui-error__password {
+  background-color: #fff; }
+
+.cui-background--secondary {
+  background-color: #DEE9EE; }
+
+/* 
+Texts
+
+Styles for text. Heading tags have the same base font size and weight to encourage writing semantic markup.
+
+Markup: <h1>H1 Heading</h1>
+        <h2>H2 Heading</h2>
+        <h3>H3 Heading</h3>
+        <h4>H4 Heading</h4>
+        <h5>H5 Heading</h5>
+        <h6>H6 Heading</h6>
+        <div class="cui-styleguide__text-section">
+          <span class="cui-italic">Italics should be used sparingly.</span><br>
+          <span class="cui-bold">Bolds should never be used.</span><br>
+          The heaviest weight of Helvetica Neue <br>
+          that should be used is Medium. <br>
+          <p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus 
+          ac facilisis in. Egestas eget quam. Maecenas faucibus mollis 
+          interdum maecenas faucibus.</p> 
+        </div>
+        <a class="cui-link" href="">Link Style</a>
+        <ul class="cui-ul">
+          <li>Unordered List</li>
+          <li>Unordered List</li>
+        </ul>
+        <ol class="cui-ol">
+          <li>Ordered List</li>
+        </ol>
+
+Styleguide 1.2
+*/
+body {
+  color: #929292; }
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000;
+  font-size: 1em;
+  font-weight: 400;
+  margin: 0; }
+
+.cui-italic,
+.cui-bold {
+  color: #929292;
+  font-style: italic; }
+
+p {
+  color: #929292; }
+
+.cui-link {
+  color: #429DD1; }
+
+ul,
+ol,
+.cui-ul,
+.cui-off-canvas__list--child,
+.cui-expandable__body,
+.cui-ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0; }
+
+/*
+Inputs
+
+:disabled               - Styling for a disabled input field
+:focus                  - Styling when user clicks in a field to enter input
+.cui-input--error       - Styling after user has entered input that is invalid
+.cui-input--valid       - Styling after user has entered input that is valid
+
+Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/>
+
+Styleguide 1.3.1
+*/
+.cui-input, select.cui-select {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  border: 1px solid #DEE9EE;
+  box-sizing: border-box;
+  font-size: 0.875em;
+  height: 56px;
+  margin: 5px 0 20px;
+  padding: 8px 12px;
+  position: relative;
+  width: 100%; }
+  .cui-input.pseudo-class-focus, select.pseudo-class-focus.cui-select, .cui-input:focus, select.cui-select:focus {
+    border: 1px solid #828483;
+    outline: 0; }
+  .cui-input--display {
+    border: 0;
+    height: 14px;
+    margin: -3px 0 -3px 1px;
+    padding: 0;
+    width: 200px; }
+  .cui-input--half {
+    width: 48%; }
+  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid.cui-select, .cui-input.ng-touched.ng-invalid:focus, select.ng-touched.ng-invalid.cui-select:focus {
+    border: 1px solid #FF4400; }
+  .cui-input__password-holder {
+    width: 100%;
+    float: none;
+    position: relative; }
+    .cui-input__password-holder--half {
+      position: relative;
+      float: left; }
+  .cui-input[type="password"]:focus + .cui-error__password, select[type="password"].cui-select:focus + .cui-error__password {
+    display: inline-block; }
+  .cui-input.ng-touched.ng-valid, select.ng-touched.ng-valid.cui-select, .cui-input--valid {
+    border: 1px solid #47CBB4; }
+  @media all and (max-width: 700px) {
+    .cui-input--half {
+      width: 100%; }
+    .cui-input__password--holder--half {
+      width: 100%;
+      float: none; }
+      .cui-input__password--holder--half > .cui-error__password {
+        top: 100%;
+        right: 0;
+        transform: translate(-100%, 0); }
+        .cui-input__password--holder--half > .cui-error__password:before {
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, -90%) rotate(180deg); } }
+
+/*
+Email tags field
+
+Markup:
+<div name="emails" class="cui-tags-input">
+  <div class="host" tabindex="-1">
+    <div class="tags">
+      <ul class="tag-list">
+        <li class="tag-item"><span>example@gmail.com</span> 
+          <a class="remove-button">×</a>
+        </li>
+      </ul>
+      <input class="input" autocomplete="off" type="text" placeholder="" spellcheck="true"><span class="input" style="visibility: hidden; width: auto; white-space: pre; display: none;">example@gmail.com</span>
+    </div> 
+  </div>
+</div>
+
+Styleguide 1.3.2
+*/
+.cui-tags-input {
+  display: block;
+  font-size: 0.875em; }
+  .cui-tags-input.ng-touched.ng-invalid .tags {
+    border: 1px solid #FF4400; }
+  .cui-tags-input.ng-touched.ng-valid .tags {
+    border: 1px solid #47CBB4; }
+
+.cui-tags-input *, .cui-tags-input *:before, .cui-tags-input *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.cui-tags-input .host {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 20px; }
+
+.cui-tags-input .host:active {
+  outline: 0; }
+
+.cui-tags-input .tags {
+  padding: 8px 12px;
+  min-height: 56px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: text;
+  background-color: #fff;
+  border: 1px solid #DEE9EE; }
+
+.cui-tags-input .tags.focused {
+  border: 1px solid #828483;
+  outline: 0; }
+
+.cui-tags-input .tags .tag-list {
+  padding: 4px 20px 0 0;
+  margin: 0 10px 0 0;
+  list-style-type: none; }
+
+.cui-tags-input .tags .tag-item {
+  background: #429DD1;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  float: left;
+  padding: 5px;
+  margin: 0 10px 5px 0; }
+
+.cui-tags-input .tags .tag-item.selected {
+  background: #FF4400; }
+
+.cui-tags-input .tags .tag-item .remove-button {
+  margin: 0 0 0 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  vertical-align: middle;
+  font: bold 16px Arial, sans-serif;
+  color: #fff; }
+
+.cui-tags-input .tags .tag-item .remove-button:active {
+  color: #FFD700; }
+
+.cui-tags-input .tags .input {
+  border: 0;
+  outline: 0;
+  padding: 5px 0 0 0;
+  width: 3px;
+  float: left; }
+
+.cui-tags-input .tags .input.invalid-tag {
+  color: #FF4400; }
+
+.cui-tags-input .tags .input::-ms-clear {
+  display: none; }
+
+.cui-tags-input[disabled] .host:focus {
+  outline: 0; }
+
+.cui-tags-input[disabled] .tags {
+  background-color: #eee;
+  cursor: default; }
+
+.cui-tags-input[disabled] .tags .tag-item {
+  opacity: 0.65;
+  background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%); }
+
+.cui-tags-input[disabled] .tags .tag-item .remove-button {
+  cursor: default; }
+
+.cui-tags-input[disabled] .tags .tag-item .remove-button:active {
+  color: #585858; }
+
+.cui-tags-input[disabled] .tags .input {
+  background-color: #eee;
+  cursor: default; }
+
+.cui-tags-input .autocomplete {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  position: absolute;
+  padding: 5px 0;
+  z-index: 999;
+  width: 100%; }
+
+.cui-tags-input .autocomplete .suggestion-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative; }
+
+.cui-tags-input .autocomplete .suggestion-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
+  background-color: #fff; }
+
+.cui-tags-input .autocomplete .suggestion-item.selected {
+  color: #fff;
+  background-color: #0097cf; }
+
+.cui-tags-input .autocomplete .suggestion-item.selected em {
+  color: #fff;
+  background-color: #0097cf; }
+
+.cui-tags-input .autocomplete .suggestion-item em {
+  color: #000;
+  background-color: #fff; }
+
+/*
+Dropdown
+
+Markup: <select class="cui-input cui-input--full cui-select">
+            <option value="helloo"></option>
+            <option value="hellloooo"></option>
+            <option value="hellllooooooo"></option>
+            <option value="HELLO"></option>
+          </select>
+
+Styleguide 1.3.3
+*/
+select.cui-select {
+  appearance: none;
+  background: url("img/select-arrows.svg") right 10px center no-repeat;
+  background-size: 17px 31px;
+  border-radius: 0;
+  padding-right: 10px; }
+  select.cui-select:focus {
+    outline: 0; }
+
+/*
+Radio
+
+Markup:
+<fieldset class="cui-radio__fieldset">
+  <legend class="cui-radio__legend">Accessible description for radio button collection</legend>
+  <div class="cui-radio__container">
+    <input class="cui-radio" type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />
+    <label class="cui-radio__label" for="radio-choice-1">Choice 1</label>
+  </div>
+  <div class="cui-radio__container">
+    <input class="cui-radio" type="radio" name="radio-choice" id="radio-choice-2" value="choice-2" />
+    <label class="cui-radio__label" for="radio-choice-2">Choice 2</label>
+  </div>
+</fieldset>
+
+Styleguide 1.3.4
+*/
+.cui-radio__legend {
+  left: -999em;
+  position: absolute; }
+
+.cui-radio__fieldset {
+  border: 0;
+  display: flex; }
+
+.cui-radio__container {
+  height: 1.875em; }
+
+.cui-radio__label:before {
+  border: 1px solid #A2A19F;
+  border-radius: 50%;
+  content: "\00a0";
+  display: inline-block;
+  height: 1.25rem;
+  margin: -0.125em 0.5em 0 0;
+  vertical-align: top;
+  width: 1.25rem; }
+
+.cui-radio:focus + .cui-radio__label.cui-radio__label:before {
+  box-shadow: inset 0 0 0 2px #fff, 0 0 7px #A2A19F; }
+
+.cui-radio:checked + .cui-radio__label:before {
+  box-shadow: inset 0 0 0 2px #fff; }
+
+/*
+Checkbox
+
+Markup:
+<fieldset>
+  <legend class="cui-checkbox__legend">Accessible description for checkbox collection</legend>
+  <ul class="cui-checkbox__group">
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1"/><label class="cui-checkbox__label" for="option-1">Option 1</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-2"/><label class="cui-checkbox__label" for="option-2">Option 2</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-3"/><label class="cui-checkbox__label" for="option-3">Option 3</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-4"/><label class="cui-checkbox__label" for="option-4">Option 4</label></li>
+  </ul>
+</fieldset>
+
+Styleguide 1.3.5
+*/
+.cui-checkbox {
+  left: -999em;
+  position: absolute; }
+  .cui-checkbox__group {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding-left: 0; }
+  .cui-checkbox__container {
+    height: 40px; }
+  .cui-checkbox__label {
+    cursor: pointer; }
+    .cui-checkbox__label:before {
+      background: white;
+      border-radius: 0.3rem;
+      border: 1px solid #A2A19F;
+      content: '\a0';
+      display: inline-block;
+      height: 1.8rem;
+      line-height: 1.4;
+      margin-right: .6em;
+      text-indent: .15em;
+      vertical-align: .2em;
+      width: 1.8rem; }
+  .cui-checkbox:focus + .cui-checkbox__label:before {
+    box-shadow: 0 0 7px #A2A19F; }
+  .cui-checkbox:checked + .cui-checkbox__label:before {
+    box-shadow: inset 0 0 0 2px #fff; }
+
+/*
+Primary Colors
+
+Markup: <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">.cui-primary-colors--light</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">.cui-primary-colors--medium-light</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">.cui-primary-colors--medium</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">.cui-primary-colors--medium-dark</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">.cui-primary-colors--dark</div>
+
+Styleguide 1.4.1
+*/
+.cui-primary-colors--light {
+  background-color: #87CEEC; }
+
+.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title {
+  background-color: #429DD1; }
+
+.cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child {
+  background-color: #4582B4; }
+
+.cui-primary-colors--medium-dark, .cui-off-canvas__list-item, .cui-off-canvas__option {
+  background-color: #165E9B; }
+
+.cui-primary-colors--dark {
+  background-color: #0A2741; }
+
+/*
+Secondary Colors
+
+Markup: <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">.cui-secondary-colors--light</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">.cui-secondary-colors--medium-light</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">.cui-secondary-colors--medium</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">.cui-secondary-colors--dark</div>
+
+Styleguide 1.4.2
+*/
+.cui-secondary-colors--light {
+  background-color: #3CB371; }
+
+.cui-secondary-colors--medium-light {
+  background-color: #FFD700; }
+
+.cui-secondary-colors--medium {
+  background-color: #FF8C00; }
+
+.cui-secondary-colors--dark {
+  background-color: #FF4400; }
+
+/* 
+Logos
+
+Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
+
+Styleguide 1.5
+*/
+/* 
+Buttons
+
+Styles for button elements
+
+:focus                      - Focus styling
+:active                     - Selected styling
+.cui-button--error          - Error styling 
+.cui-button--error:active   - Error selected styling
+
+Markup: <button class="cui-button {{modifier_class}}">Button</button>
+
+Styleguide 1.6
+*/
+.cui-button, .cui-wizard__next {
+  background-color: #429DD1;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.75em;
+  height: 37px;
+  width: 160px; }
+  .cui-button:focus, .cui-wizard__next:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next {
+    box-shadow: 0 0 3px #A2A19F, 0 0 7px #A2A19F;
+    outline: 0; }
+  .cui-button:active, .cui-wizard__next:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next {
+    background-color: #165E9B; }
+  .cui-button--error, .cui-wizard__next--error {
+    background-color: #dbdbdb;
+    cursor: default; }
+    .cui-button--error:active, .cui-wizard__next--error:active, .cui-button--error.pseudo-class-active, .pseudo-class-active.cui-wizard__next--error {
+      background-color: #A2A19F; }
+
+/*
+Blocks
+
+A logically and functionally independent page component, the equivalent of a component in Web Components. Blocks being independent allows for their re-use, as well as facilitating the project development and support process.
+
+Styleguide 2.
+*/
+/*
+CUI Wizard
+
+Markup: 
+<div class="cui-wizard">
+  <div class="cui-wizard__title ">A description of this form</div>
+  <div class="cui-wizard__body">
+    <cui-wizard class="cui-wizard__contents" step="1" clickable-indicators="" minimum-padding="30">
+      <indicator-container class="indicator-container"><span class="step-indicator active" style="cursor: pointer;">Step One</span><span class="step-indicator style="cursor: pointer;">Step 2</span></indicator-container>
+      <step title="Organization info" class="active">
+        <form name="organization" novalidate="" class="">
+          <label for="field-1">Input Field Disabled</label>
+          <input type="text" name="field-1" class="cui-input" disabled="">
+          <label for="field-2">Select Field</label>
+          <select name="field-2" class="cui-input cui-select" required="required">
+            <option value="" disabled="" selected="" class=""></option>
+          </select>
+          <div class="cui-wizard__field-row">
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-3">Input Field</label>
+              <input type="text" name="field-3" class="cui-input" required="required">
+            </div>
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-4">Input Field</label>
+              <input type="text" name="field-4" class="cui-input">
+            </div>
+          </div>
+          <div class="cui-wizard__field-row">
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-5">Select Field</label>
+              <select name="field-5" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-6">Select Field</label>
+              <select name="field-6" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="cui-wizard__field-row">
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-7">Select Field</label>
+              <select name="field-7" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="field-8">Input Field</label>
+              <input type="text" name="field-8" class="cui-input">
+            </div>
+          </div>
+          <div class="cui-wizard__controls">
+            <button class="cui-wizard__next">Button</button>
+            <button class="cui-wizard__skip">cui-skip-for-now &gt;&gt;</button>
+          </div>
+        </form>
+      </step>
+    </cui-wizard>
+  </div>
+</div>
+
+Styleguide 2.1
+*/
+.cui-wizard {
+  border-radius: 6px; }
+  .cui-wizard__body {
+    background: white;
+    border-radius: 0 0 6px 6px;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 50px; }
+  .cui-wizard__title {
+    background-color: #429DD1;
+    border-radius: 6px 6px 0 0;
+    color: white;
+    padding: 15px;
+    text-align: center; }
+  @media all and (max-width: 600px) {
+    .cui-wizard {
+      width: 90%; }
+      .cui-wizard__body {
+        padding: 20px; } }
+  .cui-wizard__contents {
+    display: block;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%; }
+  .cui-wizard__controls {
+    text-align: right; }
+  .cui-wizard__previous {
+    background: #fff;
+    border: 0;
+    color: #53abd0;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 20px; }
+    .cui-wizard__previous.active {
+      display: inline-block; }
+  .cui-wizard__skip {
+    background: #fff;
+    border: 0;
+    color: #53abd0;
+    cursor: pointer;
+    font-size: 12px;
+    display: none;
+    margin-left: 20px; }
+    .cui-wizard__skip--show {
+      display: inline-block; }
+  .cui-wizard__field-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    @media screen and (min-width: 700px) {
+      .cui-wizard__field-row {
+        flex-direction: row; } }
+  .cui-wizard__field-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    @media screen and (min-width: 700px) {
+      .cui-wizard__field-container--half {
+        width: 48%; } }
+  .cui-wizard label {
+    text-transform: capitalize; }
+
+.cui-error, .cui-error--half {
+  color: red;
+  font-size: 14px;
+  margin-top: 0;
+  padding: 5px 0 5px;
+  position: relative; }
+  .cui-error.ng-inactive, .ng-inactive.cui-error--half {
+    display: none; }
+  .cui-error--half {
+    width: 48%; }
+    @media all and (max-width: 700px) {
+      .cui-error--half {
+        width: 100%; } }
+  .cui-error__password {
+    display: none;
+    border: 1px solid #DDD;
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.09);
+    padding: 10px 20px 20px;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 300px;
+    border-radius: 7px;
+    z-index: 2;
+    transform: translate(10px, -30%);
+    color: #888; }
+    .cui-error__password::before {
+      color: white;
+      content: '▼';
+      font-size: 16px;
+      left: 0;
+      position: absolute;
+      text-shadow: 2px 2px rgba(0, 0, 0, 0.09);
+      top: 30%;
+      transform: rotate(90deg) translate(7px, 15px); }
+
+.step-indicator {
+  color: #bbb;
+  display: inline-block;
+  margin-bottom: -2px;
+  padding: 10px 0;
+  text-transform: capitalize;
+  white-space: nowrap; }
+  .step-indicator.active {
+    border-bottom: 6px solid #429DD1;
+    color: #333; }
+
+step {
+  display: none; }
+  step.active {
+    display: block; }
+
+.chevron {
+  color: #53abd0;
+  float: right;
+  margin-right: 20px;
+  transition: all 200ms ease-in-out; }
+
+/*
+Header
+
+Markup: <header class="cui-header">
+          <div class="cui-header__top">
+            <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
+            <div class="cui-header__user" onclick="toggle_visibility('cui-avatar__popup--header');">
+            <span class="cui-header__user--name">Bill Murray</span>
+            <div class="cui-chevron--left"></div>
+            <cui-avatar class="cui-header__user--avatar cui-avatar">
+              <div id="cui-avatar__popup--header" class="cui-avatar--popup" style="opacity:0">
+                <span class="cui-avatar--popup__greet">
+                  Hello, Bill!<br/>
+                  <span class="small">Logged in as Bill Murray</span>
+                </span>
+                <span class="cui-avatar--popup__greet">You should login.<br/>
+                </span>
+                <hr/>
+              </div>
+            </cui-avatar>
+          </div>
+          </div>
+          <cui-top-menu ng-if="cuiTopMenu"></cui-top-menu>
+          <!-- TODO : Search bar? -->
+        </header>
+
+Styleguide 2.2
+*/
+.cui-header {
+  background: white;
+  padding: 0 30px; }
+  .cui-header__user {
+    flex-grow: 1;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; }
+    .cui-header__user--avatar {
+      background-size: contain;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 50px;
+      width: 50px; }
+    .cui-header__user--name {
+      color: #AAA;
+      cursor: pointer;
+      margin-right: 15px; }
+      @media all and (max-width: 600px) {
+        .cui-header__user--name {
+          display: none; } }
+    @media all and (max-width: 600px) {
+      .cui-header__user > .cui-chevron--left {
+        display: none; } }
+  .cui-header__svg-logo {
+    height: 45px;
+    width: 200px;
+    margin-left: 20px; }
+  .cui-header__top {
+    align-items: center;
+    display: flex;
+    height: 80px;
+    padding: 0 0;
+    border-bottom: 1px solid #EEE; }
+  .cui-header__bottom {
+    align-items: center;
+    display: flex;
+    height: 60px;
+    padding: 0 0; }
+
+/*
+Avatar
+
+Markup: 
+<div class="cui-header__user" onclick="toggle_visibility('cui-avatar__popup');">
+  <span class="cui-header__user--name">Bill Murray</span>
+  <div class="cui-chevron--left"></div>
+  <cui-avatar class="cui-header__user--avatar cui-avatar" >
+    <div id="cui-avatar__popup" class="cui-avatar--popup" style="opacity:0">
+      <span class="cui-avatar--popup__greet">
+        Hello, Bill!<br/>
+        <span class="small">Logged in as Bill Murray</span>
+      </span>
+      <span class="cui-avatar--popup__greet">You should login.<br/>
+      </span>
+      <hr/>
+    </div>
+  </cui-avatar>
+</div>
+
+Styleguide 2.3
+*/
+.cui-avatar {
+  position: relative; }
+  .cui-avatar--popup {
+    background: white;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.16);
+    opacity: 0;
+    padding: 10px 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    transform: translate(0, 19px);
+    transition: all 80ms ease-in-out;
+    width: 200px;
+    z-index: 3;
+    pointer-events: none; }
+    .cui-avatar--popup.active {
+      opacity: 1;
+      pointer-events: auto; }
+    .cui-avatar--popup hr {
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.15); }
+    .cui-avatar--popup::before {
+      color: white;
+      content: '▼';
+      font-size: 1em;
+      position: absolute;
+      text-shadow: 2px 2px rgba(0, 0, 0, 0.09);
+      top: 0;
+      transform: rotate(180deg) translate(20px, 15px);
+      right: 0; }
+    .cui-avatar--popup__greet {
+      display: block;
+      color: #AAA;
+      font-size: 0.9375em;
+      padding: 3px 10px;
+      cursor: default; }
+      .cui-avatar--popup__greet .small {
+        font-size: 13px; }
+    .cui-avatar--popup__option {
+      color: #AAA;
+      display: block;
+      font-size: 0.875em;
+      padding: 3px 10px; }
+      .cui-avatar--popup__option:hover {
+        color: #888; }
+      .cui-avatar--popup__option.logout {
+        color: #6b9bc8;
+        text-align: right; }
+        .cui-avatar--popup__option.logout:hover {
+          color: #386895; }
+  .cui-avatar__svg-logo {
+    height: 45px;
+    width: 200px; }
+
+.cui-chevron, .cui-chevron--left, .cui-chevron--right, .cui-chevron--top, .cui-chevron--bottom {
+  margin-right: 15px;
+  width: 0;
+  height: 0;
+  position: relative; }
+  .cui-chevron:after, .cui-chevron--left:after, .cui-chevron--right:after, .cui-chevron--top:after, .cui-chevron--bottom:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-right: 8px solid #AAA;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent; }
+  .cui-chevron--left {
+    cursor: pointer; }
+  .cui-chevron--right {
+    transform: rotate(-90deg); }
+  .cui-chevron--top {
+    transform: rotate(180deg); }
+
+/*
+Container
+
+Markup: 
+<div class="cui-tile">
+    <div class="cui-tile__title">Container Title</div>
+    <div class="cui-tile__body">
+        <p>Container Body</p>
+    </div>
+</div>
+
+Styleguide 2.4
+*/
+.cui-tile {
+  border-radius: 6px; }
+  .cui-tile__body {
+    background: white;
+    border-radius: 0 0 6px 6px;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 50px; }
+  .cui-tile__title {
+    border-radius: 6px 6px 0 0;
+    color: white;
+    padding: 15px;
+    text-align: center; }
+  @media all and (max-width: 600px) {
+    .cui-tile__body {
+      padding: 20px; } }
+
+/*
+Off Canvas Nav
+
+Markup:
+<div class="cui-wrapper">
+  <div class="snap-drawers">
+    <div class="snap-drawer">
+      <nav class="cui-off-canvas">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__nav__name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__list--child">
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <snap-content class="snap-content">
+    <header class="cui-header">
+      <div class="cui-header__top">
+        <div class="cui-menu__toggle-button-container active" snap-toggle="left" onclick="Nav.navToggle()">
+          <button class="cui-menu__toggle-button"></button>
+        </div>
+        <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#">
+    </div></header>
+    <div class="cui-menu__content-wrapper" style="min-height:0;height:400px">
+      <div class="cui-styleguide__main-container" style="min-height:0;height:400px">
+        <!--   <header class="cui-styleguide__header">
+            <h1 class="cui-styleguide__doc-title"></h1>
+          </header> -->
+      <nav id="desktop-menu" class="cui-off-canvas desktop-menu">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__list-item-name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__list-item">
+            <a class="cui-off-canvas__list-item-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__list--child">
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__list-item--child">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+        <article role="main" class="cui-styleguide__main" style="min-height:0">
+
+              <div id="kssref-2" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-1">
+              </div>
+              <section id="kssref-2-6" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-2">
+            
+
+            <div class="cui-styleguide__style">
+              <div clas="cui-tile__title"></div>
+              <h2 class="cui-tile__title cui-styleguide__title cui-styleguide__title--level-2">
+                <a class="cui-styleguide__title__permalink" href="#">
+                  <span class="cui-styleguide__title__ref">
+                      
+                  </span>
+                  Example
+                </a>
+              </h2>
+
+            </div>
+
+            <div class="cui-tile__body">
+              <div>PAGE CONTENT</div>
+              </div></section>
+        </article>
+      </div>
+    </div>
+  </snap-content>
+</div>
+
+
+Styleguide 2.6
+*/
+.cui-off-canvas__list-item {
+  display: block;
+  margin: 10px 0;
+  cursor: pointer; }
+  .cui-off-canvas__list-item a {
+    color: white;
+    text-decoration: none; }
+
+.cui-off-canvas__option {
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px; }
+  .cui-off-canvas__option:hover {
+    color: orange; }
+  .cui-off-canvas__option:first-of-type {
+    margin-top: 30px; }
+
+.cui-off-canvas__list-item-link {
+  display: block;
+  min-height: 2.5em;
+  padding-left: 2.5em;
+  padding-top: 0.625em; }
+
+.cui-off-canvas__list-item a:hover,
+.cui-off-canvas__list-item.active a {
+  color: #FF8C00; }
+
+.cui-off-canvas__list--child {
+  padding-left: 2.5em;
+  padding-top: 0.625em; }
+  .cui-off-canvas__list--child a:hover,
+  .cui-off-canvas__list--child.active a {
+    color: #87CEEC; }
+
+.cui-off-canvas__list-item--child {
+  font-weight: 500;
+  padding: 0.3125em 0; }
+
+.cui-wrapper {
+  min-height: 100vh;
+  background: #DEE9EE;
+  position: relative; }
+
+.cui-nav__content-wrapper,
+.cui-menu__content-wrapper {
+  margin-left: 300px;
+  transition: all 150ms ease-in-out; }
+  .cui-nav__content-wrapper.desktop-menu--collapse,
+  .cui-menu__content-wrapper.desktop-menu--collapse {
+    margin-left: 0; }
+  @media screen and (max-width: 999px) {
+    .cui-nav__content-wrapper,
+    .cui-menu__content-wrapper {
+      margin-left: 0; } }
+
+.snap-content,
+snap-content {
+  background: #DEE9EE;
+  padding: 0; }
+
+.snap-drawer,
+snap-drawer {
+  background: #4582B4;
+  min-height: 100vh; }
+
+@media screen and (min-width: 999px) {
+  .snap-drawer {
+    display: none; } }
+
+.snap-menu--option {
+  background: #165E9B;
+  color: white;
+  display: block;
+  padding: 10px 20px;
+  margin: 10px 0;
+  cursor: pointer; }
+  .snap-menu--option:hover {
+    color: orange; }
+  .snap-menu--option:first-of-type {
+    margin-top: 30px; }
+
+snap-content,
+[snap\:content],
+[snap-content],
+[data-snap-content],
+[x-snap-content],
+.snap-content,
+.x-snap-content,
+snap-drawers,
+[snap\:drawers],
+[snap-drawers],
+[data-snap-drawers],
+[x-snap-drawers],
+.snap-drawers,
+.x-snap-drawers,
+.snap-drawers,
+.snap-content {
+  position: static;
+  background: #DEE9EE; }
+  @media screen and (max-width: 999px) {
+    snap-content,
+    [snap\:content],
+    [snap-content],
+    [data-snap-content],
+    [x-snap-content],
+    .snap-content,
+    .x-snap-content,
+    snap-drawers,
+    [snap\:drawers],
+    [snap-drawers],
+    [data-snap-drawers],
+    [x-snap-drawers],
+    .snap-drawers,
+    .x-snap-drawers,
+    .snap-drawers,
+    .snap-content {
+      position: absolute;
+      height: auto;
+      top: 0;
+      bottom: 0;
+      width: auto;
+      left: 0;
+      right: 0; } }
+
+snap-drawer,
+[snap\:drawer],
+[snap-drawer],
+[data-snap-drawer],
+[x-snap-drawer],
+.snap-drawer,
+.x-snap-drawer,
+.snap-drawer {
+  height: auto;
+  bottom: 0;
+  overflow: auto;
+  -webkit-transition: top 0.2s linear;
+  -moz-transition: top 0.2s linear;
+  -o-transition: top 0.2s linear;
+  transition: top 0.2s linear;
+  -webkit-transition: bottom 0.2s linear;
+  -moz-transition: bottom 0.2s linear;
+  -o-transition: bottom 0.2s linear;
+  transition: bottom 0.2s linear;
+  -webkit-overflow-scrolling: touch;
+  -moz-overflow-scrolling: touch;
+  -o-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  width: 265px;
+  position: absolute; }
+
+.snap-content {
+  z-index: 2;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -moz-overflow-scrolling: touch;
+  -o-overflow-scrolling: touch;
+  overflow-scrolling: touch; }
+
+.snap-drawer-left {
+  left: 0;
+  z-index: 1; }
+
+.snap-drawer-right {
+  right: 0;
+  z-index: 1; }
+
+.snapjs-left .snap-drawer-right,
+.snapjs-right .snap-drawer-left {
+  display: none; }
+
+.snapjs-expand-left .snap-drawer-left,
+.snapjs-expand-right .snap-drawer-right {
+  width: 100%; }
+
+.desktop-menu {
+  background: #4582B4;
+  left: 0;
+  position: absolute;
+  top: 0;
+  margin-top: 80px;
+  bottom: 0;
+  width: 300px;
+  transition: all 150ms ease-in-out;
+  display: none; }
+  @media screen and (min-width: 1000px) {
+    .desktop-menu {
+      display: inline-block; } }
+  .desktop-menu--collapse {
+    left: -300px; }
+
+.desktop-menu--option {
+  background: #165E9B;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px; }
+  .desktop-menu--option:hover {
+    color: #FF8C00; }
+  .desktop-menu--option:first-of-type {
+    margin-top: 30px; }
+
+.menu-toggle--button,
+.cui-menu__toggle-button {
+  background: #429DD1;
+  border: none;
+  width: 40px;
+  height: 7px;
+  position: relative;
+  transition: background 200ms ease-in-out; }
+  .menu-toggle--button:before,
+  .cui-menu__toggle-button:before {
+    background: #429DD1;
+    content: '';
+    height: 7px;
+    left: 0;
+    position: absolute;
+    width: 40px;
+    top: -12px;
+    transition: background 200ms ease-in-out; }
+  .menu-toggle--button:after,
+  .cui-menu__toggle-button:after {
+    background: #429DD1;
+    content: '';
+    bottom: -12px;
+    height: 7px;
+    left: 0;
+    position: absolute;
+    width: 40px;
+    transition: background 200ms ease-in-out; }
+
+.cui-menu__toggle-button:focus {
+  box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+  outline: 0; }
+  .cui-menu__toggle-button:focus:before, .cui-menu__toggle-button:focus:after {
+    box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+    outline: 0; }
+
+.menu-toggle,
+.cui-menu__toggle-button-container {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center; }
+  .menu-toggle.active .menu-toggle--button,
+  .menu-toggle.active .cui-menu__toggle-button,
+  .cui-menu__toggle-button-container.active .menu-toggle--button,
+  .cui-menu__toggle-button-container.active .cui-menu__toggle-button {
+    background: #4582B4; }
+    .menu-toggle.active .menu-toggle--button:before,
+    .menu-toggle.active .cui-menu__toggle-button:before,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:before,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:before {
+      background: #4582B4; }
+    .menu-toggle.active .menu-toggle--button:after,
+    .menu-toggle.active .cui-menu__toggle-button:after,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:after,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:after {
+      background: #4582B4; }
+
+/*
+Expandable
+
+Markup:
+<div class="cui-expandable expanded">
+  <div class="cui-expandable__title">
+    Expandable Group #1
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    Expandable Group #2
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    Expandable Group #3
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+  </ul>
+</div>
+
+Styleguide 2.5
+*/
+.cui-expandable {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  padding-bottom: 10px;
+  width: 100%; }
+  .cui-expandable__title {
+    color: #333;
+    cursor: pointer;
+    display: block;
+    padding: 10px 0 0; }
+  .cui-expandable__review-item {
+    color: #666;
+    font-size: 14px;
+    line-height: .75;
+    margin: 1em 0; }
+  .cui-expandable:last-of-type {
+    margin-bottom: 20px; }
+  .cui-expandable__body {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 200ms ease-in-out; }
+  .cui-expandable.expanded > .cui-expandable__body {
+    max-height: 500px; }
+  .cui-expandable.expanded > .cui-expandable__title > .chevron {
+    transform: rotate(90deg); }
+
+.indicator-container {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px; }
+  .indicator-container.small > .step-indicator {
+    display: none;
+    pointer-events: none; }
+    .indicator-container.small > .step-indicator.active {
+      border: 0;
+      display: inline-block;
+      margin: 0 auto;
+      text-align: center;
+      color: #bbb; }
+
+/*
+Tables
+
+Markup:
+<table class="cui-table cui-table--borderless">
+    <thead>
+      <tr>
+        <th scope="col">Column Title</th>
+        <th scope="col">Column Title</th>
+        <th scope="col">Column Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="">
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>      
+    </tbody>
+  </table>
+
+Styleguide 1.7
+
+*/
+.cui-table {
+  border-spacing: 0;
+  margin: 2em 0;
+  min-width: 100%; }
+  .cui-table thead tr {
+    background-color: #A2A19F; }
+  .cui-table thead th {
+    text-align: left; }
+  .cui-table th, .cui-table td {
+    border: 1px solid #A2A19F;
+    padding: 1.5rem; }
+
+.cui-table--borderless thead tr {
+  background-color: transparent; }
+  .cui-table--borderless thead tr th {
+    border-top: 0; }
+
+.cui-table--borderless th, .cui-table--borderless td {
+  border-left: 0;
+  border-right: 0; }
+
+/*
+Popover
+
+Markup:
+<div class="cui-wizard__field-container cui-wizard__field-container--half ">
+                  <div class="cui-input__password-holder">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" class="cui-input cui-input__password cui-input--error" placeholder="" required="required">
+<div class="cui-error__password">
+  <p class="">Passwords must:</p>
+  <div class="cui-error__message">have at least 1 lower case letter</div>
+  <div class="cui-error__message">have at least 1 upper case letter</div>
+</div>
+</div>
+
+Styleguide 2.7
+*/
+.cui-tile {
+  width: 80%;
+  margin: 30px auto; }
+
+.cui-wrapper {
+  overflow: hidden; }

@@ -1,0 +1,72 @@
+<div class="cui-tile">
+  <div class="cui-tile__title">Profile management</div>
+    <div class="cui-tile__body">
+      <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+       <indicator-container class="indicator-container"></indicator-container>
+        <step title="Eidt profile" state="profileMangement">
+        <form name="user" novalidate>
+          <div class="cui-wizard__field-row">     
+           <!-- First Name -->     
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+              <!--    This adds error messages to the firstName input field. Notice the naming convention
+              ng-messages="<formName><inputName>.$error" -->
+              <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="profile.user.name.given"></input>
+            </div>
+            <!-- Last Name -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+              <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+            </div>
+          </div>
+          <div class="cui-wizard__field-row">
+            <!-- Address 1 -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="address1">{{"cui-user-address" | translate}} 1</label>
+               <input type="text" ng-model="profile.user.addresses[0].streets[0]" class="cui-input" name="address1" ng-required="true"></input>
+            </div>
+            <!-- Address 2 -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="address2">{{"cui-user-address" | translate}} 2</label>
+              <input type="text" ng-model="profile.user.addresses[1].streets[1]" class="cui-input" name="address2" ng-required="true"></input>
+            </div>
+          </div>
+          <div class="cui-wizard__field-row">
+            <!-- City/Region -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="city-region">{{"cui-city" | translate}}</label>
+              <input type="text" ng-model="profile.user.addresses[0].city" class="cui-input" name="city" ng-required="true"></input>
+            </div>
+            <!-- State/Province -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="state-province">{{"cui-state" | translate}}</label>
+              <input type="text" ng-model="profile.user.addresses[0].state" class="cui-input" name="state" ng-required="true" ng-model="profile.addresses.state"></input>
+            </div>
+          </div>
+          <div class="cui-wizard__field-row">
+            <!-- Postal Code -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="postal-code">{{"cui-postal" | translate}}</label>
+                <input type="text" ng-model="profile.user.addresses[0].postal" class="cui-input" name="postal" ng-required="true" ng-model="profile.user.addresses.postal"></input>
+            </div>
+            <!-- Country -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="country">{{"cui-country" | translate}}</label>
+                <input type="text" ng-model="profile.user.addresses[0].country" class="cui-input" name="country" ng-required="true" ng-model="profile.user.addresses.country"></input>
+            </div>
+          </div>
+        </form>
+        <div class="cui-wizard__controls">
+          <!-- go to assets/js/app/app.profile.js to customize this function -->
+          <button class="cui-wizard__next" ng-click="profile.save()">Save</button>
+        </div>
+      </step>
+    </cui-wizard>
+  </div>
+</div>

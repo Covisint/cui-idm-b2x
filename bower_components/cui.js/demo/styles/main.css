@@ -1,0 +1,18 @@
+/* Styles for cui demo
+ *
+ */
+
+/* === idm-demo === */
+.running {
+	color: green;
+}
+.failing {
+	color: red;
+}
+.reset {
+}
+
+/* === hacks / overrides === */
+.hack {
+	color: green;
+}

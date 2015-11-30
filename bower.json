@@ -1,0 +1,25 @@
+{
+  "name": "CUI-CCA-B2X",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "angular": "~1.4.7",
+    "angular-snap": "~1.8.5",
+    "angular-ui-router": "~0.2.15",
+    "angular-messages": "~1.4.7",
+    "angular-local-storage": "~0.2.3",
+    "cui-ng": "~1",
+    "cui-styleguide": "~1",
+    "cui-i18n": "~1",
+    "cui-icons": "~1",
+    "cui.js": "*"
+  }
+}

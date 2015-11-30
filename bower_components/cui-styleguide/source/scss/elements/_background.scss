@@ -1,0 +1,13 @@
+// Backgrounds
+//
+// Markup: <div class="cui-background">Primary</div><div class="cui-background--secondary">Secondary</div>
+//
+// Styleguide 1.1
+
+.cui-background {
+    background-color: $primary-background;
+}
+
+.cui-background--secondary {
+    background-color: $secondary-background;
+}

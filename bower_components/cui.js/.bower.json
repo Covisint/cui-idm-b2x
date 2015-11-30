@@ -1,0 +1,25 @@
+{
+  "name": "cui",
+  "main": "dist/cui.min.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "table-to-json": "~0.11.1"
+  },
+  "homepage": "https://github.com/thirdwavellc/cui.js",
+  "_release": "1d31ff4155",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1d31ff415532b1568dedc2c360c54de9b0c29962"
+  },
+  "_source": "git@github.com:thirdwavellc/cui.js.git",
+  "_target": "*",
+  "_originalSource": "cui.js"
+}

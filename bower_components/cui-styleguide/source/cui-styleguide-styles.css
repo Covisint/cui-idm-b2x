@@ -1,0 +1,91 @@
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+html {
+  font-size: 16px; }
+
+.cui-styleguide__colors {
+  color: #fff;
+  display: inline-flex;
+  height: 8rem;
+  padding: 20px;
+  width: 8rem; }
+
+.cui-header__user--avatar {
+  background-image: url(http://www.fillmurray.com/200/200); }
+
+.cui-styleguide__page-container,
+.cui-styleguide__main-container {
+  display: flex;
+  flex-direction: column; }
+
+@media screen and (min-width: 1000px) {
+  .cui-styleguide__main-container {
+    flex-direction: row;
+    flex: 1; } }
+
+@media screen and (min-width: 1000px) {
+  .cui-styleguide__main-container {
+    flex: 1 0 auto; } }
+
+.cui-styleguide__nav {
+  justify-content: center; }
+  @media screen and (min-width: 1000px) {
+    .cui-styleguide__nav {
+      flex: 0 0 15em; } }
+
+.cui-styleguide__nav-menu--child {
+  list-style-type: none; }
+
+.cui-styleguide__main {
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #dfe9ee;
+  flex: 1;
+  min-height: 1000px; }
+  .cui-styleguide__main::after {
+    clear: both;
+    content: "";
+    display: table; }
+  @media screen and (min-width: 999px) {
+    .cui-styleguide__main {
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto; }
+      .cui-styleguide__main::after {
+        clear: both;
+        content: "";
+        display: table; } }
+
+.cui-styleguide__section.cui-tile {
+  margin: 50px auto; }
+
+.cui-styleguide__title a {
+  color: #fff;
+  text-decoration: none; }
+
+.cui-styleguide__markup-container {
+  border: 1px solid #eee; }
+
+.cui-styleguide__markup {
+  padding: 10px;
+  margin-bottom: 0; }
+
+.cui-styleguide__description,
+.cui-styleguide-modifier__title,
+.cui-styleguide__markup-title {
+  font-weight: 900;
+  padding: 10px 0; }
+
+.cui-styleguide-modifier__default-name,
+.cui-styleguide-modifier__name,
+.cui-styleguide-modifier__description {
+  margin: 10px 0; }
+
+.cui-background,
+.cui-background--secondary {
+  padding: 20px; }

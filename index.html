@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="baseCtrl as base">
+<head>
+  <meta charset="UTF-8">
+  <title>CUI-CCA-B2X</title>
+
+  <!-- build:css assets/css/main.css -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- endbuild -->
+
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+</head>
+<body ng-cloak>
+  
+
+  <div class="cui-wrapper">
+    <snap-drawer> 
+      <span class="snap-menu--option" ui-sref="profile">Profile Management</span>
+    </snap-drawer>
+    <snap-content snap-opt-disable="'right'">
+      <header class="cui-header">
+        <div class="cui-header__top">
+          <div class="menu-toggle" snap-toggle="left" ng-click="base.toggleDesktopMenu()" ng-class="base.desktopMenu ? 'active' : ''" style="margin-right:20px">
+            <div class="menu-toggle--button"></div>
+          </div>
+        </div>
+      </header>
+      <div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
+        <span class="desktop-menu--option" ui-sref="profile">Profile Management</span>
+      </div>
+
+      <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
+
+        <div ui-view></div>
+
+      </div>
+
+    </snap-content>
+  </div>
+
+
+  <!-- build:js assets/js/vendor.js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/cui.js/dist/cui.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/snapjs/snap.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
+  <script src="bower_components/angular-snap/angular-snap.js"></script>
+  <script src="bower_components/angular-translate/angular-translate.js"></script>
+  <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+  <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+  <script src="bower_components/cui-ng/dist/cui-ng.js"></script>
+   <script src="bower_components/cui-i18n/translate.js"></script>
+  <!-- endbuild -->
+
+   <!-- build:js assets/js/app.js -->
+  <script src="assets/concatJS/app.js"></script>
+  <!-- endbuild -->
+  
+</body>
+</html>

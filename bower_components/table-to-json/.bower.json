@@ -1,0 +1,36 @@
+{
+  "name": "table-to-json",
+  "version": "0.11.1",
+  "main": [
+    "./lib/jquery.tabletojson.min.js"
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "homepage": "https://github.com/lightswitch05/table-to-json",
+  "authors": [
+    "Daniel White <daniel@developerdan.com>"
+  ],
+  "description": "jQuery plugin that reads an HTML table and returns a javascript object representing the values and columns of the table",
+  "license": "MIT",
+  "keywords": [
+    "table-to-json"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src"
+  ],
+  "_release": "0.11.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.11.1",
+    "commit": "e6d6b11482aeb1afa87408872cf757cc5816211c"
+  },
+  "_source": "git://github.com/lightswitch05/table-to-json.git",
+  "_target": "~0.11.1",
+  "_originalSource": "table-to-json"
+}

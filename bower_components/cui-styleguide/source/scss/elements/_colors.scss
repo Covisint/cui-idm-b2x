@@ -1,0 +1,72 @@
+// Colors
+//
+// A color palette for the Covisint Next Gen UI Framework
+//
+// Styleguide 1.4
+
+.cui-primary-colors,
+.cui-secondary-colors {
+}
+
+/*
+Primary Colors
+
+Markup: <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">.cui-primary-colors--light</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">.cui-primary-colors--medium-light</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">.cui-primary-colors--medium</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">.cui-primary-colors--medium-dark</div>
+        <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">.cui-primary-colors--dark</div>
+
+Styleguide 1.4.1
+*/
+
+.cui-primary-colors--light  {
+  background-color: $cui-primary-colors--light;
+}   
+
+.cui-primary-colors--medium-light  {
+  background-color: $cui-primary-colors--medium-light;
+}
+
+.cui-primary-colors--medium  {
+  background-color: $cui-primary-colors--medium;
+}   
+
+.cui-primary-colors--medium-dark  {
+  background-color: $cui-primary-colors--medium-dark;
+} 
+
+.cui-primary-colors--dark  {
+  background-color: $cui-primary-colors--dark;
+}
+
+
+
+
+
+/*
+Secondary Colors
+
+Markup: <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">.cui-secondary-colors--light</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">.cui-secondary-colors--medium-light</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">.cui-secondary-colors--medium</div>
+        <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">.cui-secondary-colors--dark</div>
+
+Styleguide 1.4.2
+*/
+
+.cui-secondary-colors--light  {
+  background-color: $cui-secondary-colors--light;
+}   
+
+.cui-secondary-colors--medium-light  {
+  background-color: $cui-secondary-colors--medium-light;
+}
+
+.cui-secondary-colors--medium  {
+  background-color: $cui-secondary-colors--medium;
+}
+
+.cui-secondary-colors--dark  {
+  background-color: $cui-secondary-colors--dark;
+}
