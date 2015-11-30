@@ -1,7 +1,0 @@
-#!/bin/bash
-
-bower install
-npm install
-$PATH kss-node --config kss-config.json
-grunt build
-mvn clean deploy -U
