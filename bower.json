@@ -20,6 +20,7 @@
     "cui-styleguide": "~1",
     "cui-i18n": "~1",
     "cui-icons": "~1",
-    "cui.js": "*"
+    "cui.js": "*",
+    "cui": "cui.js#*"
   }
 }
