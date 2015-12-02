@@ -1,32 +1,19 @@
 angular.module('app')
-.factory('Person',['$http','$q','Auth',function($http,$q,Auth){
+.factory('Person',['$http','$q','API',function($http,$q,API){
 
 
     
     var getPeople=function(){
-        return $http({
-            method:'GET',
-            url:Auth.url() + '/person/v1/persons',
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + Auth.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
+        return API.cui.getUsers;
     };
 
     var getById=function(id){
         return $http({
             method:'GET',
-            url:Auth.url() + '/person/v1/persons/' + id,
+            url:API.url() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + Auth.token()
+                Authorization:'Bearer ' + API.token()
             }
         })
         .then(function(res){
@@ -40,10 +27,10 @@ angular.module('app')
     var update=function(id,data){
         return $http({
             method:'PUT',
-            url:Auth.url() + '/person/v1/persons/' + id,
+            url:API.url() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + Auth.token(),
+                Authorization:'Bearer ' + API.token(),
                 'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
             },
             data:data
@@ -57,7 +44,7 @@ angular.module('app')
     };
 
     var person={
-        getAll:getPeople,
+        getAll:API.cui.getUsers,
         getById:getById,
         update:update
     };

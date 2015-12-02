@@ -8,11 +8,20 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/home.html',
             controller: 'baseCtrl as base'
         })
-        .state('profile',{
-            url: '/profile',
-            templateUrl: 'assets/angular-templates/profile.html',
-            controller: 'profileManagementCtrl as profile'
-        });
+        .state('users',{
+            url: '/users',
+            templateUrl: 'assets/angular-templates/users/users.html',
+            controller: 'usersCtrl as users'
+        })
+        .state('edit',{
+            url: '/edit',
+            templateUrl: 'assets/angular-templates/edit/edit.html',
+        })
+        .state('edit.user',{
+            url: '/user/:id',
+            templateUrl: 'assets/angular-templates/edit/edit.users.html',
+            controller: 'userEditCtrl as userEdit'
+        })
     // $locationProvider.html5Mode(true);
     
     //fixes infinite digest loop with ui-router

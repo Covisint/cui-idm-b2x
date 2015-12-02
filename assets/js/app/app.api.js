@@ -1,18 +1,17 @@
 angular.module('app')
-.factory('Auth',[function(){
+.factory('API',[function(){
     
     var myCUI= cui.api();
     myCUI.setService('https://api.covapp.io');
-
-    var doAuth = function(){
+    
+    var doAuth = (function(){
         myCUI.doSysAuth({
-            clientId: 'HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF',
-            clientSecret: 'LhedhdbgKYWcmZru'
+            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
+            clientSecret: 'MqKZsqUtAVAIiWkg'
         });
-    };
+    })();
 
     var token = function(){
-        doAuth();
         return myCUI.getToken();
     };
 
@@ -22,6 +21,7 @@ angular.module('app')
 
     return{
         token:token,
-        url:url
+        url:url,
+        cui:myCUI
     };
 }]);
