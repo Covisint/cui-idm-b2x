@@ -11,27 +11,47 @@
     }]);
 
 angular.module('app')
-.controller('baseCtrl',['Person',function(Person){
-	var base=this;
-	
-	base.desktopMenu=true;
-
+.factory('Auth',[function(){
+    
     var myCUI= cui.api();
     myCUI.setService('https://api.covapp.io');
 
-    myCUI.doSysAuth({
-        clientId: 'HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF',
-        clientSecret: 'LhedhdbgKYWcmZru'
-    });
+    var doAuth = function(){
+        myCUI.doSysAuth({
+            clientId: 'HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF',
+            clientSecret: 'LhedhdbgKYWcmZru'
+        });
+    };
 
-    Person.get(myCUI.getToken(),myCUI.getService())
-    .then(function(res){
-        console.log(res);
-    })
+    var token = function(){
+        doAuth();
+        return myCUI.getToken();
+    };
 
-	base.toggleDesktopMenu=function(){
-		base.desktopMenu=!base.desktopMenu;
-	};
+    var url = function(){
+        return myCUI.getService();
+    };
+
+    return{
+        token:token,
+        url:url
+    };
+}]);
+
+angular.module('app')
+.controller('baseCtrl',['Person',function(Person){
+    var base=this;
+    
+    base.desktopMenu=true;
+
+    base.toggleDesktopMenu=function(){
+        base.desktopMenu=!base.desktopMenu;
+    };
+
+    // Person.getAll() gets all the people in the API
+    // Person.getById(id) gets 1 person
+
+
 }]);
 
 angular.module('app')
@@ -78,49 +98,87 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('profileManagementCtrl',['localStorageService', '$scope', function(localStorageService, $scope){
+.controller('profileManagementCtrl',['localStorageService', '$scope','Person', function(localStorageService, $scope,Person){
     var profile=this;
 
+    Person.getById("OGEXKB93")
+    .then(function(res){
+        profile.user=res.data;
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+
+
     profile.save=function(){
-        // Currently the save function just saves to local storage
-        // However, once the API library is in place this will be easily
-        // replacable with a function to send a PUT to the API.
-        localStorageService.set('profile.user',$scope.profile.user);
+        Person.update("OGEXKB93",profile.user);
     };
 
-     var profileInStorage = localStorageService.get('profile.user');
-        profile.user = profileInStorage || {};
-        // This watch function saves the user form to local storage every time there's a change
-        $scope.$watch('profile.user',function(){
-            localStorageService.set('profile.user',$scope.profile.user);
-        }, true);
 }]);
 
 angular.module('app')
-.factory('Person',['$http','$q',function($http,$q){
+.factory('Person',['$http','$q','Auth',function($http,$q,Auth){
 
-    var getPeople=function(token,url){
-        var deferred=$q.defer();
-        $http({
+
+    
+    var getPeople=function(){
+        return $http({
             method:'GET',
-            url:url + '/person/v1/persons',
+            url:Auth.url() + '/person/v1/persons',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + token
+                Authorization:'Bearer ' + Auth.token()
             }
         })
         .then(function(res){
-            deferred.resolve(res);
-        },
-        function(res){
-            deferred.reject(res);
+            return res;
         })
-        return deferred.promise;
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var getById=function(id){
+        return $http({
+            method:'GET',
+            url:Auth.url() + '/person/v1/persons/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.v1+json',
+                Authorization:'Bearer ' + Auth.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var update=function(id,data){
+        return $http({
+            method:'PUT',
+            url:Auth.url() + '/person/v1/persons/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.v1+json',
+                Authorization:'Bearer ' + Auth.token(),
+                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
+            },
+            data:data
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
     };
 
     var person={
-        get:getPeople
-    }
+        getAll:getPeople,
+        getById:getById,
+        update:update
+    };
 
     return person;
 

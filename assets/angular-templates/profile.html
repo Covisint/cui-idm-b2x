@@ -34,7 +34,7 @@
             <!-- Address 2 -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="address2">{{"cui-user-address" | translate}} 2</label>
-              <input type="text" ng-model="profile.user.addresses[1].streets[1]" class="cui-input" name="address2" ng-required="true"></input>
+              <input type="text" ng-model="profile.user.addresses[0].streets[1]" class="cui-input" name="address2"></input>
             </div>
           </div>
           <div class="cui-wizard__field-row">
@@ -64,7 +64,7 @@
         </form>
         <div class="cui-wizard__controls">
           <!-- go to assets/js/app/app.profile.js to customize this function -->
-          <button class="cui-wizard__next" ng-click="profile.save()">Save</button>
+          <button class="cui-wizard__next" ng-click="profile.save()" ng-class="user.$invalid? 'cui-wizard__next--error' : ''">Save</button>
         </div>
       </step>
     </cui-wizard>
