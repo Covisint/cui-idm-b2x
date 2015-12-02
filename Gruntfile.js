@@ -124,7 +124,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      app: ['assets/js/app/*.js']
+      app: ['assets/js/app/**/*.js']
     }
 
 
