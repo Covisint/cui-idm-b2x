@@ -1,3 +1,4 @@
+<h2 ng-click="base.goBack()">Go Back</h2>
 <div class="cui-tile">
   <div class="cui-tile__title">Profile management</div>
     <div class="cui-tile__body">
@@ -6,6 +7,7 @@
         <step title="Edit profile">
         <form name="user" novalidate>
           <div class="cui-wizard__field-row"> 
+          <ng-include src="'assets/angular-templates/loading.html'" class="fill" ng-class="userEdit.loading? 'show' : ''"></ng-include>
 
            <!-- First Name -->     
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
@@ -28,11 +30,17 @@
             </div>
           </div>
 
+          <!-- Title -->
+          <label for="title">Title</label>
+          <input type="text" ng-model="userEdit.user.title" name="title" class="cui-input"></input>
+
+
+
           <div class="cui-wizard__field-row">
             <!-- Address 1 -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="address1">{{"cui-user-address" | translate}} 1</label>
-               <input type="text" ng-model="userEdit.user.addresses[0].streets[0]" class="cui-input" name="address1" ng-required="true"></input>
+               <input type="text" ng-model="userEdit.user.addresses[0].streets[0]" class="cui-input" name="address1"></input>
             </div>
 
             <!-- Address 2 -->
@@ -46,13 +54,13 @@
             <!-- City/Region -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="city-region">{{"cui-city" | translate}}</label>
-              <input type="text" ng-model="userEdit.user.addresses[0].city" class="cui-input" name="city" ng-required="true"></input>
+              <input type="text" ng-model="userEdit.user.addresses[0].city" class="cui-input" name="city"></input>
             </div>
 
             <!-- State/Province -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="state-province">{{"cui-state" | translate}}</label>
-              <input type="text" ng-model="userEdit.user.addresses[0].state" class="cui-input" name="state" ng-required="true" ng-model="profile.addresses.state"></input>
+              <input type="text" ng-model="userEdit.user.addresses[0].state" class="cui-input" name="state" ng-model="profile.addresses.state"></input>
             </div>
           </div>
 
@@ -60,15 +68,18 @@
             <!-- Postal Code -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="postal-code">{{"cui-postal" | translate}}</label>
-                <input type="text" ng-model="userEdit.user.addresses[0].postal" class="cui-input" name="postal" ng-required="true" ng-model="userEdit.user.addresses.postal"></input>
+                <input type="text" ng-model="userEdit.user.addresses[0].postal" class="cui-input" name="postal" ng-model="userEdit.user.addresses.postal"></input>
             </div>
 
             <!-- Country -->
             <div class="cui-wizard__field-container cui-wizard__field-container--half">
               <label for="country">{{"cui-country" | translate}}</label>
-                <input type="text" ng-model="userEdit.user.addresses[0].country" class="cui-input" name="country" ng-required="true" ng-model="userEdit.user.addresses.country"></input>
+                <input type="text" ng-model="userEdit.user.addresses[0].country" class="cui-input" name="country" ng-model="userEdit.user.addresses.country"></input>
             </div>
           </div>
+
+          <!-- TODO: ADD PREFIX, MITTLE NAME, TIME ZONE, LANGUAGE PREF. EMAIL ADDRESS (?), MOBILE PHONE, FAX AND CHALLENGE QUESTIONS -->
+
         </form>
 
         <div class="cui-wizard__controls">

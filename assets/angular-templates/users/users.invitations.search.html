@@ -1,0 +1,39 @@
+<div class="cui-tile">
+  <div class="cui-tile__title">User Invitations</div>
+    <div class="cui-tile__body">
+        <ng-include src="'assets/angular-templates/loading.html'" class="fill" ng-class="usersInvitations.listLoading? 'show' : ''"></ng-include>
+        <input class="cui-input" placeholder="Search invitations by email" ng-model="usersInvitations.search['name.given']"></input>
+        <input class="cui-input" placeholder="Number of results per page" ng-model="usersInvitations.search.pageSize"></input>
+        <input class="cui-input" placeholder="Page" ng-model="usersInvitations.search.page"></input>
+<!--         <table class="cui-table cui-table--borderless">
+            <thead>
+                <tr>
+                    <th>Invitation ID</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="invitation in usersInvitations.list">
+                    <td>{{invitation.id}}</td>
+                    <td>{{invitation.email}}</td>
+                    <td><a class="cui-link" ui-sref="users.invitations.view({id: invitation.id})">View</a></td>
+                </tr>
+            </tbody>
+        </table> -->
+        <cui-expandable class="cui-expandable" ng-repeat="invitation in usersInvitations.list">
+            <cui-expandable-title class="cui-expandable__title" ng-click="usersInvitations.getInfo(invitation.invitor.id,invitation.invitee.id,$index);toggleExpand()">
+                <td>{{invitation.id}}</td>
+                <td>{{invitation.email}}</td>
+                <td><a class="cui-link">View</a></td>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" style="position:relative">
+                <ng-include src="'assets/angular-templates/loading.html'" class="fill" ng-class="(!usersInvitations.invitorLoading[$index] && !usersInvitations.inviteeLoading[$index])? '' : 'show'"></ng-include>
+                </br>
+                Invitor: {{usersInvitations.invitor[$index].name.given}} {{usersInvitations.invitor[$index].name.surname}}
+                <br/>Invitee: {{usersInvitations.invitee[$index].name.given}} {{usersInvitations.invitee[$index].name.surname}}
+                </br></br>
+            </cui-expandable-body>
+        </cui-expandable>
+    </div>
+</div>

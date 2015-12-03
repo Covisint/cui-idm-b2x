@@ -367,7 +367,8 @@ fieldset {
   border: 0;
   margin: 0; }
 
-.cui-radio, .cui-checkbox__legend {
+.cui-radio, .cui-checkbox__legend, .cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
   left: -999em;
   position: absolute; }
 
@@ -376,7 +377,7 @@ Elements
 
 A constituent part of a block that can't be used outside of it.
 
-Styleguide 1.
+Styleguide Elements
 */
 .cui-background, .cui-error__password {
   background-color: #fff; }
@@ -413,7 +414,7 @@ Markup: <h1>H1 Heading</h1>
           <li>Ordered List</li>
         </ol>
 
-Styleguide 1.2
+Styleguide Elements.Text
 */
 body {
   color: #929292; }
@@ -439,6 +440,7 @@ ul,
 ol,
 .cui-ul,
 .cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list,
 .cui-expandable__body,
 .cui-ol {
   list-style-type: none;
@@ -455,7 +457,7 @@ Inputs
 
 Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/>
 
-Styleguide 1.3.1
+Styleguide Elements.Forms.Input
 */
 .cui-input, select.cui-select {
   -webkit-appearance: none;
@@ -524,7 +526,7 @@ Markup:
   </div>
 </div>
 
-Styleguide 1.3.2
+Styleguide Elements.Forms.Tags
 */
 .cui-tags-input {
   display: block;
@@ -673,7 +675,7 @@ Markup: <select class="cui-input cui-input--full cui-select">
             <option value="HELLO"></option>
           </select>
 
-Styleguide 1.3.3
+Styleguide Elements.Forms.Dropdown
 */
 select.cui-select {
   appearance: none;
@@ -700,7 +702,7 @@ Markup:
   </div>
 </fieldset>
 
-Styleguide 1.3.4
+Styleguide Elements.Forms.Radio
 */
 .cui-radio__legend {
   left: -999em;
@@ -743,7 +745,7 @@ Markup:
   </ul>
 </fieldset>
 
-Styleguide 1.3.5
+Styleguide Elements.Forms.Checkbox
 */
 .cui-checkbox {
   left: -999em;
@@ -783,7 +785,7 @@ Markup: <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors
         <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">.cui-primary-colors--medium-dark</div>
         <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">.cui-primary-colors--dark</div>
 
-Styleguide 1.4.1
+Styleguide Elements.Colors.Primary-Colors
 */
 .cui-primary-colors--light {
   background-color: #87CEEC; }
@@ -791,10 +793,12 @@ Styleguide 1.4.1
 .cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title {
   background-color: #429DD1; }
 
-.cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child {
+.cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
   background-color: #4582B4; }
 
-.cui-primary-colors--medium-dark, .cui-off-canvas__list-item, .cui-off-canvas__option {
+.cui-primary-colors--medium-dark, .cui-off-canvas__list-item,
+.cui-off-canvas__section, .cui-off-canvas__option {
   background-color: #165E9B; }
 
 .cui-primary-colors--dark {
@@ -808,7 +812,7 @@ Markup: <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-co
         <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">.cui-secondary-colors--medium</div>
         <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">.cui-secondary-colors--dark</div>
 
-Styleguide 1.4.2
+Styleguide Elements.Colors.Secondary-Colors
 */
 .cui-secondary-colors--light {
   background-color: #3CB371; }
@@ -827,7 +831,7 @@ Logos
 
 Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
 
-Styleguide 1.5
+Styleguide Elements.Logo
 */
 /* 
 Buttons
@@ -841,9 +845,9 @@ Styles for button elements
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
-Styleguide 1.6
+Styleguide Elements.Buttons
 */
-.cui-button, .cui-wizard__next {
+.cui-button, .cui-wizard__next, .cui-card__button {
   background-color: #429DD1;
   border: 0;
   border-radius: 4px;
@@ -851,10 +855,10 @@ Styleguide 1.6
   font-size: 0.75em;
   height: 37px;
   width: 160px; }
-  .cui-button:focus, .cui-wizard__next:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next {
+  .cui-button:focus, .cui-wizard__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next, .pseudo-class-focus.cui-card__button {
     box-shadow: 0 0 3px #A2A19F, 0 0 7px #A2A19F;
     outline: 0; }
-  .cui-button:active, .cui-wizard__next:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next {
+  .cui-button:active, .cui-wizard__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next, .pseudo-class-active.cui-card__button {
     background-color: #165E9B; }
   .cui-button--error, .cui-wizard__next--error {
     background-color: #dbdbdb;
@@ -867,10 +871,12 @@ Blocks
 
 A logically and functionally independent page component, the equivalent of a component in Web Components. Blocks being independent allows for their re-use, as well as facilitating the project development and support process.
 
-Styleguide 2.
+Weight: 200
+
+Styleguide Blocks
 */
 /*
-CUI Wizard
+Wizard
 
 Markup: 
 <div class="cui-wizard">
@@ -932,7 +938,7 @@ Markup:
   </div>
 </div>
 
-Styleguide 2.1
+Styleguide Blocks.Wizard
 */
 .cui-wizard {
   border-radius: 6px; }
@@ -1080,7 +1086,7 @@ Markup: <header class="cui-header">
           <!-- TODO : Search bar? -->
         </header>
 
-Styleguide 2.2
+Styleguide Blocks.Header
 */
 .cui-header {
   background: white;
@@ -1143,7 +1149,7 @@ Markup:
   </cui-avatar>
 </div>
 
-Styleguide 2.3
+Styleguide Blocks.Avatar
 */
 .cui-avatar {
   position: relative; }
@@ -1232,7 +1238,7 @@ Markup:
     </div>
 </div>
 
-Styleguide 2.4
+Styleguide Blocks.Container
 */
 .cui-tile {
   border-radius: 6px; }
@@ -1260,47 +1266,47 @@ Markup:
     <div class="snap-drawer">
       <nav class="cui-off-canvas">
         <ul class="cui-off-canvas__list">
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__nav__name">Overview</span>
             </a>
           </li>
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
             </a>
           </li>
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
             </a>
-            <ul class="cui-off-canvas__list--child">
-                <li class="cui-off-canvas__list-item--child">
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
@@ -1326,47 +1332,47 @@ Markup:
           </header> -->
       <nav id="desktop-menu" class="cui-off-canvas desktop-menu">
         <ul class="cui-off-canvas__list">
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__list-item-name">Overview</span>
             </a>
           </li>
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
             </a>
           </li>
-          <li class="cui-off-canvas__list-item">
-            <a class="cui-off-canvas__list-item-link" href="#">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
               <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
             </a>
-            <ul class="cui-off-canvas__list--child">
-                <li class="cui-off-canvas__list-item--child">
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
                 </li>
-                <li class="cui-off-canvas__list-item--child">
+                <li class="cui-off-canvas__sub-section">
                   <a href="#">
                     <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
                   </a>
@@ -1406,13 +1412,15 @@ Markup:
 </div>
 
 
-Styleguide 2.6
+Styleguide Blocks.Off-Canvas
 */
-.cui-off-canvas__list-item {
+.cui-off-canvas__list-item,
+.cui-off-canvas__section {
   display: block;
   margin: 10px 0;
   cursor: pointer; }
-  .cui-off-canvas__list-item a {
+  .cui-off-canvas__list-item a,
+  .cui-off-canvas__section a {
     color: white;
     text-decoration: none; }
 
@@ -1427,24 +1435,37 @@ Styleguide 2.6
   .cui-off-canvas__option:first-of-type {
     margin-top: 30px; }
 
-.cui-off-canvas__list-item-link {
+.cui-off-canvas__list-item-link,
+.cui-off-canvas__section-link {
   display: block;
   min-height: 2.5em;
   padding-left: 2.5em;
   padding-top: 0.625em; }
 
 .cui-off-canvas__list-item a:hover,
-.cui-off-canvas__list-item.active a {
+.cui-off-canvas__list-item.active a,
+.cui-off-canvas__section a:hover,
+.cui-off-canvas__section.active a {
   color: #FF8C00; }
 
-.cui-off-canvas__list--child {
+.cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
   padding-left: 2.5em;
   padding-top: 0.625em; }
   .cui-off-canvas__list--child a:hover,
-  .cui-off-canvas__list--child.active a {
+  .cui-off-canvas__list--child.active a,
+  .cui-off-canvas__sub-section-list a:hover,
+  .cui-off-canvas__sub-section-list.active a {
     color: #87CEEC; }
+  .cui-off-canvas__list--child .cui-off-canvas__list-item--active,
+  .cui-off-canvas__section--active .cui-off-canvas__list--child,
+  .cui-off-canvas__sub-section-list .cui-off-canvas__list-item--active,
+  .cui-off-canvas__section--active
+  .cui-off-canvas__sub-section-list {
+    position: inherit; }
 
-.cui-off-canvas__list-item--child {
+.cui-off-canvas__list-item--child,
+.cui-off-canvas__sub-section {
   font-weight: 500;
   padding: 0.3125em 0; }
 
@@ -1680,7 +1701,7 @@ Expandable
 
 Markup:
 <div class="cui-expandable expanded">
-  <div class="cui-expandable__title">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
     Expandable Group #1
     <span class="chevron">></span>
   </div>
@@ -1692,7 +1713,7 @@ Markup:
   </ul>
 </div>
 <div class="cui-expandable">
-  <div class="cui-expandable__title">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
     Expandable Group #2
     <span class="chevron">></span>
   </div>
@@ -1704,7 +1725,7 @@ Markup:
   </ul>
 </div>
 <div class="cui-expandable">
-  <div class="cui-expandable__title">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
     Expandable Group #3
     <span class="chevron">></span>
   </div>
@@ -1716,7 +1737,7 @@ Markup:
   </ul>
 </div>
 
-Styleguide 2.5
+Styleguide Blocks.Expandable
 */
 .cui-expandable {
   border-bottom: 1px solid #ddd;
@@ -1796,7 +1817,7 @@ Markup:
     </tbody>
   </table>
 
-Styleguide 1.7
+Styleguide Elements.Tables
 
 */
 .cui-table {
@@ -1835,11 +1856,111 @@ Markup:
 </div>
 </div>
 
-Styleguide 2.7
+Styleguide Blocks.Popover
 */
+/*
+Card
+
+Markup:
+<div class="cui-card__container">
+  <div class="cui-card">
+    <div class="cui-card__image-container">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px"
+         height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+        <use class="cui-card__icon" xlink:href="public/img/icons/icons-out.svg#user"></use>
+      </svg>
+    </div>
+    <div class="cui-card__content">
+      <h3 class="cui-card__content-header">Header</h3>
+      <p>Some text that appropriately describes the context of this card. Some text that appropriately describes the context of this card.</p>
+    </div>
+    <button class="cui-card__button">Button</button>
+  </div>
+</div>
+
+Styleguide Blocks.Cards
+*/
+.cui-card__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px; }
+  @media screen and (min-width: 600px) {
+    .cui-card__container {
+      flex-direction: row;
+      justify-content: space-between; } }
+
+.cui-card {
+  background: #fff;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 40px 40px;
+  transition: box-shadow .2s ease, transform .2s ease;
+  width: 20em; }
+  .cui-card:hover {
+    box-shadow: 0 1px 3px #A2A19F;
+    transform: translateY(-3px); }
+
+.cui-card__image-container {
+  justify-content: center;
+  display: flex; }
+
+.cui-card__image {
+  width: 100%; }
+
+p {
+  max-width: 100%; }
+
+.cui-card__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  line-height: 1.4; }
+
+.cui-card__content-header {
+  align-self: center;
+  color: #828483;
+  font-size: 1.8em;
+  font-weight: 900;
+  margin: 0.3125em 0; }
+
+.cui-card__icon {
+  fill: #429DD1; }
+
+.cui-card__button {
+  align-self: center;
+  border-radius: 0.75em; }
+
 .cui-tile {
   width: 80%;
   margin: 30px auto; }
 
+.cui-tile__body {
+  position: relative; }
+
 .cui-wrapper {
   overflow: hidden; }
+
+.fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: white;
+  opacity: 0;
+  transition: all 100ms ease-in-out;
+  z-index: 10;
+  pointer-events: none; }
+  .fill.show {
+    opacity: 1; }
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; }

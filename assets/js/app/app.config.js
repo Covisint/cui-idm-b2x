@@ -10,18 +10,28 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users',{
             url: '/users',
-            templateUrl: 'assets/angular-templates/users/users.html',
-            controller: 'usersCtrl as users'
+            templateUrl: 'assets/angular-templates/users/users.html'
         })
-        .state('edit',{
-            url: '/edit',
-            templateUrl: 'assets/angular-templates/edit/edit.html',
+        .state('users.search',{
+            url: '/',
+            templateUrl: 'assets/angular-templates/users/users.search.html',
+            controller: 'usersSearchCtrl as usersSearch'
         })
-        .state('edit.user',{
-            url: '/user/:id',
-            templateUrl: 'assets/angular-templates/edit/edit.users.html',
-            controller: 'userEditCtrl as userEdit'
+        .state('users.edit',{
+            url: '/edit/:id',
+            templateUrl: 'assets/angular-templates/users/users.edit.html',
+            controller: 'usersEditCtrl as userEdit'
         })
+        .state('users.invitations',{
+            url: '/invitations',
+            templateUrl: 'assets/angular-templates/users/users.invitations.search.html',
+            controller: 'usersInvitationsCtrl as usersInvitations'
+        })
+        .state('users.invitations.view',{
+            url: '/view',
+            templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
+            controller: 'userInvitationsViewCtrl as usersInvitationsView'
+        });
     // $locationProvider.html5Mode(true);
     
     //fixes infinite digest loop with ui-router
@@ -40,11 +50,17 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService',function(LocaleService){
+.run(['LocaleService','$rootScope','$state',function(LocaleService,$rootScope,$state){
     //add more locales here
     LocaleService.setLocales('en_US','English (United States)');
     LocaleService.setLocales('pl_PL','Polish (Poland)');
     LocaleService.setLocales('zh_CN', 'Chinese (Simplified)');
     LocaleService.setLocales('pt_PT','Portuguese (Portugal)');
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        $state.previous = {};
+        $state.previous.name = fromState;
+        $state.previous.params = fromParams;
+    });
 }]);
 
