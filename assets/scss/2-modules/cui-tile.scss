@@ -3,6 +3,34 @@
     margin:30px auto;
 }
 
+.cui-tile__body{
+    position:relative;
+}
+
 .cui-wrapper{
     overflow:hidden;
+}
+
+.fill{
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    background:white;
+    opacity:0;
+    transition:all 100ms ease-in-out;
+    z-index:10;
+    pointer-events:none;
+    &.show{
+        opacity:1;
+    }
+}
+
+.center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
 }

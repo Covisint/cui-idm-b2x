@@ -357,17 +357,32 @@ td,
 th {
   padding: 0; }
 
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+fieldset {
+  border: 0;
+  margin: 0; }
+
+.cui-radio, .cui-checkbox__legend, .cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
+  left: -999em;
+  position: absolute; }
+
 /*
 Elements
 
 A constituent part of a block that can't be used outside of it.
 
-Styleguide 1.
+Styleguide Elements
 */
 .cui-background, .cui-error__password {
   background-color: #fff; }
 
-.cui-background--secondary, snap-content {
+.cui-background--secondary {
   background-color: #DEE9EE; }
 
 /* 
@@ -382,24 +397,24 @@ Markup: <h1>H1 Heading</h1>
         <h5>H5 Heading</h5>
         <h6>H6 Heading</h6>
         <div class="cui-styleguide__text-section">
-          <span class="cui__italic">Italics should be used sparingly.</span><br>
-          <span class="cui__bold">Bolds should never be used.</span><br>
+          <span class="cui-italic">Italics should be used sparingly.</span><br>
+          <span class="cui-bold">Bolds should never be used.</span><br>
           The heaviest weight of Helvetica Neue <br>
           that should be used is Medium. <br>
           <p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus 
           ac facilisis in. Egestas eget quam. Maecenas faucibus mollis 
           interdum maecenas faucibus.</p> 
         </div>
-        <a class="cui__link" href="">Link Style</a>
-        <ul class="cui__ul">
+        <a class="cui-link" href="">Link Style</a>
+        <ul class="cui-ul">
           <li>Unordered List</li>
           <li>Unordered List</li>
         </ul>
-        <ol class="cui__ol">
+        <ol class="cui-ol">
           <li>Ordered List</li>
         </ol>
 
-Styleguide 1.2
+Styleguide Elements.Text
 */
 body {
   color: #929292; }
@@ -410,16 +425,27 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   margin: 0; }
 
-.cui__italic,
-.cui__bold {
+.cui-italic,
+.cui-bold {
   color: #929292;
   font-style: italic; }
 
 p {
   color: #929292; }
 
-.cui__link {
+.cui-link {
   color: #429DD1; }
+
+ul,
+ol,
+.cui-ul,
+.cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list,
+.cui-expandable__body,
+.cui-ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0; }
 
 /*
 Inputs
@@ -431,7 +457,7 @@ Inputs
 
 Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/>
 
-Styleguide 1.3.1
+Styleguide Elements.Forms.Input
 */
 .cui-input, select.cui-select {
   -webkit-appearance: none;
@@ -500,7 +526,7 @@ Markup:
   </div>
 </div>
 
-Styleguide 1.3.2
+Styleguide Elements.Forms.Tags
 */
 .cui-tags-input {
   display: block;
@@ -649,7 +675,7 @@ Markup: <select class="cui-input cui-input--full cui-select">
             <option value="HELLO"></option>
           </select>
 
-Styleguide 1.3.3
+Styleguide Elements.Forms.Dropdown
 */
 select.cui-select {
   appearance: none;
@@ -665,7 +691,7 @@ Radio
 
 Markup:
 <fieldset class="cui-radio__fieldset">
-  <legend class="cui-radio__legend">Accessible description for radio button choice</legend>
+  <legend class="cui-radio__legend">Accessible description for radio button collection</legend>
   <div class="cui-radio__container">
     <input class="cui-radio" type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />
     <label class="cui-radio__label" for="radio-choice-1">Choice 1</label>
@@ -676,28 +702,79 @@ Markup:
   </div>
 </fieldset>
 
-Styleguide 1.3.4
+Styleguide Elements.Forms.Radio
 */
-.cui-radio {
-  position: absolute;
-  left: -999em; }
-  .cui-radio__legend {
-    left: -999em;
-    position: absolute; }
-  .cui-radio__fieldset {
-    border: 0;
-    display: flex; }
-  .cui-radio__container {
-    height: 1.875em; }
-  .cui-radio__label:before {
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 3px #A2A19F;
-    content: "\00a0";
-    display: inline-block;
-    height: 1.125rem;
-    margin: -0.125em 0.5em 0 0;
-    vertical-align: top;
-    width: 1.125rem; }
+.cui-radio__legend {
+  left: -999em;
+  position: absolute; }
+
+.cui-radio__fieldset {
+  border: 0;
+  display: flex; }
+
+.cui-radio__container {
+  height: 1.875em; }
+
+.cui-radio__label:before {
+  border: 1px solid #A2A19F;
+  border-radius: 50%;
+  content: "\00a0";
+  display: inline-block;
+  height: 1.25rem;
+  margin: -0.125em 0.5em 0 0;
+  vertical-align: top;
+  width: 1.25rem; }
+
+.cui-radio:focus + .cui-radio__label.cui-radio__label:before {
+  box-shadow: inset 0 0 0 2px #fff, 0 0 7px #A2A19F; }
+
+.cui-radio:checked + .cui-radio__label:before {
+  box-shadow: inset 0 0 0 2px #fff; }
+
+/*
+Checkbox
+
+Markup:
+<fieldset>
+  <legend class="cui-checkbox__legend">Accessible description for checkbox collection</legend>
+  <ul class="cui-checkbox__group">
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1"/><label class="cui-checkbox__label" for="option-1">Option 1</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-2"/><label class="cui-checkbox__label" for="option-2">Option 2</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-3"/><label class="cui-checkbox__label" for="option-3">Option 3</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-4"/><label class="cui-checkbox__label" for="option-4">Option 4</label></li>
+  </ul>
+</fieldset>
+
+Styleguide Elements.Forms.Checkbox
+*/
+.cui-checkbox {
+  left: -999em;
+  position: absolute; }
+  .cui-checkbox__group {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding-left: 0; }
+  .cui-checkbox__container {
+    height: 40px; }
+  .cui-checkbox__label {
+    cursor: pointer; }
+    .cui-checkbox__label:before {
+      background: white;
+      border-radius: 0.3rem;
+      border: 1px solid #A2A19F;
+      content: '\a0';
+      display: inline-block;
+      height: 1.8rem;
+      line-height: 1.4;
+      margin-right: .6em;
+      text-indent: .15em;
+      vertical-align: .2em;
+      width: 1.8rem; }
+  .cui-checkbox:focus + .cui-checkbox__label:before {
+    box-shadow: 0 0 7px #A2A19F; }
+  .cui-checkbox:checked + .cui-checkbox__label:before {
+    box-shadow: inset 0 0 0 2px #fff; }
 
 /*
 Primary Colors
@@ -708,18 +785,20 @@ Markup: <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors
         <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">.cui-primary-colors--medium-dark</div>
         <div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">.cui-primary-colors--dark</div>
 
-Styleguide 1.4.1
+Styleguide Elements.Colors.Primary-Colors
 */
-.cui-primary-colors--light, .menu-toggle__button, .menu-toggle__button:before, .menu-toggle__button:after {
+.cui-primary-colors--light {
   background-color: #87CEEC; }
 
-.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label::before, .cui-tile__title, .menu-toggle--button, .menu-toggle--button:before, .menu-toggle--button:after {
+.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title {
   background-color: #429DD1; }
 
-.cui-primary-colors--medium, .off-canvas, .menu-toggle.active .menu-toggle--button, .menu-toggle.active .menu-toggle--button:before, .menu-toggle.active .menu-toggle--button:after, snap-drawer, .desktop-menu {
+.cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
   background-color: #4582B4; }
 
-.cui-primary-colors--medium-dark, .off-canvas__list-item, .off-canvas__option, .snap-menu--option, .desktop-menu--option {
+.cui-primary-colors--medium-dark, .cui-off-canvas__list-item,
+.cui-off-canvas__section, .cui-off-canvas__option {
   background-color: #165E9B; }
 
 .cui-primary-colors--dark {
@@ -733,7 +812,7 @@ Markup: <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-co
         <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">.cui-secondary-colors--medium</div>
         <div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">.cui-secondary-colors--dark</div>
 
-Styleguide 1.4.2
+Styleguide Elements.Colors.Secondary-Colors
 */
 .cui-secondary-colors--light {
   background-color: #3CB371; }
@@ -752,7 +831,7 @@ Logos
 
 Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
 
-Styleguide 1.5
+Styleguide Elements.Logo
 */
 /* 
 Buttons
@@ -766,9 +845,9 @@ Styles for button elements
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
-Styleguide 1.6
+Styleguide Elements.Buttons
 */
-.cui-button, .cui-wizard__next {
+.cui-button, .cui-wizard__next, .cui-card__button {
   background-color: #429DD1;
   border: 0;
   border-radius: 4px;
@@ -776,10 +855,10 @@ Styleguide 1.6
   font-size: 0.75em;
   height: 37px;
   width: 160px; }
-  .cui-button:focus, .cui-wizard__next:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next {
+  .cui-button:focus, .cui-wizard__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next, .pseudo-class-focus.cui-card__button {
     box-shadow: 0 0 3px #A2A19F, 0 0 7px #A2A19F;
     outline: 0; }
-  .cui-button:active, .cui-wizard__next:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next {
+  .cui-button:active, .cui-wizard__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next, .pseudo-class-active.cui-card__button {
     background-color: #165E9B; }
   .cui-button--error, .cui-wizard__next--error {
     background-color: #dbdbdb;
@@ -792,10 +871,12 @@ Blocks
 
 A logically and functionally independent page component, the equivalent of a component in Web Components. Blocks being independent allows for their re-use, as well as facilitating the project development and support process.
 
-Styleguide 2.
+Weight: 200
+
+Styleguide Blocks
 */
 /*
-CUI Wizard
+Wizard
 
 Markup: 
 <div class="cui-wizard">
@@ -857,13 +938,10 @@ Markup:
   </div>
 </div>
 
-Styleguide 2.1
+Styleguide Blocks.Wizard
 */
 .cui-wizard {
-  border-radius: 6px;
-  margin: 0 auto;
-  max-width: 1000px;
-  width: 80%; }
+  border-radius: 6px; }
   .cui-wizard__body {
     background: white;
     border-radius: 0 0 6px 6px;
@@ -960,47 +1038,6 @@ Styleguide 2.1
       top: 30%;
       transform: rotate(90deg) translate(7px, 15px); }
 
-.cui-expandable {
-  border-bottom: 1px solid #ddd;
-  display: block;
-  padding-bottom: 10px;
-  width: 100%; }
-  .cui-expandable__title {
-    color: #333;
-    cursor: pointer;
-    display: block;
-    padding: 10px 0 0; }
-  .cui-expandable__review-item {
-    color: #666;
-    font-size: 14px;
-    line-height: .75; }
-  .cui-expandable:last-of-type {
-    margin-bottom: 20px; }
-  .cui-expandable__body {
-    display: block;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 200ms ease-in-out; }
-  .cui-expandable.expanded > .cui-expandable__body {
-    max-height: 500px; }
-  .cui-expandable.expanded > .cui-expandable__title > .chevron {
-    transform: rotate(90deg); }
-
-.indicator-container {
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 40px; }
-  .indicator-container.small > .step-indicator {
-    display: none;
-    pointer-events: none; }
-    .indicator-container.small > .step-indicator.active {
-      border: 0;
-      display: inline-block;
-      margin: 0 auto;
-      text-align: center;
-      color: #bbb; }
-
 .step-indicator {
   color: #bbb;
   display: inline-block;
@@ -1049,7 +1086,7 @@ Markup: <header class="cui-header">
           <!-- TODO : Search bar? -->
         </header>
 
-Styleguide 2.2
+Styleguide Blocks.Header
 */
 .cui-header {
   background: white;
@@ -1112,7 +1149,7 @@ Markup:
   </cui-avatar>
 </div>
 
-Styleguide 2.3
+Styleguide Blocks.Avatar
 */
 .cui-avatar {
   position: relative; }
@@ -1201,13 +1238,10 @@ Markup:
     </div>
 </div>
 
-Styleguide 2.4
+Styleguide Blocks.Container
 */
 .cui-tile {
-  border-radius: 6px;
-  margin: 0 auto;
-  max-width: 1000px;
-  width: 80%; }
+  border-radius: 6px; }
   .cui-tile__body {
     background: white;
     border-radius: 0 0 6px 6px;
@@ -1220,261 +1254,251 @@ Styleguide 2.4
     padding: 15px;
     text-align: center; }
   @media all and (max-width: 600px) {
-    .cui-tile {
-      width: 90%; }
-      .cui-tile__body {
-        padding: 20px; } }
+    .cui-tile__body {
+      padding: 20px; } }
 
-.off-canvas__list {
-  list-style-type: none;
-  padding: 0; }
+/*
+Off Canvas Nav
 
-.off-canvas__list-item {
+Markup:
+<div class="cui-wrapper">
+  <div class="snap-drawers">
+    <div class="snap-drawer">
+      <nav class="cui-off-canvas">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <snap-content class="snap-content">
+    <header class="cui-header">
+      <div class="cui-header__top">
+        <div class="cui-menu__toggle-button-container active" snap-toggle="left" onclick="Nav.navToggle()">
+          <button class="cui-menu__toggle-button"></button>
+        </div>
+        <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#">
+    </div></header>
+    <div class="cui-menu__content-wrapper" style="min-height:0;height:400px">
+      <div class="cui-styleguide__main-container" style="min-height:0;height:400px">
+        <!--   <header class="cui-styleguide__header">
+            <h1 class="cui-styleguide__doc-title"></h1>
+          </header> -->
+      <nav id="desktop-menu" class="cui-off-canvas desktop-menu">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+        <article role="main" class="cui-styleguide__main" style="min-height:0">
+
+              <div id="kssref-2" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-1">
+              </div>
+              <section id="kssref-2-6" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-2">
+            
+
+            <div class="cui-styleguide__style">
+              <div clas="cui-tile__title"></div>
+              <h2 class="cui-tile__title cui-styleguide__title cui-styleguide__title--level-2">
+                <a class="cui-styleguide__title__permalink" href="#">
+                  <span class="cui-styleguide__title__ref">
+                      
+                  </span>
+                  Example
+                </a>
+              </h2>
+
+            </div>
+
+            <div class="cui-tile__body">
+              <div>PAGE CONTENT</div>
+              </div></section>
+        </article>
+      </div>
+    </div>
+  </snap-content>
+</div>
+
+
+Styleguide Blocks.Off-Canvas
+*/
+.cui-off-canvas__list-item,
+.cui-off-canvas__section {
   display: block;
-  padding: 10px 20px;
   margin: 10px 0;
   cursor: pointer; }
-  .off-canvas__list-item a {
+  .cui-off-canvas__list-item a,
+  .cui-off-canvas__section a {
     color: white;
     text-decoration: none; }
 
-.off-canvas__option {
+.cui-off-canvas__option {
   color: white;
   cursor: pointer;
   display: block;
   margin: 10px 0;
   padding: 10px 20px; }
-  .off-canvas__option:hover {
+  .cui-off-canvas__option:hover {
     color: orange; }
-  .off-canvas__option:first-of-type {
+  .cui-off-canvas__option:first-of-type {
     margin-top: 30px; }
 
-.menu-toggle {
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center; }
-
-.menu-toggle__button {
-  width: 40px;
-  height: 7px;
-  position: relative;
-  transition: all 200ms ease-in-out; }
-  .menu-toggle__button:before {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 7px;
-    top: -12px; }
-  .menu-toggle__button:after {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 7px;
-    bottom: -12px; }
-
-snap-content {
-  padding: 0; }
-
-snap-drawer {
-  min-height: 100vh; }
-
-.snap-menu--option {
-  color: white;
+.cui-off-canvas__list-item-link,
+.cui-off-canvas__section-link {
   display: block;
-  padding: 10px 20px;
-  margin: 10px 0;
-  cursor: pointer; }
-  .snap-menu--option:hover {
-    color: orange; }
-  .snap-menu--option:first-of-type {
-    margin-top: 30px; }
+  min-height: 2.5em;
+  padding-left: 2.5em;
+  padding-top: 0.625em; }
 
-snap-content,
-[snap\:content],
-[snap-content],
-[data-snap-content],
-[x-snap-content],
-.snap-content,
-.x-snap-content,
-snap-drawers,
-[snap\:drawers],
-[snap-drawers],
-[data-snap-drawers],
-[x-snap-drawers],
-.snap-drawers,
-.x-snap-drawers,
-.snap-drawers,
-.snap-content {
-  position: static; }
-  @media screen and (max-width: 999px) {
-    snap-content,
-    [snap\:content],
-    [snap-content],
-    [data-snap-content],
-    [x-snap-content],
-    .snap-content,
-    .x-snap-content,
-    snap-drawers,
-    [snap\:drawers],
-    [snap-drawers],
-    [data-snap-drawers],
-    [x-snap-drawers],
-    .snap-drawers,
-    .x-snap-drawers,
-    .snap-drawers,
-    .snap-content {
-      position: absolute;
-      height: auto;
-      top: 0;
-      bottom: 0;
-      width: auto;
-      left: 0;
-      right: 0; } }
+.cui-off-canvas__list-item a:hover,
+.cui-off-canvas__list-item.active a,
+.cui-off-canvas__section a:hover,
+.cui-off-canvas__section.active a {
+  color: #FF8C00; }
 
-snap-drawer,
-[snap\:drawer],
-[snap-drawer],
-[data-snap-drawer],
-[x-snap-drawer],
-.snap-drawer,
-.x-snap-drawer,
-.snap-drawer {
-  position: relative;
-  display: none;
-  height: auto;
-  top: 0;
-  bottom: 0;
-  overflow: auto;
-  -webkit-transition: top 0.2s linear;
-  -moz-transition: top 0.2s linear;
-  -o-transition: top 0.2s linear;
-  transition: top 0.2s linear;
-  -webkit-transition: bottom 0.2s linear;
-  -moz-transition: bottom 0.2s linear;
-  -o-transition: bottom 0.2s linear;
-  transition: bottom 0.2s linear;
-  -webkit-overflow-scrolling: touch;
-  -moz-overflow-scrolling: touch;
-  -o-overflow-scrolling: touch;
-  overflow-scrolling: touch;
-  width: 265px; }
-  @media screen and (max-width: 999px) {
-    snap-drawer,
-    [snap\:drawer],
-    [snap-drawer],
-    [data-snap-drawer],
-    [x-snap-drawer],
-    .snap-drawer,
-    .x-snap-drawer,
-    .snap-drawer {
-      position: absolute;
-      display: inline; } }
+.cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
+  padding-left: 2.5em;
+  padding-top: 0.625em; }
+  .cui-off-canvas__list--child a:hover,
+  .cui-off-canvas__list--child.active a,
+  .cui-off-canvas__sub-section-list a:hover,
+  .cui-off-canvas__sub-section-list.active a {
+    color: #87CEEC; }
+  .cui-off-canvas__list--child .cui-off-canvas__list-item--active,
+  .cui-off-canvas__section--active .cui-off-canvas__list--child,
+  .cui-off-canvas__sub-section-list .cui-off-canvas__list-item--active,
+  .cui-off-canvas__section--active
+  .cui-off-canvas__sub-section-list {
+    position: inherit; }
 
-.snap-content {
-  z-index: 2;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  -moz-overflow-scrolling: touch;
-  -o-overflow-scrolling: touch;
-  overflow-scrolling: touch; }
-
-.snap-drawer-left {
-  left: 0;
-  z-index: 1; }
-
-.snap-drawer-right {
-  right: 0;
-  z-index: 1; }
-
-.snapjs-left .snap-drawer-right,
-.snapjs-right .snap-drawer-left {
-  display: none; }
-
-.snapjs-expand-left .snap-drawer-left,
-.snapjs-expand-right .snap-drawer-right {
-  width: 100%; }
-
-.desktop-menu {
-  left: 0;
-  position: absolute;
-  top: 0;
-  margin-top: 80px;
-  bottom: 0;
-  width: 300px;
-  display: none;
-  transition: all 150ms ease-in-out; }
-  @media screen and (min-width: 1000px) {
-    .desktop-menu {
-      display: inline-block; } }
-  .desktop-menu--collapse {
-    left: -300px; }
-
-.desktop-menu--option {
-  color: white;
-  cursor: pointer;
-  display: block;
-  margin: 10px 0;
-  padding: 10px 20px; }
-  .desktop-menu--option:hover {
-    color: orange; }
-  .desktop-menu--option:first-of-type {
-    margin-top: 30px; }
-
-.menu-toggle {
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center; }
-
-.menu-toggle--button {
-  width: 40px;
-  height: 7px;
-  position: relative;
-  transition: all 200ms ease-in-out; }
-  .menu-toggle--button:before {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 7px;
-    top: -12px;
-    transition: all 200ms ease-in-out; }
-  .menu-toggle--button:after {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 7px;
-    bottom: -12px;
-    transition: all 200ms ease-in-out; }
+.cui-off-canvas__list-item--child,
+.cui-off-canvas__sub-section {
+  font-weight: 500;
+  padding: 0.3125em 0; }
 
 .cui-wrapper {
   min-height: 100vh;
   background: #DEE9EE;
   position: relative; }
 
-.cui-nav__content-wrapper {
-  padding: 40px;
+.cui-nav__content-wrapper,
+.cui-menu__content-wrapper {
   margin-left: 300px;
   transition: all 150ms ease-in-out; }
-  .cui-nav__content-wrapper.desktop-menu--collapse {
+  .cui-nav__content-wrapper.desktop-menu--collapse,
+  .cui-menu__content-wrapper.desktop-menu--collapse {
     margin-left: 0; }
   @media screen and (max-width: 999px) {
-    .cui-nav__content-wrapper {
+    .cui-nav__content-wrapper,
+    .cui-menu__content-wrapper {
       margin-left: 0; } }
 
+.snap-content,
 snap-content {
   background: #DEE9EE;
   padding: 0; }
 
+.snap-drawer,
 snap-drawer {
   background: #4582B4;
   min-height: 100vh; }
+
+@media screen and (min-width: 1000px) {
+  .snap-drawer {
+    display: none; } }
 
 .snap-menu--option {
   background: #165E9B;
@@ -1540,7 +1564,6 @@ snap-drawer,
 .x-snap-drawer,
 .snap-drawer {
   height: auto;
-  top: 0;
   bottom: 0;
   overflow: auto;
   -webkit-transition: top 0.2s linear;
@@ -1614,70 +1637,330 @@ snap-drawer,
   .desktop-menu--option:first-of-type {
     margin-top: 30px; }
 
-.menu-toggle--button {
-  background: #87CEEC;
+.menu-toggle--button,
+.cui-menu__toggle-button {
+  background: #429DD1;
+  border: none;
   width: 40px;
   height: 7px;
   position: relative;
-  transition: all 200ms ease-in-out; }
-  .menu-toggle--button:before {
-    background: #87CEEC;
+  transition: background 200ms ease-in-out; }
+  .menu-toggle--button:before,
+  .cui-menu__toggle-button:before {
+    background: #429DD1;
     content: '';
+    height: 7px;
+    left: 0;
     position: absolute;
     width: 40px;
-    height: 7px;
-    top: -12px; }
-  .menu-toggle--button:after {
-    background: #87CEEC;
+    top: -12px;
+    transition: background 200ms ease-in-out; }
+  .menu-toggle--button:after,
+  .cui-menu__toggle-button:after {
+    background: #429DD1;
     content: '';
+    bottom: -12px;
+    height: 7px;
+    left: 0;
     position: absolute;
     width: 40px;
-    height: 7px;
-    bottom: -12px; }
+    transition: background 200ms ease-in-out; }
 
-.menu-toggle {
+.cui-menu__toggle-button:focus {
+  box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+  outline: 0; }
+  .cui-menu__toggle-button:focus:before, .cui-menu__toggle-button:focus:after {
+    box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+    outline: 0; }
+
+.menu-toggle,
+.cui-menu__toggle-button-container {
   cursor: pointer;
   height: 40px;
   width: 40px;
   display: flex;
   align-items: center; }
-  .menu-toggle.active .menu-toggle--button {
+  .menu-toggle.active .menu-toggle--button,
+  .menu-toggle.active .cui-menu__toggle-button,
+  .cui-menu__toggle-button-container.active .menu-toggle--button,
+  .cui-menu__toggle-button-container.active .cui-menu__toggle-button {
     background: #4582B4; }
-    .menu-toggle.active .menu-toggle--button:before {
+    .menu-toggle.active .menu-toggle--button:before,
+    .menu-toggle.active .cui-menu__toggle-button:before,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:before,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:before {
       background: #4582B4; }
-    .menu-toggle.active .menu-toggle--button:after {
+    .menu-toggle.active .menu-toggle--button:after,
+    .menu-toggle.active .cui-menu__toggle-button:after,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:after,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:after {
       background: #4582B4; }
 
-.list-of-things {
-  margin: 0 auto;
-  width: 400px;
-  padding: 50px;
-  background-color: white;
-  border-radius: 10px;
-  max-width: 50%;
-  min-width: 300px; }
-  .list-of-things h1 {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 20px; }
-  .list-of-things ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-bottom: 15px; }
-  .list-of-things h2 {
-    font-size: 20px;
-    margin-bottom: 10px; }
-  .list-of-things .cui-ng-module {
-    margin-left: 10px;
-    margin-bottom: 20px; }
-  .list-of-things * {
-    color: #333 !important; }
-  .list-of-things .list {
-    margin-left: 10px;
-    margin-bottom: 3px; }
-  .list-of-things .thing {
+/*
+Expandable
+
+Markup:
+<div class="cui-expandable expanded">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+    Expandable Group #1
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+    Expandable Group #2
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+    Expandable Group #3
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+  </ul>
+</div>
+
+Styleguide Blocks.Expandable
+*/
+.cui-expandable {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  padding-bottom: 10px;
+  width: 100%; }
+  .cui-expandable__title {
+    color: #333;
+    cursor: pointer;
     display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-size: 18px; }
+    padding: 10px 0 0; }
+  .cui-expandable__review-item {
+    color: #666;
+    font-size: 14px;
+    line-height: .75;
+    margin: 1em 0; }
+  .cui-expandable:last-of-type {
+    margin-bottom: 20px; }
+  .cui-expandable__body {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 200ms ease-in-out; }
+  .cui-expandable.expanded > .cui-expandable__body {
+    max-height: 500px; }
+  .cui-expandable.expanded > .cui-expandable__title > .chevron {
+    transform: rotate(90deg); }
+
+.indicator-container {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px; }
+  .indicator-container.small > .step-indicator {
+    display: none;
+    pointer-events: none; }
+    .indicator-container.small > .step-indicator.active {
+      border: 0;
+      display: inline-block;
+      margin: 0 auto;
+      text-align: center;
+      color: #bbb; }
+
+/*
+Tables
+
+Markup:
+<table class="cui-table cui-table--borderless">
+    <thead>
+      <tr>
+        <th scope="col">Column Title</th>
+        <th scope="col">Column Title</th>
+        <th scope="col">Column Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="">
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>
+      <tr>
+        <td scope="row">Row Information</td>
+        <td>Row Information</td>
+        <td>Row Information</td>
+      </tr>      
+    </tbody>
+  </table>
+
+Styleguide Elements.Tables
+
+*/
+.cui-table {
+  border-spacing: 0;
+  margin: 2em 0;
+  min-width: 100%; }
+  .cui-table thead tr {
+    background-color: #A2A19F; }
+  .cui-table thead th {
+    text-align: left; }
+  .cui-table th, .cui-table td {
+    border: 1px solid #A2A19F;
+    padding: 1.5rem; }
+
+.cui-table--borderless thead tr {
+  background-color: transparent; }
+  .cui-table--borderless thead tr th {
+    border-top: 0; }
+
+.cui-table--borderless th, .cui-table--borderless td {
+  border-left: 0;
+  border-right: 0; }
+
+/*
+Popover
+
+Markup:
+<div class="cui-wizard__field-container cui-wizard__field-container--half ">
+                  <div class="cui-input__password-holder">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" class="cui-input cui-input__password cui-input--error" placeholder="" required="required">
+<div class="cui-error__password">
+  <p class="">Passwords must:</p>
+  <div class="cui-error__message">have at least 1 lower case letter</div>
+  <div class="cui-error__message">have at least 1 upper case letter</div>
+</div>
+</div>
+
+Styleguide Blocks.Popover
+*/
+/*
+Card
+
+Markup:
+<div class="cui-card__container">
+  <div class="cui-card">
+    <div class="cui-card__image-container">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px"
+         height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+        <use class="cui-card__icon" xlink:href="public/img/icons/icons-out.svg#user"></use>
+      </svg>
+    </div>
+    <div class="cui-card__content">
+      <h3 class="cui-card__content-header">Header</h3>
+      <p>Some text that appropriately describes the context of this card. Some text that appropriately describes the context of this card.</p>
+    </div>
+    <button class="cui-card__button">Button</button>
+  </div>
+</div>
+
+Styleguide Blocks.Cards
+*/
+.cui-card__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px; }
+  @media screen and (min-width: 600px) {
+    .cui-card__container {
+      flex-direction: row;
+      justify-content: space-between; } }
+
+.cui-card {
+  background: #fff;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 40px 40px;
+  transition: box-shadow .2s ease, transform .2s ease;
+  width: 20em; }
+  .cui-card:hover {
+    box-shadow: 0 1px 3px #A2A19F;
+    transform: translateY(-3px); }
+
+.cui-card__image-container {
+  justify-content: center;
+  display: flex; }
+
+.cui-card__image {
+  width: 100%; }
+
+p {
+  max-width: 100%; }
+
+.cui-card__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  line-height: 1.4; }
+
+.cui-card__content-header {
+  align-self: center;
+  color: #828483;
+  font-size: 1.8em;
+  font-weight: 900;
+  margin: 0.3125em 0; }
+
+.cui-card__icon {
+  fill: #429DD1; }
+
+.cui-card__button {
+  align-self: center;
+  border-radius: 0.75em; }
+
+.cui-tile {
+  width: 80%;
+  margin: 30px auto; }
+
+.cui-tile__body {
+  position: relative; }
+
+.cui-wrapper {
+  overflow: hidden; }
+
+.fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: white;
+  opacity: 0;
+  transition: all 100ms ease-in-out;
+  z-index: 10;
+  pointer-events: none; }
+  .fill.show {
+    opacity: 1; }
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; }

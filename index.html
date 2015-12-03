@@ -14,8 +14,11 @@
   
 
   <div class="cui-wrapper">
-    <snap-drawer> 
-      <span class="snap-menu--option" ui-sref="profile">Profile Management</span>
+    <snap-drawer>
+
+      <span class="snap-menu--option" ui-sref="users.search">Search Users</span>
+      <span class="snap-menu--option" ui-sref="users.invitations">User Invitations</span>
+
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
       <header class="cui-header">
@@ -26,7 +29,10 @@
         </div>
       </header>
       <div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-        <span class="desktop-menu--option" ui-sref="profile">Profile Management</span>
+        
+        <span class="desktop-menu--option" ui-sref="users.search">Search Users</span>
+        <span class="desktop-menu--option" ui-sref="users.invitations">User Invitations</span>
+
       </div>
 
       <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
@@ -58,10 +64,11 @@
   <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
   <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
   <script src="bower_components/cui-ng/dist/cui-ng.js"></script>
-   <script src="bower_components/cui-i18n/translate.js"></script>
+  <script src="bower_components/cui-i18n/translate.js"></script>
+  <script src="bower_components/cui.js/dist/cui.js"></script>
   <!-- endbuild -->
 
-   <!-- build:js assets/js/app.js -->
+  <!-- build:js assets/js/app.js -->
   <script src="assets/concatJS/app.js"></script>
   <!-- endbuild -->
   
