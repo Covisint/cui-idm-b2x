@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('baseCtrl',['Person',function(Person){
+.controller('baseCtrl',['$state',function($state){
     var base=this;
     
     base.desktopMenu=true;
@@ -8,8 +8,15 @@ angular.module('app')
         base.desktopMenu=!base.desktopMenu;
     };
 
-    // Person.getAll() gets all the people in the API
-    // Person.getById(id) gets 1 person
+    base.goBack=function(){
+        if($state.previous.name.name!==''){
+            $state.go($state.previous.name,$state.previous.params);
+        }
+        else {
+            $state.go('base');
+        }
+    };
+
 
 
 }]);
