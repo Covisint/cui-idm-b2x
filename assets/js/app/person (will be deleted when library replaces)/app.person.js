@@ -41,6 +41,23 @@ angular.module('app')
         });
     };
 
+    var getInvitationById=function(id){
+        return $http({
+            method:'GET',
+            url:API.url() + '/person/v1/personInvitations/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
     var createInvitation=function(invitee,invitor){
         return $http({
             method:'POST',
@@ -133,6 +150,22 @@ angular.module('app')
         });
     };
 
+    var sendUserInvitationEmail=function(body){
+        console.log(body);
+        return $http({
+            method:'POST',
+            url:'http://10.120.50.52:8000/invitation/person',
+            "Content-Type": "application/json",
+            data:body
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
     var person={
         getAll:API.cui.getUsers,
         getById:getById,
@@ -140,7 +173,9 @@ angular.module('app')
         getInvitations:getInvitations,
         create:create,
         delete:del,
-        createInvitation:createInvitation
+        createInvitation:createInvitation,
+        sendUserInvitationEmail:sendUserInvitationEmail,
+        getInvitationById:getInvitationById
     };
 
     return person;

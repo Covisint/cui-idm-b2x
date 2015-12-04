@@ -20,7 +20,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('users.edit',{
             url: '/edit/:id',
             templateUrl: 'assets/angular-templates/users/users.edit.html',
-            controller: 'usersEditCtrl as userEdit'
+            controller: 'usersEditCtrl as usersEdit'
         })
         .state('users.invitations',{
             url: '/invitations',
@@ -36,6 +36,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/invite',
             templateUrl: 'assets/angular-templates/users/users.invite.html',
             controller: 'usersInviteCtrl as usersInvite'
+        })
+        .state('users.register',{
+            url: '/register?id&code',
+            templateUrl: 'assets/angular-templates/users/users.register.html',
+            controller: 'usersRegisterCtrl as usersRegister'
         });
     // $locationProvider.html5Mode(true);
     
