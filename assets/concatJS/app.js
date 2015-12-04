@@ -16,12 +16,12 @@ angular.module('app')
     var myCUI= cui.api();
     myCUI.setService('https://api.covapp.io');
     
-    var doAuth = (function(){
-        myCUI.doSysAuth({
+    var doAuth = function(){
+        return myCUI.doSysAuth({
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
-    })();
+    }
 
     var token = function(){
         return myCUI.getToken();
@@ -34,7 +34,8 @@ angular.module('app')
     return{
         token:token,
         url:url,
-        cui:myCUI
+        cui:myCUI,
+        doAuth:doAuth
     };
 }]);
 
@@ -94,6 +95,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/view',
             templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
             controller: 'userInvitationsViewCtrl as usersInvitationsView'
+        })
+        .state('users.invite',{
+            url: '/invite',
+            templateUrl: 'assets/angular-templates/users/users.invite.html',
+            controller: 'usersInviteCtrl as usersInvite'
         });
     // $locationProvider.html5Mode(true);
     
@@ -172,6 +178,39 @@ angular.module('app')
         });
     };
 
+    var createInvitation=function(invitee,invitor){
+        return $http({
+            method:'POST',
+            url:API.url() + '/person/v1/personInvitations',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token(),
+                'Content-type':'application/vnd.com.covisint.platform.person.invitation.v1+json'
+            },
+            data:{
+                email:invitee.email,
+                invitor:{
+                    id:invitor.id,
+                    type:'person'
+                },
+                invitee:{
+                    id:invitee.id,
+                    type:'person'
+                },
+                targetOrganization:{
+                    "id":"OCOVSMKT-CVDEV204002",
+                    "type":"organization"
+                }
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
     var update=function(id,data){
         return $http({
             method:'PUT',
@@ -191,11 +230,54 @@ angular.module('app')
         });
     };
 
+    var create=function(data){
+        return $http({
+            method:'POST',
+            url:API.url() + '/person/v1/persons',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.v1+json',
+                Authorization:'Bearer ' + API.token(),
+                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
+            },
+            data:data
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var del=function(id){
+        return $http({
+            method:'DELETE',
+            url:API.url() + '/person/v1/persons/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.v1+json',
+                Authorization:'Bearer ' + API.token(),
+                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
+            },
+            data:{
+                id:id
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
     var person={
         getAll:API.cui.getUsers,
         getById:getById,
         update:update,
-        getInvitations:getInvitations
+        getInvitations:getInvitations,
+        create:create,
+        delete:del,
+        createInvitation:createInvitation
     };
 
     return person;
@@ -235,16 +317,21 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersInvitations.invitorLoading=[];
     usersInvitations.inviteeLoading=[];
 
-    Person.getInvitations()
-    .then(function(res){
-        usersInvitations.listLoading=false;
-        usersInvitations.list=res.data;
-    })
-    .catch(function(err){
-        usersInvitations.listLoading=false
-        console.log(err);
+    API.doAuth()
+    .then(function(){
+        Person.getInvitations()
+        .then(function(res){
+            usersInvitations.listLoading=false;
+            usersInvitations.list=res.data;
+        })
+        .catch(function(err){
+            usersInvitations.listLoading=false
+            console.log(err);
+        });
     });
 
+    // This is needed to "attach" the invitor's and the invitee's info to the invitation
+    // since the only parameter that we have from the invitation API is the ID
     usersInvitations.getInfo=function(invitorId,inviteeId,index){
         if(usersInvitations.invitor[index]===undefined){
             var params={};
@@ -257,7 +344,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
             .then(function(res){
                 usersInvitations.invitorLoading[index]=false;
                 usersInvitations.invitor[index]=res[0];
-                // console.log(usersInvitations.invitor);
                 $scope.$apply();
             })
             .fail(function(err){
@@ -299,37 +385,108 @@ function(localStorageService,$scope,Person,$stateParams,API){
 }]);
 
 angular.module('app')
-.controller('usersSearchCtrl',['localStorageService', '$scope','API', function(localStorageService, $scope, API){
-    var usersSearch=this;
+.controller('usersInviteCtrl',['localStorageService','$scope','Person','$stateParams','API',
+function(localStorageService,$scope,Person,$stateParams,API){
+    var usersInvite=this;
+    usersInvite.user={};
+    usersInvite.user.organization={ // organization is hardcoded
+                                    // will be replaced once auth is in place
+        "id": "OCOVSMKT-CVDEV204002",
+        "type": "organization",
+        "realm": "APPCLOUD"
+    };
 
-    usersSearch.listLoading=true;
-    API.cui.getUsers()
-    .then(function(res){
-        usersSearch.listLoading=false;
-        usersSearch.list=res;
-        usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
-        $scope.$apply();
-    })
-    .fail(function(err){
-        usersSearch.listLoading=false;
-        // console.log(err);
-    });
-
-
-    var search=function(){
-        API.cui.getUser({data:usersSearch.search})
+    var createInvitation=function(invitee){
+        Person.createInvitation(invitee,{id:'RN3BJI54'})
         .then(function(res){
-            usersSearch.list=res;
-            $scope.$apply();
+            console.log('sending email to ' + res.data.email);
+            sendInvitationEmail(res.data);
         })
-        .fail(function(err){
-            // TBD : error handling
-            // console.log(err);
+        .catch(function(err){
+            console.log(err);
         });
     };
 
-    $scope.$watchCollection('usersSearch.search',search); 
+    var sendInvitationEmail=function(invitation){
+        // var emailOpts={
+        //     to:'invitation.email',
+        //     from:''
+        // }
+    };
 
+    usersInvite.saveUser=function(form){
+
+        // Sets every field to $touched, so that when the user
+        // clicks on 'sent invitation' he gets the warnings
+        // for each field that has an error.
+        angular.forEach(form.$error, function (field) {
+            angular.forEach(field, function(errorField){
+                errorField.$setTouched();
+            });
+        });
+
+        if(form.$valid){
+
+            API.doAuth()
+            .then(function(){
+                Person.create(usersInvite.user)
+                .then(function(res){
+                    console.log(res.data);
+                    createInvitation(res.data);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+
+            });
+
+        }
+    }
+
+
+
+}]);
+
+angular.module('app')
+.controller('usersSearchCtrl',['localStorageService', '$scope','API','Person',
+ function(localStorageService, $scope, API,Person){
+    var usersSearch=this;
+    usersSearch.listLoading=true;
+
+    API.doAuth()
+    .then(function(){
+        API.cui.getUsers()
+        .then(function(res){
+            usersSearch.listLoading=false;
+            usersSearch.list=res;
+            usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
+            $scope.$apply();
+        })
+        .fail(function(err){
+            usersSearch.listLoading=false;
+            // console.log(err);
+        });
+    })
+
+
+    var search=function(){
+        // this if statement stops the search from executing
+        // when the controller first fires  and the search object is undefined/
+        // once pagination is impletemented this won't be needed
+        if(usersSearch.search){
+            API.cui.getUser({data:usersSearch.search})
+            .then(function(res){
+                usersSearch.list=res;
+                $scope.$apply();
+            })
+            .fail(function(err){
+                // TBD : error handling
+                // console.log(err);
+            });
+        }
+    };
+
+    $scope.$watchCollection('usersSearch.search',search); 
 
 
 

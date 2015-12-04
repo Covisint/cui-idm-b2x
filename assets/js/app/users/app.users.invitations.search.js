@@ -8,16 +8,21 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersInvitations.invitorLoading=[];
     usersInvitations.inviteeLoading=[];
 
-    Person.getInvitations()
-    .then(function(res){
-        usersInvitations.listLoading=false;
-        usersInvitations.list=res.data;
-    })
-    .catch(function(err){
-        usersInvitations.listLoading=false
-        console.log(err);
+    API.doAuth()
+    .then(function(){
+        Person.getInvitations()
+        .then(function(res){
+            usersInvitations.listLoading=false;
+            usersInvitations.list=res.data;
+        })
+        .catch(function(err){
+            usersInvitations.listLoading=false
+            console.log(err);
+        });
     });
 
+    // This is needed to "attach" the invitor's and the invitee's info to the invitation
+    // since the only parameter that we have from the invitation API is the ID
     usersInvitations.getInfo=function(invitorId,inviteeId,index){
         if(usersInvitations.invitor[index]===undefined){
             var params={};
@@ -30,7 +35,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
             .then(function(res){
                 usersInvitations.invitorLoading[index]=false;
                 usersInvitations.invitor[index]=res[0];
-                // console.log(usersInvitations.invitor);
                 $scope.$apply();
             })
             .fail(function(err){
