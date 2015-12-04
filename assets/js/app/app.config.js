@@ -31,6 +31,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/view',
             templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
             controller: 'userInvitationsViewCtrl as usersInvitationsView'
+        })
+        .state('users.invite',{
+            url: '/invite',
+            templateUrl: 'assets/angular-templates/users/users.invite.html',
+            controller: 'usersInviteCtrl as usersInvite'
         });
     // $locationProvider.html5Mode(true);
     

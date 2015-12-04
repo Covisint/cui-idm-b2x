@@ -1,0 +1,74 @@
+<h2 ng-click="base.goBack()">Go Back</h2>
+<div class="cui-tile">
+  <div class="cui-tile__title">Invite User</div>
+    <div class="cui-tile__body">
+      <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+       <indicator-container class="indicator-container"></indicator-container>
+        <step title="User details">
+        <form name="user" novalidate>
+        </ng-include>
+
+
+            <!-- Email -->     
+            <label for="user-email">{{'cui-email' | translate}}</label> 
+            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
+              <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="email" class="cui-input" ng-required="true" ng-model="usersInvite.user.email"></input>
+        
+
+          <div class="cui-wizard__field-row"> 
+           <!-- First Name -->     
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+              <!--    This adds error messages to the firstName input field. Notice the naming convention
+              ng-messages="<formName><inputName>.$error" -->
+              <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersInvite.user.name.given"></input>
+            </div>
+
+            <!-- Last Name -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+              <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" ng-model="usersInvite.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+            </div>
+          </div>
+        
+          
+          <div class="cui-wizard__field-row"> 
+           <!-- timezone -->     
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-given">{{'cui-timezone' | translate}}</label> 
+              <!--    This adds error messages to the firstName input field. Notice the naming convention
+              ng-messages="<formName><inputName>.$error" -->
+              <div class="cui-error" ng-messages="user.timezone.$error" ng-if="user.timezone.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" name="timezone" class="cui-input" ng-required="true" ng-model="usersInvite.user.timezone"></input>
+            </div>
+
+            <!-- Language -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-language">Language</label>
+              <div class="cui-error" ng-messages="user.language.$error" ng-if="user.language.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" ng-model="usersInvite.user.language" name="language" class="cui-input" ng-required="true"></input>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="cui-wizard__controls">
+          <!-- go to assets/js/app/app.profile.js to customize this function -->
+          <button class="cui-wizard__next" ng-click="usersInvite.saveUser(user)" ng-class="user.$invalid? 'cui-wizard__next--error' : ''">Save</button>
+        </div>
+      </step>
+    </cui-wizard>
+  </div>
+</div>

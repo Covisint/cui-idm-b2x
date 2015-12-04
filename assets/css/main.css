@@ -1952,7 +1952,6 @@ p {
   left: 0;
   background: white;
   opacity: 0;
-  transition: all 100ms ease-in-out;
   z-index: 10;
   pointer-events: none; }
   .fill.show {
