@@ -41,6 +41,23 @@ angular.module('app')
         });
     };
 
+    var getInvitationById=function(id){
+        return $http({
+            method:'GET',
+            url:API.url() + '/person/v1/personInvitations/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
     var createInvitation=function(invitee,invitor){
         return $http({
             method:'POST',
@@ -112,24 +129,18 @@ angular.module('app')
         });
     };
 
-    var del=function(id){
+    var sendUserInvitationEmail=function(body){
         return $http({
-            method:'DELETE',
-            url:API.url() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:{
-                id:id
-            }
+            method:'POST',
+            url:'http://localhost:8000/invitation/person',
+            "Content-Type": "application/json",
+            data:body
         })
         .then(function(res){
             return res;
         })
-        .catch(function(res){
-            return $q.reject(res);
+        .catch(function(err){
+            return $q.reject(err);
         });
     };
 
@@ -139,8 +150,9 @@ angular.module('app')
         update:update,
         getInvitations:getInvitations,
         create:create,
-        delete:del,
-        createInvitation:createInvitation
+        createInvitation:createInvitation,
+        sendUserInvitationEmail:sendUserInvitationEmail,
+        getInvitationById:getInvitationById
     };
 
     return person;

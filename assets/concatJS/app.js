@@ -84,7 +84,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('users.edit',{
             url: '/edit/:id',
             templateUrl: 'assets/angular-templates/users/users.edit.html',
-            controller: 'usersEditCtrl as userEdit'
+            controller: 'usersEditCtrl as usersEdit'
         })
         .state('users.invitations',{
             url: '/invitations',
@@ -100,6 +100,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/invite',
             templateUrl: 'assets/angular-templates/users/users.invite.html',
             controller: 'usersInviteCtrl as usersInvite'
+        })
+        .state('users.register',{
+            url: '/register?id&code',
+            templateUrl: 'assets/angular-templates/users/users.register.html',
+            controller: 'usersRegisterCtrl as usersRegister'
         });
     // $locationProvider.html5Mode(true);
     
@@ -165,6 +170,23 @@ angular.module('app')
         return $http({
             method:'GET',
             url:API.url() + '/person/v1/personInvitations/',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var getInvitationById=function(id){
+        return $http({
+            method:'GET',
+            url:API.url() + '/person/v1/personInvitations/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -249,24 +271,18 @@ angular.module('app')
         });
     };
 
-    var del=function(id){
+    var sendUserInvitationEmail=function(body){
         return $http({
-            method:'DELETE',
-            url:API.url() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:{
-                id:id
-            }
+            method:'POST',
+            url:'http://localhost:8000/invitation/person',
+            "Content-Type": "application/json",
+            data:body
         })
         .then(function(res){
             return res;
         })
-        .catch(function(res){
-            return $q.reject(res);
+        .catch(function(err){
+            return $q.reject(err);
         });
     };
 
@@ -276,8 +292,9 @@ angular.module('app')
         update:update,
         getInvitations:getInvitations,
         create:create,
-        delete:del,
-        createInvitation:createInvitation
+        createInvitation:createInvitation,
+        sendUserInvitationEmail:sendUserInvitationEmail,
+        getInvitationById:getInvitationById
     };
 
     return person;
@@ -285,8 +302,8 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams', 
-function(localStorageService,$scope,Person,$stateParams){
+.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams','$timeout', 
+function(localStorageService,$scope,Person,$stateParams,$timeout){
     var usersEdit=this;
     usersEdit.loading=true;
 
@@ -302,14 +319,29 @@ function(localStorageService,$scope,Person,$stateParams){
 
 
     usersEdit.save=function(){
-        Person.update($stateParams.id,usersEdit.user);
+        usersEdit.saving=true;
+        usersEdit.fail=false;
+        usersEdit.success=false;
+        Person.update($stateParams.id,usersEdit.user).
+        then(function(res){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.success=true;
+            },300);
+        })
+        .catch(function(err){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.fail=true;
+            },300);
+        });
     };
 
 }]);
 
 angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API',
-function(localStorageService,$scope,Person,$stateParams,API){
+.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API','$timeout',
+function(localStorageService,$scope,Person,$stateParams,API,$timeout){
     var usersInvitations=this;
     usersInvitations.listLoading=true;
     usersInvitations.invitor=[];
@@ -334,17 +366,20 @@ function(localStorageService,$scope,Person,$stateParams,API){
     // since the only parameter that we have from the invitation API is the ID
     usersInvitations.getInfo=function(invitorId,inviteeId,index){
         if(usersInvitations.invitor[index]===undefined){
-            var params={};
             //get invitor's details
             usersInvitations.invitorLoading[index]=true;
-            params={
+            usersInvitations.inviteeLoading[index]=true;
+            
+            var invitorParams={
                 id:invitorId
             };
-            API.cui.getUsers({data:params})
+            API.cui.getUsers({data:invitorParams})
             .then(function(res){
-                usersInvitations.invitorLoading[index]=false;
                 usersInvitations.invitor[index]=res[0];
                 $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.invitorLoading[index]=false;
+                },500);
             })
             .fail(function(err){
                 console.log(err);
@@ -352,14 +387,17 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
 
             //get invitee's details
-            params={
+            var inviteeParams={
                 id:inviteeId
             };
-            API.cui.getUsers({data:params})
+            API.cui.getUsers({data:inviteeParams})
             .then(function(res){
-                usersInvitations.inviteeLoading[index]=false;
                 usersInvitations.invitee[index]=res[0];
                 $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.inviteeLoading[index]=false;
+                },500);
+                
             })
             .fail(function(err){
                 console.log(err);
@@ -399,23 +437,35 @@ function(localStorageService,$scope,Person,$stateParams,API){
     var createInvitation=function(invitee){
         Person.createInvitation(invitee,{id:'RN3BJI54'})
         .then(function(res){
-            console.log('sending email to ' + res.data.email);
             sendInvitationEmail(res.data);
         })
         .catch(function(err){
-            console.log(err);
+            usersInvite.sending=false;
+            usersInvite.fail=true;
         });
     };
 
     var sendInvitationEmail=function(invitation){
-        // var emailOpts={
-        //     to:'invitation.email',
-        //     from:''
-        // }
+        var emailOpts={
+            to:invitation.email,
+            from:'cuiInterface@thirdwave.com',
+            fromName:'CUI INTERFACE',
+            subject: 'Request to join our organization',
+            text: "You've received an invitation to join our organization.<p>" + 
+            "localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode
+        };
+        Person.sendUserInvitationEmail(emailOpts)
+        .then(function(res){   
+            usersInvite.sending=false;
+            usersInvite.sent=true;
+        })
+        .catch(function(err){
+            usersInvite.sending=false;
+            usersInvite.fail=true;
+        });
     };
 
     usersInvite.saveUser=function(form){
-
         // Sets every field to $touched, so that when the user
         // clicks on 'sent invitation' he gets the warnings
         // for each field that has an error.
@@ -426,16 +476,18 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
 
         if(form.$valid){
-
+            usersInvite.sending=true;
+            usersInvite.sent=false;
+            usersInvite.fail=false;
             API.doAuth()
             .then(function(){
                 Person.create(usersInvite.user)
-                .then(function(res){
-                    console.log(res.data);
+                .then(function(res){   
                     createInvitation(res.data);
                 })
                 .catch(function(err){
-                    console.log(err);
+                    usersInvite.sending=false;
+                    usersInvite.fail=true;
                 });
 
             });
@@ -444,6 +496,44 @@ function(localStorageService,$scope,Person,$stateParams,API){
     }
 
 
+
+}]);
+
+angular.module('app')
+.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
+function(localStorageService,$scope,Person,$stateParams,API){
+    var usersRegister=this;
+    usersRegister.loading=true;
+
+
+    Person.getInvitationById($stateParams.id)
+    .then(function(res){
+        console.log(res);
+        getUser(res.data.invitee.id);
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+
+    var getUser=function(id){
+        var params={
+            id:id
+        };
+        API.cui.getUsers({data:params})
+        .then(function(res){
+            usersRegister.loading=false;
+            usersRegister.user=res[0];
+            $scope.$apply();
+        })
+        .fail(function(err){
+            usersRegister.loading=false;
+            console.log(err);
+        })
+    }
+
+    usersRegister.save=function(){
+        Person.update(usersRegister.user.id,usersRegister.user);
+    };
 
 }]);
 

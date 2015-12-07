@@ -19,9 +19,9 @@
     left:0;
     background:white;
     opacity:0;
-    
     z-index:10;
     pointer-events:none;
+    transition:all 200ms ease-in-out;
     &.show{
         opacity:1;
     }
@@ -31,6 +31,63 @@
     position:absolute;
     top:50%;
     left:50%;
-    transform:translate(-50%,-50%);
     z-index:10;
+}
+
+.cui-loading--large__center {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    border: solid 10px lighten($cui-primary-colors--light,20%);
+    border-top-color: $cui-primary-colors--light;
+    animation: spin-center 1s infinite linear;
+    transform-origin: center;
+    position:absolute;
+    top:50%;
+    left:50%;
+}
+
+.cui-loading--medium__center {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    border: solid 5px lighten($cui-primary-colors--light,20%);
+    border-top-color: $cui-primary-colors--light;
+    animation: spin-center 0.5s infinite linear;
+    transform-origin: center;
+    position:absolute;
+    top:50%;
+    left:50%;
+}
+
+.cui-loading--medium {
+    width: 30px;
+    height: 30px;
+    display:inline-block;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    border: solid 5px lighten($cui-primary-colors--light,20%);
+    border-top-color: $cui-primary-colors--light;
+    animation: spin 1s infinite linear;
+    transform-origin: center;
+}
+
+@keyframes spin-center {
+    from {transform:translate(-50%,-50%) rotate(0deg);}
+    to {transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+@keyframes spin {
+    from {transform:translate(-4px,11px) rotate(0deg);}
+    to {transform:translate(-4px,11px) rotate(360deg);}
+}
+
+.cui-wizard__next.success {
+    background:$cui-secondary-colors--light;
+}
+
+.cui-wizard__next.fail {
+    background:$cui-secondary-colors--dark;
 }
