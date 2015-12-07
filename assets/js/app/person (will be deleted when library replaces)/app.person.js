@@ -41,6 +41,56 @@ angular.module('app')
         });
     };
 
+    var getInvitationById=function(id){
+        return $http({
+            method:'GET',
+            url:API.url() + '/person/v1/personInvitations/' + id,
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var createInvitation=function(invitee,invitor){
+        return $http({
+            method:'POST',
+            url:API.url() + '/person/v1/personInvitations',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
+                Authorization:'Bearer ' + API.token(),
+                'Content-type':'application/vnd.com.covisint.platform.person.invitation.v1+json'
+            },
+            data:{
+                email:invitee.email,
+                invitor:{
+                    id:invitor.id,
+                    type:'person'
+                },
+                invitee:{
+                    id:invitee.id,
+                    type:'person'
+                },
+                targetOrganization:{
+                    "id":"OCOVSMKT-CVDEV204002",
+                    "type":"organization"
+                }
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
     var update=function(id,data){
         return $http({
             method:'PUT',
@@ -60,11 +110,49 @@ angular.module('app')
         });
     };
 
+    var create=function(data){
+        return $http({
+            method:'POST',
+            url:API.url() + '/person/v1/persons',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.person.v1+json',
+                Authorization:'Bearer ' + API.token(),
+                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
+            },
+            data:data
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(res){
+            return $q.reject(res);
+        });
+    };
+
+    var sendUserInvitationEmail=function(body){
+        return $http({
+            method:'POST',
+            url:'http://localhost:8000/invitation/person',
+            "Content-Type": "application/json",
+            data:body
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
     var person={
         getAll:API.cui.getUsers,
         getById:getById,
         update:update,
-        getInvitations:getInvitations
+        getInvitations:getInvitations,
+        create:create,
+        createInvitation:createInvitation,
+        sendUserInvitationEmail:sendUserInvitationEmail,
+        getInvitationById:getInvitationById
     };
 
     return person;
