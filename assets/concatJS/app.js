@@ -271,32 +271,10 @@ angular.module('app')
         });
     };
 
-    var del=function(id){
-        return $http({
-            method:'DELETE',
-            url:API.url() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:{
-                id:id
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
     var sendUserInvitationEmail=function(body){
-        console.log(body);
         return $http({
             method:'POST',
-            url:'http://10.120.50.52:8000/invitation/person',
+            url:'http://localhost:8000/invitation/person',
             "Content-Type": "application/json",
             data:body
         })
@@ -314,7 +292,6 @@ angular.module('app')
         update:update,
         getInvitations:getInvitations,
         create:create,
-        delete:del,
         createInvitation:createInvitation,
         sendUserInvitationEmail:sendUserInvitationEmail,
         getInvitationById:getInvitationById
@@ -325,8 +302,8 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams', 
-function(localStorageService,$scope,Person,$stateParams){
+.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams','$timeout', 
+function(localStorageService,$scope,Person,$stateParams,$timeout){
     var usersEdit=this;
     usersEdit.loading=true;
 
@@ -342,14 +319,29 @@ function(localStorageService,$scope,Person,$stateParams){
 
 
     usersEdit.save=function(){
-        Person.update($stateParams.id,usersEdit.user);
+        usersEdit.saving=true;
+        usersEdit.fail=false;
+        usersEdit.success=false;
+        Person.update($stateParams.id,usersEdit.user).
+        then(function(res){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.success=true;
+            },300);
+        })
+        .catch(function(err){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.fail=true;
+            },300);
+        });
     };
 
 }]);
 
 angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API',
-function(localStorageService,$scope,Person,$stateParams,API){
+.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API','$timeout',
+function(localStorageService,$scope,Person,$stateParams,API,$timeout){
     var usersInvitations=this;
     usersInvitations.listLoading=true;
     usersInvitations.invitor=[];
@@ -374,17 +366,20 @@ function(localStorageService,$scope,Person,$stateParams,API){
     // since the only parameter that we have from the invitation API is the ID
     usersInvitations.getInfo=function(invitorId,inviteeId,index){
         if(usersInvitations.invitor[index]===undefined){
-            var params={};
             //get invitor's details
             usersInvitations.invitorLoading[index]=true;
-            params={
+            usersInvitations.inviteeLoading[index]=true;
+            
+            var invitorParams={
                 id:invitorId
             };
-            API.cui.getUsers({data:params})
+            API.cui.getUsers({data:invitorParams})
             .then(function(res){
-                usersInvitations.invitorLoading[index]=false;
                 usersInvitations.invitor[index]=res[0];
                 $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.invitorLoading[index]=false;
+                },500);
             })
             .fail(function(err){
                 console.log(err);
@@ -392,14 +387,17 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
 
             //get invitee's details
-            params={
+            var inviteeParams={
                 id:inviteeId
             };
-            API.cui.getUsers({data:params})
+            API.cui.getUsers({data:inviteeParams})
             .then(function(res){
-                usersInvitations.inviteeLoading[index]=false;
                 usersInvitations.invitee[index]=res[0];
                 $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.inviteeLoading[index]=false;
+                },500);
+                
             })
             .fail(function(err){
                 console.log(err);
@@ -439,36 +437,35 @@ function(localStorageService,$scope,Person,$stateParams,API){
     var createInvitation=function(invitee){
         Person.createInvitation(invitee,{id:'RN3BJI54'})
         .then(function(res){
-            console.log(res.data);
-            console.log('sending email to ' + res.data.email);
             sendInvitationEmail(res.data);
         })
         .catch(function(err){
-            console.log(err);
+            usersInvite.sending=false;
+            usersInvite.fail=true;
         });
     };
 
     var sendInvitationEmail=function(invitation){
         var emailOpts={
             to:invitation.email,
-            from:'cuiInterface@test.com',
+            from:'cuiInterface@thirdwave.com',
             fromName:'CUI INTERFACE',
             subject: 'Request to join our organization',
             text: "You've received an invitation to join our organization.<p>" + 
-            "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode +
-            "'>Click here to register.</a>"
+            "localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode
         };
         Person.sendUserInvitationEmail(emailOpts)
-        .then(function(res){
-            console.log(res);
+        .then(function(res){   
+            usersInvite.sending=false;
+            usersInvite.sent=true;
         })
         .catch(function(err){
-            console.log(err);
+            usersInvite.sending=false;
+            usersInvite.fail=true;
         });
     };
 
     usersInvite.saveUser=function(form){
-
         // Sets every field to $touched, so that when the user
         // clicks on 'sent invitation' he gets the warnings
         // for each field that has an error.
@@ -479,16 +476,18 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
 
         if(form.$valid){
-
+            usersInvite.sending=true;
+            usersInvite.sent=false;
+            usersInvite.fail=false;
             API.doAuth()
             .then(function(){
                 Person.create(usersInvite.user)
-                .then(function(res){
-                    console.log(res.data);
+                .then(function(res){   
                     createInvitation(res.data);
                 })
                 .catch(function(err){
-                    console.log(err);
+                    usersInvite.sending=false;
+                    usersInvite.fail=true;
                 });
 
             });

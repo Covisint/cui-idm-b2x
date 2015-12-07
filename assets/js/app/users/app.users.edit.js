@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams', 
-function(localStorageService,$scope,Person,$stateParams){
+.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams','$timeout', 
+function(localStorageService,$scope,Person,$stateParams,$timeout){
     var usersEdit=this;
     usersEdit.loading=true;
 
@@ -16,7 +16,22 @@ function(localStorageService,$scope,Person,$stateParams){
 
 
     usersEdit.save=function(){
-        Person.update($stateParams.id,usersEdit.user);
+        usersEdit.saving=true;
+        usersEdit.fail=false;
+        usersEdit.success=false;
+        Person.update($stateParams.id,usersEdit.user).
+        then(function(res){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.success=true;
+            },300);
+        })
+        .catch(function(err){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.fail=true;
+            },300);
+        });
     };
 
 }]);

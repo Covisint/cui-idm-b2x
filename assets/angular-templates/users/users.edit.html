@@ -84,7 +84,12 @@
 
         <div class="cui-wizard__controls">
           <!-- go to assets/js/app/app.profile.js to customize this function -->
-          <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="user.$invalid? 'cui-wizard__next--error' : ''">Save</button>
+          <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="(user.$invalid)? 'cui-wizard__next--error' : (usersEdit.success)? 'success' : (usersEdit.fail)? 'fail' : ''" style="position:relative"> 
+            <div class="cui-loading--medium__center" ng-show="usersEdit.saving"></div>
+            <span ng-if="(!usersEdit.saving && !usersEdit.success && !usersEdit.fail)">Update</span>
+            <span ng-if="usersEdit.success">Updated!</span>
+            <span ng-if="usersEdit.fail">Error! Try again?</span>
+          </button>
         </div>
       </step>
     </cui-wizard>

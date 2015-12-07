@@ -129,32 +129,10 @@ angular.module('app')
         });
     };
 
-    var del=function(id){
-        return $http({
-            method:'DELETE',
-            url:API.url() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:{
-                id:id
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
     var sendUserInvitationEmail=function(body){
-        console.log(body);
         return $http({
             method:'POST',
-            url:'http://10.120.50.52:8000/invitation/person',
+            url:'http://localhost:8000/invitation/person',
             "Content-Type": "application/json",
             data:body
         })
@@ -172,7 +150,6 @@ angular.module('app')
         update:update,
         getInvitations:getInvitations,
         create:create,
-        delete:del,
         createInvitation:createInvitation,
         sendUserInvitationEmail:sendUserInvitationEmail,
         getInvitationById:getInvitationById
