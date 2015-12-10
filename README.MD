@@ -42,12 +42,15 @@ This showcases an example of a "Profile Management" form with multiple form step
     <div class="cui-tile__body">
       <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
        <indicator-container class="indicator-container"></indicator-container>
+
         <step title="Edit profile" state="profileMangement">
           <div ng-include src="'assets/angular-templates/profile-steps/profile.edit.html'"></div>
       	</step>
+
       	<step title="Settings" state="profileSettings">
           <div ng-include src="'assets/angular-templates/profile-steps/profile.settings.html'"></div>
       	</step>
+      	
     </cui-wizard>
   </div>
 </div>
@@ -55,9 +58,10 @@ This showcases an example of a "Profile Management" form with multiple form step
 # Form Example
 
 ```html
-<form name="user" novalidate>
-	<!-- First Name -->   
-	<div class="cui-wizard__field-row">     
+<form name="user" novalidate>  
+	<div class="cui-wizard__field-row">  
+
+		<!-- First Name -->    
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
       		<label for="user-name-given">{{'cui-first-name' | translate}}</label> 
         	<!--    This adds error messages to the firstName input field. Notice the naming convention
@@ -67,6 +71,7 @@ This showcases an example of a "Profile Management" form with multiple form step
         	</div>
         	<input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="profile.user.name.given"></input>
     	</div>
+
     	<!-- Last Name -->
     	<div class="cui-wizard__field-container cui-wizard__field-container--half">
     		<label for="user-name-surname">{{'cui-last-name' | translate}}</label>
@@ -75,6 +80,7 @@ This showcases an example of a "Profile Management" form with multiple form step
       		</div>
     		<input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
     	</div>
+
   	</div>
 </form>
 ```
