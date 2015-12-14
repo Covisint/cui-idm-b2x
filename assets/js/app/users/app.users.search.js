@@ -6,7 +6,7 @@ angular.module('app')
 
     API.doAuth()
     .then(function(){
-        API.cui.getUsers()
+        API.cui.getPersons()
         .then(function(res){
             usersSearch.listLoading=false;
             usersSearch.list=res;
@@ -17,7 +17,7 @@ angular.module('app')
             usersSearch.listLoading=false;
             // console.log(err);
         });
-    })
+    });
 
 
     var search=function(){
@@ -25,7 +25,8 @@ angular.module('app')
         // when the controller first fires  and the search object is undefined/
         // once pagination is impletemented this won't be needed
         if(usersSearch.search){
-            API.cui.getUser({data:usersSearch.search})
+            console.log(usersSearch.search);
+            API.cui.getPersons({data:usersSearch.search})
             .then(function(res){
                 usersSearch.list=res;
                 $scope.$apply();

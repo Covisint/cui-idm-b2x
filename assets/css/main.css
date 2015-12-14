@@ -433,7 +433,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
   color: #929292; }
 
-.cui-link {
+.cui-link, .cui-search__dropdown a, .cui-expandable__link {
   color: #429DD1; }
 
 ul,
@@ -442,6 +442,7 @@ ol,
 .cui-off-canvas__list--child,
 .cui-off-canvas__sub-section-list,
 .cui-expandable__body,
+.cui-top-nav__section ul,
 .cui-ol {
   list-style-type: none;
   padding-left: 0;
@@ -1414,6 +1415,11 @@ Markup:
 
 Styleguide Blocks.Off-Canvas
 */
+.cui-search__dropdown .cui-search__filter-title, .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title {
+  display: block;
+  margin: 10px 0;
+  cursor: pointer; }
+
 .cui-off-canvas__list-item,
 .cui-off-canvas__section {
   display: block;
@@ -1457,12 +1463,12 @@ Styleguide Blocks.Off-Canvas
   .cui-off-canvas__sub-section-list a:hover,
   .cui-off-canvas__sub-section-list.active a {
     color: #87CEEC; }
-  .cui-off-canvas__list--child .cui-off-canvas__list-item--active,
-  .cui-off-canvas__section--active .cui-off-canvas__list--child,
-  .cui-off-canvas__sub-section-list .cui-off-canvas__list-item--active,
-  .cui-off-canvas__section--active
-  .cui-off-canvas__sub-section-list {
-    position: inherit; }
+
+.cui-off-canvas__list-item--active .cui-off-canvas__list--child,
+.cui-off-canvas__list-item--active .cui-off-canvas__sub-section-list,
+.cui-off-canvas__section--active .cui-off-canvas__list--child,
+.cui-off-canvas__section--active .cui-off-canvas__sub-section-list {
+  position: inherit; }
 
 .cui-off-canvas__list-item--child,
 .cui-off-canvas__sub-section {
@@ -1701,7 +1707,7 @@ Expandable
 
 Markup:
 <div class="cui-expandable expanded">
-  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+  <div class="cui-expandable__title">
     Expandable Group #1
     <span class="chevron">></span>
   </div>
@@ -1713,7 +1719,7 @@ Markup:
   </ul>
 </div>
 <div class="cui-expandable">
-  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+  <div class="cui-expandable__title">
     Expandable Group #2
     <span class="chevron">></span>
   </div>
@@ -1725,7 +1731,7 @@ Markup:
   </ul>
 </div>
 <div class="cui-expandable">
-  <div class="cui-expandable__title" onclick="Expandable.toggleExpandable(this)">
+  <div class="cui-expandable__title">
     Expandable Group #3
     <span class="chevron">></span>
   </div>
@@ -1933,6 +1939,265 @@ p {
 .cui-card__button {
   align-self: center;
   border-radius: 0.75em; }
+
+/*
+Global Navigation
+
+Markup:
+<div class="cui-top-nav__container">
+  <nav class="cui-top-nav" role='navigation'>
+    <ul class="cui-top-nav__nav-list">
+      <li class="cui-top-nav__section cui-top-nav__section--active">
+        <a href="#">Nav section</a>
+        <div class="cui-top-nav__sub-nav-dropdown">
+          <ul class="cui-top-nav__sub-nav-list">
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+              <ul class="cui-top-nav__sub-nav-items">
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+              </ul>
+            </li>
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+            </li>
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="cui-top-nav__section">
+        <a href="#">Nav section</a>
+      </li>
+      <li class="cui-top-nav__section">
+        <a href="#">Nav section</a>
+      </li>
+    </ul>
+    <div class="cui-search-container">
+      <input class="cui-search" type="text" placeholder="search" />
+      <div class="cui-search__dropdown">
+        <ul>
+          <li class="cui-search__filter">
+            <span class="cui-search__filter-title" >Search filter</span>
+            <ul class="cui-search__search-filter-items">
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+            </ul>
+          </li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+Styleguide Blocks.Global Navigation
+*/
+.cui-top-nav__container {
+  display: flex;
+  flex-direction: column;
+  min-height: 80px; }
+
+.cui-top-nav {
+  align-items: center;
+  display: none;
+  flex-direction: row;
+  flex-grow: 2;
+  justify-content: center; }
+  @media screen and (min-width: 992px) {
+    .cui-top-nav {
+      display: flex; } }
+
+.cui-top-nav__nav-list {
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 2;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0; }
+
+.cui-top-nav__section {
+  padding: 0 0.625em; }
+  .cui-top-nav__section a {
+    color: #828483;
+    position: relative;
+    text-decoration: none; }
+
+.cui-top-nav__section.cui-top-nav__section--active > a {
+  color: #4582B4;
+  border: 2px solid #4582B4;
+  border-radius: 30px;
+  padding: .3em .7em;
+  transition: background-color .3s;
+  z-index: 1; }
+  .cui-top-nav__section.cui-top-nav__section--active > a:hover {
+    color: white;
+    background-color: #4582B4; }
+
+.cui-search {
+  border: 2px solid #eee;
+  border-radius: 4px;
+  height: 2em;
+  padding-left: 5px;
+  margin-right: 1em; }
+
+.cui-search__dropdown {
+  min-width: 12.5em;
+  position: absolute; }
+  .cui-search__dropdown a {
+    color: inherit;
+    text-decoration: none; }
+  .cui-search__dropdown .cui-search__search-filter-items {
+    max-height: 0; }
+  .cui-search__dropdown ul {
+    background-color: #f9f9f9;
+    max-height: 0;
+    list-style-type: none;
+    overflow: hidden;
+    padding-left: 0;
+    margin: 0;
+    transition: max-height .2s ease-out; }
+  .cui-search__dropdown .cui-search__filter-title {
+    background-color: #eee;
+    color: #828483;
+    font-weight: 600;
+    margin: 0.625em 0 0;
+    padding: 0.625em 0.3125em; }
+  .cui-search__dropdown .cui-search__filter.expanded .cui-search__search-filter-items {
+    max-height: 62.5em;
+    transition: max-height .2s ease-in; }
+  .cui-search__dropdown .cui-search__search-filter-item {
+    margin: 0.625em 0 0 0.625em; }
+
+.cui-top-nav__sub-nav-dropdown {
+  min-width: 12.5em;
+  position: absolute; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-nav-items {
+    max-height: 0; }
+  .cui-top-nav__sub-nav-dropdown ul {
+    background-color: #f9f9f9;
+    max-height: 0;
+    list-style-type: none;
+    overflow: hidden;
+    padding-left: 0;
+    margin: 0;
+    transition: max-height .2s ease-out; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title {
+    background-color: #eee;
+    color: #828483;
+    font-weight: 600;
+    margin: 0.625em 0 0;
+    padding: 0.625em 0.3125em; }
+    .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title.expanded + .cui-top-nav__sub-nav-items {
+      max-height: 62.5em;
+      transition: max-height .2s ease-in; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-nav-item {
+    margin: 0.625em 0 0 0.625em; }
+
+.cui-search:focus + .cui-search__dropdown > ul,
+.cui-search-container:hover .cui-search__dropdown > ul,
+.cui-top-nav__section:hover .cui-top-nav__sub-nav-dropdown > ul {
+  max-height: 62.5em;
+  transition: max-height .2s ease-in; }
+
+/*
+Expandable with Table Layout
+
+Markup:
+<div class="cui-expandable__container">
+<div class="cui-expandable__tr">
+  <span class="cui-expandable__td">Invitation ID</span>
+  <span class="cui-expandable__td">Email</span>
+  <span class="cui-expandable__td"></span>
+</div>
+<div class="cui-expandable expanded">
+  <div class="cui-expandable__title">
+    <div class="cui-expandable__tr">
+      <span class="cui-expandable__td">11545385</span>
+      <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+      <span class="cui-expandable__td"><span class="cui-expandable__link">view</span></span>
+    </div>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    <div class="cui-expandable__tr">
+      <span class="cui-expandable__td">11545385</span>
+      <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+      <span class="cui-expandable__td"><span class="cui-link">view</span></span>
+    </div>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    <div class="cui-expandable__tr">
+      <span class="cui-expandable__td">11545385</span>
+      <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+      <span class="cui-expandable__td"><span class="cui-link">view</span></span>
+    </div>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+  </ul>
+</div>
+</div>
+
+
+Styleguide Blocks.Expandable With Table Layout
+*/
+.cui-expandable__container {
+  font-size: 0.75em;
+  overflow-x: scroll; }
+  @media screen and (min-width: 500px) {
+    .cui-expandable__container {
+      font-size: 1em; } }
+
+.cui-expandable__tr {
+  width: 100%;
+  display: block; }
+  .cui-expandable__tr::after {
+    clear: both;
+    content: "";
+    display: table; }
+
+.cui-expandable__td {
+  float: left;
+  display: block;
+  margin-right: 2.3576515979%;
+  width: 23.2317613015%; }
+  .cui-expandable__td:last-child {
+    margin-right: 0; }
+  .cui-expandable__td:nth-of-type(2) {
+    float: left;
+    display: block;
+    margin-right: 2.3576515979%;
+    width: 48.821174201%; }
+    .cui-expandable__td:nth-of-type(2):last-child {
+      margin-right: 0; }
+  .cui-expandable__td:nth-of-type(3) {
+    text-align: center; }
 
 .cui-tile {
   width: 80%;

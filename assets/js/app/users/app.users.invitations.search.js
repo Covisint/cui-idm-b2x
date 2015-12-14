@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API','$timeout',
-function(localStorageService,$scope,Person,$stateParams,API,$timeout){
+.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
+function(localStorageService,$scope,$stateParams,API,$timeout){
     var usersInvitations=this;
     usersInvitations.listLoading=true;
     usersInvitations.invitor=[];
@@ -8,18 +8,18 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
     usersInvitations.invitorLoading=[];
     usersInvitations.inviteeLoading=[];
 
-    API.doAuth()
-    .then(function(){
-        Person.getInvitations()
-        .then(function(res){
-            usersInvitations.listLoading=false;
-            usersInvitations.list=res.data;
-        })
-        .catch(function(err){
-            usersInvitations.listLoading=false
-            console.log(err);
-        });
+
+    API.cui.getPersonInvitations()
+    .then(function(res){
+        usersInvitations.listLoading=false;
+        usersInvitations.list=res;
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersInvitations.listLoading=false
+        console.log(err);
     });
+
 
     // This is needed to "attach" the invitor's and the invitee's info to the invitation
     // since the only parameter that we have from the invitation API is the ID
@@ -28,13 +28,10 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
             //get invitor's details
             usersInvitations.invitorLoading[index]=true;
             usersInvitations.inviteeLoading[index]=true;
-            
-            var invitorParams={
-                id:invitorId
-            };
-            API.cui.getUsers({data:invitorParams})
+
+            API.cui.getPerson({personId:invitorId})
             .then(function(res){
-                usersInvitations.invitor[index]=res[0];
+                usersInvitations.invitor[index]=res;
                 $scope.$apply();
                 $timeout(function(){
                     usersInvitations.invitorLoading[index]=false;
@@ -46,17 +43,13 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
 
 
             //get invitee's details
-            var inviteeParams={
-                id:inviteeId
-            };
-            API.cui.getUsers({data:inviteeParams})
+            API.cui.getPerson({personId:inviteeId})
             .then(function(res){
-                usersInvitations.invitee[index]=res[0];
+                usersInvitations.invitee[index]=res;
                 $scope.$apply();
                 $timeout(function(){
                     usersInvitations.inviteeLoading[index]=false;
                 },500);
-                
             })
             .fail(function(err){
                 console.log(err);

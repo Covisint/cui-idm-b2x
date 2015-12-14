@@ -14,7 +14,7 @@ angular.module('app')
 .factory('API',[function(){
     
     var myCUI= cui.api();
-    myCUI.setService('https://api.covapp.io');
+    myCUI.setServiceUrl('https://api.covapp.io');
     
     var doAuth = function(){
         return myCUI.doSysAuth({
@@ -146,13 +146,13 @@ angular.module('app')
 
     
     var getPeople=function(){
-        return API.cui.getUsers;
+        return API.cui.getPersons;
     };
 
     var getById=function(id){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/persons/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -169,7 +169,7 @@ angular.module('app')
     var getInvitations=function(){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/personInvitations/',
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -186,7 +186,7 @@ angular.module('app')
     var getInvitationById=function(id){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/personInvitations/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -203,7 +203,7 @@ angular.module('app')
     var createInvitation=function(invitee,invitor){
         return $http({
             method:'POST',
-            url:API.url() + '/person/v1/personInvitations',
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token(),
@@ -236,7 +236,7 @@ angular.module('app')
     var update=function(id,data){
         return $http({
             method:'PUT',
-            url:API.url() + '/person/v1/persons/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token(),
@@ -255,7 +255,7 @@ angular.module('app')
     var create=function(data){
         return $http({
             method:'POST',
-            url:API.url() + '/person/v1/persons',
+            url:API.cui.getServiceUrl() + '/person/v1/persons',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token(),
@@ -302,19 +302,23 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','Person','$stateParams','$timeout', 
-function(localStorageService,$scope,Person,$stateParams,$timeout){
+.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
+function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit=this;
     usersEdit.loading=true;
 
-    Person.getById($stateParams.id)
-    .then(function(res){
-        usersEdit.loading=false;
-        usersEdit.user=res.data;
-    })
-    .catch(function(err){
-        usersEdit.loading=false
-        console.log(err);
+    API.doAuth()
+    .then(function(){
+        API.cui.getPerson({personId:$stateParams.id})
+        .then(function(res){
+            usersEdit.loading=false;
+            usersEdit.user=res;
+            $scope.$apply();
+        })
+        .fail(function(err){
+            usersEdit.loading=false
+            console.log(err);
+        });
     });
 
 
@@ -322,14 +326,14 @@ function(localStorageService,$scope,Person,$stateParams,$timeout){
         usersEdit.saving=true;
         usersEdit.fail=false;
         usersEdit.success=false;
-        Person.update($stateParams.id,usersEdit.user).
+        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user}).
         then(function(res){
             $timeout(function(){
                 usersEdit.saving=false;
                 usersEdit.success=true;
             },300);
         })
-        .catch(function(err){
+        .fail(function(err){
             $timeout(function(){
                 usersEdit.saving=false;
                 usersEdit.fail=true;
@@ -340,8 +344,8 @@ function(localStorageService,$scope,Person,$stateParams,$timeout){
 }]);
 
 angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','Person','$stateParams','API','$timeout',
-function(localStorageService,$scope,Person,$stateParams,API,$timeout){
+.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
+function(localStorageService,$scope,$stateParams,API,$timeout){
     var usersInvitations=this;
     usersInvitations.listLoading=true;
     usersInvitations.invitor=[];
@@ -349,18 +353,18 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
     usersInvitations.invitorLoading=[];
     usersInvitations.inviteeLoading=[];
 
-    API.doAuth()
-    .then(function(){
-        Person.getInvitations()
-        .then(function(res){
-            usersInvitations.listLoading=false;
-            usersInvitations.list=res.data;
-        })
-        .catch(function(err){
-            usersInvitations.listLoading=false
-            console.log(err);
-        });
+
+    API.cui.getPersonInvitations()
+    .then(function(res){
+        usersInvitations.listLoading=false;
+        usersInvitations.list=res;
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersInvitations.listLoading=false
+        console.log(err);
     });
+
 
     // This is needed to "attach" the invitor's and the invitee's info to the invitation
     // since the only parameter that we have from the invitation API is the ID
@@ -369,13 +373,10 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
             //get invitor's details
             usersInvitations.invitorLoading[index]=true;
             usersInvitations.inviteeLoading[index]=true;
-            
-            var invitorParams={
-                id:invitorId
-            };
-            API.cui.getUsers({data:invitorParams})
+
+            API.cui.getPerson({personId:invitorId})
             .then(function(res){
-                usersInvitations.invitor[index]=res[0];
+                usersInvitations.invitor[index]=res;
                 $scope.$apply();
                 $timeout(function(){
                     usersInvitations.invitorLoading[index]=false;
@@ -387,17 +388,13 @@ function(localStorageService,$scope,Person,$stateParams,API,$timeout){
 
 
             //get invitee's details
-            var inviteeParams={
-                id:inviteeId
-            };
-            API.cui.getUsers({data:inviteeParams})
+            API.cui.getPerson({personId:inviteeId})
             .then(function(res){
-                usersInvitations.invitee[index]=res[0];
+                usersInvitations.invitee[index]=res;
                 $scope.$apply();
                 $timeout(function(){
                     usersInvitations.inviteeLoading[index]=false;
                 },500);
-                
             })
             .fail(function(err){
                 console.log(err);
@@ -545,7 +542,7 @@ angular.module('app')
 
     API.doAuth()
     .then(function(){
-        API.cui.getUsers()
+        API.cui.getPersons()
         .then(function(res){
             usersSearch.listLoading=false;
             usersSearch.list=res;
@@ -556,7 +553,7 @@ angular.module('app')
             usersSearch.listLoading=false;
             // console.log(err);
         });
-    })
+    });
 
 
     var search=function(){
@@ -564,7 +561,8 @@ angular.module('app')
         // when the controller first fires  and the search object is undefined/
         // once pagination is impletemented this won't be needed
         if(usersSearch.search){
-            API.cui.getUser({data:usersSearch.search})
+            console.log(usersSearch.search);
+            API.cui.getPersons({data:usersSearch.search})
             .then(function(res){
                 usersSearch.list=res;
                 $scope.$apply();

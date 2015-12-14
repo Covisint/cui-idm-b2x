@@ -4,13 +4,13 @@ angular.module('app')
 
     
     var getPeople=function(){
-        return API.cui.getUsers;
+        return API.cui.getPersons;
     };
 
     var getById=function(id){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/persons/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -27,7 +27,7 @@ angular.module('app')
     var getInvitations=function(){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/personInvitations/',
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -44,7 +44,7 @@ angular.module('app')
     var getInvitationById=function(id){
         return $http({
             method:'GET',
-            url:API.url() + '/person/v1/personInvitations/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token()
@@ -61,7 +61,7 @@ angular.module('app')
     var createInvitation=function(invitee,invitor){
         return $http({
             method:'POST',
-            url:API.url() + '/person/v1/personInvitations',
+            url:API.cui.getServiceUrl() + '/person/v1/personInvitations',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
                 Authorization:'Bearer ' + API.token(),
@@ -94,7 +94,7 @@ angular.module('app')
     var update=function(id,data){
         return $http({
             method:'PUT',
-            url:API.url() + '/person/v1/persons/' + id,
+            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token(),
@@ -113,7 +113,7 @@ angular.module('app')
     var create=function(data){
         return $http({
             method:'POST',
-            url:API.url() + '/person/v1/persons',
+            url:API.cui.getServiceUrl() + '/person/v1/persons',
             headers:{
                 Accept:'application/vnd.com.covisint.platform.person.v1+json',
                 Authorization:'Bearer ' + API.token(),

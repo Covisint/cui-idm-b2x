@@ -2,7 +2,7 @@ angular.module('app')
 .factory('API',[function(){
     
     var myCUI= cui.api();
-    myCUI.setService('https://api.covapp.io');
+    myCUI.setServiceUrl('https://api.covapp.io');
     
     var doAuth = function(){
         return myCUI.doSysAuth({
