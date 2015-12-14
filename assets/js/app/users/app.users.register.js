@@ -7,7 +7,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){
-        console.log(res);
         getUser(res.data.invitee.id);
     })
     .catch(function(err){
@@ -15,13 +14,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
     });
 
     var getUser=function(id){
-        var params={
-            id:id
-        };
-        API.cui.getUsers({data:params})
+        API.cui.getPerson({personId:id})
         .then(function(res){
             usersRegister.loading=false;
-            usersRegister.user=res[0];
+            usersRegister.user=res;
             $scope.$apply();
         })
         .fail(function(err){

@@ -1,0 +1,34 @@
+<form name="signOn" novalidate>
+  <ng-include src="'assets/angular-templates/loading.html'" class="fill" ng-class="usersRegister.loading? 'show' : ''"></ng-include>
+  
+  <!-- User ID -->
+  <label for="userID">User ID</label> 
+  <div class="cui-error" ng-messages="signOn.username.$error" ng-if="signOn.username.$touched">
+    <div ng-messages-include="assets/angular-templates/messages.html"></div>
+  </div>
+  <input type="text" name="username" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.username"></input>
+
+  
+  <!-- Password -->
+  <div class="cui-wizard__field-row">
+     <div class="cui-wizard__field-container cui-wizard__field-container--half ">
+       <div class="cui-input__password-holder">
+         <label for="password1">{{'cui-password' | translate}}</label>
+         <input type="password" name="password1" ng-model="usersRegister.userLogin.password1" class="cui-input  cui-input__password" ng-required="true" ng-class="{'cui-input--error': signOn.password1.$touched && signOn.password1.$invalid}" password-validation="{{usersRegister.passwordPolicies}}" style="width:100%"></input>
+         <div class="cui-error__password" ng-messages="signOn.password1.$error" ng-messages-multiple ng-if="signOn.password1.$invalid">
+           <div ng-messages-include="assets/angular-templates/password-messages.html"></div>
+         </div>
+       </div>
+     </div>
+     <div class="cui-wizard__field-container cui-wizard__field-container--half">
+     <!-- password -->
+       <label for="password">{{'cui-password-re' | translate}}</label>
+       <input type="password" ng-model="usersRegister.userLogin.password2" class="cui-input " placeholder=""></input>
+     </div>
+   </div>
+
+  <div class="cui-wizard__controls">
+    <!-- go to assets/js/app/app.profile.js to customize this function -->
+    <button class="cui-wizard__next" ng-click="usersRegister.register()" ng-class="signOn.$invalid? 'cui-wizard__next--error' : ''">Finish</button>
+  </div>
+</form>

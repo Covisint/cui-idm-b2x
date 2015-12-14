@@ -131,10 +131,10 @@ angular.module('app')
 
     var sendUserInvitationEmail=function(body){
         return $http({
-            method:'POST',
-            url:'http://localhost:8000/invitation/person',
-            "Content-Type": "application/json",
-            data:body
+            'method':'POST',
+            'url':'http://localhost:8000/invitation/person',
+            'Content-Type': 'application/json',
+            'data':body
         })
         .then(function(res){
             return res;

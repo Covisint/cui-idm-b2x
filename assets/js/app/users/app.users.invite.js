@@ -22,13 +22,20 @@ function(localStorageService,$scope,Person,$stateParams,API){
     };
 
     var sendInvitationEmail=function(invitation){
+        var message="You've received an invitation to join our organization.<p>" + 
+            "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
+            " to register</a>.",
+            text;
+        if(usersInvite.message && usersInvite.message!==''){
+            text=usersInvite.message + '<br/><br/>' + message;
+        }
+        else text=message;
         var emailOpts={
             to:invitation.email,
             from:'cuiInterface@thirdwave.com',
             fromName:'CUI INTERFACE',
             subject: 'Request to join our organization',
-            text: "You've received an invitation to join our organization.<p>" + 
-            "localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode
+            text: text
         };
         Person.sendUserInvitationEmail(emailOpts)
         .then(function(res){   
