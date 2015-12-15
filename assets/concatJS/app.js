@@ -21,7 +21,7 @@ angular.module('app')
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
-    }
+    };
 
     var token = function(){
         return myCUI.getToken();
@@ -30,6 +30,8 @@ angular.module('app')
     var url = function(){
         return myCUI.getService();
     };
+
+    doAuth();
 
     return{
         token:token,
@@ -273,10 +275,10 @@ angular.module('app')
 
     var sendUserInvitationEmail=function(body){
         return $http({
-            method:'POST',
-            url:'http://localhost:8000/invitation/person',
-            "Content-Type": "application/json",
-            data:body
+            'method':'POST',
+            'url':'http://localhost:8000/invitation/person',
+            'Content-Type': 'application/json',
+            'data':body
         })
         .then(function(res){
             return res;
@@ -443,13 +445,20 @@ function(localStorageService,$scope,Person,$stateParams,API){
     };
 
     var sendInvitationEmail=function(invitation){
+        var message="You've received an invitation to join our organization.<p>" + 
+            "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
+            " to register</a>.",
+            text;
+        if(usersInvite.message && usersInvite.message!==''){
+            text=usersInvite.message + '<br/><br/>' + message;
+        }
+        else text=message;
         var emailOpts={
             to:invitation.email,
             from:'cuiInterface@thirdwave.com',
             fromName:'CUI INTERFACE',
             subject: 'Request to join our organization',
-            text: "You've received an invitation to join our organization.<p>" + 
-            "localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode
+            text: text
         };
         Person.sendUserInvitationEmail(emailOpts)
         .then(function(res){   
@@ -501,11 +510,31 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
+    usersRegister.userLogin={};
+    usersRegister.userLogin.password='';
 
+    usersRegister.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){
-        console.log(res);
         getUser(res.data.invitee.id);
     })
     .catch(function(err){
@@ -513,13 +542,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
     });
 
     var getUser=function(id){
-        var params={
-            id:id
-        };
-        API.cui.getUsers({data:params})
+        API.cui.getPerson({personId:id})
         .then(function(res){
             usersRegister.loading=false;
-            usersRegister.user=res[0];
+            usersRegister.user=res;
             $scope.$apply();
         })
         .fail(function(err){

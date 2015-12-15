@@ -9,7 +9,7 @@ angular.module('app')
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
-    }
+    };
 
     var token = function(){
         return myCUI.getToken();
@@ -18,6 +18,8 @@ angular.module('app')
     var url = function(){
         return myCUI.getService();
     };
+
+    doAuth();
 
     return{
         token:token,

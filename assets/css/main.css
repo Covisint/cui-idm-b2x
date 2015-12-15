@@ -367,7 +367,7 @@ fieldset {
   border: 0;
   margin: 0; }
 
-.cui-radio, .cui-checkbox__legend, .cui-off-canvas__list--child,
+.cui-radio, .cui-checkbox__legend, .cui-switch__input, .cui-off-canvas__list--child,
 .cui-off-canvas__sub-section-list {
   left: -999em;
   position: absolute; }
@@ -776,6 +776,76 @@ Styleguide Elements.Forms.Checkbox
     box-shadow: 0 0 7px #A2A19F; }
   .cui-checkbox:checked + .cui-checkbox__label:before {
     box-shadow: inset 0 0 0 2px #fff; }
+
+/*
+Switch
+
+Markup:
+<div class="cui-switch">
+  <input class="cui-switch__input" name="switch" id="cui-switch-1" type="checkbox" /> 
+  <label class="cui-switch__label" for="cui-switch-1">
+    <div class="cui-switch__container">
+      <span class="cui-switch__checked-message">Accept</span>
+      <span class="cui-switch__unchecked-message">Don't Accept</span>
+    </div>
+  </label> 
+</div>
+
+Styleguide Elements.Forms.Switch
+*/
+.cui-switch {
+  display: flex; }
+
+.cui-switch__container {
+  align-items: center;
+  border: 1px solid #6D6D6D;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  height: 50px;
+  justify-content: space-around;
+  width: 209px; }
+  .cui-switch__container span {
+    margin-left: 15px; }
+
+.cui-switch__checked-message {
+  color: black;
+  transition: color .5s ease-in-out;
+  z-index: 10; }
+
+.cui-switch__unchecked-message {
+  color: white;
+  transition: color .5s ease-in-out;
+  z-index: 10; }
+
+.cui-switch__label {
+  content: '';
+  position: relative; }
+
+.cui-switch__label:before {
+  background-color: #00BD9C;
+  border-radius: 0 6px 6px 0;
+  content: '';
+  cursor: pointer;
+  height: calc(100% - 2px);
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  transition: all .15s ease-in;
+  width: 104px; }
+
+.cui-switch__input:checked + .cui-switch__label:before {
+  border-radius: 6px 0 0 6px;
+  transform: translateX(-103px); }
+
+.cui-switch__input:checked + .cui-switch__label .cui-switch__unchecked-message {
+  color: black;
+  transition: color .5s; }
+
+.cui-switch__input:checked + .cui-switch__label .cui-switch__checked-message {
+  color: white;
+  transition: color .5s; }
 
 /*
 Primary Colors
@@ -1772,6 +1842,9 @@ Styleguide Blocks.Expandable
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
+.cui-expandable__body {
+  padding-left: 10px; }
+
 .indicator-container {
   border-bottom: 1px solid #ddd;
   display: flex;
@@ -2283,3 +2356,13 @@ Styleguide Blocks.Expandable With Table Layout
 
 .cui-wizard__next.fail {
   background: #FF4400; }
+
+.circle {
+  width: 9px;
+  height: 9px;
+  background: #FF4400;
+  display: inline-block;
+  border-radius: 50%;
+  transform: translate(0, -1px); }
+  .circle.green {
+    background: #3CB371; }

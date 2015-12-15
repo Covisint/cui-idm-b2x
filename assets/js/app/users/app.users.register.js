@@ -3,11 +3,31 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
+    usersRegister.userLogin={};
+    usersRegister.userLogin.password='';
 
+    usersRegister.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){
-        console.log(res);
         getUser(res.data.invitee.id);
     })
     .catch(function(err){
@@ -15,13 +35,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
     });
 
     var getUser=function(id){
-        var params={
-            id:id
-        };
-        API.cui.getUsers({data:params})
+        API.cui.getPerson({personId:id})
         .then(function(res){
             usersRegister.loading=false;
-            usersRegister.user=res[0];
+            usersRegister.user=res;
             $scope.$apply();
         })
         .fail(function(err){
