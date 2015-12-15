@@ -6,24 +6,32 @@
   <div class="cui-error" ng-messages="signOn.username.$error" ng-if="signOn.username.$touched">
     <div ng-messages-include="assets/angular-templates/messages.html"></div>
   </div>
-  <input type="text" name="username" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.username"></input>
+  <input type="text" name="username" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.username" />
 
   
-  <!-- Password -->
   <div class="cui-wizard__field-row">
-     <div class="cui-wizard__field-container cui-wizard__field-container--half ">
-       <div class="cui-input__password-holder">
-         <label for="password1">{{'cui-password' | translate}}</label>
-         <input type="password" name="password1" ng-model="usersRegister.userLogin.password1" class="cui-input  cui-input__password" ng-required="true" ng-class="{'cui-input--error': signOn.password1.$touched && signOn.password1.$invalid}" password-validation="{{usersRegister.passwordPolicies}}" style="width:100%"></input>
-         <div class="cui-error__password" ng-messages="signOn.password1.$error" ng-messages-multiple ng-if="signOn.password1.$invalid">
-           <div ng-messages-include="assets/angular-templates/password-messages.html"></div>
-         </div>
-       </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half ">
+
+      <!-- Password -->
+      <div class="cui-input__password-holder">
+        <label for="password1">{{'cui-password' | translate}}</label>
+        <input type="password" name="password1" ng-model="usersRegister.userLogin.password" class="cui-input  cui-input__password" ng-required="true" ng-class="{'cui-input--error': signOn.password1.$touched && signOn.password1.$invalid}" password-validation="{{usersRegister.passwordPolicies}}" />
+        <div class="cui-error__password" ng-messages="signOn.password1.$error" ng-messages-multiple ng-if="signOn.password1.$invalid">
+          <div ng-messages-include="assets/angular-templates/password-messages.html"></div>
+        </div>
+      </div>
      </div>
      <div class="cui-wizard__field-container cui-wizard__field-container--half">
-     <!-- password -->
-       <label for="password">{{'cui-password-re' | translate}}</label>
-       <input type="password" ng-model="usersRegister.userLogin.password2" class="cui-input " placeholder=""></input>
+
+      <!-- password confirm -->
+      <div class="cui-input__password-holder">
+        <label for="password2">{{'cui-password-re' | translate}}</label>
+        <div class="cui-error" ng-if="(usersRegister.userLogin.password!==usersRegister.userLogin.password2) && signOn.password2.$touched">
+          Passwords must match
+        </div>
+        <input type="password" name="password2" ng-model="usersRegister.userLogin.password2" class="cui-input cui-input__password" ng-class="{'cui-input--error': (usersRegister.userLogin.password!==usersRegister.userLogin.password2)}" ng-required="true"/>
+        {{usersRegister.userLogin.password!==usersRegister.userLogin.password2}}
+      </div>
      </div>
    </div>
 

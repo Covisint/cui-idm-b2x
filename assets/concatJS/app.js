@@ -21,7 +21,7 @@ angular.module('app')
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
-    }
+    };
 
     var token = function(){
         return myCUI.getToken();
@@ -30,6 +30,8 @@ angular.module('app')
     var url = function(){
         return myCUI.getService();
     };
+
+    doAuth();
 
     return{
         token:token,
@@ -508,7 +510,28 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
+    usersRegister.userLogin={};
+    usersRegister.userLogin.password='';
 
+    usersRegister.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){

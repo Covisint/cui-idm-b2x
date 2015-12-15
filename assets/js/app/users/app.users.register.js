@@ -3,7 +3,28 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
+    usersRegister.userLogin={};
+    usersRegister.userLogin.password='';
 
+    usersRegister.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){
