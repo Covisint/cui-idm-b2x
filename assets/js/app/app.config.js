@@ -41,6 +41,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/register?id&code',
             templateUrl: 'assets/angular-templates/users/users.register.html',
             controller: 'usersRegisterCtrl as usersRegister'
+        })
+        .state('sysAdmin',{
+            url: '/sysAdmin',
+            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.html',
+        })
+        .state('sysAdmin.account',{
+            url: '/sysAdmin/account/',
+            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
+            //controller: 'sysAdminInformationCtrl as sysAdminInformation'
         });
     // $locationProvider.html5Mode(true);
     

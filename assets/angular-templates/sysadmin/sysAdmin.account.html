@@ -1,0 +1,29 @@
+<div class="cui-tile">
+  <div class="cui-tile__title">Create Your Security Administrator Account</div>
+    <div class="cui-tile__body">
+      <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+       <indicator-container class="indicator-container"></indicator-container>
+
+        <step title="User Information" state="userInformation">
+          <div ng-include src="'assets/angular-templates/sysAdmin/account-steps/sysAdmin.information.html'"></div>
+        </step>
+
+        <step title="Organization Information" state="organizationInformation">
+          <div ng-include src=""></div>
+        </step>
+
+        <step title="Sign In Information" state="signInInformation">
+          <div ng-include src=""></div>
+        </step>
+
+        <step title="Package Selection" state="packageSelection">
+          <div ng-include src=""></div>
+        </step>
+
+        <step title="Review" state="review">
+          <div ng-include src=""></div>
+        </step>
+
+    </cui-wizard>
+  </div>
+</div>

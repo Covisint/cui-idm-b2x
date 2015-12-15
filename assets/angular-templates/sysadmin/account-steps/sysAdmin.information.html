@@ -1,0 +1,65 @@
+<form name="user" novalidate>
+
+    <div class="cui-wizard__field-row">
+        <!-- First Name -->    
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+            <!--    This adds error messages to the firstName input field. Notice the naming convention
+            ng-messages="<formName><inputName>.$error" -->
+            <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="profile.user.name.given"></input>
+        </div>
+
+        <!-- Last Name -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+            <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+        </div>
+	</div>
+
+	<div class="cui-wizard__field-row">
+        <!-- Email -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-email">{{'cui-email' | translate}}</label>
+            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" ng-model="profile.user.email" name="email" class="cui-input" ng-required="true"></input>
+        </div>
+
+        <!-- Re-enter Email -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-email">{{'cui-re-enter-email' | translate}}</label>
+            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" ng-model="profile.user.email" name="email" class="cui-input" ng-required="true"></input>
+        </div>
+    </div>
+
+    <div class="cui-wizard__field-row">
+        <!-- Address 1 -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-address-1">{{'cui-address' | translate}} 1</label>
+            <div class="cui-error" ng-messages="user.address.$error" ng-if="user.address.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" ng-model="profile.user.address" name="email" class="cui-input" ng-required="true"></input>
+        </div>
+
+        <!-- Address 2 -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="user-address-2">{{'cui-address' | translate}} 2</label>
+            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" ng-model="profile.user.address" name="email" class="cui-input" ng-required="true"></input>
+        </div>
+    </div>
+
+</form>
