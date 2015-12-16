@@ -5,18 +5,11 @@
         <indicator-container class="indicator-container"></indicator-container>
 
         <step title="User Information" state="userInformation">
-          <div ng-include src="'assets/angular-templates/sysAdmin/account-steps/sysAdmin.information.html'"></div>
-          <div class="cui-wizard__controls">
-            <!-- go to assets/js/app/app.profile.js to customize this function -->
-            <button class="cui-wizard__next" ng-click="" ng-class="" style="position:relative"> 
-              <div class="cui-loading--medium__center" ng-show=""></div>
-              <span>Next</span>
-            </button>
-          </div>
+          <div ng-include src="'assets/angular-templates/sysAdmin/account-steps/sysAdmin.user.html'"></div>
         </step>
 
         <step title="Organization Information" state="organizationInformation">
-          <div ng-include src=""></div>
+          <div ng-include src="'assets/angular-templates/sysAdmin/account-steps/sysAdmin.organization.html'"></div>
         </step>
 
         <step title="Sign In Information" state="signInInformation">
@@ -34,3 +27,5 @@
     </cui-wizard>
   </div>
 </div>
+
+

@@ -69,7 +69,7 @@
             <input type="text" name="postal" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].postal"></input>
         </div>
 
-                <!-- Telephone Number -->
+        <!-- Telephone Number -->
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
             <label for="phone">{{'cui-telephone' | translate}}</label>
             <input type="text" name="phone" class="cui-input" ng-model="sysAdminEdit.user.phones[0].number"></input>
@@ -81,3 +81,10 @@
     <label for="TOS"> I agree to the Covisint <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></label>
     
 </form>
+
+<div class="cui-wizard__controls">
+    <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="user.$invalid? 'cui-wizard__next--error' : ''" style="position:relative"> 
+        <div class="cui-loading--medium__center" ng-show=""></div>
+        <span>{{'cui-next' | translate}}</span>
+    </button>
+</div>
