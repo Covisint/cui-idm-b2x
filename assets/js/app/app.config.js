@@ -49,7 +49,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('sysAdmin.account',{
             url: '/sysAdmin/account/',
             templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
-            //controller: 'sysAdminInformationCtrl as sysAdminInformation'
+            controller: 'sysAdminAccountCtrl as sysAdminAccount'
         });
     // $locationProvider.html5Mode(true);
     
