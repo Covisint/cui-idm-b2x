@@ -2,10 +2,17 @@
   <div class="cui-tile__title">Create Your Security Administrator Account</div>
     <div class="cui-tile__body">
       <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
-       <indicator-container class="indicator-container"></indicator-container>
+        <indicator-container class="indicator-container"></indicator-container>
 
         <step title="User Information" state="userInformation">
           <div ng-include src="'assets/angular-templates/sysAdmin/account-steps/sysAdmin.information.html'"></div>
+          <div class="cui-wizard__controls">
+            <!-- go to assets/js/app/app.profile.js to customize this function -->
+            <button class="cui-wizard__next" ng-click="" ng-class="" style="position:relative"> 
+              <div class="cui-loading--medium__center" ng-show=""></div>
+              <span>Next</span>
+            </button>
+          </div>
         </step>
 
         <step title="Organization Information" state="organizationInformation">

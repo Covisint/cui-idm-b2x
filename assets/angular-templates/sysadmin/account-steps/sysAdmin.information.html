@@ -4,12 +4,10 @@
         <!-- First Name -->    
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
             <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
-            <!--    This adds error messages to the firstName input field. Notice the naming convention
-            ng-messages="<formName><inputName>.$error" -->
             <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
                 <div ng-messages-include="assets/angular-templates/messages.html"></div>
             </div>
-            <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="profile.user.name.given"></input>
+            <input type="text" name="firstName" class="cui-input" ng-model="sysAdminEdit.user.name.given" ng-required="true"></input>
         </div>
 
         <!-- Last Name -->
@@ -18,7 +16,7 @@
             <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
                 <div ng-messages-include="assets/angular-templates/messages.html"></div>
             </div>
-            <input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+            <input type="text" name="lastName" class="cui-input" ng-model="sysAdminEdit.user.name.surname" ng-required="true"></input>
         </div>
 	</div>
 
@@ -26,40 +24,60 @@
         <!-- Email -->
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
             <label for="user-email">{{'cui-email' | translate}}</label>
-            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
-            </div>
-            <input type="text" ng-model="profile.user.email" name="email" class="cui-input" ng-required="true"></input>
+            <input type="text" name="email" class="cui-input" ng-model="sysAdminEdit.user.email" ng-required="true"></input>
         </div>
 
-        <!-- Re-enter Email -->
+        <!-- Country -->
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
-            <label for="user-email">{{'cui-re-enter-email' | translate}}</label>
-            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
-            </div>
-            <input type="text" ng-model="profile.user.email" name="email" class="cui-input" ng-required="true"></input>
+            <label for="country">{{'cui-country' | translate}}</label>
+            <input type="text" name="country" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].country"></input>
         </div>
     </div>
 
     <div class="cui-wizard__field-row">
         <!-- Address 1 -->
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
-            <label for="user-address-1">{{'cui-address' | translate}} 1</label>
-            <div class="cui-error" ng-messages="user.address.$error" ng-if="user.address.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
-            </div>
-            <input type="text" ng-model="profile.user.address" name="email" class="cui-input" ng-required="true"></input>
+            <label for="address1">{{'cui-user-address' | translate}} 1</label>
+            <input type="text" name="address1" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].streets[0]"></input>
         </div>
 
         <!-- Address 2 -->
         <div class="cui-wizard__field-container cui-wizard__field-container--half">
-            <label for="user-address-2">{{'cui-address' | translate}} 2</label>
-            <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
-            </div>
-            <input type="text" ng-model="profile.user.address" name="email" class="cui-input" ng-required="true"></input>
+            <label for="address2">{{'cui-user-address' | translate}} 2</label>
+            <input type="text" name="address2" class="cui-input" ng-model="sysAdminEdit.user.addresses[1].streets[0]"></input>
         </div>
     </div>
 
+    <div class="cui-wizard__field-row">
+        <!-- City/Region -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="city-region">{{'cui-city' | translate}}</label>
+            <input type="text" name="city" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].city"></input>
+        </div>
+
+        <!-- State/Province -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="state-province">{{'cui-state' | translate}}</label>
+            <input type="text" name="state" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].state"></input>
+        </div>
+    </div>
+
+    <div class="cui-wizard__field-row">
+        <!-- Postal Code -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="postal-code">{{'cui-postal' | translate}}</label>
+            <input type="text" name="postal" class="cui-input" ng-model="sysAdminEdit.user.addresses[0].postal"></input>
+        </div>
+
+                <!-- Telephone Number -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="phone">{{'cui-telephone' | translate}}</label>
+            <input type="text" name="phone" class="cui-input" ng-model="sysAdminEdit.user.phones[0].number"></input>
+        </div> 
+    </div>
+
+    <!-- TOS Agreement -->
+    <input type="checkbox" name="TOS"  ng-model="sysAdminEdit.TOS" ng-true-value="'YES'" ng-false-value="'NO'">
+    <label for="TOS"> I agree to the Covisint <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></label>
+    
 </form>
