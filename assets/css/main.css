@@ -2366,3 +2366,18 @@ Styleguide Blocks.Expandable With Table Layout
   transform: translate(0, -1px); }
   .circle.green {
     background: #3CB371; }
+
+.cui-error__password {
+  width: 310px;
+  position: absolute;
+  top: 30%; }
+  @media all and (max-width: 700px) {
+    .cui-error__password {
+      left: 50%;
+      top: 100%;
+      width: 90%;
+      transform: translate(-50%, -10px); }
+      .cui-error__password:before {
+        top: 3px;
+        left: 20%;
+        transform: rotate(180deg) translate(0, 100%); } }

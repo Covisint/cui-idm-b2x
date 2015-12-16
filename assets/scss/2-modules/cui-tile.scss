@@ -103,3 +103,20 @@
         background:$cui-secondary-colors--light;
     }
 }
+
+.cui-error__password{
+    width:310px;
+    position:absolute;
+    top:30%;
+    @media all and (max-width:700px){
+        left:50%;
+        top:100%;
+        width:90%;
+        transform:translate(-50%,-10px);
+        &:before{
+            top:3px;
+            left:20%;
+            transform:rotate(180deg) translate(0,100%);
+        }
+    }
+}

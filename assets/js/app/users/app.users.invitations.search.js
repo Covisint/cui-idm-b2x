@@ -16,7 +16,7 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
         $scope.$apply();
     })
     .fail(function(err){
-        usersInvitations.listLoading=false
+        usersInvitations.listLoading=false;
         console.log(err);
     });
 
@@ -55,7 +55,7 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
                 console.log(err);
             });
         }
-    }
+    };
 
 
     // var search=function(){

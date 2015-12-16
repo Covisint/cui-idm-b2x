@@ -19,6 +19,9 @@
                     <td>{{user.id}}</td>
                     <td>{{user.name.given}} {{user.name.surname}}</td>
                     <td>{{user.title}}</td>
+                    <td>{{user.status}}
+                        <div ng-if="user.status==='pending'"><a class="cui-link" ui-sref="users.activate({id: user.id})">Activate!</a></div>
+                    </td>
                     <td><a class="cui-link" ui-sref="users.edit({id: user.id})">Edit</a></td>
                 </tr>
             </tbody>

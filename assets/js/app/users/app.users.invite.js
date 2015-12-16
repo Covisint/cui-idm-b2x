@@ -76,7 +76,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
             });
 
         }
-    }
+    };
 
 
 

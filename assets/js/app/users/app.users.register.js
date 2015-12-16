@@ -5,6 +5,8 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersRegister.loading=true;
     usersRegister.userLogin={};
     usersRegister.userLogin.password='';
+    usersRegister.registering=false;
+    usersRegister.registrationError=false;
 
     usersRegister.passwordPolicies=[
         {
@@ -28,12 +30,17 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     Person.getInvitationById($stateParams.id)
     .then(function(res){
+        if(res.data.invitationCode!==$stateParams.code){
+            // Wrong code
+            return;
+        }
         getUser(res.data.invitee.id);
     })
     .catch(function(err){
         console.log(err);
     });
 
+    // Pre polulates the form with info the admin inserted when he first created the invitation
     var getUser=function(id){
         API.cui.getPerson({personId:id})
         .then(function(res){
@@ -44,11 +51,93 @@ function(localStorageService,$scope,Person,$stateParams,API){
         .fail(function(err){
             usersRegister.loading=false;
             console.log(err);
-        })
-    }
-
-    usersRegister.save=function(){
-        Person.update(usersRegister.user.id,usersRegister.user);
+        });
     };
+
+    Person.getSecurityQuestions()
+    .then(function(res){
+        res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
+        // this ensures half the questions get put into the first challenge question dropdown and 
+        // half into the other.
+        var numberOfQuestions=res.data.length,
+            numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
+        usersRegister.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
+        usersRegister.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
+        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0]; 
+        usersRegister.userLogin.question2=usersRegister.userLogin.challengeQuestions2[0];
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+
+    usersRegister.finish=function(form){
+        if(form.$invalid){
+            angular.forEach(form.$error, function (field) {
+                angular.forEach(field, function(errorField){
+                    errorField.$setTouched();
+                });
+            });
+            return;
+        }
+        
+        usersRegister.registering=true;
+        
+        var passwordAccount={
+            username:usersRegister.userLogin.username,
+            password:usersRegister.userLogin.password,
+            passwordPolicy:{
+                "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
+                "type":"passwordPolicy",
+                "realm":"COVSMKT-CVDEV"
+            },
+            authenticationPolicy:{
+                "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
+                "type":"authenticationPolicy",
+                "realm":"COVSMKT-CVDEV"
+            },
+            version:1
+        };
+
+        var securityQuestions={
+            id:usersRegister.user.id,
+            questions:[{
+                question:{
+                    id:usersRegister.userLogin.question1.id,
+                    type:'question',
+                    realm:'COVSMKT-CVDEV'
+                },
+                answer:usersRegister.userLogin.challengeAnswer1,
+                index:1
+            },{
+                question:{
+                    id:usersRegister.userLogin.question2.id,
+                    type:'question',
+                    realm:'COVSMKT-CVDEV'
+                },
+                answer:usersRegister.userLogin.challengeAnswer2,
+                index:2
+            }],
+            version:1
+        };
+
+
+        Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
+        .then(function(res){
+            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions)
+        })
+        .then(function(res){
+            return Person.update(usersRegister.user.id,usersRegister.user)
+        })
+        .then(function(res){
+            console.log(res);
+            usersRegister.registering=false;
+        })
+        .catch(function(err){
+            console.log(err);
+            usersRegister.registrationError=true;
+            usersRegister.registering=false;
+        });
+    };
+
 
 }]);

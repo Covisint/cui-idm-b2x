@@ -41,6 +41,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/register?id&code',
             templateUrl: 'assets/angular-templates/users/users.register.html',
             controller: 'usersRegisterCtrl as usersRegister'
+        })
+        .state('users.activate',{
+            url: '/activate/:id',
+            templateUrl: 'assets/angular-templates/users/users.activate.html',
+            controller: 'usersActivateCtrl as usersActivate'
         });
     // $locationProvider.html5Mode(true);
     

@@ -13,7 +13,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             $scope.$apply();
         })
         .fail(function(err){
-            usersEdit.loading=false
+            usersEdit.loading=false;
             console.log(err);
         });
     });

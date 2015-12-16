@@ -144,6 +144,134 @@ angular.module('app')
         });
     };
 
+    var getSecurityQuestions=function(){
+        return $http({
+            method:'GET',
+            url: API.cui.getServiceUrl() + '/authn/v2/securityQuestions',
+            headers:{
+                Accept:'application/vnd.com.covisint.platform.securityquestion.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
+    var getPasswordAccount=function(id){
+        return $http({
+            method:'GET',
+            url: API.cui.getServiceUrl() + '/person/v1/persons/' + id + '/accounts/password',
+            headers:{
+                Accept: 'application/vnd.com.covisint.platform.person.account.password.v1+json',
+                Authorization:'Bearer ' + API.token()
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
+    var createPasswordAccount=function(id,data){
+        return $http({
+            method: 'PUT',
+            url: API.cui.getServiceUrl() + '/person/v1/persons/' + id + '/accounts/password',
+            headers: {
+                Accept: 'application/vnd.com.covisint.platform.person.account.password.v1+json',
+                Authorization: 'Bearer ' + API.token(),
+                'Content-Type': 'application/vnd.com.covisint.platform.person.account.password.v1+json'
+            },
+            data:data
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
+    var createSecurityQuestions=function(id,data){
+        return $http({
+            method: 'PUT',
+            url: API.cui.getServiceUrl() + '/authn/v2/persons/' + id + '/accounts/securityQuestion',
+            headers: {
+                Accept: 'application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json',
+                Authorization: 'Bearer ' + API.token(),
+                'Content-Type': 'application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json'
+            },
+            data:data
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
+    var grantExchangePackage=function(id){
+        return $http({
+            method:'PUT',
+            url: API.cui.getServiceUrl() + '/service/v1/persons/' + id + '/packages/PCOVSMKT-CVDEV204003000',
+            headers:{
+                Accept: 'application/vnd.com.covisint.platform.package.grant.v1+json',
+                Authorization : 'Bearer ' + API.token(),
+                'Content-Type': 'application/vnd.com.covisint.platform.package.grant.v1+json',
+            },
+            data:{
+                "version": 1,
+                "grantee": {
+                    "id": id,
+                    "type": "person"
+                },
+                "servicePackage": {
+                    "id": "PCOVSMKT-CVDEV204003000"
+                }
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
+    var grantCcaPackage=function(id){
+        return $http({
+            method:'PUT',
+            url: API.cui.getServiceUrl() + '/service/v1/persons/' + id + '/packages/PAPC2040605',
+            headers:{
+                Accept: 'application/vnd.com.covisint.platform.package.grant.v1+json',
+                Authorization : 'Bearer ' + API.token(),
+                'Content-Type': 'application/vnd.com.covisint.platform.package.grant.v1+json',
+            },
+            data:{
+                "version": 1,
+                "grantee": {
+                    "id": id,
+                    "type": "person"
+                },
+                "servicePackage": {
+                    "id": "PAPC2040605"
+                }
+            }
+        })
+        .then(function(res){
+            return res;
+        })
+        .catch(function(err){
+            return $q.reject(err);
+        });
+    };
+
     var person={
         getAll:API.cui.getUsers,
         getById:getById,
@@ -152,8 +280,15 @@ angular.module('app')
         create:create,
         createInvitation:createInvitation,
         sendUserInvitationEmail:sendUserInvitationEmail,
-        getInvitationById:getInvitationById
+        getInvitationById:getInvitationById,
+        getSecurityQuestions:getSecurityQuestions,
+        getPasswordAccount:getPasswordAccount,
+        createPasswordAccount:createPasswordAccount,
+        createSecurityQuestions:createSecurityQuestions,
+        grantCcaPackage:grantCcaPackage,
+        grantExchangePackage:grantExchangePackage
     };
+
 
     return person;
 
