@@ -1,0 +1,24 @@
+.welcome-wrapper {
+	padding: 20px;
+}
+
+.card-wrapper {
+	display: flex;
+	margin: 0 auto;
+	padding: 12px;
+}
+
+.welcome-title h1 {
+	color: #FFFFFF;
+	font-size: 2em;
+	text-align: center;
+}
+
+.welcome-footer p {
+	display: inline;
+	margin-right: 12px;
+}
+
+.welcome-footer select {
+	float: right;
+}
