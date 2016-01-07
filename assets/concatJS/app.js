@@ -112,6 +112,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/activate/:id',
             templateUrl: 'assets/angular-templates/users/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
+        })
+        .state('sysAdmin',{
+            url: '/sysAdmin',
+            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.html',
+        })
+        .state('sysAdmin.account',{
+            url: '/sysAdmin/account/',
+            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
+            controller: 'sysAdminAccountCtrl as sysAdminAccount'
         });
     // $locationProvider.html5Mode(true);
     
@@ -442,6 +451,23 @@ angular.module('app')
     return person;
 
 }]);
+
+angular.module('app')
+.controller('sysAdminAccountCtrl',['$scope', 
+	function($scope) {
+		var sysAdminAccount = this;
+
+		sysAdminAccount.tosError = [
+			{
+				test: "test",
+				name: 'tosRequired',
+				check: function() {
+					return sysAdminAccount.tos;
+				}
+			}
+		];
+}]); 
+
 
 angular.module('app')
 .controller('usersActivateCtrl',['$stateParams','API','Person',

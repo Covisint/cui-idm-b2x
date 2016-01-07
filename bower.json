@@ -20,6 +20,6 @@
     "cui-i18n": "~1",
     "cui-icons": "~1",
     "cui.js": "~0",
-    "name": "slb-styleguide#*"
+    "slb-styleguide": "#master"
   }
 }
