@@ -63,6 +63,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('welcome.screen',{
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
+            controller: 'welcomeCtrl as welcome'
         });
     // $locationProvider.html5Mode(true);
     
