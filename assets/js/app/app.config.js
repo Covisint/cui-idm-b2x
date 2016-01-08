@@ -70,13 +70,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
             controller: 'welcomeCtrl as welcome'
         })
-        .state('topLevelOrg',{
-            url: '/topLevelOrg',
+        .state('tlo',{
+            url: '/tlo',
             templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
         })
-        .state('topLevelOrg.account',{
-            url: '/topLevelOrg/account',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.account.html',
+        .state('tlo.registration',{
+            url: '/tlo/registration',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
         });
     // $locationProvider.html5Mode(true);
     
