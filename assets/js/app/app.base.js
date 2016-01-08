@@ -1,5 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state',function($state){
+.controller('baseCtrl',['$state','getCountries','$scope','$translate',
+function($state,getCountries,$scope,$translate){
     var base=this;
     
     base.desktopMenu=true;
@@ -17,6 +18,26 @@ angular.module('app')
         }
     };
 
+
+    var setCountries=function(language){
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];   
+        }
+        getCountries(language)
+        .then(function(res){
+            base.countries=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    }
+
+    $scope.$on('languageChange',function(e,args){
+        // console.log(e);
+        setCountries(args);
+    });
+
+    setCountries($translate.proposedLanguage());
 
 
 }]);

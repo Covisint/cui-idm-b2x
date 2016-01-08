@@ -1,0 +1,112 @@
+<form name="user" novalidate>
+
+  <!-- First row -->
+  <div class="cui-wizard__field-row"> 
+   <!-- First Name -->     
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+      <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersWalkup.user.name.given"/>
+    </div>
+
+    <!-- Last Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+      <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" ng-model="usersWalkup.user.name.surname" name="lastName" class="cui-input" ng-required="true"/>
+    </div>
+  </div>
+
+
+  <!-- Second row -->
+  <div class="cui-wizard__field-row"> 
+   <!-- Email -->     
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-email' | translate}}</label> 
+      <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="email" name="email" class="cui-input" ng-required="true" ng-model="usersWalkup.user.email"/>
+    </div>
+
+    <!-- Re-enter Email -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-email-re' | translate}}</label>
+      <div class="cui-error" ng-if="user.emailRe.$touched && user.emailRe.$error.match">
+        <div class="cui-error__message">{{'email-mismatch' | translate}}</div>
+      </div>
+      <input type="text" ng-model="usersWalkup.emailRe" name="emailRe" class="cui-input" ng-required="true" match="usersWalkup.user.email"/>
+    </div>
+  </div>
+
+
+  <!-- Third row -->
+  <div class="cui-wizard__field-row"> 
+     <!-- Country -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="country">{{"cui-country" | translate}}</label>
+      <div auto-complete input-name="country" pause="100" selected-object="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+    </div>
+  
+    <!-- Address 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-address" | translate}} 1</label>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].streets[0]" class="cui-input" name="address1">
+    </div>
+  </div>
+
+
+  <!-- Fourth row -->
+  <div class="cui-wizard__field-row"> 
+     <!-- Address 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{"cui-address" | translate}} 2</label>
+       <input type="text" ng-model="usersWalkup.user.addresses[0].streets[1]" class="cui-input" name="address1">
+    </div>
+
+    <!-- City -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-city" | translate}}</label>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].city" class="cui-input" name="city"></input>
+    </div>
+    
+  </div>
+
+
+  <!-- Fifth row -->
+  <div class="cui-wizard__field-row"> 
+    <!-- State/Province -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-state" | translate}}</label>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].state" class="cui-input" name="state"></input>
+    </div>
+
+    <!-- Postal Code -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="postal-code">{{"cui-postal" | translate}}</label>
+        <input type="text" ng-model="usersWalkup.user.addresses[0].postal" class="cui-input" name="postal"/>
+    </div>
+  </div>
+
+
+  <!-- Sixth row -->
+  <div class="cui-wizard__field-row">
+    <!-- Telephone number -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-telephone" | translate}}</label>
+        <input type="text" ng-model="usersWalkup.user.phones[0].number" class="cui-input" name="postal"/>
+    </div>
+  </div>
+
+  <span>{{"terms-conditions" | translate}}</span>
+
+</form>
+
+<div class="cui-wizard__controls">
+  <!-- go to assets/js/app/app.profile.js to customize this function -->
+  <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="user.$invalid? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+</div>

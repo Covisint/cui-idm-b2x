@@ -1,0 +1,83 @@
+<h2 ng-click="base.goBack()">Go Back</h2>
+<div class="cui-tile">
+  <div class="cui-tile__title">Invite User</div>
+    <div class="cui-tile__body">
+      <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+       <indicator-container class="indicator-container"></indicator-container>
+        <step title="User details">
+        <form name="invite" novalidate>
+        </ng-include>
+
+
+            <!-- Email -->     
+            <label for="user-email">{{'cui-email' | translate}}</label> 
+            <div class="cui-error" ng-messages="invite.email.$error" ng-if="invite.email.$touched">
+              <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="email" class="cui-input" ng-required="true" ng-model="usersInvite.user.email"></input>
+        
+
+          <div class="cui-wizard__field-row"> 
+           <!-- First Name -->     
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+              <!--    This adds error messages to the firstName input field. Notice the naming convention
+              ng-messages="<formName><inputName>.$error" -->
+              <div class="cui-error" ng-messages="invite.firstName.$error" ng-if="invite.firstName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersInvite.user.name.given"></input>
+            </div>
+
+            <!-- Last Name -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+              <div class="cui-error" ng-messages="invite.lastName.$error" ng-if="invite.lastName.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" ng-model="usersInvite.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+            </div>
+          </div>
+        
+          
+          <div class="cui-wizard__field-row"> 
+           <!-- timezone -->     
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-name-given">{{'cui-timezone' | translate}}</label> 
+              <!--    This adds error messages to the firstName input field. Notice the naming convention
+              ng-messages="<formName><inputName>.$error" -->
+              <div class="cui-error" ng-messages="invite.timezone.$error" ng-if="invite.timezone.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" name="timezone" class="cui-input" ng-required="true" ng-model="usersInvite.user.timezone"></input>
+            </div>
+
+            <!-- Language -->
+            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+              <label for="user-language">Language</label>
+              <div class="cui-error" ng-messages="invite.language.$error" ng-if="invite.language.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              </div>
+              <input type="text" ng-model="usersInvite.user.language" name="language" class="cui-input" ng-required="true"></input>
+            </div>
+          </div>
+          
+          <label for="custom-message">Custom message</label>
+          <textarea ng-model="usersInvite.message" class="cui-input" style="resize:vertical;height:100px" ></textarea>
+
+        </form>
+
+        <div class="cui-wizard__controls">
+
+          <!-- go to assets/js/app/app.profile.js to customize this function -->
+          <button class="cui-wizard__next" ng-click="usersInvite.saveUser(invite)" ng-class="(invite.$invalid)? 'cui-wizard__next--error' : (usersInvite.sent)? 'success' : (usersInvite.fail)? 'fail' : ''" style="position:relative"> 
+            <div class="cui-loading--medium__center" ng-show="usersInvite.sending"></div>
+            <span ng-if="(!usersInvite.sending && !usersInvite.sent && !usersInvite.fail)">Send invite</span>
+            <span ng-if="usersInvite.sent">Invite sent!</span>
+            <span ng-if="usersInvite.fail">Error! Try again?</span>
+          </button>
+        </div>
+      </step>
+    </cui-wizard>
+  </div>
+</div>

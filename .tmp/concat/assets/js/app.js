@@ -76,7 +76,6 @@ function($state,getCountries,$scope,$translate){
     }
 
     $scope.$on('languageChange',function(e,args){
-        // console.log(e);
         setCountries(args);
     });
 

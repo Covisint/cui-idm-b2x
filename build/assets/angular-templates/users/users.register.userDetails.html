@@ -1,0 +1,100 @@
+<form name="user" novalidate>
+  <div class="cui-wizard__field-row"> 
+  <ng-include src="'assets/angular-templates/loading.html'" class="fill" ng-class="usersRegister.loading? 'show' : ''"></ng-include>
+   <!-- First Name -->     
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+      <!--    This adds error messages to the firstName input field. Notice the naming convention
+      ng-messages="<formName><inputName>.$error" -->
+      <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersRegister.user.name.given"></input>
+    </div>
+
+    <!-- Last Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+      <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" ng-model="usersRegister.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <label for="title">Title</label>
+  <input type="text" ng-model="usersRegister.user.title" name="title" class="cui-input"></input>
+
+
+
+  <div class="cui-wizard__field-row">
+    <!-- Address 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="address1">{{"cui-user-address" | translate}} 1</label>
+       <input type="text" ng-model="usersRegister.user.addresses[0].streets[0]" class="cui-input" name="address1"></input>
+    </div>
+
+    <!-- Address 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="address2">{{"cui-user-address" | translate}} 2</label>
+      <input type="text" ng-model="usersRegister.user.addresses[0].streets[1]" class="cui-input" name="address2"></input>
+    </div>
+  </div>
+  <div class="cui-wizard__field-row">
+
+    <!-- City/Region -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="city-region">{{"cui-city" | translate}}</label>
+      <input type="text" ng-model="usersRegister.user.addresses[0].city" class="cui-input" name="city"></input>
+    </div>
+
+    <!-- State/Province -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="state-province">{{"cui-state" | translate}}</label>
+      <input type="text" ng-model="usersRegister.user.addresses[0].state" class="cui-input" name="state"></input>
+    </div>
+  </div>
+
+  <div class="cui-wizard__field-row">
+    <!-- Postal Code -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="postal-code">{{"cui-postal" | translate}}</label>
+        <input type="text" ng-model="usersRegister.user.addresses[0].postal" class="cui-input" name="postal"></input>
+    </div>
+
+    <!-- Country -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="country">{{"cui-country" | translate}}</label>
+        <input type="text" ng-model="usersRegister.user.addresses[0].country" class="cui-input" name="country"></input>
+    </div>
+  </div>
+
+  <div class="cui-wizard__field-row">
+    <!-- Timezone -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="timezone">{{"cui-timezone" | translate}}</label>
+      <div class="cui-error" ng-messages="user.timezone.$error" ng-if="user.timezone.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" ng-model="usersRegister.user.timezone" class="cui-input" name="timezone" ng-required="true"></input>
+    </div>
+
+    <!-- Language -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="language">Language</label>
+      <div class="cui-error" ng-messages="user.language.$error" ng-if="user.language.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+      </div>
+      <input type="text" ng-model="usersRegister.user.language" class="cui-input" name="language" ng-required="true"></input>
+    </div>
+  </div>
+
+  <!-- TODO: ADD PREFIX, MIDDLE NAME, TIME ZONE, LANGUAGE PREF. EMAIL ADDRESS (?), MOBILE PHONE, FAX -->
+
+</form>
+
+<div class="cui-wizard__controls">
+  <!-- go to assets/js/app/app.profile.js to customize this function -->
+  <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="user.$invalid? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+</div>

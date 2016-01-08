@@ -17,9 +17,10 @@
     "angular-messages": "~1.4.7",
     "angular-local-storage": "~0.2.3",
     "cui-ng": "~1",
-    "cui-i18n": "~1",
+    "cui-i18n": "#master",
     "cui-icons": "~1",
     "cui.js": "~0",
-    "slb-styleguide": "#master"
+    "slb-styleguide": "#master",
+    "cui-styleguide": "~1.4.0"
   }
 }
