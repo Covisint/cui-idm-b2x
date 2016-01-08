@@ -69,6 +69,14 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
             controller: 'welcomeCtrl as welcome'
+        })
+        .state('topLevelOrg',{
+            url: '/topLevelOrg',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
+        })
+        .state('topLevelOrg.account',{
+            url: '/topLevelOrg/account',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.account.html',
         });
     // $locationProvider.html5Mode(true);
     
