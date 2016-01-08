@@ -60,6 +60,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/sysAdmin/account/',
             templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
             controller: 'sysAdminAccountCtrl as sysAdminAccount'
+        })
+        .state('welcome',{
+            url: '/welcome',
+            templateUrl: 'assets/angular-templates/welcome/welcome.html',
+        })
+        .state('welcome.screen',{
+            url: '/welcome',
+            templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
+            controller: 'welcomeCtrl as welcome'
         });
     // $locationProvider.html5Mode(true);
     
