@@ -75,7 +75,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
         })
         .state('tlo.registration',{
-            url: '/tlo/registration',
+            url: '/registration',
             templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
         });
     // $locationProvider.html5Mode(true);
