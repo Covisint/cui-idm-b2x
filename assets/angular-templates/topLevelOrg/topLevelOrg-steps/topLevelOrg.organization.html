@@ -1,4 +1,4 @@
-<form name="tlo.userProfile" novalidate>
+<form name="userProfile" novalidate>
 	
 	<!-- First Row -->
 	<div class="cui-wizard__field-row">
@@ -71,10 +71,10 @@
 <form>
 
 <div class="cui-wizard__controls">
-	<div class="row"
+	<div class="row">
 		<h2 ng-click="base.goBack()">{{'<< PREVIOUS' | translate}}</h2>
 
-		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(tlo.userProfile)" ng-class="(tlo.userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
+		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userProfile)" ng-class="(userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
         	<div class="cui-loading--medium__center" ng-show=""></div>
         	<span>{{'cui-next' | translate}}</span>
     	</button>
