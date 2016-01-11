@@ -27,31 +27,14 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    Person.getInvitationById($stateParams.id)
-    .then(function(res){
-        if(res.data.invitationCode!==$stateParams.code){
-            // Wrong code
-            return;
+    usersWalkup.userTosError=[
+        {
+            name:'tos',
+            check:function(){
+                return usersWalkup.userTos;
+            }
         }
-        getUser(res.data.invitee.id);
-    })
-    .catch(function(err){
-        console.log(err);
-    });
-
-    // Pre polulates the form with info the admin inserted when he first created the invitation
-    var getUser=function(id){
-        API.cui.getPerson({personId:id})
-        .then(function(res){
-            usersWalkup.loading=false;
-            usersWalkup.user=res;
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersWalkup.loading=false;
-            console.log(err);
-        });
-    };
+    ];
 
     Person.getSecurityQuestions()
     .then(function(res){

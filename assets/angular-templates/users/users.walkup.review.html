@@ -1,0 +1,30 @@
+<cui-expandable class="cui-expandable expanded">
+  <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+    {{'user-profile' | translate}}
+    <span class="chevron">></span>
+  </cui-expandable-title>
+  <cui-expandable-body class="cui-expandable__body">
+    <p class="cui-expandable__review-item">{{'cui-first-name' | translate}}: 
+      <span ng-if="!usersWalkup.edit[0]">{{usersWalkup.user.name.given}}</span>
+      <input ng-model="usersWalkup.nameEdit" ng-init="usersWalkup.nameEdit=usersWalkup.user.name.given" class="cui-input" ng-if="usersWalkup.edit[0]"/>
+      <span class="cui-link" ng-click="usersWalkup.edit[0]=!usersWalkup.edit[0]" ng-if="!usersWalkup.edit[0]">Edit</span>
+      <span class="cui-link" ng-if="usersWalkup.edit[0]" ng-click="usersWalkup.user.name.given=usersWalkup.nameEdit;usersWalkup.edit[0]=false;">Save</span>
+      <span class="cui-link" ng-if="usersWalkup.edit[0]" ng-click="usersWalkup.edit[0]=!usersWalkup.edit[0];usersWalkup.edit[0]=false;">Cancel</span>
+    </p>
+    <p class="cui-expandable__review-item">{{'cui-last-name' | translate}}: {{usersWalkup.user.name.surname}}</p>
+    <p class="cui-expandable__review-item">{{'cui-email' | translate}} : {{usersWalkup.user.email}}</p>
+    <p class="cui-expandable__review-item">{{'cui-country' | translate}} : {{usersWalkup.user.addresses[0].country.title}}</p>
+    <p class="cui-expandable__review-item">{{'cui-address' | translate}} 1: {{usersWalkup.user.addresses[0].streets[0]}}</p>
+    <p class="cui-expandable__review-item">{{'cui-address' | translate}} 2: {{usersWalkup.user.addresses[0].streets[1]}}</p>
+    <p class="cui-expandable__review-item">{{'cui-city' | translate}}: {{usersWalkup.user.addresses[0].city}}</p>
+    <p class="cui-expandable__review-item">{{'cui-state' | translate}}: {{usersWalkup.user.addresses[0].state}}</p>
+    <p class="cui-expandable__review-item">{{'cui-postal' | translate}}: {{usersWalkup.user.addresses[0].postal}}</p>
+    <p class="cui-expandable__review-item">{{'cui-telephone' | translate}}: {{usersWalkup.user.phones[0].number}}</p>
+  </cui-expandable-body>
+</cui-expandable>
+
+
+<div class="cui-wizard__controls">
+  <button class="cui-wizard__previous" ng-click="previous('wizard.user')"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
+</div>

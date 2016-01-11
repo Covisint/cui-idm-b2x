@@ -102,7 +102,13 @@
     </div>
   </div>
 
-  <span>{{"terms-conditions" | translate}}</span>
+  <!-- This fixes an issue with the button the next not being clickable after confirming TOS -->
+  <span style="display:none">{{user.tos.$error}}</span>
+
+  <span class="cui-checkbox__container"><input class="cui-checkbox" ng-model="usersWalkup.userTos" type="checkbox" name="tos" id="tos" custom-error="usersWalkup.userTosError"/><label class="cui-checkbox__label" for="tos">{{"i-agree" | translate}} <a href="#">{{"terms-service" | translate}}</a> {{'and' | translate}} <a href="#">{{"privacy-policy" | translate}}</a></label></span>
+  <div class="cui-error" ng-if="user.tos.$touched && user.tos.$error.tos">
+    <div class="cui-error__message">{{'must-agree-tos' | translate}}</div>
+  </div>
 
 </form>
 
