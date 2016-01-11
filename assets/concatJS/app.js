@@ -86,8 +86,10 @@ function($state,getCountries,$scope,$translate){
 }]);
 
 angular.module('app')
-.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider','$injector','localStorageServiceProvider',
-function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,$injector,localStorageServiceProvider){
+.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
+    '$injector','localStorageServiceProvider','$cuiIconProvider',
+function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
+    $injector,localStorageServiceProvider,$cuiIconProvider){
     localStorageServiceProvider.setPrefix('cui');
     $stateProvider
         .state('base',{
@@ -147,6 +149,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/sysAdmin/account/',
             templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
             controller: 'sysAdminAccountCtrl as sysAdminAccount'
+        })
+        .state('welcome',{
+            url: '/welcome',
+            templateUrl: 'assets/angular-templates/welcome/welcome.html',
+        })
+        .state('welcome.screen',{
+            url: '/welcome',
+            templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
+            controller: 'welcomeCtrl as welcome'
         });
     // $locationProvider.html5Mode(true);
     
@@ -163,10 +174,12 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         prefix:'locale-'
     });
      
+    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state',function(LocaleService,$rootScope,$state){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache',
+    function(LocaleService,$rootScope,$state,$http,$templateCache){
     //add more locales here
     LocaleService.setLocales('en_US','English (United States)');
     LocaleService.setLocales('pl_PL','Polish (Poland)');
@@ -177,6 +190,14 @@ angular.module('app')
         $state.previous = {};
         $state.previous.name = fromState;
         $state.previous.params = fromParams;
+    });
+
+    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg'];
+
+    angular.forEach(icons,function(icon){
+        $http.get(icon,{
+            cache: $templateCache
+        });
     });
 }]);
 
@@ -948,31 +969,14 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    Person.getInvitationById($stateParams.id)
-    .then(function(res){
-        if(res.data.invitationCode!==$stateParams.code){
-            // Wrong code
-            return;
+    usersWalkup.userTosError=[
+        {
+            name:'tos',
+            check:function(){
+                return usersWalkup.userTos;
+            }
         }
-        getUser(res.data.invitee.id);
-    })
-    .catch(function(err){
-        console.log(err);
-    });
-
-    // Pre polulates the form with info the admin inserted when he first created the invitation
-    var getUser=function(id){
-        API.cui.getPerson({personId:id})
-        .then(function(res){
-            usersWalkup.loading=false;
-            usersWalkup.user=res;
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersWalkup.loading=false;
-            console.log(err);
-        });
-    };
+    ];
 
     Person.getSecurityQuestions()
     .then(function(res){
@@ -1061,5 +1065,17 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
 
 }]);
+
+angular.module('app')
+.controller('welcomeCtrl',['$scope', 
+	function($scope) {
+		var welcome = this;
+		$scope.modalVisible = false;
+
+		$scope.modalDisplay = function() {
+			$scope.modalVisible = !$scope.modalVisible;
+		};
+}]); 
+
 
 })(angular);

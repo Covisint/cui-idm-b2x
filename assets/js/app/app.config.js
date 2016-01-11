@@ -1,6 +1,8 @@
 angular.module('app')
-.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider','$injector','localStorageServiceProvider',
-function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,$injector,localStorageServiceProvider){
+.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
+    '$injector','localStorageServiceProvider','$cuiIconProvider',
+function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
+    $injector,localStorageServiceProvider,$cuiIconProvider){
     localStorageServiceProvider.setPrefix('cui');
     $stateProvider
         .state('base',{
@@ -85,10 +87,12 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         prefix:'locale-'
     });
      
+    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state',function(LocaleService,$rootScope,$state){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache',
+    function(LocaleService,$rootScope,$state,$http,$templateCache){
     //add more locales here
     LocaleService.setLocales('en_US','English (United States)');
     LocaleService.setLocales('pl_PL','Polish (Poland)');
@@ -99,6 +103,14 @@ angular.module('app')
         $state.previous = {};
         $state.previous.name = fromState;
         $state.previous.params = fromParams;
+    });
+
+    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg'];
+
+    angular.forEach(icons,function(icon){
+        $http.get(icon,{
+            cache: $templateCache
+        });
     });
 }]);
 
