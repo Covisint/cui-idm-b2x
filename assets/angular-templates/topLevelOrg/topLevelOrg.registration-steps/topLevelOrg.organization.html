@@ -100,18 +100,19 @@
                 <div class="cui-error" ng-messages="organization.supplierCode.$error" ng-if="organization.supplierCode.$touched">
                     <div ng-messages-include="assets/angular-templates/messages.html"></div>
                 </div>
-                <input type="password" name="supplierCode" class="cui-input cui-input__password cui-input--error" placeholder="" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': newTLO.supplierCode.$touched}" >
+                <input type="text" name="supplierCode" class="cui-input cui-input__password cui-input--error" placeholder="" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': newTLO.supplierCode.$touched}" >
                 <div class="cui-error__password">
                     <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum totam impedit atque. Modi maxime consequatur, laboriosam libero nesciunt ad ipsam optio asperiores maiores voluptate? Error quam beatae tenetur ut tempora.</p>
                 </div>
             </div>
         </div>
+
     </div>
 </form>
 
 <div class="cui-wizard__controls">
 	<div class="row">
-		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userProfile)" ng-class="(userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
+		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userProfile)" ng-class="(userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative">
         	<div class="cui-loading--medium__center" ng-show=""></div>
         	<span>{{'cui-next' | translate}}</span>
     	</button>
