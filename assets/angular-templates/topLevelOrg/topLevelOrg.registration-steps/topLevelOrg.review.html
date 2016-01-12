@@ -1,12 +1,96 @@
-<form name="userProfile" novalidate>
-	<p>Review Form</p>
-<form>
+<cui-expandable class="cui-expandable expanded">
+
+	<!-- User Information -->
+  	<cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+    	{{'user-profile' | translate}}
+    	<span class="chevron">></span>
+  	</cui-expandable-title>
+
+  	<cui-expandable-body class="cui-expandable__body">
+  		<!-- First Name -->
+		<p class="cui-expandable__review-item">{{'cui-first-name' | translate}}: 
+			<span ng-if="!newTLO.edit[0]">{{newTLO.user.name.given}}</span>
+			<input ng-model="newTLO.nameEdit" ng-init="newTLO.nameEdit=newTLO.user.name.given" class="cui-input--half" ng-if="newTLO.edit[0]"/>
+			<span class="cui-link" ng-click="newTLO.edit[0]=!newTLO.edit[0]" ng-if="!newTLO.edit[0]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[0]" ng-click="newTLO.user.name.given=newTLO.nameEdit;newTLO.edit[0]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[0]" ng-click="newTLO.edit[0]=!newTLO.edit[0];newTLO.edit[0]=false;">Cancel</span>
+		</p>
+		<!-- Last Name -->
+		<p class="cui-expandable__review-item">{{'cui-last-name' | translate}}:
+			<span ng-if="!newTLO.edit[1]">{{newTLO.user.name.surname}}</span>
+			<input ng-model="newTLO.surnameEdit" ng-init="newTLO.surnameEdit=newTLO.user.name.surname" class="cui-input--half" ng-if="newTLO.edit[1]"/>
+			<span class="cui-link" ng-click="newTLO.edit[1]=!newTLO.edit[1]" ng-if="!newTLO.edit[1]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[1]" ng-click="newTLO.user.name.surname=newTLO.surnameEdit;newTLO.edit[1]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[1]" ng-click="newTLO.edit[1]=!newTLO.edit[1];newTLO.edit[1]=false;">Cancel</span>
+		</p>
+		<!-- Email -->
+		<p class="cui-expandable__review-item">{{'cui-email' | translate}}:
+			<span ng-if="!newTLO.edit[2]">{{newTLO.user.email}}</span>
+			<input ng-model="newTLO.emailEdit" ng-init="newTLO.emailEdit=newTLO.user.email" class="cui-input--half" ng-if="newTLO.edit[2]"/>
+			<span class="cui-link" ng-click="newTLO.edit[2]=!newTLO.edit[2]" ng-if="!newTLO.edit[2]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[2]" ng-click="newTLO.user.email=newTLO.emailEdit;newTLO.edit[2]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[2]" ng-click="newTLO.edit[2]=!newTLO.edit[2];newTLO.edit[2]=false;">Cancel</span>
+		</p>
+		<!-- Country -->
+		<p class="cui-expandable__review-item">{{'cui-country' | translate}}:
+			<span ng-if="!newTLO.edit[3]">{{newTLO.user.addresses[0].country.title}}</span>
+			<input ng-model="newTLO.countryEdit" ng-init="newTLO.countryEdit=newTLO.user.addresses[0].country.title" class="cui-input--half" ng-if="newTLO.edit[3]"/>
+			<span class="cui-link" ng-click="newTLO.edit[3]=!newTLO.edit[3]" ng-if="!newTLO.edit[3]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[3]" ng-click="newTLO.user.addresses[0].country.title=newTLO.countryEdit;newTLO.edit[3]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[3]" ng-click="newTLO.edit[3]=!newTLO.edit[3];newTLO.edit[3]=false;">Cancel</span>
+		</p>
+		<!-- Address 1 -->
+		<p class="cui-expandable__review-item">{{'cui-address' | translate}} 1:
+			<span ng-if="!newTLO.edit[4]">{{newTLO.user.addresses[0].streets[0]}}</span>
+			<input ng-model="newTLO.address1Edit" ng-init="newTLO.address1Edit=newTLO.user.addresses[0].streets[0]" class="cui-input--half" ng-if="newTLO.edit[4]"/>
+			<span class="cui-link" ng-click="newTLO.edit[4]=!newTLO.edit[4]" ng-if="!newTLO.edit[4]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[4]" ng-click="newTLO.user.addresses[0].streets[0]=newTLO.address1Edit;newTLO.edit[4]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[4]" ng-click="newTLO.edit[4]=!newTLO.edit[4];newTLO.edit[4]=false;">Cancel</span>
+		</p>
+		<!-- Address 2 -->
+		<p class="cui-expandable__review-item">{{'cui-address' | translate}} 2:
+			<span ng-if="!newTLO.edit[5]">{{newTLO.user.addresses[0].streets[1]}}</span>
+			<input ng-model="newTLO.address2Edit" ng-init="newTLO.address2Edit=newTLO.user.addresses[0].streets[1]" class="cui-input--half" ng-if="newTLO.edit[5]"/>
+			<span class="cui-link" ng-click="newTLO.edit[5]=!newTLO.edit[5]" ng-if="!newTLO.edit[5]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[5]" ng-click="newTLO.user.addresses[0].streets[1]=newTLO.address2Edit;newTLO.edit[5]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[5]" ng-click="newTLO.edit[5]=!newTLO.edit[5];newTLO.edit[5]=false;">Cancel</span>
+		</p>
+		<!-- City -->
+		<p class="cui-expandable__review-item">{{'cui-city' | translate}}:
+			<span ng-if="!newTLO.edit[6]">{{newTLO.user.addresses[0].city}}</span>
+			<input ng-model="newTLO.cityEdit" ng-init="newTLO.cityEdit=newTLO.user.addresses[0].city" class="cui-input--half" ng-if="newTLO.edit[6]"/>
+			<span class="cui-link" ng-click="newTLO.edit[6]=!newTLO.edit[6]" ng-if="!newTLO.edit[6]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[6]" ng-click="newTLO.user.addresses[0].city=newTLO.cityEdit;newTLO.edit[6]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[6]" ng-click="newTLO.edit[6]=!newTLO.edit[6];newTLO.edit[6]=false;">Cancel</span>
+		</p>
+		<!-- State -->
+	    <p class="cui-expandable__review-item">{{'cui-state' | translate}}:
+	    	<span ng-if="!newTLO.edit[7]">{{newTLO.user.addresses[0].state}}</span>
+			<input ng-model="newTLO.stateEdit" ng-init="newTLO.stateEdit=newTLO.user.addresses[0].state" class="cui-input--half" ng-if="newTLO.edit[7]"/>
+			<span class="cui-link" ng-click="newTLO.edit[7]=!newTLO.edit[7]" ng-if="!newTLO.edit[7]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[7]" ng-click="newTLO.user.addresses[0].state=newTLO.stateEdit;newTLO.edit[7]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[7]" ng-click="newTLO.edit[7]=!newTLO.edit[7];newTLO.edit[7]=false;">Cancel</span>
+	    </p>
+	    <!-- Postal -->
+	    <p class="cui-expandable__review-item">{{'cui-postal' | translate}}:
+	    	<span ng-if="!newTLO.edit[8]">{{newTLO.user.addresses[0].postal}}</span>
+			<input ng-model="newTLO.postalEdit" ng-init="newTLO.postalEdit=newTLO.user.addresses[0].postal" class="cui-input--half" ng-if="newTLO.edit[8]"/>
+			<span class="cui-link" ng-click="newTLO.edit[8]=!newTLO.edit[8]" ng-if="!newTLO.edit[8]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[8]" ng-click="newTLO.user.addresses[0].postal=newTLO.postalEdit;newTLO.edit[8]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[8]" ng-click="newTLO.edit[8]=!newTLO.edit[8];newTLO.edit[8]=false;">Cancel</span>
+	    </p>
+	    <!-- Phone Number -->
+	    <p class="cui-expandable__review-item">{{'cui-telephone' | translate}}:
+	    	<span ng-if="!newTLO.edit[9]">{{newTLO.user.phones[0].number}}</span>
+			<input ng-model="newTLO.phoneEdit" ng-init="newTLO.phoneEdit=newTLO.user.phones[0].number" class="cui-input--half" ng-if="newTLO.edit[9]"/>
+			<span class="cui-link" ng-click="newTLO.edit[9]=!newTLO.edit[9]" ng-if="!newTLO.edit[9]">Edit</span>
+			<span class="cui-link" ng-if="newTLO.edit[9]" ng-click="newTLO.user.phones[0].number=newTLO.phoneEdit;newTLO.edit[9]=false;">Save</span>
+			<span class="cui-link" ng-if="newTLO.edit[9]" ng-click="newTLO.edit[9]=!newTLO.edit[9];newTLO.edit[9]=false;">Cancel</span>
+	    </p>
+	</cui-expandable-body>
+</cui-expandable>
 
 <div class="cui-wizard__controls">
-	<div class="row">
-		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userProfile)" ng-class="(userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
-        	<div class="cui-loading--medium__center" ng-show=""></div>
-        	<span>{{'cui-next' | translate}}</span>
-    	</button>
-	</div>
+  <button class="cui-wizard__previous" ng-click="previous('wizard.userLogin')"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
 </div>
