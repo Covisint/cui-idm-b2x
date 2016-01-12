@@ -1,6 +1,7 @@
 angular.module('app')
 .controller('tloCtrl',['$scope', function($scope) {
 	var newTLO = this;
+	$scope.popoverVisible = false;
 
 	newTLO.tosError = [
 		{
@@ -11,5 +12,13 @@ angular.module('app')
 			}
 		}
 	];
+
+	$scope.showPopover = function() {
+		$scope.popoverVisible = true;
+	};
+
+	$scope.hidePopover = function() {
+		$scope.popoverVisible = false;
+	};
 	
 }]); 
