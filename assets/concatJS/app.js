@@ -158,6 +158,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
             controller: 'welcomeCtrl as welcome'
+        })
+        .state('tlo',{
+            url: '/tlo',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
+        })
+        .state('tlo.registration',{
+            url: '/registration',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
+            controller: 'tloCtrl as newTLO'
         });
     // $locationProvider.html5Mode(true);
     
@@ -519,6 +528,24 @@ angular.module('app')
 				}
 			}
 		];
+}]); 
+
+
+angular.module('app')
+.controller('tloCtrl',['$scope', function($scope) {
+	var newTLO = this;
+	$scope.popoverVisible = false;
+
+	newTLO.tosError = [
+		{
+			test: "test",
+			name: 'tosRequired',
+			check: function() {
+				return newTLO.tos;
+			}
+		}
+	];
+	
 }]); 
 
 
