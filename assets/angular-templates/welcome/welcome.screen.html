@@ -2,72 +2,74 @@
   <div class="welcome-wrapper">
 
     <!-- Title -->
-  	<div class="welcome-title">
-  		<h1>{{ 'welcome-title' | translate }}</h1>	
-  	</div>
+    <div class="welcome-title">
+      <h1>{{ 'welcome-title' | translate }}</h1>	
+    </div>
     
-      <!-- Tile: New Top-level Organization -->
-  		<div class="cui-card__container">
-    			<div class="cui-card">
-      			<div class="cui-card__image-container">
-        				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-          				<use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
-        				</svg>
-      			</div>
-      			<div class="cui-card__content">
-        				<h3 class="cui-card__content-header">{{ 'cui-new-TLO' | translate }}</h3>
-        				<p>{{ 'cui-new-TLO_description' | translate }}</p>
-      			</div>
-      			<button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
-    			</div>
-      
-      <!-- Tile: New Division -->
-    			<div class="cui-card">
-      			<div class="cui-card__image-container">
-        				<img src="http://placeskull.com/97/97/000000/10">
-      			</div>
-      			<div class="cui-card__content">
-        				<h3 class="cui-card__content-header">{{ 'cui-new-division' | translate }}</h3>
-                <div class="card-modal" ng-show="modalVisible">
-                  <div class="triangle-up"></div>
-                  <div class="card-modal__content">
-                    <p>The responsibilities of the Security Administrator will be explained in detail after you select a registration method. However, you may choose to cancel your registration in order to allow a different member of your Organization to register as the Security Administrator.</p>
-                    <a href="" ng-click="modalDisplay()">Cool, got it!</a>
-                  </div>
-                </div>
-        				<p>{{ 'cui-new-division_description_start' | translate }} <a href="" ng-click="modalDisplay()">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division_description_end' | translate }}</p>
-      			</div>
-      			<button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
-    			</div>
+    <!-- Tile: New Top-level Organization -->
+    <div class="cui-card__container">
+     <div class="cui-card">
+      <div class="cui-card__image-container">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+          <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+        </svg>
+      </div>
+      <div class="cui-card__content">
+        <h3 class="cui-card__content-header">{{ 'cui-new-TLO' | translate }}</h3>
+        <p>{{ 'cui-new-TLO_description' | translate }}</p>
+      </div>
+      <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
+    </div>
 
-      <!-- Tile: New User -->
-    			<div class="cui-card">
-      			<div class="cui-card__image-container">
-        				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-          				<use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-        				</svg>
-      			</div>
-      			<div class="cui-card__content">
-        				<h3 class="cui-card__content-header">{{ 'cui-new-user' | translate }}</h3>
-        				<p>{{ 'cui-new-user_description' | translate }}</p>
-      			</div>
-      			<button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
-    			</div>
-  		</div>
+    <!-- Tile: New Division -->
+    <div class="cui-card">
+     <div class="cui-card__image-container">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+        <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+      </svg>
+    </div>
 
-    <!-- Footer -->
-  	<div class="welcome-footer">
-  		<p><a href="">Covisint</a></p>
-  		<p><a href="">Privacy &amp; Terms</a></p>
-  		<p><a href="">Help</a></p>
-  		<p><a href="" class="welcome-learn_more">Learn more</a> about why we ask for this information.</p>
-  		<select class="language-select">
-  			<option value="en_US">English (United States)</option>
-  			<option value="pl_PL">Polish</option>
-  		</select>
-  	</div>
-  
+    <div class="cui-card__content">
+      <h3 class="cui-card__content-header">{{ 'cui-new-division' | translate }}</h3>
+      <div class="cui-styeguide__popover-container" ng-show="welcome.divisionPopover">
+        <div class="cui-popover cui-popover--dark cui-popover--top">
+          <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores recusandae, voluptatibus cupiditate ullam tenetur veritatis, voluptates vero minus quos, quia officiis odio eveniet impedit, vel ratione iste! Ipsum, vel, recusandae.</p>
+          <a href="" ng-click="welcome.divisionPopover=false">Cool, got it!</a>
+        </div>
+      </div>
+      <p>{{ 'cui-new-division_description_start' | translate }} <a href="" ng-click="welcome.divisionPopover=true">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division_description_end' | translate }}</p>
+    </div>
+    <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
   </div>
+
+  <!-- Tile: New User -->
+  <div class="cui-card">
+   <div class="cui-card__image-container">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+      <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+    </svg>
+  </div>
+  <div class="cui-card__content">
+    <h3 class="cui-card__content-header">{{ 'cui-new-user' | translate }}</h3>
+    <p>{{ 'cui-new-user_description' | translate }}</p>
+  </div>
+  <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
+</div>
+</div>
+
+<!-- Footer -->
+<div class="welcome-footer">
+  <p><a href="">Covisint</a></p>
+  <p><a href="">Privacy &amp; Terms</a></p>
+  <p><a href="">Help</a></p>
+  <p><a href="" class="welcome-learn_more">Learn more</a> about why we ask for this information.</p>
+  <select class="language-select">
+   <option value="en_US">English (United States)</option>
+   <option value="pl_PL">Polish</option>
+ </select>
+</div>
+
+</div>
 
 </div>
 
