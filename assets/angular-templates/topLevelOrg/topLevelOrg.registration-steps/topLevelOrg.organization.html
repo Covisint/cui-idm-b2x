@@ -1,0 +1,119 @@
+<form name="organization" novalidate>
+    
+    <!-- First Row -->
+    <div class="cui-wizard__field-row">
+        <!-- Company/Division -->    
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-name">{{'cui-company-name' | translate}}</label>
+            <div class="cui-error" ng-messages="organization.name.$error" ng-if="organization.name.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="name" class="cui-input" ng-required="true" ng-model="newTLO.organization.name">
+        </div>
+
+        <!-- Phone -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-phone">{{'cui-organization-phone' | translate}}</label>
+            <div class="cui-error" ng-messages="organization.phone.$error" ng-if="organization.phone.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="phone" class="cui-input" ng-model="newTLO.organization.phones[0].number">
+        </div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="cui-wizard__field-row">
+        <!-- Address 1 -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-address1">{{'cui-organization-address' | translate}} 1</label>
+            <div class="cui-error" ng-messages="organization.address1.$error" ng-if="organization.address1.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="address1" class="cui-input" ng-required="true" ng-model="newTLO.organization.addresses[0].streets[0]">
+        </div>
+
+        <!-- Address 2 -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-address2">{{'cui-organization-address' | translate}} 2</label>
+            <div class="cui-error" ng-messages="organization.address2.$error" ng-if="organization.address2.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="address2" class="cui-input" ng-model="newTLO.organization.addresses[0].streets[0]">
+        </div>
+    </div>
+
+    <!-- Third Row -->
+    <div class="cui-wizard__field-row">
+        <!-- City -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-city">{{'cui-organization-city' | translate}}</label>
+            <div class="cui-error" ng-messages="organization.city.$error" ng-if="organization.city.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="city" class="cui-input" ng-required="true" ng-model="newTLO.organization.addresses[0].city">
+        </div>
+
+        <!-- State/Province -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-state">{{'cui-organization-state' | translate}}</label>
+            <div class="cui-error" ng-messages="organization.state.$error" ng-if="organization.state.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <input type="text" name="state" class="cui-input" ng-required="true" ng-model="newTLO.organization.addresses[0].state">
+        </div>
+    </div>
+
+    <!-- Fourth Row -->
+    <div class="cui-wizard__field-row">
+        <!-- Postal Code -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-postal">{{'cui-organization-postal' | translate}}</label>
+
+            <div class="cui-error" ng-messages="organization.postal.$error" ng-if="organization.postal.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+
+            <input type="text" name="postal" class="cui-input" ng-model="newTLO.organization.addresses.postal">
+        </div>
+
+        <!-- Country -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <label for="organization-country">{{"cui-organization-country" | translate}}</label>
+            <div class="cui-error" ng-messages="organization.country.$error" ng-if="organization.country.$touched">
+                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <div auto-complete input-name="country" pause="100" selected-object="newTLO.organization.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="newTLO.organization.addresses[0].country">
+                <input type="text" name="country" class="cui-input" ng-model="newTLO.organization.addresses[0].country">
+            </div>
+        </div>
+    </div>    
+
+    <!-- Fifth Row -->
+    <div class="cui-wizard__field-row">
+        <!-- Supplier Code -->
+        <div class="cui-wizard__field-container cui-wizard__field-container--half ">
+            <div class="cui-input__password-holder">
+                <label for="supplierCode">{{"cui-supplier-code" | translate}}</label>
+                <div class="cui-error" ng-messages="organization.supplierCode.$error" ng-if="organization.supplierCode.$touched">
+                    <div ng-messages-include="assets/angular-templates/messages.html"></div>
+                </div>
+                <input type="text" name="supplierCode" class="cui-input" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': organization.supplierCode.$touched}" ng-focus="newTLO.supplierPopover=true" ng-blur="newTLO.supplierPopover=false">
+                <div class="cui-styeguide__popover-container" ng-show="newTLO.supplierPopover">
+                    <div class="cui-popover cui-popover--left">
+                        <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum totam impedit atque. Modi maxime consequatur, laboriosam libero nesciunt ad ipsam optio asperiores maiores voluptate? Error quam beatae tenetur ut tempora.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div class="cui-wizard__controls">
+    <div class="row">
+        <button class="cui-wizard__next" ng-click="nextWithErrorChecking(organization)" ng-class="(organization.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative">
+            <div class="cui-loading--medium__center" ng-show=""></div>
+            <span>{{'cui-next' | translate}}</span>
+        </button>
+    </div>
+</div>

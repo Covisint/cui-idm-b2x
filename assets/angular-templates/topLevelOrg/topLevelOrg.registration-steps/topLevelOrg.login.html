@@ -1,0 +1,87 @@
+<form name="userLogin" novalidate>
+
+	<!-- First Row -->
+    <!-- User ID -->    	
+    <label for="userID">{{'cui-user-id' | translate}}</label>
+    <div class="cui-error" ng-messages="userLogin.name.$error" ng-if="userLogin.name.$touched">
+        <div ng-messages-include="assets/angular-templates/messages.html"></div>
+    </div>
+    <input type="text" name="userID" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.username">
+
+	<!-- Second row -->
+	<div class="cui-wizard__field-row"> 
+		<!-- Password -->     
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-password' | translate}}</label> 
+	  		<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
+	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
+	  		</div>
+	  		<input type="{{showpassword ? 'text' : 'password'}}" name="email" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password">
+	  		<input type="checkbox" ng-model="showpassword">
+		</div>
+
+		<!-- Re-enter Password -->
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-password-re' | translate}}</label>
+	  		<div class="cui-error" ng-if="userLogin.passwordRe.$touched && userLogin.passwordRe.$error.match">
+	    		<div class="cui-error__message">{{'password-mismatch' | translate}}</div>
+	  		</div>
+	  		<input type="{{showpassword ? 'text' : 'password'}}" name="emailRe" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.passwordRe" match="newTLO.userLogin.password">
+	  		<input type="checkbox" ng-model="showpassword">
+		</div>
+	</div>
+
+	<!-- Third row -->
+	<div class="cui-wizard__field-row"> 
+		<!-- Challenge Question 1 -->     
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-challenge-question' | translate}} 1</label> 
+	  		<div class="cui-error" ng-messages="userLogin.challenge1.$error" ng-if="userLogin.challenge1.$touched">
+	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
+	  		</div>
+	  		<select ng-model="newTLO.userLogin.question1" name="challenege1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenege1.$invalid}" ng-options="questions as question.question[0].text for question in newTLO.userLogin.challengeQuestion1 track by question.id">
+	  		</select>
+		</div>
+
+		<!-- Challenge Answer 1 -->
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-challenge-answer' | translate}} 1</label>
+	  		<div class="cui-error" ng-messages="userLogin.answer1.$error" ng-if="userLogin.answer1.$touched">
+	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
+	  		</div>
+	  		<input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.challengeAnswer1">
+		</div>
+	</div>
+
+	<!-- Fourth row -->
+	<div class="cui-wizard__field-row"> 
+		<!-- Challenge Question 2 -->     
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-challenge-question' | translate}} 2</label> 
+	  		<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
+	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
+	  		</div>
+	  		<select ng-model="newTLO.userLogin.question2" name="challenege2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenege2.$invalid}" ng-options="questions as question.question[1].text for question in newTLO.userLogin.challengeQuestion2 track by question.id">
+	  		</select>
+		</div>
+
+		<!-- Challenge Answer 2 -->
+		<div class="cui-wizard__field-container cui-wizard__field-container--half">
+	  		<label>{{'cui-challenge-answer' | translate}} 2</label>
+	  		<div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$touched">
+	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
+	  		</div>
+	  		<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.challengeAnswer2">
+		</div>
+	</div>
+	
+<form>
+
+<div class="cui-wizard__controls">
+	<div class="row">
+		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
+        	<div class="cui-loading--medium__center" ng-show=""></div>
+        	<span>{{'cui-next' | translate}}</span>
+    	</button>
+	</div>
+</div>
