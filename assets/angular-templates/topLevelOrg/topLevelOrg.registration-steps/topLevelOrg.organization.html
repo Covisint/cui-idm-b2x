@@ -38,7 +38,7 @@
             <div class="cui-error" ng-messages="organization.address2.$error" ng-if="organization.address2.$touched">
                 <div ng-messages-include="assets/angular-templates/messages.html"></div>
             </div>
-            <input type="text" name="address2" class="cui-input" ng-model="newTLO.organization.addresses[0].streets[0]">
+            <input type="text" name="address2" class="cui-input" ng-model="newTLO.organization.addresses[0].streets[1]">
         </div>
     </div>
 
@@ -91,17 +91,20 @@
     <!-- Fifth Row -->
     <div class="cui-wizard__field-row">
         <!-- Supplier Code -->
-        <div class="cui-wizard__field-container cui-wizard__field-container--half ">
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
             <div class="cui-input__password-holder">
                 <label for="supplierCode">{{"cui-supplier-code" | translate}}</label>
                 <div class="cui-error" ng-messages="organization.supplierCode.$error" ng-if="organization.supplierCode.$touched">
                     <div ng-messages-include="assets/angular-templates/messages.html"></div>
                 </div>
                 <input type="text" name="supplierCode" class="cui-input" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': organization.supplierCode.$touched}" ng-focus="newTLO.supplierPopover=true" ng-blur="newTLO.supplierPopover=false">
-                <div class="cui-styeguide__popover-container" ng-show="newTLO.supplierPopover">
-                    <div class="cui-popover cui-popover--left">
-                        <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum totam impedit atque. Modi maxime consequatur, laboriosam libero nesciunt ad ipsam optio asperiores maiores voluptate? Error quam beatae tenetur ut tempora.</p>
-                    </div>
+            </div>
+        </div>
+
+        <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <div class="cui-styeguide__popover-container" ng-show="newTLO.supplierPopover" style="position:absolute">
+                <div class="cui-popover cui-popover--left">
+                    <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum totam impedit atque. Modi maxime consequatur, laboriosam libero nesciunt ad ipsam optio asperiores maiores voluptate? Error quam beatae tenetur ut tempora.</p>
                 </div>
             </div>
         </div>
