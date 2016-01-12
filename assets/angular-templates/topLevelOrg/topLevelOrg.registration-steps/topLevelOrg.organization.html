@@ -97,8 +97,8 @@
                 <div class="cui-error" ng-messages="organization.supplierCode.$error" ng-if="organization.supplierCode.$touched">
                     <div ng-messages-include="assets/angular-templates/messages.html"></div>
                 </div>
-                <input type="text" name="supplierCode" class="cui-input cui-input--error" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': newTLO.supplierCode.$touched}" ng-focus="showPopover()" ng-blur="hidePopover()">
-                <div class="cui-styeguide__popover-container" ng-show="popoverVisible">
+                <input type="text" name="supplierCode" class="cui-input" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': organization.supplierCode.$touched}" ng-focus="newTLO.supplierPopover=true" ng-blur="newTLO.supplierPopover=false">
+                <div class="cui-styeguide__popover-container" ng-show="newTLO.supplierPopover">
                     <div class="cui-popover cui-popover--left">
                         <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum totam impedit atque. Modi maxime consequatur, laboriosam libero nesciunt ad ipsam optio asperiores maiores voluptate? Error quam beatae tenetur ut tempora.</p>
                     </div>
@@ -111,7 +111,7 @@
 
 <div class="cui-wizard__controls">
     <div class="row">
-        <button class="cui-wizard__next" ng-click="nextWithErrorChecking(userProfile)" ng-class="(userProfile.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative">
+        <button class="cui-wizard__next" ng-click="nextWithErrorChecking(organization)" ng-class="(organization.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative">
             <div class="cui-loading--medium__center" ng-show=""></div>
             <span>{{'cui-next' | translate}}</span>
         </button>
