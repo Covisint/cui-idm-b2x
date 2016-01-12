@@ -47,9 +47,10 @@
   <!-- Third row -->
   <div class="cui-wizard__field-row"> 
      <!-- Country -->
+     {{usersWalkup.user.addresses[0].country}}
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="country">{{"cui-country" | translate}}</label>
-      <div auto-complete input-name="country" pause="100" selected-object="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+      <div auto-complete input-name="country" pause="100" selected-object="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="usersWalkup.user.addresses[0].country"></div>
     </div>
   
     <!-- Address 1 -->

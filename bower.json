@@ -21,6 +21,6 @@
     "cui-icons": "#master",
     "cui.js": "~0",
     "slb-styleguide": "#master",
-    "cui-styleguide": "~1.4.0"
+    "cui-styleguide": "#master"
   }
 }
