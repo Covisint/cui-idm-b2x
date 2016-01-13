@@ -102,7 +102,7 @@
 	<!-- TOS -->
    	<input type="checkbox" name="TOS"  ng-model="newTLO.tos" custom-error="newTLO.tosError">
     <label for="TOS"> I agree to the Covisint <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></label>
-    <span ng-if="user.TOS.$error.tosRequired && user.TOS.$touched"><br><br>Please agree to the Terms of Service</span>
+    <span class="cui-error" ng-if="user.TOS.$error.tosRequired && user.TOS.$touched"><br><br>Please agree to the Terms of Service</span>
 
 </form>
 
