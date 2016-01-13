@@ -16,7 +16,7 @@
 	  		<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
 	  		</div>
-	  		<input type="{{showpassword ? 'text' : 'password'}}" name="email" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password">
+	  		<input type="{{showpassword ? 'text' : 'password'}}" name="password" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password">
 	  		<input type="checkbox" ng-model="showpassword">
 		</div>
 
@@ -26,8 +26,8 @@
 	  		<div class="cui-error" ng-if="userLogin.passwordRe.$touched && userLogin.passwordRe.$error.match">
 	    		<div class="cui-error__message">{{'password-mismatch' | translate}}</div>
 	  		</div>
-	  		<input type="{{showpassword ? 'text' : 'password'}}" name="emailRe" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.passwordRe" match="newTLO.userLogin.password">
-	  		<input type="checkbox" ng-model="showpassword">
+	  		<input type="{{showpasswordRe ? 'text' : 'password'}}" name="passwordRe" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.passwordRe" match="newTLO.userLogin.password">
+	  		<input type="checkbox" ng-model="showpasswordRe">
 		</div>
 	</div>
 
