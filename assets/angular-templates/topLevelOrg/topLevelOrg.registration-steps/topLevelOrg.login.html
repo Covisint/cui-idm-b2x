@@ -78,10 +78,6 @@
 <form>
 
 <div class="cui-wizard__controls">
-	<div class="row">
-		<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''" style="position:relative"> 
-        	<div class="cui-loading--medium__center" ng-show=""></div>
-        	<span>{{'cui-next' | translate}}</span>
-    	</button>
-	</div>
+  <button class="cui-wizard__previous" ng-click="previous('wizard.organization')"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="">{{'cui-next' | translate}}</button>
 </div>
