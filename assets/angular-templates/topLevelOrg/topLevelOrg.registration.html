@@ -1,7 +1,7 @@
 <div class="cui-tile">
   <div class="cui-tile__title">Create Your Account</div>
     <div class="cui-tile__body">
-      <cui-wizard bar class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+      <cui-wizard bar mobile-stack class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
         <indicator-container class="indicator-container"></indicator-container>
 
         <step title="User Profile" state="userProfile" icon="cui:user">
@@ -14,7 +14,7 @@
           </div>
         </step>
 
-        <step title="Login" state="login" icon="cui:login">
+        <step title="Login" state="userLogin" icon="cui:login">
           <div ng-include="'assets/angular-templates/topLevelOrg/topLevelOrg.registration-steps/topLevelOrg.login.html'">
           </div>
         </step>
