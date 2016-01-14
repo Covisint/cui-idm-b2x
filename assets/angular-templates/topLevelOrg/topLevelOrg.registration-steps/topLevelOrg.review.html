@@ -66,10 +66,23 @@
   	<cui-expandable-body class="cui-expandable__body">
 		<!-- User ID -->
 		<inline-edit label="cui-user-id" model="newTLO.userLogin.username"></inline-edit>
+		<!-- Password -->
+		<inline-edit label="cui-password" model="newTLO.userLogin.password"></inline-edit>
+		<!-- Re-Enter Password -->
+		<inline-edit label="cui-password-re" model="newTLO.userLogin.passwordRe"></inline-edit>
+		<!-- Challenge Question 1 -->
+		<inline-edit label="cui-challenge-question" model="newTLO.userLogin.question1"></inline-edit>
+		<!-- Challenge Answer 1 -->
+		<inline-edit label="cui-challenge-answer" model="newTLO.userLogin.challengeAnswer1"></inline-edit>
+		<!-- Challenge Question 2 -->
+		<inline-edit label="cui-challenge-question" model="newTLO.userLogin.question2"></inline-edit>
+		<!-- Challenge Answer 2 -->
+		<inline-edit label="cui-challenge-answer" model="newTLO.userLogin.challengeAnswer2"></inline-edit>
+
 	</cui-expandable-body>
 </cui-expandable>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous('wizard.userLogin')"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
   <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
 </div>
