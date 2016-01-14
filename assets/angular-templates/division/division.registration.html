@@ -1,0 +1,31 @@
+<div class="cui-tile">
+  <div class="cui-tile__title">Create Your Account</div>
+    <div class="cui-tile__body">
+      <cui-wizard bar mobile-stack class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+        <indicator-container class="indicator-container"></indicator-container>
+
+        <step title="User Profile" state="userProfile" icon="cui:user">
+          <div ng-include="'assets/angular-templates/division/division.registration-steps/division.userProfile.html'">
+          </div>
+        </step>
+
+        <step title="Organization" state="organization" icon="cui:skyscraper">
+          <div ng-include="'assets/angular-templates/division/division.registration-steps/division.organization.html'">
+          </div>
+        </step>
+
+        <step title="Login" state="userLogin" icon="cui:login">
+          <div ng-include="'assets/angular-templates/division/division.registration-steps/division.login.html'">
+          </div>
+        </step>
+
+        <step title="Review" state="review" icon="cui:review">
+          <div ng-include="'assets/angular-templates/division/division.registration-steps/division.review.html'">
+          </div>
+        </step>
+
+    </cui-wizard>
+  </div>
+</div>
+
+

@@ -65,7 +65,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('welcome',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.html',
+            templateUrl: 'assets/angular-templates/welcome/welcome.html'
         })
         .state('welcome.screen',{
             url: '/welcome',
@@ -74,12 +74,21 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
             templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
             controller: 'tloCtrl as newTLO'
+        })
+        .state('division',{
+            url: '/division',
+            templateUrl: 'assets/angular-templates/division/division.html'
+        })
+        .state('division.registration',{
+            url: '/registration',
+            templateUrl: 'assets/angular-templates/division/division.registration.html',
+            controller: 'divisionCtrl as newDivision'
         });
     // $locationProvider.html5Mode(true);
     
