@@ -37,7 +37,7 @@
 	  		<div class="cui-error" ng-messages="userLogin.challenge1.$error" ng-if="userLogin.challenge1.$touched">
 	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
 	  		</div>
-	  		<select ng-model="newTLO.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="questions as question.question[0].text for question in newTLO.userLogin.challengeQuestions1 track by question.id">
+	  		<select ng-model="newTLO.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question.id as question.question[0].text for question in newTLO.userLogin.challengeQuestions1">
 	  		</select>
 		</div>
 
@@ -59,7 +59,7 @@
 	  		<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
 	    		<div ng-messages-include="assets/angular-templates/messages.html"></div>
 	  		</div>
-	  		<select ng-model="newTLO.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="questions as question.question[0].text for question in newTLO.userLogin.challengeQuestions2 track by question.id">
+	  		<select ng-model="newTLO.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question.id as question.question[0].text for question in newTLO.userLogin.challengeQuestions2">
 	  		</select>
 		</div>
 
@@ -72,10 +72,9 @@
 	  		<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.challengeAnswer2">
 		</div>
 	</div>
-	
 </form>
 
 <div class="cui-wizard__controls">
   <button class="cui-wizard__previous" ng-click="previous('wizard.organization')"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="">{{'cui-next' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__nezt--error' : ''">{{'cui-next' | translate}}</button>
 </div>

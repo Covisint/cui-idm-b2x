@@ -24,6 +24,9 @@ angular.module('app')
 
         newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
         newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+
+        newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0].id;
+        newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0].id;
     })
     .catch(function(err) {
         console.log(err);
