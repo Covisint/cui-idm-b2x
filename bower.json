@@ -19,7 +19,7 @@
     "cui-ng": "#master",
     "cui-i18n": "#master",
     "cui-icons": "#master",
-    "cui.js": "~0",
+    "cui.js": "#master",
     "slb-styleguide": "#master",
     "cui-styleguide": "#master"
   }

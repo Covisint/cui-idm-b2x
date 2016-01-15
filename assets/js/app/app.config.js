@@ -78,7 +78,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
+            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
             controller: 'tloCtrl as newTLO'
         })
         .state('division',{
@@ -87,7 +87,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('division.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/division/division.registration.html',
+            templateUrl: 'assets/angular-templates/division/division.registration/division.registration.html',
             controller: 'divisionCtrl as newDivision'
         });
     // $locationProvider.html5Mode(true);

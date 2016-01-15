@@ -5,13 +5,32 @@ angular.module('app')
 
 	newTLO.tosError = [
 		{
-			test: "test",
 			name: 'tosRequired',
 			check: function() {
 				return newTLO.tos;
 			}
 		}
 	];
+
+  newTLO.passwordPolicies = [
+    {
+      'allowUpperChars': true,
+      'allowLowerChars': true,
+      'allowNumChars': true,
+      'allowSpecialChars': true,
+      'requiredNumberOfCharClasses': 3
+    },
+    {
+      'disallowedChars':'^&*)(#$'
+    },
+    {
+      'min': 8,
+      'max': 18
+    },
+    {
+      'disallowedWords': ['password', 'admin']
+    }
+  ];
 
 	Person.getSecurityQuestions()
     .then(function(res) {
