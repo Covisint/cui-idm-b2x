@@ -46,7 +46,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/users/users.walkup.html',
+            templateUrl:'assets/angular-templates/users/users.walkup/users.walkup.html',
             controller: 'usersWalkupCtrl as usersWalkup'
         })
         .state('users.activate',{
