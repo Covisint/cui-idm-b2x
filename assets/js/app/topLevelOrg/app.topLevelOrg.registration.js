@@ -3,15 +3,6 @@ angular.module('app')
 	var newTLO = this;
 	newTLO.userLogin = {};
 
-	newTLO.tosError = [
-		{
-			name: 'tosRequired',
-			check: function() {
-				return newTLO.tos;
-			}
-		}
-	];
-
   newTLO.passwordPolicies = [
     {
       'allowUpperChars': true,

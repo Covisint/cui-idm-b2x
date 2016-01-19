@@ -4,15 +4,6 @@ angular.module('app')
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
-	newDivision.tosError = [
-		{
-			name: 'tosRequired',
-			check: function() {
-				return newDivision.tos;
-			}
-		}
-	];
-
     newDivision.passwordPolicies = [
         {
             'allowUpperChars': true,
