@@ -1,0 +1,25 @@
+<div class="cui-tile">
+  <div class="cui-tile__title">{{'create-account' | translate}}</div>
+  <div class="cui-tile__body">
+    <cui-wizard bar mobile-stack class="cui-wizard" step="1" clickable-indicators minimum-padding="30" bar>
+    <indicator-container class="indicator-container"></indicator-container>
+
+    <step title="{{'user-profile' | translate}}" icon="cui:user">
+      <ng-include src="'assets/angular-templates/users/users.walkup/users.walkup-steps/users.walkup.userProfile.html'"></ng-include>
+    </step>
+
+    <step title="{{'login' | translate}}" icon="cui:login">
+      <ng-include src="'assets/angular-templates/users/users.walkup/users.walkup-steps/users.walkup.login.html'"></ng-include>
+    </step>
+
+    <step title="{{'applications' | translate}}" icon="cui:applications">
+      <ng-include src="'assets/angular-templates/users/users.walkup/users.walkup-steps/users.walkup.applications.html'"></ng-include>
+    </step>
+
+    <step title="{{'review' | translate}}" icon="cui:review">
+      <ng-include src="'assets/angular-templates/users/users.walkup/users.walkup-steps/users.walkup.review.html'"></ng-include>
+    </step>
+
+  </cui-wizard>
+</div>
+</div>

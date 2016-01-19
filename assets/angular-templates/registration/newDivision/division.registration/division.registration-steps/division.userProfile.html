@@ -100,9 +100,9 @@
   	</div>
 
 	<!-- TOS -->
-   	<input type="checkbox" name="TOS"  ng-model="newDivision.tos" custom-error="newDivision.tosError">
+   	<input type="checkbox" name="TOS"  ng-model="newDivision.tos" ng-required="true">
     <label for="TOS"> I agree to the Covisint <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></label>
-    <span class="cui-error" ng-if="user.TOS.$error.tosRequired && user.TOS.$touched"><br><br>You Must agree to the Terms of Service to continue.</span>
+    <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br>You Must agree to the Terms of Service to continue.</span>
 
 </form>
 

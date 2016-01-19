@@ -719,15 +719,6 @@ angular.module('app')
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
-	newDivision.tosError = [
-		{
-			name: 'tosRequired',
-			check: function() {
-				return newDivision.tos;
-			}
-		}
-	];
-
     newDivision.passwordPolicies = [
         {
             'allowUpperChars': true,
@@ -804,15 +795,6 @@ angular.module('app')
 .controller('tloCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
 	var newTLO = this;
 	newTLO.userLogin = {};
-
-	newTLO.tosError = [
-		{
-			name: 'tosRequired',
-			check: function() {
-				return newTLO.tos;
-			}
-		}
-	];
 
   newTLO.passwordPolicies = [
     {
@@ -1027,15 +1009,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
         },
         {
             'disallowedWords':['password','admin']
-        }
-    ];
-
-    usersWalkup.userTosError=[
-        {
-            name:'tos',
-            check:function(){
-                return usersWalkup.userTos;
-            }
         }
     ];
 

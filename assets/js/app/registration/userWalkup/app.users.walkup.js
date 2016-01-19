@@ -27,15 +27,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    usersWalkup.userTosError=[
-        {
-            name:'tos',
-            check:function(){
-                return usersWalkup.userTos;
-            }
-        }
-    ];
-
     Person.getSecurityQuestions()
     .then(function(res){
         res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
