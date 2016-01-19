@@ -16,52 +16,38 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users.search',{
             url: '/',
-            templateUrl: 'assets/angular-templates/users/users.search.html',
+            templateUrl: 'assets/angular-templates/users/users.search/users.search.html',
             controller: 'usersSearchCtrl as usersSearch'
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: 'assets/angular-templates/users/users.edit.html',
+            templateUrl: 'assets/angular-templates/edit/users.edit/users.edit.html',
             controller: 'usersEditCtrl as usersEdit'
         })
         .state('users.invitations',{
             url: '/invitations',
-            templateUrl: 'assets/angular-templates/users/users.invitations.search.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invitations.search.html',
             controller: 'usersInvitationsCtrl as usersInvitations'
-        })
-        .state('users.invitations.view',{
-            url: '/view',
-            templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
-            controller: 'userInvitationsViewCtrl as usersInvitationsView'
         })
         .state('users.invite',{
             url: '/invite',
-            templateUrl: 'assets/angular-templates/users/users.invite.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invite.html',
             controller: 'usersInviteCtrl as usersInvite'
         })
         .state('users.register',{
             url: '/register?id&code',
-            templateUrl: 'assets/angular-templates/users/users.register.html',
+            templateUrl: 'assets/angular-templates/registration/userInvited/users.register.html',
             controller: 'usersRegisterCtrl as usersRegister'
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/users/users.walkup.html',
+            templateUrl:'assets/angular-templates/registration/userWalkup/users.walkup.html',
             controller: 'usersWalkupCtrl as usersWalkup'
         })
         .state('users.activate',{
             url: '/activate/:id',
-            templateUrl: 'assets/angular-templates/users/users.activate.html',
+            templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
-        })
-        .state('sysAdmin',{
-            url: '/sysAdmin',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.html',
-        })
-        .state('sysAdmin.account',{
-            url: '/sysAdmin/account/',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
-            controller: 'sysAdminAccountCtrl as sysAdminAccount'
         })
         .state('welcome',{
             url: '/welcome',
@@ -74,20 +60,20 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html'
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
             controller: 'tloCtrl as newTLO'
         })
         .state('division',{
             url: '/division',
-            templateUrl: 'assets/angular-templates/division/division.html'
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.html'
         })
         .state('division.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/division/division.registration/division.registration.html',
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
             controller: 'divisionCtrl as newDivision'
         });
     // $locationProvider.html5Mode(true);

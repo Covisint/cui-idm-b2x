@@ -18,19 +18,16 @@
     right:0;
     left:0;
     background:white;
-    opacity:0;
     z-index:10;
     pointer-events:none;
     transition:all 200ms ease-in-out;
-    &.show{
-        opacity:1;
-    }
 }
 
 .center{
     position:absolute;
     top:50%;
     left:50%;
+    transform:translate(-50%,-50%);
     z-index:10;
 }
 
