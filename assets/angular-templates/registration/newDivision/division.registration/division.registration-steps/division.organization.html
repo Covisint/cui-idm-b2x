@@ -1,6 +1,6 @@
-<input class="cui-input--half" placeholder="Filter by organization name" ng-model="newDivision.orgSearch.name"></input>
+<input class="cui-input--half" placeholder="Filter by organization name" ng-model="newDivision.orgSearch.name">
 
-<p>All Organizations:</p>
+<p>{{'cui-all-organizations' | translate}}</p>
 
 <cui-expandable class="cui-expandable" ng-repeat="organization in newDivision.organizationList">
 	<cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
@@ -19,5 +19,5 @@
 
 <div class="cui-wizard__controls">
 	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  	<button class="cui-wizard__next" ng-click="next()">{{'cui-next' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="next()">{{'cui-next' | translate}}</button>
 </div>
