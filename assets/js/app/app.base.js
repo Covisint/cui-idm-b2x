@@ -20,6 +20,7 @@ function($state,getCountries,$scope,$translate){
 
 
     var setCountries=function(language){
+        language = language || 'en';
         if(language.indexOf('_')>-1){
             language=language.split('_')[0];   
         }

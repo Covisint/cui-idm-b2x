@@ -17,7 +17,7 @@
         <p class="cui-card__content-header">{{ 'cui-new-TLO' | translate }}</p>
         <p>{{ 'cui-new-TLO-description' | translate }}</p>
       </div>
-      <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
+      <button class="cui-card__button" ui-sref="tlo.registration">{{ 'cui-sign-up' | translate }}</button>
     </div>
 
     <!-- Tile: New Division -->
@@ -32,13 +32,13 @@
         <!-- Popover -->
         <div class="cui-styeguide__popover-container" ng-show="welcome.divisionPopover">
           <div class="cui-popover cui-popover--dark cui-popover--top">
-            <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores recusandae, voluptatibus cupiditate ullam tenetur veritatis, voluptates vero minus quos, quia officiis odio eveniet impedit, vel ratione iste! Ipsum, vel, recusandae.</p>
+            <p class="">{{ 'cui-welcome-popover' | translate }}</p>
             <p class="cui-popover_link"><a href="" ng-click="welcome.divisionPopover=false">Cool, got it!</a></p>
           </div>
         </div>
         <p>{{ 'cui-new-division-description-start' | translate }} <a href="" ng-click="welcome.divisionPopover=true">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division-description-end' | translate }}</p>
       </div>
-      <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
+      <button class="cui-card__button" ui-sref="division.registration">{{ 'cui-sign-up' | translate }}</button>
     </div>
 
     <!-- Tile: New User -->
@@ -52,7 +52,7 @@
         <p class="cui-card__content-header">{{ 'cui-new-user' | translate }}</p>
         <p>{{ 'cui-new-user-description' | translate }}</p>
       </div>
-      <button class="cui-card__button">{{ 'cui-sign-up' | translate }}</button>
+      <button class="cui-card__button" ui-sref="users.walkupRegistration">{{ 'cui-sign-up' | translate }}</button>
     </div>
   </div>
 </div>
