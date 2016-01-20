@@ -13,7 +13,7 @@
     <!-- Email -->
     <inline-edit label="cui-email" model="usersWalkup.user.email"></inline-edit>
     <!-- Country -->
-    <inline-edit label="cui-country" model="usersWalkup.user.addresses[0].country.title"></inline-edit>
+    <inline-edit type="auto-complete" model="usersWalkup.user.addresses[0].country" display="usersWalkup.user.addresses[0].country.title || usersWalkup.user.addresses[0].country" label="cui-country" selected-object="usersWalkup.user.addresses[0].country" model="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
     <!-- Address 1 -->
     <inline-edit label="cui-address-1" model="usersWalkup.user.addresses[0].streets[0]"></inline-edit>
     <!-- Address 2 -->
@@ -52,7 +52,7 @@
     <!-- Postal -->
     <inline-edit label="cui-postal" model="usersWalkup.organization.addresses[0].postal"></inline-edit>
     <!-- Country -->
-    <inline-edit label="cui-country" model="usersWalkup.organization.addresses[0].country.title"></inline-edit>
+    <inline-edit type="auto-complete" model="usersWalkup.organization.addresses[0].country" display="usersWalkup.organization.addresses[0].country.title || usersWalkup.organization.addresses[0].country" label="cui-country" selected-object="usersWalkup.organization.addresses[0].country" model="usersWalkup.organization.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
   </cui-expandable-body>
 </cui-expandable>
 
