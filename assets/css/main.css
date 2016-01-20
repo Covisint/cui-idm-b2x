@@ -388,34 +388,28 @@ Styleguide Elements
 /* 
 Texts
 
-Styles for text. Heading tags have the same base font size and weight to encourage writing semantic markup.
+Styles for text. Please refer to _vars.scss for variable values.
+
+Styleguide Elements.Texts
+*/
+/*
+Headers
+
+Header styling is applied through the use of classes. Our recommended method for applying h1 styling is to @extend the %h1 placeholder selector in a class's CSS style declaration block and apply that class to your element.
 
 Markup: 
-<h1>H1 Heading</h1>
-<h2>H2 Heading</h2>
-<h3>H3 Heading</h3>
-<h4>H4 Heading</h4>
-<h5>H5 Heading</h5>
-<h6>H6 Heading</h6>
+<h1 class="h1">H1 Heading</h1>
+<h2 class="h2">H2 Heading</h2>
+<h3 class="h3">H3 Heading</h3>
+<h4 class="h4">H4 Heading</h4>
+<h5 class="h5">H5 Heading</h5>
+<h6 class="h6">H6 Heading</h6>
 <div class="cui-styleguide__text-section">
-  <span class="cui-italic">Italics should be used sparingly.</span><br>
-  <span class="cui-bold">Bolds should never be used.</span><br>
-  The heaviest weight of Helvetica Neue <br>
-  that should be used is Medium. <br>
-  <p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus 
-  ac facilisis in. Egestas eget quam. Maecenas faucibus mollis 
-  interdum maecenas faucibus.</p> 
 </div>
-<a class="cui-link" href="">Link Style</a>
-<ul class="cui-ul">
-  <li>Unordered List</li>
-  <li>Unordered List</li>
-</ul>
-<ol class="cui-ol">
-  <li>Ordered List</li>
-</ol>
 
-Styleguide Elements.Text
+Weight: -20
+
+Styleguide Elements.Texts.Headers
 */
 @font-face {
   font-family: "lato-regular";
@@ -456,17 +450,51 @@ h1, h2, h3, h4, h5, h6 {
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: 700; }
 
-.cui-italic,
-.cui-bold {
-  color: #929292;
-  font-style: italic; }
-
 p {
   color: #929292; }
 
+/* 
+Links
+
+Also available as the placeholder selector %cui-link.
+
+Markup: <a class="cui-link" href="">Link Style</a>
+
+Styleguide Elements.Texts.Links
+*/
 .cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
   color: #429DD1; }
 
+/* 
+Paragraphs
+
+Default styling for paragraphs
+
+Markup:
+<p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus 
+ac facilisis in. Egestas eget quam. Maecenas faucibus mollis 
+interdum maecenas faucibus.</p>
+
+Weight: -10
+
+Styleguide Elements.Texts.Paragraphs
+*/
+/*
+Unordered Lists
+
+Browser styles are removed from lists in order to separate visual presentation from semantic meaning. If you want to restore the default styling, @extend the placeholder selector %cui-ul--default in your list's CSS style declaration block.
+
+.cui-ul--default    - restores browser styling
+
+Markup:
+<ul class="{{modifier_class}}">
+  <li>Unordered List</li>
+  <li>Unordered List</li>
+  <li>Unordered List</li>
+</ul>
+
+Styleguide Elements.Texts.Unordered-Lists
+*/
 ul,
 ol,
 .cui-ul,
@@ -478,6 +506,30 @@ ol,
   list-style-type: none;
   padding-left: 0;
   margin: 0; }
+
+.cui-ul--default {
+  list-style-type: disc;
+  list-style-position: inside; }
+
+/*
+Ordered Lists
+
+Browser styles are removed from lists in order to separate visual presentation from semantic meaning. If you want to restore the default styling, @extend the placeholder selector %cui-ol--default in your list's CSS style declaration block.
+
+.cui-ol--default    - restores browser styling
+
+Markup:
+<ol class="{{modifier_class}}">
+  <li>Ordered List</li>
+  <li>Ordered List</li>
+  <li>Ordered List</li>
+</ol>
+
+Styleguide Elements.Texts.Ordered-Lists
+*/
+.cui-ol--default {
+  list-style-type: decimal;
+  list-style-position: inside; }
 
 /*
 Inputs
@@ -896,15 +948,22 @@ Styleguide Elements.Forms.Switch
   color: white;
   transition: color .5s; }
 
+/* 
+Colors
+
+A color palette for the Covisint Next Gen UI Framework. Values are available as Sass variables. Variable names are indicated inside each color panel.
+
+Styleguide Elements.Colors
+*/
 /*
 Primary Colors
 
 Markup: 
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">.cui-primary-colors--light</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">.cui-primary-colors--medium-light</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">.cui-primary-colors--medium</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">.cui-primary-colors--medium-dark</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">.cui-primary-colors--dark</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">$cui-primary-colors--light</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">$cui-primary-colors--medium-light</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">$cui-primary-colors--medium</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">$cui-primary-colors--medium-dark</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">$cui-primary-colors--dark</div>
 
 Styleguide Elements.Colors.Primary-Colors
 */
@@ -929,10 +988,10 @@ Styleguide Elements.Colors.Primary-Colors
 Secondary Colors
 
 Markup: 
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">.cui-secondary-colors--light</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">.cui-secondary-colors--medium-light</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">.cui-secondary-colors--medium</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">.cui-secondary-colors--dark</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">$cui-secondary-colors--light</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">$cui-secondary-colors--medium-light</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">$cui-secondary-colors--medium</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">$cui-secondary-colors--dark</div>
 
 Styleguide Elements.Colors.Secondary-Colors
 */
@@ -961,6 +1020,7 @@ Buttons
 Styles for button elements
 
 :focus                      - Focus styling
+:hover                      - Hover styling
 :active                     - Selected styling
 .cui-button--error          - Error styling 
 .cui-button--error:active   - Error selected styling
@@ -969,7 +1029,8 @@ Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
 Styleguide Elements.Buttons
 */
-.cui-button, .cui-wizard__next, .cui-card__button {
+.cui-button, .cui-wizard__next,
+.cui-form__next, .cui-card__button {
   background-color: #429DD1;
   border: 0;
   border-radius: 4px;
@@ -977,15 +1038,24 @@ Styleguide Elements.Buttons
   font-size: 0.75em;
   height: 37px;
   width: 160px; }
-  .cui-button:focus, .cui-wizard__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next, .pseudo-class-focus.cui-card__button {
+  .cui-button:focus, .cui-wizard__next:focus,
+  .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
+  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button, .cui-button:hover, .cui-wizard__next:hover,
+  .cui-form__next:hover, .cui-card__button:hover, .cui-button.pseudo-class-hover, .pseudo-class-hover.cui-wizard__next,
+  .pseudo-class-hover.cui-form__next, .pseudo-class-hover.cui-card__button {
     box-shadow: 0 0 3px #A2A19F, 0 0 7px #A2A19F;
     outline: 0; }
-  .cui-button:active, .cui-wizard__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next, .pseudo-class-active.cui-card__button {
+  .cui-button:active, .cui-wizard__next:active,
+  .cui-form__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next,
+  .pseudo-class-active.cui-form__next, .pseudo-class-active.cui-card__button {
     background-color: #165E9B; }
-  .cui-button--error, .cui-wizard__next--error {
+  .cui-button--error, .cui-wizard__next--error,
+  .cui-form__next--error {
     background-color: #dbdbdb;
     cursor: default; }
-    .cui-button--error:active, .cui-wizard__next--error:active, .cui-button--error.pseudo-class-active, .pseudo-class-active.cui-wizard__next--error {
+    .cui-button--error:active, .cui-wizard__next--error:active,
+    .cui-form__next--error:active, .cui-button--error.pseudo-class-active, .pseudo-class-active.cui-wizard__next--error,
+    .pseudo-class-active.cui-form__next--error {
       background-color: #A2A19F; }
 
 /*
@@ -998,106 +1068,118 @@ Weight: 200
 Styleguide Blocks
 */
 /*
-Wizard
+Form
 
 Markup: 
-<div class="cui-wizard">
-  <div class="cui-wizard__title ">A description of this form</div>
-  <div class="cui-wizard__body">
-    <cui-wizard class="cui-wizard__contents" step="1" clickable-indicators="" minimum-padding="30">
-      <indicator-container class="indicator-container"><span class="step-indicator active" style="cursor: pointer;">Step One</span><span class="step-indicator style="cursor: pointer;">Step 2</span></indicator-container>
-      <step title="Organization info" class="active">
-        <form name="organization" novalidate="" class="">
+<div class="cui-form">
+  <div class="cui-form__title ">A description of this form</div>
+  <div class="cui-form__body">
+    <div class="cui-form__contents">
+      <div class="indicator-container">
+        <span class="step-indicator active">Step One</span>
+        <span class="step-indicator">Step Two</span>
+      </div>
+      <div title="Organization info" class="step active">
+        <form name="organization">
           <label for="field-1">Input Field Disabled</label>
           <input type="text" name="field-1" class="cui-input" disabled="">
           <label for="field-2">Select Field</label>
           <select name="field-2" class="cui-input cui-select" required="required">
             <option value="" disabled="" selected="" class=""></option>
           </select>
-          <div class="cui-wizard__field-row">
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-3">Input Field</label>
               <input type="text" name="field-3" class="cui-input" required="required">
             </div>
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-4">Input Field</label>
               <input type="text" name="field-4" class="cui-input">
             </div>
           </div>
-          <div class="cui-wizard__field-row">
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-5">Select Field</label>
               <select name="field-5" class="cui-input cui-select">
                 <option value="" disabled="" selected="" class=""></option>
               </select>
             </div>
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-6">Select Field</label>
               <select name="field-6" class="cui-input cui-select">
                 <option value="" disabled="" selected="" class=""></option>
               </select>
             </div>
           </div>
-          <div class="cui-wizard__field-row">
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-7">Select Field</label>
               <select name="field-7" class="cui-input cui-select">
                 <option value="" disabled="" selected="" class=""></option>
               </select>
             </div>
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
+            <div class="cui-form__field-container cui-form__field-container--half">
               <label for="field-8">Input Field</label>
               <input type="text" name="field-8" class="cui-input">
             </div>
           </div>
-          <div class="cui-wizard__controls">
-            <button class="cui-wizard__next">Button</button>
-            <button class="cui-wizard__skip">cui-skip-for-now &gt;&gt;</button>
+          <div class="cui-form__controls">
+            <button class="cui-form__next">Button</button>
           </div>
         </form>
-      </step>
-    </cui-wizard>
+      </div>
+    </div>
   </div>
 </div>
 
-Styleguide Blocks.Wizard
+Styleguide Blocks.Form
 */
-.cui-wizard {
+.cui-wizard,
+.cui-form {
   border-radius: 6px; }
-  .cui-wizard__body {
+  .cui-wizard__body,
+  .cui-form__body {
     background: white;
     border-radius: 0 0 6px 6px;
     margin: 0 auto;
     max-width: 100%;
     padding: 50px; }
-  .cui-wizard__title {
+  .cui-wizard__title,
+  .cui-form__title {
     background-color: #429DD1;
     border-radius: 6px 6px 0 0;
     color: white;
     padding: 15px;
     text-align: center; }
   @media all and (max-width: 600px) {
-    .cui-wizard {
+    .cui-wizard,
+    .cui-form {
       width: 90%; }
-      .cui-wizard__body {
+      .cui-wizard__body,
+      .cui-form__body {
         padding: 20px; } }
-  .cui-wizard__contents {
+  .cui-wizard__contents,
+  .cui-form__contents {
     display: block;
     margin: 0 auto;
     max-width: 800px;
     width: 100%; }
-  .cui-wizard__controls {
+  .cui-wizard__controls,
+  .cui-form__controls {
     text-align: right; }
-  .cui-wizard__previous {
+  .cui-wizard__previous,
+  .cui-form__previous {
     background: #fff;
     border: 0;
     color: #53abd0;
     cursor: pointer;
     font-size: 12px;
     margin-right: 20px; }
-    .cui-wizard__previous.active {
+    .cui-wizard__previous.active,
+    .cui-form__previous.active {
       display: inline-block; }
-  .cui-wizard__skip {
+  .cui-wizard__skip,
+  .cui-form__skip {
     background: #fff;
     border: 0;
     color: #53abd0;
@@ -1105,23 +1187,29 @@ Styleguide Blocks.Wizard
     font-size: 12px;
     display: none;
     margin-left: 20px; }
-    .cui-wizard__skip--show {
+    .cui-wizard__skip--show,
+    .cui-form__skip--show {
       display: inline-block; }
-  .cui-wizard__field-row {
+  .cui-wizard__field-row,
+  .cui-form__field-row {
     display: flex;
     flex-direction: column;
     justify-content: space-between; }
     @media screen and (min-width: 700px) {
-      .cui-wizard__field-row {
+      .cui-wizard__field-row,
+      .cui-form__field-row {
         flex-direction: row; } }
-  .cui-wizard__field-container {
+  .cui-wizard__field-container,
+  .cui-form__field-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between; }
     @media screen and (min-width: 700px) {
-      .cui-wizard__field-container--half {
+      .cui-wizard__field-container--half,
+      .cui-form__field-container--half {
         width: 48%; } }
-  .cui-wizard label {
+  .cui-wizard label,
+  .cui-form label {
     text-transform: capitalize; }
 
 .cui-error, .cui-error--half {
@@ -1178,6 +1266,9 @@ Styleguide Blocks.Wizard
           left: 20%;
           transform: rotate(180deg) translate(0, 100%); } }
 
+.indicator-container {
+  border-bottom: 1px solid #ddd; }
+
 .step-indicator {
   color: #bbb;
   display: inline-block;
@@ -1195,7 +1286,7 @@ Styleguide Blocks.Wizard
     border: 0.125em solid #ccc;
     height: 3.125em;
     position: relative;
-    margin: auto 0;
+    margin: 0 auto;
     width: 3.125em;
     z-index: 1; }
   .step-indicator.active {
@@ -1203,21 +1294,26 @@ Styleguide Blocks.Wizard
     color: #333; }
     .step-indicator.active .icon {
       border: 0.125em solid #429DD1; }
+    .step-indicator.active .cui-icon-rotate {
+      fill: #4582B4; }
   .step-indicator.visited {
     color: #666; }
     .step-indicator.visited .icon {
       border: 0.125em solid #666; }
 
 .cui-icon-rotate {
+  fill: #A2A19F;
   height: 1.5em;
   width: 1.5em; }
   @media screen and (min-width: 700px) {
     .cui-icon-rotate {
       margin: 0.625em auto 0; } }
 
-step {
+step,
+.step {
   display: none; }
-  step.active {
+  step.active,
+  .step.active {
     display: block; }
 
 @media screen and (max-width: 700px) {
@@ -1612,13 +1708,13 @@ Tile
 
 Markup: 
 <div class="cui-tile">
-  <div class="cui-tile__title">Container Title</div>
+  <div class="cui-tile__title">Tile Title</div>
   <div class="cui-tile__body">
-    <p>Container Body</p>
+    <p>Tile Body</p>
   </div>
 </div>
 
-Styleguide Blocks.Container
+Styleguide Blocks.Tile
 */
 .cui-tile {
   border-radius: 6px; }
@@ -2155,7 +2251,7 @@ Styleguide Blocks.Expandable
   padding-left: 10px; }
 
 .indicator-container {
-  border: 0;
+  border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   margin-bottom: 40px;
@@ -2166,21 +2262,31 @@ Styleguide Blocks.Expandable
     position: absolute;
     top: 62%;
     z-index: 0; }
+    .indicator-container .steps-bar--no-js {
+      width: 100%; }
     .indicator-container .steps-bar .steps-bar-fill {
-      background: #666;
+      background: #D0D0D0;
       display: inline-block;
       height: 0.125em;
       position: absolute; }
-  .indicator-container.small > .step-indicator {
+  .indicator-container.small .step-indicator {
     display: none;
     pointer-events: none; }
-    .indicator-container.small > .step-indicator.active {
+    .indicator-container.small .step-indicator.active {
       border: 0;
       display: inline-block;
       margin: 0 auto;
       text-align: center;
+      color: #bbb; }
+
+.indicator-container--icons {
+  border: 0; }
+  .indicator-container--icons.small .step-indicator {
+    display: none;
+    pointer-events: none; }
+    .indicator-container--icons.small .step-indicator.active {
       color: #429DD1; }
-    .indicator-container.small > .step-indicator.visited {
+    .indicator-container--icons.small .step-indicator.visited {
       color: #666; }
 
 /*
@@ -2364,7 +2470,7 @@ Styleguide Blocks.Popover
 Card
 
 Markup:
-<div class="cui-card__container">
+<div>
   <div class="cui-card">
     <div class="cui-card__image-container">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px"
@@ -2386,7 +2492,7 @@ Styleguide Blocks.Cards
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 500px; }
+  min-height: 31.25em; }
   @media screen and (min-width: 600px) {
     .cui-card__container {
       flex-direction: row;
@@ -2398,10 +2504,11 @@ Styleguide Blocks.Cards
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  padding: 40px 40px;
-  transition: box-shadow .2s ease, transform .2s ease;
-  width: 20em; }
+  min-height: 28.75em;
+  margin: 0.625em;
+  max-width: 20em;
+  padding: 2.5em 2.5em;
+  transition: box-shadow .2s ease, transform .2s ease; }
   .cui-card:hover {
     box-shadow: 0 1px 3px #A2A19F;
     transform: translateY(-3px); }
@@ -2434,7 +2541,8 @@ p {
 
 .cui-card__button {
   align-self: center;
-  border-radius: 0.75em; }
+  border-radius: 0.75em;
+  height: 4.1666666667em; }
 
 /*
 Global Navigation
@@ -2801,6 +2909,73 @@ Styleguide Blocks.Loading
   100% {
     transform: rotate(360deg); } }
 
+/*
+Step Indicator
+
+Markup:
+<div class="indicator-container">
+  <span class="step-indicator active">Example Step 1</span>
+  <span class="step-indicator">Example Step 2</span>
+  <span class="step-indicator">Example Step 3</span>
+  <span class="step-indicator">Example Step 4</span>
+</div>
+
+Styleguide Blocks.Step-Indicator
+*/
+/*
+Step Indicator With Icons
+
+Markup:
+<div class="indicator-container indicator-container--icons">
+  <div class="steps-bar steps-bar--no-js"><div class="steps-bar-fill"></div></div>
+  <span class="step-indicator ng-binding ng-scope active">Step 1
+    <div class="icon-container">
+      <div class="icon">
+        <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <use xlink:href="public/img/icons/icons-out.svg#skyscraper"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </span>
+  <span class="step-indicator ng-binding ng-scope">Step 2
+    <div class="icon-container">
+      <div class="icon">
+        <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <use xlink:href="public/img/icons/icons-out.svg#user"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </span>
+  <span class="step-indicator ng-binding ng-scope">Step 3
+    <div class="icon-container">
+      <div class="icon">
+        <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <use xlink:href="public/img/icons/icons-out.svg#division"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </span>
+  <span class="step-indicator ng-binding ng-scope">Step 4
+    <div class="icon-container">
+      <div class="icon">
+        <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <use xlink:href="public/img/icons/icons-out.svg#review"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+
+Styleguide Blocks.Step-Indicator-With-Icons
+*/
 .cui-tile {
   width: 80%;
   margin: 30px auto; }

@@ -27,7 +27,7 @@ angular.module('app')
 	Person.getSecurityQuestions()
     .then(function(res) {
     	// Removes first question as it is blank
-        res.data.splice(0,1); 
+        res.data.splice(0,1);
 
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.data.length,
@@ -37,8 +37,8 @@ angular.module('app')
         newDivision.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
         // Preload question into input
-        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0].id;
-        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0].id;
+        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
+        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
     })
     .catch(function(err) {
     });
@@ -72,5 +72,5 @@ angular.module('app')
     };
 
     $scope.$watchCollection('newDivision.orgSearch', searchOrganizations);
-	
-}]); 
+
+}]);

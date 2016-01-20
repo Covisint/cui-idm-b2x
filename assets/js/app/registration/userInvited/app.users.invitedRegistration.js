@@ -57,13 +57,13 @@ function(localStorageService,$scope,Person,$stateParams,API){
     Person.getSecurityQuestions()
     .then(function(res){
         res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
-        // this ensures half the questions get put into the first challenge question dropdown and 
+        // this ensures half the questions get put into the first challenge question dropdown and
         // half into the other.
         var numberOfQuestions=res.data.length,
             numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
         usersRegister.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
         usersRegister.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
-        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0]; 
+        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0];
         usersRegister.userLogin.question2=usersRegister.userLogin.challengeQuestions2[0];
     })
     .catch(function(err){
@@ -79,9 +79,9 @@ function(localStorageService,$scope,Person,$stateParams,API){
             });
             return;
         }
-        
+
         usersRegister.registering=true;
-        
+
         var passwordAccount={
             username:usersRegister.userLogin.username,
             password:usersRegister.userLogin.password,
@@ -123,10 +123,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
         Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
         .then(function(res){
-            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions)
+            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
         })
         .then(function(res){
-            return Person.update(usersRegister.user.id,usersRegister.user)
+            return Person.update(usersRegister.user.id,usersRegister.user);
         })
         .then(function(res){
             console.log(res);

@@ -2,9 +2,9 @@
 
   <!-- First row -->
   <div class="cui-wizard__field-row">
-    <!-- First Name -->     
+    <!-- First Name -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label for="user-name-given">{{'cui-first-name' | translate}}</label> 
+      <label for="user-name-given">{{'cui-first-name' | translate}}</label>
       <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
         <div ng-messages-include="assets/angular-templates/messages.html"></div>
       </div>
@@ -22,10 +22,10 @@
   </div>
 
   <!-- Second row -->
-  <div class="cui-wizard__field-row"> 
-    <!-- Email -->     
+  <div class="cui-wizard__field-row">
+    <!-- Email -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label>{{'cui-email' | translate}}</label> 
+      <label>{{'cui-email' | translate}}</label>
       <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
         <div ng-messages-include="assets/angular-templates/messages.html"></div>
       </div>
@@ -43,7 +43,7 @@
   </div>
 
   <!-- Third row -->
-  <div class="cui-wizard__field-row"> 
+  <div class="cui-wizard__field-row">
     <!-- Country -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="country">{{"cui-country" | translate}}</label>
@@ -61,7 +61,7 @@
   </div>
 
   <!-- Fourth row -->
-  <div class="cui-wizard__field-row"> 
+  <div class="cui-wizard__field-row">
     <!-- Address 2 -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label >{{"cui-address" | translate}} 2</label>
@@ -76,7 +76,7 @@
   </div>
 
   <!-- Fifth row -->
-  <div class="cui-wizard__field-row"> 
+  <div class="cui-wizard__field-row">
     <!-- State/Province -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{"cui-state" | translate}}</label>
@@ -101,9 +101,9 @@
 
   <!-- TOS -->
   <input type="checkbox" name="TOS"  ng-model="newTLO.tos" ng-required="true">
-  <label for="TOS">{{'cui-agree-covisint' | translate}}<a href="">{{'terms-of-service' | translate}}</a>{{'cui-and' | translate}}<a href="">{{'privacy-policy' | translate}}</a></label>
+  <label for="TOS">{{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
   <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br>{{'cui-tos-agree' | translate}}</span>
-  
+
 </form>
 
 <div class="cui-wizard__controls">
