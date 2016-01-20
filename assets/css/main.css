@@ -3084,45 +3084,6 @@ Styleguide Blocks.Step-Indicator-With-Icons
         left: 20%;
         transform: rotate(180deg) translate(0, 100%); } }
 
-.step-indicator {
-  color: #bbb;
-  display: inline-block;
-  margin-bottom: -2px;
-  padding: 10px 0;
-  position: relative;
-  text-align: center;
-  text-transform: capitalize;
-  white-space: nowrap; }
-  .step-indicator .icon-container {
-    margin-top: 0.625em; }
-  .step-indicator .icon {
-    background: #fff;
-    border-radius: 50%;
-    border: 0.125em solid #ccc;
-    height: 3.125em;
-    position: relative;
-    width: 3.125em;
-    z-index: 1; }
-  .step-indicator.active {
-    border-bottom: 6px solid #429DD1;
-    color: #333; }
-    .step-indicator.active .icon {
-      border: 0.125em solid #429DD1; }
-  .step-indicator.visited {
-    color: #666; }
-    .step-indicator.visited .icon {
-      border: 0.125em solid #666; }
-
-.cui-icon-rotate {
-  height: 24px;
-  width: 24px;
-  margin: 0 auto; }
-
-step {
-  display: none; }
-  step.active {
-    display: block; }
-
 .cui-styeguide__popover-container {
   position: absolute; }
 
