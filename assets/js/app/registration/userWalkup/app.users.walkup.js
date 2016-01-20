@@ -31,7 +31,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     Person.getSecurityQuestions()
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1); 
+        res.data.splice(0,1);
 
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.data.length,
@@ -41,8 +41,8 @@ function(localStorageService,$scope,Person,$stateParams,API){
         usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
         // Preload question into input
-        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0].id;
-        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0].id;
+        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
+        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
     .catch(function(err) {
     });
@@ -86,9 +86,9 @@ function(localStorageService,$scope,Person,$stateParams,API){
     //         });
     //         return;
     //     }
-        
+
     //     usersWalkup.registering=true;
-        
+
     //     var passwordAccount={
     //         username:usersWalkup.userLogin.username,
     //         password:usersWalkup.userLogin.password,

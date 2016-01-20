@@ -45,7 +45,7 @@ angular.module('app')
 .controller('baseCtrl',['$state','getCountries','$scope','$translate',
 function($state,getCountries,$scope,$translate){
     var base=this;
-    
+
     base.desktopMenu=true;
 
     base.toggleDesktopMenu=function(){
@@ -65,7 +65,7 @@ function($state,getCountries,$scope,$translate){
     var setCountries=function(language){
         language = language || 'en';
         if(language.indexOf('_')>-1){
-            language=language.split('_')[0];   
+            language=language.split('_')[0];
         }
         getCountries(language)
         .then(function(res){
@@ -74,7 +74,7 @@ function($state,getCountries,$scope,$translate){
         .catch(function(err){
             console.log(err);
         });
-    }
+    };
 
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
@@ -742,7 +742,7 @@ angular.module('app')
 	Person.getSecurityQuestions()
     .then(function(res) {
     	// Removes first question as it is blank
-        res.data.splice(0,1); 
+        res.data.splice(0,1);
 
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.data.length,
@@ -752,8 +752,8 @@ angular.module('app')
         newDivision.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
         // Preload question into input
-        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0].id;
-        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0].id;
+        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
+        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
     })
     .catch(function(err) {
     });
@@ -787,8 +787,8 @@ angular.module('app')
     };
 
     $scope.$watchCollection('newDivision.orgSearch', searchOrganizations);
-	
-}]); 
+
+}]);
 
 
 angular.module('app')
@@ -817,26 +817,26 @@ angular.module('app')
   ];
 
 	Person.getSecurityQuestions()
-    .then(function(res) {
-    	// Removes first question as it is blank
-        res.data.splice(0,1); 
+  .then(function(res) {
+      // Removes first question as it is blank
+      res.data.splice(0,1);
 
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+      // Splits questions to use between both dropdowns
+      var numberOfQuestions = res.data.length,
+      numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+      newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+      newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
-        // Preload question into input
-        newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0].id;
-        newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0].id;
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
-	
-}]); 
+      // Preload question into input
+      newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
+      newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  })
+  .catch(function(err) {
+      console.log(err);
+  });
+
+}]);
 
 
 angular.module('app')
@@ -898,13 +898,13 @@ function(localStorageService,$scope,Person,$stateParams,API){
     Person.getSecurityQuestions()
     .then(function(res){
         res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
-        // this ensures half the questions get put into the first challenge question dropdown and 
+        // this ensures half the questions get put into the first challenge question dropdown and
         // half into the other.
         var numberOfQuestions=res.data.length,
             numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
         usersRegister.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
         usersRegister.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
-        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0]; 
+        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0];
         usersRegister.userLogin.question2=usersRegister.userLogin.challengeQuestions2[0];
     })
     .catch(function(err){
@@ -920,9 +920,9 @@ function(localStorageService,$scope,Person,$stateParams,API){
             });
             return;
         }
-        
+
         usersRegister.registering=true;
-        
+
         var passwordAccount={
             username:usersRegister.userLogin.username,
             password:usersRegister.userLogin.password,
@@ -964,10 +964,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
         Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
         .then(function(res){
-            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions)
+            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
         })
         .then(function(res){
-            return Person.update(usersRegister.user.id,usersRegister.user)
+            return Person.update(usersRegister.user.id,usersRegister.user);
         })
         .then(function(res){
             console.log(res);
@@ -1016,7 +1016,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     Person.getSecurityQuestions()
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1); 
+        res.data.splice(0,1);
 
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.data.length,
@@ -1026,8 +1026,8 @@ function(localStorageService,$scope,Person,$stateParams,API){
         usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
         // Preload question into input
-        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0].id;
-        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0].id;
+        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
+        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
     .catch(function(err) {
     });
@@ -1071,9 +1071,9 @@ function(localStorageService,$scope,Person,$stateParams,API){
     //         });
     //         return;
     //     }
-        
+
     //     usersWalkup.registering=true;
-        
+
     //     var passwordAccount={
     //         username:usersWalkup.userLogin.username,
     //         password:usersWalkup.userLogin.password,

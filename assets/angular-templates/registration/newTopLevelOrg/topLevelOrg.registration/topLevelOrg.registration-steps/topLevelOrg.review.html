@@ -57,7 +57,7 @@
 </cui-expandable>
 
 <!-- Sign In Information -->
-<cui-expandable class="cui-expandable">	
+<cui-expandable class="cui-expandable">
 	<cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
 		{{'cui-sign-in-information' | translate}}
 		<span class="chevron">></span>
@@ -71,11 +71,11 @@
 		<!-- Re-Enter Password -->
 		<inline-edit label="cui-password-re" model="newTLO.userLogin.passwordRe"></inline-edit>
 		<!-- Challenge Question 1 -->
-		<inline-edit label="cui-challenge-question" model="newTLO.userLogin.question1"></inline-edit>
+		<inline-edit type="dropdown" display="newTLO.userLogin.question1.question[0].text" label="cui-challenge-question" options="newTLO.userLogin.challengeQuestions1" options-expression="question as question.question[0].text for question in options" model="newTLO.userLogin.question1"></inline-edit>
 		<!-- Challenge Answer 1 -->
 		<inline-edit label="cui-challenge-answer" model="newTLO.userLogin.challengeAnswer1"></inline-edit>
 		<!-- Challenge Question 2 -->
-		<inline-edit label="cui-challenge-question" model="newTLO.userLogin.question2"></inline-edit>
+		<inline-edit type="dropdown" display="newTLO.userLogin.question2.question[0].text" label="cui-challenge-question" options="newTLO.userLogin.challengeQuestions2" options-expression="question as question.question[0].text for question in options" model="newTLO.userLogin.question2"></inline-edit>
 		<!-- Challenge Answer 2 -->
 		<inline-edit label="cui-challenge-answer" model="newTLO.userLogin.challengeAnswer2"></inline-edit>
 	</cui-expandable-body>

@@ -24,23 +24,23 @@ angular.module('app')
   ];
 
 	Person.getSecurityQuestions()
-    .then(function(res) {
-    	// Removes first question as it is blank
-        res.data.splice(0,1); 
+  .then(function(res) {
+      // Removes first question as it is blank
+      res.data.splice(0,1);
 
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+      // Splits questions to use between both dropdowns
+      var numberOfQuestions = res.data.length,
+      numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+      newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+      newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
-        // Preload question into input
-        newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0].id;
-        newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0].id;
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
-	
-}]); 
+      // Preload question into input
+      newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
+      newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  })
+  .catch(function(err) {
+      console.log(err);
+  });
+
+}]);

@@ -2,7 +2,7 @@ angular.module('app')
 .controller('baseCtrl',['$state','getCountries','$scope','$translate',
 function($state,getCountries,$scope,$translate){
     var base=this;
-    
+
     base.desktopMenu=true;
 
     base.toggleDesktopMenu=function(){
@@ -22,7 +22,7 @@ function($state,getCountries,$scope,$translate){
     var setCountries=function(language){
         language = language || 'en';
         if(language.indexOf('_')>-1){
-            language=language.split('_')[0];   
+            language=language.split('_')[0];
         }
         getCountries(language)
         .then(function(res){
@@ -31,7 +31,7 @@ function($state,getCountries,$scope,$translate){
         .catch(function(err){
             console.log(err);
         });
-    }
+    };
 
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
