@@ -19,7 +19,7 @@
 				</div>
 				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newDivision.userLogin.password" ng-class="{'cui-input': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="newDivision.passwordPolicies">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
-					<div ng-messages-include="assets/angular-templates/registration/newDivision/division.registration/password-validation.html"></div>
+					<div ng-messages-include="assets/angular-templates/registration/password-validation.html"></div>
 				</div>
 			</div>
 		</div>
