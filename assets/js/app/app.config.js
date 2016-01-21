@@ -75,7 +75,28 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/registration',
             templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
             controller: 'divisionCtrl as newDivision'
+        })
+        .state('misc',{
+            url: '/status',
+            templateUrl: 'assets/angular-templates/misc/misc.html'
+        })
+        .state('misc.404',{
+            url: '/404',
+            templateUrl: 'assets/angular-templates/misc/misc.404.html'
+        })
+        .state('misc.notAuth',{
+            url: '/notAuthorized',
+            templateUrl: 'assets/angular-templates/misc/misc.notAuth.html'
+        })
+        .state('misc.pendingStatus',{
+            url: '/pendingStatus',
+            templateUrl: 'assets/angular-templates/misc/misc.pendingStatus.html'
+        })
+        .state('misc.success',{
+            url: '/success',
+            templateUrl: 'assets/angular-templates/misc/misc.success.html'
         });
+
     // $locationProvider.html5Mode(true);
     
     //fixes infinite digest loop with ui-router
