@@ -462,7 +462,7 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
+.cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-expandable__review-button {
   color: #429DD1; }
 
 /* 
@@ -543,7 +543,7 @@ Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/
 
 Styleguide Elements.Forms.Input
 */
-.cui-input, select.cui-select {
+.cui-input, select.cui-select, select.cui-expandable__review-select, .cui-expandable__review-input {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
   border: 1px solid #DEE9EE;
@@ -554,7 +554,7 @@ Styleguide Elements.Forms.Input
   padding: 8px 12px;
   position: relative;
   width: 100%; }
-  .cui-input.pseudo-class-focus, select.pseudo-class-focus.cui-select, .cui-input:focus, select.cui-select:focus {
+  .cui-input.pseudo-class-focus, select.pseudo-class-focus.cui-select, select.pseudo-class-focus.cui-expandable__review-select, .pseudo-class-focus.cui-expandable__review-input, .cui-input:focus, select.cui-select:focus, select.cui-expandable__review-select:focus, .cui-expandable__review-input:focus {
     border: 1px solid #828483;
     outline: 0; }
   .cui-input--display {
@@ -565,7 +565,7 @@ Styleguide Elements.Forms.Input
     width: 200px; }
   .cui-input--half {
     width: 48%; }
-  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid.cui-select, .cui-input.ng-touched.ng-invalid:focus, select.ng-touched.ng-invalid.cui-select:focus {
+  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid.cui-select, select.ng-touched.ng-invalid.cui-expandable__review-select, .ng-touched.ng-invalid.cui-expandable__review-input, .cui-input.ng-touched.ng-invalid:focus, select.ng-touched.ng-invalid.cui-select:focus, select.ng-touched.ng-invalid.cui-expandable__review-select:focus, .ng-touched.ng-invalid.cui-expandable__review-input:focus {
     border: 1px solid #FF4400; }
   .cui-input__password-holder {
     display: flex;
@@ -573,9 +573,9 @@ Styleguide Elements.Forms.Input
     flex-grow: 1;
     justify-content: space-between;
     position: relative; }
-  .cui-input[type="password"]:focus + .cui-error__password, select[type="password"].cui-select:focus + .cui-error__password {
+  .cui-input[type="password"]:focus + .cui-error__password, select[type="password"].cui-select:focus + .cui-error__password, select[type="password"].cui-expandable__review-select:focus + .cui-error__password, [type="password"].cui-expandable__review-input:focus + .cui-error__password {
     display: inline-block; }
-  .cui-input.ng-touched.ng-valid, select.ng-touched.ng-valid.cui-select, .cui-input--valid {
+  .cui-input.ng-touched.ng-valid, select.ng-touched.ng-valid.cui-select, select.ng-touched.ng-valid.cui-expandable__review-select, .ng-touched.ng-valid.cui-expandable__review-input, .cui-input--valid {
     border: 1px solid #47CBB4; }
   @media all and (max-width: 700px) {
     .cui-input--half {
@@ -779,13 +779,13 @@ Markup:
 
 Styleguide Elements.Forms.Dropdown
 */
-select.cui-select {
+select.cui-select, select.cui-expandable__review-select {
   appearance: none;
   background: url("img/select-arrows.svg") right 10px center no-repeat;
   background-size: 17px 31px;
   border-radius: 0;
   padding-right: 10px; }
-  select.cui-select:focus {
+  select.cui-select:focus, select.cui-expandable__review-select:focus {
     outline: 0; }
 
 /*
@@ -1058,6 +1058,51 @@ Styleguide Elements.Buttons
     .pseudo-class-active.cui-form__next--error {
       background-color: #A2A19F; }
 
+/*
+Grid
+
+An example of a few grid layouts that can be used. We utilize thoughtbot's lightweight semantic grid system, <a class="cui-link" href="http://neat.bourbon.io/">Neat</a>. Please refer to their documentation for recommended usage. 
+
+Markup:
+<div class="cui-styleguide__outer-container">
+  <code>@include outer-container;</code>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__half">
+      <code>@include span-columns(6);</code>
+    </div>
+    <div class="cui-styleguide__half">
+      <code>@include span-columns(6);</code>
+    </div>  
+  </div>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+  </div>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+  </div>
+</div>
+
+Styleguide Elements.Grid
+*/
 /*
 Blocks
 
@@ -3102,3 +3147,26 @@ Styleguide Blocks.Step-Indicator-With-Icons
   color: #FFFFFF;
   font-size: 2em;
   text-align: center; }
+
+.cui-expandable__review-button {
+  cursor: pointer; }
+
+.cui-expandable__review-input {
+  display: inline-block;
+  width: 300px;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  font-size: 1em; }
+
+.cui-expandable__review-select {
+  display: inline-block;
+  width: 300px;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  font-size: 1em; }
+
+inline-edit .angucomplete-dropdown {
+  border: 1px solid #ececec;
+  margin-top: 7px; }
