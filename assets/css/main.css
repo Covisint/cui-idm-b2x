@@ -3129,11 +3129,16 @@ Styleguide Blocks.Step-Indicator-With-Icons
         left: 20%;
         transform: rotate(180deg) translate(0, 100%); } }
 
-.cui-styeguide__popover-container {
-  position: absolute; }
+.cui-card {
+  position: relative; }
+  .cui-card .cui-styeguide__popover-container {
+    position: absolute; }
 
 .cui-popover_link {
   text-align: center; }
+
+.cui-popover_link a {
+  color: #FFFFFF; }
 
 .welcome-wrapper {
   padding: 30px;
