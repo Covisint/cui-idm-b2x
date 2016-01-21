@@ -17,7 +17,7 @@
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 					<div ng-messages-include="assets/angular-templates/messages.html"></div>
 				</div>
-				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password" ng-class="{'cui-input': newTLO.password.$touched && newTLO.password.$invalid}" password-validation="newTLO.passwordPolicies">
+				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password" ng-class="{'cui-input--error': newTLO.password.$touched && newTLO.password.$invalid}" password-validation="newTLO.passwordPolicies">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
 					<div ng-messages-include="assets/angular-templates/registration/password-validation.html"></div>
 				</div>
