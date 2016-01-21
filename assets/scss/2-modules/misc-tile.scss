@@ -10,7 +10,11 @@
 	overflow: auto;
 }
 
-.misc-body a, p {
+.misc-body p {
+	color: $cui-primary-colors--medium-light;
+}
+
+.misc-body a {
 	color: $cui-primary-colors--medium-light;
 }
 
