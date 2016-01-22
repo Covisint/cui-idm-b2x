@@ -11,15 +11,20 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
 <body ng-cloak>
-  
-
   <div class="cui-wrapper">
     <snap-drawer>
 
       <span class="snap-menu--option" ui-sref="welcome.screen">Welcome</span>
       <span class="snap-menu--option" ui-sref="users.search">Search Users</span>
       <span class="snap-menu--option" ui-sref="users.invitations">User Invitations</span>
-      <span class="snap-menu--option" ui-sref="tlo.account">New TLO Registration</span>
+      <span class="snap-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
+      <span class="snap-menu--option" ui-sref="users.register">Invited User Registration</span>
+      <span class="snap-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
+      <span class="snap-menu--option" ui-sref="division.registration">New Division Registration</span>
+      <span class="snap-menu--option" ui-sref="misc.404">404 Not Found</span>
+      <span class="snap-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
+      <span class="snap-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
+      <span class="snap-menu--option" ui-sref="misc.success">Success</span>
 
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
@@ -31,52 +36,55 @@
         </div>
       </header>
       <div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-        
+
         <span class="desktop-menu--option" ui-sref="welcome.screen">Welcome</span>
         <span class="desktop-menu--option" ui-sref="users.search">Search Users</span>
         <span class="desktop-menu--option" ui-sref="users.invitations">User Invitations</span>
+        <span class="desktop-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
+        <span class="desktop-menu--option" ui-sref="users.register">Invited User Registration</span>
         <span class="desktop-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
+        <span class="desktop-menu--option" ui-sref="division.registration">New Division Registration</span>
+        <span class="desktop-menu--option" ui-sref="misc.404">404 Not Found</span>
+        <span class="desktop-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
+        <span class="desktop-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
+        <span class="desktop-menu--option" ui-sref="misc.success">Success</span>
 
       </div>
-
       <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-
         <div ui-view></div>
         <div class="cui-tile">
           <div ng-translate-language-select></div>
         </div>
-      </div> 
-
+      </div>
     </snap-content>
   </div>
 
+<!-- build:js assets/js/vendor.js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/cui.js/dist/cui.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/snapjs/snap.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
+<script src="bower_components/angular-snap/angular-snap.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+<script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+<script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+<script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+<script src="bower_components/cui-ng/dist/cui-ng.js"></script>
+<script src="bower_components/cui-i18n/translate.js"></script>
+<script src="bower_components/cui.js/dist/cui.js"></script>
+<!-- endbuild -->
 
-  <!-- build:js assets/js/vendor.js -->
-  <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/lodash/lodash.js"></script>
-  <script src="bower_components/cui.js/dist/cui.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/snapjs/snap.js"></script>
-  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="bower_components/angular-messages/angular-messages.js"></script>
-  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
-  <script src="bower_components/angular-snap/angular-snap.js"></script>
-  <script src="bower_components/angular-translate/angular-translate.js"></script>
-  <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
-  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-  <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
-  <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
-  <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-  <script src="bower_components/cui-ng/dist/cui-ng.js"></script>
-  <script src="bower_components/cui-i18n/translate.js"></script>
-  <script src="bower_components/cui.js/dist/cui.js"></script>
-  <!-- endbuild -->
+<!-- build:js assets/js/app.js -->
+<script src="assets/concatJS/app.js"></script>
+<!-- endbuild -->
 
-  <!-- build:js assets/js/app.js -->
-  <script src="assets/concatJS/app.js"></script>
-  <!-- endbuild -->
-  
 </body>
 </html>

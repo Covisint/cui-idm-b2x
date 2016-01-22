@@ -45,7 +45,7 @@ angular.module('app')
 .controller('baseCtrl',['$state','getCountries','$scope','$translate',
 function($state,getCountries,$scope,$translate){
     var base=this;
-    
+
     base.desktopMenu=true;
 
     base.toggleDesktopMenu=function(){
@@ -63,8 +63,9 @@ function($state,getCountries,$scope,$translate){
 
 
     var setCountries=function(language){
+        language = language || 'en';
         if(language.indexOf('_')>-1){
-            language=language.split('_')[0];   
+            language=language.split('_')[0];
         }
         getCountries(language)
         .then(function(res){
@@ -73,7 +74,7 @@ function($state,getCountries,$scope,$translate){
         .catch(function(err){
             console.log(err);
         });
-    }
+    };
 
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
@@ -103,56 +104,42 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users.search',{
             url: '/',
-            templateUrl: 'assets/angular-templates/users/users.search.html',
+            templateUrl: 'assets/angular-templates/users/users.search/users.search.html',
             controller: 'usersSearchCtrl as usersSearch'
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: 'assets/angular-templates/users/users.edit.html',
+            templateUrl: 'assets/angular-templates/edit/users.edit/users.edit.html',
             controller: 'usersEditCtrl as usersEdit'
         })
         .state('users.invitations',{
             url: '/invitations',
-            templateUrl: 'assets/angular-templates/users/users.invitations.search.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invitations.search.html',
             controller: 'usersInvitationsCtrl as usersInvitations'
-        })
-        .state('users.invitations.view',{
-            url: '/view',
-            templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
-            controller: 'userInvitationsViewCtrl as usersInvitationsView'
         })
         .state('users.invite',{
             url: '/invite',
-            templateUrl: 'assets/angular-templates/users/users.invite.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invite.html',
             controller: 'usersInviteCtrl as usersInvite'
         })
         .state('users.register',{
             url: '/register?id&code',
-            templateUrl: 'assets/angular-templates/users/users.register.html',
+            templateUrl: 'assets/angular-templates/registration/userInvited/users.register.html',
             controller: 'usersRegisterCtrl as usersRegister'
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/users/users.walkup.html',
+            templateUrl:'assets/angular-templates/registration/userWalkup/users.walkup.html',
             controller: 'usersWalkupCtrl as usersWalkup'
         })
         .state('users.activate',{
             url: '/activate/:id',
-            templateUrl: 'assets/angular-templates/users/users.activate.html',
+            templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
-        })
-        .state('sysAdmin',{
-            url: '/sysAdmin',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.html',
-        })
-        .state('sysAdmin.account',{
-            url: '/sysAdmin/account/',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
-            controller: 'sysAdminAccountCtrl as sysAdminAccount'
         })
         .state('welcome',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.html',
+            templateUrl: 'assets/angular-templates/welcome/welcome.html'
         })
         .state('welcome.screen',{
             url: '/welcome',
@@ -161,13 +148,43 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
             controller: 'tloCtrl as newTLO'
+        })
+        .state('division',{
+            url: '/division',
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.html'
+        })
+        .state('division.registration',{
+            url: '/registration',
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
+            controller: 'divisionCtrl as newDivision'
+        })
+        .state('misc',{
+            url: '/status',
+            templateUrl: 'assets/angular-templates/misc/misc.html'
+        })
+        .state('misc.404',{
+            url: '/404',
+            templateUrl: 'assets/angular-templates/misc/misc.404.html'
+        })
+        .state('misc.notAuth',{
+            url: '/notAuthorized',
+            templateUrl: 'assets/angular-templates/misc/misc.notAuth.html'
+        })
+        .state('misc.pendingStatus',{
+            url: '/pendingStatus',
+            templateUrl: 'assets/angular-templates/misc/misc.pendingStatus.html'
+        })
+        .state('misc.success',{
+            url: '/success',
+            templateUrl: 'assets/angular-templates/misc/misc.success.html'
         });
+
     // $locationProvider.html5Mode(true);
     
     //fixes infinite digest loop with ui-router
@@ -180,7 +197,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     //where the locales are being loaded from
     $translateProvider.useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-        prefix:'locale-'
+        prefix:'locale-',
+        suffix:'.json'
     });
      
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
@@ -212,10 +230,212 @@ angular.module('app')
 
 
 
+angular.module('app')
+.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
+function(localStorageService,$scope,$stateParams,$timeout,API){
+    var usersEdit=this;
+    usersEdit.loading=true;
+
+    API.doAuth()
+    .then(function(){
+        API.cui.getPerson({personId:$stateParams.id})
+        .then(function(res){
+            usersEdit.loading=false;
+            usersEdit.user=res;
+            $scope.$apply();
+        })
+        .fail(function(err){
+            usersEdit.loading=false;
+            console.log(err);
+        });
+    });
+
+
+    usersEdit.save=function(){
+        usersEdit.saving=true;
+        usersEdit.fail=false;
+        usersEdit.success=false;
+        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user}).
+        then(function(res){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.success=true;
+            },300);
+        })
+        .fail(function(err){
+            $timeout(function(){
+                usersEdit.saving=false;
+                usersEdit.fail=true;
+            },300);
+        });
+    };
+
+}]);
+
 angular.module('app').factory('getCountries',['$http',function($http){
     return function(locale){
         return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
     };
+}]);
+
+angular.module('app')
+.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
+function(localStorageService,$scope,$stateParams,API,$timeout){
+    var usersInvitations=this;
+    usersInvitations.listLoading=true;
+    usersInvitations.invitor=[];
+    usersInvitations.invitee=[];
+    usersInvitations.invitorLoading=[];
+    usersInvitations.inviteeLoading=[];
+
+
+    API.cui.getPersonInvitations()
+    .then(function(res){
+        usersInvitations.listLoading=false;
+        usersInvitations.list=res;
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersInvitations.listLoading=false;
+        console.log(err);
+    });
+
+
+    // This is needed to "attach" the invitor's and the invitee's info to the invitation
+    // since the only parameter that we have from the invitation API is the ID
+    usersInvitations.getInfo=function(invitorId,inviteeId,index){
+        if(usersInvitations.invitor[index]===undefined){
+            //get invitor's details
+            usersInvitations.invitorLoading[index]=true;
+            usersInvitations.inviteeLoading[index]=true;
+
+            API.cui.getPerson({personId:invitorId})
+            .then(function(res){
+                usersInvitations.invitor[index]=res;
+                $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.invitorLoading[index]=false;
+                },500);
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+
+
+            //get invitee's details
+            API.cui.getPerson({personId:inviteeId})
+            .then(function(res){
+                usersInvitations.invitee[index]=res;
+                $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.inviteeLoading[index]=false;
+                },500);
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        }
+    };
+
+
+    // var search=function(){
+    //     API.cui.getUser({data:usersSearch.search})
+    //     .then(function(res){
+    //         usersSearch.list=res;
+    //         $scope.$apply();
+    //     })
+    //     .fail(function(err){
+    //         // TBD : error handling
+    //         // console.log(err);
+    //     });
+    // };
+
+    // $scope.$watchCollection('usersSearch.search',search); 
+
+}]);
+
+angular.module('app')
+.controller('usersInviteCtrl',['localStorageService','$scope','Person','$stateParams','API',
+function(localStorageService,$scope,Person,$stateParams,API){
+    var usersInvite=this;
+    usersInvite.user={};
+    usersInvite.user.organization={ // organization is hardcoded
+                                    // will be replaced once auth is in place
+        "id": "OCOVSMKT-CVDEV204002",
+        "type": "organization",
+        "realm": "APPCLOUD"
+    };
+
+    var createInvitation=function(invitee){
+        Person.createInvitation(invitee,{id:'RN3BJI54'})
+        .then(function(res){
+            sendInvitationEmail(res.data);
+        })
+        .catch(function(err){
+            usersInvite.sending=false;
+            usersInvite.fail=true;
+        });
+    };
+
+    var sendInvitationEmail=function(invitation){
+        var message="You've received an invitation to join our organization.<p>" + 
+            "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
+            " to register</a>.",
+            text;
+        if(usersInvite.message && usersInvite.message!==''){
+            text=usersInvite.message + '<br/><br/>' + message;
+        }
+        else text=message;
+        var emailOpts={
+            to:invitation.email,
+            from:'cuiInterface@thirdwave.com',
+            fromName:'CUI INTERFACE',
+            subject: 'Request to join our organization',
+            text: text
+        };
+        Person.sendUserInvitationEmail(emailOpts)
+        .then(function(res){   
+            usersInvite.sending=false;
+            usersInvite.sent=true;
+        })
+        .catch(function(err){
+            usersInvite.sending=false;
+            usersInvite.fail=true;
+        });
+    };
+
+    usersInvite.saveUser=function(form){
+        // Sets every field to $touched, so that when the user
+        // clicks on 'sent invitation' he gets the warnings
+        // for each field that has an error.
+        angular.forEach(form.$error, function (field) {
+            angular.forEach(field, function(errorField){
+                errorField.$setTouched();
+            });
+        });
+
+        if(form.$valid){
+            usersInvite.sending=true;
+            usersInvite.sent=false;
+            usersInvite.fail=false;
+            API.doAuth()
+            .then(function(){
+                Person.create(usersInvite.user)
+                .then(function(res){   
+                    createInvitation(res.data);
+                })
+                .catch(function(err){
+                    usersInvite.sending=false;
+                    usersInvite.fail=true;
+                });
+
+            });
+
+        }
+    };
+
+
+
 }]);
 
 angular.module('app')
@@ -515,160 +735,71 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('sysAdminAccountCtrl',['$scope', 
-	function($scope) {
-		var sysAdminAccount = this;
+.controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+	var newDivision = this;
+	newDivision.userLogin = {};
+    newDivision.orgSearch = {};
 
-		sysAdminAccount.tosError = [
-			{
-				test: "test",
-				name: 'tosRequired',
-				check: function() {
-					return sysAdminAccount.tos;
-				}
-			}
-		];
-}]); 
+    newDivision.passwordPolicies = [
+        {
+            'allowUpperChars': true,
+            'allowLowerChars': true,
+            'allowNumChars': true,
+            'allowSpecialChars': true,
+            'requiredNumberOfCharClasses': 3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min': 8,
+            'max': 18
+        },
+        {
+            'disallowedWords': ['password', 'admin']
+        }
+    ];
 
+	Person.getSecurityQuestions()
+    .then(function(res) {
+    	// Removes first question as it is blank
+        res.data.splice(0,1);
 
-angular.module('app')
-.controller('tloCtrl',['$scope', function($scope) {
-	var newTLO = this;
-	$scope.popoverVisible = false;
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = res.data.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-	newTLO.tosError = [
-		{
-			test: "test",
-			name: 'tosRequired',
-			check: function() {
-				return newTLO.tos;
-			}
-		}
-	];
-	
-}]); 
+        newDivision.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+        newDivision.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
-
-angular.module('app')
-.controller('usersActivateCtrl',['$stateParams','API','Person',
-function($stateParams,API,Person){
-    var usersActivate=this;
-
-    var personParams=[{
-        name:'personId',
-        value: $stateParams.id
-    }];
-
-    API.cui.activatePerson({params:personParams})
-    .then(function(res){
-        return Person.grantCcaPackage($stateParams.id);
+        // Preload question into input
+        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
+        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
     })
-    .then(function(res){
-        return Person.grantExchangePackage($stateParams.id);
-    })
-    .then(function(res){
-        console.log(res);
-    })
-    .fail(function(err){
-        console.log(err);
+    .catch(function(err) {
     });
 
-}]);
-
-angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
-function(localStorageService,$scope,$stateParams,$timeout,API){
-    var usersEdit=this;
-    usersEdit.loading=true;
-
+    // Return all organizations
     API.doAuth()
-    .then(function(){
-        API.cui.getPerson({personId:$stateParams.id})
+    .then(function() {
+        API.cui.getOrganizations()
         .then(function(res){
-            usersEdit.loading=false;
-            usersEdit.user=res;
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersEdit.loading=false;
-            console.log(err);
+            newDivision.organizationList = res;
         });
-    });
-
-
-    usersEdit.save=function(){
-        usersEdit.saving=true;
-        usersEdit.fail=false;
-        usersEdit.success=false;
-        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user}).
-        then(function(res){
-            $timeout(function(){
-                usersEdit.saving=false;
-                usersEdit.success=true;
-            },300);
-        })
-        .fail(function(err){
-            $timeout(function(){
-                usersEdit.saving=false;
-                usersEdit.fail=true;
-            },300);
-        });
-    };
-
-}]);
-
-angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
-function(localStorageService,$scope,$stateParams,API,$timeout){
-    var usersInvitations=this;
-    usersInvitations.listLoading=true;
-    usersInvitations.invitor=[];
-    usersInvitations.invitee=[];
-    usersInvitations.invitorLoading=[];
-    usersInvitations.inviteeLoading=[];
-
-
-    API.cui.getPersonInvitations()
-    .then(function(res){
-        usersInvitations.listLoading=false;
-        usersInvitations.list=res;
-        $scope.$apply();
     })
     .fail(function(err){
-        usersInvitations.listLoading=false;
         console.log(err);
     });
 
-
-    // This is needed to "attach" the invitor's and the invitee's info to the invitation
-    // since the only parameter that we have from the invitation API is the ID
-    usersInvitations.getInfo=function(invitorId,inviteeId,index){
-        if(usersInvitations.invitor[index]===undefined){
-            //get invitor's details
-            usersInvitations.invitorLoading[index]=true;
-            usersInvitations.inviteeLoading[index]=true;
-
-            API.cui.getPerson({personId:invitorId})
+    var searchOrganizations = function() {
+        // this if statement stops the search from executing
+        // when the controller first fires  and the search object is undefined/
+        // once pagination is impletemented this won't be needed
+        if (newDivision.orgSearch) {
+            API.cui.getOrganizations({'qs': [['name', newDivision.orgSearch.name]]})
             .then(function(res){
-                usersInvitations.invitor[index]=res;
+                newDivision.organizationList = res;
                 $scope.$apply();
-                $timeout(function(){
-                    usersInvitations.invitorLoading[index]=false;
-                },500);
-            })
-            .fail(function(err){
-                console.log(err);
-            });
-
-
-            //get invitee's details
-            API.cui.getPerson({personId:inviteeId})
-            .then(function(res){
-                usersInvitations.invitee[index]=res;
-                $scope.$apply();
-                $timeout(function(){
-                    usersInvitations.inviteeLoading[index]=false;
-                },500);
             })
             .fail(function(err){
                 console.log(err);
@@ -676,106 +807,58 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
         }
     };
 
-
-    // var search=function(){
-    //     API.cui.getUser({data:usersSearch.search})
-    //     .then(function(res){
-    //         usersSearch.list=res;
-    //         $scope.$apply();
-    //     })
-    //     .fail(function(err){
-    //         // TBD : error handling
-    //         // console.log(err);
-    //     });
-    // };
-
-    // $scope.$watchCollection('usersSearch.search',search); 
+    $scope.$watchCollection('newDivision.orgSearch', searchOrganizations);
 
 }]);
+
 
 angular.module('app')
-.controller('usersInviteCtrl',['localStorageService','$scope','Person','$stateParams','API',
-function(localStorageService,$scope,Person,$stateParams,API){
-    var usersInvite=this;
-    usersInvite.user={};
-    usersInvite.user.organization={ // organization is hardcoded
-                                    // will be replaced once auth is in place
-        "id": "OCOVSMKT-CVDEV204002",
-        "type": "organization",
-        "realm": "APPCLOUD"
-    };
+.controller('tloCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+	var newTLO = this;
+	newTLO.userLogin = {};
 
-    var createInvitation=function(invitee){
-        Person.createInvitation(invitee,{id:'RN3BJI54'})
-        .then(function(res){
-            sendInvitationEmail(res.data);
-        })
-        .catch(function(err){
-            usersInvite.sending=false;
-            usersInvite.fail=true;
-        });
-    };
+  newTLO.passwordPolicies = [
+    {
+      'allowUpperChars': true,
+      'allowLowerChars': true,
+      'allowNumChars': true,
+      'allowSpecialChars': true,
+      'requiredNumberOfCharClasses': 3
+    },
+    {
+      'disallowedChars':'^&*)(#$'
+    },
+    {
+      'min': 8,
+      'max': 18
+    },
+    {
+      'disallowedWords': ['password', 'admin']
+    }
+  ];
 
-    var sendInvitationEmail=function(invitation){
-        var message="You've received an invitation to join our organization.<p>" + 
-            "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
-            " to register</a>.",
-            text;
-        if(usersInvite.message && usersInvite.message!==''){
-            text=usersInvite.message + '<br/><br/>' + message;
-        }
-        else text=message;
-        var emailOpts={
-            to:invitation.email,
-            from:'cuiInterface@thirdwave.com',
-            fromName:'CUI INTERFACE',
-            subject: 'Request to join our organization',
-            text: text
-        };
-        Person.sendUserInvitationEmail(emailOpts)
-        .then(function(res){   
-            usersInvite.sending=false;
-            usersInvite.sent=true;
-        })
-        .catch(function(err){
-            usersInvite.sending=false;
-            usersInvite.fail=true;
-        });
-    };
+	Person.getSecurityQuestions()
+  .then(function(res) {
+      // Removes first question as it is blank
+      res.data.splice(0,1);
 
-    usersInvite.saveUser=function(form){
-        // Sets every field to $touched, so that when the user
-        // clicks on 'sent invitation' he gets the warnings
-        // for each field that has an error.
-        angular.forEach(form.$error, function (field) {
-            angular.forEach(field, function(errorField){
-                errorField.$setTouched();
-            });
-        });
+      // Splits questions to use between both dropdowns
+      var numberOfQuestions = res.data.length,
+      numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        if(form.$valid){
-            usersInvite.sending=true;
-            usersInvite.sent=false;
-            usersInvite.fail=false;
-            API.doAuth()
-            .then(function(){
-                Person.create(usersInvite.user)
-                .then(function(res){   
-                    createInvitation(res.data);
-                })
-                .catch(function(err){
-                    usersInvite.sending=false;
-                    usersInvite.fail=true;
-                });
+      newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+      newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
 
-            });
-
-        }
-    };
-
-
+      // Preload question into input
+      newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
+      newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  })
+  .catch(function(err) {
+      console.log(err);
+  });
 
 }]);
+
 
 angular.module('app')
 .controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
@@ -836,13 +919,13 @@ function(localStorageService,$scope,Person,$stateParams,API){
     Person.getSecurityQuestions()
     .then(function(res){
         res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
-        // this ensures half the questions get put into the first challenge question dropdown and 
+        // this ensures half the questions get put into the first challenge question dropdown and
         // half into the other.
         var numberOfQuestions=res.data.length,
             numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
         usersRegister.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
         usersRegister.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
-        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0]; 
+        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0];
         usersRegister.userLogin.question2=usersRegister.userLogin.challengeQuestions2[0];
     })
     .catch(function(err){
@@ -858,9 +941,9 @@ function(localStorageService,$scope,Person,$stateParams,API){
             });
             return;
         }
-        
+
         usersRegister.registering=true;
-        
+
         var passwordAccount={
             username:usersRegister.userLogin.username,
             password:usersRegister.userLogin.password,
@@ -902,10 +985,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
         Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
         .then(function(res){
-            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions)
+            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
         })
         .then(function(res){
-            return Person.update(usersRegister.user.id,usersRegister.user)
+            return Person.update(usersRegister.user.id,usersRegister.user);
         })
         .then(function(res){
             console.log(res);
@@ -918,6 +1001,154 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
     };
 
+
+}]);
+
+angular.module('app')
+.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
+function(localStorageService,$scope,Person,$stateParams,API){
+    var usersWalkup=this;
+    usersWalkup.userLogin={};
+    usersWalkup.userLogin.password='';
+    usersWalkup.registering=false;
+    usersWalkup.registrationError=false;
+    usersWalkup.userLogin = {};
+
+    usersWalkup.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
+    Person.getSecurityQuestions()
+    .then(function(res) {
+        // Removes first question as it is blank
+        res.data.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = res.data.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+        usersWalkup.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+
+        // Preload question into input
+        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
+        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+
+    // usersWalkup.finish=function(form){
+    //     if(form.$invalid){
+    //         angular.forEach(form.$error, function (field) {
+    //             angular.forEach(field, function(errorField){
+    //                 errorField.$setTouched();
+    //             });
+    //         });
+    //         return;
+    //     }
+
+    //     usersWalkup.registering=true;
+
+    //     var passwordAccount={
+    //         username:usersWalkup.userLogin.username,
+    //         password:usersWalkup.userLogin.password,
+    //         passwordPolicy:{
+    //             "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
+    //             "type":"passwordPolicy",
+    //             "realm":"COVSMKT-CVDEV"
+    //         },
+    //         authenticationPolicy:{
+    //             "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
+    //             "type":"authenticationPolicy",
+    //             "realm":"COVSMKT-CVDEV"
+    //         },
+    //         version:1
+    //     };
+
+    //     var securityQuestions={
+    //         id:usersWalkup.user.id,
+    //         questions:[{
+    //             question:{
+    //                 id:usersWalkup.userLogin.question1.id,
+    //                 type:'question',
+    //                 realm:'COVSMKT-CVDEV'
+    //             },
+    //             answer:usersWalkup.userLogin.challengeAnswer1,
+    //             index:1
+    //         },{
+    //             question:{
+    //                 id:usersWalkup.userLogin.question2.id,
+    //                 type:'question',
+    //                 realm:'COVSMKT-CVDEV'
+    //             },
+    //             answer:usersWalkup.userLogin.challengeAnswer2,
+    //             index:2
+    //         }],
+    //         version:1
+    //     };
+
+
+    //     Person.createPasswordAccount(usersWalkup.user.id,passwordAccount)
+    //     .then(function(res){
+    //         return Person.createSecurityQuestions(usersWalkup.user.id,securityQuestions)
+    //     })
+    //     .then(function(res){
+    //         return Person.update(usersWalkup.user.id,usersWalkup.user)
+    //     })
+    //     .then(function(res){
+    //         console.log(res);
+    //         usersWalkup.registering=false;
+    //     })
+    //     .catch(function(err){
+    //         console.log(err);
+    //         usersWalkup.registrationError=true;
+    //         usersWalkup.registering=false;
+    //     });
+    // };
+
+}]);
+
+
+angular.module('app')
+.controller('usersActivateCtrl',['$stateParams','API','Person',
+function($stateParams,API,Person){
+    var usersActivate=this;
+
+    var personParams=[{
+        name:'personId',
+        value: $stateParams.id
+    }];
+
+    API.cui.activatePerson({params:personParams})
+    .then(function(res){
+        return Person.grantCcaPackage($stateParams.id);
+    })
+    .then(function(res){
+        return Person.grantExchangePackage($stateParams.id);
+    })
+    .then(function(res){
+        console.log(res);
+    })
+    .fail(function(err){
+        console.log(err);
+    });
 
 }]);
 
@@ -968,140 +1199,9 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
-function(localStorageService,$scope,Person,$stateParams,API){
-    var usersWalkup=this;
-    usersWalkup.userLogin={};
-    usersWalkup.userLogin.password='';
-    usersWalkup.registering=false;
-    usersWalkup.registrationError=false;
-
-    usersWalkup.passwordPolicies=[
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
-
-    usersWalkup.userTosError=[
-        {
-            name:'tos',
-            check:function(){
-                return usersWalkup.userTos;
-            }
-        }
-    ];
-
-    Person.getSecurityQuestions()
-    .then(function(res){
-        res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
-        // this ensures half the questions get put into the first challenge question dropdown and 
-        // half into the other.
-        var numberOfQuestions=res.data.length,
-            numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
-        usersWalkup.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
-        usersWalkup.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
-        usersWalkup.userLogin.question1=usersWalkup.userLogin.challengeQuestions1[0]; 
-        usersWalkup.userLogin.question2=usersWalkup.userLogin.challengeQuestions2[0];
-    })
-    .catch(function(err){
-        console.log(err);
-    });
-
-    usersWalkup.finish=function(form){
-        if(form.$invalid){
-            angular.forEach(form.$error, function (field) {
-                angular.forEach(field, function(errorField){
-                    errorField.$setTouched();
-                });
-            });
-            return;
-        }
-        
-        usersWalkup.registering=true;
-        
-        var passwordAccount={
-            username:usersWalkup.userLogin.username,
-            password:usersWalkup.userLogin.password,
-            passwordPolicy:{
-                "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
-                "type":"passwordPolicy",
-                "realm":"COVSMKT-CVDEV"
-            },
-            authenticationPolicy:{
-                "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
-                "type":"authenticationPolicy",
-                "realm":"COVSMKT-CVDEV"
-            },
-            version:1
-        };
-
-        var securityQuestions={
-            id:usersWalkup.user.id,
-            questions:[{
-                question:{
-                    id:usersWalkup.userLogin.question1.id,
-                    type:'question',
-                    realm:'COVSMKT-CVDEV'
-                },
-                answer:usersWalkup.userLogin.challengeAnswer1,
-                index:1
-            },{
-                question:{
-                    id:usersWalkup.userLogin.question2.id,
-                    type:'question',
-                    realm:'COVSMKT-CVDEV'
-                },
-                answer:usersWalkup.userLogin.challengeAnswer2,
-                index:2
-            }],
-            version:1
-        };
-
-
-        Person.createPasswordAccount(usersWalkup.user.id,passwordAccount)
-        .then(function(res){
-            return Person.createSecurityQuestions(usersWalkup.user.id,securityQuestions)
-        })
-        .then(function(res){
-            return Person.update(usersWalkup.user.id,usersWalkup.user)
-        })
-        .then(function(res){
-            console.log(res);
-            usersWalkup.registering=false;
-        })
-        .catch(function(err){
-            console.log(err);
-            usersWalkup.registrationError=true;
-            usersWalkup.registering=false;
-        });
-    };
-
-
-}]);
-
-angular.module('app')
 .controller('welcomeCtrl',['$scope', 
 	function($scope) {
 		var welcome = this;
-		$scope.modalVisible = false;
-
-		$scope.modalDisplay = function() {
-			$scope.modalVisible = !$scope.modalVisible;
-		};
 }]); 
 
 

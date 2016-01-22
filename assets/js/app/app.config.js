@@ -16,56 +16,42 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users.search',{
             url: '/',
-            templateUrl: 'assets/angular-templates/users/users.search.html',
+            templateUrl: 'assets/angular-templates/users/users.search/users.search.html',
             controller: 'usersSearchCtrl as usersSearch'
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: 'assets/angular-templates/users/users.edit.html',
+            templateUrl: 'assets/angular-templates/edit/users.edit/users.edit.html',
             controller: 'usersEditCtrl as usersEdit'
         })
         .state('users.invitations',{
             url: '/invitations',
-            templateUrl: 'assets/angular-templates/users/users.invitations.search.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invitations.search.html',
             controller: 'usersInvitationsCtrl as usersInvitations'
-        })
-        .state('users.invitations.view',{
-            url: '/view',
-            templateUrl: 'assets/angular-templates/users/users.invitations.view.html',
-            controller: 'userInvitationsViewCtrl as usersInvitationsView'
         })
         .state('users.invite',{
             url: '/invite',
-            templateUrl: 'assets/angular-templates/users/users.invite.html',
+            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invite.html',
             controller: 'usersInviteCtrl as usersInvite'
         })
         .state('users.register',{
             url: '/register?id&code',
-            templateUrl: 'assets/angular-templates/users/users.register.html',
+            templateUrl: 'assets/angular-templates/registration/userInvited/users.register.html',
             controller: 'usersRegisterCtrl as usersRegister'
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/users/users.walkup.html',
+            templateUrl:'assets/angular-templates/registration/userWalkup/users.walkup.html',
             controller: 'usersWalkupCtrl as usersWalkup'
         })
         .state('users.activate',{
             url: '/activate/:id',
-            templateUrl: 'assets/angular-templates/users/users.activate.html',
+            templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
-        })
-        .state('sysAdmin',{
-            url: '/sysAdmin',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.html',
-        })
-        .state('sysAdmin.account',{
-            url: '/sysAdmin/account/',
-            templateUrl: 'assets/angular-templates/sysAdmin/sysAdmin.account.html',
-            controller: 'sysAdminAccountCtrl as sysAdminAccount'
         })
         .state('welcome',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.html',
+            templateUrl: 'assets/angular-templates/welcome/welcome.html'
         })
         .state('welcome.screen',{
             url: '/welcome',
@@ -74,13 +60,43 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.html',
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/topLevelOrg/topLevelOrg.registration.html',
+            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
             controller: 'tloCtrl as newTLO'
+        })
+        .state('division',{
+            url: '/division',
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.html'
+        })
+        .state('division.registration',{
+            url: '/registration',
+            templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
+            controller: 'divisionCtrl as newDivision'
+        })
+        .state('misc',{
+            url: '/status',
+            templateUrl: 'assets/angular-templates/misc/misc.html'
+        })
+        .state('misc.404',{
+            url: '/404',
+            templateUrl: 'assets/angular-templates/misc/misc.404.html'
+        })
+        .state('misc.notAuth',{
+            url: '/notAuthorized',
+            templateUrl: 'assets/angular-templates/misc/misc.notAuth.html'
+        })
+        .state('misc.pendingStatus',{
+            url: '/pendingStatus',
+            templateUrl: 'assets/angular-templates/misc/misc.pendingStatus.html'
+        })
+        .state('misc.success',{
+            url: '/success',
+            templateUrl: 'assets/angular-templates/misc/misc.success.html'
         });
+
     // $locationProvider.html5Mode(true);
     
     //fixes infinite digest loop with ui-router
@@ -93,7 +109,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     //where the locales are being loaded from
     $translateProvider.useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-        prefix:'locale-'
+        prefix:'locale-',
+        suffix:'.json'
     });
      
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);

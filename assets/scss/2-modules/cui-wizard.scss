@@ -1,0 +1,31 @@
+.cui-expandable__review-button {
+    @extend .cui-link;
+    cursor:pointer;
+}
+
+.cui-expandable__review-input {
+    @extend .cui-input;
+    display:inline-block;
+    width:300px;
+    height:auto;
+    margin:-6px 0 -6px 0;
+    padding:0 2px;
+    font-size:1em;
+}
+
+.cui-expandable__review-select {
+    @extend .cui-select;
+    display:inline-block;
+    width:300px;
+    height:auto;
+    margin:-6px 0 -6px 0;
+    padding:0 2px;
+    font-size:1em;
+}
+
+inline-edit{
+    .angucomplete-dropdown {
+        border: 1px solid #ececec;
+        margin-top: 7px;
+    }
+}

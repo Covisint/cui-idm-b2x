@@ -1,9 +1,17 @@
-.cui-styeguide__popover-container {
-	position:absolute;
+.cui-card {
+	position: relative;
+
+	.cui-styeguide__popover-container {
+		position: absolute;
+	}
 }
 
 .cui-popover_link {
 	text-align: center;
+}
+
+.cui-popover_link a {
+	color: #FFFFFF;
 }
 
 .welcome-wrapper {
