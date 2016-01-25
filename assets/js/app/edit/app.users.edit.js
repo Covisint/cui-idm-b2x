@@ -6,38 +6,39 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     API.doAuth()
     .then(function(res) {
-        return  API.cui.getPerson({personId:$stateParams.id});
+        return  API.cui.getPerson({personId: $stateParams.id});
     })
-    .then(function(res){
-        usersEdit.user=res;
-        return API.cui.getPersonPassword({personId: usersEdit.user.id})
+    .then(function(res) {
+        usersEdit.user = res;
+        return API.cui.getPersonPassword({personId: usersEdit.user.id});
     })
-    .then(function(res){
+    .then(function(res) {
         usersEdit.userPassword = res;
         $scope.$apply();
         usersEdit.loading = false;
     })
-    .fail(function(err){
+    .fail(function(err) {
         $scope.$apply();
         usersEdit.loading = false;
     });
 
-    usersEdit.save=function(){
+    usersEdit.save = function() {
         usersEdit.saving = true;
         usersEdit.fail = false;
         usersEdit.success = false;
-        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user}).
-        then(function(res) {
+
+        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user})
+        .then(function(res) {
             $timeout(function() {
                 usersEdit.saving = false;
                 usersEdit.success = true;
-            },300);
+            }, 300);
         })
         .fail(function(err) {
             $timeout(function() {
                 usersEdit.saving = false;
                 usersEdit.fail = true;
-            },300);
+            }, 300);
         });
     };
 
