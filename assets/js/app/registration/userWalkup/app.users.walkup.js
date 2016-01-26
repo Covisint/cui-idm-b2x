@@ -3,10 +3,10 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersWalkup=this;
     usersWalkup.userLogin={};
-    usersWalkup.userLogin.password='';
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
     usersWalkup.userLogin = {};
+    usersWalkup.orgSearch = {};
 
     usersWalkup.passwordPolicies=[
         {
@@ -47,6 +47,33 @@ function(localStorageService,$scope,Person,$stateParams,API){
     .catch(function(err) {
         console.log(err);
     });
+
+    // Return all organizations
+    API.doAuth()
+    .then(function() {
+        API.cui.getOrganizations()
+        .then(function(res){
+            usersWalkup.organizationList = res;
+        });
+    })
+    .fail(function(err) {
+        console.log(err);
+    });
+
+    var searchOrganizations = function() {
+        if (usersWalkup.orgSearch) {
+            API.cui.getOrganizations({'qs': [['name', usersWalkup.orgSearch.name]]})
+            .then(function(res){
+                usersWalkup.organizationList = res;
+                $scope.$apply();
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

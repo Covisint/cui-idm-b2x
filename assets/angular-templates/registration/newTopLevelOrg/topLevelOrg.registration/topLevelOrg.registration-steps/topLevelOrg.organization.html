@@ -94,7 +94,7 @@
       <div class="cui-error" ng-messages="organization.supplierCode.$error" ng-if="organization.supplierCode.$touched">
         <div ng-messages-include="assets/angular-templates/messages.html"></div>
       </div>
-      <input type="text" name="supplierCode" class="cui-input" required="required" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': organization.supplierCode.$touched}" ng-focus="newTLO.supplierPopover=true" ng-blur="newTLO.supplierPopover=false">
+      <input type="text" name="supplierCode" class="cui-input" ng-model="newTLO.organization.supplierCode" ng-class="{'cui-input--error': organization.supplierCode.$touched}" ng-focus="newTLO.supplierPopover=true" ng-blur="newTLO.supplierPopover=false">
     </div>
     <div class="cui-styeguide__popover-container" ng-show="newTLO.supplierPopover" style="position:absolute">
       <div class="cui-popover cui-popover--left">

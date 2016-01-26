@@ -4,7 +4,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
     usersRegister.userLogin={};
-    usersRegister.userLogin.password='';
     usersRegister.registering=false;
     usersRegister.registrationError=false;
     usersRegister.signOn = {};
