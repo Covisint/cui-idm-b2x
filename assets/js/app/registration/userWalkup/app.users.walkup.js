@@ -27,6 +27,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
     };
 
+
     usersWalkup.passwordPolicies=[
         {
             'allowUpperChars':true,
@@ -67,6 +68,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
         console.log(err);
     });
 
+
     // Populate Applications List
 
     API.cui.getPackages()
@@ -77,6 +79,34 @@ function(localStorageService,$scope,Person,$stateParams,API){
     .fail(function(err){
         console.log(err);
     })
+
+    // Return all organizations
+    API.doAuth()
+    .then(function() {
+        API.cui.getOrganizations()
+        .then(function(res){
+            usersWalkup.organizationList = res;
+        });
+    })
+    .fail(function(err) {
+        console.log(err);
+    });
+
+    var searchOrganizations = function() {
+        if (usersWalkup.orgSearch) {
+            API.cui.getOrganizations({'qs': [['name', usersWalkup.orgSearch.name]]})
+            .then(function(res){
+                usersWalkup.organizationList = res;
+                $scope.$apply();
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
+
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

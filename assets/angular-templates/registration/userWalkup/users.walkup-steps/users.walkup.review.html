@@ -37,22 +37,8 @@
     </cui-expandable-title>
 
     <cui-expandable-body class="cui-expandable__body">
-    <!-- Company/Division -->
-    <inline-edit label="cui-organization-name" model="usersWalkup.organization.name"></inline-edit>
-    <!-- Telephone -->
-    <inline-edit label="cui-telephone" model="usersWalkup.organization.phones[0].number"></inline-edit>
-    <!-- Address 1 -->
-    <inline-edit label="cui-address-1" model="usersWalkup.organization.addresses[0].streets[0]"></inline-edit>
-    <!-- Address 2 -->
-    <inline-edit label="cui-address-2" model="usersWalkup.organization.addresses[0].streets[1]"></inline-edit>
-    <!-- City -->
-    <inline-edit label="cui-city" model="usersWalkup.organization.addresses[0].city"></inline-edit>
-    <!-- State -->
-    <inline-edit label="cui-state" model="usersWalkup.organization.addresses[0].state"></inline-edit>
-    <!-- Postal -->
-    <inline-edit label="cui-postal" model="usersWalkup.organization.addresses[0].postal"></inline-edit>
-    <!-- Country -->
-    <inline-edit type="auto-complete" model="usersWalkup.organization.addresses[0].country" display="usersWalkup.organization.addresses[0].country.title || usersWalkup.organization.addresses[0].country" label="cui-country" selected-object="usersWalkup.organization.addresses[0].country" model="usersWalkup.organization.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
+      <!-- Company/Division -->
+      <inline-edit type="dropdown" display="usersWalkup.organizationSelect.organization.name" label="cui-org" options="usersWalkup.organizationList" options-expression="organization as organization.name for organization in options" model="usersWalkup.organizationSelect.organization"></inline-edit>
   </cui-expandable-body>
 </cui-expandable>
 
