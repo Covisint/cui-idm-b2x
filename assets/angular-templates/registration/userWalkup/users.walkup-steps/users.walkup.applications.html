@@ -1,8 +1,63 @@
-<p>< {{'cui-all-applications' | translate}}</p>
-<input class="cui-input--half" placeholder="Filter by application name">
+<div ng-if="!usersWalkup.applications.step || usersWalkup.applications.step===1" ng-init="usersWalkup.applications.step=1">
+  <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" />
+  <div style="float:right" class="cui-link">
+    {{'cui-selections' | translate }}
+    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+  </div>
 
-<p>{{'cui-application-select-info' | translate}}</p>
-<div class="cui-wizard__controls">
-	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="next()">{{'cui-next' | translate}}</button>
+  <div ng-repeat="application in usersWalkup.applications.list" style="margin-bottom:10px">
+    <input id="application{{$index}}" type="checkbox" ng-model="usersWalkup.applications.selected[$index]" ng-true-value="'{{application.id}},{{application.name[0].text}}'" ng-false-value="null" ng-change="usersWalkup.applications.updateNumberOfSelected(usersWalkup.applications.selected[$index])" style="margin-right:10px"/>
+    <label for="application{{$index}}" ng-bind="application.name[0].text"></label>
+    <span style="float:right;clear:both;">{{'cui-more-information' | translate }}</span>
+  </div>
+
+  <div class="cui-wizard__controls" style="margin-top:20px">
+  	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__next" ng-click="usersWalkup.applications.process(); usersWalkup.applications.step=usersWalkup.applications.step+1">{{'cui-next' | translate}}</button>
+  </div>
+</div>
+
+<!-- Checkout Applications -->
+<div ng-if="usersWalkup.applications.step===2">
+  <span ng-click="usersWalkup.applications.step=1" translate>< {{'cui-all-applications'}}</span>
+  <div style="float:right" class="cui-link">
+    {{'cui-selections' | translate }}
+    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+  </div>
+  <form name="selectApps" class="application-review">
+    <div class="application-review__name application-review__label">
+      <span translate>{{ 'cui-application-name' }}</span>
+    </div>
+    <div class="application-review__tos-link application-review__label">
+      <span translate>{{ 'cui-application-tos' }}</span>
+    </div>
+    <div class="application-review__tos-agreement application-review__label">
+      <span translate>{{ 'cui-application-tos-agreement' }}</span>
+    </div>
+    <div ng-repeat="application in usersWalkup.applications.processedSelected" class="application-review__list">
+      <div class="application-review__name">
+        <span>{{application.name}}</span>
+      </div>
+      <div class="application-review__tos-link">
+        <a class="cui-link" translate>{{'cui-view-tos'}}</a>
+      </div>
+      <div class="application-review__tos-agreement">
+        <div class="cui-switch">
+          <input class="cui-switch__input" ng-model="usersWalkup.applications.selectedApp[$index]" name="application{{$index}}" id="application{{$index}}" type="checkbox" ng-required="true"/>
+          <label class="cui-switch__label" for="application{{$index}}">
+            <div class="cui-switch__container">
+              <span class="cui-switch__checked-message">Accept</span>
+              <span class="cui-switch__unchecked-message">Don't Accept</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="cui-error-message" ng-if="!selectApps.$valid && usersWalkup.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
+  <div class="cui-wizard__controls">
+    <button class="cui-wizard__previous" ng-click="usersWalkup.applications.step=usersWalkup.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
+    <button class="cui-wizard__next" ng-click="usersWalkup.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+  </div>
 </div>

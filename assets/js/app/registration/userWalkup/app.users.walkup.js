@@ -3,10 +3,29 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersWalkup=this;
     usersWalkup.userLogin={};
-    usersWalkup.userLogin.password='';
+    usersWalkup.applications={};
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
-    usersWalkup.userLogin = {};
+    usersWalkup.applications.numberOfSelected=0;
+
+    usersWalkup.applications.updateNumberOfSelected=function(a){
+        if(a!==null) usersWalkup.applications.numberOfSelected++;
+        else usersWalkup.applications.numberOfSelected--;
+    };
+
+    usersWalkup.applications.process=function(){
+        usersWalkup.applications.processedSelected=[];
+        angular.forEach(usersWalkup.applications.selected,function(app){
+            if(app!==null) {
+                var id=app.split(',')[0];
+                var name=app.split(',')[1];
+                usersWalkup.applications.processedSelected.push({
+                    id:id,
+                    name:name
+                });
+            }
+        });
+    };
 
     usersWalkup.passwordPolicies=[
         {
@@ -28,25 +47,36 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    Person.getSecurityQuestions()
+    API.cui.getSecurityQuestions()
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1);
+        res.splice(0,1);
 
         // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
+        var numberOfQuestions = res.length,
         numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        usersWalkup.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
-    .catch(function(err) {
+    .fail(function(err) {
         console.log(err);
     });
+
+    // Populate Applications List
+
+    API.cui.getPackages()
+    .then(function(res){
+        console.log(res);
+        usersWalkup.applications.list=res;
+    })
+    .fail(function(err){
+        console.log(err);
+    })
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

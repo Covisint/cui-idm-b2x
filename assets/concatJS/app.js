@@ -233,40 +233,44 @@ angular.module('app')
 angular.module('app')
 .controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
 function(localStorageService,$scope,$stateParams,$timeout,API){
-    var usersEdit=this;
-    usersEdit.loading=true;
+    var usersEdit = this;
+    usersEdit.loading = true;
 
     API.doAuth()
-    .then(function(){
-        API.cui.getPerson({personId:$stateParams.id})
-        .then(function(res){
-            usersEdit.loading=false;
-            usersEdit.user=res;
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersEdit.loading=false;
-            console.log(err);
-        });
+    .then(function(res) {
+        return  API.cui.getPerson({personId: $stateParams.id});
+    })
+    .then(function(res) {
+        usersEdit.user = res;
+        return API.cui.getPersonPassword({personId: usersEdit.user.id});
+    })
+    .then(function(res) {
+        usersEdit.userPassword = res;
+        $scope.$apply();
+        usersEdit.loading = false;
+    })
+    .fail(function(err) {
+        $scope.$apply();
+        usersEdit.loading = false;
     });
 
+    usersEdit.save = function() {
+        usersEdit.saving = true;
+        usersEdit.fail = false;
+        usersEdit.success = false;
 
-    usersEdit.save=function(){
-        usersEdit.saving=true;
-        usersEdit.fail=false;
-        usersEdit.success=false;
-        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user}).
-        then(function(res){
-            $timeout(function(){
-                usersEdit.saving=false;
-                usersEdit.success=true;
-            },300);
+        API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user})
+        .then(function(res) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.success = true;
+            }, 300);
         })
-        .fail(function(err){
-            $timeout(function(){
-                usersEdit.saving=false;
-                usersEdit.fail=true;
-            },300);
+        .fail(function(err) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.fail = true;
+            }, 300);
         });
     };
 
@@ -869,6 +873,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersRegister.userLogin.password='';
     usersRegister.registering=false;
     usersRegister.registrationError=false;
+    usersRegister.signOn = {};
 
     usersRegister.passwordPolicies=[
         {
@@ -917,89 +922,93 @@ function(localStorageService,$scope,Person,$stateParams,API){
     };
 
     Person.getSecurityQuestions()
-    .then(function(res){
-        res.data.splice(0,1); // first question has a text of 'none' , this can be removed later;
-        // this ensures half the questions get put into the first challenge question dropdown and
-        // half into the other.
-        var numberOfQuestions=res.data.length,
-            numberOfQuestionsFloor=Math.floor(numberOfQuestions/2);
-        usersRegister.userLogin.challengeQuestions1=res.data.slice(0,numberOfQuestionsFloor);
-        usersRegister.userLogin.challengeQuestions2=res.data.slice(numberOfQuestionsFloor);
-        usersRegister.userLogin.question1=usersRegister.userLogin.challengeQuestions1[0];
-        usersRegister.userLogin.question2=usersRegister.userLogin.challengeQuestions2[0];
+    .then(function(res) {
+        // Removes first question as it is blank
+        res.data.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = res.data.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+        usersRegister.signOn.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
+        usersRegister.signOn.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+
+        // Preload question into input
+        usersRegister.signOn.question1 = usersRegister.signOn.challengeQuestions1[0];
+        usersRegister.signOn.question2 = usersRegister.signOn.challengeQuestions2[0];
     })
-    .catch(function(err){
-        console.log(err);
+        .catch(function(err) {
+            console.log(err);
     });
 
-    usersRegister.finish=function(form){
-        if(form.$invalid){
-            angular.forEach(form.$error, function (field) {
-                angular.forEach(field, function(errorField){
-                    errorField.$setTouched();
-                });
-            });
-            return;
-        }
+    // usersRegister.finish=function(form){
+    //     if(form.$invalid){
+    //         angular.forEach(form.$error, function (field) {
+    //             angular.forEach(field, function(errorField){
+    //                 errorField.$setTouched();
+    //             });
+    //         });
+    //         return;
+    //     }
 
-        usersRegister.registering=true;
+    //     usersRegister.registering=true;
 
-        var passwordAccount={
-            username:usersRegister.userLogin.username,
-            password:usersRegister.userLogin.password,
-            passwordPolicy:{
-                "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
-                "type":"passwordPolicy",
-                "realm":"COVSMKT-CVDEV"
-            },
-            authenticationPolicy:{
-                "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
-                "type":"authenticationPolicy",
-                "realm":"COVSMKT-CVDEV"
-            },
-            version:1
-        };
+    //     var passwordAccount={
+    //         username:usersRegister.userLogin.username,
+    //         password:usersRegister.userLogin.password,
+    //         passwordPolicy:{
+    //             "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
+    //             "type":"passwordPolicy",
+    //             "realm":"COVSMKT-CVDEV"
+    //         },
+    //         authenticationPolicy:{
+    //             "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
+    //             "type":"authenticationPolicy",
+    //             "realm":"COVSMKT-CVDEV"
+    //         },
+    //         version:1
+    //     };
 
-        var securityQuestions={
-            id:usersRegister.user.id,
-            questions:[{
-                question:{
-                    id:usersRegister.userLogin.question1.id,
-                    type:'question',
-                    realm:'COVSMKT-CVDEV'
-                },
-                answer:usersRegister.userLogin.challengeAnswer1,
-                index:1
-            },{
-                question:{
-                    id:usersRegister.userLogin.question2.id,
-                    type:'question',
-                    realm:'COVSMKT-CVDEV'
-                },
-                answer:usersRegister.userLogin.challengeAnswer2,
-                index:2
-            }],
-            version:1
-        };
+    //     var securityQuestions={
+    //         id:usersRegister.user.id,
+    //         questions:[{
+    //             question:{
+    //                 id:usersRegister.userLogin.question1.id,
+    //                 type:'question',
+    //                 realm:'COVSMKT-CVDEV'
+    //             },
+    //             answer:usersRegister.userLogin.challengeAnswer1,
+    //             index:1
+    //         },{
+    //             question:{
+    //                 id:usersRegister.userLogin.question2.id,
+    //                 type:'question',
+    //                 realm:'COVSMKT-CVDEV'
+    //             },
+    //             answer:usersRegister.userLogin.challengeAnswer2,
+    //             index:2
+    //         }],
+    //         version:1
+    //     };
 
 
-        Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
-        .then(function(res){
-            return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
-        })
-        .then(function(res){
-            return Person.update(usersRegister.user.id,usersRegister.user);
-        })
-        .then(function(res){
-            console.log(res);
-            usersRegister.registering=false;
-        })
-        .catch(function(err){
-            console.log(err);
-            usersRegister.registrationError=true;
-            usersRegister.registering=false;
-        });
-    };
+    //     Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
+    //     .then(function(res){
+    //         return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
+    //     })
+    //     .then(function(res){
+    //         return Person.update(usersRegister.user.id,usersRegister.user);
+    //     })
+    //     .then(function(res){
+    //         console.log(res);
+    //         usersRegister.registering=false;
+    //     })
+    //     .catch(function(err){
+    //         console.log(err);
+    //         usersRegister.registrationError=true;
+    //         usersRegister.registering=false;
+    //     });
+    // };
 
 
 }]);
@@ -1009,10 +1018,29 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersWalkup=this;
     usersWalkup.userLogin={};
-    usersWalkup.userLogin.password='';
+    usersWalkup.applications={};
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
-    usersWalkup.userLogin = {};
+    usersWalkup.applications.numberOfSelected=0;
+
+    usersWalkup.applications.updateNumberOfSelected=function(a){
+        if(a!==null) usersWalkup.applications.numberOfSelected++;
+        else usersWalkup.applications.numberOfSelected--;
+    };
+
+    usersWalkup.applications.process=function(){
+        usersWalkup.applications.processedSelected=[];
+        angular.forEach(usersWalkup.applications.selected,function(app){
+            if(app!==null) {
+                var id=app.split(',')[0];
+                var name=app.split(',')[1];
+                usersWalkup.applications.processedSelected.push({
+                    id:id,
+                    name:name
+                });
+            }
+        });
+    };
 
     usersWalkup.passwordPolicies=[
         {
@@ -1034,25 +1062,36 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    Person.getSecurityQuestions()
+    API.cui.getSecurityQuestions()
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1);
+        res.splice(0,1);
 
         // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
+        var numberOfQuestions = res.length,
         numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        usersWalkup.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
-    .catch(function(err) {
+    .fail(function(err) {
         console.log(err);
     });
+
+    // Populate Applications List
+
+    API.cui.getPackages()
+    .then(function(res){
+        console.log(res);
+        usersWalkup.applications.list=res;
+    })
+    .fail(function(err){
+        console.log(err);
+    })
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){
