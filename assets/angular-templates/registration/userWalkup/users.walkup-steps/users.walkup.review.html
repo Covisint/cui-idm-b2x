@@ -53,9 +53,9 @@
     <!-- User ID -->
     <inline-edit label="cui-user-id" model="usersWalkup.userLogin.username"></inline-edit>
     <!-- Password -->
-    <inline-edit label="cui-password" model="usersWalkup.userLogin.password"></inline-edit>
+    <inline-edit type="password" label="cui-password" model="usersWalkup.userLogin.password"></inline-edit>
     <!-- Re-Enter Password -->
-    <inline-edit label="cui-password-re" model="usersWalkup.userLogin.passwordRe"></inline-edit>
+    <inline-edit type="password" label="cui-password-re" model="usersWalkup.userLogin.passwordRe"></inline-edit>
     <!-- Challenge Question 1 -->
     <inline-edit type="dropdown" display="usersWalkup.userLogin.question1.question[0].text" label="cui-challenge-question" options="usersWalkup.userLogin.challengeQuestions1" options-expression="question as question.question[0].text for question in options" model="usersWalkup.userLogin.question1"></inline-edit>
     <!-- Challenge Answer 1 -->
@@ -83,5 +83,5 @@
 
 <div class="cui-wizard__controls">
   <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="usersWalkup.submit(userWalkupRegForm)" ng-class="{'cui-wizard__next--error' : !userWalkupRegForm.$valid }">{{'cui-submit' | translate}}</button>
 </div>

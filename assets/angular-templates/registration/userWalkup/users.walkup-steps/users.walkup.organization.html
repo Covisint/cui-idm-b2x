@@ -1,4 +1,4 @@
-<form name="organizationSelect" novalidate>
+<ng-form name="organizationSelect" novalidate>
   <p>{{'cui-all-organizations' | translate}}</p>
   <input class="cui-input--half" placeholder="Filter by organization name" ng-model="usersWalkup.orgSearch.name">
 
@@ -7,7 +7,7 @@
       {{organization.name}}
       <span class="chevron">></span>
     </cui-expandable-title>
-    
+
     <cui-expandable-body class="cui-expandable__body">
       <p>{{organization.id}}</p>
       <p>{{organization.url}}</p>
@@ -18,7 +18,7 @@
       </div>
     </cui-expandable-body>
   </cui-expandable>
-</form>
+</ng-form>
 
 <div class="cui-wizard__controls">
   <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>

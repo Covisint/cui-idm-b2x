@@ -96,13 +96,14 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     // Process the selected apps when you click next after selecting the apps you need
     usersWalkup.applications.process=function(){
+        if(usersWalkup.applications.processedSelected) var oldSelected=usersWalkup.applications.processedSelected;
         usersWalkup.applications.processedSelected=[];
         angular.forEach(usersWalkup.applications.selected,function(app,i){
             if(app!==null) {
                 usersWalkup.applications.processedSelected.push({
                     id:app.split(',')[0],
                     name:app.split(',')[1],
-                    acceptedTos: (usersWalkup.applications.selected[i].acceptedTos || false)
+                    acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
                 });
             }
         });
@@ -123,6 +124,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
     };
 
+
+    usersWalkup.submit = function(form){
+        console.log(form);
+    }
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

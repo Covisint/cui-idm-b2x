@@ -91,25 +91,25 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     // Update the number of selected apps everytime on of the boxes is checked/unchecked
    usersRegister.applications.updateNumberOfSelected=function(a){
-    console.log(a);
         if(a!==null) usersRegister.applications.numberOfSelected++;
         else usersRegister.applications.numberOfSelected--;
     };
 
     // Process the selected apps when you click next after selecting the apps you need
    usersRegister.applications.process=function(){
+       if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
        usersRegister.applications.processedSelected=[];
-        angular.forEach(usersRegister.applications.selected,function(app,i){
-            if(app!==null) {
+       angular.forEach(usersRegister.applications.selected,function(app,i){
+           if(app!==null) {
                usersRegister.applications.processedSelected.push({
-                    id:app.split(',')[0],
-                    name:app.split(',')[1],
-                    acceptedTos: (usersRegister.applications.selected[i].acceptedTos || false)
-                });
-            }
-        });
-        return usersRegister.applications.processedSelected.length;
-    };
+                   id:app.split(',')[0],
+                   name:app.split(',')[1],
+                   acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+               });
+           }
+       });
+       return usersRegister.applications.processedSelected.length;
+   };
 
     // Search apps by name
    usersRegister.applications.searchApplications=function(){

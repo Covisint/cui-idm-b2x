@@ -3348,6 +3348,10 @@ inline-edit .angucomplete-dropdown {
   text-align: center;
   font-size: 0.8em; }
 
+.cui-expandable__title--error {
+  font-weight: bold;
+  color: red; }
+
 .cui-tile__body, .cui-registration__body {
   overflow: hidden; }
 

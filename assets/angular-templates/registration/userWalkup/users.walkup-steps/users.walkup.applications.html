@@ -24,7 +24,7 @@
     {{'cui-selections' | translate }}
     <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
-  <form name="selectApps" class="application-review">
+  <ng-form name="selectApps" class="application-review">
     <div class="application-review__name application-review__label">
       <span translate>{{ 'cui-application-name' }}</span>
     </div>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </ng-form>
 
   <div class="cui-error-message" ng-if="!selectApps.$valid && usersWalkup.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
