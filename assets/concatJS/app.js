@@ -873,6 +873,8 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersRegister.registering=false;
     usersRegister.registrationError=false;
     usersRegister.signOn = {};
+    usersRegister.applications = {};
+    usersRegister.applications.numberOfSelected=0;
 
     usersRegister.passwordPolicies=[
         {
@@ -939,6 +941,55 @@ function(localStorageService,$scope,Person,$stateParams,API){
         .catch(function(err) {
             console.log(err);
     });
+
+
+
+    // Populate Applications List
+
+    API.cui.getPackages()
+    .then(function(res){
+       usersRegister.applications.list=res;
+        $scope.$apply();
+    })
+    .fail(function(err){
+        console.log(err);
+    })
+
+    // Update the number of selected apps everytime on of the boxes is checked/unchecked
+   usersRegister.applications.updateNumberOfSelected=function(a){
+    console.log(a);
+        if(a!==null) usersRegister.applications.numberOfSelected++;
+        else usersRegister.applications.numberOfSelected--;
+    };
+
+    // Process the selected apps when you click next after selecting the apps you need
+   usersRegister.applications.process=function(){
+       usersRegister.applications.processedSelected=[];
+        angular.forEach(usersRegister.applications.selected,function(app,i){
+            if(app!==null) {
+               usersRegister.applications.processedSelected.push({
+                    id:app.split(',')[0],
+                    name:app.split(',')[1],
+                    acceptedTos: (usersRegister.applications.selected[i].acceptedTos || false)
+                });
+            }
+        });
+        return usersRegister.applications.processedSelected.length;
+    };
+
+    // Search apps by name
+   usersRegister.applications.searchApplications=function(){
+        API.cui.getPackages({'qs': [['name',usersRegister.applications.search]]})
+        .then(function(res){
+            console.log(typeofusersRegister.applications.search);
+            console.log(res);
+           usersRegister.applications.list = res;
+            $scope.$apply();
+        })
+        .fail(function(err){
+            console.log(err);
+        });
+    };
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){
@@ -1111,11 +1162,12 @@ function(localStorageService,$scope,Person,$stateParams,API){
     // Process the selected apps when you click next after selecting the apps you need
     usersWalkup.applications.process=function(){
         usersWalkup.applications.processedSelected=[];
-        angular.forEach(usersWalkup.applications.selected,function(app){
+        angular.forEach(usersWalkup.applications.selected,function(app,i){
             if(app!==null) {
                 usersWalkup.applications.processedSelected.push({
                     id:app.split(',')[0],
-                    name:app.split(',')[1]
+                    name:app.split(',')[1],
+                    acceptedTos: (usersWalkup.applications.selected[i].acceptedTos || false)
                 });
             }
         });

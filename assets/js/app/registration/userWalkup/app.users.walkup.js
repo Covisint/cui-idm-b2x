@@ -97,11 +97,12 @@ function(localStorageService,$scope,Person,$stateParams,API){
     // Process the selected apps when you click next after selecting the apps you need
     usersWalkup.applications.process=function(){
         usersWalkup.applications.processedSelected=[];
-        angular.forEach(usersWalkup.applications.selected,function(app){
+        angular.forEach(usersWalkup.applications.selected,function(app,i){
             if(app!==null) {
                 usersWalkup.applications.processedSelected.push({
                     id:app.split(',')[0],
-                    name:app.split(',')[1]
+                    name:app.split(',')[1],
+                    acceptedTos: (usersWalkup.applications.selected[i].acceptedTos || false)
                 });
             }
         });
