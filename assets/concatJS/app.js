@@ -870,7 +870,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
     var usersRegister=this;
     usersRegister.loading=true;
     usersRegister.userLogin={};
-    usersRegister.userLogin.password='';
     usersRegister.registering=false;
     usersRegister.registrationError=false;
     usersRegister.signOn = {};
@@ -1023,25 +1022,6 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersWalkup.registrationError=false;
     usersWalkup.applications.numberOfSelected=0;
 
-    usersWalkup.applications.updateNumberOfSelected=function(a){
-        if(a!==null) usersWalkup.applications.numberOfSelected++;
-        else usersWalkup.applications.numberOfSelected--;
-    };
-
-    usersWalkup.applications.process=function(){
-        usersWalkup.applications.processedSelected=[];
-        angular.forEach(usersWalkup.applications.selected,function(app){
-            if(app!==null) {
-                var id=app.split(',')[0];
-                var name=app.split(',')[1];
-                usersWalkup.applications.processedSelected.push({
-                    id:id,
-                    name:name
-                });
-            }
-        });
-    };
-
     usersWalkup.passwordPolicies=[
         {
             'allowUpperChars':true,
@@ -1082,16 +1062,80 @@ function(localStorageService,$scope,Person,$stateParams,API){
         console.log(err);
     });
 
+
+
+    // Return all organizations
+    API.doAuth()
+    .then(function() {
+        API.cui.getOrganizations()
+        .then(function(res){
+            usersWalkup.organizationList = res;
+        });
+    })
+    .fail(function(err) {
+        console.log(err);
+    });
+
+    var searchOrganizations = function() {
+        if (usersWalkup.orgSearch) {
+            API.cui.getOrganizations({'qs': [['name', usersWalkup.orgSearch.name]]})
+            .then(function(res){
+                usersWalkup.organizationList = res;
+                $scope.$apply();
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
+
     // Populate Applications List
 
     API.cui.getPackages()
     .then(function(res){
-        console.log(res);
         usersWalkup.applications.list=res;
+        $scope.$apply();
     })
     .fail(function(err){
         console.log(err);
     })
+
+    // Update the number of selected apps everytime on of the boxes is checked/unchecked
+    usersWalkup.applications.updateNumberOfSelected=function(a){
+        if(a!==null) usersWalkup.applications.numberOfSelected++;
+        else usersWalkup.applications.numberOfSelected--;
+    };
+
+    // Process the selected apps when you click next after selecting the apps you need
+    usersWalkup.applications.process=function(){
+        usersWalkup.applications.processedSelected=[];
+        angular.forEach(usersWalkup.applications.selected,function(app){
+            if(app!==null) {
+                usersWalkup.applications.processedSelected.push({
+                    id:app.split(',')[0],
+                    name:app.split(',')[1]
+                });
+            }
+        });
+        return usersWalkup.applications.processedSelected.length;
+    };
+
+    // Search apps by name
+    usersWalkup.applications.searchApplications=function(){
+        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search]]})
+        .then(function(res){
+            console.log(typeof usersWalkup.applications.search);
+            console.log(res);
+            usersWalkup.applications.list = res;
+            $scope.$apply();
+        })
+        .fail(function(err){
+            console.log(err);
+        });
+    };
+
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

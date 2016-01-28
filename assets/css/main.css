@@ -925,20 +925,36 @@ Styleguide Elements.Forms.Switch
   position: relative; }
 
 .cui-switch__label:before {
-  background-color: #00BD9C;
+  background-color: #555;
   border-radius: 0 6px 6px 0;
   content: '';
   cursor: pointer;
   height: calc(100% - 2px);
   position: absolute;
-  right: 1px;
+  left: 50%;
   top: 1px;
   transition: all .15s ease-in;
-  width: 104px; }
+  width: calc(50% - 1px); }
+
+.cui-switch__label:after {
+  background-color: #00BD9C;
+  border-radius: 6px 0 0 6px;
+  content: '';
+  cursor: pointer;
+  height: calc(100% - 2px);
+  position: absolute;
+  right: calc(50% - 1px);
+  top: 1px;
+  transition: all .15s ease-in;
+  width: 0; }
 
 .cui-switch__input:checked + .cui-switch__label:before {
-  border-radius: 6px 0 0 6px;
-  transform: translateX(-103px); }
+  width: 0;
+  border-radius: 0; }
+
+.cui-switch__input:checked + .cui-switch__label:after {
+  width: 50%;
+  border-radius: 6px 0 0 6px; }
 
 .cui-switch__input:checked + .cui-switch__label .cui-switch__unchecked-message {
   color: black;

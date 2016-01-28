@@ -1,5 +1,5 @@
 <div ng-if="!usersWalkup.applications.step || usersWalkup.applications.step===1" ng-init="usersWalkup.applications.step=1">
-  <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" />
+  <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersWalkup.applications.search" ng-change="usersWalkup.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
     <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
@@ -13,7 +13,7 @@
 
   <div class="cui-wizard__controls" style="margin-top:20px">
   	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-    <button class="cui-wizard__next" ng-click="usersWalkup.applications.process(); usersWalkup.applications.step=usersWalkup.applications.step+1">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-click="usersWalkup.applications.process()===0? next() : usersWalkup.applications.step=2">{{'cui-next' | translate}}</button>
   </div>
 </div>
 
