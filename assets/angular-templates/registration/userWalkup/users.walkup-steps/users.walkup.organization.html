@@ -14,7 +14,7 @@
       <p>{{organization.phones[0].number}}</p>
 
       <div class="cui-wizard__controls">
-        <button class="cui-wizard__next"  ng-click="next(); $parent.usersWalkup.organizationSelect.organization = organization">{{'cui-select-org' | translate}}</button>
+        <button class="cui-wizard__next"  ng-click="next(); usersWalkup.organization = organization">{{'cui-select-org' | translate}}</button>
       </div>
     </cui-expandable-body>
   </cui-expandable>

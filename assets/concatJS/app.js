@@ -1073,6 +1073,10 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersWalkup.registrationError=false;
     usersWalkup.applications.numberOfSelected=0;
 
+    function handleError(err){
+        console.log(err);
+    }
+
     usersWalkup.passwordPolicies=[
         {
             'allowUpperChars':true,
@@ -1134,9 +1138,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
                 usersWalkup.organizationList = res;
                 $scope.$apply();
             })
-            .fail(function(err){
-                console.log(err);
-            });
+            .fail(handleError);
         }
     };
 
@@ -1144,14 +1146,18 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     // Populate Applications List
 
-    API.cui.getPackages()
-    .then(function(res){
-        usersWalkup.applications.list=res;
-        $scope.$apply();
-    })
-    .fail(function(err){
-        console.log(err);
-    })
+    $scope.$watch('usersWalkup.organization',function(newOrg){
+        if(newOrg){
+            usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
+            usersWalkup.applications.processedSelected=undefined; // is selected.
+            API.cui.getPackages({'qs': [['owningOrganization.id', newOrg.id]]})
+            .then(function(res){
+                usersWalkup.applications.list=res;
+                $scope.$apply();
+            })
+            .fail(handleError);
+        }
+    });
 
     // Update the number of selected apps everytime on of the boxes is checked/unchecked
     usersWalkup.applications.updateNumberOfSelected=function(a){
@@ -1184,9 +1190,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
             usersWalkup.applications.list = res;
             $scope.$apply();
         })
-        .fail(function(err){
-            console.log(err);
-        });
+        .fail(handleError);
     };
 
 
