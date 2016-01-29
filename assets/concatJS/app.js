@@ -1113,9 +1113,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
-    .fail(function(err) {
-        console.log(err);
-    });
+    .fail(handleError);
 
 
 
@@ -1127,9 +1125,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
             usersWalkup.organizationList = res;
         });
     })
-    .fail(function(err) {
-        console.log(err);
-    });
+    .fail(handleError);
 
     var searchOrganizations = function() {
         if (usersWalkup.orgSearch) {

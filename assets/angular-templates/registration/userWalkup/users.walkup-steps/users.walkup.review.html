@@ -7,7 +7,7 @@
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- First Name -->
-    <inline-edit label="cui-first-name" model="usersWalkup.user.name.given"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}:<span class="review-item__value">{{usersWalkup.user.name.given}}</span></div>
     <!-- Last Name -->
     <inline-edit label="cui-last-name" model="usersWalkup.user.name.surname"></inline-edit>
     <!-- Email -->
