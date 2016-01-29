@@ -1,12 +1,12 @@
-<form name="userLogin" novalidate>
+<ng-form name="userLogin" novalidate>
 
 	<!-- First Row -->
 	<!-- User ID -->
 	<label for="userID">{{'cui-user-id' | translate}}</label>
-	<div class="cui-error" ng-messages="userLogin.name.$error" ng-if="userLogin.name.$touched">
+	<div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.userID.$touched">
 		<div ng-messages-include="assets/angular-templates/messages.html"></div>
 	</div>
-	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.username">
+	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.username" ng-class="{'cui-input--error' : userLogin.userID.$touched &&  userLogin.userID.$touched}">
 
 	<!-- Second row -->
 	<div class="cui-wizard__field-row">
@@ -17,7 +17,7 @@
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 					<div ng-messages-include="assets/angular-templates/messages.html"></div>
 				</div>
-				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.password" ng-class="{'cui-input--error': usersWalkup.password.$touched && usersWalkup.password.$invalid}" password-validation="usersWalkup.passwordPolicies">
+				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="usersWalkup.passwordPolicies" ng-model-options="{allowInvalid:true}" ng-change="usersWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(usersWalkup.userLogin.password)">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
 					<div ng-messages-include="assets/angular-templates/registration/password-validation.html"></div>
 				</div>
@@ -78,7 +78,7 @@
 		</div>
 	</div>
 
-</form>
+</ng-form>
 
 <div class="cui-wizard__controls">
 	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>

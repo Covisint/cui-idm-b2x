@@ -3,10 +3,14 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API){
     var usersWalkup=this;
     usersWalkup.userLogin={};
-    usersWalkup.userLogin.password='';
+    usersWalkup.applications={};
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
-    usersWalkup.userLogin = {};
+    usersWalkup.applications.numberOfSelected=0;
+
+    function handleError(err){
+        console.log(err);
+    }
 
     usersWalkup.passwordPolicies=[
         {
@@ -28,25 +32,102 @@ function(localStorageService,$scope,Person,$stateParams,API){
         }
     ];
 
-    Person.getSecurityQuestions()
+    API.cui.getSecurityQuestions()
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1);
+        res.splice(0,1);
 
         // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
+        var numberOfQuestions = res.length,
         numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        usersWalkup.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        usersWalkup.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
     })
-    .catch(function(err) {
-        console.log(err);
+    .fail(handleError);
+
+
+
+    // Return all organizations
+    API.doAuth()
+    .then(function() {
+        API.cui.getOrganizations()
+        .then(function(res){
+            usersWalkup.organizationList = res;
+        });
+    })
+    .fail(handleError);
+
+    var searchOrganizations = function() {
+        if (usersWalkup.orgSearch) {
+            API.cui.getOrganizations({'qs': [['name', usersWalkup.orgSearch.name]]})
+            .then(function(res){
+                usersWalkup.organizationList = res;
+                $scope.$apply();
+            })
+            .fail(handleError);
+        }
+    };
+
+    $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
+
+    // Populate Applications List
+
+    $scope.$watch('usersWalkup.organization',function(newOrg){
+        if(newOrg){
+            usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
+            usersWalkup.applications.processedSelected=undefined; // is selected.
+            API.cui.getPackages({'qs': [['owningOrganization.id', newOrg.id]]})
+            .then(function(res){
+                usersWalkup.applications.list=res;
+                $scope.$apply();
+            })
+            .fail(handleError);
+        }
     });
+
+    // Update the number of selected apps everytime on of the boxes is checked/unchecked
+    usersWalkup.applications.updateNumberOfSelected=function(a){
+        if(a!==null) usersWalkup.applications.numberOfSelected++;
+        else usersWalkup.applications.numberOfSelected--;
+    };
+
+    // Process the selected apps when you click next after selecting the apps you need
+    usersWalkup.applications.process=function(){
+        if(usersWalkup.applications.processedSelected) var oldSelected=usersWalkup.applications.processedSelected;
+        usersWalkup.applications.processedSelected=[];
+        angular.forEach(usersWalkup.applications.selected,function(app,i){
+            if(app!==null) {
+                usersWalkup.applications.processedSelected.push({
+                    id:app.split(',')[0],
+                    name:app.split(',')[1],
+                    acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                });
+            }
+        });
+        return usersWalkup.applications.processedSelected.length;
+    };
+
+    // Search apps by name
+    usersWalkup.applications.searchApplications=function(){
+        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search]]})
+        .then(function(res){
+            console.log(typeof usersWalkup.applications.search);
+            console.log(res);
+            usersWalkup.applications.list = res;
+            $scope.$apply();
+        })
+        .fail(handleError);
+    };
+
+
+    usersWalkup.submit = function(form){
+        console.log(form);
+    }
 
     // usersWalkup.finish=function(form){
     //     if(form.$invalid){

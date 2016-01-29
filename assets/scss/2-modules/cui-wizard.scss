@@ -29,3 +29,107 @@ inline-edit{
         margin-top: 7px;
     }
 }
+
+.application-review{
+    display:flex;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+    clear:both;
+    &__label{
+        font-weight:bold;
+        font-size:0.9em;
+    }
+    &__name{
+        width:35%;
+        padding:5px 0;
+        display:flex;
+        align-items:center;
+    }
+    &__tos-link{
+        width:35%;
+        padding:5px 0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+    &__tos-agreement{
+        width:30%;
+        text-align:right;
+        padding:5px 0;
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+    }
+    &__list{
+        width:100%;
+        display:flex;
+
+    }
+    .cui-switch{
+        display:inline-flex;
+        &__container{
+            height:35px;
+        }
+    }
+
+    .cui-switch__input:checked {
+        & + .cui-switch__label:before {
+            width:0;
+            left:50%;
+            transform:none;
+            border-radius: 0;
+        }
+        & + .cui-switch__label:after {
+            width: 104px;
+            border-radius: 6px 0 0 6px;
+        }
+    }
+
+    .cui-switch__label:before {
+      left: 50%;
+      top: 1px;
+      transition: all .15s ease-in;
+      width: 104px;
+      background-color: #555;
+    }
+
+    .cui-switch__label:after {
+      background-color: #00BD9C;
+      border-radius: 0;
+      content: '';
+      cursor: pointer;
+      height: calc(100% - 2px);
+      position: absolute;
+      right: 50%;
+      top: 1px;
+      transition: all .15s ease-in;
+      width: 0;
+    }
+}
+
+.cui-error-message {
+    color:red;
+    text-align:right;
+    margin-bottom:20px;
+}
+
+.badge{
+    border-radius:20px;
+    background:red;
+    color:white;
+    padding:5px 9px;
+    min-width:25px;
+    display:inline-block;
+    text-align:center;
+    font-size:0.8em;
+}
+
+.cui-expandable__title--error{
+    font-weight:bold;
+    color:red;
+}
+
+.edit-button{
+    position:absolute;
+    left:0;
+}

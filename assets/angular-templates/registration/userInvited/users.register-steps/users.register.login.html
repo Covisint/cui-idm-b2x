@@ -3,7 +3,7 @@
   <!-- First Row -->
   <!-- User ID -->
   <label for="userID">{{'cui-user-id' | translate}}</label>
-  <div class="cui-error" ng-messages="signOn.name.$error" ng-if="signOn.name.$touched">
+  <div class="cui-error" ng-messages="signOn.userID.$error" ng-if="signOn.name.$touched">
     <div ng-messages-include="assets/angular-templates/messages.html"></div>
   </div>
   <input type="text" name="userID" class="cui-input" ng-required="true" ng-model="usersRegister.signOn.username">

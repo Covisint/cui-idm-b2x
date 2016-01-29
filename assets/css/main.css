@@ -925,20 +925,36 @@ Styleguide Elements.Forms.Switch
   position: relative; }
 
 .cui-switch__label:before {
-  background-color: #00BD9C;
+  background-color: #555;
   border-radius: 0 6px 6px 0;
   content: '';
   cursor: pointer;
   height: calc(100% - 2px);
   position: absolute;
-  right: 1px;
+  left: 50%;
   top: 1px;
   transition: all .15s ease-in;
-  width: 104px; }
+  width: calc(50% - 1px); }
+
+.cui-switch__label:after {
+  background-color: #00BD9C;
+  border-radius: 6px 0 0 6px;
+  content: '';
+  cursor: pointer;
+  height: calc(100% - 2px);
+  position: absolute;
+  right: calc(50% - 1px);
+  top: 1px;
+  transition: all .15s ease-in;
+  width: 0; }
 
 .cui-switch__input:checked + .cui-switch__label:before {
-  border-radius: 6px 0 0 6px;
-  transform: translateX(-103px); }
+  width: 0;
+  border-radius: 0; }
+
+.cui-switch__input:checked + .cui-switch__label:after {
+  width: 50%;
+  border-radius: 6px 0 0 6px; }
 
 .cui-switch__input:checked + .cui-switch__label .cui-switch__unchecked-message {
   color: black;
@@ -958,19 +974,20 @@ Styleguide Elements.Colors
 /*
 Primary Colors
 
+
 Markup: 
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">$cui-primary-colors--light</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">$cui-primary-colors--medium-light</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">$cui-primary-colors--medium</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">$cui-primary-colors--medium-dark</div>
-<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">$cui-primary-colors--dark</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">$cui-primary-colors--light #87CEEC</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">$cui-primary-colors--medium-light #429DD1</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">$cui-primary-colors--medium #4582B4</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">$cui-primary-colors--medium-dark #165E9B</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">$cui-primary-colors--dark #0A2741</div>
 
 Styleguide Elements.Colors.Primary-Colors
 */
 .cui-primary-colors--light {
   background-color: #87CEEC; }
 
-.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title {
+.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title, .cui-registration__title {
   background-color: #429DD1; }
 
 .cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child,
@@ -987,11 +1004,12 @@ Styleguide Elements.Colors.Primary-Colors
 /*
 Secondary Colors
 
+
 Markup: 
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">$cui-secondary-colors--light</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">$cui-secondary-colors--medium-light</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">$cui-secondary-colors--medium</div>
-<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">$cui-secondary-colors--dark</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">$cui-secondary-colors--light #3CB371</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">$cui-secondary-colors--medium-light #FFD700</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">$cui-secondary-colors--medium #FF8C00</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">$cui-secondary-colors--dark #FF4400</div>
 
 Styleguide Elements.Colors.Secondary-Colors
 */
@@ -1031,13 +1049,16 @@ Styleguide Elements.Buttons
 */
 .cui-button, .cui-wizard__next,
 .cui-form__next, .cui-card__button {
+  align-items: center;
   background-color: #429DD1;
+  border-radius: 0.25em;
   border: 0;
-  border-radius: 4px;
   color: #fff;
-  font-size: 0.75em;
-  height: 37px;
-  width: 160px; }
+  display: inline-flex;
+  font-size: 12px;
+  height: 3.0833333333em;
+  justify-content: center;
+  width: 13.3333333333em; }
   .cui-button:focus, .cui-wizard__next:focus,
   .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
   .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button, .cui-button:hover, .cui-wizard__next:hover,
@@ -1761,21 +1782,21 @@ Markup:
 
 Styleguide Blocks.Tile
 */
-.cui-tile {
+.cui-tile, .cui-registration {
   border-radius: 6px; }
-  .cui-tile__body {
+  .cui-tile__body, .cui-registration__body {
     background: white;
     border-radius: 0 0 6px 6px;
     margin: 0 auto;
     max-width: 100%;
     padding: 50px; }
-  .cui-tile__title {
+  .cui-tile__title, .cui-registration__title {
     border-radius: 6px 6px 0 0;
     color: white;
     padding: 15px;
     text-align: center; }
   @media all and (max-width: 600px) {
-    .cui-tile__body {
+    .cui-tile__body, .cui-registration__body {
       padding: 20px; } }
 
 /*
@@ -3021,11 +3042,88 @@ Markup:
 
 Styleguide Blocks.Step-Indicator-With-Icons
 */
-.cui-tile {
+.cui-registration {
+  margin: 0;
+  width: 100%; }
+  @media screen and (min-width: 700px) {
+    .cui-registration {
+      margin: 1.875em auto;
+      width: 80%; } }
+  .cui-registration__title {
+    left: -9999px;
+    position: absolute; }
+    @media screen and (min-width: 700px) {
+      .cui-registration__title {
+        left: 0;
+        position: relative; } }
+  .cui-registration__body {
+    padding: 0; }
+    @media screen and (min-width: 700px) {
+      .cui-registration__body {
+        padding: 3.125em; } }
+  .cui-registration .cui-expandable.mobile-element {
+    padding-bottom: 0; }
+  .cui-registration .mobile-element > .cui-expandable__title {
+    background-color: #F3F3F3; }
+  .cui-registration .mobile-element > .cui-expandable__title {
+    height: 7.5em;
+    padding-left: 1.25em;
+    padding-top: 0;
+    position: relative; }
+    .cui-registration .mobile-element > .cui-expandable__title::before {
+      background-color: #D0D0D0;
+      content: '';
+      left: 2.8125em;
+      height: 100%;
+      position: absolute;
+      width: 0.0625em; }
+  .cui-registration .mobile-element.expanded > .cui-expandable__title {
+    background-color: #fff; }
+    .cui-registration .mobile-element.expanded > .cui-expandable__title::before {
+      background-color: #979797; }
+  .cui-registration .mobile-element.visited > .cui-expandable__title {
+    background-color: #D9EAEE; }
+    .cui-registration .mobile-element.visited > .cui-expandable__title::before {
+      background-color: #979797; }
+  .cui-registration .cui-expandable:first-of-type.mobile-element > .cui-expandable__title::before {
+    background-color: #979797;
+    content: '';
+    left: 2.8125em;
+    height: 100%;
+    position: absolute;
+    width: 0.0625em; }
+  .cui-registration .cui-expandable:first-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+    bottom: 0;
+    height: 50%; }
+  .cui-registration .cui-expandable:last-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+    top: 0;
+    height: 50%; }
+  .cui-registration .mobile-element.visited .icon {
+    border: 0.125em solid #6D6D6D; }
+  .cui-registration .mobile-element .icon {
+    background: #fff;
+    border: 0.125em solid #D0D0D0;
+    border-radius: 50%;
+    height: 3.125em;
+    position: relative;
+    margin: 0 auto;
+    width: 3.125em;
+    z-index: 1; }
+  .cui-registration .mobile-element.expanded .icon {
+    border: 0.125em solid #009FD3; }
+  .cui-registration .mobile-element.expanded .cui-icon-rotate {
+    fill: #009FD3; }
+  .cui-registration .cui-icon-rotate {
+    margin: 0.625em auto; }
+  .cui-registration .mobile-element .cui-expandable__title {
+    align-items: center;
+    display: flex; }
+
+.cui-tile, .cui-registration {
   width: 80%;
   margin: 30px auto; }
 
-.cui-tile__body {
+.cui-tile__body, .cui-registration__body {
   position: relative; }
 
 .cui-wrapper {
@@ -3175,3 +3273,111 @@ Styleguide Blocks.Step-Indicator-With-Icons
 inline-edit .angucomplete-dropdown {
   border: 1px solid #ececec;
   margin-top: 7px; }
+
+.application-review {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  clear: both; }
+  .application-review__label {
+    font-weight: bold;
+    font-size: 0.9em; }
+  .application-review__name {
+    width: 35%;
+    padding: 5px 0;
+    display: flex;
+    align-items: center; }
+  .application-review__tos-link {
+    width: 35%;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  .application-review__tos-agreement {
+    width: 30%;
+    text-align: right;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; }
+  .application-review__list {
+    width: 100%;
+    display: flex; }
+  .application-review .cui-switch {
+    display: inline-flex; }
+    .application-review .cui-switch__container {
+      height: 35px; }
+  .application-review .cui-switch__input:checked + .cui-switch__label:before {
+    width: 0;
+    left: 50%;
+    transform: none;
+    border-radius: 0; }
+  .application-review .cui-switch__input:checked + .cui-switch__label:after {
+    width: 104px;
+    border-radius: 6px 0 0 6px; }
+  .application-review .cui-switch__label:before {
+    left: 50%;
+    top: 1px;
+    transition: all .15s ease-in;
+    width: 104px;
+    background-color: #555; }
+  .application-review .cui-switch__label:after {
+    background-color: #00BD9C;
+    border-radius: 0;
+    content: '';
+    cursor: pointer;
+    height: calc(100% - 2px);
+    position: absolute;
+    right: 50%;
+    top: 1px;
+    transition: all .15s ease-in;
+    width: 0; }
+
+.cui-error-message {
+  color: red;
+  text-align: right;
+  margin-bottom: 20px; }
+
+.badge {
+  border-radius: 20px;
+  background: red;
+  color: white;
+  padding: 5px 9px;
+  min-width: 25px;
+  display: inline-block;
+  text-align: center;
+  font-size: 0.8em; }
+
+.cui-expandable__title--error {
+  font-weight: bold;
+  color: red; }
+
+.edit-button {
+  position: absolute;
+  left: 0; }
+
+.cui-tile__body, .cui-registration__body {
+  overflow: hidden; }
+
+.misc-body {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 60%;
+  padding: 12px;
+  overflow: auto; }
+
+.misc-body p {
+  color: #429DD1; }
+
+.misc-body a {
+  color: #429DD1; }
+
+.misc-body h1 {
+  color: #429DD1;
+  font-size: 2em; }
+
+.misc-body img {
+  margin: 20px; }
+
+.cui-card__button {
+  float: right; }
