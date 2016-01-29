@@ -3352,6 +3352,10 @@ inline-edit .angucomplete-dropdown {
   font-weight: bold;
   color: red; }
 
+.edit-button {
+  position: absolute;
+  left: 0; }
+
 .cui-tile__body, .cui-registration__body {
   overflow: hidden; }
 

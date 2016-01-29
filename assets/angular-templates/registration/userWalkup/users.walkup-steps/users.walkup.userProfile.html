@@ -104,6 +104,7 @@
   <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
   <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
   <div class="cui-wizard__controls">
-    <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(5)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
   </div>
 </ng-form>

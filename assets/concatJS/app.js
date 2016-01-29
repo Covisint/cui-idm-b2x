@@ -61,6 +61,9 @@ function($state,getCountries,$scope,$translate){
         }
     };
 
+    base.generateHiddenPassword=function(password){
+        return Array(password.length+1).join('•');
+    };
 
     var setCountries=function(language){
         language = language || 'en';

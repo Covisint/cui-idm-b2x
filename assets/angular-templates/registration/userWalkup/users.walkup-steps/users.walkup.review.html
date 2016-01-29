@@ -2,35 +2,35 @@
 <cui-expandable class="cui-expandable expanded">
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-user-information' | translate}}
-    <span class="chevron">></span>
+    <span class="edit-button" ng-click="goToStep(1)"></span><span class="chevron">></span>
   </cui-expandable-title>
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- First Name -->
     <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}:<span class="review-item__value">{{usersWalkup.user.name.given}}</span></div>
     <!-- Last Name -->
-    <inline-edit label="cui-last-name" model="usersWalkup.user.name.surname"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-last-name' | translate}}:<span class="review-item__value">{{usersWalkup.user.name.surname}}</span></div>
     <!-- Email -->
-    <inline-edit label="cui-email" model="usersWalkup.user.email"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-email' | translate}}:<span class="review-item__value">{{usersWalkup.user.email}}</span></div>
     <!-- Country -->
-    <inline-edit type="auto-complete" model="usersWalkup.user.addresses[0].country" display="usersWalkup.user.addresses[0].country.title || usersWalkup.user.addresses[0].country" label="cui-country" selected-object="usersWalkup.user.addresses[0].country" model="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-country' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].country.title || usersWalkup.user.addresses[0].country}}</span></div>
     <!-- Address 1 -->
-    <inline-edit label="cui-address-1" model="usersWalkup.user.addresses[0].streets[0]"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].streets[0] && usersWalkup.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].streets[0]}}</span></div>
     <!-- Address 2 -->
-    <inline-edit label="cui-address-2" model="usersWalkup.user.addresses[0].streets[1]"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].streets[1] && usersWalkup.user.addresses[0].streets[1]!==''">{{'cui-address-2' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].streets[1]}}</span></div>
     <!-- City -->
-    <inline-edit label="cui-city" model="usersWalkup.user.addresses[0].city"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].city && usersWalkup.user.addresses[0].city!==''">{{'cui-city' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].city}}</span></div>
     <!-- State -->
-    <inline-edit label="cui-state" model="usersWalkup.user.addresses[0].state"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].state && usersWalkup.user.addresses[0].state!==''">{{'cui-state' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].state}}</span></div>
     <!-- Postal -->
-    <inline-edit label="cui-postal" model="usersWalkup.user.addresses[0].postal"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].postal && usersWalkup.user.addresses[0].postal!==''">{{'cui-postal' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].postal}}</span></div>
     <!-- Phone Number -->
-    <inline-edit label="cui-telephone" model="usersWalkup.user.phones[0].number"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.user.phones[0].number && usersWalkup.user.phones[0].number!==''">{{'cui-telephone' | translate}}:<span class="review-item__value">{{usersWalkup.user.phones[0].number}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Organization Information -->
-<cui-expandable class="cui-expandable">
+<cui-expandable class="cui-expandable expanded">
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       {{'cui-organization-information' | translate}}
       <span class="chevron">></span>
@@ -38,12 +38,12 @@
 
     <cui-expandable-body class="cui-expandable__body">
       <!-- Company/Division -->
-      <inline-edit type="dropdown" display="usersWalkup.organizationSelect.organization.name" label="cui-org" options="usersWalkup.organizationList" options-expression="organization as organization.name for organization in options" model="usersWalkup.organizationSelect.organization"></inline-edit>
+      <div class="cui-expandable__review-item">{{'cui-org' | translate}}:<span class="review-item__value">{{usersWalkup.organization.name}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Sign In Information -->
-<cui-expandable class="cui-expandable">
+<cui-expandable class="cui-expandable expanded">
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-sign-in-information' | translate}}
     <span class="chevron">></span>
@@ -51,24 +51,22 @@
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- User ID -->
-    <inline-edit label="cui-user-id" model="usersWalkup.userLogin.username"></inline-edit>
+     <div class="cui-expandable__review-item">{{'cui-user-id' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.username}}</span></div>
     <!-- Password -->
-    <inline-edit type="password" label="cui-password" model="usersWalkup.userLogin.password"></inline-edit>
-    <!-- Re-Enter Password -->
-    <inline-edit type="password" label="cui-password-re" model="usersWalkup.userLogin.passwordRe"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-password' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
-    <inline-edit type="dropdown" display="usersWalkup.userLogin.question1.question[0].text" label="cui-challenge-question" options="usersWalkup.userLogin.challengeQuestions1" options-expression="question as question.question[0].text for question in options" model="usersWalkup.userLogin.question1"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question1.question[0].text}}</span></div>
     <!-- Challenge Answer 1 -->
-    <inline-edit label="cui-challenge-answer" model="usersWalkup.userLogin.challengeAnswer1"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.challengeAnswer1}}</span></div>
     <!-- Challenge Question 2 -->
-    <inline-edit type="dropdown" display="usersWalkup.userLogin.question2.question[0].text" label="cui-challenge-question" options="usersWalkup.userLogin.challengeQuestions2" options-expression="question as question.question[0].text for question in options" model="usersWalkup.userLogin.question2"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question2.question[0].text}}</span></div>
     <!-- Challenge Answer 2 -->
-    <inline-edit label="cui-challenge-answer" model="usersWalkup.userLogin.challengeAnswer2"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.challengeAnswer2}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Application Selection -->
-<cui-expandable class="cui-expandable">
+<cui-expandable class="cui-expandable expanded" ng-if="usersWalkup.applications.processedSelected && usersWalkup.applications.processedSelected.length>0">
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-application-selection' | translate}}
     <span class="chevron">></span>
