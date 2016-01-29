@@ -1,4 +1,4 @@
-# CUI-CCA-B2X
+# CUI-IDM-B2X
 
 # Standard index.html
 
