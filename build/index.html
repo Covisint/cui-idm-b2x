@@ -2,22 +2,27 @@
 <html lang="en" ng-app="app" ng-controller="baseCtrl as base">
 <head>
   <meta charset="UTF-8">
-  <title>CUI-CCA-B2P</title>
+  <title>CUI IDM B2X</title>
 
-  <link rel="stylesheet" href="assets/css/main.81080076.css">
+  <link rel="stylesheet" href="assets/css/main.8ac1ea20.css">
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
 <body ng-cloak>
-  
-
   <div class="cui-wrapper">
     <snap-drawer>
 
+      <span class="snap-menu--option" ui-sref="welcome.screen">Welcome</span>
       <span class="snap-menu--option" ui-sref="users.search">Search Users</span>
       <span class="snap-menu--option" ui-sref="users.invitations">User Invitations</span>
-      <span class="snap-menu--option" ui-sref="sysAdmin.account">Sys Admin Account Creation</span>
-      <span class="snap-menu--option" ui-sref="users.walkupRegistration">User Walkup Registration</span>
+      <span class="snap-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
+      <span class="snap-menu--option" ui-sref="users.register">Invited User Registration</span>
+      <span class="snap-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
+      <span class="snap-menu--option" ui-sref="division.registration">New Division Registration</span>
+      <span class="snap-menu--option" ui-sref="misc.404">404 Not Found</span>
+      <span class="snap-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
+      <span class="snap-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
+      <span class="snap-menu--option" ui-sref="misc.success">Success</span>
 
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
@@ -29,27 +34,32 @@
         </div>
       </header>
       <div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-        
+
+        <span class="desktop-menu--option" ui-sref="welcome.screen">Welcome</span>
         <span class="desktop-menu--option" ui-sref="users.search">Search Users</span>
         <span class="desktop-menu--option" ui-sref="users.invitations">User Invitations</span>
-        <span class="desktop-menu--option" ui-sref="sysAdmin.account">Sys Admin Account Creation</span>
-        <span class="desktop-menu--option" ui-sref="users.walkupRegistration">User Walkup Registration</span>
+        <span class="desktop-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
+        <span class="desktop-menu--option" ui-sref="users.register">Invited User Registration</span>
+        <span class="desktop-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
+        <span class="desktop-menu--option" ui-sref="division.registration">New Division Registration</span>
+        <span class="desktop-menu--option" ui-sref="misc.404">404 Not Found</span>
+        <span class="desktop-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
+        <span class="desktop-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
+        <span class="desktop-menu--option" ui-sref="misc.success">Success</span>
 
       </div>
-
       <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-
         <div ui-view></div>
-
+        <div class="cui-tile">
+          <div ng-translate-language-select></div>
+        </div>
       </div>
-
     </snap-content>
   </div>
 
+<script src="assets/js/vendor.76dc39bb.js"></script>
 
-  <script src="assets/js/vendor.4cec9945.js"></script>
+<script src="assets/js/app.e25dd3a8.js"></script>
 
-  <script src="assets/js/app.8d6ea2ee.js"></script>
-  
 </body>
 </html>

@@ -1,0 +1,26 @@
+<ng-form name="organizationSelect" novalidate>
+  <p>{{'cui-all-organizations' | translate}}</p>
+  <input class="cui-input--half" placeholder="Filter by organization name" ng-model="usersWalkup.orgSearch.name">
+
+  <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList">
+    <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+      {{organization.name}}
+      <span class="chevron">></span>
+    </cui-expandable-title>
+
+    <cui-expandable-body class="cui-expandable__body">
+      <p>{{organization.id}}</p>
+      <p>{{organization.url}}</p>
+      <p>{{organization.phones[0].number}}</p>
+
+      <div class="cui-wizard__controls">
+        <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="usersWalkup.organization=organization;next()">{{'cui-select-org' | translate}}</button>
+        <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="usersWalkup.organization=organization;goToStep(5)">{{'cui-back-to-review' | translate}}</button>
+      </div>
+    </cui-expandable-body>
+  </cui-expandable>
+</ng-form>
+
+<div class="cui-wizard__controls">
+  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+</div>
