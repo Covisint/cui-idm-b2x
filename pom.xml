@@ -76,6 +76,6 @@
   <organization>
     <name>Covisint</name>
   </organization>
-  <name>CUI IDM Business to * Reference Implementation Suite</name>
+  <name>CUI IDM B2X</name>
   <description>A collection of reference implementations for the IDM product on the Covisint Platform.</description>
 </project>
