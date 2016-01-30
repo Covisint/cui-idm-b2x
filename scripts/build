@@ -1,0 +1,7 @@
+#!/bin/bash
+
+npm install
+bower install
+bower update
+grunt build
+mvn clean package deploy -U
