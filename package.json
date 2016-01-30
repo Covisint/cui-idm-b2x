@@ -1,18 +1,18 @@
 {
-  "name": "cui-ng-barebones",
-  "version": "1.0.0",
-  "description": "Starting point for CUI angular apps.",
+  "name": "cui-idm-b2x",
+  "version": "0.1.0",
+  "description": "Collection of reference implementations for the Covisint IDM plaftorm.",
   "main": "index.html",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thirdwavellc/cui-ng-barebones.git"
+    "url": "git+https://github.com/thirdwavellc/cui-idm-b2x.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thirdwavellc/cui-ng-barebones/issues"
+    "url": "https://github.com/thirdwavellc/cui-idm-b2x/issues"
   },
-  "homepage": "https://github.com/thirdwavellc/cui-cca-b2p#readme",
+  "homepage": "https://github.com/thirdwavellc/cui-idm-b2x#readme",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-browser-sync": "^2.1.3",
