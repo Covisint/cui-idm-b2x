@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.thirdwavellc</groupId>
+    <artifactId>thirdwave-parent</artifactId>
+    <version>1.1.5</version>
+  </parent>
+
+  <groupId>com.covisint.cui</groupId>
+  <artifactId>cui-idm-b2x</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptor>assembly.xml</descriptor>
+          <finalName>${project.artifactId}-${project.version}</finalName>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- lets let people know we are deploying this -->
+      <plugin>
+          <groupId>br.com.kibutx</groupId>
+          <artifactId>slack-maven-plugin</artifactId>
+          <version>1.1.2</version>
+          <executions>
+              <execution>
+                  <id>slack</id>
+                  <phase>deploy</phase>
+                  <goals>
+                      <goal>slackmessage</goal>
+                  </goals>
+                  <configuration>
+                      <apiHash>T04NG8SKZ/B0CSFDSAU/dEomAyvMHfg0CBuVMyKFKCyT</apiHash>
+                      <username>Maven8r</username>
+                      <channel>#cui</channel>
+                      <message>Whoo Hoo!  A new Angular Component Build.</message>
+                          <attachments>
+                            <attachment>
+                                  <title>${project.name}</title>
+                                  <title_link>http://nexus.thirdwavellc.com/service/local/artifact/maven/redirect?r=snapshots&amp;g=${project.groupId}&amp;a=${project.artifactId}&amp;v=${project.version}&amp;p=tar.gz&amp;c=static</title_link>                   
+                                  <author_name>${user.name} on ${os.name}</author_name>
+                                  <color>#36a64f</color>
+                                  <fallback>Artifact ${project.artifactId} has been posted to Nexus.</fallback>
+                                  <pretext>Get your artifact here!</pretext>
+                                  <text>${project.description}</text>
+                              </attachment>
+                          </attachments>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+  <scm>
+    <url>https://github.com/thirdwavellc/cui-idm-b2x</url>
+    <connection>scm:git:git@github.com:thirdwavellc/cui-idm-b2x.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+  <organization>
+    <name>Covisint</name>
+  </organization>
+  <name>CUI IDM Business to * Reference Implementation Suite</name>
+  <description>A collection of reference implementations for the IDM product on the Covisint Platform.</description>
+</project>
