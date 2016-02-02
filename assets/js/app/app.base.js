@@ -22,6 +22,26 @@ function($state,getCountries,$scope,$translate){
         return Array(password.length+1).join('•');
     };
 
+    base.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
     var setCountries=function(language){
         language = language || 'en';
         if(language.indexOf('_')>-1){

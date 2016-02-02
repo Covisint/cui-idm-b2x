@@ -1,3 +1,7 @@
+.cui-expandable {
+    position:relative;
+}
+
 .cui-expandable__review-button {
     @extend .cui-link;
     cursor:pointer;
@@ -132,4 +136,17 @@ inline-edit{
 .edit-button{
     position:absolute;
     left:0;
+    top:0;
+    transform:translate(-100%,-3px);
+    cursor:pointer;
+    .cui-icon-rotate{
+        fill: #333;
+        height:30px;
+        width:30px;
+    }
+    &:hover{
+        .cui-icon-rotate{
+            fill: $cui-primary-colors--medium-light;
+        }
+    }
 }

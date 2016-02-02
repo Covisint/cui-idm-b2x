@@ -65,6 +65,26 @@ function($state,getCountries,$scope,$translate){
         return Array(password.length+1).join('•');
     };
 
+    base.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
     var setCountries=function(language){
         language = language || 'en';
         if(language.indexOf('_')>-1){
@@ -189,22 +209,24 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         });
 
     // $locationProvider.html5Mode(true);
-    
+
     //fixes infinite digest loop with ui-router
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
       $state.go('base');
     });
 
-    
+
     //where the locales are being loaded from
     $translateProvider.useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
-    });
-     
+    })
+    .fallbackLanguage('en_US');
+
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
+    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
 }]);
 
 angular.module('app')
@@ -222,7 +244,7 @@ angular.module('app')
         $state.previous.params = fromParams;
     });
 
-    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg'];
+    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
 
     angular.forEach(icons,function(icon){
         $http.get(icon,{
@@ -1067,42 +1089,26 @@ function(localStorageService,$scope,Person,$stateParams,API){
 }]);
 
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
-function(localStorageService,$scope,Person,$stateParams,API){
+.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService',
+function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
     var usersWalkup=this;
     usersWalkup.userLogin={};
     usersWalkup.applications={};
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
     usersWalkup.applications.numberOfSelected=0;
+    usersWalkup.user={ addresses:[] };
+    usersWalkup.user.addresses[0]={};
 
     function handleError(err){
         console.log(err);
     }
 
-    usersWalkup.passwordPolicies=[
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
-
-    API.cui.getSecurityQuestions()
-    .then(function(res) {
-        // Removes first question as it is blank
+    API.doAuth()
+    .then(function(){
+        return API.cui.getSecurityQuestions()
+    })
+    .then(function(res){ // get all the security questions
         res.splice(0,1);
 
         // Splits questions to use between both dropdowns
@@ -1115,18 +1121,11 @@ function(localStorageService,$scope,Person,$stateParams,API){
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
+
+        return API.cui.getOrganizations();
     })
-    .fail(handleError);
-
-
-
-    // Return all organizations
-    API.doAuth()
-    .then(function() {
-        API.cui.getOrganizations()
-        .then(function(res){
-            usersWalkup.organizationList = res;
-        });
+    .then(function(res){
+        usersWalkup.organizationList=res; // populate organization list
     })
     .fail(handleError);
 
@@ -1145,7 +1144,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
 
     // Populate Applications List
 
-    $scope.$watch('usersWalkup.organization',function(newOrg){
+    $scope.$watch('usersWalkup.organization',function(newOrg){ // If the organization selected changes reset all the apps
         if(newOrg){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
@@ -1192,79 +1191,55 @@ function(localStorageService,$scope,Person,$stateParams,API){
         .fail(handleError);
     };
 
-
-    usersWalkup.submit = function(form){
-        console.log(form);
-    }
-
-    // usersWalkup.finish=function(form){
-    //     if(form.$invalid){
-    //         angular.forEach(form.$error, function (field) {
-    //             angular.forEach(field, function(errorField){
-    //                 errorField.$setTouched();
-    //             });
-    //         });
-    //         return;
-    //     }
-
-    //     usersWalkup.registering=true;
-
-    //     var passwordAccount={
-    //         username:usersWalkup.userLogin.username,
-    //         password:usersWalkup.userLogin.password,
-    //         passwordPolicy:{
-    //             "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
-    //             "type":"passwordPolicy",
-    //             "realm":"COVSMKT-CVDEV"
-    //         },
-    //         authenticationPolicy:{
-    //             "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
-    //             "type":"authenticationPolicy",
-    //             "realm":"COVSMKT-CVDEV"
-    //         },
-    //         version:1
-    //     };
-
-    //     var securityQuestions={
-    //         id:usersWalkup.user.id,
-    //         questions:[{
-    //             question:{
-    //                 id:usersWalkup.userLogin.question1.id,
-    //                 type:'question',
-    //                 realm:'COVSMKT-CVDEV'
-    //             },
-    //             answer:usersWalkup.userLogin.challengeAnswer1,
-    //             index:1
-    //         },{
-    //             question:{
-    //                 id:usersWalkup.userLogin.question2.id,
-    //                 type:'question',
-    //                 realm:'COVSMKT-CVDEV'
-    //             },
-    //             answer:usersWalkup.userLogin.challengeAnswer2,
-    //             index:2
-    //         }],
-    //         version:1
-    //     };
+    // Prepare security question account to be posted to API
+    var buildUserSecurityQuestionAccount=function(){
+        return [
+            {
+                question:{
+                    id:usersWalkup.userLogin.question1.id,
+                    type:'question',
+                    realm:res.realm
+                },
+                answer:usersWalkup.userLogin.challengeAnswer1,
+                index:1
+            },
+            {
+                question:{
+                    id:usersWalkup.userLogin.question2.id,
+                    type:'question',
+                    realm:res.realm
+                },
+                answer:usersWalkup.userLogin.challengeAnswer2,
+                index:2
+            }
+        ];
+    };
 
 
-    //     Person.createPasswordAccount(usersWalkup.user.id,passwordAccount)
-    //     .then(function(res){
-    //         return Person.createSecurityQuestions(usersWalkup.user.id,securityQuestions)
-    //     })
-    //     .then(function(res){
-    //         return Person.update(usersWalkup.user.id,usersWalkup.user)
-    //     })
-    //     .then(function(res){
-    //         console.log(res);
-    //         usersWalkup.registering=false;
-    //     })
-    //     .catch(function(err){
-    //         console.log(err);
-    //         usersWalkup.registrationError=true;
-    //         usersWalkup.registering=false;
-    //     });
-    // };
+    usersWalkup.submit = function(){
+        // get the title of the country object selected
+        usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
+        usersWalkup.user.organization={id:usersWalkup.organization.id};
+        usersWalkup.user.timezone='EST5EDT';
+        // get the current language being used
+        if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
+        else usersWalkup.user.language=LocaleService.getLocaleCode();
+        API.cui.createPerson({data: usersWalkup.user}) // Create Person
+        .then(function(res){
+            console.log(res);
+            return API.cui.createSecurityQuestionAccount({ // Create person's security question account
+                personId:res.id,
+                data: {
+                    version:1,
+                    questions:buildUserSecurityQuestionAccount()
+                }
+            });
+        })
+        .then(function(res){
+            console.log(res);
+        })
+        .fail(handleError);
+    };
 
 }]);
 

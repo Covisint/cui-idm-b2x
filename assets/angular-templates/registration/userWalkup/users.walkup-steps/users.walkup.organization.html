@@ -14,13 +14,12 @@
       <p>{{organization.phones[0].number}}</p>
 
       <div class="cui-wizard__controls">
-        <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="usersWalkup.organization=organization;next()">{{'cui-select-org' | translate}}</button>
-        <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="usersWalkup.organization=organization;goToStep(5)">{{'cui-back-to-review' | translate}}</button>
+        <button class="cui-wizard__next" ng-click="usersWalkup.organization=organization;next()">{{'cui-select-org' | translate}}</button>
       </div>
     </cui-expandable-body>
   </cui-expandable>
 </ng-form>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__previous" ng-click="previous()" style="margin-right:0"><< {{'cui-previous' | translate}}</button>
 </div>

@@ -385,7 +385,7 @@ Styleguide Elements
 .cui-background--secondary {
   background-color: #DEE9EE; }
 
-/* 
+/*
 Texts
 
 Styles for text. Please refer to _vars.scss for variable values.
@@ -397,7 +397,7 @@ Headers
 
 Header styling is applied through the use of classes. Our recommended method for applying h1 styling is to @extend the %h1 placeholder selector in a class's CSS style declaration block and apply that class to your element.
 
-Markup: 
+Markup:
 <h1 class="h1">H1 Heading</h1>
 <h2 class="h2">H2 Heading</h2>
 <h3 class="h3">H3 Heading</h3>
@@ -453,7 +453,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
   color: #929292; }
 
-/* 
+/*
 Links
 
 Also available as the placeholder selector %cui-link.
@@ -465,14 +465,14 @@ Styleguide Elements.Texts.Links
 .cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-expandable__review-button {
   color: #429DD1; }
 
-/* 
+/*
 Paragraphs
 
 Default styling for paragraphs
 
 Markup:
-<p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus 
-ac facilisis in. Egestas eget quam. Maecenas faucibus mollis 
+<p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus
+ac facilisis in. Egestas eget quam. Maecenas faucibus mollis
 interdum maecenas faucibus.</p>
 
 Weight: -10
@@ -1782,7 +1782,7 @@ Markup:
 
 Styleguide Blocks.Tile
 */
-.cui-tile, .cui-registration {
+.cui-tile, .cui-registration, .code-info {
   border-radius: 6px; }
   .cui-tile__body, .cui-registration__body {
     background: white;
@@ -3119,7 +3119,7 @@ Styleguide Blocks.Step-Indicator-With-Icons
     align-items: center;
     display: flex; }
 
-.cui-tile, .cui-registration {
+.cui-tile, .cui-registration, .code-info {
   width: 80%;
   margin: 30px auto; }
 
@@ -3251,6 +3251,9 @@ Styleguide Blocks.Step-Indicator-With-Icons
   font-size: 2em;
   text-align: center; }
 
+.cui-expandable {
+  position: relative; }
+
 .cui-expandable__review-button {
   cursor: pointer; }
 
@@ -3354,7 +3357,16 @@ inline-edit .angucomplete-dropdown {
 
 .edit-button {
   position: absolute;
-  left: 0; }
+  left: 0;
+  top: 0;
+  transform: translate(-100%, -3px);
+  cursor: pointer; }
+  .edit-button .cui-icon-rotate {
+    fill: #333;
+    height: 30px;
+    width: 30px; }
+  .edit-button:hover .cui-icon-rotate {
+    fill: #429DD1; }
 
 .cui-tile__body, .cui-registration__body {
   overflow: hidden; }
@@ -3381,3 +3393,12 @@ inline-edit .angucomplete-dropdown {
 
 .cui-card__button {
   float: right; }
+
+.code-info {
+  background: white;
+  padding: 20px;
+  color: #555;
+  border: 1px solid #eee;
+  border-left: 5px solid #429DD1;
+  border-radius: 3px;
+  box-sizing: border-box; }
