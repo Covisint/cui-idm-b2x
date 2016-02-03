@@ -98,22 +98,24 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         });
 
     // $locationProvider.html5Mode(true);
-    
+
     //fixes infinite digest loop with ui-router
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
       $state.go('base');
     });
 
-    
+
     //where the locales are being loaded from
     $translateProvider.useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
-    });
-     
+    })
+    .fallbackLanguage('en_US');
+
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
+    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
 }]);
 
 angular.module('app')
@@ -131,7 +133,7 @@ angular.module('app')
         $state.previous.params = fromParams;
     });
 
-    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg'];
+    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
 
     angular.forEach(icons,function(icon){
         $http.get(icon,{
