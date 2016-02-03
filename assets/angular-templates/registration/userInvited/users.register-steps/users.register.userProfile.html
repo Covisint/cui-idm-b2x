@@ -1,5 +1,28 @@
 <form name="user" novalidate>
+  <p>All fields are required. Complete your registration below with 
+    <a href='' class="cui-link--medium-light
+    " ng-click='usersRegister.applications.toggleCovisintInfo()'> <!-- usersRegister.showCovisintInfo = true -->
+      Covisint SF.
+      <div class="cui-styeguide__popover-container" style="left: 292px;" ng-if="usersRegister.showCovisintInfo">
+        <div class="cui-popover cui-popover--top">
+          <p class="">Covisint<br>
+          415-780-0210<br>
+          121 Second St., 6th Floor<br>
+          San Francisco, CA 94103<br>
+          USA</p>
 
+          <p>Supplier code: 12345678 A</p>
+
+          <p>For security, you must register 
+          with the email your invite 
+          was sent. This can be edited 
+          within user settings after 
+          registration is complete</p>
+        </div>
+      </div>
+    </a>
+  </p>
+  
   <!-- First row -->
   <div class="cui-wizard__field-row">
     <!-- First Name -->     
@@ -80,7 +103,7 @@
 
   <!-- TOS -->
   <input type="checkbox" name="TOS"  ng-model="usersRegister.tos" ng-required="true">
-  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
+  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="" class="cui-link--medium-light">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="" class="cui-link--medium-light">{{'privacy-policy' | translate}}</a></label>
   <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
 
 </form>
