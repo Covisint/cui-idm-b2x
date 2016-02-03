@@ -32,6 +32,9 @@
 }
 
 .cui-link--medium-light {
-	color: #429DD1;
+	color: $cui-primary-colors--medium-light;
+}
+
+.cui-link--no-decoration {
 	text-decoration: none;
 }
