@@ -1,5 +1,11 @@
 <form name="user" novalidate>
-
+  <p>All fields are required. Complete your registration below with 
+    <a href='' class="cui-link--medium-light cui-link--no-decoration" ng-click='usersRegister.applications.toggleCovisintInfo()'> <!-- usersRegister.showCovisintInfo = true -->
+      Covisint SF.
+      <div ng-include="'assets/angular-templates/popover.html'"></div>
+    </a>
+  </p>
+  
   <!-- First row -->
   <div class="cui-wizard__field-row">
     <!-- First Name -->     
@@ -80,7 +86,7 @@
 
   <!-- TOS -->
   <input type="checkbox" name="TOS"  ng-model="usersRegister.tos" ng-required="true">
-  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
+  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a></label>
   <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
 
 </form>
