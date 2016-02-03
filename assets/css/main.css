@@ -415,7 +415,7 @@ Styleguide Elements.Texts.Headers
   font-family: "lato-regular";
   font-style: normal;
   font-weight: normal;
-  src: url("fonts/lato-regular.woff2") format("woff2"), url("fonts/lato-regular.woff") format("woff"); }
+  src: url("/bower_components/lato/font/lato-regular/lato-regular.woff2") format("woff2"), url("/bower_components/lato/font/lato-regular/lato-regular.woff") format("woff"); }
 
 body {
   color: #929292;
@@ -987,7 +987,7 @@ Styleguide Elements.Colors.Primary-Colors
 .cui-primary-colors--light {
   background-color: #87CEEC; }
 
-.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title, .cui-registration__title {
+.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   background-color: #429DD1; }
 
 .cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child,
@@ -1028,7 +1028,7 @@ Styleguide Elements.Colors.Secondary-Colors
 /* 
 Logos
 
-Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
+Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
 
 Styleguide Elements.Logo
 */
@@ -1683,7 +1683,7 @@ Header
 Markup: 
 <header class="cui-header">
   <div class="cui-header__top">
-    <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="public/img/svg-out.svg#covisint-logo"></use></svg>
+    <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
     <div class="cui-header__user" onclick="toggle_visibility('cui-header__user-menu');">
     <span class="cui-header__user-name">Bill Murray</span>
     <div class="cui-header__chevron--left"></div>
@@ -1782,21 +1782,29 @@ Markup:
 
 Styleguide Blocks.Tile
 */
-.cui-tile, .cui-registration, .code-info {
+.cui-tile, .cui-form--mobile-steps, .code-info {
   border-radius: 6px; }
-  .cui-tile__body, .cui-registration__body {
+  .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
     background: white;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0;
     margin: 0 auto;
     max-width: 100%;
-    padding: 50px; }
-  .cui-tile__title, .cui-registration__title {
-    border-radius: 6px 6px 0 0;
+    padding: 1.75em;
+    position: relative; }
+    @media screen and (min-width: 701px) {
+      .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
+        border-radius: 0 0 6px 6px;
+        padding: 50px; } }
+  .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+    border-radius: 0;
     color: white;
     padding: 15px;
     text-align: center; }
+    @media screen and (min-width: 701px) {
+      .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+        border-radius: 6px 6px 0 0; } }
   @media all and (max-width: 600px) {
-    .cui-tile__body, .cui-registration__body {
+    .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
       padding: 20px; } }
 
 /*
@@ -2541,7 +2549,7 @@ Markup:
     <div class="cui-card__image-container">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px"
          height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-        <use class="cui-card__icon" xlink:href="public/img/icons/icons-out.svg#user"></use>
+        <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
       </svg>
     </div>
     <div class="cui-card__content">
@@ -2962,6 +2970,17 @@ Markup:
 
 Styleguide Blocks.Loading
 */
+.cui-loading__container {
+  background: white;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: all 200ms ease-in-out;
+  z-index: 10; }
+
 .cui-loading {
   animation: spin 1s infinite linear;
   background-color: #fff;
@@ -2999,7 +3018,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="public/img/icons/icons-out.svg#skyscraper"></use>
+            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
           </svg>
         </div>
       </div>
@@ -3010,7 +3029,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="public/img/icons/icons-out.svg#user"></use>
+            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
           </svg>
         </div>
       </div>
@@ -3021,7 +3040,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="public/img/icons/icons-out.svg#division"></use>
+            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
           </svg>
         </div>
       </div>
@@ -3032,7 +3051,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="public/img/icons/icons-out.svg#review"></use>
+            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
           </svg>
         </div>
       </div>
@@ -3042,88 +3061,123 @@ Markup:
 
 Styleguide Blocks.Step-Indicator-With-Icons
 */
-.cui-registration {
-  margin: 0;
-  width: 100%; }
+.cui-form--mobile-steps .cui-form__title {
+  left: -9999px;
+  position: absolute; }
   @media screen and (min-width: 700px) {
-    .cui-registration {
-      margin: 1.875em auto;
-      width: 80%; } }
-  .cui-registration__title {
-    left: -9999px;
-    position: absolute; }
-    @media screen and (min-width: 700px) {
-      .cui-registration__title {
-        left: 0;
-        position: relative; } }
-  .cui-registration__body {
-    padding: 0; }
-    @media screen and (min-width: 700px) {
-      .cui-registration__body {
-        padding: 3.125em; } }
-  .cui-registration .cui-expandable.mobile-element {
-    padding-bottom: 0; }
-  .cui-registration .mobile-element > .cui-expandable__title {
-    background-color: #F3F3F3; }
-  .cui-registration .mobile-element > .cui-expandable__title {
-    height: 7.5em;
-    padding-left: 1.25em;
-    padding-top: 0;
-    position: relative; }
-    .cui-registration .mobile-element > .cui-expandable__title::before {
-      background-color: #D0D0D0;
-      content: '';
-      left: 2.8125em;
-      height: 100%;
-      position: absolute;
-      width: 0.0625em; }
-  .cui-registration .mobile-element.expanded > .cui-expandable__title {
-    background-color: #fff; }
-    .cui-registration .mobile-element.expanded > .cui-expandable__title::before {
-      background-color: #979797; }
-  .cui-registration .mobile-element.visited > .cui-expandable__title {
-    background-color: #D9EAEE; }
-    .cui-registration .mobile-element.visited > .cui-expandable__title::before {
-      background-color: #979797; }
-  .cui-registration .cui-expandable:first-of-type.mobile-element > .cui-expandable__title::before {
-    background-color: #979797;
+    .cui-form--mobile-steps .cui-form__title {
+      left: 0;
+      position: relative; } }
+
+.cui-form--mobile-steps .cui-form__body {
+  padding: 0; }
+  @media screen and (min-width: 700px) {
+    .cui-form--mobile-steps .cui-form__body {
+      padding: 3.125em; } }
+
+.cui-form--mobile-steps .cui-expandable.mobile-element {
+  padding-bottom: 0; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable:first-of-type {
+  border-bottom: 1px solid #929292;
+  border-top: 1px solid #929292; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable {
+  border-bottom: 1px solid #929292; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable.expanded > .cui-expandable__body {
+  padding-top: 2.5em;
+  padding-bottom: 2.5em; }
+
+.cui-form--mobile-steps .mobile-element > .cui-expandable__title {
+  background-color: #F3F3F3;
+  height: 7.5em;
+  padding-left: 1.25em;
+  padding-top: 0;
+  position: relative; }
+  .cui-form--mobile-steps .mobile-element > .cui-expandable__title::before {
+    background-color: #D0D0D0;
     content: '';
-    left: 2.8125em;
+    left: 2.5em;
     height: 100%;
     position: absolute;
-    width: 0.0625em; }
-  .cui-registration .cui-expandable:first-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
-    bottom: 0;
-    height: 50%; }
-  .cui-registration .cui-expandable:last-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
-    top: 0;
-    height: 50%; }
-  .cui-registration .mobile-element.visited .icon {
-    border: 0.125em solid #6D6D6D; }
-  .cui-registration .mobile-element .icon {
-    background: #fff;
-    border: 0.125em solid #D0D0D0;
-    border-radius: 50%;
-    height: 3.125em;
-    position: relative;
-    margin: 0 auto;
-    width: 3.125em;
-    z-index: 1; }
-  .cui-registration .mobile-element.expanded .icon {
-    border: 0.125em solid #009FD3; }
-  .cui-registration .mobile-element.expanded .cui-icon-rotate {
-    fill: #009FD3; }
-  .cui-registration .cui-icon-rotate {
-    margin: 0.625em auto; }
-  .cui-registration .mobile-element .cui-expandable__title {
-    align-items: center;
-    display: flex; }
+    width: 1px; }
+  .cui-form--mobile-steps .mobile-element > .cui-expandable__title span {
+    color: #D0D0D0;
+    font-size: 1.5em;
+    padding-left: 1.0416666667em; }
 
-.cui-tile, .cui-registration, .code-info {
+.cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title {
+  background-color: #fff;
+  border-bottom: 1px solid #929292; }
+  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title::before {
+    background-color: #979797; }
+  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title span {
+    color: #009FD3; }
+
+.cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title {
+  background-color: #D9EAEE; }
+  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title::before {
+    background-color: #979797; }
+  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title span {
+    color: #6D6D6D; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title::before {
+  background-color: #979797;
+  content: '';
+  left: 2.5em;
+  height: 100%;
+  position: absolute;
+  width: 1px; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+  bottom: 0;
+  height: 50%; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title span {
+  font-size: 1.5em;
+  padding-left: 1.0416666667em; }
+
+.cui-form--mobile-steps .cui-expandable:last-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+  top: 0;
+  height: 50%; }
+
+.cui-form--mobile-steps .mobile-element.visited .icon {
+  border: 2px solid #6D6D6D; }
+
+.cui-form--mobile-steps .mobile-element .icon {
+  background: #fff;
+  border: 2px solid #D0D0D0;
+  border-radius: 50%;
+  height: 2.5em;
+  position: relative;
+  margin: 0 auto;
+  width: 2.5em;
+  z-index: 1; }
+
+.cui-form--mobile-steps .mobile-element.expanded .icon {
+  border: 2px solid #009FD3; }
+
+.cui-form--mobile-steps .mobile-element.visited .cui-icon-rotate {
+  fill: #6D6D6D; }
+
+.cui-form--mobile-steps .mobile-element.expanded .cui-icon-rotate {
+  fill: #009FD3; }
+
+.cui-form--mobile-steps .mobile-element .cui-icon-rotate {
+  height: 1.25em;
+  margin: 0.5em auto 0;
+  width: 1.25em; }
+
+.cui-form--mobile-steps .mobile-element .cui-expandable__title {
+  align-items: center;
+  display: flex; }
+
+.cui-tile, .cui-form--mobile-steps, .code-info {
   width: 80%;
   margin: 30px auto; }
 
-.cui-tile__body, .cui-registration__body {
+.cui-tile__body, .cui-form--mobile-steps .cui-form__body {
   position: relative; }
 
 .cui-wrapper {
@@ -3359,7 +3413,7 @@ inline-edit .angucomplete-dropdown {
   position: absolute;
   left: 0;
   top: 0;
-  transform: translate(-100%, -3px);
+  transform: translate(-100%, 0px);
   cursor: pointer; }
   .edit-button .cui-icon-rotate {
     fill: #333;
@@ -3368,7 +3422,7 @@ inline-edit .angucomplete-dropdown {
   .edit-button:hover .cui-icon-rotate {
     fill: #429DD1; }
 
-.cui-tile__body, .cui-registration__body {
+.cui-tile__body, .cui-form--mobile-steps .cui-form__body {
   overflow: hidden; }
 
 .misc-body {

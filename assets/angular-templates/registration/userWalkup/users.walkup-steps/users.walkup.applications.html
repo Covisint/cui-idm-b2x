@@ -4,7 +4,7 @@
   <div class="cui-wizard__controls" style="margin-top:20px">
     <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
-    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="selectApps.$valid && goToStep(5)" ng-class="{'cui-wizard__next--error': !selectApps.$valid}">{{'cui-back-to-review' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="goToStep(5)">{{'cui-back-to-review' | translate}}</button>
   </div>
 </div>
 
