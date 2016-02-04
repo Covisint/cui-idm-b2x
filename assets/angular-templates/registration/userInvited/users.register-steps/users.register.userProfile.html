@@ -1,8 +1,8 @@
 <form name="user" novalidate>
-  <p>All fields are required. Complete your registration below with 
+  <p>{{"cui-all-fields-required" | translate}}. {{"cui-complete-registration" | translate}}
     <a href='' class="cui-link--medium-light cui-link--no-decoration" ng-click='usersRegister.applications.toggleCovisintInfo()'> <!-- usersRegister.showCovisintInfo = true -->
       Covisint SF.
-      <div ng-include="'assets/angular-templates/popover.html'"></div>
+      <div ng-include="'assets/angular-templates/complete-registration-popover.html'"></div>
     </a>
   </p>
   
@@ -85,12 +85,21 @@
   </div>
 
   <!-- TOS -->
-  <input type="checkbox" name="TOS"  ng-model="usersRegister.tos" ng-required="true">
-  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a></label>
-  <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
+
+  <div class='cui-tos-container'>
+    <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
+    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}} 
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} 
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
+    </label>
+    <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
+  </div>
 
 </form>
 
-<div class="cui-wizard__controls">
+<div class="cui-wizard__controls cui-wizard__controls--clear">
   <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
 </div>
+
+
+
