@@ -1,26 +1,12 @@
-.cui-tile{
-    width:80%;
-    margin:30px auto;
+
+.cui-nav__content-wrapper {
+  @media screen and (min-width: 701px) {
+    padding: em(30) 10%;
+  }
 }
 
-.cui-tile__body{
-    position:relative;
-}
-
-.cui-wrapper{
+.cui-wrapper {
     overflow:hidden;
-}
-
-.fill{
-    position:absolute;
-    top:0;
-    bottom:0;
-    right:0;
-    left:0;
-    background:white;
-    z-index:10;
-    pointer-events:none;
-    transition:all 200ms ease-in-out;
 }
 
 .center{

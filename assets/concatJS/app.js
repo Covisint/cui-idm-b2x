@@ -900,6 +900,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     usersRegister.signOn = {};
     usersRegister.applications = {};
     usersRegister.applications.numberOfSelected=0;
+    usersRegister.showCovisintInfo=false;
 
     usersRegister.passwordPolicies=[
         {
@@ -1015,6 +1016,12 @@ function(localStorageService,$scope,Person,$stateParams,API){
             console.log(err);
         });
     };
+
+    usersRegister.applications.toggleCovisintInfo=function(){
+        usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
+    };
+
+ 
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){

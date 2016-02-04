@@ -3173,26 +3173,12 @@ Styleguide Blocks.Step-Indicator-With-Icons
   align-items: center;
   display: flex; }
 
-.cui-tile, .cui-form--mobile-steps, .code-info {
-  width: 80%;
-  margin: 30px auto; }
-
-.cui-tile__body, .cui-form--mobile-steps .cui-form__body {
-  position: relative; }
+@media screen and (min-width: 701px) {
+  .cui-nav__content-wrapper {
+    padding: 1.875em 10%; } }
 
 .cui-wrapper {
   overflow: hidden; }
-
-.fill {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: white;
-  z-index: 10;
-  pointer-events: none;
-  transition: all 200ms ease-in-out; }
 
 .center {
   position: absolute;
@@ -3281,9 +3267,9 @@ Styleguide Blocks.Step-Indicator-With-Icons
         left: 20%;
         transform: rotate(180deg) translate(0, 100%); } }
 
-.cui-card {
+.cui-card, .cui-popover-container--relative {
   position: relative; }
-  .cui-card .cui-styeguide__popover-container {
+  .cui-card .cui-styeguide__popover-container, .cui-popover-container--relative .cui-styeguide__popover-container {
     position: absolute; }
 
 .cui-popover_link {
@@ -3447,6 +3433,12 @@ inline-edit .angucomplete-dropdown {
 
 .cui-card__button {
   float: right; }
+
+.cui-link--medium-light {
+  color: #429DD1; }
+
+.cui-link--no-decoration {
+  text-decoration: none; }
 
 .code-info {
   background: white;
