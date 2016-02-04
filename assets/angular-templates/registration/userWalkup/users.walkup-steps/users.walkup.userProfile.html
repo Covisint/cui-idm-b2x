@@ -100,10 +100,17 @@
   </div>
 
   <!-- TOS -->
-  <input type="checkbox" name="TOS" id="TOS" ng-model="usersWalkup.tos" ng-required="true">
-  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
-  <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
-  <div class="cui-wizard__controls">
+  <div class='cui-tos-container'>
+    <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
+    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}} 
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} 
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
+    </label>
+    <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
+  </div>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <a href='' class="cui-previous-link cui-link--medium-light cui-link--no-decoration"><<{{'cui-previous' | translate}}</a>
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
     <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(5)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
   </div>
