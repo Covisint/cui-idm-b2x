@@ -3,7 +3,13 @@
 
 	.cui-styeguide__popover-container {
 		position: absolute;
-		left: 220px;
+		left: 300px;
+
+		@media screen and (max-width: 700px) {
+			width: 270px;
+		  left: -20px;	
+		  top: 20px
+		}
 	}
 }
 
@@ -30,4 +36,3 @@
 	font-size: 2em;
 	text-align: center;
 }
-
