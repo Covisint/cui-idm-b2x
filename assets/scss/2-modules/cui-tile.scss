@@ -117,3 +117,18 @@
         }
     }
 }
+
+.cui-footer{
+    padding-bottom: 30px;
+    &__translate {
+        float: right;
+        display: inline-block;;
+    }
+
+    &__link {
+        float: left;
+        display: inline-block;
+        padding-right: 40px;
+    }
+}
+
