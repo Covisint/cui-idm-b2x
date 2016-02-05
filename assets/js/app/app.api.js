@@ -1,9 +1,9 @@
 angular.module('app')
 .factory('API',[function(){
-    
+
     var myCUI= cui.api();
-    myCUI.setServiceUrl('https://api.covapp.io');
-    
+    myCUI.setServiceUrl('PRD');
+
     var doAuth = function(){
         return myCUI.doSysAuth({
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
@@ -15,15 +15,8 @@ angular.module('app')
         return myCUI.getToken();
     };
 
-    var url = function(){
-        return myCUI.getService();
-    };
-
-    doAuth();
-
     return{
         token:token,
-        url:url,
         cui:myCUI,
         doAuth:doAuth
     };

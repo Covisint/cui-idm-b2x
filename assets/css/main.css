@@ -3018,7 +3018,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
           </svg>
         </div>
       </div>
@@ -3029,7 +3029,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
           </svg>
         </div>
       </div>
@@ -3040,7 +3040,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
           </svg>
         </div>
       </div>
@@ -3051,7 +3051,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
           </svg>
         </div>
       </div>
@@ -3270,7 +3270,13 @@ Styleguide Blocks.Step-Indicator-With-Icons
 .cui-card, .cui-popover-container--relative {
   position: relative; }
   .cui-card .cui-styeguide__popover-container, .cui-popover-container--relative .cui-styeguide__popover-container {
-    position: absolute; }
+    position: absolute;
+    left: 300px; }
+    @media screen and (max-width: 700px) {
+      .cui-card .cui-styeguide__popover-container, .cui-popover-container--relative .cui-styeguide__popover-container {
+        width: 270px;
+        left: -20px;
+        top: 20px; } }
 
 .cui-popover_link {
   text-align: center; }
@@ -3448,3 +3454,10 @@ inline-edit .angucomplete-dropdown {
   border-left: 5px solid #429DD1;
   border-radius: 3px;
   box-sizing: border-box; }
+
+.cui-tos-container {
+  float: right;
+  padding-bottom: 30px; }
+
+.cui-wizard__controls--clear {
+  clear: both; }

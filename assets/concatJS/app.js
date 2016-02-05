@@ -12,10 +12,10 @@
 
 angular.module('app')
 .factory('API',[function(){
-    
+
     var myCUI= cui.api();
-    myCUI.setServiceUrl('https://api.covapp.io');
-    
+    myCUI.setServiceUrl('PRD');
+
     var doAuth = function(){
         return myCUI.doSysAuth({
             clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
@@ -27,15 +27,8 @@ angular.module('app')
         return myCUI.getToken();
     };
 
-    var url = function(){
-        return myCUI.getService();
-    };
-
-    doAuth();
-
     return{
         token:token,
-        url:url,
         cui:myCUI,
         doAuth:doAuth
     };
@@ -1100,15 +1093,21 @@ angular.module('app')
 function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
     var usersWalkup=this;
 
-    // Variable initialization
     usersWalkup.userLogin={};
     usersWalkup.applications={};
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
     usersWalkup.applications.numberOfSelected=0;
-    usersWalkup.user={ addresses:[] }; // We need to initialize these arrays so ng-model treats them as arrays
-    usersWalkup.user.addresses[0]={ streets:[] }; //  rather than objects
-    usersWalkup.user.phones=[];
+    if(!localStorageService.get('usersWalkup.user')){
+        usersWalkup.user={ addresses:[] }; // We need to initialize these arrays so ng-model treats them as arrays
+        usersWalkup.user.addresses[0]={ streets:[] }; // rather than objects
+        usersWalkup.user.phones=[];
+    }
+    else usersWalkup.user=localStorageService.get('usersWalkup.user');
+
+    $scope.$watch('usersWalkup.user',function(a){
+        if(a && Object.keys(a).length!==0) localStorageService.set('usersWalkup.user',a);
+    },true);
 
     function handleError(err){
         console.log('Error!\n');
@@ -1116,8 +1115,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
     };
 
     API.doAuth()
-    .then(function(){
-        return API.cui.getSecurityQuestions()
+    .then(function(res){
+        return API.cui.getSecurityQuestions();
     })
     .then(function(res){ // get all the security questions
         res.splice(0,1);
@@ -1199,63 +1198,106 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
         .fail(handleError);
     };
 
-    // Prepare security question account to be posted to API
-    var buildUserSecurityQuestionAccount=function(user){
-        return [
-            {
-                question:{
-                    id:usersWalkup.userLogin.question1.id,
-                    type:'question',
-                    realm:user.realm
-                },
-                answer:usersWalkup.userLogin.challengeAnswer1,
-                index:1
-            },
-            {
-                question:{
-                    id:usersWalkup.userLogin.question2.id,
-                    type:'question',
-                    realm:user.realm
-                },
-                answer:usersWalkup.userLogin.challengeAnswer2,
-                index:2
-            }
-        ];
-    };
-
-    // Removes unecessary properties from the user object.
-    var buildUserObject=function(){
-        // if (usersWalkup.user.addresses && usersWalkup.user.addresses[0].streets.length===0) usersWalkup.user.addresses[0].streets[0]=;
-        // if (usersWalkup.user.addresses && usersWalkup.user.addresses.length===0) delete usersWalkup.user.addresses;
-        // if (usersWalkup.user.phones && usersWalkup.user.phones.length===0) delete usersWalkup.user.phones;
-    }
-
     usersWalkup.submit = function(){
-        // get the title of the country object selected
-        usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
-        usersWalkup.user.organization={id:usersWalkup.organization.id};
-        buildUserObject();
-        usersWalkup.user.timezone='EST5EDT';
-        // get the current language being used
-        if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
-        else usersWalkup.user.language=LocaleService.getLocaleCode();
-        API.cui.createPerson({data: usersWalkup.user}) // Create Person
+        var user,org;
+        API.cui.createPerson({data: build.user()})
         .then(function(res){
-            console.log(res);
-            return API.cui.createSecurityQuestionAccount({ // Create person's security question account
-                personId:res.id,
-                data: {
-                    version:1,
-                    id:res.id,
-                    questions: buildUserSecurityQuestionAccount(res)
-                }
-            });
+            user=res;
+            return API.cui.getOrganization({ organizationId:user.organization.id });
         })
         .then(function(res){
-            console.log(res);
+            org=res;
+            return API.cui.createSecurityQuestionAccount( build.userSecurityQuestionAccount(user) );
+        })
+        .then(function(){
+            return API.cui.createPersonPassword( build.personPassword(user,org) );
+        })
+        .then(function(){
+            return API.cui.createPersonRequest( build.personRequest(user) );
+        })
+        .then(function(){
+            console.log('userCreated.');
         })
         .fail(handleError);
     };
+
+    // collection of helper functions to build necessary calls on this controller
+    var build={
+        personRequest:function(user){
+            return {
+                data:{
+                    id:user.id,
+                    version:'1',
+                    registrant:user.id,
+                    justification:'User walkup registration.',
+                    servicePackageRequest:this.packageRequests()
+                }
+            };
+        },
+        packageRequests:function(){
+            var packages=[];
+            angular.forEach(usersWalkup.applications.selected,function(servicePackage){
+                console.log(servicePackage.id);
+                packages.push({packageId:servicePackage.split(',')[0]});
+            });
+            return packages;
+        },
+        personPassword:function(user,org){
+            return {
+                personId:user.id,
+                data:{
+                    version:'1',
+                    username:usersWalkup.userLogin.username,
+                    password:usersWalkup.userLogin.password,
+                    passwordPolicy:org.passwordPolicy,
+                    authenticationPolicy:org.authenticationPolicy
+                }
+            };
+        },
+        userSecurityQuestionAccount:function(user){
+            return {
+                personId:user.id,
+                data: {
+                    version:'1',
+                    id:user.id,
+                    questions: this.userSecurityQuestions(user)
+                }
+            };
+        },
+        user:function(){
+            // get the title of the country object selected
+            usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
+            usersWalkup.user.organization={id:usersWalkup.organization.id};
+            usersWalkup.user.timezone='EST5EDT';
+            // get the current language being used
+            if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
+            else usersWalkup.user.language=LocaleService.getLocaleCode();
+            return usersWalkup.user;
+        },
+        userSecurityQuestions:function(user){
+            return [
+                {
+                    question:{
+                        id:usersWalkup.userLogin.question1.id,
+                        type:'question',
+                        realm:user.realm
+                    },
+                    answer:usersWalkup.userLogin.challengeAnswer1,
+                    index:1
+                },
+                {
+                    question:{
+                        id:usersWalkup.userLogin.question2.id,
+                        type:'question',
+                        realm:user.realm
+                    },
+                    answer:usersWalkup.userLogin.challengeAnswer2,
+                    index:2
+                }
+            ];
+        }
+    };
+
 
 }]);
 
