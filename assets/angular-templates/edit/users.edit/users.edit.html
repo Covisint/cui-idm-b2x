@@ -37,7 +37,7 @@
       <!-- go to assets/js/app/app.profile.js to customize this function -->
       <button class="cui-wizard__next" ui-sref="users.search" style="position:relative">{{'cui-back' | translate}}</button> 
       <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="(user.$invalid)? 'cui-wizard__next--error' : (usersEdit.success)? 'success' : (usersEdit.fail)? 'fail' : ''" style="position:relative"> 
-        <div class="cui-loading--medium__center" ng-show="usersEdit.saving"></div>
+        <div class=".cui-loading--medium-ctr" ng-show="usersEdit.saving"></div>
         <span ng-if="(!usersEdit.saving && !usersEdit.success && !usersEdit.fail)">{{'cui-update' | translate}}</span>
         <span ng-if="usersEdit.success">{{'cui-updated' | translate}}!</span>
         <span ng-if="usersEdit.fail">{{'cui-error-try-again' | translate}}</span>
