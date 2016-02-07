@@ -1233,6 +1233,12 @@ Styleguide Blocks.Form
   .cui-wizard__controls,
   .cui-form__controls {
     text-align: right; }
+  .cui-wizard__next.success,
+  .cui-form__next.success {
+    background: #3CB371; }
+  .cui-wizard__next.fail,
+  .cui-form__next.fail {
+    background: #FF4400; }
   .cui-wizard__previous,
   .cui-form__previous {
     background: #fff;
@@ -1331,6 +1337,16 @@ Styleguide Blocks.Form
           top: 3px;
           left: 20%;
           transform: rotate(180deg) translate(0, 100%); } }
+
+.cui-error__status {
+  width: 9px;
+  height: 9px;
+  background: #FF4400;
+  display: inline-block;
+  border-radius: 50%;
+  transform: translate(0, -1px); }
+  .cui-error__status.cui-error__status--pass {
+    background: #3CB371; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd; }
@@ -2505,7 +2521,7 @@ Styleguide Blocks.Popover
   width: 19.375em;
   z-index: 2; }
   .cui-popover--dark {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.8);
     box-shadow: none;
     color: #fff; }
     .cui-popover--dark p {
@@ -2572,7 +2588,7 @@ Styleguide Blocks.Cards
       flex-direction: row;
       justify-content: space-between; } }
 
-.cui-card {
+.cui-card, .cui-popover-container--relative {
   background: #fff;
   border-radius: 6px;
   box-sizing: border-box;
@@ -2583,7 +2599,7 @@ Styleguide Blocks.Cards
   max-width: 20em;
   padding: 2.5em 2.5em;
   transition: box-shadow .2s ease, transform .2s ease; }
-  .cui-card:hover {
+  .cui-card:hover, .cui-popover-container--relative:hover {
     box-shadow: 0 1px 3px #A2A19F;
     transform: translateY(-3px); }
 
@@ -2970,6 +2986,11 @@ Markup:
 
 Styleguide Blocks.Loading
 */
+.cui-loading--center, .cui-loading--medium-ctr {
+  position: absolute;
+  top: 50%;
+  left: 50%; }
+
 .cui-loading__container {
   background: white;
   bottom: 0;
@@ -2981,7 +3002,7 @@ Styleguide Blocks.Loading
   transition: all 200ms ease-in-out;
   z-index: 10; }
 
-.cui-loading {
+.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr {
   animation: spin 1s infinite linear;
   background-color: #fff;
   border: 0.625em solid #429DD1;
@@ -2989,6 +3010,15 @@ Styleguide Blocks.Loading
   border-top-color: #87CEEC;
   height: 5em;
   width: 5em; }
+
+.cui-loading--medium, .cui-loading--medium-ctr {
+  border: 0.3125em solid #429DD1;
+  height: 1.875em;
+  width: 1.875em; }
+
+.cui-loading--center {
+  transform: translate(-50%, -50%);
+  z-index: 10; }
 
 @keyframes spin {
   100% {
@@ -3018,7 +3048,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
           </svg>
         </div>
       </div>
@@ -3029,7 +3059,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
           </svg>
         </div>
       </div>
@@ -3040,7 +3070,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
           </svg>
         </div>
       </div>
@@ -3051,7 +3081,7 @@ Markup:
       <div class="icon">
         <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-            <use xlink:href="/bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
           </svg>
         </div>
       </div>
@@ -3180,97 +3210,18 @@ Styleguide Blocks.Step-Indicator-With-Icons
 .cui-wrapper {
   overflow: hidden; }
 
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10; }
-
-.cui-loading--large__center {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  -webkit-box-sizing: border-box;
-  border: solid 10px #dff2fa;
-  border-top-color: #87CEEC;
-  animation: spin-center 1s infinite linear;
-  transform-origin: center;
-  position: absolute;
-  top: 50%;
-  left: 50%; }
-
-.cui-loading--medium__center {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  -webkit-box-sizing: border-box;
-  border: solid 5px #dff2fa;
-  border-top-color: #87CEEC;
-  animation: spin-center 0.5s infinite linear;
-  transform-origin: center;
-  position: absolute;
-  top: 50%;
-  left: 50%; }
-
-.cui-loading--medium {
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-  border-radius: 50%;
-  -webkit-box-sizing: border-box;
-  border: solid 5px #dff2fa;
-  border-top-color: #87CEEC;
-  animation: spin 1s infinite linear;
-  transform-origin: center; }
-
-@keyframes spin-center {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg); }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg); } }
-
-@keyframes spin {
-  from {
-    transform: translate(-4px, 11px) rotate(0deg); }
-  to {
-    transform: translate(-4px, 11px) rotate(360deg); } }
-
-.cui-wizard__next.success {
-  background: #3CB371; }
-
-.cui-wizard__next.fail {
-  background: #FF4400; }
-
-.circle {
-  width: 9px;
-  height: 9px;
-  background: #FF4400;
-  display: inline-block;
-  border-radius: 50%;
-  transform: translate(0, -1px); }
-  .circle.green {
-    background: #3CB371; }
-
-.cui-error__password {
-  width: 310px;
-  position: absolute;
-  top: 30%; }
-  @media all and (max-width: 700px) {
-    .cui-error__password {
-      left: 50%;
-      top: 100%;
-      width: 90%;
-      transform: translate(-50%, -10px); }
-      .cui-error__password:before {
-        top: 3px;
-        left: 20%;
-        transform: rotate(180deg) translate(0, 100%); } }
+.cui-footer {
+  padding-bottom: 30px; }
+  .cui-footer__translate {
+    float: right;
+    display: inline-block; }
+  .cui-footer__link {
+    float: left;
+    display: inline-block;
+    padding-right: 40px; }
 
 .cui-card, .cui-popover-container--relative {
   position: relative; }
-  .cui-card .cui-styeguide__popover-container, .cui-popover-container--relative .cui-styeguide__popover-container {
-    position: absolute; }
 
 .cui-popover_link {
   text-align: center; }
@@ -3290,6 +3241,18 @@ Styleguide Blocks.Step-Indicator-With-Icons
   color: #FFFFFF;
   font-size: 2em;
   text-align: center; }
+
+.cui-popover__new-division {
+  transform: translate(-22.375em, 64%);
+  opacity: 0.85;
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-styeguide__popover-container {
+    position: absolute; }
+    .cui-styeguide__popover-container .cui-popover__new-division {
+      width: 275px;
+      transform: translate(2.5em, -128%); } }
 
 .cui-expandable {
   position: relative; }
@@ -3448,3 +3411,22 @@ inline-edit .angucomplete-dropdown {
   border-left: 5px solid #429DD1;
   border-radius: 3px;
   box-sizing: border-box; }
+
+.cui-tos-container {
+  float: right;
+  padding-bottom: 30px; }
+
+.cui-wizard__controls--clear {
+  clear: both; }
+
+.cui-previous-link {
+  padding-right: 30px; }
+
+.cui-popover-container--relative .cui-styeguide__popover-container {
+  position: absolute;
+  left: 300px; }
+  @media screen and (max-width: 700px) {
+    .cui-popover-container--relative .cui-styeguide__popover-container {
+      width: 270px;
+      left: -20px;
+      top: 20px; } }
