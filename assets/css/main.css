@@ -3210,6 +3210,16 @@ Styleguide Blocks.Step-Indicator-With-Icons
 .cui-wrapper {
   overflow: hidden; }
 
+.cui-footer {
+  padding-bottom: 30px; }
+  .cui-footer__translate {
+    float: right;
+    display: inline-block; }
+  .cui-footer__link {
+    float: left;
+    display: inline-block;
+    padding-right: 40px; }
+
 .cui-card, .cui-popover-container--relative {
   position: relative; }
 
@@ -3231,6 +3241,18 @@ Styleguide Blocks.Step-Indicator-With-Icons
   color: #FFFFFF;
   font-size: 2em;
   text-align: center; }
+
+.cui-popover__new-division {
+  transform: translate(-22.375em, 64%);
+  opacity: 0.85;
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-styeguide__popover-container {
+    position: absolute; }
+    .cui-styeguide__popover-container .cui-popover__new-division {
+      width: 275px;
+      transform: translate(2.5em, -128%); } }
 
 .cui-expandable {
   position: relative; }
