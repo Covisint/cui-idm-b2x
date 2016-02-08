@@ -55,7 +55,7 @@
     </div>
   </form>
 
-  <div class="cui-error-message" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
+  <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
     <button class="cui-wizard__previous" ng-click="usersRegister.applications.step=usersRegister.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
     <button class="cui-wizard__next" ng-click="usersRegister.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>

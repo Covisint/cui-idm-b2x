@@ -1348,6 +1348,11 @@ Styleguide Blocks.Form
   .cui-error__status.cui-error__status--pass {
     background: #3CB371; }
 
+.cui-wizard__step-error {
+  color: red;
+  text-align: right;
+  margin-bottom: 20px; }
+
 .indicator-container {
   border-bottom: 1px solid #ddd; }
 
@@ -3306,11 +3311,6 @@ inline-edit .angucomplete-dropdown {
   .application-review__list {
     width: 100%;
     display: flex; }
-
-.cui-error-message {
-  color: red;
-  text-align: right;
-  margin-bottom: 20px; }
 
 .badge {
   border-radius: 20px;
