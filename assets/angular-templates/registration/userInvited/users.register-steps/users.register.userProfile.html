@@ -97,7 +97,6 @@
 </form>
 
 <div class="cui-wizard__controls cui-wizard__controls--clear">
-  <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
   <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
 </div>
 
