@@ -904,7 +904,7 @@ Styleguide Elements.Forms.Switch
   cursor: pointer;
   display: flex;
   font-size: 12px;
-  height: 50px;
+  height: 35px;
   justify-content: space-around;
   width: 209px; }
   .cui-switch__container span {
@@ -3254,9 +3254,6 @@ Styleguide Blocks.Step-Indicator-With-Icons
       width: 275px;
       transform: translate(2.5em, -128%); } }
 
-.cui-expandable {
-  position: relative; }
-
 .cui-expandable__review-button {
   cursor: pointer; }
 
@@ -3309,35 +3306,6 @@ inline-edit .angucomplete-dropdown {
   .application-review__list {
     width: 100%;
     display: flex; }
-  .application-review .cui-switch {
-    display: inline-flex; }
-    .application-review .cui-switch__container {
-      height: 35px; }
-  .application-review .cui-switch__input:checked + .cui-switch__label:before {
-    width: 0;
-    left: 50%;
-    transform: none;
-    border-radius: 0; }
-  .application-review .cui-switch__input:checked + .cui-switch__label:after {
-    width: 104px;
-    border-radius: 6px 0 0 6px; }
-  .application-review .cui-switch__label:before {
-    left: 50%;
-    top: 1px;
-    transition: all .15s ease-in;
-    width: 104px;
-    background-color: #555; }
-  .application-review .cui-switch__label:after {
-    background-color: #00BD9C;
-    border-radius: 0;
-    content: '';
-    cursor: pointer;
-    height: calc(100% - 2px);
-    position: absolute;
-    right: 50%;
-    top: 1px;
-    transition: all .15s ease-in;
-    width: 0; }
 
 .cui-error-message {
   color: red;

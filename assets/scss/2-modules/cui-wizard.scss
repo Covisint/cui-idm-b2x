@@ -1,6 +1,4 @@
-.cui-expandable {
-    position:relative;
-}
+// start inline edit styles to be removed
 
 .cui-expandable__review-button {
     @extend .cui-link;
@@ -33,6 +31,8 @@ inline-edit{
         margin-top: 7px;
     }
 }
+
+// end inline styles
 
 .application-review{
     display:flex;
@@ -68,46 +68,6 @@ inline-edit{
         width:100%;
         display:flex;
 
-    }
-    .cui-switch{
-        display:inline-flex;
-        &__container{
-            height:35px;
-        }
-    }
-
-    .cui-switch__input:checked {
-        & + .cui-switch__label:before {
-            width:0;
-            left:50%;
-            transform:none;
-            border-radius: 0;
-        }
-        & + .cui-switch__label:after {
-            width: 104px;
-            border-radius: 6px 0 0 6px;
-        }
-    }
-
-    .cui-switch__label:before {
-      left: 50%;
-      top: 1px;
-      transition: all .15s ease-in;
-      width: 104px;
-      background-color: #555;
-    }
-
-    .cui-switch__label:after {
-      background-color: #00BD9C;
-      border-radius: 0;
-      content: '';
-      cursor: pointer;
-      height: calc(100% - 2px);
-      position: absolute;
-      right: 50%;
-      top: 1px;
-      transition: all .15s ease-in;
-      width: 0;
     }
 }
 
