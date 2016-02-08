@@ -13,7 +13,7 @@
   <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersWalkup.applications.search" ng-change="usersWalkup.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
 
   <div ng-repeat="application in usersWalkup.applications.list" style="margin-bottom:10px">
@@ -33,7 +33,7 @@
   <span ng-click="usersWalkup.applications.step=1" translate>< {{'cui-all-applications'}}</span>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
   <ng-form name="selectApps" class="application-review">
     <div class="application-review__name application-review__label">

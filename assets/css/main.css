@@ -462,7 +462,7 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-expandable__review-button {
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
   color: #429DD1; }
 
 /*
@@ -963,6 +963,24 @@ Styleguide Elements.Forms.Switch
 .cui-switch__input:checked + .cui-switch__label .cui-switch__checked-message {
   color: white;
   transition: color .5s; }
+
+/*
+Badge
+
+Markup: 
+<div class="cui-badge">5</div>
+
+Styleguide Elements.Forms.Badge
+*/
+.cui-badge {
+  background: red;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 0.8em;
+  min-width: 25px;
+  padding: 5px 9px;
+  text-align: center; }
 
 /* 
 Colors
@@ -2319,12 +2337,16 @@ Styleguide Blocks.Expandable
   border-bottom: 1px solid #ddd;
   display: block;
   padding-bottom: 10px;
+  position: relative;
   width: 100%; }
   .cui-expandable__title {
     color: #333;
     cursor: pointer;
     display: block;
     padding: 10px 0 0; }
+  .cui-expandable__title--error {
+    color: red;
+    font-weight: 700; }
   .cui-expandable__review-item {
     color: #666;
     font-size: 14px;
@@ -2342,8 +2364,40 @@ Styleguide Blocks.Expandable
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
+.cui-expandable__review-button {
+  cursor: pointer; }
+
+.cui-expandable__review-input {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
+.cui-expandable__review-select {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
 .cui-expandable__body {
   padding-left: 10px; }
+
+.edit-button {
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(-100%, 0px); }
+  .edit-button .cui-icon-rotate {
+    fill: #333;
+    height: 30px;
+    width: 30px; }
+  .edit-button:hover .cui-icon-rotate {
+    fill: #429DD1; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd;
@@ -3259,25 +3313,6 @@ Styleguide Blocks.Step-Indicator-With-Icons
       width: 275px;
       transform: translate(2.5em, -128%); } }
 
-.cui-expandable__review-button {
-  cursor: pointer; }
-
-.cui-expandable__review-input {
-  display: inline-block;
-  width: 300px;
-  height: auto;
-  margin: -6px 0 -6px 0;
-  padding: 0 2px;
-  font-size: 1em; }
-
-.cui-expandable__review-select {
-  display: inline-block;
-  width: 300px;
-  height: auto;
-  margin: -6px 0 -6px 0;
-  padding: 0 2px;
-  font-size: 1em; }
-
 inline-edit .angucomplete-dropdown {
   border: 1px solid #ececec;
   margin-top: 7px; }
@@ -3311,33 +3346,6 @@ inline-edit .angucomplete-dropdown {
   .application-review__list {
     width: 100%;
     display: flex; }
-
-.badge {
-  border-radius: 20px;
-  background: red;
-  color: white;
-  padding: 5px 9px;
-  min-width: 25px;
-  display: inline-block;
-  text-align: center;
-  font-size: 0.8em; }
-
-.cui-expandable__title--error {
-  font-weight: bold;
-  color: red; }
-
-.edit-button {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform: translate(-100%, 0px);
-  cursor: pointer; }
-  .edit-button .cui-icon-rotate {
-    fill: #333;
-    height: 30px;
-    width: 30px; }
-  .edit-button:hover .cui-icon-rotate {
-    fill: #429DD1; }
 
 .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
   overflow: hidden; }
