@@ -106,7 +106,7 @@
       <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} 
       <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
     </label>
-    <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
+    <span class="cui-wizard__step-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
   </div>
 
   <div class="cui-wizard__controls cui-wizard__controls--clear">

@@ -462,7 +462,7 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-expandable__review-button {
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
   color: #429DD1; }
 
 /*
@@ -781,7 +781,7 @@ Styleguide Elements.Forms.Dropdown
 */
 select.cui-select, select.cui-expandable__review-select {
   appearance: none;
-  background: url("img/select-arrows.svg") right 10px center no-repeat;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="17px" height="31px"><path fill="#D0D0D0" d="M8.23800939,30.8033504 C7.97291044,30.8033504 7.72571832,30.6715649 7.57584594,30.450103 L0.135557793,19.4912451 C-0.0252144045,19.2530176 -0.0442890719,18.965273 0.085340811,18.7208071 C0.217695646,18.4708826 0.483573154,18.3157032 0.779425139,18.3157032 L15.6615585,18.3157032 C15.9577998,18.3157032 16.2236773,18.4708826 16.3560322,18.7208071 C16.485662,18.965273 16.4665874,19.2530176 16.3062044,19.4904654 L8.86513775,30.4715474 C8.72499733,30.6793629 8.49026214,30.8033504 8.23800939,30.8033504 L8.23800939,30.8033504 Z M8.2212704,30.0333022 L8.23800939,30.4134526 L8.23800939,30.0235548 C8.23333805,30.0239447 8.22438463,30.0290133 8.2212704,30.0333022 L8.2212704,30.0333022 Z"></path>\a                 <path fill="#D0D0D0" d="M15.6606554,12.971311 L0.778521994,12.971311 C0.48967703,12.971311 0.226135196,12.8126226 0.0910554077,12.5568496 C-0.0444136592,12.3010766 -0.0276746653,11.9934473 0.134265369,11.75405 L7.57494279,0.752303424 C7.72014383,0.537859627 7.96149677,0.409973145 8.21997798,0.409973145 C8.47845918,0.409973145 8.71942284,0.537859627 8.86462388,0.752693322 L16.3053013,11.75405 C16.4672413,11.9934473 16.4839803,12.3010766 16.3485113,12.5568496 C16.2134315,12.8126226 15.9495004,12.971311 15.6606554,12.971311 L15.6606554,12.971311 Z"></path></svg>') right 10px center no-repeat;
   background-size: 17px 31px;
   border-radius: 0;
   padding-right: 10px; }
@@ -904,7 +904,7 @@ Styleguide Elements.Forms.Switch
   cursor: pointer;
   display: flex;
   font-size: 12px;
-  height: 50px;
+  height: 35px;
   justify-content: space-around;
   width: 209px; }
   .cui-switch__container span {
@@ -963,6 +963,24 @@ Styleguide Elements.Forms.Switch
 .cui-switch__input:checked + .cui-switch__label .cui-switch__checked-message {
   color: white;
   transition: color .5s; }
+
+/*
+Badge
+
+Markup: 
+<div class="cui-badge">5</div>
+
+Styleguide Elements.Forms.Badge
+*/
+.cui-badge {
+  background: red;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 0.8em;
+  min-width: 25px;
+  padding: 5px 9px;
+  text-align: center; }
 
 /* 
 Colors
@@ -1347,6 +1365,11 @@ Styleguide Blocks.Form
   transform: translate(0, -1px); }
   .cui-error__status.cui-error__status--pass {
     background: #3CB371; }
+
+.cui-wizard__step-error {
+  color: red;
+  text-align: right;
+  margin-bottom: 20px; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd; }
@@ -2314,12 +2337,16 @@ Styleguide Blocks.Expandable
   border-bottom: 1px solid #ddd;
   display: block;
   padding-bottom: 10px;
+  position: relative;
   width: 100%; }
   .cui-expandable__title {
     color: #333;
     cursor: pointer;
     display: block;
     padding: 10px 0 0; }
+  .cui-expandable__title--error {
+    color: red;
+    font-weight: 700; }
   .cui-expandable__review-item {
     color: #666;
     font-size: 14px;
@@ -2337,8 +2364,40 @@ Styleguide Blocks.Expandable
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
+.cui-expandable__review-button {
+  cursor: pointer; }
+
+.cui-expandable__review-input {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
+.cui-expandable__review-select {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
 .cui-expandable__body {
   padding-left: 10px; }
+
+.cui-expandable__edit-button {
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(-100%, 0px); }
+  .cui-expandable__edit-button .cui-icon-rotate {
+    fill: #333;
+    height: 30px;
+    width: 30px; }
+  .cui-expandable__edit-button:hover .cui-icon-rotate {
+    fill: #429DD1; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd;
@@ -3254,28 +3313,6 @@ Styleguide Blocks.Step-Indicator-With-Icons
       width: 275px;
       transform: translate(2.5em, -128%); } }
 
-.cui-expandable {
-  position: relative; }
-
-.cui-expandable__review-button {
-  cursor: pointer; }
-
-.cui-expandable__review-input {
-  display: inline-block;
-  width: 300px;
-  height: auto;
-  margin: -6px 0 -6px 0;
-  padding: 0 2px;
-  font-size: 1em; }
-
-.cui-expandable__review-select {
-  display: inline-block;
-  width: 300px;
-  height: auto;
-  margin: -6px 0 -6px 0;
-  padding: 0 2px;
-  font-size: 1em; }
-
 inline-edit .angucomplete-dropdown {
   border: 1px solid #ececec;
   margin-top: 7px; }
@@ -3309,67 +3346,6 @@ inline-edit .angucomplete-dropdown {
   .application-review__list {
     width: 100%;
     display: flex; }
-  .application-review .cui-switch {
-    display: inline-flex; }
-    .application-review .cui-switch__container {
-      height: 35px; }
-  .application-review .cui-switch__input:checked + .cui-switch__label:before {
-    width: 0;
-    left: 50%;
-    transform: none;
-    border-radius: 0; }
-  .application-review .cui-switch__input:checked + .cui-switch__label:after {
-    width: 104px;
-    border-radius: 6px 0 0 6px; }
-  .application-review .cui-switch__label:before {
-    left: 50%;
-    top: 1px;
-    transition: all .15s ease-in;
-    width: 104px;
-    background-color: #555; }
-  .application-review .cui-switch__label:after {
-    background-color: #00BD9C;
-    border-radius: 0;
-    content: '';
-    cursor: pointer;
-    height: calc(100% - 2px);
-    position: absolute;
-    right: 50%;
-    top: 1px;
-    transition: all .15s ease-in;
-    width: 0; }
-
-.cui-error-message {
-  color: red;
-  text-align: right;
-  margin-bottom: 20px; }
-
-.badge {
-  border-radius: 20px;
-  background: red;
-  color: white;
-  padding: 5px 9px;
-  min-width: 25px;
-  display: inline-block;
-  text-align: center;
-  font-size: 0.8em; }
-
-.cui-expandable__title--error {
-  font-weight: bold;
-  color: red; }
-
-.edit-button {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform: translate(-100%, 0px);
-  cursor: pointer; }
-  .edit-button .cui-icon-rotate {
-    fill: #333;
-    height: 30px;
-    width: 30px; }
-  .edit-button:hover .cui-icon-rotate {
-    fill: #429DD1; }
 
 .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
   overflow: hidden; }
