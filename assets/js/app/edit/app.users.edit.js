@@ -3,6 +3,8 @@ angular.module('app')
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
+    usersEdit.editName = false;
+    usersEdit.editAddress = true;
 
     var selectQuestionsForUser = function(questionsArray, allQuestions){
         var questionTexts = [];
@@ -45,6 +47,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.loading = false;
     });
 
+
     usersEdit.save = function() {
         usersEdit.saving = true;
         usersEdit.fail = false;
@@ -64,5 +67,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             }, 300);
         });
     };
+
+    usersEdit.saveFullName = function(){
+        usersEdit.user.name.given = usersEdit.tempGiven; 
+        usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.editName=false
+    }
 
 }]);
