@@ -12,16 +12,35 @@
     
     <!-- User full name -->
     <p>{{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}</p>
-    <!-- Avatar - not working yet-->
-    <cui-avatar class="cui-header__user--avatar cui-avatar" user-avatar="usersEdit.user.avatar">
+    
     <!-- UserID -->
-    <p>{{'cui-user-id' | translate}}:</p>
+    <p>{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
     <p>{{'cui-registered' | translate}}:</p>
 
-
-    <form name="user" novalidate>
       <!-- Full Name -->
-      <inline-edit label="cui-name" model="usersEdit.user.name.given"></inline-edit>
+      <p ng-if="!usersEdit.editName">
+        {{"cui-name"| translate}}:
+        <span ng-if="!usersEdit.editName">
+          {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
+        </span>
+        <span ng-click="usersEdit.editName = !usersEdit.editName"> Edit</span>
+      </p>
+
+      <div ng-if="usersEdit.editName">
+        <p>{{'cui-first-name' | translate}}
+          <input type="text" ng-init="usersEdit.tempGiven = usersEdit.user.name.given" ng-model="usersEdit.tempGiven"></input>
+        </p>
+        
+        <p>{{'cui-last-name' | translate}}
+          <input type="text" ng-init="usersEdit.tempSurname = usersEdit.user.name.surname" ng-model="usersEdit.tempSurname"></input>
+        </p>
+
+        <div>
+          <span ng-click="usersEdit.saveFullName()">Save</span>
+          <span ng-click="usersEdit.editName=false">Cancel</span>
+        </div>
+      </div>
+
       <!-- User ID -->
       <inline-edit label="cui-user-id" model="usersEdit.userPassword.username"></inline-edit>
       <!-- Email -->
