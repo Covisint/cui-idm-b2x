@@ -1269,6 +1269,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
             usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
             usersWalkup.user.organization={id:usersWalkup.organization.id};
             usersWalkup.user.timezone='EST5EDT';
+            if(usersWalkup.user.phones[0].number) usersWalkup.user.phones[0].type="main";
             // get the current language being used
             if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
             else usersWalkup.user.language=LocaleService.getLocaleCode();

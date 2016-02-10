@@ -462,7 +462,7 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-expandable__review-button {
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
   color: #429DD1; }
 
 /*
@@ -781,7 +781,7 @@ Styleguide Elements.Forms.Dropdown
 */
 select.cui-select, select.cui-expandable__review-select {
   appearance: none;
-  background: url("img/select-arrows.svg") right 10px center no-repeat;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="17px" height="31px"><path fill="#D0D0D0" d="M8.23800939,30.8033504 C7.97291044,30.8033504 7.72571832,30.6715649 7.57584594,30.450103 L0.135557793,19.4912451 C-0.0252144045,19.2530176 -0.0442890719,18.965273 0.085340811,18.7208071 C0.217695646,18.4708826 0.483573154,18.3157032 0.779425139,18.3157032 L15.6615585,18.3157032 C15.9577998,18.3157032 16.2236773,18.4708826 16.3560322,18.7208071 C16.485662,18.965273 16.4665874,19.2530176 16.3062044,19.4904654 L8.86513775,30.4715474 C8.72499733,30.6793629 8.49026214,30.8033504 8.23800939,30.8033504 L8.23800939,30.8033504 Z M8.2212704,30.0333022 L8.23800939,30.4134526 L8.23800939,30.0235548 C8.23333805,30.0239447 8.22438463,30.0290133 8.2212704,30.0333022 L8.2212704,30.0333022 Z"></path>\a                 <path fill="#D0D0D0" d="M15.6606554,12.971311 L0.778521994,12.971311 C0.48967703,12.971311 0.226135196,12.8126226 0.0910554077,12.5568496 C-0.0444136592,12.3010766 -0.0276746653,11.9934473 0.134265369,11.75405 L7.57494279,0.752303424 C7.72014383,0.537859627 7.96149677,0.409973145 8.21997798,0.409973145 C8.47845918,0.409973145 8.71942284,0.537859627 8.86462388,0.752693322 L16.3053013,11.75405 C16.4672413,11.9934473 16.4839803,12.3010766 16.3485113,12.5568496 C16.2134315,12.8126226 15.9495004,12.971311 15.6606554,12.971311 L15.6606554,12.971311 Z"></path></svg>') right 10px center no-repeat;
   background-size: 17px 31px;
   border-radius: 0;
   padding-right: 10px; }
@@ -963,6 +963,24 @@ Styleguide Elements.Forms.Switch
 .cui-switch__input:checked + .cui-switch__label .cui-switch__checked-message {
   color: white;
   transition: color .5s; }
+
+/*
+Badge
+
+Markup: 
+<div class="cui-badge">5</div>
+
+Styleguide Elements.Forms.Badge
+*/
+.cui-badge {
+  background: red;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 0.8em;
+  min-width: 25px;
+  padding: 5px 9px;
+  text-align: center; }
 
 /* 
 Colors
@@ -1233,6 +1251,12 @@ Styleguide Blocks.Form
   .cui-wizard__controls,
   .cui-form__controls {
     text-align: right; }
+  .cui-wizard__next.success,
+  .cui-form__next.success {
+    background: #3CB371; }
+  .cui-wizard__next.fail,
+  .cui-form__next.fail {
+    background: #FF4400; }
   .cui-wizard__previous,
   .cui-form__previous {
     background: #fff;
@@ -1332,64 +1356,20 @@ Styleguide Blocks.Form
           left: 20%;
           transform: rotate(180deg) translate(0, 100%); } }
 
-.indicator-container {
-  border-bottom: 1px solid #ddd; }
-
-.step-indicator {
-  color: #bbb;
+.cui-error__status {
+  width: 9px;
+  height: 9px;
+  background: #FF4400;
   display: inline-block;
-  margin-bottom: -2px;
-  padding: 10px 0;
-  position: relative;
-  text-align: center;
-  text-transform: capitalize;
-  white-space: nowrap; }
-  .step-indicator .icon-container {
-    margin-top: 0.625em; }
-  .step-indicator .icon {
-    background: #fff;
-    border-radius: 50%;
-    border: 0.125em solid #ccc;
-    height: 3.125em;
-    position: relative;
-    margin: 0 auto;
-    width: 3.125em;
-    z-index: 1; }
-  .step-indicator.active {
-    border-bottom: 6px solid #429DD1;
-    color: #333; }
-    .step-indicator.active .icon {
-      border: 0.125em solid #429DD1; }
-    .step-indicator.active .cui-icon-rotate {
-      fill: #4582B4; }
-  .step-indicator.visited {
-    color: #666; }
-    .step-indicator.visited .icon {
-      border: 0.125em solid #666; }
+  border-radius: 50%;
+  transform: translate(0, -1px); }
+  .cui-error__status.cui-error__status--pass {
+    background: #3CB371; }
 
-.cui-icon-rotate {
-  fill: #A2A19F;
-  height: 1.5em;
-  width: 1.5em; }
-  @media screen and (min-width: 700px) {
-    .cui-icon-rotate {
-      margin: 0.625em auto 0; } }
-
-step,
-.step {
-  display: none; }
-  step.active,
-  .step.active {
-    display: block; }
-
-@media screen and (max-width: 700px) {
-  .cui-wizard[mobile-stack] .desktop-element,
-  .cui-wizard[mobile-stack] .indicator-container {
-    display: none; } }
-
-@media screen and (min-width: 701px) {
-  .cui-wizard[mobile-stack] .mobile-element {
-    display: none; } }
+.cui-wizard__step-error {
+  color: red;
+  text-align: right;
+  margin-bottom: 20px; }
 
 .chevron {
   color: #53abd0;
@@ -2298,12 +2278,16 @@ Styleguide Blocks.Expandable
   border-bottom: 1px solid #ddd;
   display: block;
   padding-bottom: 10px;
+  position: relative;
   width: 100%; }
   .cui-expandable__title {
     color: #333;
     cursor: pointer;
     display: block;
     padding: 10px 0 0; }
+  .cui-expandable__title--error {
+    color: red;
+    font-weight: 700; }
   .cui-expandable__review-item {
     color: #666;
     font-size: 14px;
@@ -2321,8 +2305,40 @@ Styleguide Blocks.Expandable
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
+.cui-expandable__review-button {
+  cursor: pointer; }
+
+.cui-expandable__review-input {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
+.cui-expandable__review-select {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
 .cui-expandable__body {
   padding-left: 10px; }
+
+.cui-expandable__edit-button {
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(-100%, 0px); }
+  .cui-expandable__edit-button .cui-expandable__edit-icon {
+    fill: #333;
+    height: 30px;
+    width: 30px; }
+  .cui-expandable__edit-button:hover .cui-expandable__edit-icon {
+    fill: #429DD1; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd;
@@ -2505,7 +2521,7 @@ Styleguide Blocks.Popover
   width: 19.375em;
   z-index: 2; }
   .cui-popover--dark {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.8);
     box-shadow: none;
     color: #fff; }
     .cui-popover--dark p {
@@ -2970,6 +2986,11 @@ Markup:
 
 Styleguide Blocks.Loading
 */
+.cui-loading--center, .cui-loading--medium-ctr {
+  position: absolute;
+  top: 50%;
+  left: 50%; }
+
 .cui-loading__container {
   background: white;
   bottom: 0;
@@ -2981,7 +3002,7 @@ Styleguide Blocks.Loading
   transition: all 200ms ease-in-out;
   z-index: 10; }
 
-.cui-loading {
+.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr {
   animation: spin 1s infinite linear;
   background-color: #fff;
   border: 0.625em solid #429DD1;
@@ -2989,6 +3010,15 @@ Styleguide Blocks.Loading
   border-top-color: #87CEEC;
   height: 5em;
   width: 5em; }
+
+.cui-loading--medium, .cui-loading--medium-ctr {
+  border: 0.3125em solid #429DD1;
+  height: 1.875em;
+  width: 1.875em; }
+
+.cui-loading--center {
+  transform: translate(-50%, -50%);
+  z-index: 10; }
 
 @keyframes spin {
   100% {
@@ -3007,6 +3037,65 @@ Markup:
 
 Styleguide Blocks.Step-Indicator
 */
+.indicator-container {
+  border-bottom: 1px solid #ddd; }
+
+.step-indicator {
+  color: #bbb;
+  display: inline-block;
+  margin-bottom: -2px;
+  padding: 10px 0;
+  position: relative;
+  text-align: center;
+  text-transform: capitalize;
+  white-space: nowrap; }
+  .step-indicator .icon-container {
+    margin-top: 0.625em; }
+  .step-indicator .icon {
+    background: #fff;
+    border-radius: 50%;
+    border: 0.125em solid #ccc;
+    height: 3.125em;
+    position: relative;
+    margin: 0 auto;
+    width: 3.125em;
+    z-index: 1; }
+  .step-indicator.active {
+    border-bottom: 6px solid #429DD1;
+    color: #333; }
+    .step-indicator.active .icon {
+      border: 0.125em solid #429DD1; }
+    .step-indicator.active .cui-icon-rotate {
+      fill: #4582B4; }
+  .step-indicator.visited {
+    color: #666; }
+    .step-indicator.visited .icon {
+      border: 0.125em solid #666; }
+
+.cui-icon-rotate {
+  fill: #A2A19F;
+  height: 1.5em;
+  width: 1.5em; }
+  @media screen and (min-width: 700px) {
+    .cui-icon-rotate {
+      margin: 0.625em auto 0; } }
+
+step,
+.step {
+  display: none; }
+  step.active,
+  .step.active {
+    display: block; }
+
+@media screen and (max-width: 700px) {
+  .cui-wizard[mobile-stack] .desktop-element,
+  .cui-wizard[mobile-stack] .indicator-container {
+    display: none; } }
+
+@media screen and (min-width: 701px) {
+  .cui-wizard[mobile-stack] .mobile-element {
+    display: none; } }
+
 /*
 Step Indicator With Icons
 
@@ -3213,7 +3302,7 @@ Styleguide Blocks.Step-Indicator-With-Icons
   top: 50%;
   left: 50%; }
 
-.cui-loading--medium {
+.cui-loading--medium, .cui-loading--medium-ctr {
   width: 30px;
   height: 30px;
   display: inline-block;
