@@ -23,7 +23,7 @@
         <span ng-if="!usersEdit.editName">
           {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
         </span>
-        <span ng-click="usersEdit.editName = !usersEdit.editName"> Edit</span>
+        <a class='c' ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
       </p>
 
       <div ng-if="usersEdit.editName">
@@ -36,8 +36,8 @@
         </p>
 
         <div>
-          <span ng-click="usersEdit.saveFullName()">Save</span>
-          <span ng-click="usersEdit.editName=false">Cancel</span>
+          <span ng-click="usersEdit.saveFullName()">{{'cui-save' | translate}}</span>
+          <span ng-click="usersEdit.editName=false">{{'cui-cancel' | translate}}</span>
         </div>
       </div>
 
@@ -52,31 +52,74 @@
       <!-- Challenge Question 1 -->
       <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
 
-      <!-- Address 1 -->
-      <inline-edit label="cui-address-1" model="usersEdit.user.addresses[0].streets[0]"></inline-edit>
-      <!-- Address 2 -->
-      <inline-edit label="cui-address-2" model="usersEdit.user.addresses[0].streets[1]"></inline-edit>
-      <!-- City -->
-      <inline-edit label="cui-city" model="usersEdit.user.addresses[0].city"></inline-edit>
-      <!-- State -->
-      <inline-edit label="cui-state" model="usersEdit.user.addresses[0].state"></inline-edit>
-      <!-- Postal -->
-      <inline-edit label="cui-postal" model="usersEdit.user.addresses[0].postal"></inline-edit>
-      <!-- Country -->
-      <inline-edit type="auto-complete" model="usersEdit.user.addresses[0].country" display="usersEdit.user.addresses[0].country.title || usersEdit.user.addresses[0].country" label="cui-country" selected-object="usersEdit.user.addresses[0].country" model="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
-    </form>
+{{usersEdit.user.addresses}}
 
-    <!-- Update -->
-    <div class="cui-wizard__controls">
+
+      <p>{{'cui-address' | translate}}
+        <a class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-update' | translate}}</a>
+        <a class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</a>
+      </p>
+
+      <div ng-if='usersEdit.editAddress'>
+
+        <!-- <inline-edit label="cui-address-2" ng-model="usersEdit.user.addresses[0].streets[1]"></inline-edit> -->
+        <!-- <inline-edit label="cui-city" model="usersEdit.user.addresses[0].city"></inline-edit> -->
+        <!-- State -->
+        <!-- <inline-edit label="cui-state" model="usersEdit.user.addresses[0].state"></inline-edit> -->
+        <!-- Postal -->
+        <!-- <inline-edit label="cui-postal" model="usersEdit.user.addresses[0].postal"></inline-edit> -->
+        <!-- Country -->
+        <!-- <inline-edit type="auto-complete" model="usersEdit.user.addresses[0].country" display="usersEdit.user.addresses[0].country.title || usersEdit.user.addresses[0].country" label="cui-country" selected-object="usersEdit.user.addresses[0].country" model="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit> -->
+
+
+
+        <form name="organization">
+          <!-- Address 1 -->
+          <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
+          <input type="text" name="{{'cui-street-address' | translate}}" ng-model="usersEdit.user.addresses[0].streets[0]" class="cui-input">
+
+          <!-- Address 2 -->
+          <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
+          <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.user.addresses[0].streets[1]" class="cui-input">
+
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <!-- City -->
+              <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
+              <select name="{{'cui-city' | translate}}" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
+              <select name="{{'cui-zip' | translate}}" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+          </div>
+
+          <label for="{{'cui-country' | translate}}">{{'cui-country' | translate}}</label>
+          <select name="field-7" class="cui-input cui-select">
+            <option value="" disabled="" selected="" class=""></option>
+          </select>
+
+          <a class="cui-link" href="">cancel</a>
+          <!-- Update -->
+          <button class="cui-button">{{'cui-update' | translate}}</button>
+        </form>
+
+
+
+<!--     <div class="cui-wizard__controls"> -->
       <!-- go to assets/js/app/app.profile.js to customize this function -->
-      <button class="cui-wizard__next" ui-sref="users.search" style="position:relative">{{'cui-back' | translate}}</button> 
+      <!-- <button class="cui-wizard__next" ui-sref="users.search" style="position:relative">{{'cui-back' | translate}}</button> 
       <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="(user.$invalid)? 'cui-wizard__next--error' : (usersEdit.success)? 'success' : (usersEdit.fail)? 'fail' : ''" style="position:relative"> 
         <div class=".cui-loading--medium-ctr" ng-show="usersEdit.saving"></div>
         <span ng-if="(!usersEdit.saving && !usersEdit.success && !usersEdit.fail)">{{'cui-update' | translate}}</span>
         <span ng-if="usersEdit.success">{{'cui-updated' | translate}}!</span>
         <span ng-if="usersEdit.fail">{{'cui-error-try-again' | translate}}</span>
       </button>
-    </div>
+    </div> -->
 
   </div>
 </div>
