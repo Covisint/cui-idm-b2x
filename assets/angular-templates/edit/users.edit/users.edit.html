@@ -5,19 +5,34 @@
     <!-- Title -->
     <cui-expandable class="cui-expandable">
       <cui-expandable-title class="cui-expandable__title">
-        {{'cui-profile-settings' | translate}}
+        {{'cui-my-profile' | translate}}
+
       </cui-expandable-title>
     </cui-expandable>
     
+    <!-- User full name -->
+    <p>{{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}</p>
+    <!-- Avatar - not working yet-->
+    <cui-avatar class="cui-header__user--avatar cui-avatar" user-avatar="usersEdit.user.avatar">
+    <!-- UserID -->
+    <p>{{'cui-user-id' | translate}}:</p>
+    <p>{{'cui-registered' | translate}}:</p>
+
+
     <form name="user" novalidate>
+      <!-- Full Name -->
+      <inline-edit label="cui-name" model="usersEdit.user.name.given"></inline-edit>
       <!-- User ID -->
       <inline-edit label="cui-user-id" model="usersEdit.userPassword.username"></inline-edit>
-      <!-- First Name -->
-      <inline-edit label="cui-first-name" model="usersEdit.user.name.given"></inline-edit>
-      <!-- Last Name -->
-      <inline-edit label="cui-last-name" model="usersEdit.user.name.surname"></inline-edit>
       <!-- Email -->
       <inline-edit label="cui-email" model="usersEdit.user.email"></inline-edit>
+      <!-- Password -->
+      <inline-edit label="cui-password" model=""></inline-edit>
+      <!-- Challenge Question 1 -->
+      <inline-edit name="{{'cui-challenge-question' | translate}} 1" model="usersEdit.user.challengeQuestion1"></inline-edit>
+      <!-- Challenge Question 1 -->
+      <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
+
       <!-- Address 1 -->
       <inline-edit label="cui-address-1" model="usersEdit.user.addresses[0].streets[0]"></inline-edit>
       <!-- Address 2 -->
@@ -37,7 +52,7 @@
       <!-- go to assets/js/app/app.profile.js to customize this function -->
       <button class="cui-wizard__next" ui-sref="users.search" style="position:relative">{{'cui-back' | translate}}</button> 
       <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="(user.$invalid)? 'cui-wizard__next--error' : (usersEdit.success)? 'success' : (usersEdit.fail)? 'fail' : ''" style="position:relative"> 
-        <div class="cui-loading--medium__center" ng-show="usersEdit.saving"></div>
+        <div class=".cui-loading--medium-ctr" ng-show="usersEdit.saving"></div>
         <span ng-if="(!usersEdit.saving && !usersEdit.success && !usersEdit.fail)">{{'cui-update' | translate}}</span>
         <span ng-if="usersEdit.success">{{'cui-updated' | translate}}!</span>
         <span ng-if="usersEdit.fail">{{'cui-error-try-again' | translate}}</span>

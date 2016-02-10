@@ -1,16 +1,5 @@
-.cui-card, .cui-popover-container--relative {
+.cui-card{
 	position: relative;
-
-	.cui-styeguide__popover-container {
-		position: absolute;
-		left: 300px;
-
-		@media screen and (max-width: 700px) {
-			width: 270px;
-		  left: -20px;	
-		  top: 20px
-		}
-	}
 }
 
 .cui-popover_link {
@@ -35,4 +24,21 @@
 	color: #FFFFFF;
 	font-size: 2em;
 	text-align: center;
+}
+
+.cui-popover__new-division {
+	transform: translate(-22.375em, 64%);
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 700px) {
+	.cui-styeguide__popover-container {
+		position: absolute;
+
+		.cui-popover__new-division {
+			width: 275px;
+			transform: translate(2.5em, -128%);
+		}
+	}
 }

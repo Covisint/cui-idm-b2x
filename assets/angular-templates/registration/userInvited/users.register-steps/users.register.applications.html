@@ -2,7 +2,7 @@
   <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersRegister.applications.search" ng-change="usersRegister.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
   </div>
 
   <div ng-repeat="application in usersRegister.applications.list" style="margin-bottom:10px">
@@ -22,7 +22,7 @@
   <span ng-click="usersRegister.applications.step=1" translate>< {{'cui-all-applications'}}</span>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
   </div>
   <form name="selectApps" class="application-review">
     <div class="application-review__name application-review__label">
@@ -55,7 +55,7 @@
     </div>
   </form>
 
-  <div class="cui-error-message" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
+  <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
     <button class="cui-wizard__previous" ng-click="usersRegister.applications.step=usersRegister.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
     <button class="cui-wizard__next" ng-click="usersRegister.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
