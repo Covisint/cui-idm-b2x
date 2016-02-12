@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
+.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state',
+function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state){
     var usersWalkup=this;
 
     usersWalkup.userLogin={};
@@ -8,7 +8,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
     usersWalkup.registering=false;
     usersWalkup.registrationError=false;
     usersWalkup.applications.numberOfSelected=0;
-    if(!localStorageService.get('usersWalkup.user')){
+    if(!localStorageService.get('usersWalkup.user')){ // if it's not in the localstorage already
         usersWalkup.user={ addresses:[] }; // We need to initialize these arrays so ng-model treats them as arrays
         usersWalkup.user.addresses[0]={ streets:[] }; // rather than objects
         usersWalkup.user.phones=[];
@@ -45,9 +45,9 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
     })
     .fail(handleError);
 
-    var searchOrganizations = function(newOrgNameToSearch) {
-        if (usersWalkup.orgSearch) {
-            API.cui.getOrganizations({'qs': [['name', newOrgNameToSearch]]})
+    var searchOrganizations = function(newOrgToSearch) {
+        if (newOrgToSearch) {
+            API.cui.getOrganizations({'qs': [['name', newOrgToSearch.name]]})
             .then(function(res){
                 usersWalkup.organizationList = res;
                 $scope.$apply();
@@ -58,15 +58,15 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
 
     $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
 
-    // Populate Applications List
-
+    // Populate Applications List based on the current organization
     $scope.$watch('usersWalkup.organization',function(newOrgSelected){ // If the organization selected changes reset all the apps
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
             API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]})
             .then(function(res){
-                usersWalkup.applications.list=res;
+                if(res.length===0) usersWalkup.applications.list=undefined;
+                else usersWalkup.applications.list=res;
                 $scope.$apply();
             })
             .fail(handleError);
@@ -100,15 +100,17 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
 
     // Search apps by name
     usersWalkup.applications.searchApplications=function(){
-        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search]]})
+        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
         .then(function(res){
-            usersWalkup.applications.list = res;
+
+             usersWalkup.applications.list = res;
             $scope.$apply();
         })
         .fail(handleError);
     };
 
     usersWalkup.submit = function(){
+        usersWalkup.submitting=true;
         var user,org;
         API.cui.createPerson({data: build.user()})
         .then(function(res){
@@ -123,33 +125,44 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
             return API.cui.createPersonPassword( build.personPassword(user,org) );
         })
         .then(function(){
-            return API.cui.createPersonRequest( build.personRequest(user) );
+            return API.cui.createPersonRequest( build.personRequest(user,org) );
         })
         .then(function(){
+            usersWalkup.submitting=false;
+            usersWalkup.success=true;
             console.log('userCreated.');
+            $state.go('misc.success');
         })
-        .fail(handleError);
+        .fail(function(err){
+            usersWalkup.success=false;
+            handleError(err);
+        });
     };
 
     // collection of helper functions to build necessary calls on this controller
     var build={
-        personRequest:function(user){
+        personRequest:function(user,org){
             return {
                 data:{
                     id:user.id,
-                    version:'1',
-                    registrant:user.id,
+                    registrant:{
+                        id: user.id,
+                        type: 'person',
+                        realm: org.realm
+                    },
                     justification:'User walkup registration.',
                     servicePackageRequest:this.packageRequests()
                 }
             };
         },
         packageRequests:function(){
-            var packages=[];
-            angular.forEach(usersWalkup.applications.selected,function(servicePackage){
-                console.log(servicePackage.id);
-                packages.push({packageId:servicePackage.split(',')[0]});
-            });
+            // var packages=[];
+            // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
+            //     packages.push({packageId:servicePackage.split(',')[0]});
+            // });
+            var packages={
+                'packageId':usersWalkup.applications.selected[0].split(',')[0]
+            };
             return packages;
         },
         personPassword:function(user,org){
@@ -179,7 +192,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService){
             usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
             usersWalkup.user.organization={id:usersWalkup.organization.id};
             usersWalkup.user.timezone='EST5EDT';
-            if(usersWalkup.user.phones[0].number) usersWalkup.user.phones[0].type="main";
+            if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
             // get the current language being used
             if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
             else usersWalkup.user.language=LocaleService.getLocaleCode();

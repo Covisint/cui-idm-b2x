@@ -17,7 +17,7 @@
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 					<div ng-messages-include="assets/angular-templates/messages.html"></div>
 				</div>
-				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="usersWalkup.passwordPolicies" ng-model-options="{allowInvalid:true}" ng-change="usersWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(usersWalkup.userLogin.password)">
+				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="base.passwordPolicies" ng-model-options="{allowInvalid:true}" ng-change="usersWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(usersWalkup.userLogin.password)">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
 					<div ng-messages-include="assets/angular-templates/registration/password-validation.html"></div>
 				</div>
@@ -81,6 +81,7 @@
 </ng-form>
 
 <div class="cui-wizard__controls">
-	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-	<button class="cui-wizard__next" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+	<button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+	<button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+	<button class="cui-wizard__next" ng-if="wizardFinished" ng-click="userLogin.$valid && goToStep(5)" ng-class="!userLogin.$valid? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
 </div>

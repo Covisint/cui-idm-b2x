@@ -1,8 +1,11 @@
 <!-- User Information -->
 <cui-expandable class="cui-expandable expanded">
+  <div class="cui-expandable__edit-button" ng-click="goToStep(1)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-user-information' | translate}}
-    <span class="edit-button" ng-click="goToStep(1)"></span><span class="chevron">></span>
+    <span class="chevron">></span>
   </cui-expandable-title>
 
   <cui-expandable-body class="cui-expandable__body">
@@ -13,7 +16,7 @@
     <!-- Email -->
     <div class="cui-expandable__review-item">{{'cui-email' | translate}}:<span class="review-item__value">{{usersWalkup.user.email}}</span></div>
     <!-- Country -->
-    <div class="cui-expandable__review-item">{{'cui-country' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].country.title || usersWalkup.user.addresses[0].country}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-country' | translate}}:<span class="review-item__value">{{usersWalkup.userCountry.title || usersWalkup.userCountry}}</span></div>
     <!-- Address 1 -->
     <div class="cui-expandable__review-item" ng-if="usersWalkup.user.addresses[0].streets[0] && usersWalkup.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}:<span class="review-item__value">{{usersWalkup.user.addresses[0].streets[0]}}</span></div>
     <!-- Address 2 -->
@@ -44,6 +47,9 @@
 
 <!-- Sign In Information -->
 <cui-expandable class="cui-expandable expanded">
+  <div class="cui-expandable__edit-button" ng-click="goToStep(3)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-sign-in-information' | translate}}
     <span class="chevron">></span>
@@ -66,7 +72,10 @@
 </cui-expandable>
 
 <!-- Application Selection -->
-<cui-expandable class="cui-expandable expanded" ng-if="usersWalkup.applications.processedSelected && usersWalkup.applications.processedSelected.length>0">
+<cui-expandable class="cui-expandable expanded">
+  <div class="cui-expandable__edit-button" ng-click="goToStep(4)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-application-selection' | translate}}
     <span class="chevron">></span>
@@ -74,12 +83,19 @@
 
   <cui-expandable-body class="cui-expandable__body">
 
+    <div class="cui-expandable__review-item" ng-if="usersWalkup.applications.processedSelected.length===0 || !usersWalkup.applications.processedSelected.length">
+      <span class="cui-link" ng-click="goToStep(4)">{{'no-applications-selected' | translate}}</span>
+    </div>
+
     <div class="cui-expandable__review-item" ng-repeat="application in usersWalkup.applications.processedSelected">{{application.name}}</div>
 
   </cui-expandable-body>
 </cui-expandable>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="usersWalkup.submit(userWalkupRegForm)" ng-class="{'cui-wizard__next--error' : !userWalkupRegForm.$valid }">{{'cui-submit' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="userWalkupRegForm.$valid && usersWalkup.submit()" ng-class="(!userWalkupRegForm.$valid)? 'cui-wizard__next--error' : usersWalkup.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
+    <div class="cui-loading--medium-ctr" ng-if="usersWalkup.submitting"></div>
+    <span ng-if="!usersWalkup.submitting && usersWalkup.success!=false">{{'cui-submit' | translate}}</span>
+    <span ng-if="usersWalkup.success===false">Error! Try again?</span>
+  </button>
 </div>

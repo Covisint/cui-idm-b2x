@@ -441,13 +441,13 @@ h1, h2, h3, h4, h5, h6 {
 .h4 {
   font-size: 1.5em; }
 
-.h5 {
+.h5, .cui-media__title {
   font-size: 1.25em; }
 
 .h6 {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-media__title {
   font-weight: 700; }
 
 p {
@@ -977,7 +977,7 @@ Styleguide Elements.Forms.Badge
   border-radius: 20px;
   color: white;
   display: inline-block;
-  font-size: 0.8em;
+  font-size: 0.75em;
   min-width: 25px;
   padding: 5px 9px;
   text-align: center; }
@@ -1008,12 +1008,10 @@ Styleguide Elements.Colors.Primary-Colors
 .cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   background-color: #429DD1; }
 
-.cui-primary-colors--medium, .cui-off-canvas, .cui-off-canvas__list--child,
-.cui-off-canvas__sub-section-list {
+.cui-primary-colors--medium {
   background-color: #4582B4; }
 
-.cui-primary-colors--medium-dark, .cui-off-canvas__list-item,
-.cui-off-canvas__section, .cui-off-canvas__option {
+.cui-primary-colors--medium-dark, .cui-off-canvas__option {
   background-color: #165E9B; }
 
 .cui-primary-colors--dark {
@@ -1685,7 +1683,7 @@ Markup:
 Styleguide Blocks.Header
 */
 .cui-header {
-  background: white;
+  background: #fff;
   padding: 0 30px; }
   .cui-header__user {
     flex-grow: 1;
@@ -1742,7 +1740,7 @@ Styleguide Blocks.Header
     display: flex;
     height: 80px;
     padding: 0 0;
-    border-bottom: 1px solid #EEE; }
+    border-bottom: 1px solid #eee; }
   .cui-header__bottom {
     align-items: center;
     display: flex;
@@ -1949,8 +1947,12 @@ Styleguide Blocks.Off-Canvas
   margin: 10px 0;
   cursor: pointer; }
 
+.cui-off-canvas {
+  background-color: #4582B4; }
+
 .cui-off-canvas__list-item,
 .cui-off-canvas__section {
+  background-color: #165E9B;
   display: block;
   margin: 10px 0;
   cursor: pointer; }
@@ -1985,6 +1987,7 @@ Styleguide Blocks.Off-Canvas
 
 .cui-off-canvas__list--child,
 .cui-off-canvas__sub-section-list {
+  background-color: #4582B4;
   padding-left: 2.5em;
   padding-top: 0.625em; }
   .cui-off-canvas__list--child a:hover,
@@ -2290,7 +2293,7 @@ Styleguide Blocks.Expandable
     font-weight: 700; }
   .cui-expandable__review-item {
     color: #666;
-    font-size: 14px;
+    font-size: 0.875em;
     line-height: .75;
     margin: 1em 0; }
   .cui-expandable:last-of-type {
@@ -2299,7 +2302,7 @@ Styleguide Blocks.Expandable
     display: block;
     max-height: 0;
     overflow: hidden;
-    transition: all 200ms ease-in-out; }
+    transition: all 0.3s linear; }
   .cui-expandable.expanded > .cui-expandable__body {
     max-height: 2000px; }
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
@@ -2325,7 +2328,8 @@ Styleguide Blocks.Expandable
   width: 300px; }
 
 .cui-expandable__body {
-  padding-left: 10px; }
+  padding-left: 20px;
+  padding-right: 20px; }
 
 .cui-expandable__edit-button {
   cursor: pointer;
@@ -2344,10 +2348,10 @@ Styleguide Blocks.Expandable
   border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 2.5em;
   position: relative; }
   .indicator-container .steps-bar {
-    background: #ccc;
+    background-color: #ccc;
     height: 0.125em;
     position: absolute;
     top: 62%;
@@ -2355,7 +2359,7 @@ Styleguide Blocks.Expandable
     .indicator-container .steps-bar--no-js {
       width: 100%; }
     .indicator-container .steps-bar .steps-bar-fill {
-      background: #D0D0D0;
+      background-color: #D0D0D0;
       display: inline-block;
       height: 0.125em;
       position: absolute; }
@@ -2370,7 +2374,9 @@ Styleguide Blocks.Expandable
       color: #bbb; }
 
 .indicator-container--icons {
-  border: 0; }
+  border-bottom: 0; }
+  .indicator-container--icons.small .steps-bar {
+    display: none; }
   .indicator-container--icons.small .step-indicator {
     display: none;
     pointer-events: none; }
@@ -2597,7 +2603,7 @@ Styleguide Blocks.Cards
   min-height: 28.75em;
   margin: 0.625em;
   max-width: 20em;
-  padding: 2.5em 2.5em;
+  padding: 2.5em;
   transition: box-shadow .2s ease, transform .2s ease; }
   .cui-card:hover, .cui-popover-container--relative:hover {
     box-shadow: 0 1px 3px #A2A19F;
@@ -2622,7 +2628,7 @@ p {
 .cui-card__content-header {
   align-self: center;
   color: #828483;
-  font-size: 1.8em;
+  font-size: 1.75em;
   font-weight: 900;
   margin: 0.3125em 0; }
 
@@ -3037,9 +3043,6 @@ Markup:
 
 Styleguide Blocks.Step-Indicator
 */
-.indicator-container {
-  border-bottom: 1px solid #ddd; }
-
 .step-indicator {
   color: #bbb;
   display: inline-block;
@@ -3071,6 +3074,9 @@ Styleguide Blocks.Step-Indicator
     color: #666; }
     .step-indicator.visited .icon {
       border: 0.125em solid #666; }
+
+.indicator-container--icons .step-indicator.active {
+  border-bottom: 0; }
 
 .cui-icon-rotate {
   fill: #A2A19F;
@@ -3261,6 +3267,113 @@ Styleguide Blocks.Step-Indicator-With-Icons
 .cui-form--mobile-steps .mobile-element .cui-expandable__title {
   align-items: center;
   display: flex; }
+
+/*
+Tabs
+
+Markup:
+<div class="cui-tabs">
+  <ul class="cui-tabs__nav">
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab cui-tabs__tab--active" data-pane="tab1">Active Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab2">Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab3">Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab4">Tab</a></li>
+  </ul>
+  <div class="cui-tabs__content">
+    <div id="tab1" class="cui-tabs__tab-pane cui-tabs__tab-pane--active"><p>Tab 1 Content</p></div>
+    <div id="tab2" class="cui-tabs__tab-pane"><p>Tab 2 Content</p></div>
+    <div id="tab3" class="cui-tabs__tab-pane"><p>Tab 3 Content</p></div>
+    <div id="tab4" class="cui-tabs__tab-pane"><p>Tab 4 Content</p></div>
+  </div>
+</div>
+
+Styleguide Blocks.Tabs
+*/
+.cui-tabs {
+  display: flex;
+  flex-direction: column; }
+
+.cui-tabs__nav {
+  display: flex;
+  flex: 1; }
+
+.cui-tabs__tab-container {
+  border-left: 1px solid #fff;
+  display: flex;
+  flex: 1;
+  justify-content: center; }
+
+.cui-tabs__tab-container:first-of-type {
+  border-left: none; }
+
+.cui-tabs__tab {
+  align-items: center;
+  background-color: #828483;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  font-size: 0.75em;
+  justify-content: center;
+  padding: 0.625em;
+  text-align: center;
+  text-decoration: none; }
+  .cui-tabs__tab--active {
+    background-color: #fff;
+    color: #343534; }
+  @media screen and (min-width: 701px) {
+    .cui-tabs__tab {
+      font-size: 1em; } }
+
+.cui-tabs__tab-pane {
+  display: none; }
+  .cui-tabs__tab-pane--active {
+    display: flex;
+    font-size: 0.75em;
+    flex: 1;
+    padding: 3.125em 1.25em; }
+  @media screen and (min-width: 701px) {
+    .cui-tabs__tab-pane {
+      font-size: 1em; } }
+
+/*
+Media Object 
+
+Markup:
+<div class="cui-media">
+  <div class="cui-media__image-container">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+      <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+    </svg>
+  </div>
+  <div class="cui-media__body">
+    <h3 class="cui-media__title">Media Object body title</h3>
+    <p class="cui-media__content">Media Object body text</p>
+  </div>
+</div>
+
+Styleguide Blocks.Media-Object
+*/
+.cui-media {
+  display: flex; }
+
+.cui-media__image-container {
+  display: flex;
+  flex: .25;
+  justify-content: center; }
+
+.cui-media__body {
+  flex: .75; }
+
+.cui-media__image {
+  border: 2px solid black;
+  border-radius: 50%;
+  height: 3.125em;
+  width: 3.125em; }
+
+.cui-media__content {
+  margin: 0;
+  padding: 0.3125em 0; }
 
 @media screen and (min-width: 701px) {
   .cui-nav__content-wrapper {

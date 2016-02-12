@@ -71,7 +71,7 @@
 
           <!-- go to assets/js/app/app.profile.js to customize this function -->
           <button class="cui-wizard__next" ng-click="usersInvite.saveUser(invite)" ng-class="(invite.$invalid)? 'cui-wizard__next--error' : (usersInvite.sent)? 'success' : (usersInvite.fail)? 'fail' : ''" style="position:relative"> 
-            <div class="cui-loading--medium__center" ng-show="usersInvite.sending"></div>
+            <div class=".cui-loading--medium-ctr" ng-show="usersInvite.sending"></div>
             <span ng-if="(!usersInvite.sending && !usersInvite.sent && !usersInvite.fail)">Send invite</span>
             <span ng-if="usersInvite.sent">Invite sent!</span>
             <span ng-if="usersInvite.fail">Error! Try again?</span>

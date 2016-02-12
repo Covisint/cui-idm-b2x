@@ -50,7 +50,7 @@
       <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
         <div ng-messages-include="assets/angular-templates/messages.html"></div>
       </div>
-      <div auto-complete input-name="country" pause="100" selected-object="usersWalkup.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="usersWalkup.user.addresses[0].country"></div>
+      <div auto-complete input-name="country" pause="100" selected-object="usersWalkup.userCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="usersWalkup.userCountry"></div>
     </div>
 
     <!-- Address 1 -->
@@ -71,7 +71,7 @@
     <!-- City -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{"cui-city" | translate}}</label>
-      <input type="text" ng-model="usersWalkup.user.addresses[0].city" class="cui-input" name="city"></input>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].city" class="cui-input" name="city"/>
     </div>
   </div>
 
@@ -80,7 +80,7 @@
     <!-- State/Province -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{"cui-state" | translate}}</label>
-      <input type="text" ng-model="usersWalkup.user.addresses[0].state" class="cui-input" name="state"></input>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].state" class="cui-input" name="state"/>
     </div>
 
     <!-- Postal Code -->
@@ -100,10 +100,16 @@
   </div>
 
   <!-- TOS -->
-  <input type="checkbox" name="TOS" id="TOS" ng-model="usersWalkup.tos" ng-required="true">
-  <label for="TOS"> {{'cui-agree-covisint' | translate}} <a href="">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} <a href="">{{'privacy-policy' | translate}}</a></label>
-  <span class="cui-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
-  <div class="cui-wizard__controls">
+  <div class='cui-tos-container'>
+    <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
+    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}}
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
+    </label>
+    <span class="cui-wizard__step-error" ng-if="user.TOS.$touched && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
+  </div>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
     <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(5)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
   </div>

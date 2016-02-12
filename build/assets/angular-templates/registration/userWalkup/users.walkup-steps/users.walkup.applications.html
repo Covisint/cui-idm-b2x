@@ -1,28 +1,39 @@
-<div ng-if="!usersWalkup.applications.step || usersWalkup.applications.step===1" ng-init="usersWalkup.applications.step=1">
+<!-- If there's no applications in that organization -->
+<div ng-if="!usersWalkup.applications.list">
+  Seems like your organization doesn't have any applications. You can always try again after logging in.
+  <div class="cui-wizard__controls" style="margin-top:20px">
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="goToStep(5)">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</div>
+
+<!-- If there's applications -->
+<div ng-if="usersWalkup.applications.list && (!usersWalkup.applications.step || usersWalkup.applications.step===1)" ng-init="usersWalkup.applications.step=1">
   <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersWalkup.applications.search" ng-change="usersWalkup.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
 
-  <div ng-repeat="application in usersWalkup.applications.list" style="margin-bottom:10px">
+  <div ng-repeat="application in usersWalkup.applications.list track by application.id" style="margin-bottom:10px">
     <input id="application{{$index}}" type="checkbox" ng-model="usersWalkup.applications.selected[$index]" ng-true-value="'{{application.id}},{{application.name[0].text}}'" ng-false-value="null" ng-change="usersWalkup.applications.updateNumberOfSelected(usersWalkup.applications.selected[$index])" style="margin-right:10px"/>
     <label for="application{{$index}}" ng-bind="application.name[0].text"></label>
     <span style="float:right;clear:both;">{{'cui-more-information' | translate }}</span>
   </div>
 
   <div class="cui-wizard__controls" style="margin-top:20px">
-  	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+  	<button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-click="usersWalkup.applications.process()===0? next() : usersWalkup.applications.step=2">{{'cui-next' | translate}}</button>
   </div>
 </div>
 
 <!-- Checkout Applications -->
-<div ng-if="usersWalkup.applications.step===2">
+<div ng-if="usersWalkup.applications.list && usersWalkup.applications.step===2">
   <span ng-click="usersWalkup.applications.step=1" translate>< {{'cui-all-applications'}}</span>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
-    <div class="badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
+    <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
   <ng-form name="selectApps" class="application-review">
     <div class="application-review__name application-review__label">
@@ -55,9 +66,10 @@
     </div>
   </ng-form>
 
-  <div class="cui-error-message" ng-if="!selectApps.$valid && usersWalkup.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
+  <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && usersWalkup.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
     <button class="cui-wizard__previous" ng-click="usersWalkup.applications.step=usersWalkup.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
-    <button class="cui-wizard__next" ng-click="usersWalkup.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="usersWalkup.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="selectApps.$valid && goToStep(5)" ng-class="{'cui-wizard__next--error': !selectApps.$valid}">{{'cui-back-to-review' | translate}}</button>
   </div>
 </div>
