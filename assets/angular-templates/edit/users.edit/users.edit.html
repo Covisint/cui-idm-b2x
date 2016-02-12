@@ -52,27 +52,12 @@
       <!-- Challenge Question 1 -->
       <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
 
-{{usersEdit.user.addresses}}
-
-
       <p>{{'cui-address' | translate}}
         <a class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-update' | translate}}</a>
         <a class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</a>
       </p>
 
       <div ng-if='usersEdit.editAddress'>
-
-        <!-- <inline-edit label="cui-address-2" ng-model="usersEdit.user.addresses[0].streets[1]"></inline-edit> -->
-        <!-- <inline-edit label="cui-city" model="usersEdit.user.addresses[0].city"></inline-edit> -->
-        <!-- State -->
-        <!-- <inline-edit label="cui-state" model="usersEdit.user.addresses[0].state"></inline-edit> -->
-        <!-- Postal -->
-        <!-- <inline-edit label="cui-postal" model="usersEdit.user.addresses[0].postal"></inline-edit> -->
-        <!-- Country -->
-        <!-- <inline-edit type="auto-complete" model="usersEdit.user.addresses[0].country" display="usersEdit.user.addresses[0].country.title || usersEdit.user.addresses[0].country" label="cui-country" selected-object="usersEdit.user.addresses[0].country" model="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit> -->
-
-
-
         <form name="organization">
           <!-- Address 1 -->
           <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
@@ -86,40 +71,27 @@
             <div class="cui-form__field-container cui-form__field-container--half">
               <!-- City -->
               <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
-              <select name="{{'cui-city' | translate}}" class="cui-input cui-select">
-                <option value="" disabled="" selected="" class=""></option>
-              </select>
+              <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].city">
             </div>
             <div class="cui-form__field-container cui-form__field-container--half">
               <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
-              <select name="{{'cui-zip' | translate}}" class="cui-input cui-select">
-                <option value="" disabled="" selected="" class=""></option>
-              </select>
+              <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].postal">
             </div>
           </div>
 
-          <label for="{{'cui-country' | translate}}">{{'cui-country' | translate}}</label>
-          <select name="field-7" class="cui-input cui-select">
-            <option value="" disabled="" selected="" class=""></option>
-          </select>
+          <!-- Country -->
+          <div class="cui-wizard__field-container">
+            <label for="country">{{"cui-country" | translate}}</label>
+            <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
+              <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            </div>
+            <div auto-complete input-name="country" pause="100" selected-object="usersEdit.user.Country" initial-value="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+          </div>
 
           <a class="cui-link" href="">cancel</a>
           <!-- Update -->
           <button class="cui-button">{{'cui-update' | translate}}</button>
         </form>
-
-
-
-<!--     <div class="cui-wizard__controls"> -->
-      <!-- go to assets/js/app/app.profile.js to customize this function -->
-      <!-- <button class="cui-wizard__next" ui-sref="users.search" style="position:relative">{{'cui-back' | translate}}</button> 
-      <button class="cui-wizard__next" ng-click="usersEdit.save()" ng-class="(user.$invalid)? 'cui-wizard__next--error' : (usersEdit.success)? 'success' : (usersEdit.fail)? 'fail' : ''" style="position:relative"> 
-        <div class=".cui-loading--medium-ctr" ng-show="usersEdit.saving"></div>
-        <span ng-if="(!usersEdit.saving && !usersEdit.success && !usersEdit.fail)">{{'cui-update' | translate}}</span>
-        <span ng-if="usersEdit.success">{{'cui-updated' | translate}}!</span>
-        <span ng-if="usersEdit.fail">{{'cui-error-try-again' | translate}}</span>
-      </button>
-    </div> -->
-
+      </div>
   </div>
 </div>
