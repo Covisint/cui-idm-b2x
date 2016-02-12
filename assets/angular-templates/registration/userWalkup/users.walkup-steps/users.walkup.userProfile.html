@@ -71,7 +71,7 @@
     <!-- City -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{"cui-city" | translate}}</label>
-      <input type="text" ng-model="usersWalkup.user.addresses[0].city" class="cui-input" name="city"></input>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].city" class="cui-input" name="city"/>
     </div>
   </div>
 
@@ -80,7 +80,7 @@
     <!-- State/Province -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{"cui-state" | translate}}</label>
-      <input type="text" ng-model="usersWalkup.user.addresses[0].state" class="cui-input" name="state"></input>
+      <input type="text" ng-model="usersWalkup.user.addresses[0].state" class="cui-input" name="state"/>
     </div>
 
     <!-- Postal Code -->
@@ -102,15 +102,14 @@
   <!-- TOS -->
   <div class='cui-tos-container'>
     <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
-    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}} 
-      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} 
+    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}}
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
       <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
     </label>
-    <span class="cui-wizard__step-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
+    <span class="cui-wizard__step-error" ng-if="user.TOS.$touched && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
   </div>
 
   <div class="cui-wizard__controls cui-wizard__controls--clear">
-    <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
     <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(5)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
   </div>

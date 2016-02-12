@@ -29,16 +29,17 @@
       </div>
       <div class="cui-card__content">
         <p class="cui-card__content-header">{{ 'cui-new-division' | translate }}</p>
-        <!-- Popover -->
-        <div class="cui-styeguide__popover-container" ng-show="welcome.divisionPopover">
-          <div class="cui-popover cui-popover--dark cui-popover--top">
-            <p class="">{{ 'cui-welcome-popover' | translate }}</p>
-            <p class="cui-popover_link"><a href="" ng-click="welcome.divisionPopover=false">Cool, got it!</a></p>
-          </div>
-        </div>
-        <p>{{ 'cui-new-division-description-start' | translate }} <a href="" ng-click="welcome.divisionPopover=true">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division-description-end' | translate }}</p>
+        <p>{{ 'cui-new-division-description-start' | translate }} <a href="" class="cui-link--medium-light" ng-click="welcome.divisionPopover=true">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division-description-end' | translate }}</p>
       </div>
       <button class="cui-card__button" ui-sref="division.registration">{{ 'cui-sign-up' | translate }}</button>
+    </div>
+    
+    <!-- Popover -->
+    <div class="cui-styeguide__popover-container" ng-show="welcome.divisionPopover" off-click="welcome.divisionPopover = false" off-click-if="welcome.divisionPopover">
+      <div class="cui-popover cui-popover--dark cui-popover--top cui-popover__new-division">
+        <p class="">{{ 'cui-welcome-popover' | translate }}</p>
+        <p class="cui-popover_link"><a href="" ng-click="welcome.divisionPopover=false">Cool, got it!</a></p>
+      </div>
     </div>
 
     <!-- Tile: New User -->

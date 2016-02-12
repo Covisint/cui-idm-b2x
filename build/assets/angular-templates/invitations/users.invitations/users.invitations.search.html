@@ -1,8 +1,8 @@
 <div class="cui-tile">
   <div class="cui-tile__title">User Invitations</div>
     <div class="cui-tile__body">
-        <div class="fill" ng-if="usersInvitations.listLoading">
-            <div class="center"><div class="cui-loading"></div></div>
+        <div class="cui-loading__container" ng-if="usersInvitations.listLoading">
+            <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
         <a ui-sref="users.invite" class="cui-link">Invite new user</a><br/><br/>
         

@@ -2,7 +2,7 @@
   <p>{{'cui-all-organizations' | translate}}</p>
   <input class="cui-input--half" placeholder="Filter by organization name" ng-model="usersWalkup.orgSearch.name">
 
-  <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList">
+  <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList track by organization.id">
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       {{organization.name}}
       <span class="chevron">></span>
