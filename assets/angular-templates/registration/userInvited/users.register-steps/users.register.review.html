@@ -1,5 +1,10 @@
 <!-- User Information -->
 <cui-expandable class="cui-expandable expanded">
+
+  <div class="cui-expandable__edit-button" ng-click="goToStep(1)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
+
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-user-information' | translate}}
     <span class="chevron">></span>
@@ -7,28 +12,33 @@
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- First Name -->
-    <inline-edit label="cui-first-name" model="usersRegister.user.name.given"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}: <span class="review-item__value">{{usersRegister.user.name.given}}</span></div>
     <!-- Last Name -->
-    <inline-edit label="cui-last-name" model="usersRegister.user.name.surname"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-last-name' | translate}}: <span class="review-item__value">{{usersRegister.user.name.surname}}</span></div>
     <!-- Country -->
-    <inline-edit type="auto-complete" model="usersRegister.user.addresses[0].country" display="usersRegister.user.addresses[0].country.title || usersRegister.user.addresses[0].country" label="cui-country" selected-object="usersRegister.user.addresses[0].country" model="usersRegister.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-country' | translate}}: <span class="review-item__value">{{usersRegister.userCountry.title || usersRegister.userCountry}}</span></div>
     <!-- Address 1 -->
-    <inline-edit label="cui-address-1" model="usersRegister.user.addresses[0].streets[0]"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.addresses[0].streets[0] && usersRegister.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}: <span class="review-item__value">{{usersRegister.user.addresses[0].streets[0]}}</span></div>
     <!-- Address 2 -->
-    <inline-edit label="cui-address-2" model="usersRegister.user.addresses[0].streets[1]"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.addresses[0].streets[1] && usersRegister.user.addresses[0].streets[1]!==''">{{'cui-address-2' | translate}}: <span class="review-item__value">{{usersRegister.user.addresses[0].streets[1]}}</span></div>
     <!-- City -->
-    <inline-edit label="cui-city" model="usersRegister.user.addresses[0].city"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.addresses[0].city && usersRegister.user.addresses[0].city!==''">{{'cui-city' | translate}}: <span class="review-item__value">{{usersRegister.user.addresses[0].city}}</span></div>
     <!-- State -->
-    <inline-edit label="cui-state" model="usersRegister.user.addresses[0].state"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.addresses[0].state && usersRegister.user.addresses[0].state!==''">{{'cui-state' | translate}}: <span class="review-item__value">{{usersRegister.user.addresses[0].state}}</span></div>
     <!-- Postal -->
-    <inline-edit label="cui-postal" model="usersRegister.user.addresses[0].postal"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.addresses[0].postal && usersRegister.user.addresses[0].postal!==''">{{'cui-postal' | translate}}: <span class="review-item__value">{{usersRegister.user.addresses[0].postal}}</span></div>
     <!-- Phone Number -->
-    <inline-edit label="cui-telephone" model="usersRegister.user.phones[0].number"></inline-edit>
+    <div class="cui-expandable__review-item" ng-if="usersRegister.user.phones[0].number && usersRegister.user.phones[0].number!==''">{{'cui-telephone' | translate}}: <span class="review-item__value">{{usersRegister.user.phones[0].number}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Sign In Information -->
-<cui-expandable class="cui-expandable">
+<cui-expandable class="cui-expandable expanded">
+
+  <div class="cui-expandable__edit-button" ng-click="goToStep(2)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
+
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-sign-in-information' | translate}}
     <span class="chevron">></span>
@@ -36,34 +46,44 @@
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- User ID -->
-    <inline-edit label="cui-user-id" model="usersRegister.signOn.username"></inline-edit>
+     <div class="cui-expandable__review-item">{{'cui-user-id' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.username}}</span></div>
     <!-- Password -->
-    <inline-edit label="cui-password" model="usersRegister.signOn.password"></inline-edit>
-    <!-- Re-Enter Password -->
-    <inline-edit label="cui-password-re" model="usersRegister.signOn.passwordRe"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-password' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
-    <inline-edit type="dropdown" display="usersRegister.signOn.question1.question[0].text" label="cui-challenge-question" options="usersRegister.signOn.challengeQuestions1" options-expression="question as question.question[0].text for question in options" model="usersRegister.signOn.question1"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.question1.question[0].text}}</span></div>
     <!-- Challenge Answer 1 -->
-    <inline-edit label="cui-challenge-answer" model="usersRegister.signOn.challengeAnswer1"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.challengeAnswer1}}</span></div>
     <!-- Challenge Question 2 -->
-    <inline-edit type="dropdown" display="usersRegister.signOn.question2.question[0].text" label="cui-challenge-question" options="usersRegister.signOn.challengeQuestions2" options-expression="question as question.question[0].text for question in options" model="usersRegister.signOn.question2"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.question2.question[0].text}}</span></div>
     <!-- Challenge Answer 2 -->
-    <inline-edit label="cui-challenge-answer" model="usersRegister.signOn.challengeAnswer2"></inline-edit>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{usersRegister.userLogin.challengeAnswer2}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Application Selection -->
-<cui-expandable class="cui-expandable">
+<cui-expandable class="cui-expandable expanded">
+  <div class="cui-expandable__edit-button" ng-click="goToStep(3)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div>
+
   <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
     {{'cui-application-selection' | translate}}
     <span class="chevron">></span>
   </cui-expandable-title>
 
   <cui-expandable-body class="cui-expandable__body">
+    <div class="cui-expandable__review-item" ng-if="usersRegister.applications.processedSelected.length===0 || !usersRegister.applications.processedSelected.length">
+      <span class="cui-link" ng-click="goToStep(3)">{{'no-applications-selected' | translate}}</span>
+    </div>
+
+    <div class="cui-expandable__review-item" ng-repeat="application in usersRegister.applications.processedSelected">{{application.name}}</div>
   </cui-expandable-body>
 </cui-expandable>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="usersRegisterForm.$valid && usersRegister.submit()" ng-class="(!usersRegisterForm.$valid)? 'cui-wizard__next--error' : usersRegister.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
+    <div class="cui-loading--medium-ctr" ng-if="usersRegister.submitting"></div>
+    <span ng-if="!usersRegister.submitting && usersRegister.success!=false">{{'cui-submit' | translate}}</span>
+    <span ng-if="usersRegister.success===false">Error! Try again?</span>
+  </button>
 </div>
