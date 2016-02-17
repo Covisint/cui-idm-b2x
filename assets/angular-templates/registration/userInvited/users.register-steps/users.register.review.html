@@ -81,7 +81,7 @@
 </cui-expandable>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__next" ng-click="usersRegisterForm.$valid && usersRegister.submit()" ng-class="(!usersRegisterForm.$valid)? 'cui-wizard__next--error' : usersRegister.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
+  <button class="cui-wizard__next" ng-click="userInvitedRegForm.$valid && usersRegister.submit()" ng-class="(!userInvitedRegForm.$valid)? 'cui-wizard__next--error' : usersRegister.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
     <div class="cui-loading--medium-ctr" ng-if="usersRegister.submitting"></div>
     <span ng-if="!usersRegister.submitting && usersRegister.success!=false">{{'cui-submit' | translate}}</span>
     <span ng-if="usersRegister.success===false">Error! Try again?</span>

@@ -2,13 +2,14 @@ angular.module('app')
 .controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
     function(localStorageService,$scope,Person,$stateParams,API){
         var usersRegister=this;
-        usersRegister.loading=true;
+
+        usersRegister.loading = true;
         usersRegister.userLogin = {};
-        usersRegister.registering=false;
-        usersRegister.registrationError=false;
+        usersRegister.registering = false;
+        usersRegister.registrationError = false;
         usersRegister.applications = {};
-        usersRegister.applications.numberOfSelected=0;
-        usersRegister.showCovisintInfo=false;
+        usersRegister.applications.numberOfSelected = 0;
+        usersRegister.showCovisintInfo = false;
 
         usersRegister.passwordPolicies=[
         {
@@ -43,15 +44,15 @@ angular.module('app')
         });
 
     // Pre polulates the form with info the admin inserted when he first created the invitation
-    var getUser=function(id){
+    var getUser = function(id) {
         API.cui.getPerson({personId:id})
-        .then(function(res){
-            usersRegister.loading=false;
-            usersRegister.user=res;
-            $scope.$apply();
+        .then(function(res) {
+            usersRegister.loading = false;
+            usersRegister.user = res;
+            $scope.$digest();
         })
         .fail(function(err){
-            usersRegister.loading=false;
+            usersRegister.loading = false;
             console.log(err);
         });
     };
@@ -84,7 +85,7 @@ angular.module('app')
     API.cui.getPackages()
     .then(function(res){
      usersRegister.applications.list=res;
-     $scope.$apply();
+     $scope.$digest();
  })
     .fail(function(err){
         console.log(err);
@@ -113,13 +114,11 @@ angular.module('app')
     };
 
     // Search apps by name
-    usersRegister.applications.searchApplications=function(){
-        API.cui.getPackages({'qs': [['name',usersRegister.applications.search]]})
+    usersRegister.applications.searchApplications = function() {
+        API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
         .then(function(res){
-            console.log(typeofusersRegister.applications.search);
-            console.log(res);
             usersRegister.applications.list = res;
-            $scope.$apply();
+            $scope.$digest();
         })
         .fail(function(err){
             console.log(err);
@@ -130,7 +129,7 @@ angular.module('app')
         usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
     };
 
-    
+
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){
@@ -200,6 +199,5 @@ angular.module('app')
     //         usersRegister.registering=false;
     //     });
     // };
-
 
 }]);

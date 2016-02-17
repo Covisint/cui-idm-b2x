@@ -1,9 +1,9 @@
-<form name="userLogin" novalidate>
+<ng-form name="userLogin" novalidate>
 
   <!-- First Row -->
   <!-- User ID -->
   <label for="userID">{{'cui-user-id' | translate}}</label>
-  <div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.name.$touched">
+  <div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.userID.$touched">
     <div ng-messages-include="assets/angular-templates/messages.html"></div>
   </div>
   <input type="text" name="userID" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.username">
@@ -77,10 +77,10 @@
       <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.challengeAnswer2">
     </div>
   </div>
-
-</form>
+</ng-form>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
-  <button class="cui-wizard__next" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+  <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+  <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="userLogin.$valid && goToStep(4)" ng-class="!userLogin.$valid? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
 </div>
