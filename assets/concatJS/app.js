@@ -35,8 +35,8 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('baseCtrl',['$state','getCountries','$scope','$translate',
-function($state,getCountries,$scope,$translate){
+.controller('baseCtrl',['$state','getCountries','$scope','$translate','LocaleService',
+function($state,getCountries,$scope,$translate,LocaleService){
     var base=this;
 
     base.desktopMenu=true;
@@ -77,6 +77,12 @@ function($state,getCountries,$scope,$translate){
             'disallowedWords':['password','admin']
         }
     ];
+
+    // This returns the current language being used by the cui-i18n library, used for registration processes.
+    base.getLanguageCode = function(){
+        if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
+        else return LocaleService.getLocaleCode();
+    };
 
     var setCountries=function(language){
         language = language || 'en';
@@ -433,7 +439,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     };
 
     var sendInvitationEmail=function(invitation){
-        var message="You've received an invitation to join our organization.<p>" + 
+        var message="You've received an invitation to join our organization.<p>" +
             "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
             " to register</a>.",
             text;
@@ -449,7 +455,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
             text: text
         };
         Person.sendUserInvitationEmail(emailOpts)
-        .then(function(res){   
+        .then(function(res){
             usersInvite.sending=false;
             usersInvite.sent=true;
         })
@@ -468,15 +474,16 @@ function(localStorageService,$scope,Person,$stateParams,API){
                 errorField.$setTouched();
             });
         });
-
         if(form.$valid){
             usersInvite.sending=true;
             usersInvite.sent=false;
             usersInvite.fail=false;
+            usersInvite.user.timezone="EST5EDT";
+            usersInvite.user.language=$scope.$parent.base.getLanguageCode();
             API.doAuth()
             .then(function(){
                 Person.create(usersInvite.user)
-                .then(function(res){   
+                .then(function(res){
                     createInvitation(res.data);
                 })
                 .catch(function(err){
@@ -1281,8 +1288,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         packageRequests:function(){
             // var packages=[];
             // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
-            //     packages.push({packageId:servicePackage.split(',')[0]});
-            // });
+            //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
+            // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
             var packages={
                 'packageId':usersWalkup.applications.selected[0].split(',')[0]
             };
@@ -1317,8 +1324,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             usersWalkup.user.timezone='EST5EDT';
             if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
             // get the current language being used
-            if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
-            else usersWalkup.user.language=LocaleService.getLocaleCode();
+            usersWalkup.user.language=base.getLanguageCode();
             return usersWalkup.user;
         },
         userSecurityQuestions:function(user){

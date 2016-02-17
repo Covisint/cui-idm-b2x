@@ -22,7 +22,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
     };
 
     var sendInvitationEmail=function(invitation){
-        var message="You've received an invitation to join our organization.<p>" + 
+        var message="You've received an invitation to join our organization.<p>" +
             "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
             " to register</a>.",
             text;
@@ -38,7 +38,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
             text: text
         };
         Person.sendUserInvitationEmail(emailOpts)
-        .then(function(res){   
+        .then(function(res){
             usersInvite.sending=false;
             usersInvite.sent=true;
         })
@@ -57,15 +57,16 @@ function(localStorageService,$scope,Person,$stateParams,API){
                 errorField.$setTouched();
             });
         });
-
         if(form.$valid){
             usersInvite.sending=true;
             usersInvite.sent=false;
             usersInvite.fail=false;
+            usersInvite.user.timezone="EST5EDT";
+            usersInvite.user.language=$scope.$parent.base.getLanguageCode();
             API.doAuth()
             .then(function(){
                 Person.create(usersInvite.user)
-                .then(function(res){   
+                .then(function(res){
                     createInvitation(res.data);
                 })
                 .catch(function(err){

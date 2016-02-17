@@ -5,7 +5,7 @@
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
         <a ui-sref="users.invite" class="cui-link">Invite new user</a><br/><br/>
-        
+
         <div class="cui-expandable__container">
             <div class="cui-expandable__tr">
               <span class="cui-expandable__td">Invitation ID</span>
@@ -21,9 +21,9 @@
                     </div>
                 </cui-expandable-title>
                 <cui-expandable-body class="cui-expandable__body" style="position:relative">
-                    <div class="cui-loading" ng-if="usersInvitations.invitorLoading[$index]"></div>
+                    <div class="cui-loading" ng-if="usersInvitations.invitorLoading[$index] || usersInvitations.inviteeLoading[$index]"></div>
                     </br>
-                    <div ng-show="!usersInvitations.invitorLoading[$index] && !usersInvitations.inviteeLoading[$index]">
+                    <div ng-if="!usersInvitations.invitorLoading[$index] && !usersInvitations.inviteeLoading[$index]">
                         <ul>
                             <li class="cui-expandable__review-item">
                                 Invitor: {{usersInvitations.invitor[$index].name.given}} {{usersInvitations.invitor[$index].name.surname}}
@@ -36,6 +36,6 @@
                     </br>
                 </cui-expandable-body>
             </cui-expandable>
-        
+
     </div>
 </div>

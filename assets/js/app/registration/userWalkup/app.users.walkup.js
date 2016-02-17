@@ -158,8 +158,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         packageRequests:function(){
             // var packages=[];
             // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
-            //     packages.push({packageId:servicePackage.split(',')[0]});
-            // });
+            //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
+            // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
             var packages={
                 'packageId':usersWalkup.applications.selected[0].split(',')[0]
             };
@@ -194,8 +194,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             usersWalkup.user.timezone='EST5EDT';
             if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
             // get the current language being used
-            if(LocaleService.getLocaleCode().indexOf('_')>-1) usersWalkup.user.language=LocaleService.getLocaleCode().split('_')[0];
-            else usersWalkup.user.language=LocaleService.getLocaleCode();
+            usersWalkup.user.language=base.getLanguageCode();
             return usersWalkup.user;
         },
         userSecurityQuestions:function(user){
