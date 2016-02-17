@@ -1,8 +1,8 @@
 <form name="user" novalidate>
   <p>{{"cui-all-fields-required" | translate}}. {{"cui-complete-registration" | translate}}
-    <a href='' class="cui-link--medium-light cui-link--no-decoration" ng-click='usersRegister.applications.toggleCovisintInfo()'> <!-- usersRegister.showCovisintInfo = true -->
+    <a href='' class="cui-link--medium-light cui-link--no-decoration" ng-click='usersRegister.applications.toggleCovisintInfo()'>
       Covisint SF.
-      <div ng-include="'assets/angular-templates/complete-registration-popover.html'"></div>
+      <div ng-include="'assets/angular-templates/registration/userInvited/complete-registration-popover.html'"></div>
     </a>
   </p>
   
@@ -35,7 +35,7 @@
       <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
         <div ng-messages-include="assets/angular-templates/messages.html"></div>
       </div>
-      <div auto-complete input-name="country" pause="100" selected-object="usersRegister.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="usersRegister.user.addresses[0].country"></div>
+      <div auto-complete input-name="country" pause="100" selected-object="usersRegister.userCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="usersRegister.userCountry"></div>
     </div>
   
     <!-- Address 1 -->
