@@ -194,7 +194,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             usersWalkup.user.timezone='EST5EDT';
             if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
             // get the current language being used
-            usersWalkup.user.language=base.getLanguageCode();
+            usersWalkup.user.language=$scope.$parent.base.getLanguageCode();
             return usersWalkup.user;
         },
         userSecurityQuestions:function(user){

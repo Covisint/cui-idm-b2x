@@ -84,8 +84,8 @@ angular.module('app')
         // Populate Applications List
         API.cui.getPackages()
         .then(function(res){
-           usersRegister.applications.list=res;
-           $scope.$digest();
+            usersRegister.applications.list = res;
+            $scope.$digest();
         })
         .fail(function(err){
             console.log(err);
@@ -130,6 +130,10 @@ angular.module('app')
         };
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9e6021937338dfaf5e69bdc8c8d70bf86440f393
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){

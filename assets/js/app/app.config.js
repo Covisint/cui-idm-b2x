@@ -107,12 +107,21 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
 
     //where the locales are being loaded from
-    $translateProvider.useLoader('LocaleLoader',{
+    $translateProvider
+    .uniformLanguageTag('java')
+    .determinePreferredLanguage()
+    .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
     })
-    .fallbackLanguage('en_US');
+    .registerAvailableLanguageKeys(['en_US','pl_PL','zh_CN','pt_PT'],{
+        'en*':'en_US',
+        'pl*':'pl_PL',
+        'zh*':'zh_CN',
+        'pt*':'pt_PT',
+        '*':'en_US'
+    });
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);

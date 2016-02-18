@@ -217,12 +217,21 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
 
     //where the locales are being loaded from
-    $translateProvider.useLoader('LocaleLoader',{
+    $translateProvider
+    .uniformLanguageTag('java')
+    .determinePreferredLanguage()
+    .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
     })
-    .fallbackLanguage('en_US');
+    .registerAvailableLanguageKeys(['en_US','pl_PL','zh_CN','pt_PT'],{
+        'en*':'en_US',
+        'pl*':'pl_PL',
+        'zh*':'zh_CN',
+        'pt*':'pt_PT',
+        '*':'en_US'
+    });
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
@@ -416,8 +425,8 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
 }]);
 
 angular.module('app')
-.controller('usersInviteCtrl',['localStorageService','$scope','Person','$stateParams','API',
-function(localStorageService,$scope,Person,$stateParams,API){
+.controller('usersInviteCtrl',['localStorageService','$scope','$stateParams','API',
+function(localStorageService,$scope,$stateParams,API){
     var usersInvite=this;
     usersInvite.user={};
     usersInvite.user.organization={ // organization is hardcoded
@@ -427,42 +436,35 @@ function(localStorageService,$scope,Person,$stateParams,API){
         "realm": "APPCLOUD"
     };
 
-    var createInvitation=function(invitee){
-        Person.createInvitation(invitee,{id:'RN3BJI54'})
-        .then(function(res){
-            sendInvitationEmail(res.data);
-        })
-        .catch(function(err){
-            usersInvite.sending=false;
-            usersInvite.fail=true;
-        });
-    };
-
     var sendInvitationEmail=function(invitation){
         var message="You've received an invitation to join our organization.<p>" +
             "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
             " to register</a>.",
             text;
-        if(usersInvite.message && usersInvite.message!==''){
-            text=usersInvite.message + '<br/><br/>' + message;
-        }
-        else text=message;
-        var emailOpts={
-            to:invitation.email,
-            from:'cuiInterface@thirdwave.com',
-            fromName:'CUI INTERFACE',
-            subject: 'Request to join our organization',
-            text: text
-        };
-        Person.sendUserInvitationEmail(emailOpts)
-        .then(function(res){
-            usersInvite.sending=false;
-            usersInvite.sent=true;
-        })
-        .catch(function(err){
-            usersInvite.sending=false;
-            usersInvite.fail=true;
-        });
+        console.log(message);
+        usersInvite.sending=false;
+        usersInvite.sent=true;
+        $scope.$digest();
+        // if(usersInvite.message && usersInvite.message!==''){
+        //     text=usersInvite.message + '<br/><br/>' + message;
+        // }
+        // else text=message;
+        // var emailOpts={
+        //     to:invitation.email,
+        //     from:'cuiInterface@thirdwave.com',
+        //     fromName:'CUI INTERFACE',
+        //     subject: 'Request to join our organization',
+        //     text: text
+        // };
+        // Person.sendUserInvitationEmail(emailOpts)
+        // .then(function(res){
+        //     usersInvite.sending=false;
+        //     usersInvite.sent=true;
+        // })
+        // .catch(function(err){
+        //     usersInvite.sending=false;
+        //     usersInvite.fail=true;
+        // });
     };
 
     usersInvite.saveUser=function(form){
@@ -482,17 +484,39 @@ function(localStorageService,$scope,Person,$stateParams,API){
             usersInvite.user.language=$scope.$parent.base.getLanguageCode();
             API.doAuth()
             .then(function(){
-                Person.create(usersInvite.user)
-                .then(function(res){
-                    createInvitation(res.data);
-                })
-                .catch(function(err){
-                    usersInvite.sending=false;
-                    usersInvite.fail=true;
-                });
-
+                return API.cui.createPerson({data:usersInvite.user});
+            })
+            .then(function(res){
+                return API.cui.createPersonInvitation({data:build.personInvitation(res)});
+            })
+            .then(function(res){
+                sendInvitationEmail(res);
+            })
+            .fail(function(err){
+                usersInvite.sending=false;
+                usersInvite.fail=true;
+                $scope.$digest();
             });
+        }
+    };
 
+    var build={
+        personInvitation:function(invitee){
+            return {
+                email:invitee.email,
+                invitor:{
+                    id:'RN3BJI54',
+                    type:'person'
+                },
+                invitee:{
+                    id:invitee.id,
+                    type:'person'
+                },
+                targetOrganization:{
+                    "id":"OCOVSMKT-CVDEV204002",
+                    "type":"organization"
+                }
+            };
         }
     };
 
@@ -924,18 +948,17 @@ angular.module('app')
 
 angular.module('app')
 .controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
-function(localStorageService,$scope,Person,$stateParams,API){
-    var usersRegister=this;
-    usersRegister.loading=true;
-    usersRegister.userLogin={};
-    usersRegister.registering=false;
-    usersRegister.registrationError=false;
-    usersRegister.signOn = {};
-    usersRegister.applications = {};
-    usersRegister.applications.numberOfSelected=0;
-    usersRegister.showCovisintInfo=false;
+    function(localStorageService,$scope,Person,$stateParams,API){
+        var usersRegister=this;
+        usersRegister.loading=true;
+        usersRegister.userLogin = {};
+        usersRegister.registering=false;
+        usersRegister.registrationError=false;
+        usersRegister.applications = {};
+        usersRegister.applications.numberOfSelected=0;
+        usersRegister.showCovisintInfo=false;
 
-    usersRegister.passwordPolicies=[
+        usersRegister.passwordPolicies=[
         {
             'allowUpperChars':true,
             'allowLowerChars':true,
@@ -953,19 +976,19 @@ function(localStorageService,$scope,Person,$stateParams,API){
         {
             'disallowedWords':['password','admin']
         }
-    ];
+        ];
 
-    Person.getInvitationById($stateParams.id)
-    .then(function(res){
-        if(res.data.invitationCode!==$stateParams.code){
+        Person.getInvitationById($stateParams.id)
+        .then(function(res){
+            if(res.data.invitationCode!==$stateParams.code){
             // Wrong code
             return;
         }
         getUser(res.data.invitee.id);
     })
-    .catch(function(err){
-        console.log(err);
-    });
+        .catch(function(err){
+            console.log(err);
+        });
 
     // Pre polulates the form with info the admin inserted when he first created the invitation
     var getUser=function(id){
@@ -981,69 +1004,68 @@ function(localStorageService,$scope,Person,$stateParams,API){
         });
     };
 
-    Person.getSecurityQuestions()
+    // Load security questions for Login form
+    API.doAuth()
+    .then(function() {
+        return API.cui.getSecurityQuestions();
+    })
     .then(function(res) {
         // Removes first question as it is blank
-        res.data.splice(0,1);
+        res.splice(0,1);
 
         // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
+        var numberOfQuestions = res.length,
         numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-        usersRegister.signOn.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        usersRegister.signOn.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
+        usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+        usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
         // Preload question into input
-        usersRegister.signOn.question1 = usersRegister.signOn.challengeQuestions1[0];
-        usersRegister.signOn.question2 = usersRegister.signOn.challengeQuestions2[0];
+        usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+        usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
     })
-        .catch(function(err) {
-            console.log(err);
+    .fail(function(err) {
+        console.log("Get Security Questions Error: ", err);
     });
 
-
-
     // Populate Applications List
-
     API.cui.getPackages()
     .then(function(res){
-       usersRegister.applications.list=res;
-        $scope.$apply();
-    })
+     usersRegister.applications.list=res;
+     $scope.$apply();
+ })
     .fail(function(err){
         console.log(err);
-    })
+    });
 
     // Update the number of selected apps everytime on of the boxes is checked/unchecked
-   usersRegister.applications.updateNumberOfSelected=function(a){
+    usersRegister.applications.updateNumberOfSelected=function(a){
         if(a!==null) usersRegister.applications.numberOfSelected++;
         else usersRegister.applications.numberOfSelected--;
     };
 
     // Process the selected apps when you click next after selecting the apps you need
-   usersRegister.applications.process=function(){
-       if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
-       usersRegister.applications.processedSelected=[];
-       angular.forEach(usersRegister.applications.selected,function(app,i){
-           if(app!==null) {
-               usersRegister.applications.processedSelected.push({
-                   id:app.split(',')[0],
-                   name:app.split(',')[1],
-                   acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
-               });
-           }
-       });
-       return usersRegister.applications.processedSelected.length;
-   };
+    usersRegister.applications.process=function(){
+        if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
+        usersRegister.applications.processedSelected=[];
+        angular.forEach(usersRegister.applications.selected,function(app,i){
+         if(app!==null) {
+             usersRegister.applications.processedSelected.push({
+                 id:app.split(',')[0],
+                 name:app.split(',')[1],
+                 acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+             });
+         }
+     });
+        return usersRegister.applications.processedSelected.length;
+    };
 
     // Search apps by name
-   usersRegister.applications.searchApplications=function(){
+    usersRegister.applications.searchApplications=function(){
         API.cui.getPackages({'qs': [['name',usersRegister.applications.search]]})
         .then(function(res){
-            console.log(typeofusersRegister.applications.search);
-            console.log(res);
-           usersRegister.applications.list = res;
-            $scope.$apply();
+            usersRegister.applications.list = res;
+            $scope.$digest();
         })
         .fail(function(err){
             console.log(err);
@@ -1054,7 +1076,7 @@ function(localStorageService,$scope,Person,$stateParams,API){
         usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
     };
 
- 
+
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){
@@ -1324,7 +1346,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             usersWalkup.user.timezone='EST5EDT';
             if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
             // get the current language being used
-            usersWalkup.user.language=base.getLanguageCode();
+            usersWalkup.user.language=$scope.$parent.base.getLanguageCode();
             return usersWalkup.user;
         },
         userSecurityQuestions:function(user){
