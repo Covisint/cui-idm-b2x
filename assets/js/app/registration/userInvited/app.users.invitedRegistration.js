@@ -116,10 +116,8 @@ angular.module('app')
     usersRegister.applications.searchApplications=function(){
         API.cui.getPackages({'qs': [['name',usersRegister.applications.search]]})
         .then(function(res){
-            console.log(typeofusersRegister.applications.search);
-            console.log(res);
             usersRegister.applications.list = res;
-            $scope.$apply();
+            $scope.$digest();
         })
         .fail(function(err){
             console.log(err);
@@ -130,7 +128,7 @@ angular.module('app')
         usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
     };
 
-    
+
 
     // usersRegister.finish=function(form){
     //     if(form.$invalid){
