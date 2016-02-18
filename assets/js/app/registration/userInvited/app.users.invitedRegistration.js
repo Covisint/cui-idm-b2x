@@ -11,123 +11,123 @@ angular.module('app')
         usersRegister.applications.numberOfSelected = 0;
         usersRegister.showCovisintInfo = false;
 
+        // Pre polulates the form with info the admin inserted when he first created the invitation
+        var getUser = function(id) {
+            API.cui.getPerson({personId:id})
+            .then(function(res) {
+                usersRegister.loading = false;
+                usersRegister.user = res;
+                $scope.$digest();
+            })
+            .fail(function(err){
+                usersRegister.loading = false;
+                console.log(err);
+            });
+        };
+
         usersRegister.passwordPolicies=[
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
+            {
+                'allowUpperChars':true,
+                'allowLowerChars':true,
+                'allowNumChars':true,
+                'allowSpecialChars':true,
+                'requiredNumberOfCharClasses':3
+            },
+            {
+                'disallowedChars':'^&*)(#$'
+            },
+            {
+                'min':8,
+                'max':18
+            },
+            {
+                'disallowedWords':['password','admin']
+            }
         ];
 
         Person.getInvitationById($stateParams.id)
-        .then(function(res){
+        .then(function(res) {
             if(res.data.invitationCode!==$stateParams.code){
-            // Wrong code
-            return;
-        }
-        getUser(res.data.invitee.id);
-    })
+                // Wrong code
+                return;
+            }
+            getUser(res.data.invitee.id);
+        })
         .catch(function(err){
             console.log(err);
         });
 
-    // Pre polulates the form with info the admin inserted when he first created the invitation
-    var getUser = function(id) {
-        API.cui.getPerson({personId:id})
+        // Load security questions for Login form
+        API.doAuth()
+        .then(function() {
+            return API.cui.getSecurityQuestions();
+        })
         .then(function(res) {
-            usersRegister.loading = false;
-            usersRegister.user = res;
-            $scope.$digest();
+            // Removes first question as it is blank
+            res.splice(0,1);
+
+            // Splits questions to use between both dropdowns
+            var numberOfQuestions = res.length,
+            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+            usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+            usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+            // Preload question into input
+            usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+            usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
         })
-        .fail(function(err){
-            usersRegister.loading = false;
-            console.log(err);
+        .fail(function(err) {
+            console.log("Get Security Questions Error: ", err);
         });
-    };
 
-    // Load security questions for Login form
-    API.doAuth()
-    .then(function() {
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        // Removes first question as it is blank
-        res.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
-        usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-        usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
-
-        // Preload question into input
-        usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
-        usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
-    })
-    .fail(function(err) {
-        console.log("Get Security Questions Error: ", err);
-    });
-
-    // Populate Applications List
-    API.cui.getPackages()
-    .then(function(res){
-     usersRegister.applications.list=res;
-     $scope.$digest();
- })
-    .fail(function(err){
-        console.log(err);
-    });
-
-    // Update the number of selected apps everytime on of the boxes is checked/unchecked
-    usersRegister.applications.updateNumberOfSelected=function(a){
-        if(a!==null) usersRegister.applications.numberOfSelected++;
-        else usersRegister.applications.numberOfSelected--;
-    };
-
-    // Process the selected apps when you click next after selecting the apps you need
-    usersRegister.applications.process=function(){
-        if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
-        usersRegister.applications.processedSelected=[];
-        angular.forEach(usersRegister.applications.selected,function(app,i){
-         if(app!==null) {
-             usersRegister.applications.processedSelected.push({
-                 id:app.split(',')[0],
-                 name:app.split(',')[1],
-                 acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
-             });
-         }
-     });
-        return usersRegister.applications.processedSelected.length;
-    };
-
-    // Search apps by name
-    usersRegister.applications.searchApplications = function() {
-        API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
+        // Populate Applications List
+        API.cui.getPackages()
         .then(function(res){
-            usersRegister.applications.list = res;
-            $scope.$digest();
+           usersRegister.applications.list=res;
+           $scope.$digest();
         })
         .fail(function(err){
             console.log(err);
         });
-    };
 
-    usersRegister.applications.toggleCovisintInfo=function(){
-        usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
-    };
+        // Update the number of selected apps everytime on of the boxes is checked/unchecked
+        usersRegister.applications.updateNumberOfSelected=function(a){
+            if(a!==null) usersRegister.applications.numberOfSelected++;
+            else usersRegister.applications.numberOfSelected--;
+        };
+
+        // Process the selected apps when you click next after selecting the apps you need
+        usersRegister.applications.process=function(){
+            if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
+            usersRegister.applications.processedSelected=[];
+            angular.forEach(usersRegister.applications.selected,function(app,i){
+               if(app!==null) {
+                   usersRegister.applications.processedSelected.push({
+                       id:app.split(',')[0],
+                       name:app.split(',')[1],
+                       acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                   });
+               }
+           });
+            return usersRegister.applications.processedSelected.length;
+        };
+
+        // Search apps by name
+        usersRegister.applications.searchApplications = function() {
+            API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
+            .then(function(res){
+                usersRegister.applications.list = res;
+                $scope.$digest();
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        };
+
+        usersRegister.applications.toggleCovisintInfo=function(){
+            usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
+        };
 
 
 
