@@ -17,81 +17,82 @@
     <p>{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
     <p>{{'cui-registered' | translate}}:</p>
 
-      <!-- Full Name -->
-      <p ng-if="!usersEdit.editName">
-        {{"cui-name"| translate}}:
-        <span ng-if="!usersEdit.editName">
-          {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
-        </span>
-        <a class='c' ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
+    <!-- Full Name -->
+    <p ng-if="!usersEdit.editName">
+      {{"cui-name"| translate}}:
+      <span ng-if="!usersEdit.editName">
+        {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
+      </span>
+      <a href="" class="cui-link" ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
+    </p>
+
+    <div ng-if="usersEdit.editName">
+      <p>{{'cui-first-name' | translate}}
+        <input type="text" ng-model="usersEdit.tempGiven"></input>
+      </p>
+      
+      <p>{{'cui-last-name' | translate}}
+        <input type="text" ng-model="usersEdit.tempSurname"></input>
       </p>
 
-      <div ng-if="usersEdit.editName">
-        <p>{{'cui-first-name' | translate}}
-          <input type="text" ng-init="usersEdit.tempGiven = usersEdit.user.name.given" ng-model="usersEdit.tempGiven"></input>
-        </p>
-        
-        <p>{{'cui-last-name' | translate}}
-          <input type="text" ng-init="usersEdit.tempSurname = usersEdit.user.name.surname" ng-model="usersEdit.tempSurname"></input>
-        </p>
+      <div>
+        <a class="cui-link" href="" ng-click="usersEdit.saveFullName()">{{'cui-save' | translate}}</a>
+        <a class="cui-link" href="" ng-click="usersEdit.resetFullName()">{{'cui-cancel' | translate}}</a>
+      </div>
+    </div>
 
-        <div>
-          <span ng-click="usersEdit.saveFullName()">{{'cui-save' | translate}}</span>
-          <span ng-click="usersEdit.editName=false">{{'cui-cancel' | translate}}</span>
+    <!-- User ID -->
+    <p>{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
+    <!-- Email -->
+    <inline-edit label="cui-email" model="usersEdit.user.email"></inline-edit>
+    <!-- Password -->
+    <inline-edit label="cui-password" model=""></inline-edit>
+    <!-- Challenge Question 1 -->
+    <inline-edit name="{{'cui-challenge-question' | translate}} 1" model="usersEdit.user.challengeQuestion1"></inline-edit>
+    <!-- Challenge Question 1 -->
+    <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
+
+    <!-- Address -->
+    <p>{{'cui-address' | translate}}
+      <span class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-expand' | translate}}</span>
+      <span class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</span>
+    </p>
+
+    <div ng-if='usersEdit.editAddress'>
+      <!-- Street Address -->  
+      <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
+      <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="usersEdit.tempStreetAddress">
+
+      <!-- Address 2 -->
+      <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
+      <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.tempAddress2" class="cui-input">
+
+      <div class="cui-form__field-row">
+        <!-- City -->
+        <div class="cui-form__field-container cui-form__field-container--half">
+          <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
+          <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.tempCity">
+        </div>
+
+        <!-- ZIP -->
+        <div class="cui-form__field-container cui-form__field-container--half">
+          <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
+          <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.tempZIP">
         </div>
       </div>
 
-      <!-- User ID -->
-      <inline-edit label="cui-user-id" model="usersEdit.userPassword.username"></inline-edit>
-      <!-- Email -->
-      <inline-edit label="cui-email" model="usersEdit.user.email"></inline-edit>
-      <!-- Password -->
-      <inline-edit label="cui-password" model=""></inline-edit>
-      <!-- Challenge Question 1 -->
-      <inline-edit name="{{'cui-challenge-question' | translate}} 1" model="usersEdit.user.challengeQuestion1"></inline-edit>
-      <!-- Challenge Question 1 -->
-      <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
-
-      <p>{{'cui-address' | translate}}
-        <a class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-update' | translate}}</a>
-        <a class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</a>
-      </p>
-
-      <div ng-if='usersEdit.editAddress'>
-        <form name="organization">
-          <!-- Address 1 -->
-          <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
-          <input type="text" name="{{'cui-street-address' | translate}}" ng-model="usersEdit.user.addresses[0].streets[0]" class="cui-input">
-
-          <!-- Address 2 -->
-          <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
-          <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.user.addresses[0].streets[1]" class="cui-input">
-
-          <div class="cui-form__field-row">
-            <div class="cui-form__field-container cui-form__field-container--half">
-              <!-- City -->
-              <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
-              <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].city">
-            </div>
-            <div class="cui-form__field-container cui-form__field-container--half">
-              <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
-              <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].postal">
-            </div>
-          </div>
-
-          <!-- Country -->
-          <div class="cui-wizard__field-container">
-            <label for="country">{{"cui-country" | translate}}</label>
-            <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-              <div ng-messages-include="assets/angular-templates/messages.html"></div>
-            </div>
-            <div auto-complete input-name="country" pause="100" selected-object="usersEdit.user.Country" initial-value="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
-          </div>
-
-          <a class="cui-link" href="">cancel</a>
-          <!-- Update -->
-          <button class="cui-button">{{'cui-update' | translate}}</button>
-        </form>
+      <!-- Country -->
+      <div class="cui-wizard__field-container">
+        <label for="country">{{"cui-country" | translate}}</label>
+        <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
+          <div ng-messages-include="assets/angular-templates/messages.html"></div>
+        </div>
+        <div auto-complete input-name="country" pause="100" selected-object="usersEdit.updateTempCountry" initial-value="usersEdit.tempCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
       </div>
+
+      <a class="cui-link" href="" ng-click="usersEdit.resetTempAddress()">cancel</a>
+      <!-- Update -->
+      <button class="cui-button" ng-click="usersEdit.saveAddress()">{{'cui-update' | translate}}</button>
+    </div>
   </div>
 </div>
