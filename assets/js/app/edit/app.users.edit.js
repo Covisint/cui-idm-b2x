@@ -6,6 +6,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.editName = false;
     usersEdit.editAddress = true;
 
+    var initializeFullNameTemp = function() {
+        usersEdit.tempGiven = usersEdit.user.name.given;
+        usersEdit.tempSurname = usersEdit.user.name.surname
+    };
+
     var initializeTempAddressValues = function(){
         usersEdit.tempStreetAddress = usersEdit.user.addresses[0].streets[0];
         usersEdit.tempAddress2 = usersEdit.user.addresses[0].streets[1];
@@ -32,6 +37,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.user = res;
         initializeTempAddressValues();
+        initializeFullNameTemp();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -79,6 +85,12 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.saveFullName = function() {
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.editName = false;
+    }
+
+    usersEdit.resetFullName = function() {
+        usersEdit.tempGiven = usersEdit.user.name.given;
+        usersEdit.tempSurname = usersEdit.user.name.surname;
         usersEdit.editName = false;
     }
 

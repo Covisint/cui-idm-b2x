@@ -23,21 +23,21 @@
       <span ng-if="!usersEdit.editName">
         {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
       </span>
-      <a class='c' ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
+      <a href="" class="cui-link" ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
     </p>
 
     <div ng-if="usersEdit.editName">
       <p>{{'cui-first-name' | translate}}
-        <input type="text" ng-init="usersEdit.tempGiven = usersEdit.user.name.given" ng-model="usersEdit.tempGiven"></input>
+        <input type="text" ng-model="usersEdit.tempGiven"></input>
       </p>
       
       <p>{{'cui-last-name' | translate}}
-        <input type="text" ng-init="usersEdit.tempSurname = usersEdit.user.name.surname" ng-model="usersEdit.tempSurname"></input>
+        <input type="text" ng-model="usersEdit.tempSurname"></input>
       </p>
 
       <div>
-        <span ng-click="usersEdit.saveFullName()">{{'cui-save' | translate}}</span>
-        <span ng-click="usersEdit.editName=false">{{'cui-cancel' | translate}}</span>
+        <a class="cui-link" href="" ng-click="usersEdit.saveFullName()">{{'cui-save' | translate}}</a>
+        <a class="cui-link" href="" ng-click="usersEdit.resetFullName()">{{'cui-cancel' | translate}}</a>
       </div>
     </div>
 
@@ -54,8 +54,8 @@
 
     <!-- Address -->
     <p>{{'cui-address' | translate}}
-      <a class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-expand' | translate}}</a>
-      <a class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</a>
+      <span class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-expand' | translate}}</span>
+      <span class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</span>
     </p>
 
     <div ng-if='usersEdit.editAddress'>
