@@ -52,8 +52,6 @@
     <!-- Challenge Question 1 -->
     <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
 
-{{usersEdit.user.addresses}}
-
     <!-- Address -->
     <p>{{'cui-address' | translate}}
       <a class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-expand' | translate}}</a>
@@ -89,7 +87,7 @@
         <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
           <div ng-messages-include="assets/angular-templates/messages.html"></div>
         </div>
-        <div auto-complete input-name="country" pause="100" selected-object="usersEdit.user.Country" initial-value="usersEdit.tempCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+        <div auto-complete input-name="country" pause="100" selected-object="usersEdit.updateTempCountry" initial-value="usersEdit.tempCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
       </div>
 
       <a class="cui-link" href="" ng-click="usersEdit.resetTempAddress()">cancel</a>

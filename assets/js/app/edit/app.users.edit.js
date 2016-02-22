@@ -76,13 +76,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         });
     };
 
-    usersEdit.saveFullName = function(){
+    usersEdit.saveFullName = function() {
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
         usersEdit.editName = false;
     }
 
-    usersEdit.resetTempAddress = function(){
+    usersEdit.resetTempAddress = function() {
         initializeTempAddressValues();
         usersEdit.editAddress = false;
     }
@@ -94,5 +94,9 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
         usersEdit.editAddress = false;
+    }
+
+    usersEdit.updateTempCountry = function(results) {
+        usersEdit.tempCountry = results.description.name;
     }
 }]);
