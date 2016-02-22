@@ -61,24 +61,25 @@
     </p>
 
     <div ng-if='usersEdit.editAddress'>
-      <!-- Address 1 -->  
+      <!-- Street Address -->  
       <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
-      <input type="text" name="{{'cui-street-address' | translate}}" ng-model="usersEdit.user.addresses[0].streets[0]" class="cui-input">
+      <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="usersEdit.tempStreetAddress">
 
       <!-- Address 2 -->
       <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
-      <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.user.addresses[0].streets[1]" class="cui-input">
+      <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.tempAddress2" class="cui-input">
 
       <div class="cui-form__field-row">
         <!-- City -->
         <div class="cui-form__field-container cui-form__field-container--half">
           <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
-          <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].city">
+          <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.tempCity">
         </div>
+
         <!-- ZIP -->
         <div class="cui-form__field-container cui-form__field-container--half">
           <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
-          <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.user.addresses[0].postal">
+          <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.tempZIP">
         </div>
       </div>
 
@@ -88,12 +89,12 @@
         <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
           <div ng-messages-include="assets/angular-templates/messages.html"></div>
         </div>
-        <div auto-complete input-name="country" pause="100" selected-object="usersEdit.user.Country" initial-value="usersEdit.user.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+        <div auto-complete input-name="country" pause="100" selected-object="usersEdit.user.Country" initial-value="usersEdit.tempCountry" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
       </div>
 
-      <a class="cui-link" href="">cancel</a>
+      <a class="cui-link" href="" ng-click="usersEdit.resetTempAddress()">cancel</a>
       <!-- Update -->
-      <button class="cui-button">{{'cui-update' | translate}}</button>
+      <button class="cui-button" ng-click="usersEdit.saveAddress()">{{'cui-update' | translate}}</button>
     </div>
   </div>
 </div>
