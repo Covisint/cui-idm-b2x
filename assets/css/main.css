@@ -367,8 +367,7 @@ fieldset {
   border: 0;
   margin: 0; }
 
-.cui-radio, .cui-checkbox__legend, .cui-switch__input, .cui-off-canvas__list--child,
-.cui-off-canvas__sub-section-list {
+.cui-radio, .cui-checkbox__legend, .cui-switch__input {
   left: -999em;
   position: absolute; }
 
@@ -1074,6 +1073,7 @@ Styleguide Elements.Buttons
   font-size: 12px;
   height: 3.0833333333em;
   justify-content: center;
+  position: relative;
   width: 13.3333333333em; }
   .cui-button:focus, .cui-wizard__next:focus,
   .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
@@ -1988,8 +1988,11 @@ Styleguide Blocks.Off-Canvas
 .cui-off-canvas__list--child,
 .cui-off-canvas__sub-section-list {
   background-color: #4582B4;
+  max-height: 0;
+  overflow: hidden;
   padding-left: 2.5em;
-  padding-top: 0.625em; }
+  padding-top: 0;
+  transition: max-height 0.3s linear, padding-top 0.05s 0.25s linear; }
   .cui-off-canvas__list--child a:hover,
   .cui-off-canvas__list--child.active a,
   .cui-off-canvas__sub-section-list a:hover,
@@ -2000,7 +2003,9 @@ Styleguide Blocks.Off-Canvas
 .cui-off-canvas__list-item--active .cui-off-canvas__sub-section-list,
 .cui-off-canvas__section--active .cui-off-canvas__list--child,
 .cui-off-canvas__section--active .cui-off-canvas__sub-section-list {
-  position: inherit; }
+  max-height: 3000px;
+  padding-top: 0.625em;
+  transition: max-height 0.3s linear; }
 
 .cui-off-canvas__list-item--child,
 .cui-off-canvas__sub-section {
@@ -2300,11 +2305,8 @@ Styleguide Blocks.Expandable
     margin-bottom: 20px; }
   .cui-expandable__body {
     display: block;
-    max-height: 0;
     overflow: hidden;
-    transition: all 0.3s linear; }
-  .cui-expandable.expanded > .cui-expandable__body {
-    max-height: 2000px; }
+    width: 100%; }
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
@@ -2988,7 +2990,9 @@ Styleguide Blocks.Pagination
 Loading
 
 Markup:
-<div class="cui-loading"></div>
+<div class="cui-loading__container">
+  <div class="cui-loading"></div>
+</div>
 
 Styleguide Blocks.Loading
 */
@@ -3000,6 +3004,7 @@ Styleguide Blocks.Loading
 .cui-loading__container {
   background: white;
   bottom: 0;
+  display: flex;
   left: 0;
   pointer-events: none;
   position: absolute;
@@ -3007,8 +3012,11 @@ Styleguide Blocks.Loading
   top: 0;
   transition: all 200ms ease-in-out;
   z-index: 10; }
+  .cui-loading__container--center {
+    align-content: center;
+    justify-content: center; }
 
-.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr {
+.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr, .cui-loading--button {
   animation: spin 1s infinite linear;
   background-color: #fff;
   border: 0.625em solid #429DD1;
@@ -3018,13 +3026,21 @@ Styleguide Blocks.Loading
   width: 5em; }
 
 .cui-loading--medium, .cui-loading--medium-ctr {
-  border: 0.3125em solid #429DD1;
+  border-width: 0.3125em;
   height: 1.875em;
   width: 1.875em; }
 
 .cui-loading--center {
-  transform: translate(-50%, -50%);
   z-index: 10; }
+
+.cui-loading--button {
+  background: transparent;
+  border-width: 0.25em;
+  height: 21px;
+  left: calc(13.3333333333em / 2 - 10px);
+  position: absolute;
+  top: 8px;
+  width: 21px; }
 
 @keyframes spin {
   100% {
@@ -3294,6 +3310,7 @@ Styleguide Blocks.Tabs
   flex-direction: column; }
 
 .cui-tabs__nav {
+  border-bottom: 1px solid #eee;
   display: flex;
   flex: 1; }
 
@@ -3301,15 +3318,23 @@ Styleguide Blocks.Tabs
   border-left: 1px solid #fff;
   display: flex;
   flex: 1;
-  justify-content: center; }
+  justify-content: center;
+  padding-right: 3px; }
 
 .cui-tabs__tab-container:first-of-type {
   border-left: none; }
+  .cui-tabs__tab-container:first-of-type .cui-tabs__tab--active {
+    box-shadow: 1px -2px 2px #eee; }
+
+.cui-tabs__tab-container:last-of-type {
+  padding-right: 0; }
+  .cui-tabs__tab-container:last-of-type .cui-tabs__tab--active {
+    box-shadow: -1px -2px 2px #eee; }
 
 .cui-tabs__tab {
   align-items: center;
-  background-color: #828483;
-  color: #fff;
+  background-color: #E8F0F3;
+  color: #6A98A0;
   cursor: pointer;
   display: flex;
   flex: 1;
@@ -3320,7 +3345,9 @@ Styleguide Blocks.Tabs
   text-decoration: none; }
   .cui-tabs__tab--active {
     background-color: #fff;
-    color: #343534; }
+    box-shadow: 0px -2px 2px 1px #eee;
+    color: #1D6572;
+    margin-bottom: -1px; }
   @media screen and (min-width: 701px) {
     .cui-tabs__tab {
       font-size: 1em; } }

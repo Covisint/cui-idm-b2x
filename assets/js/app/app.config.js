@@ -49,6 +49,20 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
         })
+        .state('applications',{
+            url: '/applications',
+            templateUrl : 'assets/angular-templates/applications/applications.html'
+        })
+        .state('applications.myApplications',{
+            url: '/myApplications',
+            templateUrl: 'assets/angular-templates/applications/myApplications.html',
+            controller: 'myApplicationsCtrl as myApplications'
+        })
+        .state('applications.myApplicationDetails',{
+            url: '/myApplications/:packageId',
+            templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
+            controller: 'myApplicationDetailsCtrl as myApplicationDetails'
+        })
         .state('welcome',{
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.html'
@@ -107,12 +121,22 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
 
     //where the locales are being loaded from
-    $translateProvider.useLoader('LocaleLoader',{
+    $translateProvider
+    .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
     })
-    .fallbackLanguage('en_US');
+    .registerAvailableLanguageKeys(['en_US','pl_PL','zh_CN','pt_PT'],{
+        'en*':'en_US',
+        'pl*':'pl_PL',
+        'zh*':'zh_CN',
+        'pt*':'pt_PT',
+        '*':'en_US'
+    })
+    .uniformLanguageTag('java')
+    .determinePreferredLanguage()
+    .fallbackLanguage(['en_US']);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
