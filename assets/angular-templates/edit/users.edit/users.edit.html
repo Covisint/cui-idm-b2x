@@ -95,10 +95,7 @@
 
     {{'cui-phone-fax' | translate}}
 
-
-    <inline-edit label="cui-phone-main" model="usersEdit.user.phoneMain"></inline-edit>
-    <inline-edit label="cui-phone-office" model="usersEdit.user.phoneOffice('fax')"></inline-edit>
-    <inline-edit label="cui-phone-fax" model="usersEdit.user.phoneFax"></inline-edit>
+    <inline-edit ng-repeat="phone in usersEdit.user.phones" label="cui-{{phone.type}}" model="phone.number"></inline-edit>
 
     {{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}
 
