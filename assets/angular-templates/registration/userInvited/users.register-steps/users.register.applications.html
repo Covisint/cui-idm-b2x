@@ -1,18 +1,29 @@
-<div ng-if="!usersRegister.applications.step || usersRegister.applications.step===1" ng-init="usersRegister.applications.step=1">
+<!-- No Organization Applications -->
+<div ng-if="!usersRegister.applications.list">
+  {{'cui-org-no-applications' | translate}}
+  <div class="cui-wizard__controls" style="margin-top:20px">
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="goToStep(4)">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</div>
+
+<!-- Organization Applications -->
+<div ng-if="usersRegister.applications.list && (!usersRegister.applications.step || usersRegister.applications.step===1)" ng-init="usersRegister.applications.step=1">
   <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersRegister.applications.search" ng-change="usersRegister.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
     <div class="cui-badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
   </div>
 
-  <div ng-repeat="application in usersRegister.applications.list" style="margin-bottom:10px">
+  <div ng-repeat="application in usersRegister.applications.list track by application.id" style="margin-bottom:10px">
     <input id="application{{$index}}" type="checkbox" ng-model="usersRegister.applications.selected[$index]" ng-true-value="'{{application.id}},{{application.name[0].text}}'" ng-false-value="null" ng-change="usersRegister.applications.updateNumberOfSelected(usersRegister.applications.selected[$index])" style="margin-right:10px"/>
     <label for="application{{$index}}" ng-bind="application.name[0].text"></label>
     <span style="float:right;clear:both;">{{'cui-more-information' | translate }}</span>
   </div>
 
   <div class="cui-wizard__controls" style="margin-top:20px">
-    <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-click="usersRegister.applications.process()===0? next() : usersRegister.applications.step=2">{{'cui-next' | translate}}</button>
   </div>
 </div>
@@ -24,7 +35,7 @@
     {{'cui-selections' | translate }}
     <div class="cui-badge" ng-bind="usersRegister.applications.numberOfSelected"></div>
   </div>
-  <form name="selectApps" class="application-review">
+  <ng-form name="selectApps" class="application-review">
     <div class="application-review__name application-review__label">
       <span translate>{{ 'cui-application-name' }}</span>
     </div>
@@ -53,11 +64,12 @@
         </div>
       </div>
     </div>
-  </form>
+  </ng-form>
 
   <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
     <button class="cui-wizard__previous" ng-click="usersRegister.applications.step=usersRegister.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
-    <button class="cui-wizard__next" ng-click="usersRegister.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="usersRegister.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="selectApps.$valid && goToStep(4)" ng-class="{'cui-wizard__next--error': !selectApps.$valid}">{{'cui-back-to-review' | translate}}</button>
   </div>
 </div>

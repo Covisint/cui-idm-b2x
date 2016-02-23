@@ -1,203 +1,280 @@
 angular.module('app')
-.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API',
-    function(localStorageService,$scope,Person,$stateParams,API){
+.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state',
+    function(localStorageService,$scope,Person,$stateParams,API,$state){
         var usersRegister=this;
-        usersRegister.loading=true;
+
+        usersRegister.loading = true;
         usersRegister.userLogin = {};
-        usersRegister.registering=false;
-        usersRegister.registrationError=false;
+        usersRegister.registrationError = false;
         usersRegister.applications = {};
-        usersRegister.applications.numberOfSelected=0;
-        usersRegister.showCovisintInfo=false;
+        usersRegister.applications.numberOfSelected = 0;
+        usersRegister.showCovisintInfo = false;
+        usersRegister.submitting = false;
+        usersRegister.targetOrganization = {};
+
+        // Pre polulates the form with info the admin inserted when he first created the invitation
+        var getUser = function(id) {
+            API.cui.getPerson({personId:id})
+            .then(function(res) {
+                usersRegister.invitedUser = res;
+                usersRegister.loading = false;
+                usersRegister.user = res;
+                usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
+                usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
+                usersRegister.user.phones = [];
+                $scope.$digest();
+            })
+            .fail(function(err){
+                usersRegister.loading = false;
+                console.log(err);
+            });
+        };
+
+        var getOrganization = function(id) {
+            API.doAuth()
+            .then(function() {
+                return API.cui.getOrganization({organizationId: id});
+            })
+            .then(function(res) {
+                usersRegister.targetOrganization = res;
+                $scope.$digest();
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+        };
 
         usersRegister.passwordPolicies=[
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
+            {
+                'allowUpperChars':true,
+                'allowLowerChars':true,
+                'allowNumChars':true,
+                'allowSpecialChars':true,
+                'requiredNumberOfCharClasses':3
+            },
+            {
+                'disallowedChars':'^&*)(#$'
+            },
+            {
+                'min':8,
+                'max':18
+            },
+            {
+                'disallowedWords':['password','admin']
+            }
         ];
 
-        Person.getInvitationById($stateParams.id)
-        .then(function(res){
-            if(res.data.invitationCode!==$stateParams.code){
-            // Wrong code
-            return;
-        }
-        getUser(res.data.invitee.id);
-    })
-        .catch(function(err){
-            console.log(err);
-        });
+        (function() {
+            API.doAuth()
+            // Preload user data from Invitation
+            .then(function() {
+                return API.cui.getPersonInvitation({invitationId: $stateParams.id});
+            })
+            .then(function(res) {
+                if (res.invitationCode !== $stateParams.code) {
+                    // Wrong Code
+                    return;
+                }
+                getOrganization(res.targetOrganization.id);
+                getUser(res.invitee.id);
+            })
+            // Load security questions for login form
+            .then(function() {
+                return API.cui.getSecurityQuestions();
+            })
+            .then(function(res) {
+                // Removes first question as it is blank
+                res.splice(0,1);
 
-    // Pre polulates the form with info the admin inserted when he first created the invitation
-    var getUser=function(id){
-        API.cui.getPerson({personId:id})
-        .then(function(res){
-            usersRegister.loading=false;
-            usersRegister.user=res;
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersRegister.loading=false;
-            console.log(err);
-        });
-    };
+                // Splits questions to use between both dropdowns
+                var numberOfQuestions = res.length,
+                numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
 
-    // Load security questions for Login form
-    API.doAuth()
-    .then(function() {
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        // Removes first question as it is blank
-        res.splice(0,1);
+                usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+                usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+                // Preload question into input
+                usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+                usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
+            })
+            // Populate Applications List
+            .then(function() {
+                return API.cui.getPackages();
+            })
+            .then(function(res) {
+                usersRegister.applications.list = res;
+                $scope.$digest();
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+        })();
 
-        usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-        usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+        // Update the number of selected apps everytime on of the boxes is checked/unchecked
+        usersRegister.applications.updateNumberOfSelected=function(a){
+            if(a!==null) { usersRegister.applications.numberOfSelected++; }
+            else { usersRegister.applications.numberOfSelected--; }
+        };
 
-        // Preload question into input
-        usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
-        usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
-    })
-    .fail(function(err) {
-        console.log("Get Security Questions Error: ", err);
-    });
+        // Process the selected apps when you click next after selecting the apps you need
+        usersRegister.applications.process=function(){
+            if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
+            usersRegister.applications.processedSelected=[];
+            angular.forEach(usersRegister.applications.selected,function(app,i){
+               if(app!==null) {
+                   usersRegister.applications.processedSelected.push({
+                       id:app.split(',')[0],
+                       name:app.split(',')[1],
+                       acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                   });
+               }
+           });
+            return usersRegister.applications.processedSelected.length;
+        };
 
-    // Populate Applications List
-    API.cui.getPackages()
-    .then(function(res){
-     usersRegister.applications.list=res;
-     $scope.$apply();
- })
-    .fail(function(err){
-        console.log(err);
-    });
+        // Search apps by name
+        usersRegister.applications.searchApplications = function() {
+            API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
+            .then(function(res){
+                usersRegister.applications.list = res;
+                $scope.$digest();
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        };
 
-    // Update the number of selected apps everytime on of the boxes is checked/unchecked
-    usersRegister.applications.updateNumberOfSelected=function(a){
-        if(a!==null) usersRegister.applications.numberOfSelected++;
-        else usersRegister.applications.numberOfSelected--;
-    };
+        usersRegister.applications.toggleCovisintInfo=function(){
+            usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
+        };
 
-    // Process the selected apps when you click next after selecting the apps you need
-    usersRegister.applications.process=function(){
-        if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
-        usersRegister.applications.processedSelected=[];
-        angular.forEach(usersRegister.applications.selected,function(app,i){
-         if(app!==null) {
-             usersRegister.applications.processedSelected.push({
-                 id:app.split(',')[0],
-                 name:app.split(',')[1],
-                 acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
-             });
-         }
-     });
-        return usersRegister.applications.processedSelected.length;
-    };
+        usersRegister.submit = function() {
+            usersRegister.submitting = true;
+            var user;
 
-    // Search apps by name
-    usersRegister.applications.searchApplications=function(){
-        API.cui.getPackages({'qs': [['name',usersRegister.applications.search]]})
-        .then(function(res){
-            usersRegister.applications.list = res;
-            $scope.$digest();
-        })
-        .fail(function(err){
-            console.log(err);
-        });
-    };
+            API.doAuth()
+            // Update Person
+            .then(function() {
+                return API.cui.updatePerson({personId: usersRegister.invitedUser.id, data: build.user()});
+            })
+            // Create Password Account
+            .then(function(res) {
+                user = res;
+                return API.cui.createPersonPassword(build.personPassword(user, usersRegister.targetOrganization));
+            })
+            // Create Security Account
+            .then(function() {
+                return API.cui.createSecurityQuestionAccount(build.userSecurityQuestionAccount(user));
+            })
+            // Activate Person
+            .then(function() {
+                return API.cui.activatePerson({qs: [['personId', user.id]] });
+            })
+            // Get Selected Packages
+            .then(function() {
+                return build.packagesSelected();
+            })
+            // Create Package Requests
+            .then(function(res) {
+                if (res.length === 0) {
+                    // No Packages Selected
+                    return;
+                }
+                angular.forEach(res, function(servicePackage) {
+                    return API.cui.createPackageRequest(build.packageRequest(servicePackage));
 
-    usersRegister.applications.toggleCovisintInfo=function(){
-        usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
-    };
+                });
+            })
+            .then(function() {
+                usersRegister.submitting = false;
+                usersRegister.success = true;
+                console.log('User Created');
+                $state.go('misc.success');
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+        };
 
-
-
-    // usersRegister.finish=function(form){
-    //     if(form.$invalid){
-    //         angular.forEach(form.$error, function (field) {
-    //             angular.forEach(field, function(errorField){
-    //                 errorField.$setTouched();
-    //             });
-    //         });
-    //         return;
-    //     }
-
-    //     usersRegister.registering=true;
-
-    //     var passwordAccount={
-    //         username:usersRegister.userLogin.username,
-    //         password:usersRegister.userLogin.password,
-    //         passwordPolicy:{
-    //             "id":"20308ebc-292a-4a64-8b08-17e92cec8d59",
-    //             "type":"passwordPolicy",
-    //             "realm":"COVSMKT-CVDEV"
-    //         },
-    //         authenticationPolicy:{
-    //             "id":"3359e4d2-576f-46ae-93e9-3a5d9d161ce7",
-    //             "type":"authenticationPolicy",
-    //             "realm":"COVSMKT-CVDEV"
-    //         },
-    //         version:1
-    //     };
-
-    //     var securityQuestions={
-    //         id:usersRegister.user.id,
-    //         questions:[{
-    //             question:{
-    //                 id:usersRegister.userLogin.question1.id,
-    //                 type:'question',
-    //                 realm:'COVSMKT-CVDEV'
-    //             },
-    //             answer:usersRegister.userLogin.challengeAnswer1,
-    //             index:1
-    //         },{
-    //             question:{
-    //                 id:usersRegister.userLogin.question2.id,
-    //                 type:'question',
-    //                 realm:'COVSMKT-CVDEV'
-    //             },
-    //             answer:usersRegister.userLogin.challengeAnswer2,
-    //             index:2
-    //         }],
-    //         version:1
-    //     };
-
-
-    //     Person.createPasswordAccount(usersRegister.user.id,passwordAccount)
-    //     .then(function(res){
-    //         return Person.createSecurityQuestions(usersRegister.user.id,securityQuestions);
-    //     })
-    //     .then(function(res){
-    //         return Person.update(usersRegister.user.id,usersRegister.user);
-    //     })
-    //     .then(function(res){
-    //         console.log(res);
-    //         usersRegister.registering=false;
-    //     })
-    //     .catch(function(err){
-    //         console.log(err);
-    //         usersRegister.registrationError=true;
-    //         usersRegister.registering=false;
-    //     });
-    // };
-
-
+        // Collection of helper functions to build necessaru calls on this controller
+        var build = {
+            user: function() {
+                usersRegister.user.addresses[0].country = usersRegister.userCountry.title;
+                usersRegister.user.organization = { id: usersRegister.targetOrganization.id,
+                                                    realm: usersRegister.targetOrganization.realm,
+                                                    type: 'organization' };
+                usersRegister.user.timezone = 'EST5EDT';
+                if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; };
+                // Get the current selected language
+                usersRegister.user.language = $scope.$parent.base.getLanguageCode();
+                return usersRegister.user;
+            },
+            personPassword: function(user, org) {
+                return {
+                    personId: user.id,
+                    data: {
+                        id: user.id,
+                        version: '1',
+                        username: usersRegister.userLogin.username,
+                        password: usersRegister.userLogin.password,
+                        passwordPolicy: org.passwordPolicy,
+                        authenticationPolicy: org.authenticationPolicy
+                    }
+                };
+            },
+            userSecurityQuestions: function(user) {
+                return [
+                    {
+                        question: {
+                            id: usersRegister.userLogin.question1.id,
+                            type: 'question',
+                            realm: user.realm
+                        },
+                        answer: usersRegister.userLogin.challengeAnswer1,
+                        index: 1
+                    },
+                    {
+                        question: {
+                            id: usersRegister.userLogin.question2.id,
+                            type: 'question',
+                            realm: user.realm
+                        },
+                        answer: usersRegister.userLogin.challengeAnswer2,
+                        index: 2
+                    }
+                ];
+            },
+            userSecurityQuestionAccount: function(user) {
+                return {
+                    personId: user.id,
+                    data: {
+                        version: '1',
+                        id: user.id,
+                        questions: this.userSecurityQuestions(user)
+                    }
+                };
+            },
+            packagesSelected: function() {
+                var packages=[];
+                angular.forEach(usersRegister.applications.selected,function(servicePackage){
+                    packages.push({packageId:servicePackage.split(',')[0]});
+                });    
+                return packages;
+            },
+            packageRequest: function(packageId) {
+                return {
+                    data: {
+                        requestor: {
+                            id: usersRegister.user.id,
+                            type: 'person'
+                        },
+                        servicePackage: {
+                            id: packageId.packageId,
+                            type: 'servicePackage'
+                        },
+                        reason: 'Invited User Registration'
+                    }
+                };
+            }
+        };
 }]);
