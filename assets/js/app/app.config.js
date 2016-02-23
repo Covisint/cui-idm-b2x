@@ -49,6 +49,20 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
         })
+        .state('applications',{
+            url: '/applications',
+            templateUrl : 'assets/angular-templates/applications/applications.html'
+        })
+        .state('applications.myApplications',{
+            url: '/myApplications',
+            templateUrl: 'assets/angular-templates/applications/myApplications.html',
+            controller: 'myApplicationsCtrl as myApplications'
+        })
+        .state('applications.myApplicationDetails',{
+            url: '/myApplications/:packageId',
+            templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
+            controller: 'myApplicationDetailsCtrl as myApplicationDetails'
+        })
         .state('welcome',{
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.html'

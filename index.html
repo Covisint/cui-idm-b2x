@@ -14,17 +14,18 @@
   <div class="cui-wrapper">
     <snap-drawer>
 
-      <span class="snap-menu--option" ui-sref="welcome.screen">Welcome</span>
-      <span class="snap-menu--option" ui-sref="users.search">Search Users</span>
-      <span class="snap-menu--option" ui-sref="users.invitations">User Invitations</span>
-      <span class="snap-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
-      <span class="snap-menu--option" ui-sref="users.register">Invited User Registration</span>
-      <span class="snap-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
-      <span class="snap-menu--option" ui-sref="division.registration">New Division Registration</span>
-      <span class="snap-menu--option" ui-sref="misc.404">404 Not Found</span>
-      <span class="snap-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
-      <span class="snap-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
-      <span class="snap-menu--option" ui-sref="misc.success">Success</span>
+      <span class="snap-menu--option" snap-close ui-sref="welcome.screen">Welcome</span>
+      <span class="snap-menu--option" snap-close ui-sref="users.search">Search Users</span>
+      <span class="snap-menu--option" snap-close ui-sref="users.invitations">User Invitations</span>
+      <span class="snap-menu--option" snap-close ui-sref="users.walkupRegistration">User Walk Up Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="users.register">Invited User Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="tlo.registration">New TLO Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="division.registration">New Division Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="misc.404">404 Not Found</span>
+      <span class="snap-menu--option" snap-close ui-sref="misc.notAuth">Not Authorized</span>
+      <span class="snap-menu--option" snap-close ui-sref="misc.pendingStatus">Pending Status</span>
+      <span class="snap-menu--option" snap-close ui-sref="misc.success">Success</span>
+      <span class="snap-menu--option" snap-close ui-sref="applications.myApplications">My applications</span>
 
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
@@ -48,6 +49,7 @@
         <span class="desktop-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
         <span class="desktop-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
         <span class="desktop-menu--option" ui-sref="misc.success">Success</span>
+        <span class="desktop-menu--option" ui-sref="applications.myApplications">My applications</span>
 
       </div>
       <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
@@ -56,7 +58,7 @@
           <div ng-translate-language-select class="cui-footer__translate"></div>
           <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Covisint</a></div>
           <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Privacy & Terms</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Help</a></div>     
+          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Help</a></div>
           <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Learn more</a> about why we ask for this information</div>
         </div>
       </div>
