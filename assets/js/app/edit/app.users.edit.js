@@ -4,7 +4,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
     usersEdit.editName = false;
-    usersEdit.editAddress = true;
+    usersEdit.editAddress = false;
+    usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
 
     var initializeFullNameTemp = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
@@ -30,6 +31,22 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.challengeQuestion2 = questionTexts[1];
     };
 
+    var initializePhones = function() {
+        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
+        usersEdit.user.phoneMain = filterPhones('main')[0].number;
+        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+    };
+
+    var filterPhones = function(type) {
+        var phones = usersEdit.user.phones;
+        var filteredPhones = phones.filter(function (item) {
+            return item.type === type;
+        });
+        console.log('HO');
+        console.log(filteredPhones); 
+        return filteredPhones;
+    }
+
     API.doAuth()
     .then(function(res) {
         return  API.cui.getPerson({personId: $stateParams.id});
@@ -38,6 +55,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
+        initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -101,7 +119,9 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     usersEdit.saveAddress = function(){
         usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
-        usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
+        if (usersEdit.tempAddress2) {
+            usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
+        }
         usersEdit.user.addresses[0].city = usersEdit.tempCity;
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
