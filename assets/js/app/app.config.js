@@ -109,6 +109,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('misc.success',{
             url: '/success',
             templateUrl: 'assets/angular-templates/misc/misc.success.html'
+        })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: 'assets/angular-templates/profiles/profile.html'
+        })
+        .state('profile.organization', {
+            url: '/profile/organization?id',
+            templateUrl: 'assets/angular-templates/profiles/organization.profile.html',
+            controller: 'orgProfileCtrl as orgProfile'
         });
 
     // $locationProvider.html5Mode(true);
