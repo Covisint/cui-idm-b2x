@@ -159,6 +159,20 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
             controller: 'usersActivateCtrl as usersActivate'
         })
+        .state('applications',{
+            url: '/applications',
+            templateUrl : 'assets/angular-templates/applications/applications.html'
+        })
+        .state('applications.myApplications',{
+            url: '/myApplications',
+            templateUrl: 'assets/angular-templates/applications/myApplications.html',
+            controller: 'myApplicationsCtrl as myApplications'
+        })
+        .state('applications.myApplicationDetails',{
+            url: '/myApplications/:packageId',
+            templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
+            controller: 'myApplicationDetailsCtrl as myApplicationDetails'
+        })
         .state('welcome',{
             url: '/welcome',
             templateUrl: 'assets/angular-templates/welcome/welcome.html'
@@ -218,8 +232,6 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     //where the locales are being loaded from
     $translateProvider
-    .uniformLanguageTag('java')
-    .determinePreferredLanguage()
     .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
@@ -231,7 +243,10 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         'zh*':'zh_CN',
         'pt*':'pt_PT',
         '*':'en_US'
-    });
+    })
+    .uniformLanguageTag('java')
+    .determinePreferredLanguage()
+    .fallbackLanguage(['en_US']);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
@@ -264,12 +279,107 @@ angular.module('app')
 
 
 angular.module('app')
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams',
+function(API,$scope,$state){
+    var myApplicationDetails = this;
+    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
+    var packageId=$stateParams.packageId; // get the packageId from the url
+
+    var handleError=function(err){
+        console.log('Error \n\n', err);
+    };
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    if(packageId){
+        API.doAuth()
+        .then(function(res){
+            return API.cui.getPersonPackages({'personId':userId,'packageId':packageId});
+        })
+        .then(function(res){
+            getAppDetails(res);
+        })
+        .fail(handleError);
+    }
+    else {
+        // message for no packageId in the state
+    }
+
+    var getAppDetails=function(grant){
+        API.cui.getPackage({'packageId':grant.servicePackage.id})
+        .then(function(res){
+            res.status=grant.status;
+            if(res.parent) getParentPackageDetails(); // if the package has a parent
+            else $scope.$digest();
+        })
+        .fail(handleError);
+    };
+
+}]);
+
+
+angular.module('app')
+.controller('myApplicationsCtrl',['API','$scope',
+function(API,$scope){
+    var myApplications = this;
+    var userId='RN3BJI54';
+
+    myApplications.list=[];
+
+    var handleError=function(err){
+        console.log('Error \n\n', err);
+    };
+
+    API.doAuth()
+    .then(function(res){
+        return API.cui.getPersonPackages({'personId':userId}); // this returns a list of grants
+    })
+    .then(function(res){
+        getApplicationsFromGrants(res);
+    })
+    .fail(handleError);
+
+    var getApplicationsFromGrants=function(grants){
+        var i=0;
+        grants.forEach(function(grant){
+            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+            .then(function(res){
+                i++;
+                res.forEach(function(service){
+                    service.status=grant.status; // attach the status of the package to the service
+                    myApplications.list.push(service);
+                });
+                if(i===grants.length) $scope.$digest();
+            })
+            .fail(handleError);
+        });
+    };
+
+}]);
+
+
+angular.module('app')
 .controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
     usersEdit.editName = false;
-    usersEdit.editAddress = true;
+    usersEdit.editAddress = false;
+    usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+
+    var initializeFullNameTemp = function() {
+        usersEdit.tempGiven = usersEdit.user.name.given;
+        usersEdit.tempSurname = usersEdit.user.name.surname
+    };
+
+    var initializeTempAddressValues = function(){
+        usersEdit.tempStreetAddress = usersEdit.user.addresses[0].streets[0];
+        usersEdit.tempAddress2 = usersEdit.user.addresses[0].streets[1];
+        usersEdit.tempCity = usersEdit.user.addresses[0].city;
+        usersEdit.tempZIP = usersEdit.user.addresses[0].postal;
+        usersEdit.tempCountry = usersEdit.user.addresses[0].country;
+    };
 
     var selectQuestionsForUser = function(questionsArray, allQuestions){
         var questionTexts = [];
@@ -282,12 +392,31 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.challengeQuestion2 = questionTexts[1];
     };
 
+    var initializePhones = function() {
+        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
+        usersEdit.user.phoneMain = filterPhones('main')[0].number;
+        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+    };
+
+    var filterPhones = function(type) {
+        var phones = usersEdit.user.phones;
+        var filteredPhones = phones.filter(function (item) {
+            return item.type === type;
+        });
+        console.log('HO');
+        console.log(filteredPhones); 
+        return filteredPhones;
+    }
+
     API.doAuth()
     .then(function(res) {
         return  API.cui.getPerson({personId: $stateParams.id});
     })
     .then(function(res) {
         usersEdit.user = res;
+        initializeTempAddressValues();
+        initializeFullNameTemp();
+        initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -312,7 +441,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.loading = false;
     });
 
-
     usersEdit.save = function() {
         usersEdit.saving = true;
         usersEdit.fail = false;
@@ -333,12 +461,37 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         });
     };
 
-    usersEdit.saveFullName = function(){
+    usersEdit.saveFullName = function() {
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
-        usersEdit.editName=false
+        usersEdit.editName = false;
     }
 
+    usersEdit.resetFullName = function() {
+        usersEdit.tempGiven = usersEdit.user.name.given;
+        usersEdit.tempSurname = usersEdit.user.name.surname;
+        usersEdit.editName = false;
+    }
+
+    usersEdit.resetTempAddress = function() {
+        initializeTempAddressValues();
+        usersEdit.editAddress = false;
+    }
+
+    usersEdit.saveAddress = function(){
+        usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
+        if (usersEdit.tempAddress2) {
+            usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
+        }
+        usersEdit.user.addresses[0].city = usersEdit.tempCity;
+        usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
+        usersEdit.user.addresses[0].country = usersEdit.tempCountry;
+        usersEdit.editAddress = false;
+    }
+
+    usersEdit.updateTempCountry = function(results) {
+        usersEdit.tempCountry = results.description.name;
+    }
 }]);
 
 

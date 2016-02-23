@@ -1073,6 +1073,7 @@ Styleguide Elements.Buttons
   font-size: 12px;
   height: 3.0833333333em;
   justify-content: center;
+  position: relative;
   width: 13.3333333333em; }
   .cui-button:focus, .cui-wizard__next:focus,
   .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
@@ -2304,11 +2305,8 @@ Styleguide Blocks.Expandable
     margin-bottom: 20px; }
   .cui-expandable__body {
     display: block;
-    max-height: 0;
     overflow: hidden;
-    transition: all 0.3s linear; }
-  .cui-expandable.expanded > .cui-expandable__body {
-    max-height: 2000px; }
+    width: 100%; }
   .cui-expandable.expanded > .cui-expandable__title > .chevron {
     transform: rotate(90deg); }
 
@@ -2992,7 +2990,9 @@ Styleguide Blocks.Pagination
 Loading
 
 Markup:
-<div class="cui-loading"></div>
+<div class="cui-loading__container">
+  <div class="cui-loading"></div>
+</div>
 
 Styleguide Blocks.Loading
 */
@@ -3004,6 +3004,7 @@ Styleguide Blocks.Loading
 .cui-loading__container {
   background: white;
   bottom: 0;
+  display: flex;
   left: 0;
   pointer-events: none;
   position: absolute;
@@ -3011,8 +3012,11 @@ Styleguide Blocks.Loading
   top: 0;
   transition: all 200ms ease-in-out;
   z-index: 10; }
+  .cui-loading__container--center {
+    align-content: center;
+    justify-content: center; }
 
-.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr {
+.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr, .cui-loading--button {
   animation: spin 1s infinite linear;
   background-color: #fff;
   border: 0.625em solid #429DD1;
@@ -3027,8 +3031,16 @@ Styleguide Blocks.Loading
   width: 1.875em; }
 
 .cui-loading--center {
-  transform: translate(-50%, -50%);
   z-index: 10; }
+
+.cui-loading--button {
+  background: transparent;
+  border-width: 0.25em;
+  height: 21px;
+  left: calc(13.3333333333em / 2 - 10px);
+  position: absolute;
+  top: 8px;
+  width: 21px; }
 
 @keyframes spin {
   100% {
