@@ -20,9 +20,7 @@
     <!-- Full Name -->
     <p ng-if="!usersEdit.editName">
       {{"cui-name"| translate}}:
-      <span ng-if="!usersEdit.editName">
-        {{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}
-      </span>
+      <span ng-if="!usersEdit.editName">{{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}</span>
       <a href="" class="cui-link" ng-click="usersEdit.editName = !usersEdit.editName">Edit</a>
     </p>
 
@@ -54,7 +52,7 @@
 
     <!-- Address -->
     <p>{{'cui-address' | translate}}
-      <span class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-expand' | translate}}</span>
+      <span class="cui-link" href="" ng-if="!usersEdit.editAddress" ng-click="usersEdit.editAddress=true">{{'cui-open' | translate}}</span>
       <span class="cui-link" href="" ng-if=" usersEdit.editAddress" ng-click="usersEdit.editAddress=false">{{'cui-close' | translate}}</span>
     </p>
 
@@ -94,5 +92,21 @@
       <!-- Update -->
       <button class="cui-button" ng-click="usersEdit.saveAddress()">{{'cui-update' | translate}}</button>
     </div>
+
+    {{'cui-phone-fax' | translate}}
+
+
+    <inline-edit label="cui-phone-main" model="usersEdit.user.phoneMain"></inline-edit>
+    <inline-edit label="cui-phone-office" model="usersEdit.user.phoneOffice('fax')"></inline-edit>
+    <inline-edit label="cui-phone-fax" model="usersEdit.user.phoneFax"></inline-edit>
+
+    {{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}
+
+    <select class="cui-input  cui-select">
+      <option ng-repeat="timezone in usersEdit.timezones" value="{{timezone}}">{{timezone}}</option>
+    </select>
+
+    <select class="cui-input  cui-select">
+    </select>
   </div>
 </div>
