@@ -169,7 +169,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: 'myApplicationsCtrl as myApplications'
         })
         .state('applications.myApplicationDetails',{
-            url: '/myApplications/:packageId',
+            url: '/myApplications/:packageId/:appId',
             templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
             controller: 'myApplicationDetailsCtrl as myApplicationDetails'
         })
@@ -279,49 +279,137 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams',
-function(API,$scope,$state){
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
 
-    var packageId=$stateParams.packageId; // get the packageId from the url
+    var appId=$stateParams.appId; // get the appId from the url
+    var packageId=$stateParams.packageId;  // get the packageId from the url
 
     var handleError=function(err){
-        console.log('Error \n\n', err);
-    };
+        console.log('Error \n', err);
+        myApplicationDetails.doneLoading=true; // FORCING DONE LOADING ON ERROR
+        $scope.$digest(); // because /persons/{personId}/packages/{packageId} endpoint returns an error if the user doesn't have that grant,
+    };                    // rather than an empty array`
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if(packageId){
+    var i=0; // this is used to see if the process of getting related and bundled apps is done
+
+    var getDateGranted=function(creationUnixStamp){
+        var dateGranted=new Date(creationUnixStamp);
+        var dateGrantedFormatted=dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+        return dateGrantedFormatted;
+    };
+
+
+    var getBundledApps=function(service){
+        myApplicationDetails.bundled=[];
+        API.cui.getServices({ 'packageId':packageId })
+        .then(function(res){
+            i++;
+            res.forEach(function(app){
+                if(app.id!==myApplicationDetails.app.id){
+                    app.grantedDate=service.grantedDate;
+                    app.status=service.status;
+                    app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
+                    myApplicationDetails.bundled.push(app);
+                }
+            });
+            if(i===2) {
+                myApplicationDetails.doneLoading=true;
+                $scope.$digest();
+            }
+        })
+        .fail(handleError);
+    };
+
+    var getRelatedApps=function(servicePackage){
+        myApplicationDetails.related=[];
+        API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
+        .then(function(res){                                  // we're checking the details of belongs to
+            if(res.length===0) {
+                i++;
+                if(i===2) {
+                    myApplicationDetails.doneLoading=true;
+                    $scope.$digest();
+                }
+            }
+            res.forEach(function(pkg,i){
+                var status=[],grantedDate=[];
+                API.cui.getPersonPackage({ 'packageId':pkg.id,'personId':userId }) // Check if that child package has been granted to the user
+                .then(function(res){
+                    if(Object.keys(res).length!==0) { // If the user has been granted the package
+                        status[i]=res.status;         // put a status on it and a granted date
+                        grantedDate[i]=getDateGranted(res.creation); // so that we can decide wether to show "Request" or the status in the UI
+                    }
+                    return API.cui.getServices({ 'packageId':packageId });
+                })
+                .then(function(res){
+                    i++;
+                    res.forEach(function(app){ // for each of the services in that child package
+                        if(status[i]){ // if this status is defined then the user has been granted this service
+                            app.status=status[i];
+                            app.grantedDate=grantedDate[i];
+                        }
+                        app.parentPackage=pkg.id; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
+                        myApplicationDetails.related.push(app);
+                    });
+                    if(i===2) {
+                        myApplicationDetails.doneLoading=true;
+                        $scope.$digest();
+                    }
+                })
+                .fail(handleError);
+            });
+        })
+        .fail(handleError);
+    };
+
+    var getPackageGrantDetails=function(app){
+        API.cui.getPersonPackage({ 'personId':userId , 'packageId':packageId })
+        .then(function(res){
+            app.grantedDate=getDateGranted(res.creation);
+            app.status=res.status;
+            myApplicationDetails.app=app;
+            getBundledApps(app);
+            getRelatedApps(app);
+        })
+        .fail(handleError);
+    };
+
+    if(appId){
         API.doAuth()
         .then(function(res){
-            return API.cui.getPersonPackages({'personId':userId,'packageId':packageId});
+            return API.cui.getService({ 'serviceId':appId });
         })
         .then(function(res){
-            getAppDetails(res);
+            var app=res;
+            getPackageGrantDetails(app);
         })
         .fail(handleError);
     }
     else {
-        // message for no packageId in the state
+        // message for no appId in the state
     }
 
-    var getAppDetails=function(grant){
-        API.cui.getPackage({'packageId':grant.servicePackage.id})
-        .then(function(res){
-            res.status=grant.status;
-            if(res.parent) getParentPackageDetails(); // if the package has a parent
-            else $scope.$digest();
-        })
-        .fail(handleError);
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+    myApplicationDetails.goToDetails=function(application){
+        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('myApplicationsCtrl',['API','$scope',
-function(API,$scope){
+.controller('myApplicationsCtrl',['API','$scope','$state',
+function(API,$scope,$state){
     var myApplications = this;
     var userId='RN3BJI54';
 
@@ -329,6 +417,28 @@ function(API,$scope){
 
     var handleError=function(err){
         console.log('Error \n\n', err);
+    };
+
+    // ON LOAD START ------------------------------------------------------------------------------------------
+
+    var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
+        var i=0;
+        grants.forEach(function(grant){
+            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+            .then(function(res){
+                i++;
+                res.forEach(function(service){
+                    service.status=grant.status; // attach the status of the service package to the service
+                    service.parentPackage=grant.servicePackage.id;
+                    myApplications.list.push(service);
+                });
+                if(i===grants.length){ // if this is the last grant
+                    myApplications.doneLoading=true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
     };
 
     API.doAuth()
@@ -340,21 +450,17 @@ function(API,$scope){
     })
     .fail(handleError);
 
-    var getApplicationsFromGrants=function(grants){
-        var i=0;
-        grants.forEach(function(grant){
-            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-            .then(function(res){
-                i++;
-                res.forEach(function(service){
-                    service.status=grant.status; // attach the status of the package to the service
-                    myApplications.list.push(service);
-                });
-                if(i===grants.length) $scope.$digest();
-            })
-            .fail(handleError);
-        });
+
+    // ON LOAD END --------------------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------------
+
+    myApplications.goToDetails=function(application){
+        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
+
+
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
 
 }]);
 
@@ -404,7 +510,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             return item.type === type;
         });
         console.log('HO');
-        console.log(filteredPhones); 
+        console.log(filteredPhones);
         return filteredPhones;
     }
 
@@ -462,8 +568,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     usersEdit.saveFullName = function() {
-        usersEdit.user.name.given = usersEdit.tempGiven; 
-        usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.user.name.given = usersEdit.tempGiven;
+        usersEdit.user.name.surname = usersEdit.tempSurname;
         usersEdit.editName = false;
     }
 

@@ -1,0 +1,38 @@
+<div class="cui-tile">
+    <div class="cui-tile__title"><span ui-sref="applications.myApplications">< {{'my-applications' | translate}}</span></div>
+        <div class="cui-tile__body">
+            <div class="cui-loading__container" ng-if="!myApplicationDetails.doneLoading">
+                <div class="cui-loading--center"><div class="cui-loading"></div></div>
+            </div>
+            <div ng-if="myApplicationDetails.doneLoading"> <!-- This will contain the app details and the bundled/related apps -->
+                <!-- We don't know where the apps image will be coming from yet -->
+                {{ 'app-summary' | translate }}
+                {{myApplicationDetails.app.name[0].text}}
+                {{ 'granted' | translate }}: {{myApplicationDetails.app.grantedDate}}
+                {{myApplicationDeatils.app.status}}
+                <div class="cui-tabs class-toggle">
+                  <ul class="cui-tabs__nav">
+                    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab1"  ng-class="{'cui-tabs__tab--active':!myApplicationDetails.inClaims}" ng-click="myApplicationDetails.inClaims=false">{{'application-details' | translate}}</a></li>
+                    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab2" ng-class="{'cui-tabs__tab--active':myApplicationDetails.inClaims}"  ng-click="myApplicationDetails.inClaims=true">{{'my-claims' | translate}}</a></li>
+                  </ul>
+                  <div class="cui-tabs__content">
+                    <div id="tab1" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':!myApplicationDetails.inClaims}">
+                        {{'bundled-applications' | translate}}
+                        <div ng-repeat="application in myApplicationDetails.bundled">
+                            <a ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name[0].text}}</span> <!-- If the user has a grant on that service -->
+                            <span ng-if="!application.status">{{application.name[0].text}}</span>
+                            <span ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate}}</span> <!-- If the user has a grant on that service -->
+                            <span ng-if="application.status">{{application.status}}</span>  <!-- If the user has a grant on that service -->
+                            <span ng-if="!application.status">{{'request' | translate}}</span>
+                        </div>
+
+                    </div>
+                    <div id="tab2" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':myApplicationDetails.inClaims}">
+                        <!-- CLAIMS WILL GO HERE, OUT OF SCOPE FOR MARCH RELEASE -->
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
