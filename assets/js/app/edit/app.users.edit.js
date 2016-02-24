@@ -6,6 +6,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.editName = false;
     usersEdit.editAddress = false;
     usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+    usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
 
     var initializeFullNameTemp = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
@@ -32,9 +33,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     var initializePhones = function() {
-        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
-        usersEdit.user.phoneMain = filterPhones('main')[0].number;
-        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+        usersEdit.phones = []
+        angular.forEach(usersEdit.phoneTypes, function(type) {
+            var phoneObject = {type: type, number: filterPhones(type)[0].number}
+            usersEdit.phones.push(phoneObject);
+        });
     };
 
     var filterPhones = function(type) {
@@ -42,8 +45,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         var filteredPhones = phones.filter(function (item) {
             return item.type === type;
         });
-        console.log('HO');
-        console.log(filteredPhones); 
         return filteredPhones;
     }
 
@@ -55,7 +56,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
-        // initializePhones();
+        initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -134,11 +135,12 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     }
 
     usersEdit.clearAdditionalPhone = function() {
-        usersEdit.user.additionalPhoneType = '';
-        usersEdit.user.additionalPhoneNumber = '';
+        usersEdit.additionalPhoneType = '';
+        usersEdit.additionalPhoneNumber = '';
     }
 
-    usersEdit.saveAdditionalNumber = function() {
-
+    usersEdit.savePhone = function() {
+        usersEdit.user.phones = usersEdit.phones;
+        usersEdit.save();
     }
 }]);
