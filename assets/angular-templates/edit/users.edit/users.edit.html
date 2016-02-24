@@ -95,7 +95,21 @@
 
     {{'cui-phone-fax' | translate}}
 
+    <!-- Phone Numbers -->
     <inline-edit ng-repeat="phone in usersEdit.user.phones" label="cui-{{phone.type}}" model="phone.number"></inline-edit>
+
+    <!-- Additional Phone -->
+    <div>
+      {{'cui-phone-type' | translate}}
+      <input type="text" ng-model='usersEdit.user.additionalPhoneType'></input>
+      
+      {{'cui-phone-number' | translate}}
+      <input type="text" ng-model='usersEdit.user.additionalPhoneNumber'></input>
+
+      <a class="cui-link" href="" ng-click="usersEdit.saveAdditionalNumber()">{{'cui-save' | translate}}</a>
+      <a class="cui-link" href="" ng-click="usersEdit.clearAdditionalPhone()">{{'cui-cancel' | translate}}</a>
+    </div>
+
 
     {{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}
 

@@ -131,4 +131,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.updateTempCountry = function(results) {
         usersEdit.tempCountry = results.description.name;
     }
+
+    usersEdit.clearAdditionalPhone = function() {
+        usersEdit.user.additionalPhoneType = '';
+        usersEdit.user.additionalPhoneNumber = '';
+    }
+
+    usersEdit.saveAdditionalNumber = function() {
+
+    }
 }]);
