@@ -59,7 +59,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: 'myApplicationsCtrl as myApplications'
         })
         .state('applications.myApplicationDetails',{
-            url: '/myApplications/:packageId',
+            url: '/myApplications/:packageId/:appId',
             templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
             controller: 'myApplicationDetailsCtrl as myApplicationDetails'
         })

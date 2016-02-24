@@ -43,7 +43,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             return item.type === type;
         });
         console.log('HO');
-        console.log(filteredPhones); 
+        console.log(filteredPhones);
         return filteredPhones;
     }
 
@@ -101,8 +101,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     usersEdit.saveFullName = function() {
-        usersEdit.user.name.given = usersEdit.tempGiven; 
-        usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.user.name.given = usersEdit.tempGiven;
+        usersEdit.user.name.surname = usersEdit.tempSurname;
         usersEdit.editName = false;
     }
 
