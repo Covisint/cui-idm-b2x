@@ -103,6 +103,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.saveFullName = function() {
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.save();
         usersEdit.editName = false;
     }
 
