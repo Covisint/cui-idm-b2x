@@ -42,7 +42,7 @@
     <!-- User ID -->
     <p>{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
     <!-- Email -->
-    <inline-edit label="cui-email" model="usersEdit.user.email"></inline-edit>
+    <inline-edit label="cui-email" model="usersEdit.user.email" on-save="usersEdit.save()"></inline-edit>
     <!-- Password -->
     <inline-edit label="cui-password" model=""></inline-edit>
     <!-- Challenge Question 1 -->
