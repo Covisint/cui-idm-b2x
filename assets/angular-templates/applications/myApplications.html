@@ -10,7 +10,7 @@
             <div ng-if="myApplications.doneLoading">
                 <div ng-repeat="application in myApplications.list" ng-click="myApplications.goToDetails(application)">
                     <!-- API GAP Where do the icons come from? -->
-                    <h2 ng-bind="application.name[0].text"></h2>
+                    <h2 ng-bind="application.name | cuiI18n"></h2>
                     <span ng-if="application.category" ng-bind="application.category"></span>
                     <span ng-bind="application.status"></span>
                 </div>
