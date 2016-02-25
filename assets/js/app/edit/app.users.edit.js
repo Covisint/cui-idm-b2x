@@ -6,7 +6,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.editName = false;
     usersEdit.editAddress = false;
     usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
-    usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
 
     var initializeFullNameTemp = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
@@ -33,9 +32,10 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     var initializePhones = function() {
+        usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
         usersEdit.phones = []
         angular.forEach(usersEdit.phoneTypes, function(type) {
-            var phoneObject = {type: type, number: filterPhones(type)[0].number}
+            var phoneObject = {type: type, number: filterPhones(type)}
             usersEdit.phones.push(phoneObject);
         });
     };
@@ -45,7 +45,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         var filteredPhones = phones.filter(function (item) {
             return item.type === type;
         });
-        return filteredPhones;
+        if(filteredPhones.length > 0) {
+            return filteredPhones[0].number;
+        } else {
+            return '';
+        };
     }
 
     API.doAuth()
@@ -139,8 +143,12 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.additionalPhoneNumber = '';
     }
 
-    usersEdit.savePhone = function() {
-        usersEdit.user.phones = usersEdit.phones;
+    usersEdit.savePhone = function() {;
+        
+        usersEdit.user.phones = usersEdit.phones.slice();
+        _.remove(usersEdit.user.phones, function(phone) {
+          return phone.number == '';
+        });
         usersEdit.save();
     }
 }]);
