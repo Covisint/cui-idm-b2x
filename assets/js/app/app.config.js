@@ -1,8 +1,8 @@
 angular.module('app')
 .config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
-    '$injector','localStorageServiceProvider','$cuiIconProvider',
+    '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider){
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
     localStorageServiceProvider.setPrefix('cui');
     $stateProvider
         .state('base',{
@@ -136,16 +136,18 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         prefix:'locale-',
         suffix:'.json'
     })
-    .registerAvailableLanguageKeys(['en_US','pl_PL','zh_CN','pt_PT'],{
-        'en*':'en_US',
-        'pl*':'pl_PL',
-        'zh*':'zh_CN',
-        'pt*':'pt_PT',
-        '*':'en_US'
+    .registerAvailableLanguageKeys(['en','pl','zh','pt'],{
+        'en*':'en',
+        'pl*':'pl',
+        'zh*':'zh',
+        'pt*':'pt',
+        '*':'en'
     })
     .uniformLanguageTag('java')
     .determinePreferredLanguage()
-    .fallbackLanguage(['en_US']);
+    .fallbackLanguage(['en']);
+
+    $cuiI18nProvider.setLocalePreference(['en','pl','zh','pt']);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
@@ -155,10 +157,10 @@ angular.module('app')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache',
     function(LocaleService,$rootScope,$state,$http,$templateCache){
     //add more locales here
-    LocaleService.setLocales('en_US','English (United States)');
-    LocaleService.setLocales('pl_PL','Polish (Poland)');
-    LocaleService.setLocales('zh_CN', 'Chinese (Simplified)');
-    LocaleService.setLocales('pt_PT','Portuguese (Portugal)');
+    LocaleService.setLocales('en','English (United States)');
+    LocaleService.setLocales('pl','Polish (Poland)');
+    LocaleService.setLocales('zh', 'Chinese (Simplified)');
+    LocaleService.setLocales('pt','Portuguese (Portugal)');
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         $state.previous = {};
