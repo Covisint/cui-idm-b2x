@@ -31,7 +31,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: templateBase + 'users/users.edit/users.edit.html',
+            templateUrl: templateBase + 'edit/users.edit/users.edit.html',
             controller: returnCtrlAs('usersEdit')
         })
         .state('users.invitations',{
