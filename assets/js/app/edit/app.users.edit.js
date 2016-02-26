@@ -3,8 +3,6 @@ angular.module('app')
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
-    usersEdit.editName = false;
-    usersEdit.editAddress = false;
     usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
 
     var initializeFullNameTemp = function() {
@@ -28,14 +26,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         }, questions);
 
         usersEdit.challengeQuestion1 = questions[0];
-        // usersEdit.challengeQuestion1 = angular.copy(usersEdit.tempChallengeQuestion1)
-
-        // console.log(usersEdit.tempChallengeQuestion1);
-        // console.log(usersEdit.challengeQuestion1);
-
-console.log(questions);
         usersEdit.challengeQuestion2 = questions[1];
-        // usersEdit.user.tempChallengeQuestion2 = 
     };
 
     var initializePhones = function() {
@@ -116,18 +107,15 @@ console.log(questions);
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
         usersEdit.save();
-        usersEdit.editName = false;
     }
 
     usersEdit.resetFullName = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
         usersEdit.tempSurname = usersEdit.user.name.surname;
-        usersEdit.editName = false;
     }
 
     usersEdit.resetTempAddress = function() {
         initializeTempAddressValues();
-        usersEdit.editAddress = false;
     }
 
     usersEdit.saveAddress = function(){
@@ -138,7 +126,6 @@ console.log(questions);
         usersEdit.user.addresses[0].city = usersEdit.tempCity;
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
-        usersEdit.editAddress = false;
     }
 
     usersEdit.updateTempCountry = function(results) {
