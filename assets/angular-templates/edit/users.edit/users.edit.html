@@ -50,12 +50,12 @@
 
     <!-- Challenge Question -->
     <div class="class-toggle" toggled-class="show" ng-repeat="q in [1, 2]">
-      {{'cui-challenge-question' | translate}}: {{usersEdit['challengeQuestion' + q].question[0].text}}
+      {{'cui-challenge-question' | translate}}: {{usersEdit['challengeQuestion' + q].question | cuiI18n}}
       <a class="cui-link" href="" ng-if="!toggled" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
       
       <div ng-if="toggled">
         <!-- Question -->
-        <select class="cui-input cui-input--full cui-select" ng-model="usersEdit['challengeQuestion' + q]" ng-options="question as question.question[0].text for question in usersEdit.allSecurityQuestions">
+        <select class="cui-input cui-input--full cui-select" ng-model="usersEdit['challengeQuestion' + q]" ng-options="question as (question.question | cuiI18n) for question in usersEdit.allSecurityQuestions">
         </select>
 
         <!-- Answer -->
