@@ -219,6 +219,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('misc.success',{
             url: '/success',
             templateUrl: 'assets/angular-templates/misc/misc.success.html'
+        })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: 'assets/angular-templates/profiles/profile.html'
+        })
+        .state('profile.organization', {
+            url: '/profile/organization?id',
+            templateUrl: 'assets/angular-templates/profiles/organization.profile.html',
+            controller: 'orgProfileCtrl as orgProfile'
         });
 
     // $locationProvider.html5Mode(true);
@@ -524,7 +533,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
-        initializePhones();
+        // initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -1080,6 +1089,29 @@ angular.module('app')
     return person;
 
 }]);
+
+angular.module('app')
+.controller('orgProfileCtrl',['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+
+    var orgProfile = this;
+    orgProfile.organization = {};
+    
+    API.doAuth()
+    .then(function() {
+        // Get Organization based on url id parameter
+        return API.cui.getOrganization({organizationId: $stateParams.id});
+    })
+    .then(function(res) {
+        orgProfile.organization = res;
+        $scope.$digest();
+    })
+    .fail(function(error) {
+        console.log(error);
+    });
+
+}]);
+
 
 angular.module('app')
 .controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {

@@ -1,11 +1,9 @@
-
 .cui-nav__content-wrapper {
-  @media screen and (min-width: 701px) {
-    padding: em(30) 10%;
-  }
+    min-height: 750px;
 }
 
 .cui-wrapper {
+    background: #fff;
     overflow:hidden;
 }
 
@@ -21,4 +19,8 @@
         display: inline-block;
         padding-right: 40px;
     }
+}
+
+.cui-tile__title {
+    border-radius: 0;
 }
