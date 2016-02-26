@@ -45,10 +45,25 @@
     <inline-edit label="cui-email" model="usersEdit.user.email" on-save="usersEdit.save()"></inline-edit>
     <!-- Password -->
     <inline-edit label="cui-password" model=""></inline-edit>
-    <!-- Challenge Question 1 -->
-    <inline-edit name="{{'cui-challenge-question' | translate}} 1" model="usersEdit.user.challengeQuestion1"></inline-edit>
-    <!-- Challenge Question 1 -->
-    <inline-edit name="{{'cui-challenge-question' | translate}} 2" model="usersEdit.user.challengeQuestion2"></inline-edit>
+
+    <!-- Challenge Question -->
+    <div class="class-toggle" toggled-class="show" ng-repeat="q in [1, 2]">
+      {{'cui-challenge-question' | translate}}
+      <a class="cui-link" href="" ng-if="!toggled" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
+      
+      <div ng-if="toggled">
+        <!-- Question -->
+        <select class="cui-input cui-input--full cui-select" ng-model="usersEdit['challengeQuestion' + q]" ng-options="question as question.question[0].text for question in usersEdit.allSecurityQuestions">
+        </select>
+
+        <!-- Answer -->
+        <label>{{'cui-answer' | translate}}</label>
+        <input type="text" ng-model="usersEdit['challengeAnswer' + q]" class="cui-input cui-input--full"/>
+      </div>
+
+      <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff();">{{'cui-save' | translate}}</a>
+      <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion(q)">{{'cui-cancel' | translate}}</a>
+    </div>
 
     <!-- Address -->
     <p>{{'cui-address' | translate}}

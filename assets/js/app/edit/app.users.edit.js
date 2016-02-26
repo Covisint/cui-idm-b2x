@@ -20,15 +20,22 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.tempCountry = usersEdit.user.addresses[0].country;
     };
 
-    var selectQuestionsForUser = function(questionsArray, allQuestions){
-        var questionTexts = [];
-        angular.forEach(questionsArray, function(value){
-            var text = _.find(allQuestions, function(question){return question.id === value});
-            this.push(text.question[0].text);
-        }, questionTexts);
+    var selectQuestionsForUser = function(){
+        var questions = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
+            this.push(question);
+        }, questions);
 
-        usersEdit.user.challengeQuestion1 = questionTexts[0];
-        usersEdit.user.challengeQuestion2 = questionTexts[1];
+        usersEdit.challengeQuestion1 = questions[0];
+        // usersEdit.challengeQuestion1 = angular.copy(usersEdit.tempChallengeQuestion1)
+
+        // console.log(usersEdit.tempChallengeQuestion1);
+        // console.log(usersEdit.challengeQuestion1);
+
+console.log(questions);
+        usersEdit.challengeQuestion2 = questions[1];
+        // usersEdit.user.tempChallengeQuestion2 = 
     };
 
     var initializePhones = function() {
@@ -64,15 +71,15 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
-        var codes = _.map(res.questions, function(n){return n.question.id});
-        usersEdit.securityQuestionCodes = codes;
+        usersEdit.userSecurityQuestions = res;
         $scope.$apply();
         return API.cui.getSecurityQuestions();
     })
     .then(function(res){
-        var allSecurityQuestions = res;
+
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
         $scope.$apply();
-        selectQuestionsForUser(usersEdit.securityQuestionCodes, allSecurityQuestions);
         return API.cui.getPersonPassword({personId: usersEdit.user.id});
     })
     .then(function(res) {
@@ -143,12 +150,16 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.additionalPhoneNumber = '';
     }
 
-    usersEdit.savePhone = function() {;
-        
+    usersEdit.savePhone = function() {
         usersEdit.user.phones = usersEdit.phones.slice();
         _.remove(usersEdit.user.phones, function(phone) {
           return phone.number == '';
         });
         usersEdit.save();
+    }
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
     }
 }]);
