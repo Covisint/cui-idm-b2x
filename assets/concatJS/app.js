@@ -538,7 +538,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
-        initializePhones();
+        // initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
