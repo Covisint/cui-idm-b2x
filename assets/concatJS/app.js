@@ -189,9 +189,9 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: returnCtrlAs('newAppRequest')
         })
         .state('applications.search',{
-            url: '/search/',
+            url: '/search/:name',
             templateUrl: templateBase + 'applications/search.html',
-            controller: returnCtrlAs('newAppRequest')
+            controller: returnCtrlAs('applicationSearch')
         })
         .state('welcome',{
             url: '/welcome',
@@ -322,6 +322,45 @@ angular.module('app')
 
 
 angular.module('app')
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state){
+    var applicationSearch = this;
+    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
+    var nameSearch=$stateParams.name;  // get the packageId from the url
+
+    var handleError=function(err){
+        console.log('Error \n', err);
+    };
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    var user;
+
+    API.doAuth()
+    .then(function(res){
+        return API.cui.getPerson({personId:userId});
+    })
+    .then(function(res){
+        user=res;
+        return API.cui.getOrganization
+    })
+   .fail(function(err){
+        console.log(err);
+   })
+
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
 function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
@@ -332,9 +371,7 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // FORCING DONE LOADING ON ERROR
-        $scope.$digest(); // because /persons/{personId}/packages/{packageId} endpoint returns an error if the user doesn't have that grant,
-    };                    // rather than an empty array`
+    };
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -347,7 +384,7 @@ function(API,$scope,$stateParams,$state){
     };
 
 
-    var getBundledApps=function(service){
+    var getBundledApps=function(service){ // WORKAROUND CASE # 1
         myApplicationDetails.bundled=[];
         API.cui.getServices({ 'packageId':packageId })
         .then(function(res){
@@ -368,7 +405,7 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getRelatedApps=function(servicePackage){
+    var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
         myApplicationDetails.related=[];
         API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
@@ -464,6 +501,7 @@ function(API,$scope,$state){
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
+                // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){
@@ -512,25 +550,6 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state',
 function(API,$scope,$state){
     var newAppRequest = this;
-    var userId='RN3BJI54';
-
-
-    var handleError=function(err){
-        console.log('Error \n\n', err);
-    };
-
-    // ON LOAD START ------------------------------------------------------------------------------------------
-
-
-
-    // ON LOAD END --------------------------------------------------------------------------------------------------
-
-    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------------
-
-
-
-    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
-
 }]);
 
 
@@ -1177,7 +1196,7 @@ angular.module('app')
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
-    newDivision.passwordPolicies = [
+    newDivision.passwordPolicies = [  // WORKAROUND CASE #5
         {
             'allowUpperChars': true,
             'allowLowerChars': true,
@@ -1254,7 +1273,7 @@ angular.module('app')
 	var newTLO = this;
 	newTLO.userLogin = {};
 
-  newTLO.passwordPolicies = [
+  newTLO.passwordPolicies = [ // WORKAROUND CASE #5
     {
       'allowUpperChars': true,
       'allowLowerChars': true,
@@ -1398,7 +1417,7 @@ angular.module('app')
             })
             // Populate Applications List
             .then(function() {
-                return API.cui.getPackages();
+                return API.cui.getPackages(); // TODO : GET SERVICES INSTEAD
             })
             .then(function(res) {
                 usersRegister.applications.list = res;
@@ -1557,7 +1576,7 @@ angular.module('app')
                 var packages=[];
                 angular.forEach(usersRegister.applications.selected,function(servicePackage){
                     packages.push({packageId:servicePackage.split(',')[0]});
-                });    
+                });
                 return packages;
             },
             packageRequest: function(packageId) {
@@ -1644,7 +1663,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]})
+            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]}) // TODO GET SERVICES INSTEAD
             .then(function(res){
                 if(res.length===0) usersWalkup.applications.list=undefined;
                 else usersWalkup.applications.list=res;
@@ -1681,6 +1700,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // Search apps by name
     usersWalkup.applications.searchApplications=function(){
+        // TODO : GET SERVICES INSTEAD
         API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
         .then(function(res){
 
@@ -1741,6 +1761,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
             //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
             // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+            // WORKAROUND CASE #4
             var packages={
                 'packageId':usersWalkup.applications.selected[0].split(',')[0]
             };

@@ -79,9 +79,9 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: returnCtrlAs('newAppRequest')
         })
         .state('applications.search',{
-            url: '/search/',
+            url: '/search/:name',
             templateUrl: templateBase + 'applications/search.html',
-            controller: returnCtrlAs('newAppRequest')
+            controller: returnCtrlAs('applicationSearch')
         })
         .state('welcome',{
             url: '/welcome',

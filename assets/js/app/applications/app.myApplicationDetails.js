@@ -9,9 +9,7 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // FORCING DONE LOADING ON ERROR
-        $scope.$digest(); // because /persons/{personId}/packages/{packageId} endpoint returns an error if the user doesn't have that grant,
-    };                    // rather than an empty array`
+    };
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -24,7 +22,7 @@ function(API,$scope,$stateParams,$state){
     };
 
 
-    var getBundledApps=function(service){
+    var getBundledApps=function(service){ // WORKAROUND CASE # 1
         myApplicationDetails.bundled=[];
         API.cui.getServices({ 'packageId':packageId })
         .then(function(res){
@@ -45,7 +43,7 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getRelatedApps=function(servicePackage){
+    var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
         myApplicationDetails.related=[];
         API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to

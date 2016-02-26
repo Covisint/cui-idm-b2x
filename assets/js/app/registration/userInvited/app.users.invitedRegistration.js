@@ -99,7 +99,7 @@ angular.module('app')
             })
             // Populate Applications List
             .then(function() {
-                return API.cui.getPackages();
+                return API.cui.getPackages(); // TODO : GET SERVICES INSTEAD
             })
             .then(function(res) {
                 usersRegister.applications.list = res;
@@ -258,7 +258,7 @@ angular.module('app')
                 var packages=[];
                 angular.forEach(usersRegister.applications.selected,function(servicePackage){
                     packages.push({packageId:servicePackage.split(',')[0]});
-                });    
+                });
                 return packages;
             },
             packageRequest: function(packageId) {

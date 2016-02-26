@@ -3,7 +3,7 @@ angular.module('app')
 	var newTLO = this;
 	newTLO.userLogin = {};
 
-  newTLO.passwordPolicies = [
+  newTLO.passwordPolicies = [ // WORKAROUND CASE #5
     {
       'allowUpperChars': true,
       'allowLowerChars': true,
