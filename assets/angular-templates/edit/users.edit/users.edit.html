@@ -48,7 +48,7 @@
 
     <!-- Challenge Question -->
     <div class="class-toggle" toggled-class="show" ng-repeat="q in [1, 2]">
-      {{'cui-challenge-question' | translate}}
+      {{'cui-challenge-question' | translate}}: {{usersEdit['challengeQuestion' + q].question[0].text}}
       <a class="cui-link" href="" ng-if="!toggled" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
       
       <div ng-if="toggled">
