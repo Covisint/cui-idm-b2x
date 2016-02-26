@@ -1,19 +1,20 @@
 <div class="cui-tile">
     <div class="cui-tile__title">{{'my-applications' | translate}}</div>
         <div class="cui-tile__body">
-            <div class="cui-loading__container" ng-if="myApplications.listLoading">
+            <div class="cui-loading__container" ng-if="!myApplications.doneLoading">
                 <div class="cui-loading--center"><div class="cui-loading"></div></div>
             </div>
             <div class="sorting">
                 <!-- API GAP None of the sorting mechanisms are available from the Person Package Grant API -->
             </div>
-            <div ng-repeat="application in myApplications.list">
-                <!-- API GAP Where do the icons come from? -->
-                <h2 ng-bind="application.name[0].text"></h2>
-                <span ng-if="application.category" ng-bing="application.category"></span>
-                <span ng-bind="application.status"></span>
+            <div ng-if="myApplications.doneLoading">
+                <div ng-repeat="application in myApplications.list" ng-click="myApplications.goToDetails(application)">
+                    <!-- API GAP Where do the icons come from? -->
+                    <h2 ng-bind="application.name | cuiI18n"></h2>
+                    <span ng-if="application.category" ng-bind="application.category"></span>
+                    <span ng-bind="application.status"></span>
+                </div>
             </div>
-
         </div>
     </div>
 </div>

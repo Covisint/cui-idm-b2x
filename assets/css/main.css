@@ -378,11 +378,24 @@ A constituent part of a block that can't be used outside of it.
 
 Styleguide Elements
 */
+/* 
+Backgrounds
+
+Markup: 
+<div class="cui-background">Primary</div>
+<div class="cui-background--secondary">Secondary</div>
+<div class="cui-background--gradient">Gradient</div>
+
+Styleguide Elements.Backgrounds
+*/
 .cui-background, .cui-error__password, .cui-popover {
   background-color: #fff; }
 
 .cui-background--secondary {
   background-color: #DEE9EE; }
+
+.cui-background--gradient {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0); }
 
 /*
 Texts
@@ -650,7 +663,7 @@ Styleguide Elements.Forms.Tags
 
 .cui-tags-input .tags .tag-item,
 .cui-tags__tag {
-  background: #429DD1;
+  background: #85a6ad;
   border-radius: 3px;
   color: #fff;
   display: inline-block;
@@ -660,7 +673,7 @@ Styleguide Elements.Forms.Tags
 
 .cui-tags-input .tags .tag-item.selected,
 .cui-tags__tag--selected {
-  background: #FF4400; }
+  background: #ff4400; }
 
 .cui-tags-input .tags .tag-item .remove-button,
 .cui-tags__remove {
@@ -687,7 +700,7 @@ Styleguide Elements.Forms.Tags
 
 .cui-tags-input .tags .input.invalid-tag,
 .cui-tags__input--invalid {
-  color: #FF4400; }
+  color: #ff4400; }
 
 .cui-tags-input .tags .input::-ms-clear,
 .cui-tags__input::-ms-clear {
@@ -817,7 +830,7 @@ Styleguide Elements.Forms.Radio
   height: 1.875em; }
 
 .cui-radio__label:before {
-  border: 1px solid #A2A19F;
+  border: 1px solid #343534;
   border-radius: 50%;
   content: "\00a0";
   display: inline-block;
@@ -827,7 +840,7 @@ Styleguide Elements.Forms.Radio
   width: 1.25rem; }
 
 .cui-radio:focus + .cui-radio__label.cui-radio__label:before {
-  box-shadow: inset 0 0 0 2px #fff, 0 0 7px #A2A19F; }
+  box-shadow: inset 0 0 0 2px #fff, 0 0 7px #343534; }
 
 .cui-radio:checked + .cui-radio__label:before {
   box-shadow: inset 0 0 0 2px #fff; }
@@ -859,22 +872,25 @@ Styleguide Elements.Forms.Checkbox
   .cui-checkbox__container {
     height: 40px; }
   .cui-checkbox__label {
-    cursor: pointer; }
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex; }
     .cui-checkbox__label:before {
       background: white;
-      border-radius: 0.3rem;
-      border: 1px solid #A2A19F;
+      border-radius: 2px;
+      border: 2px solid #6a98a0;
       content: '\a0';
       display: inline-block;
-      height: 1.8rem;
+      height: 1.5rem;
       line-height: 1.4;
       margin-right: .6em;
       text-indent: .15em;
       vertical-align: .2em;
-      width: 1.8rem; }
+      width: 1.5rem; }
   .cui-checkbox:focus + .cui-checkbox__label:before {
-    box-shadow: 0 0 7px #A2A19F; }
+    box-shadow: 0 0 7px #343534; }
   .cui-checkbox:checked + .cui-checkbox__label:before {
+    background: url('data:image/svg+xml;utf8, <svg width="14px" height="11px" viewBox="0 0 28 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><g id="Apps" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" >\a         <g class="cui-svg__checked" transform="translate(-689.000000, -709.000000)" fill="#6a98a0">\a             <g transform="translate(25.000000, 516.000000)">\a                 <g transform="translate(0.000000, 180.000000)">\a                     <g transform="translate(654.000000, 0.000000)">\a                         <path d="M38.0349501,16.4514127 L34.7343616,13.1800554 L20.5418313,27.6270014 L13.3874572,20.8031544 L10.1426534,24.1418906 L20.6022646,34.1743629 L38.0349501,16.4537361 L38.0349501,16.4514127 Z"></path>\a                     </g>\a                 </g>\a             </g>\a         </g>\a     </g>\a </svg>') center no-repeat;
     box-shadow: inset 0 0 0 2px #fff; }
 
 /*
@@ -924,7 +940,7 @@ Styleguide Elements.Forms.Switch
   position: relative; }
 
 .cui-switch__label:before {
-  background-color: #555;
+  background-color: #343534;
   border-radius: 0 6px 6px 0;
   content: '';
   cursor: pointer;
@@ -936,7 +952,7 @@ Styleguide Elements.Forms.Switch
   width: calc(50% - 1px); }
 
 .cui-switch__label:after {
-  background-color: #00BD9C;
+  background-color: #6a98a0;
   border-radius: 6px 0 0 6px;
   content: '';
   cursor: pointer;
@@ -1002,19 +1018,19 @@ Markup:
 Styleguide Elements.Colors.Primary-Colors
 */
 .cui-primary-colors--light {
-  background-color: #87CEEC; }
+  background-color: #cde6f0; }
 
-.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-checkbox:checked + .cui-checkbox__label:before, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
-  background-color: #429DD1; }
+.cui-primary-colors--medium-light, .cui-radio:checked + .cui-radio__label:before, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  background-color: #85a6ad; }
 
 .cui-primary-colors--medium {
-  background-color: #4582B4; }
+  background-color: #6a98a0; }
 
 .cui-primary-colors--medium-dark, .cui-off-canvas__option {
-  background-color: #165E9B; }
+  background-color: #1d6572; }
 
 .cui-primary-colors--dark {
-  background-color: #0A2741; }
+  background-color: #343534; }
 
 /*
 Secondary Colors
@@ -1038,7 +1054,7 @@ Styleguide Elements.Colors.Secondary-Colors
   background-color: #FF8C00; }
 
 .cui-secondary-colors--dark {
-  background-color: #FF4400; }
+  background-color: #ff4400; }
 
 /* 
 Logos
@@ -1053,10 +1069,10 @@ Buttons
 Styles for button elements
 
 :focus                      - Focus styling
-:hover                      - Hover styling
 :active                     - Selected styling
 .cui-button--error          - Error styling 
 .cui-button--error:active   - Error selected styling
+.cui-button--cancel         - Cancel button styling
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
@@ -1065,27 +1081,27 @@ Styleguide Elements.Buttons
 .cui-button, .cui-wizard__next,
 .cui-form__next, .cui-card__button {
   align-items: center;
-  background-color: #429DD1;
-  border-radius: 0.25em;
+  background-color: #85a6ad;
+  border-radius: 0.1875em;
   border: 0;
   color: #fff;
   display: inline-flex;
-  font-size: 12px;
-  height: 3.0833333333em;
+  font-size: 15px;
+  height: 2.8em;
   justify-content: center;
   position: relative;
-  width: 13.3333333333em; }
+  width: 10.6666666667em; }
   .cui-button:focus, .cui-wizard__next:focus,
   .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
-  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button, .cui-button:hover, .cui-wizard__next:hover,
-  .cui-form__next:hover, .cui-card__button:hover, .cui-button.pseudo-class-hover, .pseudo-class-hover.cui-wizard__next,
-  .pseudo-class-hover.cui-form__next, .pseudo-class-hover.cui-card__button {
-    box-shadow: 0 0 3px #A2A19F, 0 0 7px #A2A19F;
+  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button {
+    box-shadow: 0 0 3px #343534, 0 0 7px #343534;
     outline: 0; }
+  .cui-button--clicked {
+    animation: button-click 0.3s forwards; }
   .cui-button:active, .cui-wizard__next:active,
   .cui-form__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next,
   .pseudo-class-active.cui-form__next, .pseudo-class-active.cui-card__button {
-    background-color: #165E9B; }
+    background-color: #1d6572; }
   .cui-button--error, .cui-wizard__next--error,
   .cui-form__next--error {
     background-color: #dbdbdb;
@@ -1093,7 +1109,17 @@ Styleguide Elements.Buttons
     .cui-button--error:active, .cui-wizard__next--error:active,
     .cui-form__next--error:active, .cui-button--error.pseudo-class-active, .pseudo-class-active.cui-wizard__next--error,
     .pseudo-class-active.cui-form__next--error {
-      background-color: #A2A19F; }
+      background-color: #343534; }
+  .cui-button--cancel {
+    background-color: #FF8C00; }
+
+@keyframes button-click {
+  60% {
+    transform: scale3d(0.8, 0.8, 1); }
+  85% {
+    transform: scale3d(1.1, 1.1, 1); }
+  100% {
+    transform: scale3d(1, 1, 1); } }
 
 /*
 Grid
@@ -1228,7 +1254,7 @@ Styleguide Blocks.Form
     padding: 50px; }
   .cui-wizard__title,
   .cui-form__title {
-    background-color: #429DD1;
+    background-color: #85a6ad;
     border-radius: 6px 6px 0 0;
     color: white;
     padding: 15px;
@@ -1254,7 +1280,7 @@ Styleguide Blocks.Form
     background: #3CB371; }
   .cui-wizard__next.fail,
   .cui-form__next.fail {
-    background: #FF4400; }
+    background: #ff4400; }
   .cui-wizard__previous,
   .cui-form__previous {
     background: #fff;
@@ -1357,7 +1383,7 @@ Styleguide Blocks.Form
 .cui-error__status {
   width: 9px;
   height: 9px;
-  background: #FF4400;
+  background: #ff4400;
   display: inline-block;
   border-radius: 50%;
   transform: translate(0, -1px); }
@@ -1683,7 +1709,7 @@ Markup:
 Styleguide Blocks.Header
 */
 .cui-header {
-  background: #fff;
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
   padding: 0 30px; }
   .cui-header__user {
     flex-grow: 1;
@@ -1725,7 +1751,7 @@ Styleguide Blocks.Header
     padding: 0 0; }
 
 .cui-header {
-  background: #fff;
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
   padding: 0 30px; }
   @media all and (max-width: 600px) {
     .cui-header > .cui-chevron--left, .cui-header > .cui-avatar__chevron--left, .cui-header >
@@ -1740,7 +1766,7 @@ Styleguide Blocks.Header
     display: flex;
     height: 80px;
     padding: 0 0;
-    border-bottom: 1px solid #eee; }
+    border-bottom: 0; }
   .cui-header__bottom {
     align-items: center;
     display: flex;
@@ -1948,11 +1974,11 @@ Styleguide Blocks.Off-Canvas
   cursor: pointer; }
 
 .cui-off-canvas {
-  background-color: #4582B4; }
+  background-color: #6a98a0; }
 
 .cui-off-canvas__list-item,
 .cui-off-canvas__section {
-  background-color: #165E9B;
+  background-color: transparent;
   display: block;
   margin: 10px 0;
   cursor: pointer; }
@@ -1987,7 +2013,7 @@ Styleguide Blocks.Off-Canvas
 
 .cui-off-canvas__list--child,
 .cui-off-canvas__sub-section-list {
-  background-color: #4582B4;
+  background-color: transparent;
   max-height: 0;
   overflow: hidden;
   padding-left: 2.5em;
@@ -1997,7 +2023,7 @@ Styleguide Blocks.Off-Canvas
   .cui-off-canvas__list--child.active a,
   .cui-off-canvas__sub-section-list a:hover,
   .cui-off-canvas__sub-section-list.active a {
-    color: #87CEEC; }
+    color: #cde6f0; }
 
 .cui-off-canvas__list-item--active .cui-off-canvas__list--child,
 .cui-off-canvas__list-item--active .cui-off-canvas__sub-section-list,
@@ -2036,15 +2062,21 @@ snap-content {
 
 .snap-drawer,
 snap-drawer {
-  background: #4582B4;
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
   min-height: 100vh; }
+  .snap-drawer .cui-off-canvas,
+  snap-drawer .cui-off-canvas {
+    background: transparent; }
+  .snap-drawer .cui-off-canvas__sub-section-list,
+  snap-drawer .cui-off-canvas__sub-section-list {
+    background: transparent; }
 
 @media screen and (min-width: 1000px) {
   .snap-drawer {
     display: none; } }
 
 .snap-menu--option {
-  background: #165E9B;
+  background: #1d6572;
   color: white;
   display: block;
   padding: 10px 20px;
@@ -2153,7 +2185,7 @@ snap-drawer,
   width: 100%; }
 
 .desktop-menu {
-  background: #4582B4;
+  background: #6a98a0;
   left: 0;
   position: absolute;
   top: 0;
@@ -2169,7 +2201,7 @@ snap-drawer,
     left: -300px; }
 
 .desktop-menu--option {
-  background: #165E9B;
+  background: #1d6572;
   color: white;
   cursor: pointer;
   display: block;
@@ -2182,32 +2214,33 @@ snap-drawer,
 
 .menu-toggle--button,
 .cui-menu__toggle-button {
-  background: #429DD1;
+  background: #fff;
   border: none;
-  width: 40px;
-  height: 7px;
+  height: 2px;
+  padding: 0;
   position: relative;
-  transition: background 200ms ease-in-out; }
+  transition: background 200ms ease-in-out;
+  width: 15px; }
   .menu-toggle--button:before,
   .cui-menu__toggle-button:before {
-    background: #429DD1;
+    background: #fff;
     content: '';
-    height: 7px;
+    height: 2px;
     left: 0;
     position: absolute;
-    width: 40px;
-    top: -12px;
-    transition: background 200ms ease-in-out; }
+    top: -9px;
+    transition: background 200ms ease-in-out;
+    width: 20px; }
   .menu-toggle--button:after,
   .cui-menu__toggle-button:after {
-    background: #429DD1;
+    background: #fff;
+    bottom: -9px;
     content: '';
-    bottom: -12px;
-    height: 7px;
+    height: 2px;
     left: 0;
     position: absolute;
-    width: 40px;
-    transition: background 200ms ease-in-out; }
+    transition: background 200ms ease-in-out;
+    width: 20px; }
 
 .cui-menu__toggle-button:focus {
   box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
@@ -2227,17 +2260,17 @@ snap-drawer,
   .menu-toggle.active .cui-menu__toggle-button,
   .cui-menu__toggle-button-container.active .menu-toggle--button,
   .cui-menu__toggle-button-container.active .cui-menu__toggle-button {
-    background: #4582B4; }
+    background: #85a6ad; }
     .menu-toggle.active .menu-toggle--button:before,
     .menu-toggle.active .cui-menu__toggle-button:before,
     .cui-menu__toggle-button-container.active .menu-toggle--button:before,
     .cui-menu__toggle-button-container.active .cui-menu__toggle-button:before {
-      background: #4582B4; }
+      background: #85a6ad; }
     .menu-toggle.active .menu-toggle--button:after,
     .menu-toggle.active .cui-menu__toggle-button:after,
     .cui-menu__toggle-button-container.active .menu-toggle--button:after,
     .cui-menu__toggle-button-container.active .cui-menu__toggle-button:after {
-      background: #4582B4; }
+      background: #85a6ad; }
 
 /*
 Expandable
@@ -2344,7 +2377,7 @@ Styleguide Blocks.Expandable
     height: 30px;
     width: 30px; }
   .cui-expandable__edit-button:hover .cui-expandable__edit-icon {
-    fill: #429DD1; }
+    fill: #85a6ad; }
 
 .indicator-container {
   border-bottom: 1px solid #ddd;
@@ -2431,11 +2464,11 @@ Styleguide Elements.Tables
   margin: 2em 0;
   min-width: 100%; }
   .cui-table thead tr {
-    background-color: #A2A19F; }
+    background-color: #343534; }
   .cui-table thead th {
     text-align: left; }
   .cui-table th, .cui-table td {
-    border: 1px solid #A2A19F;
+    border: 1px solid #343534;
     padding: 1.5rem; }
 
 .cui-table--borderless thead tr {
@@ -2608,7 +2641,7 @@ Styleguide Blocks.Cards
   padding: 2.5em;
   transition: box-shadow .2s ease, transform .2s ease; }
   .cui-card:hover, .cui-popover-container--relative:hover {
-    box-shadow: 0 1px 3px #A2A19F;
+    box-shadow: 0 1px 3px #343534;
     transform: translateY(-3px); }
 
 .cui-card__image-container {
@@ -2635,7 +2668,7 @@ p {
   margin: 0.3125em 0; }
 
 .cui-card__icon {
-  fill: #429DD1; }
+  fill: #85a6ad; }
 
 .cui-card__button {
   align-self: center;
@@ -2733,15 +2766,15 @@ Styleguide Blocks.Global Navigation
     text-decoration: none; }
 
 .cui-top-nav__section.cui-top-nav__section--active > a {
-  color: #4582B4;
-  border: 2px solid #4582B4;
+  color: #6a98a0;
+  border: 2px solid #6a98a0;
   border-radius: 30px;
   padding: .3em .7em;
   transition: background-color .3s;
   z-index: 1; }
   .cui-top-nav__section.cui-top-nav__section--active > a:hover {
     color: white;
-    background-color: #4582B4; }
+    background-color: #6a98a0; }
 
 .cui-search {
   border: 2px solid #eee;
@@ -2996,11 +3029,6 @@ Markup:
 
 Styleguide Blocks.Loading
 */
-.cui-loading--center, .cui-loading--medium-ctr {
-  position: absolute;
-  top: 50%;
-  left: 50%; }
-
 .cui-loading__container {
   background: white;
   bottom: 0;
@@ -3019,25 +3047,33 @@ Styleguide Blocks.Loading
 .cui-loading, .cui-loading--medium, .cui-loading--medium-ctr, .cui-loading--button {
   animation: spin 1s infinite linear;
   background-color: #fff;
-  border: 0.625em solid #429DD1;
+  border: 0.625em solid #85a6ad;
   border-radius: 2.5em;
-  border-top-color: #87CEEC;
+  border-top-color: #cde6f0;
   height: 5em;
   width: 5em; }
 
 .cui-loading--medium, .cui-loading--medium-ctr {
   border-width: 0.3125em;
-  height: 1.875em;
-  width: 1.875em; }
+  height: 3.75em;
+  width: 3.75em; }
 
 .cui-loading--center {
+  left: calc(50% - (5em / 2 + 0.625em));
+  position: absolute;
+  top: calc(50% - (5em / 2 + 0.625em));
   z-index: 10; }
+
+.cui-loading--medium-ctr {
+  left: calc(50% - (3.75em / 2 + 0.3125em));
+  position: absolute;
+  top: calc(50% - (3.75em / 2 + 0.3125em)); }
 
 .cui-loading--button {
   background: transparent;
-  border-width: 0.25em;
+  border-width: 0.2em;
   height: 21px;
-  left: calc(13.3333333333em / 2 - 10px);
+  left: calc(10.6666666667em / 2 - 10px);
   position: absolute;
   top: 8px;
   width: 21px; }
@@ -3080,22 +3116,24 @@ Styleguide Blocks.Step-Indicator
     width: 3.125em;
     z-index: 1; }
   .step-indicator.active {
-    border-bottom: 6px solid #429DD1;
+    border-bottom: 6px solid #85a6ad;
     color: #333; }
     .step-indicator.active .icon {
-      border: 0.125em solid #429DD1; }
+      border: 0.125em solid #6a98a0; }
     .step-indicator.active .cui-icon-rotate {
-      fill: #4582B4; }
+      fill: #6a98a0; }
   .step-indicator.visited {
     color: #666; }
     .step-indicator.visited .icon {
       border: 0.125em solid #666; }
+    .step-indicator.visited .cui-icon-rotate {
+      fill: #666; }
 
 .indicator-container--icons .step-indicator.active {
   border-bottom: 0; }
 
 .cui-icon-rotate {
-  fill: #A2A19F;
+  fill: #ccc;
   height: 1.5em;
   width: 1.5em; }
   @media screen and (min-width: 700px) {
@@ -3224,7 +3262,7 @@ Styleguide Blocks.Step-Indicator-With-Icons
   .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title::before {
     background-color: #979797; }
   .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title span {
-    color: #009FD3; }
+    color: #6a98a0; }
 
 .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title {
   background-color: #D9EAEE; }
@@ -3267,13 +3305,13 @@ Styleguide Blocks.Step-Indicator-With-Icons
   z-index: 1; }
 
 .cui-form--mobile-steps .mobile-element.expanded .icon {
-  border: 2px solid #009FD3; }
+  border: 2px solid #6a98a0; }
 
 .cui-form--mobile-steps .mobile-element.visited .cui-icon-rotate {
   fill: #6D6D6D; }
 
 .cui-form--mobile-steps .mobile-element.expanded .cui-icon-rotate {
-  fill: #009FD3; }
+  fill: #6a98a0; }
 
 .cui-form--mobile-steps .mobile-element .cui-icon-rotate {
   height: 1.25em;
@@ -3498,13 +3536,13 @@ inline-edit .angucomplete-dropdown {
   overflow: auto; }
 
 .misc-body p {
-  color: #429DD1; }
+  color: #85a6ad; }
 
 .misc-body a {
-  color: #429DD1; }
+  color: #85a6ad; }
 
 .misc-body h1 {
-  color: #429DD1;
+  color: #85a6ad;
   font-size: 2em; }
 
 .misc-body img {
@@ -3514,7 +3552,7 @@ inline-edit .angucomplete-dropdown {
   float: right; }
 
 .cui-link--medium-light {
-  color: #429DD1; }
+  color: #85a6ad; }
 
 .cui-link--no-decoration {
   text-decoration: none; }
@@ -3524,7 +3562,7 @@ inline-edit .angucomplete-dropdown {
   padding: 20px;
   color: #555;
   border: 1px solid #eee;
-  border-left: 5px solid #429DD1;
+  border-left: 5px solid #85a6ad;
   border-radius: 3px;
   box-sizing: border-box; }
 

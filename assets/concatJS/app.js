@@ -110,9 +110,9 @@ function($state,getCountries,$scope,$translate,LocaleService){
 
 angular.module('app')
 .config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
-    '$injector','localStorageServiceProvider','$cuiIconProvider',
+    '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider){
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
     localStorageServiceProvider.setPrefix('cui');
     $stateProvider
         .state('base',{
@@ -169,7 +169,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: 'myApplicationsCtrl as myApplications'
         })
         .state('applications.myApplicationDetails',{
-            url: '/myApplications/:packageId',
+            url: '/myApplications/:packageId/:appId',
             templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
             controller: 'myApplicationDetailsCtrl as myApplicationDetails'
         })
@@ -219,6 +219,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('misc.success',{
             url: '/success',
             templateUrl: 'assets/angular-templates/misc/misc.success.html'
+        })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: 'assets/angular-templates/profiles/profile.html'
+        })
+        .state('profile.organization', {
+            url: '/profile/organization?id',
+            templateUrl: 'assets/angular-templates/profiles/organization.profile.html',
+            controller: 'orgProfileCtrl as orgProfile'
         });
 
     // $locationProvider.html5Mode(true);
@@ -237,16 +246,18 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         prefix:'locale-',
         suffix:'.json'
     })
-    .registerAvailableLanguageKeys(['en_US','pl_PL','zh_CN','pt_PT'],{
-        'en*':'en_US',
-        'pl*':'pl_PL',
-        'zh*':'zh_CN',
-        'pt*':'pt_PT',
-        '*':'en_US'
+    .registerAvailableLanguageKeys(['en','pl','zh','pt'],{
+        'en*':'en',
+        'pl*':'pl',
+        'zh*':'zh',
+        'pt*':'pt',
+        '*':'en'
     })
     .uniformLanguageTag('java')
     .determinePreferredLanguage()
-    .fallbackLanguage(['en_US']);
+    .fallbackLanguage(['en']);
+
+    $cuiI18nProvider.setLocalePreference(['en','pl','zh','pt']);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
@@ -256,10 +267,10 @@ angular.module('app')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache',
     function(LocaleService,$rootScope,$state,$http,$templateCache){
     //add more locales here
-    LocaleService.setLocales('en_US','English (United States)');
-    LocaleService.setLocales('pl_PL','Polish (Poland)');
-    LocaleService.setLocales('zh_CN', 'Chinese (Simplified)');
-    LocaleService.setLocales('pt_PT','Portuguese (Portugal)');
+    LocaleService.setLocales('en','English (United States)');
+    LocaleService.setLocales('pl','Polish (Poland)');
+    LocaleService.setLocales('zh', 'Chinese (Simplified)');
+    LocaleService.setLocales('pt','Portuguese (Portugal)');
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         $state.previous = {};
@@ -279,49 +290,137 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams',
-function(API,$scope,$state){
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
 
-    var packageId=$stateParams.packageId; // get the packageId from the url
+    var appId=$stateParams.appId; // get the appId from the url
+    var packageId=$stateParams.packageId;  // get the packageId from the url
 
     var handleError=function(err){
-        console.log('Error \n\n', err);
-    };
+        console.log('Error \n', err);
+        myApplicationDetails.doneLoading=true; // FORCING DONE LOADING ON ERROR
+        $scope.$digest(); // because /persons/{personId}/packages/{packageId} endpoint returns an error if the user doesn't have that grant,
+    };                    // rather than an empty array`
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if(packageId){
+    var i=0; // this is used to see if the process of getting related and bundled apps is done
+
+    var getDateGranted=function(creationUnixStamp){
+        var dateGranted=new Date(creationUnixStamp);
+        var dateGrantedFormatted=dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+        return dateGrantedFormatted;
+    };
+
+
+    var getBundledApps=function(service){
+        myApplicationDetails.bundled=[];
+        API.cui.getServices({ 'packageId':packageId })
+        .then(function(res){
+            i++;
+            res.forEach(function(app){
+                if(app.id!==myApplicationDetails.app.id){
+                    app.grantedDate=service.grantedDate;
+                    app.status=service.status;
+                    app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
+                    myApplicationDetails.bundled.push(app);
+                }
+            });
+            if(i===2) {
+                myApplicationDetails.doneLoading=true;
+                $scope.$digest();
+            }
+        })
+        .fail(handleError);
+    };
+
+    var getRelatedApps=function(servicePackage){
+        myApplicationDetails.related=[];
+        API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
+        .then(function(res){                                  // we're checking the details of belongs to
+            if(res.length===0) {
+                i++;
+                if(i===2) {
+                    myApplicationDetails.doneLoading=true;
+                    $scope.$digest();
+                }
+            }
+            res.forEach(function(pkg,i){
+                var status=[],grantedDate=[];
+                API.cui.getPersonPackage({ 'packageId':pkg.id,'personId':userId }) // Check if that child package has been granted to the user
+                .then(function(res){
+                    if(Object.keys(res).length!==0) { // If the user has been granted the package
+                        status[i]=res.status;         // put a status on it and a granted date
+                        grantedDate[i]=getDateGranted(res.creation); // so that we can decide wether to show "Request" or the status in the UI
+                    }
+                    return API.cui.getServices({ 'packageId':packageId });
+                })
+                .then(function(res){
+                    i++;
+                    res.forEach(function(app){ // for each of the services in that child package
+                        if(status[i]){ // if this status is defined then the user has been granted this service
+                            app.status=status[i];
+                            app.grantedDate=grantedDate[i];
+                        }
+                        app.parentPackage=pkg.id; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
+                        myApplicationDetails.related.push(app);
+                    });
+                    if(i===2) {
+                        myApplicationDetails.doneLoading=true;
+                        $scope.$digest();
+                    }
+                })
+                .fail(handleError);
+            });
+        })
+        .fail(handleError);
+    };
+
+    var getPackageGrantDetails=function(app){
+        API.cui.getPersonPackage({ 'personId':userId , 'packageId':packageId })
+        .then(function(res){
+            app.grantedDate=getDateGranted(res.creation);
+            app.status=res.status;
+            myApplicationDetails.app=app;
+            getBundledApps(app);
+            getRelatedApps(app);
+        })
+        .fail(handleError);
+    };
+
+    if(appId){
         API.doAuth()
         .then(function(res){
-            return API.cui.getPersonPackages({'personId':userId,'packageId':packageId});
+            return API.cui.getService({ 'serviceId':appId });
         })
         .then(function(res){
-            getAppDetails(res);
+            var app=res;
+            getPackageGrantDetails(app);
         })
         .fail(handleError);
     }
     else {
-        // message for no packageId in the state
+        // message for no appId in the state
     }
 
-    var getAppDetails=function(grant){
-        API.cui.getPackage({'packageId':grant.servicePackage.id})
-        .then(function(res){
-            res.status=grant.status;
-            if(res.parent) getParentPackageDetails(); // if the package has a parent
-            else $scope.$digest();
-        })
-        .fail(handleError);
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+    myApplicationDetails.goToDetails=function(application){
+        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('myApplicationsCtrl',['API','$scope',
-function(API,$scope){
+.controller('myApplicationsCtrl',['API','$scope','$state',
+function(API,$scope,$state){
     var myApplications = this;
     var userId='RN3BJI54';
 
@@ -329,6 +428,28 @@ function(API,$scope){
 
     var handleError=function(err){
         console.log('Error \n\n', err);
+    };
+
+    // ON LOAD START ------------------------------------------------------------------------------------------
+
+    var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
+        var i=0;
+        grants.forEach(function(grant){
+            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+            .then(function(res){
+                i++;
+                res.forEach(function(service){
+                    service.status=grant.status; // attach the status of the service package to the service
+                    service.parentPackage=grant.servicePackage.id;
+                    myApplications.list.push(service);
+                });
+                if(i===grants.length){ // if this is the last grant
+                    myApplications.doneLoading=true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
     };
 
     API.doAuth()
@@ -340,21 +461,17 @@ function(API,$scope){
     })
     .fail(handleError);
 
-    var getApplicationsFromGrants=function(grants){
-        var i=0;
-        grants.forEach(function(grant){
-            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-            .then(function(res){
-                i++;
-                res.forEach(function(service){
-                    service.status=grant.status; // attach the status of the package to the service
-                    myApplications.list.push(service);
-                });
-                if(i===grants.length) $scope.$digest();
-            })
-            .fail(handleError);
-        });
+
+    // ON LOAD END --------------------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------------
+
+    myApplications.goToDetails=function(application){
+        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
+
+
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
 
 }]);
 
@@ -381,21 +498,24 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.tempCountry = usersEdit.user.addresses[0].country;
     };
 
-    var selectQuestionsForUser = function(questionsArray, allQuestions){
-        var questionTexts = [];
-        angular.forEach(questionsArray, function(value){
-            var text = _.find(allQuestions, function(question){return question.id === value});
-            this.push(text.question[0].text);
-        }, questionTexts);
+    var selectQuestionsForUser = function(){
+        var questions = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
+            this.push(question);
+        }, questions);
 
-        usersEdit.user.challengeQuestion1 = questionTexts[0];
-        usersEdit.user.challengeQuestion2 = questionTexts[1];
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion2 = questions[1];
     };
 
     var initializePhones = function() {
-        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
-        usersEdit.user.phoneMain = filterPhones('main')[0].number;
-        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+        usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
+        usersEdit.phones = []
+        angular.forEach(usersEdit.phoneTypes, function(type) {
+            var phoneObject = {type: type, number: filterPhones(type)}
+            usersEdit.phones.push(phoneObject);
+        });
     };
 
     var filterPhones = function(type) {
@@ -403,9 +523,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         var filteredPhones = phones.filter(function (item) {
             return item.type === type;
         });
-        console.log('HO');
-        console.log(filteredPhones); 
-        return filteredPhones;
+        if(filteredPhones.length > 0) {
+            return filteredPhones[0].number;
+        } else {
+            return '';
+        };
     }
 
     API.doAuth()
@@ -420,15 +542,15 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
-        var codes = _.map(res.questions, function(n){return n.question.id});
-        usersEdit.securityQuestionCodes = codes;
+        usersEdit.userSecurityQuestions = res;
         $scope.$apply();
         return API.cui.getSecurityQuestions();
     })
     .then(function(res){
-        var allSecurityQuestions = res;
+
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
         $scope.$apply();
-        selectQuestionsForUser(usersEdit.securityQuestionCodes, allSecurityQuestions);
         return API.cui.getPersonPassword({personId: usersEdit.user.id});
     })
     .then(function(res) {
@@ -464,6 +586,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.saveFullName = function() {
         usersEdit.user.name.given = usersEdit.tempGiven; 
         usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.save();
         usersEdit.editName = false;
     }
 
@@ -491,6 +614,24 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     usersEdit.updateTempCountry = function(results) {
         usersEdit.tempCountry = results.description.name;
+    }
+
+    usersEdit.clearAdditionalPhone = function() {
+        usersEdit.additionalPhoneType = '';
+        usersEdit.additionalPhoneNumber = '';
+    }
+
+    usersEdit.savePhone = function() {
+        usersEdit.user.phones = usersEdit.phones.slice();
+        _.remove(usersEdit.user.phones, function(phone) {
+          return phone.number == '';
+        });
+        usersEdit.save();
+    }
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
     }
 }]);
 
@@ -972,6 +1113,29 @@ angular.module('app')
     return person;
 
 }]);
+
+angular.module('app')
+.controller('orgProfileCtrl',['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+
+    var orgProfile = this;
+    orgProfile.organization = {};
+    
+    API.doAuth()
+    .then(function() {
+        // Get Organization based on url id parameter
+        return API.cui.getOrganization({organizationId: $stateParams.id});
+    })
+    .then(function(res) {
+        orgProfile.organization = res;
+        $scope.$digest();
+    })
+    .fail(function(error) {
+        console.log(error);
+    });
+
+}]);
+
 
 angular.module('app')
 .controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
