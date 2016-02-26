@@ -429,6 +429,12 @@ Styleguide Elements.Texts.Headers
   font-weight: normal;
   src: url("/bower_components/lato/font/lato-regular/lato-regular.woff2") format("woff2"), url("/bower_components/lato/font/lato-regular/lato-regular.woff") format("woff"); }
 
+@font-face {
+  font-family: "lato-black";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/bower_components/lato/font/lato-black/lato-black.woff2") format("woff2"), url("/bower_components/lato/font/lato-black/lato-black.woff") format("woff"); }
+
 body {
   color: #929292;
   font-size: 16px;
@@ -453,14 +459,16 @@ h1, h2, h3, h4, h5, h6 {
 .h4 {
   font-size: 1.5em; }
 
-.h5, .cui-media__title {
+.h5 {
   font-size: 1.25em; }
 
-.h6 {
+.h6, .cui-action__title, .cui-applications__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-media__title {
-  font-weight: 700; }
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-action__title, .cui-applications__title {
+  font-family: 'lato-black', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.6px; }
 
 p {
   color: #929292; }
@@ -474,7 +482,7 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount {
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link {
   color: #429DD1; }
 
 /*
@@ -542,6 +550,33 @@ Styleguide Elements.Texts.Ordered-Lists
 .cui-ol--default {
   list-style-type: decimal;
   list-style-position: inside; }
+
+/*
+Status
+
+Markup:
+<span class="cui-status--active">Active</span>
+<span class="cui-status--pending">Pending</span>
+<span class="cui-status--suspended">Suspended</span>
+
+Styleguide Elements.Texts.Status
+*/
+.cui-status--active, .cui-status--pending, .cui-status--suspended {
+  font-family: 'lato-black', sans-serif;
+  font-size: 0.625em;
+  text-transform: uppercase; }
+  @media screen and (min-width: 701px) {
+    .cui-status--active, .cui-status--pending, .cui-status--suspended {
+      font-size: 1.125em; } }
+
+.cui-status--active {
+  color: #85a6ad; }
+
+.cui-status--pending {
+  color: #FF8C00; }
+
+.cui-status--suspended {
+  color: #ff4400; }
 
 /*
 Inputs
@@ -2057,7 +2092,7 @@ Styleguide Blocks.Off-Canvas
 
 .snap-content,
 snap-content {
-  background: #DEE9EE;
+  background: #fff;
   padding: 0; }
 
 .snap-drawer,
@@ -2104,7 +2139,7 @@ snap-drawers,
 .snap-drawers,
 .snap-content {
   position: static;
-  background: #DEE9EE; }
+  background: #fff; }
   @media screen and (max-width: 999px) {
     snap-content,
     [snap\:content],
@@ -3376,7 +3411,7 @@ Styleguide Blocks.Tabs
   cursor: pointer;
   display: flex;
   flex: 1;
-  font-size: 0.75em;
+  font-size: 0.9375em;
   justify-content: center;
   padding: 0.625em;
   text-align: center;
@@ -3394,12 +3429,8 @@ Styleguide Blocks.Tabs
   display: none; }
   .cui-tabs__tab-pane--active {
     display: flex;
-    font-size: 0.75em;
     flex: 1;
     padding: 3.125em 1.25em; }
-  @media screen and (min-width: 701px) {
-    .cui-tabs__tab-pane {
-      font-size: 1em; } }
 
 /*
 Media Object 
@@ -3412,15 +3443,18 @@ Markup:
     </svg>
   </div>
   <div class="cui-media__body">
-    <h3 class="cui-media__title">Media Object body title</h3>
-    <p class="cui-media__content">Media Object body text</p>
+    <h3 class="cui-media__title">Media Object title</h3>
+    <p class="cui-media__content">Media Object body</p>
   </div>
 </div>
 
 Styleguide Blocks.Media-Object
 */
 .cui-media {
-  display: flex; }
+  display: flex;
+  padding: 1em 0; }
+  .cui-media--border {
+    border-bottom: 1px solid #cde6f0; }
 
 .cui-media__image-container {
   display: flex;
@@ -3429,6 +3463,17 @@ Styleguide Blocks.Media-Object
 
 .cui-media__body {
   flex: .75; }
+  @media screen and (min-width: 701px) {
+    .cui-media__body--full {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex: 1; } }
+
+.cui-media__title {
+  font-family: 'lato-black', sans-serif;
+  font-size: 1.0625em;
+  letter-spacing: 1.6px; }
 
 .cui-media__image {
   border: 2px solid black;
@@ -3437,14 +3482,84 @@ Styleguide Blocks.Media-Object
   width: 3.125em; }
 
 .cui-media__content {
+  letter-spacing: 1.6px;
+  display: flex;
   margin: 0;
   padding: 0.3125em 0; }
 
-@media screen and (min-width: 701px) {
-  .cui-nav__content-wrapper {
-    padding: 1.875em 10%; } }
+.cui-media__link {
+  cursor: pointer;
+  text-decoration: underline; }
+
+.cui-media__status {
+  display: flex;
+  flex: .25;
+  justify-content: flex-end;
+  padding-top: 5px; }
+
+@media screen and (max-width: 700px) {
+  .cui-media--vertical {
+    justify-content: center;
+    text-align: center; }
+    .cui-media--vertical .cui-media__content {
+      display: inline-block; } }
+
+/*
+Action Bar
+
+Markup:
+<div class="cui-action">
+  <span class="cui-action__title">Action Title</span>
+  <div class="cui-action__actions">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+    </svg>  
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#plus25"></use>
+    </svg>
+  </div>
+</div>
+
+Styleguide Blocks.Action-Bar
+*/
+.cui-action {
+  align-items: center;
+  background-color: #DEE9EE;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  min-height: 60px;
+  padding: 0 0.625em; }
+  @media screen and (min-width: 701px) {
+    .cui-action {
+      padding: 0 3.125em; } }
+  .cui-action__title {
+    color: #343534;
+    display: flex;
+    flex: .5; }
+    @media screen and (min-width: 701px) {
+      .cui-action__title {
+        flex: .75; } }
+  .cui-action__actions {
+    display: flex;
+    flex: .5;
+    justify-content: flex-end; }
+    @media screen and (min-width: 701px) {
+      .cui-action__actions {
+        flex: .25; } }
+  .cui-action__icon {
+    fill: #6a98a0;
+    height: 1.5625em;
+    width: auto; }
+
+.cui-nav__content-wrapper {
+  min-height: 750px; }
 
 .cui-wrapper {
+  background: #fff;
   overflow: hidden; }
 
 .cui-footer {
@@ -3456,6 +3571,9 @@ Styleguide Blocks.Media-Object
     float: left;
     display: inline-block;
     padding-right: 40px; }
+
+.cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  border-radius: 0; }
 
 .cui-card, .cui-popover-container--relative {
   position: relative; }
@@ -3565,6 +3683,49 @@ inline-edit .angucomplete-dropdown {
   border-left: 5px solid #85a6ad;
   border-radius: 3px;
   box-sizing: border-box; }
+
+.cui-applications__details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.75em 0.9375em 0.625em 0.9375em; }
+
+.cui-applications__main-container {
+  position: relative; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__main-container {
+      padding: 0.9375em 1.5625em 0 2.5em; } }
+
+@media screen and (min-width: 701px) {
+  .cui-tabs {
+    display: none; } }
+
+.cui-applications__left,
+.cui-applications__right {
+  border: 1px solid #cde6f0;
+  flex: .5; }
+
+.cui-applications__right {
+  margin-left: 3.125em; }
+  .cui-applications__right .cui-applications__title {
+    background-color: #DEE9EE; }
+
+.cui-applications__desktop-tabs {
+  display: none; }
+  @media screen and (min-width: 700px) {
+    .cui-applications__desktop-tabs {
+      display: flex; } }
+
+.cui-applications__title {
+  align-items: center;
+  border-bottom: 1px solid #cde6f0;
+  color: #85a6ad;
+  display: flex;
+  height: 3.125em;
+  padding-left: 10px; }
+
+.cui-applications .cui-media__title {
+  cursor: pointer; }
 
 .cui-tos-container {
   float: right;
