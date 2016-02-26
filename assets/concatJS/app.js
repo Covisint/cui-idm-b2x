@@ -498,21 +498,24 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.tempCountry = usersEdit.user.addresses[0].country;
     };
 
-    var selectQuestionsForUser = function(questionsArray, allQuestions){
-        var questionTexts = [];
-        angular.forEach(questionsArray, function(value){
-            var text = _.find(allQuestions, function(question){return question.id === value});
-            this.push(text.question[0].text);
-        }, questionTexts);
+    var selectQuestionsForUser = function(){
+        var questions = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
+            this.push(question);
+        }, questions);
 
-        usersEdit.user.challengeQuestion1 = questionTexts[0];
-        usersEdit.user.challengeQuestion2 = questionTexts[1];
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion2 = questions[1];
     };
 
     var initializePhones = function() {
-        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
-        usersEdit.user.phoneMain = filterPhones('main')[0].number;
-        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+        usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
+        usersEdit.phones = []
+        angular.forEach(usersEdit.phoneTypes, function(type) {
+            var phoneObject = {type: type, number: filterPhones(type)}
+            usersEdit.phones.push(phoneObject);
+        });
     };
 
     var filterPhones = function(type) {
@@ -520,9 +523,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         var filteredPhones = phones.filter(function (item) {
             return item.type === type;
         });
-        console.log('HO');
-        console.log(filteredPhones);
-        return filteredPhones;
+        if(filteredPhones.length > 0) {
+            return filteredPhones[0].number;
+        } else {
+            return '';
+        };
     }
 
     API.doAuth()
@@ -537,15 +542,15 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
-        var codes = _.map(res.questions, function(n){return n.question.id});
-        usersEdit.securityQuestionCodes = codes;
+        usersEdit.userSecurityQuestions = res;
         $scope.$apply();
         return API.cui.getSecurityQuestions();
     })
     .then(function(res){
-        var allSecurityQuestions = res;
+
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
         $scope.$apply();
-        selectQuestionsForUser(usersEdit.securityQuestionCodes, allSecurityQuestions);
         return API.cui.getPersonPassword({personId: usersEdit.user.id});
     })
     .then(function(res) {
@@ -579,8 +584,9 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     usersEdit.saveFullName = function() {
-        usersEdit.user.name.given = usersEdit.tempGiven;
-        usersEdit.user.name.surname = usersEdit.tempSurname;
+        usersEdit.user.name.given = usersEdit.tempGiven; 
+        usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.save();
         usersEdit.editName = false;
     }
 
@@ -608,6 +614,24 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     usersEdit.updateTempCountry = function(results) {
         usersEdit.tempCountry = results.description.name;
+    }
+
+    usersEdit.clearAdditionalPhone = function() {
+        usersEdit.additionalPhoneType = '';
+        usersEdit.additionalPhoneNumber = '';
+    }
+
+    usersEdit.savePhone = function() {
+        usersEdit.user.phones = usersEdit.phones.slice();
+        _.remove(usersEdit.user.phones, function(phone) {
+          return phone.number == '';
+        });
+        usersEdit.save();
+    }
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
     }
 }]);
 
