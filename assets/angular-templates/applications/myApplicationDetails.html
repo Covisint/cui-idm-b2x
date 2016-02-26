@@ -9,7 +9,7 @@
                 {{ 'app-summary' | translate }}
                 {{myApplicationDetails.app.name[0].text}}
                 {{ 'granted' | translate }}: {{myApplicationDetails.app.grantedDate}}
-                {{myApplicationDeatils.app.status}}
+                <span ng-class="'test'+myApplicationDetails.app.status">{{myApplicationDetails.app.status}}</span>
                 <div class="cui-tabs class-toggle">
                   <ul class="cui-tabs__nav">
                     <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab1"  ng-class="{'cui-tabs__tab--active':!myApplicationDetails.inClaims}" ng-click="myApplicationDetails.inClaims=false">{{'application-details' | translate}}</a></li>

@@ -113,155 +113,196 @@ angular.module('app')
     '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+
     localStorageServiceProvider.setPrefix('cui');
+
+    var templateBase='assets/angular-templates/'; // base directori of your partials
+
+
+    var returnCtrlAs=function(name,asPrefix){ // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
+        // returnCtrlAs('test') returns 'testCtrl as test'
+        return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
+    };
+
     $stateProvider
         .state('base',{
             url: '/',
-            templateUrl: 'assets/angular-templates/home.html',
-            controller: 'baseCtrl as base'
+            templateUrl: templateBase + 'base.html',
+            controller: returnCtrlAs('base')
         })
         .state('users',{
             url: '/users',
-            templateUrl: 'assets/angular-templates/users/users.html'
+            templateUrl: templateBase + 'users/users.html'
         })
         .state('users.search',{
             url: '/',
-            templateUrl: 'assets/angular-templates/users/users.search/users.search.html',
-            controller: 'usersSearchCtrl as usersSearch'
+            templateUrl: templateBase + 'users/users.search/users.search.html',
+            controller: returnCtrlAs('usersSearch')
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: 'assets/angular-templates/edit/users.edit/users.edit.html',
-            controller: 'usersEditCtrl as usersEdit'
+            templateUrl: templateBase + 'users/users.edit/users.edit.html',
+            controller: returnCtrlAs('usersEdit')
         })
         .state('users.invitations',{
             url: '/invitations',
-            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invitations.search.html',
-            controller: 'usersInvitationsCtrl as usersInvitations'
+            templateUrl: templateBase + 'invitations/users.invitations/users.invitations.search.html',
+            controller: returnCtrlAs('usersInvitations')
         })
         .state('users.invite',{
             url: '/invite',
-            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invite.html',
-            controller: 'usersInviteCtrl as usersInvite'
+            templateUrl: templateBase + 'invitations/users.invitations/users.invite.html',
+            controller: returnCtrlAs('usersInvite')
         })
         .state('users.register',{
             url: '/register?id&code',
-            templateUrl: 'assets/angular-templates/registration/userInvited/users.register.html',
-            controller: 'usersRegisterCtrl as usersRegister'
+            templateUrl: templateBase + 'registration/userInvited/users.register.html',
+            controller: returnCtrlAs('usersRegister')
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/registration/userWalkup/users.walkup.html',
-            controller: 'usersWalkupCtrl as usersWalkup'
+            templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
+            controller: returnCtrlAs('usersWalkup')
         })
         .state('users.activate',{
             url: '/activate/:id',
-            templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
-            controller: 'usersActivateCtrl as usersActivate'
+            templateUrl: templateBase + 'users/users.activate/users.activate.html',
+            controller: returnCtrlAs('usersActivate')
         })
         .state('applications',{
             url: '/applications',
-            templateUrl : 'assets/angular-templates/applications/applications.html'
+            templateUrl : templateBase + 'applications/applications.html'
         })
         .state('applications.myApplications',{
             url: '/myApplications',
-            templateUrl: 'assets/angular-templates/applications/myApplications.html',
-            controller: 'myApplicationsCtrl as myApplications'
+            templateUrl: templateBase + 'applications/myApplications.html',
+            controller: returnCtrlAs('myApplications')
         })
         .state('applications.myApplicationDetails',{
             url: '/myApplications/:packageId/:appId',
-            templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
-            controller: 'myApplicationDetailsCtrl as myApplicationDetails'
+            templateUrl: templateBase + 'applications/myApplicationDetails.html',
+            controller: returnCtrlAs('myApplicationDetails')
+        })
+        .state('applications.newRequest',{
+            url: '/newRequest',
+            templateUrl: templateBase + 'applications/newRequest.html',
+            controller: returnCtrlAs('newAppRequest')
+        })
+        .state('applications.search',{
+            url: '/search/',
+            templateUrl: templateBase + 'applications/search.html',
+            controller: returnCtrlAs('newAppRequest')
         })
         .state('welcome',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.html'
+            templateUrl: templateBase + 'welcome/welcome.html'
         })
         .state('welcome.screen',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
-            controller: 'welcomeCtrl as welcome'
+            templateUrl: templateBase + 'welcome/welcome.screen.html',
+            controller: returnCtrlAs('welcome')
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.html'
+            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
-            controller: 'tloCtrl as newTLO'
+            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
+            controller: returnCtrlAs('tlo','new')
         })
         .state('division',{
             url: '/division',
-            templateUrl: 'assets/angular-templates/registration/newDivision/division.html'
+            templateUrl: templateBase + 'registration/newDivision/division.html'
         })
         .state('division.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
-            controller: 'divisionCtrl as newDivision'
+            templateUrl: templateBase + 'registration/newDivision/division.registration/division.registration.html',
+            controller: returnCtrlAs('division','new')
         })
         .state('misc',{
             url: '/status',
-            templateUrl: 'assets/angular-templates/misc/misc.html'
+            templateUrl: templateBase + 'misc/misc.html'
         })
         .state('misc.404',{
             url: '/404',
-            templateUrl: 'assets/angular-templates/misc/misc.404.html'
+            templateUrl: templateBase + 'misc/misc.404.html'
         })
         .state('misc.notAuth',{
             url: '/notAuthorized',
-            templateUrl: 'assets/angular-templates/misc/misc.notAuth.html'
+            templateUrl: templateBase + 'misc/misc.notAuth.html'
         })
         .state('misc.pendingStatus',{
             url: '/pendingStatus',
-            templateUrl: 'assets/angular-templates/misc/misc.pendingStatus.html'
+            templateUrl: templateBase + 'misc/misc.pendingStatus.html'
         })
         .state('misc.success',{
             url: '/success',
-            templateUrl: 'assets/angular-templates/misc/misc.success.html'
+            templateUrl: templateBase + 'misc/misc.success.html'
+        })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: templateBase + 'profiles/profile.html'
+        })
+        .state('profile.organization', {
+            url: '/profile/organization?id',
+            templateUrl: templateBase + 'profiles/organization.profile.html',
+            controller: returnCtrlAs('orgProfile')
         });
 
     // $locationProvider.html5Mode(true);
 
-    //fixes infinite digest loop with ui-router
+    //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
       $state.go('base');
     });
 
+    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
+        // ADD LANGUAGES HERE ONLY
+        {
+            'en':'English',
+            'pt':'Portuguese',
+            'pl':'Polish',
+            'zh':'Chinese'
+        }
+    )
 
-    //where the locales are being loaded from
+    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
+
+    var returnRegisterAvailableLanguageKeys=function(){
+        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
+        languageKeys.forEach(function(languageKey){
+            object[languageKey+'*']=languageKey //redirect language keys such as en_US to en or en-US to en
+        })
+        return object;
+    }
+
     $translateProvider
     .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
     })
-    .registerAvailableLanguageKeys(['en','pl','zh','pt'],{
-        'en*':'en',
-        'pl*':'pl',
-        'zh*':'zh',
-        'pt*':'pt',
-        '*':'en'
-    })
+    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
     .uniformLanguageTag('java')
     .determinePreferredLanguage()
-    .fallbackLanguage(['en']);
+    .fallbackLanguage(languageKeys);
 
-    $cuiI18nProvider.setLocalePreference(['en','pl','zh','pt']);
+    $cuiI18nProvider.setLocalePreference(languageKeys);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache',
-    function(LocaleService,$rootScope,$state,$http,$templateCache){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
     //add more locales here
-    LocaleService.setLocales('en','English (United States)');
-    LocaleService.setLocales('pl','Polish (Poland)');
-    LocaleService.setLocales('zh', 'Chinese (Simplified)');
-    LocaleService.setLocales('pt','Portuguese (Portugal)');
+    var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
+    for(var LanguageKey in languageNameObject){
+        LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
+    };
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         $state.previous = {};
@@ -468,6 +509,32 @@ function(API,$scope,$state){
 
 
 angular.module('app')
+.controller('newAppRequestCtrl',['API','$scope','$state',
+function(API,$scope,$state){
+    var newAppRequest = this;
+    var userId='RN3BJI54';
+
+
+    var handleError=function(err){
+        console.log('Error \n\n', err);
+    };
+
+    // ON LOAD START ------------------------------------------------------------------------------------------
+
+
+
+    // ON LOAD END --------------------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------------
+
+
+
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
 .controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
@@ -524,7 +591,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
-        initializePhones();
+        // initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
@@ -1080,6 +1147,29 @@ angular.module('app')
     return person;
 
 }]);
+
+angular.module('app')
+.controller('orgProfileCtrl',['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+
+    var orgProfile = this;
+    orgProfile.organization = {};
+    
+    API.doAuth()
+    .then(function() {
+        // Get Organization based on url id parameter
+        return API.cui.getOrganization({organizationId: $stateParams.id});
+    })
+    .then(function(res) {
+        orgProfile.organization = res;
+        $scope.$digest();
+    })
+    .fail(function(error) {
+        console.log(error);
+    });
+
+}]);
+
 
 angular.module('app')
 .controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {

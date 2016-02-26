@@ -1,0 +1,12 @@
+<div class="cui-tile">
+    <div class="cui-tile__title">{{'new-request' | translate}}</div>
+        <div class="cui-tile__body">
+            <div>
+                {{'select-applications' | translate}} <!-- add folder icon -->
+                <input class="cui-input" ng-model="newAppRequest.search"/><button>{{'go' | translate}}</button>
+                or
+                <button ui-sref="applications.browse">{{'browse-applications' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
