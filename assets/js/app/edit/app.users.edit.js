@@ -26,7 +26,10 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         }, questions);
 
         usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion1.answer = '';
         usersEdit.challengeQuestion2 = questions[1];
+        usersEdit.challengeQuestion2.answer = '';
+        $scope.$apply();
     };
 
     var initializePhones = function() {
@@ -67,7 +70,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         return API.cui.getSecurityQuestions();
     })
     .then(function(res){
-
         usersEdit.allSecurityQuestions = res;
         selectQuestionsForUser();
         $scope.$apply();
@@ -122,10 +124,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
         if (usersEdit.tempAddress2) {
             usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
+        } else if (usersEdit.user.addresses[0].streets[1]) {
+            usersEdit.user.addresses[0].streets.splice(1, 1)
         }
         usersEdit.user.addresses[0].city = usersEdit.tempCity;
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
+        usersEdit.save();
     }
 
     usersEdit.updateTempCountry = function(results) {
@@ -143,6 +148,53 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
           return phone.number == '';
         });
         usersEdit.save();
+    }
+
+    usersEdit.saveChallengeQuestions = function() {
+        var updatedChallengeQuestions = {};
+        updatedChallengeQuestions = [{
+            question: {
+                text: usersEdit.challengeQuestion1.question[0].text,
+                lang: usersEdit.challengeQuestion1.question[0].lang,
+                answer:   usersEdit.challengeAnswer1,
+                index: 1 },
+            owner: { 
+                id: usersEdit.challengeQuestion1.owner.id } 
+            },{
+            question: {
+                text: usersEdit.challengeQuestion2.question[0].text,
+                lang: usersEdit.challengeQuestion2.question[0].lang,
+                answer:   usersEdit.challengeAnswer2,
+                index: 2 },
+            owner: { 
+                id: usersEdit.challengeQuestion1.owner.id }
+            }
+        ];
+
+        usersEdit.saving = true;
+        usersEdit.fail = false;
+        usersEdit.success = false;
+
+        API.cui.updateSecurityQuestions({
+          personId: $stateParams.id,
+          data: {
+            version: '1',
+            id: usersEdit.user.id,
+            questions: updatedChallengeQuestions
+            }
+        })
+        .then(function(res) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.success = true;
+            }, 300);
+        })
+        .fail(function(err) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.fail = true;
+            }, 300);
+        });
     }
 
     usersEdit.resetChallengeQuestion = function(question) {
