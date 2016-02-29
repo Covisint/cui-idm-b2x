@@ -102,8 +102,8 @@
   <!-- TOS -->
   <div class='cui-tos-container'>
     <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
-    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}} 
-      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}} 
+    <label for="TOS" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}}
+      <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
       <a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy-policy' | translate}}</a>
     </label>
     <span class="cui-wizard__step-error" ng-if="user.TOS.$error.required && user.TOS.$touched"><br><br> {{'cui-tos-agree' | translate}} </span>
@@ -112,6 +112,5 @@
 </form>
 
 <div class="cui-wizard__controls cui-wizard__controls--clear">
-  <button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
   <button class="cui-wizard__next" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
 </div>

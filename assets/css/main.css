@@ -462,10 +462,10 @@ h1, h2, h3, h4, h5, h6 {
 .h5 {
   font-size: 1.25em; }
 
-.h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title, .cui-applications__title {
+.h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title, .cui-applications__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-family: 'lato-black', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -3697,17 +3697,12 @@ inline-edit .angucomplete-dropdown {
   border-radius: 3px;
   box-sizing: border-box; }
 
-.cui-applications__details {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 0.75em 0.9375em 0.625em 0.9375em; }
-
 .cui-applications__main-container {
-  position: relative; }
+  position: relative;
+  min-height: 400px; }
   @media screen and (min-width: 701px) {
     .cui-applications__main-container {
-      padding: 0.9375em 1.5625em 0 2.5em; } }
+      padding: 0.9375em 3.125em 0 5em; } }
 
 @media screen and (min-width: 701px) {
   .cui-tabs {
@@ -3715,27 +3710,16 @@ inline-edit .angucomplete-dropdown {
 
 .cui-applications__left,
 .cui-applications__right {
-  border: 1px solid #cde6f0;
   flex: .5; }
 
 .cui-applications__right {
   margin-left: 3.125em; }
-  .cui-applications__right .cui-applications__title {
-    background-color: #DEE9EE; }
 
 .cui-applications__desktop-tabs {
   display: none; }
-  @media screen and (min-width: 700px) {
+  @media screen and (min-width: 701px) {
     .cui-applications__desktop-tabs {
       display: flex; } }
-
-.cui-applications__title {
-  align-items: center;
-  border-bottom: 1px solid #cde6f0;
-  color: #85a6ad;
-  display: flex;
-  height: 3.125em;
-  padding-left: 10px; }
 
 .cui-applications .cui-media__title {
   cursor: pointer; }

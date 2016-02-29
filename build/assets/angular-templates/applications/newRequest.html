@@ -3,9 +3,19 @@
         <div class="cui-tile__body">
             <div>
                 {{'select-applications' | translate}} <!-- add folder icon -->
-                <input class="cui-input" ng-model="newAppRequest.search"/><button ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
+                <input class="cui-input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/><button ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
                 or
                 <button ui-sref="applications.search">{{'browse-applications' | translate}}</button>
+                <!-- CATEGORY LIST -->
+                <div ng-if="!newAppRequest.loadingDone"> <!-- This should show a loading icon on top of the category list only -->
+                    <div class="cui-loading__container" ng-if="!myApplicationDetails.doneLoading">
+                        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+                    </div>
+                </div>
+                <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone">
+                    <!-- I HAVE 1 CATEGORY HARDCODED IN NOW, CLICKING THIS WILL TAKE YOU TO A BLANK PAGE -->
+                    <span ui-sref="applications.search({category:'{{ category | cuiI18n }}' })">{{ category | cuiI18n }}</span>
+                </div>
             </div>
         </div>
     </div>
