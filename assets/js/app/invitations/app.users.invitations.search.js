@@ -20,7 +20,6 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
         console.log(err);
     });
 
-
     // This is needed to "attach" the invitor's and the invitee's info to the invitation
     // since the only parameter that we have from the invitation API is the ID
     usersInvitations.getInfo=function(invitorId,inviteeId,index){
@@ -70,6 +69,6 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
     //     });
     // };
 
-    // $scope.$watchCollection('usersSearch.search',search); 
+    // $scope.$watchCollection('usersSearch.search',search);
 
 }]);

@@ -57,7 +57,8 @@
     <!-- Re-Enter Password -->
     <inline-edit label="cui-password-re" model="newDivision.userLogin.passwordRe"></inline-edit>
     <!-- Challenge Question 1 -->
-    <inline-edit type="dropdown" display="newDivision.userLogin.question1.question[0].text" label="cui-challenge-question" options="newDivision.userLogin.challengeQuestions1" options-expression="question as question.question[0].text for question in options" model="newDivision.userLogin.question1"></inline-edit>
+    test
+    <inline-edit type="dropdown" display="newDivision.userLogin.question1.question | cuiI18n" label="cui-challenge-question" options="newDivision.userLogin.challengeQuestions1" options-expression="question as (question.question | cuiI18n) for question in options" model="newDivision.userLogin.question1"></inline-edit>
     <!-- Challenge Answer 1 -->
     <inline-edit label="cui-challenge-answer" model="newDivision.userLogin.challengeAnswer1"></inline-edit>
     <!-- Challenge Question 2 -->
