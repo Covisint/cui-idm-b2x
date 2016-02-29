@@ -124,10 +124,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
         if (usersEdit.tempAddress2) {
             usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
+        } else if (usersEdit.user.addresses[0].streets[1]) {
+            usersEdit.user.addresses[0].streets.splice(1, 1)
         }
         usersEdit.user.addresses[0].city = usersEdit.tempCity;
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
+        usersEdit.save();
     }
 
     usersEdit.updateTempCountry = function(results) {
