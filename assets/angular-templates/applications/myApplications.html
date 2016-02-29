@@ -12,23 +12,21 @@
     </svg>
   </div>
 </div>
-<div class="cui-tile">
-        <div class="cui-tile__body">
-            <div class="cui-loading__container" ng-if="!myApplications.doneLoading">
-                <div class="cui-loading--center"><div class="cui-loading"></div></div>
-            </div>
-            <div class="sorting">
-                <!-- API GAP None of the sorting mechanisms are available from the Person Package Grant API -->
-            </div>
-            <div ng-if="myApplications.doneLoading">
-                <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list" ng-click="myApplications.goToDetails(application)">
-                    <!-- <div class="cui-media__image-container"> API GAP Where do the icons come from? </div> -->
-                    <div class="cui-media__body cui-media__body--full">
-                        <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
-                        <span class="cui-media__content" ng-if="application.category" ng-bind="application.category"></span>
-                        <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status"></span>
-                    </div>
-                </div>
+<div class="cui-applications__main-container">
+    <div class="cui-loading__container" ng-if="!myApplications.doneLoading">
+        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+    <div class="sorting">
+        <!-- API GAP None of the sorting mechanisms are available from the Person Package Grant API -->
+    </div>
+    <div ng-if="myApplications.doneLoading">
+        <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list" ng-click="myApplications.goToDetails(application)">
+            <!-- <div class="cui-media__image-container"> API GAP Where do the icons come from? </div> -->
+            <div class="cui-media__body cui-media__body--full">
+                <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
+                <span class="cui-media__content" ng-if="application.category" ng-bind="application.category"></span>
+                <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
             </div>
         </div>
+    </div>
 </div>
