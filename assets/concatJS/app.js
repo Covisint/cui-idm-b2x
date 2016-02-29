@@ -189,7 +189,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: returnCtrlAs('newAppRequest')
         })
         .state('applications.search',{
-            url: '/search/:name',
+            url: '/search?name&category&page',
             templateUrl: templateBase + 'applications/search.html',
             controller: returnCtrlAs('applicationSearch')
         })
@@ -322,12 +322,15 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state){
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter',
+function(API,$scope,$stateParams,$state,$filter){
     var applicationSearch = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
-
-    var nameSearch=$stateParams.name;  // get the packageId from the url
+    var nameSearch=$stateParams.name;
+    var categorySearch=$stateParams.category;
+    var orgPackageList=[],
+        userPackageList=[], // WORKAROUND CASE #1
+        packageRequests=[];
 
     var handleError=function(err){
         console.log('Error \n', err);
@@ -335,7 +338,89 @@ function(API,$scope,$stateParams,$state){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
+    applicationSearch.nameSearch=nameSearch; // get the url param for name and pre-populate the search field
+    applicationSearch.category=categorySearch; // same as above
+
     var user;
+
+    var nameFilter=function(app,search){
+        if(!search || search ==='') return true;
+        return $filter('cuiI18n')(app.name).toLowerCase().indexOf(search.toLowerCase())>-1;
+    };
+
+    var categoryFilter=function(app,category){
+        if(!app.category && category) return false;
+        if(!category) return true;
+        return $filter('cuiI18n')(app.category).indexOf(category)>-1;
+    };
+
+    applicationSearch.parseAppsByCategoryAndName=function(){
+        var filteredApps = _.filter(applicationSearch.unparsedListOfAvailabeApps,function(app){
+            return nameFilter(app,applicationSearch.nameSearch) && categoryFilter(app,applicationSearch.category);
+        });
+        applicationSearch.list = filteredApps;
+        applicationSearch.doneLoading = true;
+    };
+
+    var getApplications=function(orgPackageListPassed){
+        var listOfAvailabeApps=[],i=0;
+        var listOfOrgPackages=orgPackageListPassed || orgPackageList; // so we can call this without passing the orgPackageList again
+        listOfOrgPackages.forEach(function(orgPackage){
+            if(orgPackage.requestable){
+                API.cui.getServices({'packageId':orgPackage.id})
+                .then(function(res){
+                    i++
+                    res.forEach(function(service){
+                        service.packageId=orgPackage.id;
+                        service.owningOrganization=orgPackage.owningOrganization;
+                        listOfAvailabeApps.push(service);
+                    });
+                    if(i===listOfOrgPackages.length){
+                        applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                        applicationSearch.parseAppsByCategoryAndName()
+                        $scope.$digest();
+                    }
+                })
+                .fail(handleError);
+            }
+            else i++;
+            if(i===listOfOrgPackages.length){
+                applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                applicationSearch.parseAppsByCategoryAndName();
+                $scope.$digest();
+            }
+        });
+    };
+
+    var getAvailableApplications=function(userPackageGrantList){ // get apps that the user can request and doesn't already have grants to
+        orgPackageList.forEach(function(orgPackage,i){
+            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list of
+                return orgPackage.id===userPackageGrant.servicePackage.id; // packages granted to an org, remove that package from the list.
+            });
+            if(userGrantInPackageList) orgPackageList.splice(i,1);
+        });
+        var i=0;
+        orgPackageList.forEach(function(orgPackage){
+            API.cui.getOrganization({'organizationId':orgPackage.owningOrganization.id})
+            .then(function(res){
+                i++;
+                orgPackage.owningOrganization=res; // WORKAROUND CASE # 8
+                if(i===orgPackageList.length){
+                    getApplications(orgPackageList);
+                }
+            })
+            .fail(handleError);
+        })
+    };
+
+    var getUserPackageGrants=function(){ // gets applications that are available for request
+        API.cui.getPersonPackages({personId:userId})
+        .then(function(res){
+            userPackageList=res;
+            getAvailableApplications(userPackageList);
+        })
+        .fail(handleError);
+    };
 
     API.doAuth()
     .then(function(res){
@@ -343,17 +428,46 @@ function(API,$scope,$stateParams,$state){
     })
     .then(function(res){
         user=res;
-        return API.cui.getOrganization
+        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
     })
-   .fail(function(err){
-        console.log(err);
-   })
+    .then(function(res){
+        var i=0;
+        var packageGrants=res;
+        packageGrants.forEach(function(pkgGrant){
+            API.cui.getPackage({'packageId':pkgGrant.servicePackage.id})
+            .then(function(res){
+                i++;
+                orgPackageList.push(res);
+                if(i===packageGrants.length){
+                    getUserPackageGrants();
+                }
+            })
+            .fail(handleError);
+        });
+    })
+   .fail(handleError);
 
     // ON LOAD END ------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
+    applicationSearch.listenForEnter=function($event){
+        if($event.keyCode===13) applicationSearch.parseAppsByCategoryAndName();
+    };
 
+    var pkgRequestCount=applicationSearch.numberOfRequest=0;
+
+    var processNumberOfRequiredApps=function(pkgRequest){
+        if(pkgRequest) pkgRequestCount++;
+        else pkgRequestCount--;
+        applicationSearch.numberOfRequest=pkgRequestCount;
+    }
+
+    applicationSearch.toggleRequest=function(i,application){
+        if(!packageRequests[i]) packageRequests[i]=application;
+        else packageRequests[i]=undefined;
+        processNumberOfRequiredApps(packageRequests[i]);
+    };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 
@@ -552,6 +666,73 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state',
 function(API,$scope,$state){
     var newAppRequest = this;
+    var userId='RN3BJI54'; // this will be replaced with the current user ID
+    var services=[];
+    var handleError=function(err){
+        console.log('Error\n',err);
+    };
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    var user;
+    var getListOfCategories=function(services){
+        var categoryList=[]; // WORKAROUND CASE # 7
+        services.forEach(function(service){
+            service.category=[  // TODO : FORCING A CATEGORY FOR STYLING PURPOSES, NONE OF THE APPS HAVE CATEGORIES RIGHT NOW
+                {
+                    lang:'en',
+                    text:'Admin'
+                }
+            ];
+            if(service.category){
+                var serviceCategoryInCategoryList = _.some(categoryList,function(category){
+                    return angular.equals(category,service.category);
+                });
+                if(!serviceCategoryInCategoryList){
+                    categoryList.push(service.category);
+                }
+            }
+        });
+        return categoryList;
+    };
+
+    API.doAuth()
+    .then(function(res){
+        return API.cui.getPerson({personId:userId});
+    })
+    .then(function(res){
+        user=res;
+        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
+    })
+    .then(function(res){
+        var i=0;
+        var packageGrants=res;
+        packageGrants.forEach(function(pkgGrant){
+            API.cui.getServices({'packageId':pkgGrant.servicePackage.id})
+            .then(function(res){
+                i++;
+                res.forEach(function(service){
+                    service.status=pkgGrant.status;
+                    services.push(service);
+                });
+                if(i===packageGrants.length){
+                    newAppRequest.categories=getListOfCategories(services);
+                    newAppRequest.loadingDone=true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
+    })
+   .fail(handleError);
+
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 }]);
 
 
@@ -1210,7 +1391,7 @@ function($scope,$stateParams,API) {
 
 
 angular.module('app')
-.controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+.controller('divisionCtrl',['$scope', 'API', function($scope, API) {
 	var newDivision = this;
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
@@ -1235,32 +1416,29 @@ angular.module('app')
         }
     ];
 
-	Person.getSecurityQuestions()
-    .then(function(res) {
-    	// Removes first question as it is blank
-        res.data.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
-        newDivision.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        newDivision.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
-
-        // Preload question into input
-        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
-        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
-    })
-    .catch(function(err) {
-    });
-
-    // Return all organizations
     API.doAuth()
-    .then(function() {
-        API.cui.getOrganizations()
-        .then(function(res){
-            newDivision.organizationList = res;
-        });
+    .then(function(){
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res){
+            // Removes first question as it is blank
+            res.splice(0,1);
+
+            // Splits questions to use between both dropdowns
+            var numberOfQuestions = res.length,
+            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+            newDivision.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+            newDivision.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+            // Preload question into input
+            newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
+            newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
+            return API.cui.getOrganizations();
+    })
+    .then(function(res) {
+        newDivision.organizationList = res;
+        $scope.$digest();
     })
     .fail(function(err){
         console.log(err);
@@ -1288,9 +1466,13 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('tloCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+.controller('tloCtrl',['$scope', 'API', function($scope, API) {
 	var newTLO = this;
 	newTLO.userLogin = {};
+
+  var handleError=function(err){
+    console.log('Error\n',err);
+  };
 
   newTLO.passwordPolicies = [ // WORKAROUND CASE #5
     {
@@ -1312,25 +1494,27 @@ angular.module('app')
     }
   ];
 
-	Person.getSecurityQuestions()
-  .then(function(res) {
-      // Removes first question as it is blank
-      res.data.splice(0,1);
 
-      // Splits questions to use between both dropdowns
-      var numberOfQuestions = res.data.length,
-      numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
-      newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-      newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
-
-      // Preload question into input
-      newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
-      newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  API.doAuth()
+  .then(function(){
+    return API.cui.getSecurityQuestions();
   })
-  .catch(function(err) {
-      console.log(err);
-  });
+  .then(function(res){
+    // Removes first question as it is blank
+    res.splice(0,1);
+
+    // Splits questions to use between both dropdowns
+    var numberOfQuestions = res.length,
+    numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+    newTLO.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+    newTLO.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+    // Preload question into input
+    newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
+    newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  })
+  .fail(handleError);
 
 }]);
 

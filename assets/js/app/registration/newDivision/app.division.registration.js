@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('divisionCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+.controller('divisionCtrl',['$scope', 'API', function($scope, API) {
 	var newDivision = this;
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
@@ -24,32 +24,29 @@ angular.module('app')
         }
     ];
 
-	Person.getSecurityQuestions()
-    .then(function(res) {
-    	// Removes first question as it is blank
-        res.data.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.data.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
-        newDivision.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-        newDivision.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
-
-        // Preload question into input
-        newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
-        newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
-    })
-    .catch(function(err) {
-    });
-
-    // Return all organizations
     API.doAuth()
-    .then(function() {
-        API.cui.getOrganizations()
-        .then(function(res){
-            newDivision.organizationList = res;
-        });
+    .then(function(){
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res){
+            // Removes first question as it is blank
+            res.splice(0,1);
+
+            // Splits questions to use between both dropdowns
+            var numberOfQuestions = res.length,
+            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+            newDivision.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+            newDivision.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+            // Preload question into input
+            newDivision.userLogin.question1 = newDivision.userLogin.challengeQuestions1[0];
+            newDivision.userLogin.question2 = newDivision.userLogin.challengeQuestions2[0];
+            return API.cui.getOrganizations();
+    })
+    .then(function(res) {
+        newDivision.organizationList = res;
+        $scope.$digest();
     })
     .fail(function(err){
         console.log(err);

@@ -1,0 +1,22 @@
+<div class="cui-tile">
+    <div class="cui-tile__title">{{'new-request' | translate}}  <span ui-sref="applications.myApplications"><!-- Close button goes here --></span></div>
+        <div class="cui-tile__body">
+            <div>
+                <span ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
+                <input class="cui-input" ng-model="applicationSearch.nameSearch" ng-keypress="applicationSearch.listenForEnter($event)" placeholder="{{'filter-list' | translate}}"/><button ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
+                <!-- folder icon --> {{applicationSearch.numberOfRequest}} <!-- < this will be the little number above the folder icon -->
+            </div>
+            <div class="cui-loading__container" ng-if="!applicationSearch.doneLoading">
+                <div class="cui-loading--center"><div class="cui-loading"></div></div>
+            </div>
+            <div ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneLoading" ng-click="applicationSearch.appCheckbox[$index]=!applicationSearch.appCheckbox[$index]; applicationSearch.toggleRequest($index,application)">
+                <!-- application image --> {{application.name | cuiI18n}}
+                {{'owning-org' | translate}}: {{application.owningOrganization.name}}
+                <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
+                <!-- TODO Figure out above ^  (leave this so I can find it later)-->
+                <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[$index]" /><label class="cui-checkbox__label"></label></span>
+            </div>
+
+        </div>
+    </div>
+</div>
