@@ -35,6 +35,7 @@ function(API,$scope,$stateParams,$state){
                     app.status=service.status;
                     app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
                     myApplicationDetails.bundled.push(app);
+                    console.log(res);
                 }
             });
             if(i===2) {
@@ -46,7 +47,7 @@ function(API,$scope,$stateParams,$state){
     };
 
     var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
-        myApplicationDetails.related=[];
+        myApplicationDetails.related=[{id:'test',name:[{lang:'en',text:'Test Related'}]}];
         API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {

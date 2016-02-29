@@ -138,12 +138,82 @@ function(API,$scope,$stateParams,$state,$filter){
         if(pkgRequest) pkgRequestCount++;
         else pkgRequestCount--;
         applicationSearch.numberOfRequest=pkgRequestCount;
-    }
+    };
 
     applicationSearch.toggleRequest=function(i,application){
         if(!packageRequests[i]) packageRequests[i]=application;
         else packageRequests[i]=undefined;
         processNumberOfRequiredApps(packageRequests[i]);
+    };
+
+    var bundled=[],related=[];
+    applicationSearch.detailsLoadingDone=[];
+
+    var detailsFetchStep=0;
+
+    var getBundledApps=function($index,application){ // WORKAROUND CASE # 1
+        bundled[$index]=[];
+        API.cui.getServices({ 'packageId':application.packageId })
+        .then(function(res){
+            res.forEach(function(app){
+                if(app.id!==application.id){
+                    app.packageId=application.packageId;
+                    bundled[$index].push(app);
+                }
+            });
+            detailsFetchStep++;
+            if(detailsFetchStep===2){
+                applicationSearch.list[$index].details={ 'bundled':bundled[$index],'related':related[$index] };
+                applicationSearch.detailsLoadingDone[$index]=true;
+                $scope.$digest();
+            }
+        })
+        .fail(handleError);
+    };
+
+    var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
+        related[$index]=[];
+        API.cui.getPackages({ 'parentPackage.id':application.packageId }) // Get the packages that are children of the package that the app
+        .then(function(res){                                  // we're checking the details of belongs to
+            if(res.length===0) {
+                detailsFetchStep++;
+                if(detailsFetchStep===2) {
+                    applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                    applicationSearch.detailsLoadingDone[$index]=true;
+                    $scope.$digest();
+                }
+            }
+            var z=0;
+            var packages=res;
+            packages.forEach(function(pkg){
+                API.cui.getServices({ 'packageId':pkg.id })
+                .then(function(res){
+                    z++;
+                    res.forEach(function(app){ // for each of the services in that child package
+                        related[$index].push(app);
+                    });
+                    if(z===packages.length){
+                        detailsFetchStep++;
+                        if(detailsFetchStep===2){
+                            applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                            applicationSearch.detailsLoadingDone[$index]=true;
+                            $scope.$digest();
+                        }
+                    }
+                })
+                .fail(handleError);
+            });
+        })
+        .fail(handleError);
+    };
+
+    applicationSearch.getRelatedAndBundled=function($index,application){
+        if(applicationSearch.detailsLoadingDone[$index]){
+            return;
+        }
+        detailsFetchStep=0;
+        getBundledApps($index,application);
+        getRelatedApps($index,application);
     };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
