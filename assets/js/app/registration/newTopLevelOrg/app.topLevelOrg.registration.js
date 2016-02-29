@@ -1,7 +1,11 @@
 angular.module('app')
-.controller('tloCtrl',['$scope', 'API', 'Person', function($scope, API, Person) {
+.controller('tloCtrl',['$scope', 'API', function($scope, API) {
 	var newTLO = this;
 	newTLO.userLogin = {};
+
+  var handleError=function(err){
+    console.log('Error\n',err);
+  };
 
   newTLO.passwordPolicies = [ // WORKAROUND CASE #5
     {
@@ -23,24 +27,26 @@ angular.module('app')
     }
   ];
 
-	Person.getSecurityQuestions()
-  .then(function(res) {
-      // Removes first question as it is blank
-      res.data.splice(0,1);
 
-      // Splits questions to use between both dropdowns
-      var numberOfQuestions = res.data.length,
-      numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
-      newTLO.userLogin.challengeQuestions1 = res.data.slice(0,numberOfQuestionsFloor);
-      newTLO.userLogin.challengeQuestions2 = res.data.slice(numberOfQuestionsFloor);
-
-      // Preload question into input
-      newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
-      newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  API.doAuth()
+  .then(function(){
+    return API.cui.getSecurityQuestions();
   })
-  .catch(function(err) {
-      console.log(err);
-  });
+  .then(function(res){
+    // Removes first question as it is blank
+    res.splice(0,1);
+
+    // Splits questions to use between both dropdowns
+    var numberOfQuestions = res.length,
+    numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+
+    newTLO.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+    newTLO.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+    // Preload question into input
+    newTLO.userLogin.question1 = newTLO.userLogin.challengeQuestions1[0];
+    newTLO.userLogin.question2 = newTLO.userLogin.challengeQuestions2[0];
+  })
+  .fail(handleError);
 
 }]);

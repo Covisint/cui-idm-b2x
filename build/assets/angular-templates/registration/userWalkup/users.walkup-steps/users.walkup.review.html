@@ -61,11 +61,11 @@
     <!-- Password -->
     <div class="cui-expandable__review-item">{{'cui-password' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question1.question[0].text}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question1.question | cuiI18n}}</span></div>
     <!-- Challenge Answer 1 -->
     <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.challengeAnswer1}}</span></div>
     <!-- Challenge Question 2 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question2.question[0].text}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.question2.question | cuiI18n}}</span></div>
     <!-- Challenge Answer 2 -->
     <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{usersWalkup.userLogin.challengeAnswer2}}</span></div>
   </cui-expandable-body>

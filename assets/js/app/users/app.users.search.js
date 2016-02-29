@@ -38,7 +38,7 @@ angular.module('app')
         }
     };
 
-    $scope.$watchCollection('usersSearch.search',search); 
+    $scope.$watchCollection('usersSearch.search',search);
 
 
 

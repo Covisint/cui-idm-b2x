@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         bsFiles: {
             src : [
                 '**/*.html',
-                '**/*.js',
+                'assets/concatJS/**/*.js',
                 '**/*.css'
             ]
         },

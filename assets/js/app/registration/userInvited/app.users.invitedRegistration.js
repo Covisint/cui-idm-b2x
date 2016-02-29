@@ -14,34 +14,11 @@ angular.module('app')
 
         // Pre polulates the form with info the admin inserted when he first created the invitation
         var getUser = function(id) {
-            API.cui.getPerson({personId:id})
-            .then(function(res) {
-                usersRegister.invitedUser = res;
-                usersRegister.loading = false;
-                usersRegister.user = res;
-                usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
-                usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
-                usersRegister.user.phones = [];
-                $scope.$digest();
-            })
-            .fail(function(err){
-                usersRegister.loading = false;
-                console.log(err);
-            });
+            return API.cui.getPerson({personId:id});
         };
 
         var getOrganization = function(id) {
-            API.doAuth()
-            .then(function() {
-                return API.cui.getOrganization({organizationId: id});
-            })
-            .then(function(res) {
-                usersRegister.targetOrganization = res;
-                $scope.$digest();
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
+            return API.cui.getOrganization({organizationId: id});
         };
 
         usersRegister.passwordPolicies=[
@@ -64,51 +41,74 @@ angular.module('app')
             }
         ];
 
-        (function() {
-            API.doAuth()
-            // Preload user data from Invitation
-            .then(function() {
-                return API.cui.getPersonInvitation({invitationId: $stateParams.id});
-            })
-            .then(function(res) {
-                if (res.invitationCode !== $stateParams.code) {
-                    // Wrong Code
-                    return;
-                }
-                getOrganization(res.targetOrganization.id);
-                getUser(res.invitee.id);
-            })
-            // Load security questions for login form
-            .then(function() {
-                return API.cui.getSecurityQuestions();
-            })
-            .then(function(res) {
-                // Removes first question as it is blank
-                res.splice(0,1);
 
-                // Splits questions to use between both dropdowns
-                var numberOfQuestions = res.length,
-                numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+        API.doAuth()
+        // Preload user data from Invitation
+        .then(function() {
+            if(!$stateParams.id || !$stateParams.code) {
+                console.log('Invited user reg requires 2 url params: id (invitationId) and code (invitatioCode)')
+                return;
+            }
+            return API.cui.getPersonInvitation({invitationId: $stateParams.id});
+        })
+        .then(function(res){
+            if (res.invitationCode !== $stateParams.code) {
+                // Wrong Code
+                return;
+            }
+            return getUser(res.invitee.id);
+        })
+        .then(function(res){
+            usersRegister.invitedUser = res;
+            usersRegister.user = res;
+            usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
+            usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
+            usersRegister.user.phones = [];
+            return getOrganization(res.organization.id);
+        })
+        .then(function(res){
+            usersRegister.targetOrganization = res;
+            return API.cui.getSecurityQuestions();   // Load security questions for login form
+        })
+        .then(function(res) {
+            // Removes first question as it is blank
+            res.splice(0,1);
 
-                usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-                usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+            // Splits questions to use between both dropdowns
+            var numberOfQuestions = res.length,
+            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+            usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+            usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
-                // Preload question into input
-                usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
-                usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
-            })
-            // Populate Applications List
-            .then(function() {
-                return API.cui.getPackages(); // TODO : GET SERVICES INSTEAD
-            })
-            .then(function(res) {
-                usersRegister.applications.list = res;
-                $scope.$digest();
-            })
-            .fail(function(err) {
-                console.log(err);
+            // Preload question into input
+            usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+            usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
+        })
+        // Populate Applications List
+        .then(function() {
+            return API.cui.getOrganizationPackages({'organizationId':usersRegister.targetOrganization.id});
+        })
+        .then(function(res) {
+            var listOfApps=[];
+            res.forEach(function(packageGrant){
+                var i=0;
+                API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
+                .then(function(res){
+                    i++;
+                    res.forEach(function(service){
+                        service.packageId=packageGrant.servicePackage.id;
+                        listOfApps.push(service);
+                    });
+                    if(i===res.length){
+                        usersRegister.applications.list = listOfApps;
+                        $scope.$digest();
+                    }
+                });
             });
-        })();
+        })
+        .fail(function(err) {
+            console.log(err);
+        });
 
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
         usersRegister.applications.updateNumberOfSelected=function(a){
@@ -123,7 +123,7 @@ angular.module('app')
             angular.forEach(usersRegister.applications.selected,function(app,i){
                if(app!==null) {
                    usersRegister.applications.processedSelected.push({
-                       id:app.split(',')[0],
+                       packageId:app.split(',')[0],
                        name:app.split(',')[1],
                        acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
                    });
@@ -181,15 +181,21 @@ angular.module('app')
                     return;
                 }
                 angular.forEach(res, function(servicePackage) {
-                    return API.cui.createPackageRequest(build.packageRequest(servicePackage));
-
+                    var i=0;
+                    API.cui.createPackageRequest(build.packageRequest(servicePackage))
+                    .then(function(res){
+                        i++;
+                        if(i===res.length) {
+                            usersRegister.submitting = false;
+                            usersRegister.success = true;
+                            console.log('User Created');
+                            $state.go('misc.success');
+                        }
+                    })
+                    .fail(function(err) {
+                        console.log(err);
+                    });
                 });
-            })
-            .then(function() {
-                usersRegister.submitting = false;
-                usersRegister.success = true;
-                console.log('User Created');
-                $state.go('misc.success');
             })
             .fail(function(err) {
                 console.log(err);
