@@ -77,7 +77,6 @@ angular.module('app')
             // Splits questions to use between both dropdowns
             var numberOfQuestions = res.length,
             numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
             usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
             usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
@@ -266,7 +265,6 @@ angular.module('app')
                 angular.forEach(usersRegister.applications.selected,function(servicePackage){
                     packages.push({packageId:servicePackage.split(',')[0]});
                 });
-                console.log(packages);
                 return packages;
             },
             packageRequest: function(packageId) {

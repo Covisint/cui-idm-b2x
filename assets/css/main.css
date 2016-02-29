@@ -456,10 +456,10 @@ h1, h2, h3, h4, h5, h6 {
 .h5, .cui-media__title {
   font-size: 1.25em; }
 
-.h6 {
+.h6, .cui-applications__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-media__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-media__title, .cui-applications__title {
   font-weight: 700; }
 
 p {
@@ -3440,11 +3440,11 @@ Styleguide Blocks.Media-Object
   margin: 0;
   padding: 0.3125em 0; }
 
-@media screen and (min-width: 701px) {
-  .cui-nav__content-wrapper {
-    padding: 1.875em 10%; } }
+.cui-nav__content-wrapper {
+  min-height: 750px; }
 
 .cui-wrapper {
+  background: #fff;
   overflow: hidden; }
 
 .cui-footer {
@@ -3456,6 +3456,9 @@ Styleguide Blocks.Media-Object
     float: left;
     display: inline-block;
     padding-right: 40px; }
+
+.cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  border-radius: 0; }
 
 .cui-card, .cui-popover-container--relative {
   position: relative; }
@@ -3565,6 +3568,49 @@ inline-edit .angucomplete-dropdown {
   border-left: 5px solid #85a6ad;
   border-radius: 3px;
   box-sizing: border-box; }
+
+.cui-applications__details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.75em 0.9375em 0.625em 0.9375em; }
+
+.cui-applications__main-container {
+  position: relative; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__main-container {
+      padding: 0.9375em 1.5625em 0 2.5em; } }
+
+@media screen and (min-width: 701px) {
+  .cui-tabs {
+    display: none; } }
+
+.cui-applications__left,
+.cui-applications__right {
+  border: 1px solid #cde6f0;
+  flex: .5; }
+
+.cui-applications__right {
+  margin-left: 3.125em; }
+  .cui-applications__right .cui-applications__title {
+    background-color: #DEE9EE; }
+
+.cui-applications__desktop-tabs {
+  display: none; }
+  @media screen and (min-width: 700px) {
+    .cui-applications__desktop-tabs {
+      display: flex; } }
+
+.cui-applications__title {
+  align-items: center;
+  border-bottom: 1px solid #cde6f0;
+  color: #85a6ad;
+  display: flex;
+  height: 3.125em;
+  padding-left: 10px; }
+
+.cui-applications .cui-media__title {
+  cursor: pointer; }
 
 .cui-tos-container {
   float: right;

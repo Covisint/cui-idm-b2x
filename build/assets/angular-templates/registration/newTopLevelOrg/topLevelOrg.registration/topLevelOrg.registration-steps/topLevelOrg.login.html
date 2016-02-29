@@ -6,7 +6,7 @@
 	<div class="cui-error" ng-messages="userLogin.name.$error" ng-if="userLogin.name.$touched">
 		<div ng-messages-include="assets/angular-templates/messages.html"></div>
 	</div>
-	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.username">
+	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="newTlo.userLogin.username">
 
 	<!-- Second row -->
 	<div class="cui-wizard__field-row">
@@ -17,7 +17,7 @@
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 					<div ng-messages-include="assets/angular-templates/messages.html"></div>
 				</div>
-				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.password" ng-class="{'cui-input--error': newTLO.password.$touched && newTLO.password.$invalid}" password-validation="newTLO.passwordPolicies">
+				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newTlo.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="newTlo.passwordPolicies">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
 					<div ng-messages-include="assets/angular-templates/registration/password-validation.html"></div>
 				</div>
@@ -30,7 +30,7 @@
 			<div class="cui-error" ng-if="userLogin.passwordRe.$touched && userLogin.passwordRe.$error.match">
 				<div class="cui-error__message">{{'password-mismatch' | translate}}</div>
 			</div>
-			<input type="password" name="passwordRe" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.passwordRe" match="newTLO.userLogin.password">
+			<input type="password" name="passwordRe" class="cui-input" ng-required="true" ng-model="newTlo.userLogin.passwordRe" match="newTlo.userLogin.password">
 		</div>
 	</div>
 
@@ -42,7 +42,7 @@
 			<div class="cui-error" ng-messages="userLogin.challenge1.$error" ng-if="userLogin.challenge1.$touched">
 				<div ng-messages-include="assets/angular-templates/messages.html"></div>
 			</div>
-			<select ng-model="newTLO.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as question.question[0].text for question in newTLO.userLogin.challengeQuestions1">
+			<select ng-model="newTlo.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as question.question[0].text for question in newTlo.userLogin.challengeQuestions1">
 			</select>
 		</div>
 
@@ -52,7 +52,7 @@
 			<div class="cui-error" ng-messages="userLogin.answer1.$error" ng-if="userLogin.answer1.$touched">
 				<div ng-messages-include="assets/angular-templates/messages.html"></div>
 			</div>
-			<input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.challengeAnswer1">
+			<input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="newTlo.userLogin.challengeAnswer1">
 		</div>
 	</div>
 
@@ -64,7 +64,7 @@
 			<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
 				<div ng-messages-include="assets/angular-templates/messages.html"></div>
 			</div>
-			<select ng-model="newTLO.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as question.question[0].text for question in newTLO.userLogin.challengeQuestions2">
+			<select ng-model="newTlo.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as question.question[0].text for question in newTlo.userLogin.challengeQuestions2">
 			</select>
 		</div>
 
@@ -74,7 +74,7 @@
 			<div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$touched">
 				<div ng-messages-include="assets/angular-templates/messages.html"></div>
 			</div>
-			<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="newTLO.userLogin.challengeAnswer2">
+			<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="newTlo.userLogin.challengeAnswer2">
 		</div>
 	</div>
 </form>

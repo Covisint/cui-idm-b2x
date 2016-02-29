@@ -1,100 +1,20 @@
 # CUI-IDM-B2X
 
-# Standard index.html
+## List of reference implementations for CUI IDM.
 
-This shows a standard index.html implementation containing a side navigation with "Search Users" and "User Invitations".
-Notice each navigation item has a desktop and snap menu component. 
+## OPTIMIZATION TARGETS:  The following list outlines the areas in wich this UI Framework has made concessions.  In these areas, we have created extraneous calls to the API because of the lack of efficiency within the API itself.
 
-```html
-<body ng-cloak>
-	<div class="cui-wrapper">
-    	<snap-drawer>
-      		<span class="snap-menu--option" ui-sref="users.search">Search Users</span>
-      		<span class="snap-menu--option" ui-sref="users.invitations">User Invitations</span>
-    	</snap-drawer>
-    	<snap-content snap-opt-disable="'right'">
-      		<header class="cui-header">
-        		<div class="cui-header__top">
-          			<div class="menu-toggle" snap-toggle="left" ng-click="base.toggleDesktopMenu()" ng-class="base.desktopMenu ? 'active' : ''" style="margin-right:20px">
-            			<div class="menu-toggle--button"></div>
-          			</div>
-        		</div>
-      		</header>
-      		<div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-        		<span class="desktop-menu--option" ui-sref="users.search">Search Users</span>
-        		<span class="desktop-menu--option" ui-sref="users.invitations">User Invitations</span>
-      		</div>
-      		<div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
-        		<div ui-view></div>
-      		</div>
-    	</snap-content>
-  	</div>
-</body>
-```
 
-# Form Steps Example
+### Service related actions
 
-This showcases an example of a "Profile Management" form with multiple form steps. Each step contains an include that links to the form of that particular step. The include must contain an absolute path to the file.
+Case No. - Reason
+* 1 - Getting a list of Services by getting packages then for each package get services associated - we want to get services irectly instead.
+* 2 - We're able to look through that list of services by page / name / alphabetically / date added.
+* 3 - Get related apps directly rather than having to get the packages that are children of the package that contains the app we're looking at and then having to loop through all of them to get the services of each ( also it would be handy to get information on wether the user already has grants to the package that those apps belong )
+* 6 - (related to #3) We're forcing a digest cycle on a fail handler because when we reach the api to see if a user has grants on a certain package it will return an error rather than an empty array.
 
-```html
-<div class="cui-tile">
-  <div class="cui-tile__title">Profile Management</div>
-    <div class="cui-tile__body">
-      <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
-       <indicator-container class="indicator-container"></indicator-container>
 
-        <step title="Edit profile" state="profileMangement">
-          <div ng-include src="'assets/angular-templates/profile-steps/profile.edit.html'"></div>
-      	</step>
-
-      	<step title="Settings" state="profileSettings">
-          <div ng-include src="'assets/angular-templates/profile-steps/profile.settings.html'"></div>
-      	</step>
-      	
-    </cui-wizard>
-  </div>
-</div>
-```
-# Form Example
-
-```html
-<form name="user" novalidate>  
-	<div class="cui-wizard__field-row">  
-
-		<!-- First Name -->    
-		<div class="cui-wizard__field-container cui-wizard__field-container--half">
-      		<label for="user-name-given">{{'cui-first-name' | translate}}</label> 
-        	<!--    This adds error messages to the firstName input field. Notice the naming convention
-        	ng-messages="<formName><inputName>.$error" -->
-        	<div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
-        		<div ng-messages-include="assets/angular-templates/messages.html"></div>
-        	</div>
-        	<input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="profile.user.name.given"></input>
-    	</div>
-
-    	<!-- Last Name -->
-    	<div class="cui-wizard__field-container cui-wizard__field-container--half">
-    		<label for="user-name-surname">{{'cui-last-name' | translate}}</label>
-      		<div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
-        		<div ng-messages-include="assets/angular-templates/messages.html"></div>
-      		</div>
-    		<input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
-    	</div>
-
-  	</div>
-</form>
-```
-
-# Translations
-
-In this example 'cui-last-name' will translate 'Last Name' to the currently selected language.
-
-```html
-<div class="cui-wizard__field-container cui-wizard__field-container--half">
-	<label for="user-name-surname">{{'cui-last-name' | translate}}</label>
-    <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
-   		<div ng-messages-include="assets/angular-templates/messages.html"></div>
-    </div>
-    <input type="text" ng-model="profile.user.name.surname" name="lastName" class="cui-input" ng-required="true"></input>
-</div>
-```
+### Person related actions
+CASE No. - Reason
+* 4 - When submiting a personRequest we need to submit exactly 1 package request. This needs be be an array of package requests.
+* 5 - We can't get password policies for a given org from the API.

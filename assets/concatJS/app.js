@@ -113,164 +113,196 @@ angular.module('app')
     '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+
     localStorageServiceProvider.setPrefix('cui');
+
+    var templateBase='assets/angular-templates/'; // base directori of your partials
+
+
+    var returnCtrlAs=function(name,asPrefix){ // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
+        // returnCtrlAs('test') returns 'testCtrl as test'
+        return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
+    };
+
     $stateProvider
         .state('base',{
             url: '/',
-            templateUrl: 'assets/angular-templates/home.html',
-            controller: 'baseCtrl as base'
+            templateUrl: templateBase + 'base.html',
+            controller: returnCtrlAs('base')
         })
         .state('users',{
             url: '/users',
-            templateUrl: 'assets/angular-templates/users/users.html'
+            templateUrl: templateBase + 'users/users.html'
         })
         .state('users.search',{
             url: '/',
-            templateUrl: 'assets/angular-templates/users/users.search/users.search.html',
-            controller: 'usersSearchCtrl as usersSearch'
+            templateUrl: templateBase + 'users/users.search/users.search.html',
+            controller: returnCtrlAs('usersSearch')
         })
         .state('users.edit',{
             url: '/edit/:id',
-            templateUrl: 'assets/angular-templates/edit/users.edit/users.edit.html',
-            controller: 'usersEditCtrl as usersEdit'
+            templateUrl: templateBase + 'edit/users.edit/users.edit.html',
+            controller: returnCtrlAs('usersEdit')
         })
         .state('users.invitations',{
             url: '/invitations',
-            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invitations.search.html',
-            controller: 'usersInvitationsCtrl as usersInvitations'
+            templateUrl: templateBase + 'invitations/users.invitations/users.invitations.search.html',
+            controller: returnCtrlAs('usersInvitations')
         })
         .state('users.invite',{
             url: '/invite',
-            templateUrl: 'assets/angular-templates/invitations/users.invitations/users.invite.html',
-            controller: 'usersInviteCtrl as usersInvite'
+            templateUrl: templateBase + 'invitations/users.invitations/users.invite.html',
+            controller: returnCtrlAs('usersInvite')
         })
         .state('users.register',{
             url: '/register?id&code',
-            templateUrl: 'assets/angular-templates/registration/userInvited/users.register.html',
-            controller: 'usersRegisterCtrl as usersRegister'
+            templateUrl: templateBase + 'registration/userInvited/users.register.html',
+            controller: returnCtrlAs('usersRegister')
         })
         .state('users.walkupRegistration',{
             url: '/walkupRegistration',
-            templateUrl:'assets/angular-templates/registration/userWalkup/users.walkup.html',
-            controller: 'usersWalkupCtrl as usersWalkup'
+            templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
+            controller: returnCtrlAs('usersWalkup')
         })
         .state('users.activate',{
             url: '/activate/:id',
-            templateUrl: 'assets/angular-templates/users/users.activate/users.activate.html',
-            controller: 'usersActivateCtrl as usersActivate'
+            templateUrl: templateBase + 'users/users.activate/users.activate.html',
+            controller: returnCtrlAs('usersActivate')
         })
         .state('applications',{
             url: '/applications',
-            templateUrl : 'assets/angular-templates/applications/applications.html'
+            templateUrl : templateBase + 'applications/applications.html'
         })
         .state('applications.myApplications',{
             url: '/myApplications',
-            templateUrl: 'assets/angular-templates/applications/myApplications.html',
-            controller: 'myApplicationsCtrl as myApplications'
+            templateUrl: templateBase + 'applications/myApplications.html',
+            controller: returnCtrlAs('myApplications')
         })
         .state('applications.myApplicationDetails',{
             url: '/myApplications/:packageId/:appId',
-            templateUrl: 'assets/angular-templates/applications/myApplicationDetails.html',
-            controller: 'myApplicationDetailsCtrl as myApplicationDetails'
+            templateUrl: templateBase + 'applications/myApplicationDetails.html',
+            controller: returnCtrlAs('myApplicationDetails')
+        })
+        .state('applications.newRequest',{
+            url: '/newRequest',
+            templateUrl: templateBase + 'applications/newRequest.html',
+            controller: returnCtrlAs('newAppRequest')
+        })
+        .state('applications.search',{
+            url: '/search/:name',
+            templateUrl: templateBase + 'applications/search.html',
+            controller: returnCtrlAs('applicationSearch')
         })
         .state('welcome',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.html'
+            templateUrl: templateBase + 'welcome/welcome.html'
         })
         .state('welcome.screen',{
             url: '/welcome',
-            templateUrl: 'assets/angular-templates/welcome/welcome.screen.html',
-            controller: 'welcomeCtrl as welcome'
+            templateUrl: templateBase + 'welcome/welcome.screen.html',
+            controller: returnCtrlAs('welcome')
         })
         .state('tlo',{
             url: '/tlo',
-            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.html'
+            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.html'
         })
         .state('tlo.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
-            controller: 'tloCtrl as newTLO'
+            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
+            controller: returnCtrlAs('tlo','new')
         })
         .state('division',{
             url: '/division',
-            templateUrl: 'assets/angular-templates/registration/newDivision/division.html'
+            templateUrl: templateBase + 'registration/newDivision/division.html'
         })
         .state('division.registration',{
             url: '/registration',
-            templateUrl: 'assets/angular-templates/registration/newDivision/division.registration/division.registration.html',
-            controller: 'divisionCtrl as newDivision'
+            templateUrl: templateBase + 'registration/newDivision/division.registration/division.registration.html',
+            controller: returnCtrlAs('division','new')
         })
         .state('misc',{
             url: '/status',
-            templateUrl: 'assets/angular-templates/misc/misc.html'
+            templateUrl: templateBase + 'misc/misc.html'
         })
         .state('misc.404',{
             url: '/404',
-            templateUrl: 'assets/angular-templates/misc/misc.404.html'
+            templateUrl: templateBase + 'misc/misc.404.html'
         })
         .state('misc.notAuth',{
             url: '/notAuthorized',
-            templateUrl: 'assets/angular-templates/misc/misc.notAuth.html'
+            templateUrl: templateBase + 'misc/misc.notAuth.html'
         })
         .state('misc.pendingStatus',{
             url: '/pendingStatus',
-            templateUrl: 'assets/angular-templates/misc/misc.pendingStatus.html'
+            templateUrl: templateBase + 'misc/misc.pendingStatus.html'
         })
         .state('misc.success',{
             url: '/success',
-            templateUrl: 'assets/angular-templates/misc/misc.success.html'
+            templateUrl: templateBase + 'misc/misc.success.html'
         })
         .state('profile', {
             url: '/profile',
-            templateUrl: 'assets/angular-templates/profiles/profile.html'
+            templateUrl: templateBase + 'profiles/profile.html'
         })
         .state('profile.organization', {
             url: '/profile/organization?id',
-            templateUrl: 'assets/angular-templates/profiles/organization.profile.html',
-            controller: 'orgProfileCtrl as orgProfile'
+            templateUrl: templateBase + 'profiles/organization.profile.html',
+            controller: returnCtrlAs('orgProfile')
         });
 
     // $locationProvider.html5Mode(true);
 
-    //fixes infinite digest loop with ui-router
+    //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
       $state.go('base');
     });
 
+    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
+        // ADD LANGUAGES HERE ONLY
+        {
+            'en':'English',
+            'pt':'Portuguese',
+            'pl':'Polish',
+            'zh':'Chinese'
+        }
+    )
 
-    //where the locales are being loaded from
+    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
+
+    var returnRegisterAvailableLanguageKeys=function(){
+        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
+        languageKeys.forEach(function(languageKey){
+            object[languageKey+'*']=languageKey //redirect language keys such as en_US to en or en-US to en
+        })
+        return object;
+    }
+
     $translateProvider
     .useLoader('LocaleLoader',{
         url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
         prefix:'locale-',
         suffix:'.json'
     })
-    .registerAvailableLanguageKeys(['en','pl','zh','pt'],{
-        'en*':'en',
-        'pl*':'pl',
-        'zh*':'zh',
-        'pt*':'pt',
-        '*':'en'
-    })
+    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
     .uniformLanguageTag('java')
     .determinePreferredLanguage()
-    .fallbackLanguage(['en']);
+    .fallbackLanguage(languageKeys);
 
-    $cuiI18nProvider.setLocalePreference(['en','pl','zh','pt']);
+    $cuiI18nProvider.setLocalePreference(languageKeys);
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache',
-    function(LocaleService,$rootScope,$state,$http,$templateCache){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
     //add more locales here
-    LocaleService.setLocales('en','English (United States)');
-    LocaleService.setLocales('pl','Polish (Poland)');
-    LocaleService.setLocales('zh', 'Chinese (Simplified)');
-    LocaleService.setLocales('pt','Portuguese (Portugal)');
+    var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
+    for(var LanguageKey in languageNameObject){
+        LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
+    };
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         $state.previous = {};
@@ -290,6 +322,45 @@ angular.module('app')
 
 
 angular.module('app')
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state){
+    var applicationSearch = this;
+    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
+    var nameSearch=$stateParams.name;  // get the packageId from the url
+
+    var handleError=function(err){
+        console.log('Error \n', err);
+    };
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    var user;
+
+    API.doAuth()
+    .then(function(res){
+        return API.cui.getPerson({personId:userId});
+    })
+    .then(function(res){
+        user=res;
+        return API.cui.getOrganization
+    })
+   .fail(function(err){
+        console.log(err);
+   })
+
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
 function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
@@ -300,9 +371,9 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // FORCING DONE LOADING ON ERROR
-        $scope.$digest(); // because /persons/{personId}/packages/{packageId} endpoint returns an error if the user doesn't have that grant,
-    };                    // rather than an empty array`
+        myApplicationDetails.doneLoading=true; // WORKAROUND CASE #6
+        $scope.$digest();
+    };
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -315,7 +386,7 @@ function(API,$scope,$stateParams,$state){
     };
 
 
-    var getBundledApps=function(service){
+    var getBundledApps=function(service){ // WORKAROUND CASE # 1
         myApplicationDetails.bundled=[];
         API.cui.getServices({ 'packageId':packageId })
         .then(function(res){
@@ -336,7 +407,7 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getRelatedApps=function(servicePackage){
+    var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
         myApplicationDetails.related=[];
         API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
@@ -432,6 +503,7 @@ function(API,$scope,$state){
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
+                // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){
@@ -477,12 +549,17 @@ function(API,$scope,$state){
 
 
 angular.module('app')
+.controller('newAppRequestCtrl',['API','$scope','$state',
+function(API,$scope,$state){
+    var newAppRequest = this;
+}]);
+
+
+angular.module('app')
 .controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
-    usersEdit.editName = false;
-    usersEdit.editAddress = false;
     usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
 
     var initializeFullNameTemp = function() {
@@ -498,21 +575,24 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.tempCountry = usersEdit.user.addresses[0].country;
     };
 
-    var selectQuestionsForUser = function(questionsArray, allQuestions){
-        var questionTexts = [];
-        angular.forEach(questionsArray, function(value){
-            var text = _.find(allQuestions, function(question){return question.id === value});
-            this.push(text.question[0].text);
-        }, questionTexts);
+    var selectQuestionsForUser = function(){
+        var questions = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
+            this.push(question);
+        }, questions);
 
-        usersEdit.user.challengeQuestion1 = questionTexts[0];
-        usersEdit.user.challengeQuestion2 = questionTexts[1];
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion2 = questions[1];
     };
 
     var initializePhones = function() {
-        usersEdit.user.phoneFax = filterPhones('fax')[0].number;
-        usersEdit.user.phoneMain = filterPhones('main')[0].number;
-        usersEdit.user.phoneOffice = filterPhones('office')[0].number;
+        usersEdit.phoneTypes = ['main', 'mobile', 'fax'];
+        usersEdit.phones = []
+        angular.forEach(usersEdit.phoneTypes, function(type) {
+            var phoneObject = {type: type, number: filterPhones(type)}
+            usersEdit.phones.push(phoneObject);
+        });
     };
 
     var filterPhones = function(type) {
@@ -520,9 +600,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         var filteredPhones = phones.filter(function (item) {
             return item.type === type;
         });
-        console.log('HO');
-        console.log(filteredPhones);
-        return filteredPhones;
+        if(filteredPhones.length > 0) {
+            return filteredPhones[0].number;
+        } else {
+            return '';
+        };
     }
 
     API.doAuth()
@@ -533,19 +615,19 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = res;
         initializeTempAddressValues();
         initializeFullNameTemp();
-        // initializePhones();
+        initializePhones();
         return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
     })
     .then(function(res){
-        var codes = _.map(res.questions, function(n){return n.question.id});
-        usersEdit.securityQuestionCodes = codes;
+        usersEdit.userSecurityQuestions = res;
         $scope.$apply();
         return API.cui.getSecurityQuestions();
     })
     .then(function(res){
-        var allSecurityQuestions = res;
+
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
         $scope.$apply();
-        selectQuestionsForUser(usersEdit.securityQuestionCodes, allSecurityQuestions);
         return API.cui.getPersonPassword({personId: usersEdit.user.id});
     })
     .then(function(res) {
@@ -579,20 +661,18 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     usersEdit.saveFullName = function() {
-        usersEdit.user.name.given = usersEdit.tempGiven;
-        usersEdit.user.name.surname = usersEdit.tempSurname;
-        usersEdit.editName = false;
+        usersEdit.user.name.given = usersEdit.tempGiven; 
+        usersEdit.user.name.surname = usersEdit.tempSurname; 
+        usersEdit.save();
     }
 
     usersEdit.resetFullName = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
         usersEdit.tempSurname = usersEdit.user.name.surname;
-        usersEdit.editName = false;
     }
 
     usersEdit.resetTempAddress = function() {
         initializeTempAddressValues();
-        usersEdit.editAddress = false;
     }
 
     usersEdit.saveAddress = function(){
@@ -603,11 +683,28 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user.addresses[0].city = usersEdit.tempCity;
         usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
         usersEdit.user.addresses[0].country = usersEdit.tempCountry;
-        usersEdit.editAddress = false;
     }
 
     usersEdit.updateTempCountry = function(results) {
         usersEdit.tempCountry = results.description.name;
+    }
+
+    usersEdit.clearAdditionalPhone = function() {
+        usersEdit.additionalPhoneType = '';
+        usersEdit.additionalPhoneNumber = '';
+    }
+
+    usersEdit.savePhone = function() {
+        usersEdit.user.phones = usersEdit.phones.slice();
+        _.remove(usersEdit.user.phones, function(phone) {
+          return phone.number == '';
+        });
+        usersEdit.save();
+    }
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
     }
 }]);
 
@@ -1118,7 +1215,7 @@ angular.module('app')
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
-    newDivision.passwordPolicies = [
+    newDivision.passwordPolicies = [  // WORKAROUND CASE #5
         {
             'allowUpperChars': true,
             'allowLowerChars': true,
@@ -1195,7 +1292,7 @@ angular.module('app')
 	var newTLO = this;
 	newTLO.userLogin = {};
 
-  newTLO.passwordPolicies = [
+  newTLO.passwordPolicies = [ // WORKAROUND CASE #5
     {
       'allowUpperChars': true,
       'allowLowerChars': true,
@@ -1317,7 +1414,6 @@ angular.module('app')
             // Splits questions to use between both dropdowns
             var numberOfQuestions = res.length,
             numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-
             usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
             usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
 
@@ -1506,7 +1602,6 @@ angular.module('app')
                 angular.forEach(usersRegister.applications.selected,function(servicePackage){
                     packages.push({packageId:servicePackage.split(',')[0]});
                 });
-                console.log(packages);
                 return packages;
             },
             packageRequest: function(packageId) {
@@ -1593,7 +1688,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]})
+            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]}) // TODO GET SERVICES INSTEAD
             .then(function(res){
                 if(res.length===0) usersWalkup.applications.list=undefined;
                 else usersWalkup.applications.list=res;
@@ -1630,6 +1725,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // Search apps by name
     usersWalkup.applications.searchApplications=function(){
+        // TODO : GET SERVICES INSTEAD
         API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
         .then(function(res){
 
@@ -1690,6 +1786,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
             //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
             // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+            // WORKAROUND CASE #4
             var packages={
                 'packageId':usersWalkup.applications.selected[0].split(',')[0]
             };

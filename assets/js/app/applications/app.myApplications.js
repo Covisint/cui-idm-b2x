@@ -12,6 +12,7 @@ function(API,$scope,$state){
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
+                // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){

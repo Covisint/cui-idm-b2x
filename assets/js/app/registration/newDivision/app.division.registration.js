@@ -4,7 +4,7 @@ angular.module('app')
 	newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
-    newDivision.passwordPolicies = [
+    newDivision.passwordPolicies = [  // WORKAROUND CASE #5
         {
             'allowUpperChars': true,
             'allowLowerChars': true,

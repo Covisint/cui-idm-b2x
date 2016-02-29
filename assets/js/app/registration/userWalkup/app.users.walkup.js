@@ -63,7 +63,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]})
+            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]}) // TODO GET SERVICES INSTEAD
             .then(function(res){
                 if(res.length===0) usersWalkup.applications.list=undefined;
                 else usersWalkup.applications.list=res;
@@ -100,6 +100,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // Search apps by name
     usersWalkup.applications.searchApplications=function(){
+        // TODO : GET SERVICES INSTEAD
         API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
         .then(function(res){
 
@@ -160,6 +161,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
             //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
             // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+            // WORKAROUND CASE #4
             var packages={
                 'packageId':usersWalkup.applications.selected[0].split(',')[0]
             };
