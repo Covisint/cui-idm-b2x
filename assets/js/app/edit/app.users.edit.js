@@ -3,7 +3,8 @@ angular.module('app')
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
-    usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+    usersEdit.tempTimezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+    usersEdit.tempLanguages = ['en', 'pl', 'zh', 'pt'];
 
     var initializeFullNameTemp = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
