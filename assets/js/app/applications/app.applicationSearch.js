@@ -9,6 +9,8 @@ function(API,$scope,$stateParams,$state,$filter){
         userPackageList=[], // WORKAROUND CASE #1
         packageRequests=[];
 
+        // TODO : RELATED APPS CHECKBOX
+
     var handleError=function(err){
         console.log('Error \n', err);
     };
@@ -171,6 +173,43 @@ function(API,$scope,$stateParams,$state,$filter){
         .fail(handleError);
     };
 
+
+    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index){
+        var z=0;
+        packages.forEach(function(pkg){
+            if(packagesToIgnore.indexOf(pkg.id)===-1) {
+                API.cui.getServices({ 'packageId':pkg.id })
+                .then(function(res){
+                    z++;
+                    res.forEach(function(app){ // for each of the services in that child package
+                        app.packageId=pkg.id;
+                        related[$index].push(app);
+                    });
+                    if(z===packages.length){
+                        detailsFetchStep++;
+                        if(detailsFetchStep===2){
+                            applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                            applicationSearch.detailsLoadingDone[$index]=true;
+                            $scope.$digest();
+                        }
+                    }
+                })
+                .fail(handleError);
+            }
+            else{
+                z++;
+                if(z===packages.length){
+                    detailsFetchStep++;
+                    if(detailsFetchStep===2){
+                        applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                        applicationSearch.detailsLoadingDone[$index]=true;
+                        $scope.$digest();
+                    }
+                }
+            }
+        });
+    };
+
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
         related[$index]=[];
         API.cui.getPackages({ 'parentPackage.id':application.packageId }) // Get the packages that are children of the package that the app
@@ -185,24 +224,19 @@ function(API,$scope,$stateParams,$state,$filter){
             }
             var z=0;
             var packages=res;
-            packages.forEach(function(pkg){
-                API.cui.getServices({ 'packageId':pkg.id })
-                .then(function(res){
-                    z++;
-                    res.forEach(function(app){ // for each of the services in that child package
-                        related[$index].push(app);
-                    });
-                    if(z===packages.length){
-                        detailsFetchStep++;
-                        if(detailsFetchStep===2){
-                            applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                            applicationSearch.detailsLoadingDone[$index]=true;
-                            $scope.$digest();
-                        }
+            var packagesToIgnore=[]; // WORKAROUND CASE #3
+            API.cui.getPersonPackages({'personId':userId})
+            .then(function(res){
+                res.forEach(function(pkgGrant,i){
+                    if(_.some(packages,function(pkg){
+                        return pkg.id===pkgGrant.servicePackage.id
+                    })){
+                        packagesToIgnore.push(pkgGrant.servicePackage.id);
                     }
-                })
-                .fail(handleError);
-            });
+                });
+                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index)
+            })
+            .fail(handleError);
         })
         .fail(handleError);
     };

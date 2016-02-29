@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div ng-if="myApplicationDetails.related.length!==0">
-                                <h4 class="h6">{{'related-apps' | translate}}</h4>
+                                <h4 class="h6">{{'related-applications' | translate}}</h4>
                                 <div class="cui-media" ng-repeat="application in myApplicationDetails.related">
                                     <div class="cui-media__body">
                                         <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <div ng-if="myApplicationDetails.related.length!==0">
-                                <h4 class="h6">{{'related-apps' | translate}}</h4>
+                                <h4 class="h6">{{'related-applications' | translate}}</h4>
                                 <div class="cui-media" ng-repeat="application in myApplicationDetails.related">
                                     <div class="cui-media__body">
                                         <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
