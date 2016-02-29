@@ -41,6 +41,7 @@
       </div>
     </div>
 
+
     <!-- User ID -->
     <p>{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
     <!-- Email -->
@@ -63,7 +64,7 @@
         <input type="text" ng-model="usersEdit['challengeAnswer' + q]" class="cui-input cui-input--full"/>
       </div>
 
-      <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff();">{{'cui-save' | translate}}</a>
+      <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.saveChallengeQuestions()">{{'cui-save' | translate}}</a>
       <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion(q)">{{'cui-cancel' | translate}}</a>
     </div>
 
