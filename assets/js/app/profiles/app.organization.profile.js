@@ -3,19 +3,23 @@ angular.module('app')
 function($scope,$stateParams,API) {
 
     var orgProfile = this;
+    var userId = 'RN3BJI54'; // this will be replaced with the current user ID
+
     orgProfile.organization = {};
-    
+
     API.doAuth()
     .then(function() {
-        // Get Organization based on url id parameter
-        return API.cui.getOrganization({organizationId: $stateParams.id});
+        return API.cui.getPerson({personId: userId});
+    })
+    .then(function(res) {
+        return API.cui.getOrganization({organizationId: res.organization.id});
     })
     .then(function(res) {
         orgProfile.organization = res;
         $scope.$digest();
     })
-    .fail(function(error) {
-        console.log(error);
+    .fail(function(err) {
+        console.log(err);
     });
 
 }]);
