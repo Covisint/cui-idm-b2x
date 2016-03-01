@@ -18,7 +18,9 @@ angular.module('app')
 
     var doAuth = function(){
         return myCUI.doSysAuth({
-            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
+            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
+            // clientSecret: '8xFdMSR1IFSeFJjC'
+            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
     };
@@ -329,8 +331,7 @@ function(API,$scope,$stateParams,$state,$filter){
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
     var orgPackageList=[],
-        userPackageList=[], // WORKAROUND CASE #1
-        packageRequests=[];
+        userPackageList=[]; // WORKAROUND CASE #1
 
         // TODO : RELATED APPS CHECKBOX
 
@@ -457,22 +458,21 @@ function(API,$scope,$stateParams,$state,$filter){
         if($event.keyCode===13) applicationSearch.parseAppsByCategoryAndName();
     };
 
-    var pkgRequestCount=applicationSearch.numberOfRequest=0;
-
+    applicationSearch.numberOfRequests=0;
     var processNumberOfRequiredApps=function(pkgRequest){
-        if(pkgRequest) pkgRequestCount++;
-        else pkgRequestCount--;
-        applicationSearch.numberOfRequest=pkgRequestCount;
+        if(pkgRequest) applicationSearch.numberOfRequests++;
+        else  applicationSearch.numberOfRequests--;
     };
 
+    applicationSearch.packageRequests=[];
+
     applicationSearch.toggleRequest=function(i,application){
-        if(!packageRequests[i]) packageRequests[i]=application;
-        else packageRequests[i]=undefined;
-        processNumberOfRequiredApps(packageRequests[i]);
+        if(!applicationSearch.packageRequests[i]) applicationSearch.packageRequests[i]=application;
+        else applicationSearch.packageRequests[i]=undefined;
+        processNumberOfRequiredApps(applicationSearch.packageRequests[i]);
     };
 
     var bundled=[],related=[];
-    applicationSearch.detailsLoadingDone=[];
 
     var detailsFetchStep=0;
 
@@ -489,7 +489,7 @@ function(API,$scope,$stateParams,$state,$filter){
             detailsFetchStep++;
             if(detailsFetchStep===2){
                 applicationSearch.list[$index].details={ 'bundled':bundled[$index],'related':related[$index] };
-                applicationSearch.detailsLoadingDone[$index]=true;
+                applicationSearch.detailsLoadingDone[application.id]=true;
                 $scope.$digest();
             }
         })
@@ -497,7 +497,7 @@ function(API,$scope,$stateParams,$state,$filter){
     };
 
 
-    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index){
+    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index,application){
         var z=0;
         packages.forEach(function(pkg){
             if(packagesToIgnore.indexOf(pkg.id)===-1) {
@@ -512,7 +512,7 @@ function(API,$scope,$stateParams,$state,$filter){
                         detailsFetchStep++;
                         if(detailsFetchStep===2){
                             applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                            applicationSearch.detailsLoadingDone[$index]=true;
+                            applicationSearch.detailsLoadingDone[application.id]=true;
                             $scope.$digest();
                         }
                     }
@@ -541,7 +541,7 @@ function(API,$scope,$stateParams,$state,$filter){
                 detailsFetchStep++;
                 if(detailsFetchStep===2) {
                     applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                    applicationSearch.detailsLoadingDone[$index]=true;
+                    applicationSearch.detailsLoadingDone[application.id]=true;
                     $scope.$digest();
                 }
             }
@@ -557,15 +557,18 @@ function(API,$scope,$stateParams,$state,$filter){
                         packagesToIgnore.push(pkgGrant.servicePackage.id);
                     }
                 });
-                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index)
+                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index,application)
             })
             .fail(handleError);
         })
         .fail(handleError);
     };
 
+    applicationSearch.detailsLoadingDone={};
+
     applicationSearch.getRelatedAndBundled=function($index,application){
-        if(applicationSearch.detailsLoadingDone[$index]){
+        console.log(application);
+        if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }
         detailsFetchStep=0;
@@ -845,7 +848,9 @@ function(API,$scope,$state){
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-
+    newAppRequest.listenForEnter=function($event){
+        if($event.keyCode===13) $state.go('applications.search',{name:newAppRequest.search})
+    };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 }]);
