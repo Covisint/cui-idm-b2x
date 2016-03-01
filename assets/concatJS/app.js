@@ -592,7 +592,6 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // WORKAROUND CASE #6
         $scope.$digest();
     };
 
@@ -1558,6 +1557,7 @@ function($scope,$stateParams,API) {
     })
     .then(function(res) {
         orgProfile.organization = res;
+        orgProfile.loadingDone = true;
         $scope.$digest();
     })
     .fail(function(err) {

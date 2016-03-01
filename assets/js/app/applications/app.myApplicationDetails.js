@@ -9,7 +9,6 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // WORKAROUND CASE #6
         $scope.$digest();
     };
 
