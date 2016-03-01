@@ -591,8 +591,8 @@ Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/
 Styleguide Elements.Forms.Input
 */
 .cui-input, select.cui-select, select.cui-expandable__review-select, .cui-expandable__review-input {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
+  appearance: none;
+  border-radius: 0;
   border: 1px solid #DEE9EE;
   box-sizing: border-box;
   font-size: 0.875em;
@@ -627,6 +627,47 @@ Styleguide Elements.Forms.Input
   @media all and (max-width: 700px) {
     .cui-input--half {
       width: 100%; } }
+
+/*
+Input with button
+
+Markup:
+<div class="cui-input-button">
+  <input type="text" placeholder="This is placeholder text" class="cui-input-button__input"/>
+  <button class="cui-input-button__button">Go</button>
+</div>
+
+Styleguide Elements.Forms.Input-With-Button
+*/
+.cui-input-button {
+  display: flex;
+  height: 2.625em; }
+
+.cui-input-button__input {
+  appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border-bottom: 1px solid #c3c3c3;
+  border-left: 1px solid #c3c3c3;
+  border-right: 0;
+  border-top: 1px solid #c3c3c3;
+  color: #444544;
+  flex: .75;
+  font-size: 0.875em;
+  letter-spacing: 2.1px; }
+  .cui-input-button__input::placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+
+.cui-input-button__button {
+  appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border: 1px solid #c3c3c3;
+  color: #6a98a0;
+  flex: .25;
+  font-family: 'lato-black', sans-serif;
+  font-size: 0.8125em;
+  letter-spacing: 1.6px; }
 
 /*
 Email tags field
@@ -1108,6 +1149,7 @@ Styles for button elements
 .cui-button--error          - Error styling 
 .cui-button--error:active   - Error selected styling
 .cui-button--cancel         - Cancel button styling
+.cui-button--full-width     - Full width of container
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
@@ -1147,6 +1189,8 @@ Styleguide Elements.Buttons
       background-color: #343534; }
   .cui-button--cancel {
     background-color: #FF8C00; }
+  .cui-button--full-width {
+    width: 100%; }
 
 @keyframes button-click {
   60% {

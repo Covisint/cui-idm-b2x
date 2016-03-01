@@ -16,7 +16,7 @@
                     {{'owning-org' | translate}}: {{application.owningOrganization.name}}
                     <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
                     <!-- TODO Figure out above ^  (leave this so I can find it later)-->
-                    <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[$index]" /><label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[$index]=!applicationSearch.appCheckbox[$index]; applicationSearch.toggleRequest($index,application)"></label></span>
+                    <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" /><label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest($index,application)"></label></span>
                 </cui-expandable-title>
                 <cui-expandable-body class="cui-expandable__body">
                     <div class="cui-loading__container" ng-if="!applicationSearch.detailsLoadingDone[application.id]"> <!-- @Shane, this loading seems to be overlapping the expandable title -->
