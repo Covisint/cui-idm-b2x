@@ -1558,6 +1558,7 @@ function($scope,$stateParams,API) {
     })
     .then(function(res) {
         orgProfile.organization = res;
+        orgProfile.loadingDone = true;
         $scope.$digest();
     })
     .fail(function(err) {
