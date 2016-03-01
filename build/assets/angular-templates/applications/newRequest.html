@@ -3,7 +3,7 @@
         <div class="cui-tile__body">
             <div>
                 {{'select-applications' | translate}} <!-- add folder icon -->
-                <input class="cui-input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/><button ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
+                <input class="cui-input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}" ng-keypress="newAppRequest.listenForEnter($event)"/><button ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
                 or
                 <button ui-sref="applications.search">{{'browse-applications' | translate}}</button>
                 <!-- CATEGORY LIST -->
