@@ -212,7 +212,7 @@ function(API,$scope,$stateParams,$state,$filter){
 
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
         related[$index]=[];
-        API.cui.getPackages({ 'parentPackage.id':application.packageId }) // Get the packages that are children of the package that the app
+        API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {
                 detailsFetchStep++;

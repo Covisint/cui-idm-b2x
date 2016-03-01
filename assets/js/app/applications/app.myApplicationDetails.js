@@ -35,7 +35,6 @@ function(API,$scope,$stateParams,$state){
                     app.status=service.status;
                     app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
                     myApplicationDetails.bundled.push(app);
-                    console.log(res);
                 }
             });
             if(i===2) {
@@ -46,40 +45,51 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
-        myApplicationDetails.related=[{id:'test',name:[{lang:'en',text:'Test Related'}]}];
-        API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
-        .then(function(res){                                  // we're checking the details of belongs to
+    var checkIfAppIsGrantedToUser=function(app,pkgThatAppBelongsTo,packagesGrantedToUser){
+        var pkgGrantThatMatches;
+        packagesGrantedToUser.some(function(pkg,i){
+            return pkgThatAppBelongsTo.id===pkg.servicePackage.id? (pkgGrantThatMatches=packagesGrantedToUser[i],true) : false;
+        });
+        if(pkgGrantThatMatches) {
+            app.status=pkgGrantThatMatches.status;
+            app.grantedDate=getDateGranted(pkgGrantThatMatches.creation);
+        }
+        app.packageId=pkgThatAppBelongsTo.id;
+        return app;
+    };
+
+    var getRelatedApps=function(app){ // WORKAROUND CASE #3
+        myApplicationDetails.related=[];
+        var packagesGrantedToUser=[];
+        API.cui.getPersonPackages({'personId':userId }) // Check if that child package has been granted to the user
+        .then(function(res){
+            res.forEach(function(pkg){
+                packagesGrantedToUser.push(pkg);
+            });
+            return API.cui.getPackages({qs:[['parentPackage.id',packageId]]}) // Get the packages that are children of the package that the app
+        })                                                             // we're checking the details of belongs to
+        .then(function(res){
             if(res.length===0) {
                 i++;
                 if(i===2) {
-                    myApplicationDetails.doneLoading=true;
-                    $scope.$digest();
+                    myApplicationDetails.doneLoading=true; // if there's no packages that are children of the package the app we're
+                    $scope.$digest(); // checking out belongs to then we're done here.
                 }
             }
-            res.forEach(function(pkg,i){
-                var status=[],grantedDate=[];
-                API.cui.getPersonPackage({ 'packageId':pkg.id,'personId':userId }) // Check if that child package has been granted to the user
+            var packagesThatAreChildrenOfMainPacakge=res;
+            packagesThatAreChildrenOfMainPacakge.forEach(function(pkg,z){
+                API.cui.getServices({'packageId':pkg.id})
                 .then(function(res){
-                    if(Object.keys(res).length!==0) { // If the user has been granted the package
-                        status[i]=res.status;         // put a status on it and a granted date
-                        grantedDate[i]=getDateGranted(res.creation); // so that we can decide wether to show "Request" or the status in the UI
-                    }
-                    return API.cui.getServices({ 'packageId':packageId });
-                })
-                .then(function(res){
-                    i++;
-                    res.forEach(function(app){ // for each of the services in that child package
-                        if(status[i]){ // if this status is defined then the user has been granted this service
-                            app.status=status[i];
-                            app.grantedDate=grantedDate[i];
-                        }
-                        app.parentPackage=pkg.id; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
-                        myApplicationDetails.related.push(app);
+                    res.forEach(function(app,z){ // for each of the services in that child package
+                        app=checkIfAppIsGrantedToUser(app,pkg,packagesGrantedToUser); // checks if the package has been granted to the user
+                        myApplicationDetails.related.push(app); // and re-assign that app to have status and granted date if it has
                     });
-                    if(i===2) {
-                        myApplicationDetails.doneLoading=true;
-                        $scope.$digest();
+                    if(z===packagesThatAreChildrenOfMainPacakge.length-1){
+                        i++;
+                        if(i===2) {
+                            myApplicationDetails.doneLoading=true;
+                            $scope.$digest();
+                        }
                     }
                 })
                 .fail(handleError);

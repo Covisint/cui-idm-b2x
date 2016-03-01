@@ -120,11 +120,10 @@
 
     {{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}
 
-    <select class="cui-input  cui-select">
-      <option ng-repeat="timezone in usersEdit.timezones" value="{{timezone}}">{{timezone}}</option>
+    <select class="cui-input  cui-select" ng-model="usersEdit.user.timezone" ng-change="usersEdit.save()" ng-options="timezone for timezone in usersEdit.tempTimezones">
     </select>
 
-    <select class="cui-input  cui-select">
+    <select class="cui-input  cui-select" ng-model="usersEdit.user.language" ng-change="usersEdit.save()" ng-options="language for language in usersEdit.tempLanguages">
     </select>
   </div>
 </div>
