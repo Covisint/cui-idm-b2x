@@ -66,7 +66,9 @@ function(API,$scope,$state){
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-
+    newAppRequest.listenForEnter=function($event){
+        if($event.keyCode===13) $state.go('applications.search',{name:newAppRequest.search})
+    };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 }]);
