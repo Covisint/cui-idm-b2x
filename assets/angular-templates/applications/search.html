@@ -1,5 +1,14 @@
-<div class="cui-tile">
-    <div class="cui-tile__title">{{'new-request' | translate}}  <span ui-sref="applications.myApplications">Close Button goes here</span></div>
+<div class="cui-tile test">
+    <div class="cui-action">
+    <div class="cui-action__title">{{'new-request' | translate}}</div>
+    <div class="cui-action__actions">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+        </svg>
+    </div>
+</div>
+    <div class="cui-tile__title">{{'new-request' | translate}}  <span ui-sref="applications.myApplications"><!-- Close button goes here --></span></div>
+
         <div class="cui-tile__body">
             <div>
                 <span ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     watch:{
       css:{
         files: 'assets/scss/**/*',
-        tasks: ['sass']
+        tasks: ['sass','autoprefixer']
       },
       scripts:{
         files: ['assets/js/**/*'],
@@ -18,6 +18,16 @@ module.exports = function(grunt) {
       dist:{
         files:{
           'assets/css/main.css': 'assets/scss/main.scss'
+        }
+      }
+    },
+    autoprefixer: {
+      options: {
+        browsers: ['last 3 versions']
+      },
+      dist: {
+        files: {
+          'assets/css/main.css': 'assets/css/main.css'
         }
       }
     },
@@ -140,8 +150,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['concat','sass','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('default', ['concat','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('build', ['sass','autoprefixer','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
 }
