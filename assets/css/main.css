@@ -591,8 +591,8 @@ Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/
 Styleguide Elements.Forms.Input
 */
 .cui-input, select.cui-select, select.cui-expandable__review-select, .cui-expandable__review-input {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
+  appearance: none;
+  border-radius: 0;
   border: 1px solid #DEE9EE;
   box-sizing: border-box;
   font-size: 0.875em;
@@ -627,6 +627,47 @@ Styleguide Elements.Forms.Input
   @media all and (max-width: 700px) {
     .cui-input--half {
       width: 100%; } }
+
+/*
+Input with button
+
+Markup:
+<div class="cui-input-button">
+  <input type="text" placeholder="This is placeholder text" class="cui-input-button__input"/>
+  <button class="cui-input-button__button">Go</button>
+</div>
+
+Styleguide Elements.Forms.Input-With-Button
+*/
+.cui-input-button {
+  display: flex;
+  height: 2.625em; }
+
+.cui-input-button__input {
+  appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border-bottom: 1px solid #c3c3c3;
+  border-left: 1px solid #c3c3c3;
+  border-right: 0;
+  border-top: 1px solid #c3c3c3;
+  color: #444544;
+  flex: .75;
+  font-size: 0.875em;
+  letter-spacing: 2.1px; }
+  .cui-input-button__input::placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+
+.cui-input-button__button {
+  appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border: 1px solid #c3c3c3;
+  color: #6a98a0;
+  flex: .25;
+  font-family: 'lato-black', sans-serif;
+  font-size: 0.8125em;
+  letter-spacing: 1.6px; }
 
 /*
 Email tags field
@@ -1108,6 +1149,7 @@ Styles for button elements
 .cui-button--error          - Error styling 
 .cui-button--error:active   - Error selected styling
 .cui-button--cancel         - Cancel button styling
+.cui-button--full-width     - Full width of container
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
@@ -1147,6 +1189,8 @@ Styleguide Elements.Buttons
       background-color: #343534; }
   .cui-button--cancel {
     background-color: #FF8C00; }
+  .cui-button--full-width {
+    width: 100%; }
 
 @keyframes button-click {
   60% {
@@ -1201,6 +1245,26 @@ Markup:
 
 Styleguide Elements.Grid
 */
+/*
+Icons
+
+Markup:
+<svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51">
+  <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+</svg>
+
+Styleguide Elements.Icons
+*/
+.cui-icon {
+  fill: #85a6ad;
+  height: 24px;
+  width: 24px; }
+  .cui-icon--link {
+    cursor: pointer; }
+
+.cui-icon__ref {
+  color: #85a6ad; }
+
 /*
 Blocks
 
@@ -3545,7 +3609,7 @@ Styleguide Blocks.Action-Bar
   display: flex;
   flex: 1;
   min-height: 60px;
-  padding: 0 0.625em; }
+  padding: 0 0.8125em; }
   @media screen and (min-width: 701px) {
     .cui-action {
       padding: 0 3.4375em 0 4.0625em; } }
@@ -3564,8 +3628,10 @@ Styleguide Blocks.Action-Bar
       .cui-action__actions {
         flex: .25; } }
   .cui-action__icon {
+    cursor: pointer;
     fill: #6a98a0;
     height: 1.5625em;
+    min-width: 26px;
     width: auto; }
 
 .cui-nav__content-wrapper {
@@ -3698,11 +3764,15 @@ inline-edit .angucomplete-dropdown {
   box-sizing: border-box; }
 
 .cui-applications__main-container {
+  padding: 0.9375em 0.8125em;
   position: relative;
   min-height: 400px; }
   @media screen and (min-width: 701px) {
     .cui-applications__main-container {
-      padding: 0.9375em 3.125em 0 5em; } }
+      padding: 0.9375em 3.4375em 0 4.0625em; } }
+  @media screen and (max-width: 700px) {
+    .cui-applications__main-container--full {
+      padding: 0.9375em 0; } }
 
 @media screen and (min-width: 701px) {
   .cui-tabs {
@@ -3723,6 +3793,24 @@ inline-edit .angucomplete-dropdown {
 
 .cui-applications .cui-media__title {
   cursor: pointer; }
+
+.cui-applications__row {
+  display: flex;
+  justify-content: space-between; }
+
+.cui-applications__new-request .cui-applications__row {
+  margin-top: 1em;
+  margin-bottom: 3em; }
+
+.cui-applications__new-request .cui-applications__center-text {
+  text-align: center; }
+
+.cui-applications__new-request .cui-input-button {
+  margin-bottom: 1.5625em; }
+
+.cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
+.cui-form__next, .cui-applications__new-request .cui-card__button {
+  margin-top: 1.5625em; }
 
 .cui-tos-container {
   float: right;

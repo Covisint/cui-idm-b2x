@@ -846,7 +846,8 @@ angular.module('app')
 function(localStorageService,$scope,$stateParams,$timeout,API){
     var usersEdit = this;
     usersEdit.loading = true;
-    usersEdit.timezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+    usersEdit.tempTimezones = ['AKST1AKDT', 'PST2PDT', 'MST3MDT', 'CST4CDT', 'EST5EDT'];
+    usersEdit.tempLanguages = ['en', 'pl', 'zh', 'pt'];
 
     var initializeFullNameTemp = function() {
         usersEdit.tempGiven = usersEdit.user.name.given;
@@ -1529,19 +1530,23 @@ angular.module('app')
 function($scope,$stateParams,API) {
 
     var orgProfile = this;
+    var userId = 'RN3BJI54'; // this will be replaced with the current user ID
+
     orgProfile.organization = {};
-    
+
     API.doAuth()
     .then(function() {
-        // Get Organization based on url id parameter
-        return API.cui.getOrganization({organizationId: $stateParams.id});
+        return API.cui.getPerson({personId: userId});
+    })
+    .then(function(res) {
+        return API.cui.getOrganization({organizationId: res.organization.id});
     })
     .then(function(res) {
         orgProfile.organization = res;
         $scope.$digest();
     })
-    .fail(function(error) {
-        console.log(error);
+    .fail(function(err) {
+        console.log(err);
     });
 
 }]);

@@ -1,11 +1,19 @@
 .cui-applications__main-container {
+  padding: em(15) em(13);
   position: relative;
   min-height: 400px;
 
   @media screen and (min-width: 701px) {
-    padding: em(15) em(50) 0 em(80);
+    padding: em(15) em(55) 0 em(65);
+  }
+
+  &--full {
+    @media screen and (max-width: 700px) {
+      padding: em(15) 0;
+    }
   }
 }
+
 
 .cui-tabs {
   @media screen and (min-width: 701px) {
@@ -34,5 +42,34 @@
 
   .cui-media__title {
     cursor: pointer;
+  }
+}
+
+.cui-applications__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cui-applications__new-request {
+
+  .cui-applications__row {
+    margin-top: em(16);
+    margin-bottom: em(48);
+  }
+
+  .cui-input-button {
+
+  }
+
+  .cui-applications__center-text {
+    text-align: center;
+  }
+
+  .cui-input-button {
+    margin-bottom: em(25);
+  }
+
+  .cui-button {
+    margin-top: em(25);
   }
 }
