@@ -494,7 +494,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         var listOfOrgPackages=orgPackageListPassed || orgPackageList; // so we can call this without passing the orgPackageList again
         listOfOrgPackages.forEach(function(orgPackage){
             if(orgPackage.requestable){
-                API.cui.getServices({'packageId':orgPackage.id})
+                API.cui.getPackageServices({'packageId':orgPackage.id})
                 .then(function(res){
                     i++
                     res.forEach(function(service){
@@ -606,7 +606,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
     var getBundledApps=function($index,application){ // WORKAROUND CASE # 1
         bundled[$index]=[];
-        API.cui.getServices({ 'packageId':application.packageId })
+        API.cui.getPackageServices({ 'packageId':application.packageId })
         .then(function(res){
             res.forEach(function(app){
                 if(app.id!==application.id){
@@ -740,7 +740,7 @@ function(API,$scope,$stateParams,$state){
 
     var getBundledApps=function(service){ // WORKAROUND CASE # 1
         myApplicationDetails.bundled=[];
-        API.cui.getServices({ 'packageId':packageId })
+        API.cui.getPackageServices({ 'packageId':packageId })
         .then(function(res){
             i++;
             res.forEach(function(app){
@@ -870,8 +870,10 @@ function(API,$scope,$state){
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){
+            console.log(grant);
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
+                console.log(res);
                 i++;
                 res.forEach(function(service){
                     service.status=grant.status; // attach the status of the service package to the service

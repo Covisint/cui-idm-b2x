@@ -25,7 +25,7 @@ function(API,$scope,$stateParams,$state){
 
     var getBundledApps=function(service){ // WORKAROUND CASE # 1
         myApplicationDetails.bundled=[];
-        API.cui.getServices({ 'packageId':packageId })
+        API.cui.getPackageServices({ 'packageId':packageId })
         .then(function(res){
             i++;
             res.forEach(function(app){
