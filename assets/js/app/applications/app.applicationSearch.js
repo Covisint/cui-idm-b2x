@@ -1,14 +1,12 @@
 angular.module('app')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter',
-function(API,$scope,$stateParams,$state,$filter){
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
+function(API,$scope,$stateParams,$state,$filter,AppRequests){
     var applicationSearch = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
     var orgPackageList=[],
         userPackageList=[]; // WORKAROUND CASE #1
-
-        // TODO : RELATED APPS CHECKBOX
 
     var handleError=function(err){
         console.log('Error \n', err);
@@ -139,12 +137,12 @@ function(API,$scope,$stateParams,$state,$filter){
         else  applicationSearch.numberOfRequests--;
     };
 
-    applicationSearch.packageRequests=[];
+    applicationSearch.packageRequests={};
 
-    applicationSearch.toggleRequest=function(i,application){
-        if(!applicationSearch.packageRequests[i]) applicationSearch.packageRequests[i]=application;
-        else applicationSearch.packageRequests[i]=undefined;
-        processNumberOfRequiredApps(applicationSearch.packageRequests[i]);
+    applicationSearch.toggleRequest=function(application){
+        if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;
+        else delete applicationSearch.packageRequests[application.id];
+        processNumberOfRequiredApps(applicationSearch.packageRequests[application.id]);
     };
 
     var bundled=[],related=[];
@@ -209,7 +207,7 @@ function(API,$scope,$stateParams,$state,$filter){
     };
 
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
-        related[$index]=[];
+        related[$index]=[{name:[{lang:'en',text:'Test related'}], id:'TestRelatedId',packageId:'TestPackageId'}];
         API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {
@@ -242,7 +240,6 @@ function(API,$scope,$stateParams,$state,$filter){
     applicationSearch.detailsLoadingDone={};
 
     applicationSearch.getRelatedAndBundled=function($index,application){
-        console.log(application);
         if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }
@@ -250,6 +247,11 @@ function(API,$scope,$stateParams,$state,$filter){
         getBundledApps($index,application);
         getRelatedApps($index,application);
     };
+
+    applicationSearch.saveRequestsAndCheckout=function(){
+        AppRequests.set(applicationSearch.packageRequests);
+        $state.go('applications.reviewRequest');
+    }
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 

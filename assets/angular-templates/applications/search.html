@@ -1,5 +1,5 @@
 <div class="cui-tile">
-    <div class="cui-tile__title">{{'new-request' | translate}}  <span ui-sref="applications.myApplications"><!-- Close button goes here --></span></div>
+    <div class="cui-tile__title">{{'new-request' | translate}}  <span ui-sref="applications.myApplications">Close Button goes here</span></div>
         <div class="cui-tile__body">
             <div>
                 <span ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
@@ -16,9 +16,10 @@
                     {{'owning-org' | translate}}: {{application.owningOrganization.name}}
                     <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
                     <!-- TODO Figure out above ^  (leave this so I can find it later)-->
-                    <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" /><label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest($index,application)"></label></span>
+                    <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" /><label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label></span>
                 </cui-expandable-title>
                 <cui-expandable-body class="cui-expandable__body">
+                    <span ng-click="collapse()">Close button goes here</span>
                     <div class="cui-loading__container" ng-if="!applicationSearch.detailsLoadingDone[application.id]"> <!-- @Shane, this loading seems to be overlapping the expandable title -->
                         <div class="cui-loading--center"><div class="cui-loading"></div></div>
                     </div>
@@ -31,12 +32,12 @@
                     <div ng-if="application.details.related.length!==0">
                         {{'related-applications' | translate}}
                         <span ng-repeat="relatedApp in application.details.related">
-                            {{relatedApp.name | cuiI18n}}
+                            {{relatedApp.name | cuiI18n}} <span class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" /><label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]; applicationSearch.toggleRequest(relatedApp)"></label></span>
                         </span>
                     </div>
                 </cui-expandable-body>
             </cui-expandable>
-
+            <button class="cui-button" ng-click="applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
         </div>
     </div>
 </div>

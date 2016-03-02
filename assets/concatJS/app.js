@@ -36,6 +36,7 @@ angular.module('app')
     };
 }]);
 
+
 angular.module('app')
 .controller('baseCtrl',['$state','getCountries','$scope','$translate','LocaleService',
 function($state,getCountries,$scope,$translate,LocaleService){
@@ -195,6 +196,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'applications/search.html',
             controller: returnCtrlAs('applicationSearch')
         })
+        .state('applications.reviewRequest',{
+            url: '/review',
+            templateUrl: templateBase + 'applications/review.html',
+            controller: returnCtrlAs('applicationReview')
+        })
         .state('welcome',{
             url: '/welcome',
             templateUrl: templateBase + 'welcome/welcome.html'
@@ -324,16 +330,134 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter',
-function(API,$scope,$stateParams,$state,$filter){
+.factory('AppRequests',['$filter',function($filter){
+    var appRequestsObject={},
+        appRequests={};
+
+    appRequests.set=function(newAppRequestsObject){
+        appRequestsObject=newAppRequestsObject;
+    };
+
+    appRequests.get=function(){
+        return appRequestsObject;
+    };
+
+    appRequests.buildReason=function(app,reason){
+        var tempApp={};
+        angular.copy(app,tempApp);
+        tempApp.reason=$filter('translate')('reason-im-requesting') + ' ' +  $filter('cuiI18n')(tempApp.name) + ': ' + reason;
+        return tempApp;
+    };
+
+
+    // appRequestsObject is an object that looks something like
+    // {
+    //    appId:{
+    //       id:appId,
+    //       reason: reasonForRequestingThisApp,
+    //       packageId: idOfThePackageThatContainsThisApp,
+    //       ...other app properties,
+    //    },
+    //    otherAppId:{ ... },
+    //    ...
+    // }
+    appRequests.getPackageRequests=function(userId,arrayOfAppsBeingRequested){
+        var arrayOfPackagesBeingRequested=[],
+            arrayOfPackageRequests=[];
+        arrayOfAppsBeingRequested.forEach(function(app,i){
+            if(arrayOfPackagesBeingRequested.indexOf(app.packageId)>-1){ // if we've parsed an app that belongs to the same pacakge
+                arrayOfPackageRequests.some(function(packageRequest,i){
+                    return arrayOfPackageRequests[i].servicePackage.id===app.packageId? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
+                });
+            }
+            else {
+                arrayOfPackageRequests[i]={
+                    'requestor':{
+                        id:userId,
+                        type:'person'
+                    },
+                    servicePackage:{
+                        id:arrayOfAppsBeingRequested[i].packageId,
+                        type: 'servicePackage'
+                    },
+                    reason: app.reason
+                };
+                arrayOfPackagesBeingRequested[i]=app.packageId; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
+                                                                // already requesting this package
+            }
+        });
+        return arrayOfPackageRequests;
+    };
+
+    return appRequests;
+}])
+.controller('applicationReviewCtrl',['$scope','API','AppRequests',function($scope,API,AppRequests){;
+
+    var applicationReview=this;
+    var appRequests=AppRequests.get(),
+        appsBeingRequested=Object.keys(appRequests),
+        userId='RN3BJI54'; // this will be replaced with the current user ID;
+
+    var handleError=function(err){
+        console.log('Error \n', err);
+    };
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    applicationReview.appRequests=[];
+
+    appsBeingRequested.forEach(function(appId){
+        applicationReview.appRequests.push(appRequests[appId]);
+    });
+
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK START ---------------------------------------------------------------------------------
+
+    applicationReview.submit=function(){
+        var applicationRequestArray=[];
+        applicationReview.attempting=true;
+        applicationReview.appRequests.forEach(function(appRequest,i){
+            if(!appRequest.reason || appRequest.reason===''){
+                appRequest.reasonRequired=true;
+                applicationReview.attempting=false;
+                applicationReview.error=true;
+            }
+            else {
+                appRequest.reasonRequired=true;
+                applicationRequestArray[i] = AppRequests.buildReason(appRequest,appRequest.reason);
+            }
+        });
+        if(applicationReview.error) return;
+        var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
+            i=0;
+        appRequests.forEach(function(appRequest){
+            API.cui.createPackageRequest({data:appRequest})
+            .then(function(){
+                i++;
+                if(i===appRequests.length){
+                    applicationReview.attempting=false;
+                    applicationReview.success=true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
+    };
+
+    // ON CLICK END -----------------------------------------------------------------------------------
+
+}]);
+
+angular.module('app')
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
+function(API,$scope,$stateParams,$state,$filter,AppRequests){
     var applicationSearch = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
     var orgPackageList=[],
         userPackageList=[]; // WORKAROUND CASE #1
-
-        // TODO : RELATED APPS CHECKBOX
 
     var handleError=function(err){
         console.log('Error \n', err);
@@ -464,12 +588,12 @@ function(API,$scope,$stateParams,$state,$filter){
         else  applicationSearch.numberOfRequests--;
     };
 
-    applicationSearch.packageRequests=[];
+    applicationSearch.packageRequests={};
 
-    applicationSearch.toggleRequest=function(i,application){
-        if(!applicationSearch.packageRequests[i]) applicationSearch.packageRequests[i]=application;
-        else applicationSearch.packageRequests[i]=undefined;
-        processNumberOfRequiredApps(applicationSearch.packageRequests[i]);
+    applicationSearch.toggleRequest=function(application){
+        if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;
+        else delete applicationSearch.packageRequests[application.id];
+        processNumberOfRequiredApps(applicationSearch.packageRequests[application.id]);
     };
 
     var bundled=[],related=[];
@@ -534,7 +658,7 @@ function(API,$scope,$stateParams,$state,$filter){
     };
 
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
-        related[$index]=[];
+        related[$index]=[{name:[{lang:'en',text:'Test related'}], id:'TestRelatedId',packageId:'TestPackageId'}];
         API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {
@@ -567,7 +691,6 @@ function(API,$scope,$stateParams,$state,$filter){
     applicationSearch.detailsLoadingDone={};
 
     applicationSearch.getRelatedAndBundled=function($index,application){
-        console.log(application);
         if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }
@@ -575,6 +698,11 @@ function(API,$scope,$stateParams,$state,$filter){
         getBundledApps($index,application);
         getRelatedApps($index,application);
     };
+
+    applicationSearch.saveRequestsAndCheckout=function(){
+        AppRequests.set(applicationSearch.packageRequests);
+        $state.go('applications.reviewRequest');
+    }
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 

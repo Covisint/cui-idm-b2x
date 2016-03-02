@@ -83,6 +83,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'applications/search.html',
             controller: returnCtrlAs('applicationSearch')
         })
+        .state('applications.reviewRequest',{
+            url: '/review',
+            templateUrl: templateBase + 'applications/review.html',
+            controller: returnCtrlAs('applicationReview')
+        })
         .state('welcome',{
             url: '/welcome',
             templateUrl: templateBase + 'welcome/welcome.html'
