@@ -2,7 +2,7 @@
     <div class="cui-action">
         <div class="cui-action__title">{{'new-request' | translate}}</div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
             </svg>
         </div>
@@ -15,21 +15,23 @@
                   <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
                 </svg>
             </div>
-            <div class="cui-input-button">
-                <input type="text" class="cui-input-button__input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/>
-                <button class="cui-input-button__button" ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
+            <div class="cui-applications__search-options">
+                <div class="cui-input-button">
+                    <input type="text" class="cui-input-button__input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/>
+                    <button class="cui-input-button__button" ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
+                </div>
+                <div class="cui-applications__center-text">or</div>
+                <button class="cui-button cui-button--full-width" ui-sref="applications.search">{{'browse-applications' | translate}}</button>
+                <!-- CATEGORY LIST -->
             </div>
-            <div class="cui-applications__center-text">or</div>
-            <button class="cui-button cui-button--full-width" ui-sref="applications.search">{{'browse-applications' | translate}}</button>
-            <!-- CATEGORY LIST -->
             <div ng-if="!newAppRequest.loadingDone"> <!-- This should show a loading icon on top of the category list only -->
                 <div class="cui-loading__container" ng-if="!myApplicationDetails.doneLoading">
                     <div class="cui-loading--center"><div class="cui-loading"></div></div>
                 </div>
             </div>
-            <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone">
+            <!-- <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone"> -->
                 <!-- I HAVE 1 CATEGORY HARDCODED IN NOW, CLICKING THIS WILL TAKE YOU TO A BLANK PAGE -->
-                <span ui-sref="applications.search({category:'{{ category | cuiI18n }}' })">{{ category | cuiI18n }}</span>
+                <!-- <span ui-sref="applications.search({category:'{{ category | cuiI18n }}' })">{{ category | cuiI18n }}</span> -->
             </div>
         </div>
     </div>
