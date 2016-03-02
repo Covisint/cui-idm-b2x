@@ -18,7 +18,9 @@ angular.module('app')
 
     var doAuth = function(){
         return myCUI.doSysAuth({
-            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2',
+            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
+            // clientSecret: '8xFdMSR1IFSeFJjC'
+            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
             clientSecret: 'MqKZsqUtAVAIiWkg'
         });
     };
@@ -329,8 +331,7 @@ function(API,$scope,$stateParams,$state,$filter){
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
     var orgPackageList=[],
-        userPackageList=[], // WORKAROUND CASE #1
-        packageRequests=[];
+        userPackageList=[]; // WORKAROUND CASE #1
 
         // TODO : RELATED APPS CHECKBOX
 
@@ -457,22 +458,21 @@ function(API,$scope,$stateParams,$state,$filter){
         if($event.keyCode===13) applicationSearch.parseAppsByCategoryAndName();
     };
 
-    var pkgRequestCount=applicationSearch.numberOfRequest=0;
-
+    applicationSearch.numberOfRequests=0;
     var processNumberOfRequiredApps=function(pkgRequest){
-        if(pkgRequest) pkgRequestCount++;
-        else pkgRequestCount--;
-        applicationSearch.numberOfRequest=pkgRequestCount;
+        if(pkgRequest) applicationSearch.numberOfRequests++;
+        else  applicationSearch.numberOfRequests--;
     };
 
+    applicationSearch.packageRequests=[];
+
     applicationSearch.toggleRequest=function(i,application){
-        if(!packageRequests[i]) packageRequests[i]=application;
-        else packageRequests[i]=undefined;
-        processNumberOfRequiredApps(packageRequests[i]);
+        if(!applicationSearch.packageRequests[i]) applicationSearch.packageRequests[i]=application;
+        else applicationSearch.packageRequests[i]=undefined;
+        processNumberOfRequiredApps(applicationSearch.packageRequests[i]);
     };
 
     var bundled=[],related=[];
-    applicationSearch.detailsLoadingDone=[];
 
     var detailsFetchStep=0;
 
@@ -489,7 +489,7 @@ function(API,$scope,$stateParams,$state,$filter){
             detailsFetchStep++;
             if(detailsFetchStep===2){
                 applicationSearch.list[$index].details={ 'bundled':bundled[$index],'related':related[$index] };
-                applicationSearch.detailsLoadingDone[$index]=true;
+                applicationSearch.detailsLoadingDone[application.id]=true;
                 $scope.$digest();
             }
         })
@@ -497,7 +497,7 @@ function(API,$scope,$stateParams,$state,$filter){
     };
 
 
-    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index){
+    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index,application){
         var z=0;
         packages.forEach(function(pkg){
             if(packagesToIgnore.indexOf(pkg.id)===-1) {
@@ -512,7 +512,7 @@ function(API,$scope,$stateParams,$state,$filter){
                         detailsFetchStep++;
                         if(detailsFetchStep===2){
                             applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                            applicationSearch.detailsLoadingDone[$index]=true;
+                            applicationSearch.detailsLoadingDone[application.id]=true;
                             $scope.$digest();
                         }
                     }
@@ -535,13 +535,13 @@ function(API,$scope,$stateParams,$state,$filter){
 
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
         related[$index]=[];
-        API.cui.getPackages({ 'parentPackage.id':application.packageId }) // Get the packages that are children of the package that the app
+        API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {
                 detailsFetchStep++;
                 if(detailsFetchStep===2) {
                     applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                    applicationSearch.detailsLoadingDone[$index]=true;
+                    applicationSearch.detailsLoadingDone[application.id]=true;
                     $scope.$digest();
                 }
             }
@@ -557,15 +557,18 @@ function(API,$scope,$stateParams,$state,$filter){
                         packagesToIgnore.push(pkgGrant.servicePackage.id);
                     }
                 });
-                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index)
+                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index,application)
             })
             .fail(handleError);
         })
         .fail(handleError);
     };
 
+    applicationSearch.detailsLoadingDone={};
+
     applicationSearch.getRelatedAndBundled=function($index,application){
-        if(applicationSearch.detailsLoadingDone[$index]){
+        console.log(application);
+        if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }
         detailsFetchStep=0;
@@ -589,7 +592,6 @@ function(API,$scope,$stateParams,$state){
 
     var handleError=function(err){
         console.log('Error \n', err);
-        myApplicationDetails.doneLoading=true; // WORKAROUND CASE #6
         $scope.$digest();
     };
 
@@ -615,7 +617,6 @@ function(API,$scope,$stateParams,$state){
                     app.status=service.status;
                     app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
                     myApplicationDetails.bundled.push(app);
-                    console.log(res);
                 }
             });
             if(i===2) {
@@ -626,40 +627,51 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getRelatedApps=function(servicePackage){ // WORKAROUND CASE #3
-        myApplicationDetails.related=[{id:'test',name:[{lang:'en',text:'Test Related'}]}];
-        API.cui.getPackages({ 'parentPackage.id':packageId }) // Get the packages that are children of the package that the app
-        .then(function(res){                                  // we're checking the details of belongs to
+    var checkIfAppIsGrantedToUser=function(app,pkgThatAppBelongsTo,packagesGrantedToUser){
+        var pkgGrantThatMatches;
+        packagesGrantedToUser.some(function(pkg,i){
+            return pkgThatAppBelongsTo.id===pkg.servicePackage.id? (pkgGrantThatMatches=packagesGrantedToUser[i],true) : false;
+        });
+        if(pkgGrantThatMatches) {
+            app.status=pkgGrantThatMatches.status;
+            app.grantedDate=getDateGranted(pkgGrantThatMatches.creation);
+        }
+        app.packageId=pkgThatAppBelongsTo.id;
+        return app;
+    };
+
+    var getRelatedApps=function(app){ // WORKAROUND CASE #3
+        myApplicationDetails.related=[];
+        var packagesGrantedToUser=[];
+        API.cui.getPersonPackages({'personId':userId }) // Check if that child package has been granted to the user
+        .then(function(res){
+            res.forEach(function(pkg){
+                packagesGrantedToUser.push(pkg);
+            });
+            return API.cui.getPackages({qs:[['parentPackage.id',packageId]]}) // Get the packages that are children of the package that the app
+        })                                                             // we're checking the details of belongs to
+        .then(function(res){
             if(res.length===0) {
                 i++;
                 if(i===2) {
-                    myApplicationDetails.doneLoading=true;
-                    $scope.$digest();
+                    myApplicationDetails.doneLoading=true; // if there's no packages that are children of the package the app we're
+                    $scope.$digest(); // checking out belongs to then we're done here.
                 }
             }
-            res.forEach(function(pkg,i){
-                var status=[],grantedDate=[];
-                API.cui.getPersonPackage({ 'packageId':pkg.id,'personId':userId }) // Check if that child package has been granted to the user
+            var packagesThatAreChildrenOfMainPacakge=res;
+            packagesThatAreChildrenOfMainPacakge.forEach(function(pkg,z){
+                API.cui.getServices({'packageId':pkg.id})
                 .then(function(res){
-                    if(Object.keys(res).length!==0) { // If the user has been granted the package
-                        status[i]=res.status;         // put a status on it and a granted date
-                        grantedDate[i]=getDateGranted(res.creation); // so that we can decide wether to show "Request" or the status in the UI
-                    }
-                    return API.cui.getServices({ 'packageId':packageId });
-                })
-                .then(function(res){
-                    i++;
-                    res.forEach(function(app){ // for each of the services in that child package
-                        if(status[i]){ // if this status is defined then the user has been granted this service
-                            app.status=status[i];
-                            app.grantedDate=grantedDate[i];
-                        }
-                        app.parentPackage=pkg.id; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
-                        myApplicationDetails.related.push(app);
+                    res.forEach(function(app,z){ // for each of the services in that child package
+                        app=checkIfAppIsGrantedToUser(app,pkg,packagesGrantedToUser); // checks if the package has been granted to the user
+                        myApplicationDetails.related.push(app); // and re-assign that app to have status and granted date if it has
                     });
-                    if(i===2) {
-                        myApplicationDetails.doneLoading=true;
-                        $scope.$digest();
+                    if(z===packagesThatAreChildrenOfMainPacakge.length-1){
+                        i++;
+                        if(i===2) {
+                            myApplicationDetails.doneLoading=true;
+                            $scope.$digest();
+                        }
                     }
                 })
                 .fail(handleError);
@@ -835,7 +847,9 @@ function(API,$scope,$state){
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-
+    newAppRequest.listenForEnter=function($event){
+        if($event.keyCode===13) $state.go('applications.search',{name:newAppRequest.search})
+    };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 }]);
@@ -1543,6 +1557,7 @@ function($scope,$stateParams,API) {
     })
     .then(function(res) {
         orgProfile.organization = res;
+        orgProfile.loadingDone = true;
         $scope.$digest();
     })
     .fail(function(err) {

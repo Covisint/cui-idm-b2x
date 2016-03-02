@@ -16,7 +16,7 @@
     <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
   </div>
 
-  <div ng-repeat="application in usersWalkup.applications.list track by application.id" style="margin-bottom:10px">
+  <div ng-repeat="application in usersWalkup.applications.list | orderBy:'name' track by application.id" style="margin-bottom:10px">
     <input id="application{{$index}}" type="checkbox" ng-model="usersWalkup.applications.selected[$index]" ng-true-value="'{{application.id}},{{application.name | cuiI18n}}'" ng-false-value="null" ng-change="usersWalkup.applications.updateNumberOfSelected(usersWalkup.applications.selected[$index])" style="margin-right:10px"/>
     <label for="application{{$index}}" ng-bind="application.name | cuiI18n"></label>
     <span style="float:right;clear:both;">{{'cui-more-information' | translate }}</span>
