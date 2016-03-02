@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('newAppRequestCtrl',['API','$scope','$state',
-function(API,$scope,$state){
+.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
+function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
     var services=[];
@@ -9,6 +9,8 @@ function(API,$scope,$state){
     };
 
     // ON LOAD START ---------------------------------------------------------------------------------
+
+    AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
 
     var user;
     var getListOfCategories=function(services){

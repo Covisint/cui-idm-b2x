@@ -137,7 +137,11 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         else  applicationSearch.numberOfRequests--;
     };
 
-    applicationSearch.packageRequests={};
+    applicationSearch.packageRequests=AppRequests.get();
+    applicationSearch.appCheckbox={};
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        applicationSearch.appCheckbox[appId]=true;  // after being in request review
+    });
 
     applicationSearch.toggleRequest=function(application){
         if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;

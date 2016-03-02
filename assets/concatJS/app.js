@@ -588,7 +588,11 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         else  applicationSearch.numberOfRequests--;
     };
 
-    applicationSearch.packageRequests={};
+    applicationSearch.packageRequests=AppRequests.get();
+    applicationSearch.appCheckbox={};
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        applicationSearch.appCheckbox[appId]=true;  // after being in request review
+    });
 
     applicationSearch.toggleRequest=function(application){
         if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;
@@ -908,8 +912,8 @@ function(API,$scope,$state){
 
 
 angular.module('app')
-.controller('newAppRequestCtrl',['API','$scope','$state',
-function(API,$scope,$state){
+.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
+function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
     var userId='RN3BJI54'; // this will be replaced with the current user ID
     var services=[];
@@ -918,6 +922,8 @@ function(API,$scope,$state){
     };
 
     // ON LOAD START ---------------------------------------------------------------------------------
+
+    AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
 
     var user;
     var getListOfCategories=function(services){
