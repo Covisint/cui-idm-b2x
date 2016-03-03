@@ -392,7 +392,7 @@ Styleguide Elements.Backgrounds
   background-color: #fff; }
 
 .cui-background--secondary {
-  background-color: #DEE9EE; }
+  background-color: #E8F0F3; }
 
 .cui-background--gradient {
   background: linear-gradient(to bottom, #1d6572, #6a98a0); }
@@ -435,6 +435,12 @@ Styleguide Elements.Texts.Headers
   font-weight: normal;
   src: url("/bower_components/lato/font/lato-black/lato-black.woff2") format("woff2"), url("/bower_components/lato/font/lato-black/lato-black.woff") format("woff"); }
 
+@font-face {
+  font-family: "lato-bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/bower_components/lato/font/lato-bold/lato-bold.woff2") format("woff2"), url("/bower_components/lato/font/lato-bold/lato-bold.woff") format("woff"); }
+
 body {
   color: #929292;
   font-size: 16px;
@@ -467,6 +473,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .h1, .h2, .h3, .h4, .h5, .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-family: 'lato-black', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.6px; }
+
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content {
+  font-family: 'lato-bold', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
 
@@ -654,6 +665,8 @@ Styleguide Elements.Forms.Input-With-Button
   display: -ms-flexbox;
   display: flex;
   height: 2.625em; }
+  .cui-input-button--alt-bg {
+    background-color: #fff; }
 
 .cui-input-button__input {
   -webkit-appearance: none;
@@ -670,6 +683,9 @@ Styleguide Elements.Forms.Input-With-Button
           flex: .75;
   font-size: 0.875em;
   letter-spacing: 2.1px; }
+  @media screen and (min-width: 701px) {
+    .cui-input-button__input {
+      padding-left: 1.8125em; } }
   .cui-input-button__input::-webkit-input-placeholder {
     color: #444544;
     text-align: center;
@@ -686,6 +702,15 @@ Styleguide Elements.Forms.Input-With-Button
     color: #444544;
     text-align: center;
     vertical-align: center; }
+    @media screen and (min-width: 701px) {
+      .cui-input-button__input::-webkit-input-placeholder {
+        text-align: left; }
+      .cui-input-button__input::-moz-placeholder {
+        text-align: left; }
+      .cui-input-button__input:-ms-input-placeholder {
+        text-align: left; }
+      .cui-input-button__input::placeholder {
+        text-align: left; } }
 
 .cui-input-button__button {
   -webkit-appearance: none;
@@ -700,6 +725,9 @@ Styleguide Elements.Forms.Input-With-Button
   font-family: 'lato-black', sans-serif;
   font-size: 0.8125em;
   letter-spacing: 1.6px; }
+  @media screen and (min-width: 701px) {
+    .cui-input-button__button {
+      font-size: 1.125em; } }
 
 /*
 Email tags field
@@ -2080,7 +2108,7 @@ Styleguide Blocks.Tile
       .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
         border-radius: 0; } }
   .cui-tile__title--bg-light {
-    background: #DEE9EE; }
+    background: #E8F0F3; }
   @media all and (max-width: 600px) {
     .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
       padding: 20px; } }
@@ -2314,7 +2342,7 @@ Styleguide Blocks.Off-Canvas
 
 .cui-wrapper {
   min-height: 100vh;
-  background: #DEE9EE;
+  background: #E8F0F3;
   position: relative; }
 
 .cui-nav__content-wrapper,
@@ -2596,6 +2624,35 @@ Styleguide Blocks.Expandable
     cursor: pointer;
     display: block;
     padding: 10px 0 0; }
+    .cui-expandable__title--flex {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+    .cui-expandable__title .cui-expandable__title-left,
+    .cui-expandable__title .cui-expandable__title-middle,
+    .cui-expandable__title .cui-expandable__title-end {
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1; }
+    .cui-expandable__title .cui-expandable__title-middle {
+      color: #4A4A4A;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      font-size: 0.875em; }
+    .cui-expandable__title .cui-expandable__title-end {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end; }
   .cui-expandable__title--error {
     color: red;
     font-weight: 700; }
@@ -2614,6 +2671,53 @@ Styleguide Blocks.Expandable
     -webkit-transform: rotate(90deg);
         -ms-transform: rotate(90deg);
             transform: rotate(90deg); }
+
+.cui-expandable__body-pane {
+  background-color: #d4e2e6;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 3.75em;
+  position: relative;
+  width: 90%;
+  margin-left: 5%; }
+  .cui-expandable__body-pane .cui-expandable__body-close {
+    position: absolute;
+    top: 5px;
+    right: 12px; }
+    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon {
+      height: 14px;
+      width: 14px; }
+  .cui-expandable__body-pane .cui-expandable__pane-title {
+    color: #4A4A4A;
+    margin-bottom: 2.1875em; }
+  .cui-expandable__body-pane .cui-expandable__pane-col {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .cui-expandable__body-pane .cui-expandable__pane-content {
+    color: #4A4A4A; }
+    .cui-expandable__body-pane .cui-expandable__pane-content .cui-checkbox__label:before {
+      background-color: transparent;
+      border: 2px solid #4A4A4A; }
+    .cui-expandable__body-pane .cui-expandable__pane-content .cui-checkbox:checked + .cui-checkbox__label:before {
+      box-shadow: none; }
+  .cui-expandable__body-pane .cui-expandable__pane-content-item {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
 
 .cui-expandable__review-button {
   cursor: pointer; }
@@ -3924,8 +4028,10 @@ Styleguide Blocks.Media-Object
 /*
 Action Bar
 
+.cui-action--alt-bg     - Alternative background styling
+
 Markup:
-<div class="cui-action">
+<div class="cui-action {{modifier_class}}">
   <span class="cui-action__title">Action Title</span>
   <div class="cui-action__actions">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -3946,7 +4052,7 @@ Styleguide Blocks.Action-Bar
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #DEE9EE;
+  background-color: #E8F0F3;
   cursor: pointer;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3959,6 +4065,35 @@ Styleguide Blocks.Action-Bar
   @media screen and (min-width: 701px) {
     .cui-action {
       padding: 0 3.4375em 0 4.0625em; } }
+  .cui-action--alt-bg {
+    background-color: #d4e2e6; }
+    .cui-action--alt-bg .cui-action__icon,
+    .cui-action--alt-bg .cui-action__icon--lg {
+      cursor: pointer;
+      fill: #343534;
+      height: 1.5625em;
+      min-width: 26px;
+      width: auto;
+      transition: fill .15s; }
+      .cui-action--alt-bg .cui-action__icon use,
+      .cui-action--alt-bg .cui-action__icon--lg use {
+        color: #343534;
+        transition: color .15s; }
+    .cui-action--alt-bg .cui-action__icon-counter {
+      color: #343534;
+      font-family: lato-bold;
+      margin-left: -8px;
+      top: -5px;
+      transition: color .15s; }
+    .cui-action--alt-bg .cui-action__icon--active,
+    .cui-action--alt-bg .cui-action__icon-counter--active {
+      color: #6a98a0;
+      fill: #6a98a0;
+      transition: color .15s, fill .15s; }
+      .cui-action--alt-bg .cui-action__icon--active use,
+      .cui-action--alt-bg .cui-action__icon-counter--active use {
+        color: #6a98a0;
+        transition: color .15s; }
   .cui-action__title {
     color: #343534;
     display: -webkit-flex;
@@ -3987,14 +4122,32 @@ Styleguide Blocks.Action-Bar
         -webkit-flex: .25;
             -ms-flex: .25;
                 flex: .25; } }
-  .cui-action__icon {
+  .cui-action__icon, .cui-action__icon--lg {
     cursor: pointer;
     fill: #6a98a0;
     height: 1.5625em;
     min-width: 26px;
     width: auto; }
-    .cui-action__icon use {
+    .cui-action__icon use, .cui-action__icon--lg use {
       color: #6a98a0; }
+  .cui-action__icon--lg {
+    height: 2.5em;
+    width: 2.0625em; }
+  .cui-action__icon-counter {
+    color: #6a98a0;
+    font-family: lato-bold;
+    margin-left: -8px;
+    top: 2px; }
+  .cui-action .cui-input-button {
+    height: 2.5em; }
+  .cui-action .cui-input-button__input {
+    -webkit-flex: .82;
+        -ms-flex: .82;
+            flex: .82; }
+  .cui-action .cui-input-button__button {
+    -webkit-flex: .18;
+        -ms-flex: .18;
+            flex: .18; }
 
 .cui-nav__content-wrapper {
   min-height: 750px; }
@@ -4239,6 +4392,26 @@ inline-edit .angucomplete-dropdown {
     -webkit-flex: .45;
         -ms-flex: .45;
             flex: .45; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__search .cui-action--alt-bg .cui-action__title {
+    -webkit-flex: .25;
+        -ms-flex: .25;
+            flex: .25; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__search .cui-action--alt-bg .cui-input-button {
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5; } }
+
+.cui-applications__search-button {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 .cui-tos-container {
   float: right;
