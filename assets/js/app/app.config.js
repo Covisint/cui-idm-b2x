@@ -153,8 +153,15 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         {
             'en':'English',
             'pt':'Portuguese',
-            'pl':'Polish',
-            'zh':'Chinese'
+            'tr':'Turkish',
+            'zh':'Chinese (Simplified)',
+            'fr':'French',
+            'es':'Spanish',
+            'it':'Italian',
+            'ru':'Russian',
+            'th':'Thai',
+            'ja':'Japanese',
+            'de':'German'
         }
     )
 
