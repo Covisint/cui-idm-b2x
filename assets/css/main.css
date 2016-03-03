@@ -476,7 +476,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 1.6px; }
 
-.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content {
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-applications__new-request .cui-applications__categories .cui-applications__category {
   font-family: 'lato-bold', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -1362,6 +1362,18 @@ Styleguide Elements.Icons
   width: 24px; }
   .cui-icon--link {
     cursor: pointer; }
+  .cui-icon--light-grey {
+    fill: #9B9B9B; }
+  .cui-icon--grey {
+    fill: #828483; }
+  .cui-icon--dark {
+    fill: #444544; }
+  .cui-icon--black {
+    fill: #343534; }
+  .cui-icon--folder {
+    fill: #343534;
+    height: 33px;
+    width: 40px; }
 
 .cui-icon__ref {
   color: #85a6ad; }
@@ -4339,7 +4351,7 @@ inline-edit .angucomplete-dropdown {
 .cui-applications .cui-media__title {
   cursor: pointer; }
 
-.cui-applications__row {
+.cui-applications__row, .cui-applications__new-request .cui-applications__categories {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4347,7 +4359,7 @@ inline-edit .angucomplete-dropdown {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.cui-applications__new-request .cui-applications__row {
+.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__categories {
   margin-top: 1em;
   margin-bottom: 3em; }
 
@@ -4392,6 +4404,10 @@ inline-edit .angucomplete-dropdown {
     -webkit-flex: .45;
         -ms-flex: .45;
             flex: .45; } }
+
+.cui-applications__new-request .cui-applications__categories {
+  border-bottom: 1px solid #ECEAEA;
+  padding: 1.25em 0; }
 
 @media screen and (min-width: 701px) {
   .cui-applications__search .cui-action--alt-bg .cui-action__title {
