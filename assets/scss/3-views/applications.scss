@@ -107,7 +107,7 @@
         flex: .25;
       }
     }
-    
+
     .cui-input-button {
       @media screen and (min-width: 701px) {
         flex: .5;
@@ -115,4 +115,9 @@
     }
     
   }
+}
+
+.cui-applications__search-button {
+  display: flex;
+  justify-content: flex-end;
 }
