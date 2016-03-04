@@ -124,7 +124,6 @@
         flex: .5;
       }
     }
-    
   }
 }
 
@@ -132,3 +131,56 @@
   display: flex;
   justify-content: flex-end;
 }
+
+// Review page
+
+.cui-applications__review {
+
+  .cui-action--alt-bg {
+
+    .cui-action__title {
+      @media screen and (min-width: 701px) {
+        flex: .25;
+      }
+    }
+
+    .cui-input-button {
+      @media screen and (min-width: 701px) {
+        flex: .5;
+      }
+    }
+  }
+
+  .cui-applications__review-apps {
+    @extend .cui-applications__row;
+    flex-wrap: wrap;
+    margin-top: em(24);
+
+    & div:nth-child(odd) {
+      margin-right: 3.6%;
+    }
+  }
+
+  .cui-applications__review-text-input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cui-applications__submit-options {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cui-applications__submit-options {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: em(40) 0;
+
+    .cui-link {
+      margin-right: em(43);
+    }
+  }
+
+}
+

@@ -10,7 +10,7 @@
     </div>
     <div class="cui-action cui-action--alt-bg">
         <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest">{{'new-request' | translate}}</div>
-        <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
+        <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest"><  {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
             <input class="cui-input-button__input" ng-model="applicationSearch.nameSearch" ng-keypress="applicationSearch.listenForEnter($event)" placeholder="{{'filter-list' | translate}}"/>
             <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
