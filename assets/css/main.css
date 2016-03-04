@@ -465,18 +465,18 @@ h1, h2, h3, h4, h5, h6 {
 .h4 {
   font-size: 1.5em; }
 
-.h5, .cui-field-val__field {
+.h5, .cui-text-area__label, .cui-field-val__field {
   font-size: 1.25em; }
 
 .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-field-val__field, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-text-area__label, .cui-field-val__field, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-family: 'lato-black', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
 
-.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category {
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category {
   font-family: 'lato-bold', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -495,6 +495,7 @@ Styleguide Elements.Texts.Links
 */
 .cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link {
   color: #6a98a0;
+  cursor: pointer;
   text-decoration: none; }
 
 /*
@@ -1231,6 +1232,7 @@ Styles for button elements
 .cui-button--error:active   - Error selected styling
 .cui-button--cancel         - Cancel button styling
 .cui-button--full-width     - Full width of container
+.cui-button--small-rounded  - Small and rounded
 
 Markup: <button class="cui-button {{modifier_class}}">Button</button>
 
@@ -1279,6 +1281,9 @@ Styleguide Elements.Buttons
     background-color: #FF8C00; }
   .cui-button--full-width {
     width: 100%; }
+  .cui-button--small-rounded {
+    font: 0.875em;
+    width: 100px; }
 
 @-webkit-keyframes button-click {
   60% {
@@ -1629,6 +1634,15 @@ Styleguide Blocks.Form
           -webkit-transform: rotate(180deg) translate(0, 100%);
               -ms-transform: rotate(180deg) translate(0, 100%);
                   transform: rotate(180deg) translate(0, 100%); } }
+
+.cui-text-area {
+  background-color: #F7F7F7;
+  min-height: 235px;
+  padding: 1.4375em 1.3125em; }
+
+.cui-text-area__label {
+  color: #343534;
+  margin-bottom: 0.625em; }
 
 .cui-error__status {
   width: 9px;
@@ -2129,6 +2143,22 @@ Styleguide Blocks.Tile
   @media all and (max-width: 600px) {
     .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
       padding: 20px; } }
+
+.cui-tile--headless {
+  border: 1px solid #cde6f0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 1.875em 1.875em; }
 
 /*
 Off Canvas Nav
@@ -4419,7 +4449,7 @@ inline-edit .angucomplete-dropdown {
 .cui-applications .cui-media__title {
   cursor: pointer; }
 
-.cui-applications__row, .cui-applications__new-request .cui-applications__categories {
+.cui-applications__row, .cui-applications__new-request .cui-applications__categories, .cui-applications__review .cui-applications__review-apps {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4427,7 +4457,7 @@ inline-edit .angucomplete-dropdown {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__categories {
+.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__categories, .cui-applications__new-request .cui-applications__review .cui-applications__review-apps, .cui-applications__review .cui-applications__new-request .cui-applications__review-apps {
   margin-top: 1em;
   margin-bottom: 3em; }
 
@@ -4496,6 +4526,56 @@ inline-edit .angucomplete-dropdown {
   -webkit-justify-content: flex-end;
       -ms-flex-pack: end;
           justify-content: flex-end; }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__review .cui-action--alt-bg .cui-action__title {
+    -webkit-flex: .25;
+        -ms-flex: .25;
+            flex: .25; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__review .cui-action--alt-bg .cui-input-button {
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5; } }
+
+.cui-applications__review .cui-applications__review-apps {
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-top: 1.5em; }
+  .cui-applications__review .cui-applications__review-apps div:nth-child(odd) {
+    margin-right: 3.6%; }
+
+.cui-applications__review .cui-applications__review-text-input {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.cui-applications__review .cui-applications__submit-options {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.cui-applications__review .cui-applications__submit-options {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin: 2.5em 0; }
+  .cui-applications__review .cui-applications__submit-options .cui-link, .cui-applications__review .cui-applications__submit-options .cui-expandable__review-button, .cui-applications__review .cui-applications__submit-options .cui-search__dropdown a, .cui-search__dropdown .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-expandable__link, .cui-applications__review .cui-applications__submit-options .cui-pagination__link a, .cui-pagination__link .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-pagination__display-amount, .cui-applications__review .cui-applications__submit-options .cui-media__link {
+    margin-right: 2.6875em; }
 
 .cui-users__main-container {
   padding: 0.9375em 0.8125em;

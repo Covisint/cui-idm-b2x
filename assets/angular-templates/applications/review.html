@@ -1,23 +1,55 @@
-<div class="cui-tile">
-    <div class="cui-tile__title">{{'new-request' | translate}}<span ui-sref="applications.myApplications">Close button here</span></div>
-        <div class="cui-tile__body">
+<div class="cui-applications__review">
+    <div class="cui-action">
+        <div class="cui-action__title">{{'new-request' | translate}}</div>
+        <div class="cui-action__actions">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="cui-action cui-action--alt-bg">
+        <div class="cui-action__title" ng-if="!applicationSearch.category" ng-click="base.goBack()">< {{'new-request' | translate}}</div>
+        <span class="cui-action__title" ng-if="applicationSearch.category" ng-click="base.goBack()">< {{applicationSearch.category}}</span>
+        <div class="cui-input-button cui-input-button--alt-bg">
+            <input class="cui-input-button__input" ng-model="applicationSearch.nameSearch" ng-keypress="applicationSearch.listenForEnter($event)" placeholder="{{'filter-list' | translate}}"/>
+            <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
+        </div>
+        <div class="cui-action__actions">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--lg" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
+            </svg>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}}</sup>
+        </div>
+    </div>
+    <div class="cui-applications__main-container">
             <div>
-                <div>
-                    <!-- THIS BUTTON ONLY TAKES YOU BACK TO SEARCH IF THAT'S THE PAGE YOU CAME FROM (IT GOES TO THE PREVIOUS STATE) -->
-                    <span ng-click="base.goBack()">< {{'back-to-search' | translate}}</span>
-                </div>
-                {{'requested-items' | translate}}
-                <div ng-repeat="application in applicationReview.appRequests">
-                    {{application.name | cuiI18n}}
-                    {{'owning-org' | translate}}: {{application.owningOrganization.name}}
+                <h3 class="h4 h4--bold">{{'requested-items' | translate}}:</h3>
+                <div class="cui-applications__review-apps">
+                 <div class="cui-tile--headless" ng-repeat="application in applicationReview.appRequests">
+                    <div class="cui-media">
+                      <!-- Image container to be added when images are available
+                      <div class="cui-media__image-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+                          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+                        </svg>
+                      </div> -->
+                      <div class="cui-media__body">
+                        <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+                        <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                      </div>
+                    </div>
                     <!-- Terms and conditions is not provided by the API, leaving it out for now -->
-                    {{'request-reason' | translate}}
-                    <span ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
-                    <textarea ng-model="application.reason" ng-class="{'<!-- @shane textarea invalid class here -->' : application.reasonRequired}"></textarea>
+                    <div class="cui-applications__review-text-input">
+                        <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
+                        <span ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
+                        <textarea class="cui-text-area" ng-model="application.reason" ng-class="{'<!-- @shane textarea invalid class here -->' : application.reasonRequired}"></textarea>
+                    </div>
+                </div>                   
                 </div>
-                <!-- THIS BUTTON ONLY TAKES YOU BACK TO SEARCH IF THAT'S THE PAGE YOU CAME FROM (IT GOES TO THE PREVIOUS STATE) -->
-                <a class="cui-link" ng-click="base.goBack()">{{'cancel' | translate}}</a>
-                <button class="cui-button" ng-click="applicationReview.submit()">{{'submit-request' | translate}}</button>
+                <div class="cui-applications__submit-options">
+                    <a class="cui-link" ng-click="base.goBack()">{{'cancel' | translate}}</a>
+                    <button class="cui-button" ng-click="applicationReview.submit()">{{'submit-request' | translate}}</button>
+                </div>
                 <!-- @shane ng-if="applicationReview.attempting" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
                 <!-- if there's an error ng-if="applicationReview.error" -->
                 <!-- if it's successful ng-if="applicationReview.success" -->
