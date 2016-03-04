@@ -75,9 +75,9 @@ angular.module('app')
 
     applicationReview.appRequests=[];
 
-    appsBeingRequested.forEach(function(appId){
-        applicationReview.appRequests.push(appRequests[appId]);
-    });
+    for(var i=0; i<appsBeingRequested.length; i=i+2){
+        applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
+    }
 
     // ON LOAD END ------------------------------------------------------------------------------------
 
