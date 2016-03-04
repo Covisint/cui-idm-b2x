@@ -27,17 +27,20 @@
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
         <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneLoading" transition-speed="150">
-            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="!applicationSearch.detailsLoadingDone[application.id] && applicationSearch.getRelatedAndBundled($index,application);">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                 <!-- @Shane, right now the above ng-click triggers when you click the checkbox, move that ng-click wherever you see appropriate -->
-                <!-- application image --> 
-                <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
-                <span class="cui-expandable__title-middle">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                <!-- application image -->
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand();!applicationSearch.detailsLoadingDone[application.id] && applicationSearch.getRelatedAndBundled($index,application);">
+                    <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
+                    <span class="cui-expandable__title-middle" >{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                    <div></div>
+                </div>
                 <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
                 <!-- TODO Figure out above ^  (leave this so I can find it later)-->
                 <div class="cui-expandable__title-end">
                     <span class="cui-checkbox__container">
                         <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" />
-                        <label class="cui-checkbox__label" ng-click="toggleExpand();applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
+                        <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
                     </span>
                 </div>
             </cui-expandable-title>
