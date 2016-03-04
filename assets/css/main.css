@@ -1498,6 +1498,10 @@ Styleguide Blocks.Form
   .cui-wizard__controls,
   .cui-form__controls {
     text-align: right; }
+  .cui-wizard__cancel,
+  .cui-form__cancel {
+    font-size: 1.125em;
+    margin-right: 1.5555555556em; }
   .cui-wizard__next.success,
   .cui-form__next.success {
     background: #3CB371; }
@@ -4525,3 +4529,17 @@ inline-edit .angucomplete-dropdown {
     padding: 1em 1em 1.875em; }
     .cui-users__address-container.show-address .cui-users__field {
       margin-bottom: 1.5625em; }
+
+.cui-users__contact-info {
+  margin: 2.1875em 0 5.5em; }
+
+.cui-users__address-submit {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
