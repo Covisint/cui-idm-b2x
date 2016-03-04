@@ -25,26 +25,28 @@
             <div>
                 <h3 class="h4 h4--bold">{{'requested-items' | translate}}:</h3>
                 <div class="cui-applications__review-apps">
-                 <div class="cui-tile--headless" ng-repeat="application in applicationReview.appRequests">
-                    <div class="cui-media">
-                      <!-- Image container to be added when images are available
-                      <div class="cui-media__image-container">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
-                          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-                        </svg>
-                      </div> -->
-                      <div class="cui-media__body">
-                        <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
-                        <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
-                      </div>
+                 <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
+                    <div ng-repeat="application in applicationGroup" ng-if="application.name"> <!-- Put the flex wrapper here @shane -->
+                        <div class="cui-media">
+                          <!-- Image container to be added when images are available
+                          <div class="cui-media__image-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+                              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+                            </svg>
+                          </div> -->
+                          <div class="cui-media__body">
+                            <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+                            <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                          </div>
+                        </div>
+                        <!-- Terms and conditions is not provided by the API, leaving it out for now -->
+                        <div class="cui-applications__review-text-input">
+                            <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
+                            <span ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
+                            <textarea class="cui-text-area" ng-model="application.reason" ng-class="{'<!-- @shane textarea invalid class here -->' : application.reasonRequired}"></textarea>
+                        </div>
                     </div>
-                    <!-- Terms and conditions is not provided by the API, leaving it out for now -->
-                    <div class="cui-applications__review-text-input">
-                        <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
-                        <span ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
-                        <textarea class="cui-text-area" ng-model="application.reason" ng-class="{'<!-- @shane textarea invalid class here -->' : application.reasonRequired}"></textarea>
-                    </div>
-                </div>                   
+                </div>
                 </div>
                 <div class="cui-applications__submit-options">
                     <a class="cui-link" ng-click="base.goBack()">{{'cancel' | translate}}</a>
