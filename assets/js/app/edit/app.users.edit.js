@@ -5,12 +5,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     var usersEdit = this;
     var currentCountry;
-    
-    usersEdit.tempUser = {};
-    usersEdit.tempUserPasswordAccount = {};
-    usersEdit.tempUserSecurityQuestions = {};
-    usersEdit.loading = true;
 
+    usersEdit.loading = true;
     usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
     usersEdit.tempLanguages = ['en', 'zh'];
 
@@ -18,12 +14,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         // Updates user's Person object in IDM
         usersEdit.loading = true;
 
-        if (!usersEdit.tempUser.addresses[0].country) {
-            // Set the person's country to what they selected
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;    
+        if (!usersEdit.userCountry) {
+            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
         }
         else {
-            usersEdit.tempUser.addresses[0].country = currentCountry;
+            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
         }
 
         usersEdit.user = usersEdit.tempUser;
@@ -59,18 +54,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.challengeQuestion2.answer = '';
         $scope.$apply();
     };
-
-    // var filterPhones = function(type) {
-    //     var phones = usersEdit.user.phones;
-    //     var filteredPhones = phones.filter(function (item) {
-    //         return item.type === type;
-    //     });
-    //     if(filteredPhones.length > 0) {
-    //         return filteredPhones[0].number;
-    //     } else {
-    //         return '';
-    //     };
-    // };
 
     API.doAuth()
     .then(function(res) {
@@ -109,71 +92,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         $scope.$digest();
         usersEdit.loading = false;
     });
-
-    // usersEdit.save = function() {
-    //     usersEdit.saving = true;
-    //     usersEdit.fail = false;
-    //     usersEdit.success = false;
-
-    //     API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user})
-    //     .then(function(res) {
-    //         $timeout(function() {
-    //             usersEdit.saving = false;
-    //             usersEdit.success = true;
-    //         }, 300);
-    //     })
-    //     .fail(function(err) {
-    //         $timeout(function() {
-    //             usersEdit.saving = false;
-    //             usersEdit.fail = true;
-    //         }, 300);
-    //     });
-    // };
-
-    // usersEdit.saveFullName = function() {
-    //     usersEdit.user.name.given = usersEdit.tempGiven; 
-    //     usersEdit.user.name.surname = usersEdit.tempSurname; 
-    //     usersEdit.save();
-    // }
-
-    // usersEdit.resetFullName = function() {
-    //     usersEdit.tempGiven = usersEdit.user.name.given;
-    //     usersEdit.tempSurname = usersEdit.user.name.surname;
-    // }
-
-    // usersEdit.resetTempAddress = function() {
-    //     initializeTempAddressValues();
-    // }
-
-    // usersEdit.saveAddress = function(){
-    //     usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
-    //     if (usersEdit.tempAddress2) {
-    //         usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
-    //     } else if (usersEdit.user.addresses[0].streets[1]) {
-    //         usersEdit.user.addresses[0].streets.splice(1, 1)
-    //     }
-    //     usersEdit.user.addresses[0].city = usersEdit.tempCity;
-    //     usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
-    //     usersEdit.user.addresses[0].country = usersEdit.tempCountry;
-    //     usersEdit.save();
-    // }
-
-    // usersEdit.updateTempCountry = function(results) {
-    //     usersEdit.tempUser.addresses[0].country = results.description.name;
-    // };
-
-    // usersEdit.clearAdditionalPhone = function() {
-    //     usersEdit.additionalPhoneType = '';
-    //     usersEdit.additionalPhoneNumber = '';
-    // }
-
-    // usersEdit.savePhone = function() {
-    //     usersEdit.user.phones = usersEdit.phones.slice();
-    //     _.remove(usersEdit.user.phones, function(phone) {
-    //       return phone.number == '';
-    //     });
-    //     usersEdit.save();
-    // }
 
     usersEdit.saveChallengeQuestions = function() {
         var updatedChallengeQuestions = {};
