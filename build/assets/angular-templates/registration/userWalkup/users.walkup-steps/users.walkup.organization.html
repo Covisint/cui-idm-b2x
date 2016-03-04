@@ -1,6 +1,6 @@
 <ng-form name="organizationSelect" novalidate>
   <p>{{'cui-all-organizations' | translate}}</p>
-  <input class="cui-input--half" placeholder="Filter by organization name" ng-model="usersWalkup.orgSearch.name">
+  <input class="cui-input--half" placeholder="{{'cui-filter-org-name' | translate}}" ng-model="usersWalkup.orgSearch.name">
 
   <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList | orderBy:'name' track by organization.id">
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">

@@ -418,6 +418,12 @@ angular.module('app')
         applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
     }
 
+
+    applicationReview.numberOfRequests=0;
+    appsBeingRequested.forEach(function(){
+        applicationReview.numberOfRequests++;
+    });
+
     // ON LOAD END ------------------------------------------------------------------------------------
 
     // ON CLICK START ---------------------------------------------------------------------------------
@@ -425,23 +431,28 @@ angular.module('app')
     applicationReview.submit=function(){
         var applicationRequestArray=[];
         applicationReview.attempting=true;
-        applicationReview.appRequests.forEach(function(appRequest,i){
-            if(!appRequest.reason || appRequest.reason===''){
-                appRequest.reasonRequired=true;
-                applicationReview.attempting=false;
-                applicationReview.error=true;
-            }
-            else {
-                appRequest.reasonRequired=true;
-                applicationRequestArray[i] = AppRequests.buildReason(appRequest,appRequest.reason);
-            }
+        applicationReview.appRequests.forEach(function(appRequestGroup,i){
+            appRequestGroup.forEach(function(appRequest,x){
+                if(appRequest){
+                    if(!appRequest.reason || appRequest.reason===''){
+                        appRequest.reasonRequired=true;
+                        applicationReview.attempting=false;
+                        applicationReview.error=true;
+                    }
+                    else {
+                        appRequest.reasonRequired=false;
+                        applicationReview.error=false;
+                        applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
+                    }
+                }
+            });
         });
         if(applicationReview.error) return;
         var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
             i=0;
         appRequests.forEach(function(appRequest){
             API.cui.createPackageRequest({data:appRequest})
-            .then(function(){
+            .then(function(res){
                 i++;
                 if(i===appRequests.length){
                     applicationReview.attempting=false;
@@ -600,6 +611,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     applicationSearch.appCheckbox={};
     Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
         applicationSearch.appCheckbox[appId]=true;  // after being in request review
+        applicationSearch.numberOfRequests++;
     });
 
     applicationSearch.toggleRequest=function(application){
@@ -878,10 +890,8 @@ function(API,$scope,$state){
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){
-            console.log(grant);
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
-                console.log(res);
                 i++;
                 res.forEach(function(service){
                     service.status=grant.status; // attach the status of the service package to the service
@@ -1006,12 +1016,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     var usersEdit = this;
     var currentCountry;
-    
-    usersEdit.tempUser = {};
-    usersEdit.tempUserPasswordAccount = {};
-    usersEdit.tempUserSecurityQuestions = {};
-    usersEdit.loading = true;
 
+    usersEdit.loading = true;
     usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
     usersEdit.tempLanguages = ['en', 'zh'];
 
@@ -1019,12 +1025,11 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         // Updates user's Person object in IDM
         usersEdit.loading = true;
 
-        if (!usersEdit.tempUser.addresses[0].country) {
-            // Set the person's country to what they selected
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;    
+        if (!usersEdit.userCountry) {
+            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
         }
         else {
-            usersEdit.tempUser.addresses[0].country = currentCountry;
+            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
         }
 
         usersEdit.user = usersEdit.tempUser;
@@ -1060,18 +1065,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.challengeQuestion2.answer = '';
         $scope.$apply();
     };
-
-    // var filterPhones = function(type) {
-    //     var phones = usersEdit.user.phones;
-    //     var filteredPhones = phones.filter(function (item) {
-    //         return item.type === type;
-    //     });
-    //     if(filteredPhones.length > 0) {
-    //         return filteredPhones[0].number;
-    //     } else {
-    //         return '';
-    //     };
-    // };
 
     API.doAuth()
     .then(function(res) {
@@ -1110,71 +1103,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         $scope.$digest();
         usersEdit.loading = false;
     });
-
-    // usersEdit.save = function() {
-    //     usersEdit.saving = true;
-    //     usersEdit.fail = false;
-    //     usersEdit.success = false;
-
-    //     API.cui.updatePerson({personId:$stateParams.id,data:usersEdit.user})
-    //     .then(function(res) {
-    //         $timeout(function() {
-    //             usersEdit.saving = false;
-    //             usersEdit.success = true;
-    //         }, 300);
-    //     })
-    //     .fail(function(err) {
-    //         $timeout(function() {
-    //             usersEdit.saving = false;
-    //             usersEdit.fail = true;
-    //         }, 300);
-    //     });
-    // };
-
-    // usersEdit.saveFullName = function() {
-    //     usersEdit.user.name.given = usersEdit.tempGiven; 
-    //     usersEdit.user.name.surname = usersEdit.tempSurname; 
-    //     usersEdit.save();
-    // }
-
-    // usersEdit.resetFullName = function() {
-    //     usersEdit.tempGiven = usersEdit.user.name.given;
-    //     usersEdit.tempSurname = usersEdit.user.name.surname;
-    // }
-
-    // usersEdit.resetTempAddress = function() {
-    //     initializeTempAddressValues();
-    // }
-
-    // usersEdit.saveAddress = function(){
-    //     usersEdit.user.addresses[0].streets[0] = usersEdit.tempStreetAddress;
-    //     if (usersEdit.tempAddress2) {
-    //         usersEdit.user.addresses[0].streets[1] = usersEdit.tempAddress2;
-    //     } else if (usersEdit.user.addresses[0].streets[1]) {
-    //         usersEdit.user.addresses[0].streets.splice(1, 1)
-    //     }
-    //     usersEdit.user.addresses[0].city = usersEdit.tempCity;
-    //     usersEdit.user.addresses[0].postal = usersEdit.tempZIP;
-    //     usersEdit.user.addresses[0].country = usersEdit.tempCountry;
-    //     usersEdit.save();
-    // }
-
-    // usersEdit.updateTempCountry = function(results) {
-    //     usersEdit.tempUser.addresses[0].country = results.description.name;
-    // };
-
-    // usersEdit.clearAdditionalPhone = function() {
-    //     usersEdit.additionalPhoneType = '';
-    //     usersEdit.additionalPhoneNumber = '';
-    // }
-
-    // usersEdit.savePhone = function() {
-    //     usersEdit.user.phones = usersEdit.phones.slice();
-    //     _.remove(usersEdit.user.phones, function(phone) {
-    //       return phone.number == '';
-    //     });
-    //     usersEdit.save();
-    // }
 
     usersEdit.saveChallengeQuestions = function() {
         var updatedChallengeQuestions = {};
