@@ -14,19 +14,14 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         // Updates user's Person object in IDM
         usersEdit.loading = true;
 
-        console.log('BEFORE Country: ', usersEdit.tempUser);
         if (!usersEdit.userCountry) {
             usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
         }
         else {
             usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
         }
-        
-        console.log('TEMP BEFORE: ', usersEdit.tempUser);
 
         usersEdit.user = usersEdit.tempUser;
-
-        console.log('NEW USER: ', usersEdit.user);
 
         API.doAuth()
         .then(function() {
@@ -65,7 +60,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         return  API.cui.getPerson({personId: $stateParams.id});
     })
     .then(function(res) {
-        console.log('USER: ', res);
         // If the person has no addresses set we need to initialize it as an array
         // to follow the data structure 
         if (!res.addresses) {
