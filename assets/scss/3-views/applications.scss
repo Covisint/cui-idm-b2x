@@ -125,6 +125,22 @@
       }
     }
   }
+
+  .cui-applications__expandable-info {
+    display: flex;
+    flex: .9;
+
+    .cui-expandable__title-left {
+      flex: .35;
+    }
+    .cui-expandable__title-middle {
+      flex: .35;
+    }
+  }
+
+  .cui-expandable__title-end {
+      flex: .1;
+  }
 }
 
 .cui-applications__search-button {
