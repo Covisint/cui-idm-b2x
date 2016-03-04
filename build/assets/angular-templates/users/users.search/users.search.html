@@ -4,9 +4,9 @@
         <div class="cui-loading__container" ng-if="usersSearch.listLoading">
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
-        <input class="cui-input" placeholder="Search users by name" ng-model="usersSearch.search['name.given']"></input>
-        <input class="cui-input" placeholder="Number of results per page" ng-model="usersSearch.search.pageSize"></input>
-        <input class="cui-input" placeholder="Page" ng-model="usersSearch.search.page"></input>
+        <input class="cui-input" placeholder="{{'cui-search-user-name' | translate}}" ng-model="usersSearch.search['name.given']"></input>
+        <input class="cui-input" placeholder="{{'cui-num-results-page' | translate}}" ng-model="usersSearch.search.pageSize"></input>
+        <input class="cui-input" placeholder="{{'page' | translate}}" ng-model="usersSearch.search.page"></input>
         <table class="cui-table cui-table--borderless">
             <thead>
                 <tr>

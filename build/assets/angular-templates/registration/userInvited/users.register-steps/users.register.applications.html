@@ -10,7 +10,7 @@
 
 <!-- Organization Applications -->
 <div ng-if="usersRegister.applications.list && (!usersRegister.applications.step || usersRegister.applications.step===1)" ng-init="usersRegister.applications.step=1">
-  <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersRegister.applications.search" ng-change="usersRegister.applications.searchApplications()"/>
+  <input class="cui-input--half" placeholder="{{'cui-filter-app-name' | translate}}" style="margin-bottom:20px;" ng-model="usersRegister.applications.search" ng-change="usersRegister.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
     <div class="cui-badge" ng-bind="usersRegister.applications.numberOfSelected"></div>

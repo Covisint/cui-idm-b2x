@@ -79,7 +79,7 @@
             </cui-expandable-body>
         </cui-expandable>
         <div class="cui-applications__search-button">
-            <button class="cui-button" ng-click="applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+            <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
         </div>
     </div>
 </div>
