@@ -57,3 +57,29 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.cui-users__info-block {
+  margin-bottom: em(35);
+}
+
+.cui-users__inline-edit {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cui-field-val--stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.cui-users__item {
+  margin-bottom: em(10);
+}
+
+.cui-users__address-info {
+  margin-bottom: em(5);
+
+  &:first-of-type {
+    margin-top: em(5);
+  }
+}
