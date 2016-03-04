@@ -92,23 +92,28 @@ angular.module('app')
     applicationReview.submit=function(){
         var applicationRequestArray=[];
         applicationReview.attempting=true;
-        applicationReview.appRequests.forEach(function(appRequest,i){
-            if(!appRequest.reason || appRequest.reason===''){
-                appRequest.reasonRequired=true;
-                applicationReview.attempting=false;
-                applicationReview.error=true;
-            }
-            else {
-                appRequest.reasonRequired=true;
-                applicationRequestArray[i] = AppRequests.buildReason(appRequest,appRequest.reason);
-            }
+        applicationReview.appRequests.forEach(function(appRequestGroup,i){
+            appRequestGroup.forEach(function(appRequest,x){
+                if(appRequest){
+                    if(!appRequest.reason || appRequest.reason===''){
+                        appRequest.reasonRequired=true;
+                        applicationReview.attempting=false;
+                        applicationReview.error=true;
+                    }
+                    else {
+                        appRequest.reasonRequired=false;
+                        applicationReview.error=false;
+                        applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
+                    }
+                }
+            });
         });
         if(applicationReview.error) return;
         var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
             i=0;
         appRequests.forEach(function(appRequest){
             API.cui.createPackageRequest({data:appRequest})
-            .then(function(){
+            .then(function(res){
                 i++;
                 if(i===appRequests.length){
                     applicationReview.attempting=false;
