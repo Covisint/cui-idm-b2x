@@ -21,7 +21,7 @@
         <!-- API GAP None of the sorting mechanisms are available from the Person Package Grant API -->
     </div>
     <div ng-if="myApplications.doneLoading">
-        <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list" ng-click="myApplications.goToDetails(application)">
+        <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list track by application.id" ng-click="myApplications.goToDetails(application)">
             <!-- <div class="cui-media__image-container"> API GAP Where do the icons come from? </div> -->
             <div class="cui-media__body cui-media__body--full">
                 <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
