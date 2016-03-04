@@ -494,7 +494,8 @@ Markup: <a class="cui-link" href="">Link Style</a>
 Styleguide Elements.Texts.Links
 */
 .cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link {
-  color: #429DD1; }
+  color: #6a98a0;
+  text-decoration: none; }
 
 /*
 Paragraphs
@@ -4349,7 +4350,7 @@ inline-edit .angucomplete-dropdown {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.cui-users__profile-media, .cui-users__profile-info {
+.cui-users__profile-media, .cui-users__profile-info, .cui-users__address-container {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4514,3 +4515,13 @@ inline-edit .angucomplete-dropdown {
 @media screen and (min-width: 701px) {
   .cui-users__profile-info:first-of-type {
     margin-right: 15.5%; } }
+
+.cui-users__address-container {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+  .cui-users__address-container.show-address {
+    background-color: #d4e2e6;
+    padding: 1em 1em 1.875em; }
+    .cui-users__address-container.show-address .cui-users__field {
+      margin-bottom: 1.5625em; }
