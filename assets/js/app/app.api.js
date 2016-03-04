@@ -2,7 +2,8 @@ angular.module('app')
 .factory('API',[function(){
 
     var myCUI= cui.api();
-    myCUI.setServiceUrl('PRD');
+    myCUI.setServiceUrl('PRD'); // PRD
+    // myCUI.setServiceUrl('https://apistg.np.covapp.io'); // STG
 
     var doAuth = function(){
         return myCUI.doSysAuth({
