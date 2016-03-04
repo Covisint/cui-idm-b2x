@@ -15,10 +15,10 @@
             <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--lg" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--lg" ng-class="{'cui-action__icon--active': applicationReview.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
-            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}}</sup>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationReview.numberOfRequests != 0}">{{applicationReview.numberOfRequests}}</sup>
         </div>
     </div>
     <div class="cui-applications__main-container">
