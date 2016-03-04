@@ -600,6 +600,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     applicationSearch.appCheckbox={};
     Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
         applicationSearch.appCheckbox[appId]=true;  // after being in request review
+        applicationSearch.numberOfRequests++;
     });
 
     applicationSearch.toggleRequest=function(application){
@@ -878,10 +879,8 @@ function(API,$scope,$state){
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
         grants.forEach(function(grant){
-            console.log(grant);
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
-                console.log(res);
                 i++;
                 res.forEach(function(service){
                     service.status=grant.status; // attach the status of the service package to the service
