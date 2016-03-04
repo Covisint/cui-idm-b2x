@@ -1,0 +1,35 @@
+.cui-users__main-container {
+  padding: em(15) em(13);
+  position: relative;
+  min-height: 400px;
+
+  @media screen and (min-width: 701px) {
+    padding: em(15) em(55) 0 em(65);
+  }
+}
+
+.cui-users__profile-media {
+  @extend %flex-row-vert;
+  max-width: 250px;
+}
+
+.cui-users__field {
+  @extend %flex-row;
+}
+
+.cui-users__profile {
+  @extend %flex-row;
+}
+
+.cui-users__profile-info {
+  @extend %flex-row-vert;
+  flex: .5;
+  justify-content: flex-start;
+}
+
+.cui-users__profile-info:first-of-type {
+  @media screen and (min-width: 701px) {
+    margin-right: 15.5%;
+  }
+  
+}
