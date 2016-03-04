@@ -10,7 +10,7 @@
 
 <!-- If there's applications -->
 <div ng-if="usersWalkup.applications.list && (!usersWalkup.applications.step || usersWalkup.applications.step===1)" ng-init="usersWalkup.applications.step=1">
-  <input class="cui-input--half" placeholder="Filter by application name" style="margin-bottom:20px;" ng-model="usersWalkup.applications.search" ng-change="usersWalkup.applications.searchApplications()"/>
+  <input class="cui-input--half" placeholder="{{'cui-filter-app-name' | translate}}" style="margin-bottom:20px;" ng-model="usersWalkup.applications.search" ng-change="usersWalkup.applications.searchApplications()"/>
   <div style="float:right" class="cui-link">
     {{'cui-selections' | translate }}
     <div class="cui-badge" ng-bind="usersWalkup.applications.numberOfSelected"></div>
