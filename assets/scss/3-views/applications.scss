@@ -96,6 +96,17 @@
     }
   }
 
+  .cui-applications__categories {
+    @extend .cui-applications__row;
+    border-bottom: 1px solid $cui-greyscale--x-light;
+    padding: em(20) 0;
+
+    .cui-applications__category {
+      @extend %h5--bold;
+    }
+    
+  }
+
 }
 
 .cui-applications__search {

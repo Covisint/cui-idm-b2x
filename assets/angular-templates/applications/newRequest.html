@@ -12,7 +12,7 @@
         <div>
             <div class="cui-applications__row">
                 <h3 class="h6">{{'select-applications' | translate}}</h3>
-                <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+                <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--folder" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
                   <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
                 </svg>
             </div>
@@ -30,9 +30,14 @@
                     <div class="cui-loading--center"><div class="cui-loading"></div></div>
                 </div>
             </div>
-            <!-- <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone"> -->
-                <!-- I HAVE 1 CATEGORY HARDCODED IN NOW, CLICKING THIS WILL TAKE YOU TO A BLANK PAGE -->
-                <!-- <span ui-sref="applications.search({category:'{{ category | cuiI18n }}' })">{{ category | cuiI18n }}</span> -->
+            <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone">
+                <!-- 1 CATEGORY HARDCODED, CLICKING THIS WILL TAKE YOU TO A BLANK PAGE -->
+                <div class="cui-applications__categories" ui-sref="applications.search({category:'{{ category | cuiI18n }}' })">
+                    <h4 class="cui-applications__category" >{{ category | cuiI18n }}</h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+                      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
