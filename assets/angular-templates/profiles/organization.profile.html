@@ -1,19 +1,33 @@
-<div class="cui-tile">
-  <div class="cui-tile__title">{{'cui-org-profile' | translate}}</div>
-  <div class="cui-tile__body">
-    <div class="cui-loading__container" ng-if="!orgProfile.loadingDone"> <!-- @Shane spinner is cut off here, we might have to set a min-height on the spinner container -->
-        <div class="cui-loading--center"><div class="cui-loading"></div></div>
-    </div>
-    <div ng-if="orgProfile.loadingDone">
-      <h3 style="text-align:center">{{orgProfile.organization.name}}</h3>
-
-  		<h3>{{'cui-address' | translate}}</h3>
-      <p>{{orgProfile.organization.addresses[0].streets[0]}}</p>
-      <p>{{orgProfile.organization.addresses[0].city}} {{orgProfile.organization.addresses[0].state}} {{orgProfile.organization.addresses[0].postal}}</p>
-
-      <h3>{{'cui-info' | translate}}</h3>
-      <p>{{orgProfile.organization.url}}</p>
-      <p>{{orgProfile.organization.phones[0].number}}</p>
+<div class="cui-organization">
+  <div class="cui-action">
+    <div class="cui-action__title">
+      {{'cui-org-profile' | translate}}
     </div>
   </div>
+  <div class="cui-organization__main-container">
+      <div class="cui-loading__container" ng-if="!orgProfile.loadingDone"> <!-- @Shane spinner is cut off here, we might have to set a min-height on the spinner container -->
+          <div class="cui-loading--center"><div class="cui-loading"></div></div>
+      </div>
+      <div ng-if="orgProfile.loadingDone">
+        <h3 class="cui-organization__page-title">{{orgProfile.organization.name}}</h3>
+        
+        <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
+        <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
+          <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].city}} {{orgProfile.organization.addresses[0].state}} {{orgProfile.organization.addresses[0].postal}}</span>
+        </div>
+        <div class="cui-organization__info-block">
+          <h4 class="cui-field-val__field">{{'cui-info' | translate}}: </h4>
+          <div>
+            <span class="cui-field-val__field">Url: </span>
+            <span>{{orgProfile.organization.url}}</span>
+          </div>
+          <div>
+            <span class="cui-field-val__field">{{'cui-phone-fax' | translate}}: </span>
+            <span>{{orgProfile.organization.phones[0].number}}</span>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>
+

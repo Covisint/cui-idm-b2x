@@ -31,7 +31,7 @@
          <!-- Full Name -->
         <div class="cui-users__info-block">
           <div class="class-toggle" toggled-class="show-full-name">
-            <div class="cui-users__field cui-users__item" ng-if="!toggled">
+            <div class="cui-users__field" ng-if="!toggled">
               <div class="cui-field-val">
                 <span class="cui-field-val__field">{{"cui-name"| translate}}: </span>
                 <span class="cui-field-val__val" ng-if="!usersEdit.editName">{{usersEdit.tempUser.name.given}} {{usersEdit.tempUser.name.surname}}</span>
@@ -56,18 +56,18 @@
           </div>
 
           <!-- User ID -->
-          <div class="cui-field-val cui-users__item">
+          <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-user-id' | translate}}: </span>
             <span class="cui-field-val__val">{{usersEdit.user.id}}</span>
           </div>
           <!-- Email -->
-          <inline-edit class="cui-users__inline-edit cui-users__item" label="cui-email" model="usersEdit.tempUser.email" on-save="usersEdit.updatePerson()"></inline-edit>
+          <inline-edit class="cui-users__inline-edit" label="cui-email" model="usersEdit.tempUser.email" on-save="usersEdit.updatePerson()"></inline-edit>
           <!-- Password -->
-          <inline-edit class="cui-users__inline-edit cui-users__item" label="cui-password" model=""></inline-edit>
+          <inline-edit class="cui-users__inline-edit" label="cui-password" model=""></inline-edit>
         </div>
         <!-- Challenge Question -->
         <div class="cui-users__info-block">
-          <div class="class-toggle cui-users__item" toggled-class="show" ng-repeat="q in [1, 2]">
+          <div class="class-toggle" toggled-class="show" ng-repeat="q in [1, 2]">
             <div class="cui-users__field">
               <div class="cui-field-val cui-field-val--stack">
                 <span class="cui-field-val__field">{{'cui-challenge-question' | translate}} {{q}}: </span>
@@ -93,7 +93,7 @@
         </div>
 
         <!-- Timezone/Language -->
-        <span class="cui-field-val__field">{{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}</span>
+        <span class="cui-field-val__field">{{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}: </span>
         <div>
           <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone for timezone in usersEdit.tempTimezones" ng-change="usersEdit.updatePerson()"></select>
           <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="language for language in usersEdit.tempLanguages" ng-change="usersEdit.updatePerson()"></select>
@@ -105,9 +105,7 @@
         <div class="cui-users__field">
           <div class="class-toggle cui-users__address-container" toggled-class="show-address">
             <div class="cui-users__field">
-              <div class="cui-field-val">
-                <span class="cui-field-val__field">{{'cui-address' | translate}}</span>
-              </div>
+              <span class="cui-field-val__field">{{'cui-address' | translate}}: </span>
               <span ui-sref="" class="cui-link" href="" ng-if="!toggled" ng-click="toggleOn()">{{'cui-open' | translate}}</span>
               <svg ui-sref="" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
                 <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
@@ -115,11 +113,11 @@
             </div>
 
             <div ng-if="!toggled">
-              <div class="cui-users__address-info">{{usersEdit.tempUser.addresses[0].streets[0]}} </div>
-              <div class="cui-users__address-info" ng-if="usersEdit.tempUser.addresses[0].streets[1]">{{usersEdit.tempUser.addresses[0].streets[1]}}</div>
-              <div class="cui-users__address-info">{{usersEdit.tempUser.addresses[0].city}}</div>
-              <div class="cui-users__address-info">{{usersEdit.tempUser.addresses[0].state}} {{usersEdit.tempUser.addresses[0].postal}}</div>
-              <div class="cui-users__address-info">{{usersEdit.tempUser.addresses[0].country}}</div>
+              <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].streets[0]}} </div>
+              <div class="cui-field-val__val" ng-if="usersEdit.tempUser.addresses[0].streets[1]">{{usersEdit.tempUser.addresses[0].streets[1]}}</div>
+              <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].city}}</div>
+              <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].state}} {{usersEdit.tempUser.addresses[0].postal}}</div>
+              <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].country}}</div>
             </div>
         
             <div ng-if='toggled'>
@@ -168,9 +166,7 @@
         <!-- Phones/Fax -->
         <div class="class-toggle cui-users__contact-info" toggled-class="edit-phones">
           <div class="cui-users__field">
-            <div class="cui-field-val">
-              <span class="cui-field-val__field">{{'cui-phone-fax' | translate}}</span>
-            </div>
+            <span class="cui-field-val__field">{{'cui-phone-fax' | translate}}:</span>
             <a href="" class="cui-link" ng-click="toggleClass()">edit</a>
           </div>
           <!-- If user has phones -->
