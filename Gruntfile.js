@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         tasks: ['sass','autoprefixer']
       },
       scripts:{
-        files: ['assets/js/**/*'],
+        files: ['assets/app/**/*.js'],
         tasks: ['concat'],
         options: {
           spawn: false,
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
            separator: '\n\n',
       },
       dist: {
-        src: ['assets/js/app.intro.js','assets/js/app/**/*.js','assets/js/app.outro.js'],
+        src: ['assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
       }
     },
@@ -128,8 +128,8 @@ module.exports = function(grunt) {
       options: {
         assetsDirs: ['./build']
       },
-      css: ['./build/assets/css/**.*.css'],
-      js: ['./build/assets/js/**.*.js'],
+      css: ['./build/assets/css/**/*.css'],
+      js: ['./build/assets/app/**/*.js'],
       html: ['./build/index.html']
     },
     uglify: {
@@ -138,7 +138,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      app: ['assets/js/app/**/*.js']
+      app: ['assets/**/*.js']
     }
 
 

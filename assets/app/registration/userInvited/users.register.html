@@ -1,0 +1,33 @@
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/registration/userInvited" target="blank">here</a></div>
+
+<div class="cui-form--mobile-steps">
+  <div class="cui-form__title">{{'create-account' | translate}}</div>
+  <div class="cui-form__body">
+    <cui-wizard bar mobile-stack class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+      <ng-form name="userInvitedRegForm" novalidate>
+
+        <!-- User Profile -->
+        <step title="{{'cui-user-profile' | translate}}" icon="cui:user">
+          <div ng-include="'assets/app/registration/userInvited/users.register-steps/users.register.userProfile.html'"></div>
+        </step>
+
+        <!-- Login -->
+        <step title="{{'cui-login' | translate}}" icon="cui:login">
+          <div ng-include="'assets/app/registration/userInvited/users.register-steps/users.register.login.html'"></div>
+        </step>
+
+        <!-- Applications -->
+        <step title="{{'cui-applications' | translate}}" icon="cui:applications">
+          <div ng-include="'assets/app/registration/userInvited/users.register-steps/users.register.applications.html'"></div>
+        </step>
+
+        <!-- Review -->
+        <step title="{{'cui-review' | translate}}" icon="cui:review">
+          <div ng-include="'assets/app/registration/userInvited/users.register-steps/users.register.review.html'"></div>
+        </step>
+
+      </ng-form>
+    </cui-wizard>
+  </div>
+</div>

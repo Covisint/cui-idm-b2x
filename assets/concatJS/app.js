@@ -11,729 +11,6 @@
     }]);
 
 angular.module('app')
-.factory('API',[function(){
-
-    var myCUI= cui.api();
-    myCUI.setServiceUrl('PRD'); // PRD
-    // myCUI.setServiceUrl('https://apistg.np.covapp.io'); // STG
-
-    var doAuth = function(){
-        return myCUI.doSysAuth({
-            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
-            // clientSecret: '8xFdMSR1IFSeFJjC'
-            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
-            clientSecret: 'MqKZsqUtAVAIiWkg'
-        });
-    };
-
-    var token = function(){
-        return myCUI.getToken();
-    };
-
-    return{
-        token:token,
-        cui:myCUI,
-        doAuth:doAuth
-    };
-}]);
-
-
-angular.module('app')
-.controller('baseCtrl',['$state','getCountries','$scope','$translate','LocaleService',
-function($state,getCountries,$scope,$translate,LocaleService){
-    var base=this;
-
-    base.desktopMenu=true;
-
-    base.toggleDesktopMenu=function(){
-        base.desktopMenu=!base.desktopMenu;
-    };
-
-    base.goBack=function(){
-        if($state.previous.name.name!==''){
-            $state.go($state.previous.name,$state.previous.params);
-        }
-        else {
-            $state.go('base');
-        }
-    };
-
-    base.generateHiddenPassword=function(password){
-        return Array(password.length+1).join('•');
-    };
-
-    base.passwordPolicies=[
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
-
-    // This returns the current language being used by the cui-i18n library, used for registration processes.
-    base.getLanguageCode = function(){
-        if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
-        else return LocaleService.getLocaleCode();
-    };
-
-    var setCountries=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
-        }
-        getCountries(language)
-        .then(function(res){
-            base.countries=res.data;
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
-
-    $scope.$on('languageChange',function(e,args){
-        // console.log(e);
-        setCountries(args);
-    });
-
-    setCountries($translate.proposedLanguage());
-
-
-}]);
-
-angular.module('app')
-.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
-    '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
-function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
-
-    localStorageServiceProvider.setPrefix('cui');
-
-    var templateBase='assets/angular-templates/'; // base directori of your partials
-
-
-    var returnCtrlAs=function(name,asPrefix){ // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
-        // returnCtrlAs('test') returns 'testCtrl as test'
-        return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
-    };
-
-    $stateProvider
-        .state('base',{
-            url: '/',
-            templateUrl: templateBase + 'base.html',
-            controller: returnCtrlAs('base')
-        })
-        .state('users',{
-            url: '/users',
-            templateUrl: templateBase + 'users/users.html'
-        })
-        .state('users.search',{
-            url: '/',
-            templateUrl: templateBase + 'users/users.search/users.search.html',
-            controller: returnCtrlAs('usersSearch')
-        })
-        .state('users.edit',{
-            url: '/edit/:id',
-            templateUrl: templateBase + 'edit/users.edit/users.edit.html',
-            controller: returnCtrlAs('usersEdit')
-        })
-        .state('users.invitations',{
-            url: '/invitations',
-            templateUrl: templateBase + 'invitations/users.invitations/users.invitations.search.html',
-            controller: returnCtrlAs('usersInvitations')
-        })
-        .state('users.invite',{
-            url: '/invite',
-            templateUrl: templateBase + 'invitations/users.invitations/users.invite.html',
-            controller: returnCtrlAs('usersInvite')
-        })
-        .state('users.register',{
-            url: '/register?id&code',
-            templateUrl: templateBase + 'registration/userInvited/users.register.html',
-            controller: returnCtrlAs('usersRegister')
-        })
-        .state('users.walkupRegistration',{
-            url: '/walkupRegistration',
-            templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
-            controller: returnCtrlAs('usersWalkup')
-        })
-        .state('users.activate',{
-            url: '/activate/:id',
-            templateUrl: templateBase + 'users/users.activate/users.activate.html',
-            controller: returnCtrlAs('usersActivate')
-        })
-        .state('applications',{
-            url: '/applications',
-            templateUrl : templateBase + 'applications/applications.html'
-        })
-        .state('applications.myApplications',{
-            url: '/myApplications',
-            templateUrl: templateBase + 'applications/myApplications.html',
-            controller: returnCtrlAs('myApplications')
-        })
-        .state('applications.myApplicationDetails',{
-            url: '/myApplications/:packageId/:appId',
-            templateUrl: templateBase + 'applications/myApplicationDetails.html',
-            controller: returnCtrlAs('myApplicationDetails')
-        })
-        .state('applications.newRequest',{
-            url: '/newRequest',
-            templateUrl: templateBase + 'applications/newRequest.html',
-            controller: returnCtrlAs('newAppRequest')
-        })
-        .state('applications.search',{
-            url: '/search?name&category&page',
-            templateUrl: templateBase + 'applications/search.html',
-            controller: returnCtrlAs('applicationSearch')
-        })
-        .state('applications.reviewRequest',{
-            url: '/review',
-            templateUrl: templateBase + 'applications/review.html',
-            controller: returnCtrlAs('applicationReview')
-        })
-        .state('welcome',{
-            url: '/welcome',
-            templateUrl: templateBase + 'welcome/welcome.html'
-        })
-        .state('welcome.screen',{
-            url: '/welcome',
-            templateUrl: templateBase + 'welcome/welcome.screen.html',
-            controller: returnCtrlAs('welcome')
-        })
-        .state('tlo',{
-            url: '/tlo',
-            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.html'
-        })
-        .state('tlo.registration',{
-            url: '/registration',
-            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.registration/topLevelOrg.registration.html',
-            controller: returnCtrlAs('tlo','new')
-        })
-        .state('division',{
-            url: '/division',
-            templateUrl: templateBase + 'registration/newDivision/division.html'
-        })
-        .state('division.registration',{
-            url: '/registration',
-            templateUrl: templateBase + 'registration/newDivision/division.registration/division.registration.html',
-            controller: returnCtrlAs('division','new')
-        })
-        .state('misc',{
-            url: '/status',
-            templateUrl: templateBase + 'misc/misc.html'
-        })
-        .state('misc.404',{
-            url: '/404',
-            templateUrl: templateBase + 'misc/misc.404.html'
-        })
-        .state('misc.notAuth',{
-            url: '/notAuthorized',
-            templateUrl: templateBase + 'misc/misc.notAuth.html'
-        })
-        .state('misc.pendingStatus',{
-            url: '/pendingStatus',
-            templateUrl: templateBase + 'misc/misc.pendingStatus.html'
-        })
-        .state('misc.success',{
-            url: '/success',
-            templateUrl: templateBase + 'misc/misc.success.html'
-        })
-        .state('profile', {
-            url: '/profile',
-            templateUrl: templateBase + 'profiles/profile.html'
-        })
-        .state('profile.organization', {
-            url: '/profile/organization?id',
-            templateUrl: templateBase + 'profiles/organization.profile.html',
-            controller: returnCtrlAs('orgProfile')
-        });
-
-    // $locationProvider.html5Mode(true);
-
-    //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
-    $urlRouterProvider.otherwise( function($injector) {
-      var $state = $injector.get("$state");
-      $state.go('base');
-    });
-
-    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
-        // ADD LANGUAGES HERE ONLY
-        {
-            'en':'English',
-            'pt':'Portuguese',
-            'tr':'Turkish',
-            'zh':'Chinese (Simplified)',
-            'fr':'French',
-            'es':'Spanish',
-            'it':'Italian',
-            'ru':'Russian',
-            'th':'Thai',
-            'ja':'Japanese',
-            'de':'German'
-        }
-    )
-
-    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
-
-    var returnRegisterAvailableLanguageKeys=function(){
-        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
-        languageKeys.forEach(function(languageKey){
-            object[languageKey+'*']=languageKey //redirect language keys such as en_US to en or en-US to en
-        })
-        return object;
-    }
-
-    $translateProvider
-    .useLoader('LocaleLoader',{
-        url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-        prefix:'locale-',
-        suffix:'.json'
-    })
-    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
-    .uniformLanguageTag('java')
-    .determinePreferredLanguage()
-    .fallbackLanguage(languageKeys);
-
-    $cuiI18nProvider.setLocalePreference(languageKeys);
-
-    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
-    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
-}]);
-
-angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
-    //add more locales here
-    var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
-    for(var LanguageKey in languageNameObject){
-        LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
-    };
-
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        $state.previous = {};
-        $state.previous.name = fromState;
-        $state.previous.params = fromParams;
-    });
-
-    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
-
-    angular.forEach(icons,function(icon){
-        $http.get(icon,{
-            cache: $templateCache
-        });
-    });
-}]);
-
-
-
-angular.module('app')
-.factory('AppRequests',['$filter',function($filter){
-    var appRequestsObject={},
-        appRequests={};
-
-    appRequests.set=function(newAppRequestsObject){
-        appRequestsObject=newAppRequestsObject;
-    };
-
-    appRequests.get=function(){
-        return appRequestsObject;
-    };
-
-    appRequests.buildReason=function(app,reason){
-        var tempApp={};
-        angular.copy(app,tempApp);
-        tempApp.reason=$filter('translate')('reason-im-requesting') + ' ' +  $filter('cuiI18n')(tempApp.name) + ': ' + reason;
-        return tempApp;
-    };
-
-
-    // appRequestsObject is an object that looks something like
-    // {
-    //    appId:{
-    //       id:appId,
-    //       reason: reasonForRequestingThisApp,
-    //       packageId: idOfThePackageThatContainsThisApp,
-    //       ...other app properties,
-    //    },
-    //    otherAppId:{ ... },
-    //    ...
-    // }
-    appRequests.getPackageRequests=function(userId,arrayOfAppsBeingRequested){
-        var arrayOfPackagesBeingRequested=[],
-            arrayOfPackageRequests=[];
-        arrayOfAppsBeingRequested.forEach(function(app,i){
-            if(arrayOfPackagesBeingRequested.indexOf(app.packageId)>-1){ // if we've parsed an app that belongs to the same pacakge
-                arrayOfPackageRequests.some(function(packageRequest,i){
-                    return arrayOfPackageRequests[i].servicePackage.id===app.packageId? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
-                });
-            }
-            else {
-                arrayOfPackageRequests[i]={
-                    'requestor':{
-                        id:userId,
-                        type:'person'
-                    },
-                    servicePackage:{
-                        id:arrayOfAppsBeingRequested[i].packageId,
-                        type: 'servicePackage'
-                    },
-                    reason: app.reason
-                };
-                arrayOfPackagesBeingRequested[i]=app.packageId; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
-                                                                // already requesting this package
-            }
-        });
-        return arrayOfPackageRequests;
-    };
-
-    return appRequests;
-}])
-.controller('applicationReviewCtrl',['$scope','API','AppRequests',function($scope,API,AppRequests){;
-
-    var applicationReview=this;
-    var appRequests=AppRequests.get(),
-        appsBeingRequested=Object.keys(appRequests),
-        userId='RN3BJI54'; // this will be replaced with the current user ID;
-
-    var handleError=function(err){
-        console.log('Error \n', err);
-    };
-
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    applicationReview.appRequests=[];
-
-    for(var i=0; i<appsBeingRequested.length; i=i+2){
-        applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
-    }
-
-
-    applicationReview.numberOfRequests=0;
-    appsBeingRequested.forEach(function(){
-        applicationReview.numberOfRequests++;
-    });
-
-    // ON LOAD END ------------------------------------------------------------------------------------
-
-    // ON CLICK START ---------------------------------------------------------------------------------
-
-    applicationReview.submit=function(){
-        var applicationRequestArray=[];
-        applicationReview.attempting=true;
-        applicationReview.appRequests.forEach(function(appRequestGroup,i){
-            appRequestGroup.forEach(function(appRequest,x){
-                if(appRequest){
-                    if(!appRequest.reason || appRequest.reason===''){
-                        appRequest.reasonRequired=true;
-                        applicationReview.attempting=false;
-                        applicationReview.error=true;
-                    }
-                    else {
-                        appRequest.reasonRequired=false;
-                        applicationReview.error=false;
-                        applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
-                    }
-                }
-            });
-        });
-        if(applicationReview.error) return;
-        var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
-            i=0;
-        appRequests.forEach(function(appRequest){
-            API.cui.createPackageRequest({data:appRequest})
-            .then(function(res){
-                i++;
-                if(i===appRequests.length){
-                    applicationReview.attempting=false;
-                    applicationReview.success=true;
-                    $scope.$digest();
-                }
-            })
-            .fail(handleError);
-        });
-    };
-
-    // ON CLICK END -----------------------------------------------------------------------------------
-
-}]);
-
-angular.module('app')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
-function(API,$scope,$stateParams,$state,$filter,AppRequests){
-    var applicationSearch = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
-    var nameSearch=$stateParams.name;
-    var categorySearch=$stateParams.category;
-    var orgPackageList=[],
-        userPackageList=[]; // WORKAROUND CASE #1
-
-    var handleError=function(err){
-        console.log('Error \n', err);
-    };
-
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    applicationSearch.nameSearch=nameSearch; // get the url param for name and pre-populate the search field
-    applicationSearch.category=categorySearch; // same as above
-
-    var user;
-
-    var nameFilter=function(app,search){
-        if(!search || search ==='') return true;
-        return $filter('cuiI18n')(app.name).toLowerCase().indexOf(search.toLowerCase())>-1;
-    };
-
-    var categoryFilter=function(app,category){
-        if(!app.category && category) return false;
-        if(!category) return true;
-        return $filter('cuiI18n')(app.category).indexOf(category)>-1;
-    };
-
-    applicationSearch.parseAppsByCategoryAndName=function(){
-        var filteredApps = _.filter(applicationSearch.unparsedListOfAvailabeApps,function(app){
-            return nameFilter(app,applicationSearch.nameSearch) && categoryFilter(app,applicationSearch.category);
-        });
-        applicationSearch.list = filteredApps;
-        applicationSearch.doneLoading = true;
-    };
-
-    var getApplications=function(orgPackageListPassed){
-        var listOfAvailabeApps=[],i=0;
-        var listOfOrgPackages=orgPackageListPassed || orgPackageList; // so we can call this without passing the orgPackageList again
-        listOfOrgPackages.forEach(function(orgPackage){
-            if(orgPackage.requestable){
-                API.cui.getPackageServices({'packageId':orgPackage.id})
-                .then(function(res){
-                    i++
-                    res.forEach(function(service){
-                        service.packageId=orgPackage.id;
-                        service.owningOrganization=orgPackage.owningOrganization;
-                        listOfAvailabeApps.push(service);
-                    });
-                    if(i===listOfOrgPackages.length){
-                        applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
-                        applicationSearch.parseAppsByCategoryAndName()
-                        $scope.$digest();
-                    }
-                })
-                .fail(handleError);
-            }
-            else i++;
-            if(i===listOfOrgPackages.length){
-                applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
-                applicationSearch.parseAppsByCategoryAndName();
-                $scope.$digest();
-            }
-        });
-    };
-
-    var getAvailableApplications=function(userPackageGrantList){ // get apps that the user can request and doesn't already have grants to
-        orgPackageList.forEach(function(orgPackage,i){
-            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list of
-                return orgPackage.id===userPackageGrant.servicePackage.id; // packages granted to an org, remove that package from the list.
-            });
-            if(userGrantInPackageList) orgPackageList.splice(i,1);
-        });
-        var i=0;
-        orgPackageList.forEach(function(orgPackage){
-            API.cui.getOrganization({'organizationId':orgPackage.owningOrganization.id})
-            .then(function(res){
-                i++;
-                orgPackage.owningOrganization=res; // WORKAROUND CASE # 8
-                if(i===orgPackageList.length){
-                    getApplications(orgPackageList);
-                }
-            })
-            .fail(handleError);
-        })
-    };
-
-    var getUserPackageGrants=function(){ // gets applications that are available for request
-        API.cui.getPersonPackages({personId:userId})
-        .then(function(res){
-            userPackageList=res;
-            getAvailableApplications(userPackageList);
-        })
-        .fail(handleError);
-    };
-
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getPerson({personId:userId});
-    })
-    .then(function(res){
-        user=res;
-        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
-    })
-    .then(function(res){
-        var i=0;
-        var packageGrants=res;
-        packageGrants.forEach(function(pkgGrant){
-            API.cui.getPackage({'packageId':pkgGrant.servicePackage.id})
-            .then(function(res){
-                i++;
-                orgPackageList.push(res);
-                if(i===packageGrants.length){
-                    getUserPackageGrants();
-                }
-            })
-            .fail(handleError);
-        });
-    })
-   .fail(handleError);
-
-    // ON LOAD END ------------------------------------------------------------------------------------
-
-    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
-
-    applicationSearch.listenForEnter=function($event){
-        if($event.keyCode===13) applicationSearch.parseAppsByCategoryAndName();
-    };
-
-    applicationSearch.numberOfRequests=0;
-    var processNumberOfRequiredApps=function(pkgRequest){
-        if(pkgRequest) applicationSearch.numberOfRequests++;
-        else  applicationSearch.numberOfRequests--;
-    };
-
-    applicationSearch.packageRequests=AppRequests.get();
-    applicationSearch.appCheckbox={};
-    Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
-        applicationSearch.appCheckbox[appId]=true;  // after being in request review
-        applicationSearch.numberOfRequests++;
-    });
-
-    applicationSearch.toggleRequest=function(application){
-        if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;
-        else delete applicationSearch.packageRequests[application.id];
-        processNumberOfRequiredApps(applicationSearch.packageRequests[application.id]);
-    };
-
-    var bundled=[],related=[];
-
-    var detailsFetchStep=0;
-
-    var getBundledApps=function($index,application){ // WORKAROUND CASE # 1
-        bundled[$index]=[];
-        API.cui.getPackageServices({ 'packageId':application.packageId })
-        .then(function(res){
-            res.forEach(function(app){
-                if(app.id!==application.id){
-                    app.packageId=application.packageId;
-                    bundled[$index].push(app);
-                }
-            });
-            detailsFetchStep++;
-            if(detailsFetchStep===2){
-                applicationSearch.list[$index].details={ 'bundled':bundled[$index],'related':related[$index] };
-                applicationSearch.detailsLoadingDone[application.id]=true;
-                $scope.$digest();
-            }
-        })
-        .fail(handleError);
-    };
-
-
-    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index,application){
-        var z=0;
-        packages.forEach(function(pkg){
-            if(packagesToIgnore.indexOf(pkg.id)===-1) {
-                API.cui.getServices({ 'packageId':pkg.id })
-                .then(function(res){
-                    z++;
-                    res.forEach(function(app){ // for each of the services in that child package
-                        app.packageId=pkg.id;
-                        related[$index].push(app);
-                    });
-                    if(z===packages.length){
-                        detailsFetchStep++;
-                        if(detailsFetchStep===2){
-                            applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                            applicationSearch.detailsLoadingDone[application.id]=true;
-                            $scope.$digest();
-                        }
-                    }
-                })
-                .fail(handleError);
-            }
-            else{
-                z++;
-                if(z===packages.length){
-                    detailsFetchStep++;
-                    if(detailsFetchStep===2){
-                        applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                        applicationSearch.detailsLoadingDone[$index]=true;
-                        $scope.$digest();
-                    }
-                }
-            }
-        });
-    };
-
-    var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
-        related[$index]=[{name:[{lang:'en',text:'Test related'}], id:'TestRelatedId',packageId:'TestPackageId'}];
-        API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
-        .then(function(res){                                  // we're checking the details of belongs to
-            if(res.length===0) {
-                detailsFetchStep++;
-                if(detailsFetchStep===2) {
-                    applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
-                    applicationSearch.detailsLoadingDone[application.id]=true;
-                    $scope.$digest();
-                }
-            }
-            var z=0;
-            var packages=res;
-            var packagesToIgnore=[]; // WORKAROUND CASE #3
-            API.cui.getPersonPackages({'personId':userId})
-            .then(function(res){
-                res.forEach(function(pkgGrant,i){
-                    if(_.some(packages,function(pkg){
-                        return pkg.id===pkgGrant.servicePackage.id
-                    })){
-                        packagesToIgnore.push(pkgGrant.servicePackage.id);
-                    }
-                });
-                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index,application)
-            })
-            .fail(handleError);
-        })
-        .fail(handleError);
-    };
-
-    applicationSearch.detailsLoadingDone={};
-
-    applicationSearch.getRelatedAndBundled=function($index,application){
-        if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
-            return;
-        }
-        detailsFetchStep=0;
-        getBundledApps($index,application);
-        getRelatedApps($index,application);
-    };
-
-    applicationSearch.saveRequestsAndCheckout=function(){
-        AppRequests.set(applicationSearch.packageRequests);
-        $state.go('applications.reviewRequest');
-    }
-
-    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
-
-}]);
-
-
-angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
 function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
@@ -908,7 +185,7 @@ function(API,$scope,$state){
     };
 
     API.doAuth()
-    .then(function(res){
+    .then(function(){
         return API.cui.getPersonPackages({'personId':userId}); // this returns a list of grants
     })
     .then(function(res){
@@ -930,6 +207,69 @@ function(API,$scope,$state){
 
 }]);
 
+
+angular.module('app')
+.factory('AppRequests',['$filter',function($filter){
+    var appRequestsObject={},
+        appRequests={};
+
+    appRequests.set=function(newAppRequestsObject){
+        appRequestsObject=newAppRequestsObject;
+    };
+
+    appRequests.get=function(){
+        return appRequestsObject;
+    };
+
+    appRequests.buildReason=function(app,reason){
+        var tempApp={};
+        angular.copy(app,tempApp);
+        tempApp.reason=$filter('translate')('reason-im-requesting') + ' ' +  $filter('cuiI18n')(tempApp.name) + ': ' + reason;
+        return tempApp;
+    };
+
+
+    // appRequestsObject is an object that looks something like
+    // {
+    //    appId:{
+    //       id:appId,
+    //       reason: reasonForRequestingThisApp,
+    //       packageId: idOfThePackageThatContainsThisApp,
+    //       ...other app properties,
+    //    },
+    //    otherAppId:{ ... },
+    //    ...
+    // }
+    appRequests.getPackageRequests=function(userId,arrayOfAppsBeingRequested){
+        var arrayOfPackagesBeingRequested=[],
+            arrayOfPackageRequests=[];
+        arrayOfAppsBeingRequested.forEach(function(app,i){
+            if(arrayOfPackagesBeingRequested.indexOf(app.packageId)>-1){ // if we've parsed an app that belongs to the same pacakge
+                arrayOfPackageRequests.some(function(packageRequest,i){
+                    return arrayOfPackageRequests[i].servicePackage.id===app.packageId? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
+                });
+            }
+            else {
+                arrayOfPackageRequests[i]={
+                    'requestor':{
+                        id:userId,
+                        type:'person'
+                    },
+                    servicePackage:{
+                        id:arrayOfAppsBeingRequested[i].packageId,
+                        type: 'servicePackage'
+                    },
+                    reason: app.reason
+                };
+                arrayOfPackagesBeingRequested[i]=app.packageId; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
+                                                                // already requesting this package
+            }
+        });
+        return arrayOfPackageRequests;
+    };
+
+    return appRequests;
+}]);
 
 angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
@@ -1010,234 +350,661 @@ function(API,$scope,$state,AppRequests){
 
 
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
-function(localStorageService,$scope,$stateParams,$timeout,API){
-    'use strict';
+.controller('applicationReviewCtrl',['$scope','API','AppRequests',function($scope,API,AppRequests){;
 
-    var usersEdit = this;
-    var currentCountry;
+    var applicationReview=this;
+    var appRequests=AppRequests.get(),
+        appsBeingRequested=Object.keys(appRequests),
+        userId='RN3BJI54'; // this will be replaced with the current user ID;
 
-    usersEdit.loading = true;
-    usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
-    usersEdit.tempLanguages = ['en', 'zh'];
-
-    usersEdit.updatePerson = function() {
-        // Updates user's Person object in IDM
-        usersEdit.loading = true;
-
-        if (!usersEdit.userCountry) {
-            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
-        }
-        else {
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
-        }
-
-        usersEdit.user = usersEdit.tempUser;
-
-        API.doAuth()
-        .then(function() {
-            return API.cui.updatePerson({personId: usersEdit.user.id, data:usersEdit.user});
-        })
-        .then(function() {
-            usersEdit.loading = false;
-        })
-        .fail(function(error) {
-            console.log(error);
-            usersEdit.loading = false;
-        });
+    var handleError=function(err){
+        console.log('Error \n', err);
     };
 
-    usersEdit.updatePersonSecurityAccount = function() {
-        // Updates user's Security Account in IDM
-        // Currently API has issue when updating
-    };
+    // ON LOAD START ---------------------------------------------------------------------------------
 
-    var selectQuestionsForUser = function() {
-        var questions = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
-            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
-            this.push(question);
-        }, questions);
+    applicationReview.appRequests=[];
 
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$apply();
-    };
+    for(var i=0; i<appsBeingRequested.length; i=i+2){
+        applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
+    }
 
-    API.doAuth()
-    .then(function(res) {
-        return  API.cui.getPerson({personId: $stateParams.id});
-    })
-    .then(function(res) {
-        // If the person has no addresses set we need to initialize it as an array
-        // to follow the data structure 
-        if (!res.addresses) {
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        usersEdit.user = res;
-        usersEdit.tempUser = res;
-        currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
-    })
-    .then(function(res) {
-        usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = res;
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        usersEdit.allSecurityQuestions = res;
-        selectQuestionsForUser();
-        return API.cui.getPersonPassword({personId: usersEdit.user.id});
-    })
-    .then(function(res) {
-        usersEdit.userPassword = res;
-        usersEdit.tempUserPasswordAccount = res;
-        $scope.$digest();
-        usersEdit.loading = false;
-    })
-    .fail(function(err) {
-        console.log(err);
-        $scope.$digest();
-        usersEdit.loading = false;
+
+    applicationReview.numberOfRequests=0;
+    appsBeingRequested.forEach(function(){
+        applicationReview.numberOfRequests++;
     });
 
-    usersEdit.saveChallengeQuestions = function() {
-        var updatedChallengeQuestions = {};
-        updatedChallengeQuestions = [{
-            question: {
-                text: usersEdit.challengeQuestion1.question[0].text,
-                lang: usersEdit.challengeQuestion1.question[0].lang,
-                answer:   usersEdit.challengeAnswer1,
-                index: 1 },
-            owner: { 
-                id: usersEdit.challengeQuestion1.owner.id } 
-            },{
-            question: {
-                text: usersEdit.challengeQuestion2.question[0].text,
-                lang: usersEdit.challengeQuestion2.question[0].lang,
-                answer:   usersEdit.challengeAnswer2,
-                index: 2 },
-            owner: { 
-                id: usersEdit.challengeQuestion1.owner.id }
-            }
-        ];
+    // ON LOAD END ------------------------------------------------------------------------------------
 
-        usersEdit.saving = true;
-        usersEdit.fail = false;
-        usersEdit.success = false;
+    // ON CLICK START ---------------------------------------------------------------------------------
 
-        API.cui.updateSecurityQuestions({
-          personId: $stateParams.id,
-          data: {
-            version: '1',
-            id: usersEdit.user.id,
-            questions: updatedChallengeQuestions
-            }
-        })
-        .then(function(res) {
-            $timeout(function() {
-                usersEdit.saving = false;
-                usersEdit.success = true;
-            }, 300);
-        })
-        .fail(function(err) {
-            $timeout(function() {
-                usersEdit.saving = false;
-                usersEdit.fail = true;
-            }, 300);
+    applicationReview.submit=function(){
+        var applicationRequestArray=[];
+        applicationReview.attempting=true;
+        applicationReview.appRequests.forEach(function(appRequestGroup,i){
+            appRequestGroup.forEach(function(appRequest,x){
+                if(appRequest){
+                    if(!appRequest.reason || appRequest.reason===''){
+                        appRequest.reasonRequired=true;
+                        applicationReview.attempting=false;
+                        applicationReview.error=true;
+                    }
+                    else {
+                        appRequest.reasonRequired=false;
+                        applicationReview.error=false;
+                        applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
+                    }
+                }
+            });
+        });
+        if(applicationReview.error) return;
+        var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
+            i=0;
+        appRequests.forEach(function(appRequest){
+            API.cui.createPackageRequest({data:appRequest})
+            .then(function(res){
+                i++;
+                if(i===appRequests.length){
+                    applicationReview.attempting=false;
+                    applicationReview.success=true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
         });
     };
 
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
-    
-}]);
+    // ON CLICK END -----------------------------------------------------------------------------------
 
-
-angular.module('app').factory('getCountries',['$http',function($http){
-    return function(locale){
-        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
-    };
 }]);
 
 angular.module('app')
-.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
-function(localStorageService,$scope,$stateParams,API,$timeout){
-    var usersInvitations=this;
-    usersInvitations.listLoading=true;
-    usersInvitations.invitor=[];
-    usersInvitations.invitee=[];
-    usersInvitations.invitorLoading=[];
-    usersInvitations.inviteeLoading=[];
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
+function(API,$scope,$stateParams,$state,$filter,AppRequests){
+    var applicationSearch = this;
+    var userId='RN3BJI54'; // this will be replaced with the current user ID
+    var nameSearch=$stateParams.name;
+    var categorySearch=$stateParams.category;
+    var orgPackageList=[],
+        userPackageList=[]; // WORKAROUND CASE #1
 
+    var handleError=function(err){
+        console.log('Error \n', err);
+    };
 
-    API.cui.getPersonInvitations()
-    .then(function(res){
-        usersInvitations.listLoading=false;
-        usersInvitations.list=res;
-        $scope.$apply();
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    applicationSearch.nameSearch=nameSearch; // get the url param for name and pre-populate the search field
+    applicationSearch.category=categorySearch; // same as above
+
+    var user;
+
+    var nameFilter=function(app,search){
+        if(!search || search ==='') return true;
+        return $filter('cuiI18n')(app.name).toLowerCase().indexOf(search.toLowerCase())>-1;
+    };
+
+    var categoryFilter=function(app,category){
+        if(!app.category && category) return false;
+        if(!category) return true;
+        return $filter('cuiI18n')(app.category).indexOf(category)>-1;
+    };
+
+    applicationSearch.parseAppsByCategoryAndName=function(){
+        var filteredApps = _.filter(applicationSearch.unparsedListOfAvailabeApps,function(app){
+            return nameFilter(app,applicationSearch.nameSearch) && categoryFilter(app,applicationSearch.category);
+        });
+        applicationSearch.list = filteredApps;
+        applicationSearch.doneLoading = true;
+    };
+
+    var getApplications=function(orgPackageListPassed){
+        var listOfAvailabeApps=[],i=0;
+        var listOfOrgPackages=orgPackageListPassed || orgPackageList; // so we can call this without passing the orgPackageList again
+        listOfOrgPackages.forEach(function(orgPackage){
+            if(orgPackage.requestable){
+                API.cui.getPackageServices({'packageId':orgPackage.id})
+                .then(function(res){
+                    i++
+                    res.forEach(function(service){
+                        service.packageId=orgPackage.id;
+                        service.owningOrganization=orgPackage.owningOrganization;
+                        listOfAvailabeApps.push(service);
+                    });
+                    if(i===listOfOrgPackages.length){
+                        applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                        applicationSearch.parseAppsByCategoryAndName()
+                        $scope.$digest();
+                    }
+                })
+                .fail(handleError);
+            }
+            else i++;
+            if(i===listOfOrgPackages.length){
+                applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                applicationSearch.parseAppsByCategoryAndName();
+                $scope.$digest();
+            }
+        });
+    };
+
+    var getAvailableApplications=function(userPackageGrantList){ // get apps that the user can request and doesn't already have grants to
+        orgPackageList.forEach(function(orgPackage,i){
+            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list of
+                return orgPackage.id===userPackageGrant.servicePackage.id; // packages granted to an org, remove that package from the list.
+            });
+            if(userGrantInPackageList) orgPackageList.splice(i,1);
+        });
+        var i=0;
+        orgPackageList.forEach(function(orgPackage){
+            API.cui.getOrganization({'organizationId':orgPackage.owningOrganization.id})
+            .then(function(res){
+                i++;
+                orgPackage.owningOrganization=res; // WORKAROUND CASE # 8
+                if(i===orgPackageList.length){
+                    getApplications(orgPackageList);
+                }
+            })
+            .fail(handleError);
+        })
+    };
+
+    var getUserPackageGrants=function(){ // gets applications that are available for request
+        API.cui.getPersonPackages({personId:userId})
+        .then(function(res){
+            userPackageList=res;
+            getAvailableApplications(userPackageList);
+        })
+        .fail(handleError);
+    };
+
+    API.doAuth()
+    .then(function(){
+        return API.cui.getPerson({personId:userId});
     })
-    .fail(function(err){
-        usersInvitations.listLoading=false;
-        console.log(err);
+    .then(function(res){
+        user=res;
+        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
+    })
+    .then(function(res){
+        var i=0;
+        var packageGrants=res;
+        packageGrants.forEach(function(pkgGrant){
+            API.cui.getPackage({'packageId':pkgGrant.servicePackage.id})
+            .then(function(res){
+                i++;
+                orgPackageList.push(res);
+                if(i===packageGrants.length){
+                    getUserPackageGrants();
+                }
+            })
+            .fail(handleError);
+        });
+    })
+   .fail(handleError);
+
+    // ON LOAD END ------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+
+    applicationSearch.listenForEnter=function($event){
+        if($event.keyCode===13) applicationSearch.parseAppsByCategoryAndName();
+    };
+
+    applicationSearch.numberOfRequests=0;
+    var processNumberOfRequiredApps=function(pkgRequest){
+        if(pkgRequest) applicationSearch.numberOfRequests++;
+        else  applicationSearch.numberOfRequests--;
+    };
+
+    applicationSearch.packageRequests=AppRequests.get();
+    applicationSearch.appCheckbox={};
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        applicationSearch.appCheckbox[appId]=true;  // after being in request review
+        applicationSearch.numberOfRequests++;
     });
 
-    // This is needed to "attach" the invitor's and the invitee's info to the invitation
-    // since the only parameter that we have from the invitation API is the ID
-    usersInvitations.getInfo=function(invitorId,inviteeId,index){
-        if(usersInvitations.invitor[index]===undefined){
-            //get invitor's details
-            usersInvitations.invitorLoading[index]=true;
-            usersInvitations.inviteeLoading[index]=true;
+    applicationSearch.toggleRequest=function(application){
+        if(!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id]=application;
+        else delete applicationSearch.packageRequests[application.id];
+        processNumberOfRequiredApps(applicationSearch.packageRequests[application.id]);
+    };
 
-            API.cui.getPerson({personId:invitorId})
-            .then(function(res){
-                usersInvitations.invitor[index]=res;
-                $scope.$apply();
-                $timeout(function(){
-                    usersInvitations.invitorLoading[index]=false;
-                },500);
-            })
-            .fail(function(err){
-                console.log(err);
+    var bundled=[],related=[];
+
+    var detailsFetchStep=0;
+
+    var getBundledApps=function($index,application){ // WORKAROUND CASE # 1
+        bundled[$index]=[];
+        API.cui.getPackageServices({ 'packageId':application.packageId })
+        .then(function(res){
+            res.forEach(function(app){
+                if(app.id!==application.id){
+                    app.packageId=application.packageId;
+                    bundled[$index].push(app);
+                }
             });
-
-
-            //get invitee's details
-            API.cui.getPerson({personId:inviteeId})
-            .then(function(res){
-                usersInvitations.invitee[index]=res;
-                $scope.$apply();
-                $timeout(function(){
-                    usersInvitations.inviteeLoading[index]=false;
-                },500);
-            })
-            .fail(function(err){
-                console.log(err);
-            });
-        }
+            detailsFetchStep++;
+            if(detailsFetchStep===2){
+                applicationSearch.list[$index].details={ 'bundled':bundled[$index],'related':related[$index] };
+                applicationSearch.detailsLoadingDone[application.id]=true;
+                $scope.$digest();
+            }
+        })
+        .fail(handleError);
     };
 
 
-    // var search=function(){
-    //     API.cui.getUser({data:usersSearch.search})
-    //     .then(function(res){
-    //         usersSearch.list=res;
-    //         $scope.$apply();
-    //     })
-    //     .fail(function(err){
-    //         // TBD : error handling
-    //         // console.log(err);
-    //     });
-    // };
+    var getRelatedAppsThatHaventBeenGranted=function(packagesToIgnore,packages,$index,application){
+        var z=0;
+        packages.forEach(function(pkg){
+            if(packagesToIgnore.indexOf(pkg.id)===-1) {
+                API.cui.getServices({ 'packageId':pkg.id })
+                .then(function(res){
+                    z++;
+                    res.forEach(function(app){ // for each of the services in that child package
+                        app.packageId=pkg.id;
+                        related[$index].push(app);
+                    });
+                    if(z===packages.length){
+                        detailsFetchStep++;
+                        if(detailsFetchStep===2){
+                            applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                            applicationSearch.detailsLoadingDone[application.id]=true;
+                            $scope.$digest();
+                        }
+                    }
+                })
+                .fail(handleError);
+            }
+            else{
+                z++;
+                if(z===packages.length){
+                    detailsFetchStep++;
+                    if(detailsFetchStep===2){
+                        applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                        applicationSearch.detailsLoadingDone[$index]=true;
+                        $scope.$digest();
+                    }
+                }
+            }
+        });
+    };
 
-    // $scope.$watchCollection('usersSearch.search',search);
+    var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
+        related[$index]=[{name:[{lang:'en',text:'Test related'}], id:'TestRelatedId',packageId:'TestPackageId'}];
+        API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
+        .then(function(res){                                  // we're checking the details of belongs to
+            if(res.length===0) {
+                detailsFetchStep++;
+                if(detailsFetchStep===2) {
+                    applicationSearch.list[$index].details={ bundled:bundled[$index],related:related[$index] };
+                    applicationSearch.detailsLoadingDone[application.id]=true;
+                    $scope.$digest();
+                }
+            }
+            var z=0;
+            var packages=res;
+            var packagesToIgnore=[]; // WORKAROUND CASE #3
+            API.cui.getPersonPackages({'personId':userId})
+            .then(function(res){
+                res.forEach(function(pkgGrant,i){
+                    if(_.some(packages,function(pkg){
+                        return pkg.id===pkgGrant.servicePackage.id
+                    })){
+                        packagesToIgnore.push(pkgGrant.servicePackage.id);
+                    }
+                });
+                getRelatedAppsThatHaventBeenGranted(packagesToIgnore,packages,$index,application)
+            })
+            .fail(handleError);
+        })
+        .fail(handleError);
+    };
 
+    applicationSearch.detailsLoadingDone={};
+
+    applicationSearch.getRelatedAndBundled=function($index,application){
+        if(applicationSearch.detailsLoadingDone[application.id]){ // If we've already loaded the bundled and related apps for this app then we don't do it again
+            return;
+        }
+        detailsFetchStep=0;
+        getBundledApps($index,application);
+        getRelatedApps($index,application);
+    };
+
+    applicationSearch.saveRequestsAndCheckout=function(){
+        AppRequests.set(applicationSearch.packageRequests);
+        $state.go('applications.reviewRequest');
+    }
+
+    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService',
+function($state,GetCountries,$scope,$translate,LocaleService){
+    var base=this;
+
+    base.goBack=function(){
+        if($state.previous.name.name!==''){
+            $state.go($state.previous.name,$state.previous.params);
+        }
+        else {
+            $state.go('base');
+        }
+    };
+
+    base.generateHiddenPassword=function(password){
+        return Array(password.length+1).join('•');
+    };
+
+    base.passwordPolicies=[
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
+    // This returns the current language being used by the cui-i18n library, used for registration processes.
+    base.getLanguageCode = function(){
+        if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
+        else return LocaleService.getLocaleCode();
+    };
+
+    var setCountries=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetCountries(language)
+        .then(function(res){
+            base.countries=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
+    $scope.$on('languageChange',function(e,args){
+        // console.log(e);
+        setCountries(args);
+    });
+
+    setCountries($translate.proposedLanguage());
+
+
+}]);
+
+angular.module('app')
+.config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
+    '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
+function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+
+    localStorageServiceProvider.setPrefix('cui');
+
+    var templateBase='assets/app/'; // base directori of your partials
+
+
+    var returnCtrlAs=function(name,asPrefix){ // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
+        // returnCtrlAs('test') returns 'testCtrl as test'
+        return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
+    };
+
+    $stateProvider
+        .state('base',{
+            url: '/',
+            templateUrl: templateBase + 'base/base.html',
+            controller: returnCtrlAs('base')
+        })
+        .state('users',{
+            url: '/users',
+            templateUrl: templateBase + 'misc/users/users.html'
+        })
+        .state('users.search',{
+            url: '/',
+            templateUrl: templateBase + 'misc/users/search/users.search.html',
+            controller: returnCtrlAs('usersSearch')
+        })
+        .state('users.invitations',{
+            url: '/invitations',
+            templateUrl: templateBase + 'misc/invitations/search/users.invitations.search.html',
+            controller: returnCtrlAs('usersInvitations')
+        })
+        .state('users.invite',{
+            url: '/invite',
+            templateUrl: templateBase + 'misc/invitations/invite/users.invite.html',
+            controller: returnCtrlAs('usersInvite')
+        })
+        .state('users.activate',{
+            url: '/activate/:id',
+            templateUrl: templateBase + 'users/users.activate/users.activate.html',
+            controller: returnCtrlAs('usersActivate')
+        })
+        .state('registration',{
+            url: '/register',
+            templateUrl: templateBase + 'registration/registration.html'
+        })
+        .state('registration.invited',{ // invited Registration
+            url: '/invitation?id&code',
+            templateUrl: templateBase + 'registration/userInvited/users.register.html',
+            controller: returnCtrlAs('usersRegister')
+        })
+        .state('registration.walkup',{
+            url: '/walkup',
+            templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
+            controller: returnCtrlAs('usersWalkup')
+        })
+        .state('registration.tlo',{
+            url: '/top-level-org',
+            templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.registration.html',
+            controller: returnCtrlAs('tlo','new')
+        })
+        .state('registration.division',{
+            url: '/new-division',
+            templateUrl: templateBase + 'registration/newDivision/division.registration.html',
+            controller: returnCtrlAs('division','new')
+        })
+        .state('applications',{
+            url: '/applications',
+            templateUrl : templateBase + 'applications/applications.html'
+        })
+        .state('applications.myApplications',{
+            url: '/',
+            templateUrl: templateBase + 'applications/my-applications/my-applications.html',
+            controller: returnCtrlAs('myApplications')
+        })
+        .state('applications.myApplicationDetails',{
+            url: '/:packageId/:appId',
+            templateUrl: templateBase + 'applications/my-applications/my-application-details.html',
+            controller: returnCtrlAs('myApplicationDetails')
+        })
+        .state('applications.newRequest',{
+            url: '/request',
+            templateUrl: templateBase + 'applications/new-request&review/new-request.html',
+            controller: returnCtrlAs('newAppRequest')
+        })
+        .state('applications.search',{
+            url: '/search?name&category&page',
+            templateUrl: templateBase + 'applications/search/search.html',
+            controller: returnCtrlAs('applicationSearch')
+        })
+        .state('applications.reviewRequest',{
+            url: '/review',
+            templateUrl: templateBase + 'applications/new-request&review/review.html',
+            controller: returnCtrlAs('applicationReview')
+        })
+        .state('welcome',{
+            url: '/welcome',
+            templateUrl: templateBase + 'misc/welcome/welcome.html'
+        })
+        .state('welcome.screen',{
+            url: '/welcome',
+            templateUrl: templateBase + 'misc/welcome/welcome.screen.html',
+            controller: returnCtrlAs('welcome')
+        })
+        .state('misc',{
+            url: '/status',
+            templateUrl: templateBase + 'misc/misc.html'
+        })
+        .state('misc.404',{
+            url: '/404',
+            templateUrl: templateBase + 'misc/misc.404.html'
+        })
+        .state('misc.notAuth',{
+            url: '/notAuthorized',
+            templateUrl: templateBase + 'misc/misc.notAuth.html'
+        })
+        .state('misc.pendingStatus',{
+            url: '/pendingStatus',
+            templateUrl: templateBase + 'misc/misc.pendingStatus.html'
+        })
+        .state('misc.success',{
+            url: '/success',
+            templateUrl: templateBase + 'misc/misc.success.html'
+        })
+        .state('profile', {
+            url: '/profile',
+            templateUrl: templateBase + 'profile/profile.html'
+        })
+        .state('profile.user',{
+            url: '/user',
+            templateUrl: templateBase + 'profile/user/users.edit.html',
+            controller: returnCtrlAs('usersEdit')
+        })
+        .state('profile.organization', {
+            url: '/organization',
+            templateUrl: templateBase + 'profile/organization/organization.profile.html',
+            controller: returnCtrlAs('orgProfile')
+        });
+
+    // $locationProvider.html5Mode(true);
+
+    //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
+    $urlRouterProvider.otherwise( function($injector) {
+      var $state = $injector.get("$state");
+      $state.go('base');
+    });
+
+    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
+        // ADD LANGUAGES HERE ONLY
+        {
+            'en':'English',
+            'pt':'Portuguese',
+            'tr':'Turkish',
+            'zh':'Chinese (Simplified)',
+            'fr':'French',
+            'es':'Spanish',
+            'it':'Italian',
+            'ru':'Russian',
+            'th':'Thai',
+            'ja':'Japanese',
+            'de':'German'
+        }
+    )
+
+    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
+
+    var returnRegisterAvailableLanguageKeys=function(){
+        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
+        languageKeys.forEach(function(languageKey){
+            object[languageKey+'*']=languageKey //redirect language keys such as en_US to en or en-US to en
+        })
+        return object;
+    }
+
+    $translateProvider
+    .useLoader('LocaleLoader',{
+        url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
+        prefix:'locale-',
+        suffix:'.json'
+    })
+    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
+    .uniformLanguageTag('java')
+    .determinePreferredLanguage()
+    .fallbackLanguage(languageKeys);
+
+    $cuiI18nProvider.setLocalePreference(languageKeys);
+
+    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
+    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
+}]);
+
+angular.module('app')
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
+    //add more locales here
+    var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
+    for(var LanguageKey in languageNameObject){
+        LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
+    };
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        $state.previous = {};
+        $state.previous.name = fromState;
+        $state.previous.params = fromParams;
+    });
+
+    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
+
+    angular.forEach(icons,function(icon){
+        $http.get(icon,{
+            cache: $templateCache
+        });
+    });
+}]);
+
+
+
+angular.module('app')
+.factory('API',[function(){
+
+    var myCUI= cui.api();
+    myCUI.setServiceUrl('PRD'); // PRD
+    // myCUI.setServiceUrl('https://apistg.np.covapp.io'); // STG
+
+    var doAuth = function(){
+        return myCUI.doSysAuth({
+            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
+            // clientSecret: '8xFdMSR1IFSeFJjC'
+            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
+            clientSecret: 'MqKZsqUtAVAIiWkg'
+        });
+    };
+
+    var token = function(){
+        return myCUI.getToken();
+    };
+
+    return{
+        token:token,
+        cui:myCUI,
+        doAuth:doAuth
+    };
+}]);
+
+
+angular.module('app').factory('GetCountries',['$http',function($http){
+    return function(locale){
+        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
+    };
 }]);
 
 angular.module('app')
@@ -1337,6 +1104,81 @@ function(localStorageService,$scope,$stateParams,API){
     };
 
 
+
+}]);
+
+angular.module('app')
+.controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
+function(localStorageService,$scope,$stateParams,API,$timeout){
+    var usersInvitations=this;
+    usersInvitations.listLoading=true;
+    usersInvitations.invitor=[];
+    usersInvitations.invitee=[];
+    usersInvitations.invitorLoading=[];
+    usersInvitations.inviteeLoading=[];
+
+
+    API.cui.getPersonInvitations()
+    .then(function(res){
+        usersInvitations.listLoading=false;
+        usersInvitations.list=res;
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersInvitations.listLoading=false;
+        console.log(err);
+    });
+
+    // This is needed to "attach" the invitor's and the invitee's info to the invitation
+    // since the only parameter that we have from the invitation API is the ID
+    usersInvitations.getInfo=function(invitorId,inviteeId,index){
+        if(usersInvitations.invitor[index]===undefined){
+            //get invitor's details
+            usersInvitations.invitorLoading[index]=true;
+            usersInvitations.inviteeLoading[index]=true;
+
+            API.cui.getPerson({personId:invitorId})
+            .then(function(res){
+                usersInvitations.invitor[index]=res;
+                $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.invitorLoading[index]=false;
+                },500);
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+
+
+            //get invitee's details
+            API.cui.getPerson({personId:inviteeId})
+            .then(function(res){
+                usersInvitations.invitee[index]=res;
+                $scope.$apply();
+                $timeout(function(){
+                    usersInvitations.inviteeLoading[index]=false;
+                },500);
+            })
+            .fail(function(err){
+                console.log(err);
+            });
+        }
+    };
+
+
+    // var search=function(){
+    //     API.cui.getUser({data:usersSearch.search})
+    //     .then(function(res){
+    //         usersSearch.list=res;
+    //         $scope.$apply();
+    //     })
+    //     .fail(function(err){
+    //         // TBD : error handling
+    //         // console.log(err);
+    //     });
+    // };
+
+    // $scope.$watchCollection('usersSearch.search',search);
 
 }]);
 
@@ -1637,6 +1479,85 @@ angular.module('app')
 }]);
 
 angular.module('app')
+.controller('usersActivateCtrl',['$stateParams','API','Person',
+function($stateParams,API,Person){
+    var usersActivate=this;
+
+    var personParams=[{
+        name:'personId',
+        value: $stateParams.id
+    }];
+
+    API.cui.activatePerson({params:personParams})
+    .then(function(res){
+        return Person.grantCcaPackage($stateParams.id);
+    })
+    .then(function(res){
+        return Person.grantExchangePackage($stateParams.id);
+    })
+    .then(function(res){
+        console.log(res);
+    })
+    .fail(function(err){
+        console.log(err);
+    });
+
+}]);
+
+angular.module('app')
+.controller('usersSearchCtrl',['localStorageService', '$scope','API','Person',
+ function(localStorageService, $scope, API,Person){
+    var usersSearch=this;
+    usersSearch.listLoading=true;
+
+    API.doAuth()
+    .then(function(){
+        API.cui.getPersons()
+        .then(function(res){
+            usersSearch.listLoading=false;
+            usersSearch.list=res;
+            usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
+            $scope.$apply();
+        })
+        .fail(function(err){
+            usersSearch.listLoading=false;
+            // console.log(err);
+        });
+    });
+
+
+    var search=function(){
+        // this if statement stops the search from executing
+        // when the controller first fires  and the search object is undefined/
+        // once pagination is impletemented this won't be needed
+        if(usersSearch.search){
+            console.log(usersSearch.search);
+            API.cui.getPersons({data:usersSearch.search})
+            .then(function(res){
+                usersSearch.list=res;
+                $scope.$apply();
+            })
+            .fail(function(err){
+                // TBD : error handling
+                // console.log(err);
+            });
+        }
+    };
+
+    $scope.$watchCollection('usersSearch.search',search);
+
+
+
+}]);
+
+angular.module('app')
+.controller('welcomeCtrl',['$scope', 
+	function($scope) {
+		var welcome = this;
+}]); 
+
+
+angular.module('app')
 .controller('orgProfileCtrl',['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
 
@@ -1660,6 +1581,157 @@ function($scope,$stateParams,API) {
     .fail(function(err) {
         console.log(err);
     });
+
+}]);
+
+
+angular.module('app')
+.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
+function(localStorageService,$scope,$stateParams,$timeout,API){
+    'use strict';
+
+    var usersEdit = this;
+    var currentCountry;
+    var userId='RN3BJI54';
+
+    usersEdit.loading = true;
+    usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
+    usersEdit.tempLanguages = ['en', 'zh'];
+
+    usersEdit.updatePerson = function() {
+        // Updates user's Person object in IDM
+        usersEdit.loading = true;
+
+        if (!usersEdit.userCountry) {
+            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
+        }
+        else {
+            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
+        }
+
+        usersEdit.user = usersEdit.tempUser;
+
+        API.doAuth()
+        .then(function() {
+            return API.cui.updatePerson({personId: usersEdit.user.id, data:usersEdit.user});
+        })
+        .then(function() {
+            usersEdit.loading = false;
+        })
+        .fail(function(error) {
+            console.log(error);
+            usersEdit.loading = false;
+        });
+    };
+
+    usersEdit.updatePersonSecurityAccount = function() {
+        // Updates user's Security Account in IDM
+        // Currently API has issue when updating
+    };
+
+    var selectQuestionsForUser = function() {
+        var questions = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
+            this.push(question);
+        }, questions);
+
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion1.answer = '';
+        usersEdit.challengeQuestion2 = questions[1];
+        usersEdit.challengeQuestion2.answer = '';
+        $scope.$apply();
+    };
+
+    API.doAuth()
+    .then(function(res) {
+        return  API.cui.getPerson({personId: userId});
+    })
+    .then(function(res) {
+        // If the person has no addresses set we need to initialize it as an array
+        // to follow the data structure
+        if (!res.addresses) {
+            res.addresses = [{}];
+            res.addresses[0].streets = [[]];
+        }
+        usersEdit.user = res;
+        usersEdit.tempUser = res;
+        currentCountry = res.addresses[0].country;
+        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
+    })
+    .then(function(res) {
+        usersEdit.userSecurityQuestions = res;
+        usersEdit.tempUserSecurityQuestions = res;
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res) {
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
+        return API.cui.getPersonPassword({personId: usersEdit.user.id});
+    })
+    .then(function(res) {
+        usersEdit.userPassword = res;
+        usersEdit.tempUserPasswordAccount = res;
+        $scope.$digest();
+        usersEdit.loading = false;
+    })
+    .fail(function(err) {
+        console.log(err);
+        $scope.$digest();
+        usersEdit.loading = false;
+    });
+
+    usersEdit.saveChallengeQuestions = function() {
+        var updatedChallengeQuestions = {};
+        updatedChallengeQuestions = [{
+            question: {
+                text: usersEdit.challengeQuestion1.question[0].text,
+                lang: usersEdit.challengeQuestion1.question[0].lang,
+                answer:   usersEdit.challengeAnswer1,
+                index: 1 },
+            owner: {
+                id: usersEdit.challengeQuestion1.owner.id }
+            },{
+            question: {
+                text: usersEdit.challengeQuestion2.question[0].text,
+                lang: usersEdit.challengeQuestion2.question[0].lang,
+                answer:   usersEdit.challengeAnswer2,
+                index: 2 },
+            owner: {
+                id: usersEdit.challengeQuestion1.owner.id }
+            }
+        ];
+
+        usersEdit.saving = true;
+        usersEdit.fail = false;
+        usersEdit.success = false;
+
+        API.cui.updateSecurityQuestions({
+          personId: $stateParams.id,
+          data: {
+            version: '1',
+            id: usersEdit.user.id,
+            questions: updatedChallengeQuestions
+            }
+        })
+        .then(function(res) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.success = true;
+            }, 300);
+        })
+        .fail(function(err) {
+            $timeout(function() {
+                usersEdit.saving = false;
+                usersEdit.fail = true;
+            }, 300);
+        });
+    };
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
+    };
 
 }]);
 
@@ -2308,85 +2380,6 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
 
 }]);
-
-
-angular.module('app')
-.controller('usersActivateCtrl',['$stateParams','API','Person',
-function($stateParams,API,Person){
-    var usersActivate=this;
-
-    var personParams=[{
-        name:'personId',
-        value: $stateParams.id
-    }];
-
-    API.cui.activatePerson({params:personParams})
-    .then(function(res){
-        return Person.grantCcaPackage($stateParams.id);
-    })
-    .then(function(res){
-        return Person.grantExchangePackage($stateParams.id);
-    })
-    .then(function(res){
-        console.log(res);
-    })
-    .fail(function(err){
-        console.log(err);
-    });
-
-}]);
-
-angular.module('app')
-.controller('usersSearchCtrl',['localStorageService', '$scope','API','Person',
- function(localStorageService, $scope, API,Person){
-    var usersSearch=this;
-    usersSearch.listLoading=true;
-
-    API.doAuth()
-    .then(function(){
-        API.cui.getPersons()
-        .then(function(res){
-            usersSearch.listLoading=false;
-            usersSearch.list=res;
-            usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersSearch.listLoading=false;
-            // console.log(err);
-        });
-    });
-
-
-    var search=function(){
-        // this if statement stops the search from executing
-        // when the controller first fires  and the search object is undefined/
-        // once pagination is impletemented this won't be needed
-        if(usersSearch.search){
-            console.log(usersSearch.search);
-            API.cui.getPersons({data:usersSearch.search})
-            .then(function(res){
-                usersSearch.list=res;
-                $scope.$apply();
-            })
-            .fail(function(err){
-                // TBD : error handling
-                // console.log(err);
-            });
-        }
-    };
-
-    $scope.$watchCollection('usersSearch.search',search);
-
-
-
-}]);
-
-angular.module('app')
-.controller('welcomeCtrl',['$scope', 
-	function($scope) {
-		var welcome = this;
-}]); 
 
 
 })(angular);

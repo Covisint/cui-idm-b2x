@@ -4,7 +4,7 @@
   min-height: 400px;
 
   @media screen and (min-width: 701px) {
-    padding: em(15) em(55) 0 em(65);
+    padding: em(15) em(55) em(15) em(65);
   }
 
   &--full {
@@ -32,7 +32,7 @@
 .cui-applications__desktop-tabs {
   display: none;
 
-  @media screen and (min-width: 701px) { 
+  @media screen and (min-width: 701px) {
     display: flex;
   }
 }
@@ -104,7 +104,7 @@
     .cui-applications__category {
       @extend %h5--bold;
     }
-    
+
   }
 
 }
@@ -199,4 +199,3 @@
   }
 
 }
-

@@ -17,46 +17,48 @@
       <span class="snap-menu--option" snap-close ui-sref="welcome.screen">Welcome</span>
       <span class="snap-menu--option" snap-close ui-sref="users.search">Search Users</span>
       <span class="snap-menu--option" snap-close ui-sref="users.invitations">User Invitations</span>
-      <span class="snap-menu--option" snap-close ui-sref="users.walkupRegistration">User Walk Up Registration</span>
-      <span class="snap-menu--option" snap-close ui-sref="users.register">Invited User Registration</span>
-      <span class="snap-menu--option" snap-close ui-sref="tlo.registration">New TLO Registration</span>
-      <span class="snap-menu--option" snap-close ui-sref="division.registration">New Division Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="registration.walkup">User Walk Up Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="registration.invited">Invited User Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="registration.tlo">New TLO Registration</span>
+      <span class="snap-menu--option" snap-close ui-sref="registration.division">New Division Registration</span>
       <span class="snap-menu--option" snap-close ui-sref="misc.404">404 Not Found</span>
       <span class="snap-menu--option" snap-close ui-sref="misc.notAuth">Not Authorized</span>
       <span class="snap-menu--option" snap-close ui-sref="misc.pendingStatus">Pending Status</span>
       <span class="snap-menu--option" snap-close ui-sref="misc.success">Success</span>
       <span class="snap-menu--option" snap-close ui-sref="applications.myApplications">My applications</span>
-      <span class="snap-menu--option" snap-close ui-sref="applications.newRequest">My applications</span>
-      <span class="snap-menu--option" snap-close ui-sref="organization.profile">Organization Profile</span>
+      <span class="snap-menu--option" snap-close ui-sref="applications.newRequest">New app request</span>
+      <span class="snap-menu--option" snap-close ui-sref="profile.organization">Organization Profile</span>
+      <span class="snap-menu--option" snap-close ui-sref="profile.user">My Profile</span>
 
     </snap-drawer>
-    <snap-content snap-opt-disable="'right'">
+    <snap-content snap-opt-disable="'right'" class-toggle toggled-class="menu-toggled" class="menu-toggled">
       <header class="cui-header">
         <div class="cui-header__top">
-          <div class="menu-toggle" snap-toggle="left" ng-click="base.toggleDesktopMenu()" ng-class="!base.desktopMenu ? 'active' : ''" style="margin-right:20px">
+          <div class="menu-toggle" snap-toggle="left" ng-click="toggleClass()" ng-class="{'active' : !toggled}" style="margin-right:20px">
             <div class="menu-toggle--button"></div>
           </div>
         </div>
       </header>
-      <div class="desktop-menu" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
+      <div class="desktop-menu" ng-class="{'desktop-menu--collapse' : !toggled}">
 
-        <span class="desktop-menu--option" ui-sref="welcome.screen">Welcome</span>
-        <span class="desktop-menu--option" ui-sref="users.search">Search Users</span>
-        <span class="desktop-menu--option" ui-sref="users.invitations">User Invitations</span>
-        <span class="desktop-menu--option" ui-sref="users.walkupRegistration">User Walk Up Registration</span>
-        <span class="desktop-menu--option" ui-sref="users.register">Invited User Registration</span>
-        <span class="desktop-menu--option" ui-sref="tlo.registration">New TLO Registration</span>
-        <span class="desktop-menu--option" ui-sref="division.registration">New Division Registration</span>
-        <span class="desktop-menu--option" ui-sref="misc.404">404 Not Found</span>
-        <span class="desktop-menu--option" ui-sref="misc.notAuth">Not Authorized</span>
-        <span class="desktop-menu--option" ui-sref="misc.pendingStatus">Pending Status</span>
-        <span class="desktop-menu--option" ui-sref="misc.success">Success</span>
-        <span class="desktop-menu--option" ui-sref="applications.myApplications">My applications</span>
-        <span class="desktop-menu--option" ui-sref="applications.newRequest">New application request</span>
-        <span class="desktop-menu--option" ui-sref="profile.organization">Organization Profile</span>
+        <span class="desktop-menu--option" snap-close ui-sref="welcome.screen">Welcome</span>
+        <span class="desktop-menu--option" snap-close ui-sref="users.search">Search Users</span>
+        <span class="desktop-menu--option" snap-close ui-sref="users.invitations">User Invitations</span>
+        <span class="desktop-menu--option" snap-close ui-sref="registration.walkup">User Walk Up Registration</span>
+        <span class="desktop-menu--option" snap-close ui-sref="registration.invited">Invited User Registration</span>
+        <span class="desktop-menu--option" snap-close ui-sref="registration.tlo">New TLO Registration</span>
+        <span class="desktop-menu--option" snap-close ui-sref="registration.division">New Division Registration</span>
+        <span class="desktop-menu--option" snap-close ui-sref="misc.404">404 Not Found</span>
+        <span class="desktop-menu--option" snap-close ui-sref="misc.notAuth">Not Authorized</span>
+        <span class="desktop-menu--option" snap-close ui-sref="misc.pendingStatus">Pending Status</span>
+        <span class="desktop-menu--option" snap-close ui-sref="misc.success">Success</span>
+        <span class="desktop-menu--option" snap-close ui-sref="applications.myApplications">My applications</span>
+        <span class="desktop-menu--option" snap-close ui-sref="applications.newRequest">New app request</span>
+        <span class="desktop-menu--option" snap-close ui-sref="profile.organization">Organization Profile</span>
+        <span class="desktop-menu--option" snap-close ui-sref="profile.user">My Profile</span>
 
       </div>
-      <div class="cui-nav__content-wrapper" ng-class="base.desktopMenu ? '' : 'desktop-menu--collapse'">
+      <div class="cui-nav__content-wrapper" ng-class="{'desktop-menu--collapse' : !toggled}">
         <div ui-view></div>
         <div class="cui-tile cui-footer">
           <div ng-translate-language-select class="cui-footer__translate"></div>
