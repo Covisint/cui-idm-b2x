@@ -462,7 +462,7 @@ h1, h2, h3, h4, h5, h6 {
 .h3 {
   font-size: 1.75em; }
 
-.h4 {
+.h4, .cui-modal__secondary-message {
   font-size: 1.5em; }
 
 .h5, .cui-text-area__label, .cui-field-val__field, .cui-organization__page-title {
@@ -471,12 +471,12 @@ h1, h2, h3, h4, h5, h6 {
 .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-text-area__label, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title, .cui-action__title {
   font-family: 'lato-black', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
 
-.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category, .cui-organization__page-title {
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-modal__primary-message, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-modal__secondary-message, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category, .cui-organization__page-title {
   font-family: 'lato-bold', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -4239,6 +4239,63 @@ Styleguide Blocks.Field-Value
     font-size: 1.125em;
     margin-bottom: 0.3125em; }
 
+/*
+Modal example to be added via iframe
+*/
+.cui-modal {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 100; }
+  .cui-modal--hide {
+    display: none; }
+  .cui-modal__pane {
+    border-radius: 6px;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background: #fff;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    min-height: 19.25em;
+    padding: 1.875em 5em 2.125em;
+    text-align: center;
+    width: 80%; }
+    @media screen and (min-width: 701px) {
+      .cui-modal__pane {
+        width: 38.292682926829%; } }
+  .cui-modal__icon {
+    color: #1d6572;
+    height: 80px;
+    width: 80px; }
+    .cui-modal__icon svg {
+      fill: #1d6572;
+      height: 5em;
+      width: 5em; }
+  .cui-modal__primary-message {
+    color: #343534;
+    font-size: 1.875em;
+    margin-top: 0.8333333333em; }
+  .cui-modal__secondary-message {
+    color: #343534;
+    margin-top: 0.75em;
+    max-width: 9.375em; }
+
 .cui-nav__content-wrapper {
   min-height: 750px; }
 
@@ -4438,7 +4495,7 @@ inline-edit .angucomplete-dropdown {
   min-height: 400px; }
   @media screen and (min-width: 701px) {
     .cui-applications__main-container {
-      padding: 0.9375em 3.4375em 0 4.0625em; } }
+      padding: 0.9375em 3.4375em 0.9375em 4.0625em; } }
   @media screen and (max-width: 700px) {
     .cui-applications__main-container--full {
       padding: 0.9375em 0; } }
