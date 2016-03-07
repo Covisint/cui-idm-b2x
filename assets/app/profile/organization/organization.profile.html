@@ -1,4 +1,4 @@
-<div class="code-info">Markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/angular-templates/profiles/organization.profile.html" target="blank">here</a>, the javascript <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/js/app/profiles/app.organization.profile.js" class="cui-link" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/profile/organization" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
 <div class="cui-organization">
   <div class="cui-action">
     <div class="cui-action__title">
@@ -11,7 +11,7 @@
       </div>
       <div ng-if="orgProfile.loadingDone">
         <h3 class="cui-organization__page-title">{{orgProfile.organization.name}}</h3>
-        
+
         <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
         <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
           <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].streets[0]}}</span>
