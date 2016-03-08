@@ -4128,14 +4128,14 @@ Styleguide Blocks.Action-Bar
   padding: 0 0.8125em; }
   @media screen and (min-width: 701px) {
     .cui-action {
-      padding: 0 3.4375em 0 4.0625em; } }
+      padding: 1.1875em 3.4375em 0 4.0625em; } }
   .cui-action--alt .cui-action__title {
     color: #343534; }
   .cui-action--alt .cui-action__icon,
   .cui-action--alt .cui-action__icon--lg {
     cursor: pointer;
     fill: #343534;
-    height: 1.5625em;
+    height: 1.25em;
     min-width: 26px;
     width: auto;
     transition: fill .15s; }
@@ -4186,17 +4186,43 @@ Styleguide Blocks.Action-Bar
         -webkit-flex: .25;
             -ms-flex: .25;
                 flex: .25; } }
+  .cui-action__action-container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-left: 0.9375em; }
+    .cui-action__action-container .cui-action__icon {
+      margin: 0 auto; }
+  .cui-action__action-label {
+    color: #6a98a0;
+    font-size: 11px;
+    text-align: center; }
   .cui-action__icon, .cui-action__icon--lg {
     cursor: pointer;
     fill: #6a98a0;
-    height: 1.5625em;
     min-width: 26px;
     width: auto; }
     .cui-action__icon use, .cui-action__icon--lg use {
       color: #6a98a0; }
+  .cui-action__icon {
+    height: 1.25em; }
   .cui-action__icon--lg {
     height: 2.5em;
     width: 2.0625em; }
+  .cui-action__icon--new, .cui-action__icon--close {
+    fill: #fff;
+    height: 2.8125em;
+    margin-left: 1.875em;
+    margin-top: -2px;
+    width: auto; }
+  .cui-action__icon--new use {
+    color: #1d6572; }
   .cui-action__icon-counter {
     color: #6a98a0;
     font-family: lato-bold;
