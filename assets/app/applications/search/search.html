@@ -3,20 +3,21 @@
     <div class="cui-action">
         <div class="cui-action__title">{{'new-request' | translate}}</div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
             </svg>
         </div>
     </div>
-    <div class="cui-action cui-action--alt-bg">
-        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest">< {{'categories' | translate}}</div>
+    <div class="cui-action cui-action--alt">
+        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest">< 
+            {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
             <input class="cui-input-button__input" ng-model="applicationSearch.nameSearch" ng-keypress="applicationSearch.listenForEnter($event)" placeholder="{{'filter-list' | translate}}"/>
             <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--lg" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} <!-- < this will be the little number above the folder icon --></sup>
