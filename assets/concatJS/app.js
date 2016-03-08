@@ -283,7 +283,15 @@ function(API,$scope,$state,AppRequests){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    // AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    var appsBeingRequested=AppRequests.get();
+    newAppRequest.numberOfRequests=0;
+    newAppRequest.appsBeingRequested=[];
+    Object.keys(appsBeingRequested).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        newAppRequest.numberOfRequests++;
+        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
+    });
+
 
     var user;
     var getListOfCategories=function(services){
@@ -1602,6 +1610,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         })
         .then(function() {
             usersEdit.loading = false;
+            $scope.$digest();
         })
         .fail(function(error) {
             console.log(error);
@@ -1612,6 +1621,16 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.resetEdit = function(master, temp) {
         // Reset temporary variable to the master variable
         angular.copy(master, temp);
+    };
+
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === '') {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
     };
 
     usersEdit.updatePersonSecurityAccount = function() {
@@ -1662,13 +1681,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.userPassword = res;
         usersEdit.tempUserPasswordAccount = res;
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     })
     .fail(function(err) {
         console.log(err);
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     });
 
     usersEdit.saveChallengeQuestions = function() {
