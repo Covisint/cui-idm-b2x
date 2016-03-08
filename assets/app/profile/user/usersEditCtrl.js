@@ -43,6 +43,16 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         angular.copy(master, temp);
     };
 
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === '') {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
+    };
+
     usersEdit.updatePersonSecurityAccount = function() {
         // Updates user's Security Account in IDM
         // Currently API has issue when updating
