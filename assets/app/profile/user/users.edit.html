@@ -9,7 +9,13 @@
   </div>
 
   <div class="cui-users__main-container">
-    <div class="cui-users__profile-media">
+
+    <!-- Page Loading -->
+    <div class="cui-loading__container" ng-if="usersEdit.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <div class="cui-users__profile-media" ng-if="!usersEdit.loading">
       <div class="cui-media">
         <div class="cui-media__image-container">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
@@ -228,6 +234,8 @@
               <div ng-repeat="phone in usersEdit.tempUser.phones">
                 <span class="cui-field-val__field">{{phone.type}}: </span>
                 <input class="cui-field-val__val" type="text" ng-model="phone.number">
+                <div ng-if=>
+                </div>
               </div>
               <a class="cui-link" href="" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-save' | translate}}</a>
               <a class="cui-link" href="" ng-click="usersEdit.resetEdit(usersEdit.user, usersEdit.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>

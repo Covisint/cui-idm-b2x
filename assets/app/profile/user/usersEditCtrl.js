@@ -30,6 +30,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         })
         .then(function() {
             usersEdit.loading = false;
+            $scope.$digest();
         })
         .fail(function(error) {
             console.log(error);
@@ -90,13 +91,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.userPassword = res;
         usersEdit.tempUserPasswordAccount = res;
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     })
     .fail(function(err) {
         console.log(err);
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     });
 
     usersEdit.saveChallengeQuestions = function() {
