@@ -16,12 +16,6 @@ function(API,$scope,$state,AppRequests){
     var getListOfCategories=function(services){
         var categoryList=[]; // WORKAROUND CASE # 7
         services.forEach(function(service){
-            service.category=[  // TODO : FORCING A CATEGORY FOR STYLING PURPOSES, NONE OF THE APPS HAVE CATEGORIES RIGHT NOW
-                {
-                    lang:'en',
-                    text:'Admin'
-                }
-            ];
             if(service.category){
                 var serviceCategoryInCategoryList = _.some(categoryList,function(category){
                     return angular.equals(category,service.category);
@@ -40,20 +34,19 @@ function(API,$scope,$state,AppRequests){
     })
     .then(function(res){
         user=res;
-        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
+        return API.cui.getPackages(); // WORKAROUND CASE #1
     })
     .then(function(res){
         var i=0;
-        var packageGrants=res;
-        packageGrants.forEach(function(pkgGrant){
-            API.cui.getServices({'packageId':pkgGrant.servicePackage.id})
+        var packages=res;
+        packages.forEach(function(pkg){
+            API.cui.getServices({'packageId':pkg.id})
             .then(function(res){
                 i++;
                 res.forEach(function(service){
-                    service.status=pkgGrant.status;
                     services.push(service);
                 });
-                if(i===packageGrants.length){
+                if(i===packages.length){
                     newAppRequest.categories=getListOfCategories(services);
                     newAppRequest.loadingDone=true;
                     $scope.$digest();

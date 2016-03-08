@@ -5,8 +5,9 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     var userId='RN3BJI54'; // this will be replaced with the current user ID
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
-    var orgPackageList=[],
-        userPackageList=[]; // WORKAROUND CASE #1
+    var packageList=[],
+        userPackageList=[], // WORKAROUND CASE #1
+        userOrg;
 
     var handleError=function(err){
         console.log('Error \n', err);
@@ -38,20 +39,20 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         applicationSearch.doneLoading = true;
     };
 
-    var getApplications=function(orgPackageListPassed){
+    var getApplications=function(packageListPassed, packagesTheOrgHasGrants){
         var listOfAvailabeApps=[],i=0;
-        var listOfOrgPackages=orgPackageListPassed || orgPackageList; // so we can call this without passing the orgPackageList again
-        listOfOrgPackages.forEach(function(orgPackage){
-            if(orgPackage.requestable){
-                API.cui.getPackageServices({'packageId':orgPackage.id})
+        var listOfPackages=packageListPassed || packageList; // so we can call this without passing the orgPackageList again
+        listOfPackages.forEach(function(pkg){
+            if(pkg.requestable){
+                API.cui.getPackageServices({'packageId':pkg.id})
                 .then(function(res){
                     i++
                     res.forEach(function(service){
-                        service.packageId=orgPackage.id;
-                        service.owningOrganization=orgPackage.owningOrganization;
+                        if(packagesTheOrgHasGrants.indexOf(pkg.id)>-1) service.orgHasGrants=true; // if the org has grants to the package
+                        service.packageId=pkg.id;
                         listOfAvailabeApps.push(service);
                     });
-                    if(i===listOfOrgPackages.length){
+                    if(i===listOfPackages.length){
                         applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
                         applicationSearch.parseAppsByCategoryAndName()
                         $scope.$digest();
@@ -60,7 +61,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
                 .fail(handleError);
             }
             else i++;
-            if(i===listOfOrgPackages.length){
+            if(i===listOfPackages.length){
                 applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
                 applicationSearch.parseAppsByCategoryAndName();
                 $scope.$digest();
@@ -69,24 +70,21 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     };
 
     var getAvailableApplications=function(userPackageGrantList){ // get apps that the user can request and doesn't already have grants to
-        orgPackageList.forEach(function(orgPackage,i){
-            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list of
-                return orgPackage.id===userPackageGrant.servicePackage.id; // packages granted to an org, remove that package from the list.
+        packageList.forEach(function(pkg,i){
+            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list
+                return pkg.id===userPackageGrant.servicePackage.id; // remove that package from the list.
             });
-            if(userGrantInPackageList) orgPackageList.splice(i,1);
+            if(userGrantInPackageList) packageList.splice(i,1);
         });
-        var i=0;
-        orgPackageList.forEach(function(orgPackage){
-            API.cui.getOrganization({'organizationId':orgPackage.owningOrganization.id})
-            .then(function(res){
-                i++;
-                orgPackage.owningOrganization=res; // WORKAROUND CASE # 8
-                if(i===orgPackageList.length){
-                    getApplications(orgPackageList);
-                }
-            })
-            .fail(handleError);
+        API.cui.getOrganizationPackages({'organizationId':userOrg})
+        .then(function(res){
+            var packagesTheOrgHasGrants=[];
+            res.forEach(function(pkgGrant){
+                packagesTheOrgHasGrants.push(pkgGrant.servicePackage.id);
+            });
+            getApplications(packageList, packagesTheOrgHasGrants);
         })
+        .fail(handleError);
     };
 
     var getUserPackageGrants=function(){ // gets applications that are available for request
@@ -103,23 +101,17 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         return API.cui.getPerson({personId:userId});
     })
     .then(function(res){
+        userOrg=res.organization.id;
         user=res;
-        return API.cui.getOrganizationPackages({'organizationId':user.organization.id}); // WORKAROUND CASE #1
+        return API.cui.getPackages(); // WORKAROUND CASE #1
     })
     .then(function(res){
         var i=0;
-        var packageGrants=res;
-        packageGrants.forEach(function(pkgGrant){
-            API.cui.getPackage({'packageId':pkgGrant.servicePackage.id})
-            .then(function(res){
-                i++;
-                orgPackageList.push(res);
-                if(i===packageGrants.length){
-                    getUserPackageGrants();
-                }
-            })
-            .fail(handleError);
+        var packages=res;
+        packages.forEach(function(pkg){
+            packageList.push(pkg);
         });
+        getUserPackageGrants();
     })
    .fail(handleError);
 
@@ -179,7 +171,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         var z=0;
         packages.forEach(function(pkg){
             if(packagesToIgnore.indexOf(pkg.id)===-1) {
-                API.cui.getServices({ 'packageId':pkg.id })
+                API.cui.getPackageServices({ 'packageId':pkg.id })
                 .then(function(res){
                     z++;
                     res.forEach(function(app){ // for each of the services in that child package
@@ -212,7 +204,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     };
 
     var getRelatedApps=function($index,application){ // WORKAROUND CASE #3
-        related[$index]=[{name:[{lang:'en',text:'Test related'}], id:'TestRelatedId',packageId:'TestPackageId'}];
+        related[$index]=[];
         API.cui.getPackages({qs:[['parentPackage.id',application.packageId]]}) // Get the packages that are children of the package that the app
         .then(function(res){                                  // we're checking the details of belongs to
             if(res.length===0) {

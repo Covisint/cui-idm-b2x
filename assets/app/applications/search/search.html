@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="cui-action cui-action--alt">
-        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest">< 
+        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest"><
             {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
@@ -33,7 +33,7 @@
                 <!-- application image -->
                 <div class="cui-applications__expandable-info" ng-click="toggleExpand();!applicationSearch.detailsLoadingDone[application.id] && applicationSearch.getRelatedAndBundled($index,application);">
                     <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
-                    <span class="cui-expandable__title-middle" >{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                    <span class="cui-expandable__title-middle" ng-if="application.orgHasGrants">{{'granted-to-my-org' | translate}}</span>
                     <div></div>
                 </div>
                 <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
