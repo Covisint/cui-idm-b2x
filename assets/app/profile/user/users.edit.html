@@ -9,7 +9,13 @@
   </div>
 
   <div class="cui-users__main-container">
-    <div class="cui-users__profile-media">
+
+    <!-- Page Loading -->
+    <div class="cui-loading__container" ng-if="usersEdit.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <div class="cui-users__profile-media" ng-if="!usersEdit.loading">
       <div class="cui-media">
         <div class="cui-media__image-container">
           <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
@@ -43,12 +49,12 @@
             <div ng-if="toggled">
               <!-- First Name Edit -->
               <span class="cui-field-val__field">{{'cui-first-name' | translate}}: </span>
-              <input class="cui-field-val__val" type="text" name="firstName" ng-required="true" ng-model="usersEdit.tempUser.name.given">
+              <input class="cui-field-val__val" type="text" name="firstName" ng-model="usersEdit.tempUser.name.given">
               <!-- Last Name Edit -->
               <span class="cui-field-val__field">{{'cui-last-name' | translate}}: </span>
-              <input class="cui-field-val__val" type="text" name="lastName" ng-required="true" ng-model="usersEdit.tempUser.name.surname">
+              <input class="cui-field-val__val" type="text" name="lastName" ng-model="usersEdit.tempUser.name.surname">
               <!-- Name Edit Form Controls -->
-              <a class="cui-link" href="" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-update' | translate}}</a>
+              <a class="cui-link" href="" ng-if="usersEdit.tempUser.name.given && usersEdit.tempUser.name.surname" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-update' | translate}}</a>
               <a class="cui-link" href="" ng-click="usersEdit.resetEdit(usersEdit.user, usersEdit.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
             </div>
           </div>
@@ -74,7 +80,7 @@
               <p>{{'cui-email' | translate}}: <input type="text" ng-model="usersEdit.tempUser.email"></p>
               <!-- Email Edit Controls -->
               <div class="cui-users__password-reset">
-                <a class="cui-link" href="" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-save' | translate}}</a>
+                <a class="cui-link" href="" ng-if="usersEdit.tempUser.email" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-save' | translate}}</a>
                 <a class="cui-link" href="" ng-click="usersEdit.resetEdit(usersEdit.user, usersEdit.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
               </div>
             </div>
@@ -227,9 +233,11 @@
             <div ng-if="toggled">
               <div ng-repeat="phone in usersEdit.tempUser.phones">
                 <span class="cui-field-val__field">{{phone.type}}: </span>
-                <input class="cui-field-val__val" type="text" ng-model="phone.number">
+                <input class="cui-field-val__val" type="text" ng-model="phone.number" ng-change="usersEdit.checkIfFieldsAreEmpty(phone.number)">
+                <div ng-if=>
+                </div>
               </div>
-              <a class="cui-link" href="" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-save' | translate}}</a>
+              <a class="cui-link" href="" ng-if="!usersEdit.emptyFieldError" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-save' | translate}}</a>
               <a class="cui-link" href="" ng-click="usersEdit.resetEdit(usersEdit.user, usersEdit.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
             </div>
           </div>
