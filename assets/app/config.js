@@ -139,6 +139,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/organization',
             templateUrl: templateBase + 'profile/organization/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
+        })
+        .state('empty', {
+            url: '/empty',
+            templateUrl: templateBase + 'empty/empty.html',
+            controller: returnCtrlAs('empty')
         });
 
     // $locationProvider.html5Mode(true);

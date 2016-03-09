@@ -22,7 +22,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
         }
 
-        usersEdit.user = usersEdit.tempUser;
+        angular.copy(usersEdit.tempUser, usersEdit.user);
 
         API.doAuth()
         .then(function() {
@@ -30,11 +30,27 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         })
         .then(function() {
             usersEdit.loading = false;
+            $scope.$digest();
         })
         .fail(function(error) {
             console.log(error);
             usersEdit.loading = false;
         });
+    };
+
+    usersEdit.resetEdit = function(master, temp) {
+        // Reset temporary variable to the master variable
+        angular.copy(master, temp);
+    };
+
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === '') {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
     };
 
     usersEdit.updatePersonSecurityAccount = function() {
@@ -67,10 +83,10 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
-        usersEdit.user = res;
-        usersEdit.tempUser = res;
+        usersEdit.user = angular.copy(res);
+        usersEdit.tempUser = angular.copy(res);
         currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id})
+        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id});
     })
     .then(function(res) {
         usersEdit.userSecurityQuestions = res;
@@ -85,13 +101,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.userPassword = res;
         usersEdit.tempUserPasswordAccount = res;
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     })
     .fail(function(err) {
         console.log(err);
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     });
 
     usersEdit.saveChallengeQuestions = function() {

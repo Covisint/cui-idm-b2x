@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="cui-action cui-action--alt">
-        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest">< 
+        <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest"><
             {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
@@ -21,6 +21,12 @@
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} <!-- < this will be the little number above the folder icon --></sup>
+
+
+              <!-- @SHANE THESE 3 LINES ARE FOR THE POPOVER THAT WILL OPEN WHEN CLICKING ON THE FOLDER -->
+            {{'collected-items-for-request' | translate}}
+            <span ng-repeat="(key,value) in applicationSearch.packageRequests">{{value.name | cuiI18n}}</span>
+            <span ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
         </div>
     </div>
     <div class="cui-applications__main-container">
@@ -33,7 +39,7 @@
                 <!-- application image -->
                 <div class="cui-applications__expandable-info" ng-click="toggleExpand();!applicationSearch.detailsLoadingDone[application.id] && applicationSearch.getRelatedAndBundled($index,application);">
                     <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
-                    <span class="cui-expandable__title-middle" >{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
+                    <span class="cui-expandable__title-middle" ng-if="application.orgHasGrants">{{'granted-to-my-org' | translate}}</span>
                     <div></div>
                 </div>
                 <!-- Not sure what the exclamation mark bubble means or what triggers it, but you can put it in here @Shane, I'll come back to this once we get an answer -->
