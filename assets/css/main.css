@@ -493,7 +493,9 @@ Markup: <a class="cui-link" href="">Link Style</a>
 
 Styleguide Elements.Texts.Links
 */
-.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link {
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link,
+.cui-profile .cui-profile__link,
+.cui-header__user .cui-profile__link {
   color: #6a98a0;
   cursor: pointer;
   text-decoration: none; }
@@ -1362,7 +1364,7 @@ Markup:
 
 Styleguide Elements.Icons
 */
-.cui-icon {
+.cui-icon, .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron, .cui-profile--active .cui-profile__chevron, .cui-header__search {
   fill: #85a6ad;
   height: 24px;
   width: 24px; }
@@ -1730,20 +1732,26 @@ Styleguide Blocks.Form
 Profile
 
 Markup: 
-<div class="cui-profile" onclick="toggle_visibility('cui-profile__popup');">
+<div class="cui-profile" >
   <span class="cui-profile__user-name">Bill Murray</span>
-  <div class="cui-profile__chevron cui-profile__chevron--left"></div>
-  <div class="cui-profile__user-avatar">
-    <div id="cui-profile__popup" class="cui-profile__user-menu" style="opacity:0">
-      <span class="cui-profile__menu-greet">
-        Hello, Bill!<br/>
-        <span class="small">Logged in as Bill Murray</span>
-      </span>
-      <span class="cui-profile__menu-greet">You should login.<br/>
-      </span>
-      <hr/>
+  <div class="cui-profile__user-avatar"></div>
+  <div id="cui-profile__popup" class="cui-profile__user-menu">
+    <div class="cui-profile__menu-item">
+      <a href="" class="cui-profile__link">My Profile</a>
+      <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+      </svg>
+    </div>
+    <div class="cui-profile__menu-item">
+      <a href="" class="cui-profile__link">Log Out</a>
+      <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+      </svg>
     </div>
   </div>
+  <svg class="cui-profile__chevron" viewBox="0 0 216 146">
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+  </svg>
 </div>
 
 Styleguide Blocks.Profile
@@ -1791,23 +1799,21 @@ Styleguide Blocks.Profile
 .cui-avatar,
 .cui-profile,
 .cui-header__user {
-  position: relative; }
+  position: relative;
+  width: 250px; }
   .cui-avatar--popup,
   .cui-profile--popup {
     background: white;
     border-radius: 2px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.16);
     opacity: 0;
-    padding: 10px 0;
     position: absolute;
     right: 0;
-    top: 100%;
     -webkit-transform: translate(0, 19px);
         -ms-transform: translate(0, 19px);
             transform: translate(0, 19px);
     transition: all 80ms ease-in-out;
-    width: 200px;
-    z-index: 3;
+    width: 250px;
     pointer-events: none; }
     .cui-avatar--popup.active,
     .cui-profile--popup.active {
@@ -1817,18 +1823,6 @@ Styleguide Blocks.Profile
     .cui-profile--popup hr {
       border: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.15); }
-    .cui-avatar--popup::before,
-    .cui-profile--popup::before {
-      color: white;
-      content: '▼';
-      font-size: 1em;
-      position: absolute;
-      text-shadow: 2px 2px rgba(0, 0, 0, 0.09);
-      top: 0;
-      -webkit-transform: rotate(180deg) translate(20px, 15px);
-          -ms-transform: rotate(180deg) translate(20px, 15px);
-              transform: rotate(180deg) translate(20px, 15px);
-      right: 0; }
     .cui-avatar--popup__greet,
     .cui-profile--popup__greet {
       display: block;
@@ -1882,9 +1876,15 @@ Styleguide Blocks.Profile
   .cui-avatar__user-name,
   .cui-profile__user-name,
   .cui-header__user-name {
-    color: #AAA;
+    color: #fff;
     cursor: pointer;
-    margin-right: 15px; }
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    font-size: 1.125em;
+    letter-spacing: 0.9px;
+    margin: 0 15px;
+    text-transform: capitalize; }
     @media all and (max-width: 600px) {
       .cui-avatar__user-name,
       .cui-profile__user-name,
@@ -1893,21 +1893,17 @@ Styleguide Blocks.Profile
   .cui-avatar__user-menu,
   .cui-profile__user-menu,
   .cui-header__user-menu {
-    background: white;
-    border-radius: 2px;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.16);
+    background: #E8F0F3;
     opacity: 0;
     padding: 10px 0;
     pointer-events: none;
     position: absolute;
     right: 0;
-    top: 100%;
-    -webkit-transform: translate(0, 19px);
-        -ms-transform: translate(0, 19px);
-            transform: translate(0, 19px);
+    -webkit-transform: translate(0, 80px);
+        -ms-transform: translate(0, 80px);
+            transform: translate(0, 80px);
     transition: all 80ms ease-in-out;
-    width: 200px;
-    z-index: 3; }
+    width: 250px; }
     .cui-avatar__user-menu.active,
     .cui-profile__user-menu.active,
     .active.cui-header__user-menu {
@@ -1917,19 +1913,6 @@ Styleguide Blocks.Profile
     .cui-profile__user-menu hr, .cui-header__user-menu hr {
       border: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.15); }
-    .cui-avatar__user-menu::before,
-    .cui-profile__user-menu::before,
-    .cui-header__user-menu::before {
-      color: white;
-      content: '▼';
-      font-size: 1em;
-      position: absolute;
-      text-shadow: 2px 2px rgba(0, 0, 0, 0.09);
-      top: 0;
-      -webkit-transform: rotate(180deg) translate(20px, 15px);
-          -ms-transform: rotate(180deg) translate(20px, 15px);
-              transform: rotate(180deg) translate(20px, 15px);
-      right: 0; }
   .cui-avatar__menu-greet,
   .cui-profile__menu-greet,
   .cui-header__menu-greet {
@@ -1969,13 +1952,45 @@ Styleguide Blocks.Profile
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  height: 50px;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
+  height: 80px;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+  width: 250px;
+  transition: all 80ms ease-in-out; }
+  .cui-profile .cui-profile__menu-item, .cui-header__user .cui-profile__menu-item {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 0 30px 12px 24px;
+    cursor: pointer; }
+    .cui-profile .cui-profile__menu-item:first-of-type, .cui-header__user .cui-profile__menu-item:first-of-type {
+      padding: 9px 30px 12px 24px; }
+  .cui-profile .cui-profile__link, .cui-header__user .cui-profile__link {
+    font-size: 0.875em; }
+    .cui-profile .cui-profile__link:hover, .cui-header__user .cui-profile__link:hover {
+      cursor: pointer; }
+  .cui-profile .cui-profile__link-icon, .cui-header__user .cui-profile__link-icon {
+    color: #1d6572;
+    height: 15px;
+    width: 15px; }
+  .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron {
+    fill: #fff; }
+  .cui-profile--active {
+    background-color: #E8F0F3; }
+    .cui-profile--active .cui-profile__user-name, .cui-profile--active .cui-header__user-name {
+      color: #4A4A4A; }
+    .cui-profile--active .cui-profile__user-menu, .cui-profile--active .cui-header__user-menu {
+      opacity: 1; }
+    .cui-profile--active .cui-profile__chevron {
+      color: #4A4A4A;
+      fill: #4A4A4A; }
 
 /*
 Header
@@ -1983,20 +1998,33 @@ Header
 Markup: 
 <header class="cui-header">
   <div class="cui-header__top">
+    <div class="cui-menu__toggle-button-container" snap-toggle="left" onclick="Nav.navToggle()">
+      <button class="cui-menu__toggle-button"></button>
+    </div>
+    <svg class="cui-header__search" viewBox="0 0 48 48">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#search" class="svg"></use>
+    </svg>
     <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
-    <div class="cui-header__user" onclick="toggle_visibility('cui-header__user-menu');">
-    <span class="cui-header__user-name">Bill Murray</span>
-    <div class="cui-header__chevron--left"></div>
-    <div class="cui-header__user-avatar">
-      <div id="cui-header__user-menu" class="cui-header__user-menu" style="opacity:0">
-        <span class="cui-header__menu-greet">
-          Hello, Bill!<br/>
-          <span class="small">Logged in as Bill Murray</span>
-        </span>
-        <span class="cui-header__menu-greet">You should login.<br/>
-        </span>
-        <hr/>
+    <div class="cui-profile" >
+      <span class="cui-profile__user-name">Bill Murray</span>
+      <div class="cui-profile__user-avatar"></div>
+      <div id="cui-profile__popup" class="cui-profile__user-menu">
+        <div class="cui-profile__menu-item">
+          <a href="" class="cui-profile__link">My Profile</a>
+          <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+          </svg>
+        </div>
+        <div class="cui-profile__menu-item">
+          <a href="" class="cui-profile__link">Log Out</a>
+          <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+          </svg>
+        </div>
       </div>
+      <svg class="cui-profile__chevron" viewBox="0 0 216 146">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+      </svg>
     </div>
   </div>
   </div>
@@ -2007,6 +2035,10 @@ Styleguide Blocks.Header
 .cui-header {
   background: linear-gradient(to bottom, #1d6572, #6a98a0);
   padding: 0 30px; }
+  .cui-header__search {
+    color: white;
+    cursor: pointer;
+    fill: white; }
   .cui-header__user {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
@@ -2039,9 +2071,25 @@ Styleguide Blocks.Header
       .cui-profile__chevron--left, .cui-header__user > .cui-header__chevron--left {
         display: none; } }
   .cui-header__svg-logo {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     height: 45px;
     width: 200px;
     margin-left: 20px; }
+  .cui-header__logo {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
   .cui-header__top {
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -2065,6 +2113,10 @@ Styleguide Blocks.Header
 .cui-header {
   background: linear-gradient(to bottom, #1d6572, #6a98a0);
   padding: 0 30px; }
+  .cui-header__search {
+    color: white;
+    cursor: pointer;
+    fill: white; }
   @media all and (max-width: 600px) {
     .cui-header > .cui-chevron--left, .cui-header > .cui-avatar__chevron--left, .cui-header >
     .cui-profile__chevron--left, .cui-header > .cui-header__chevron--left {
@@ -2323,7 +2375,7 @@ Styleguide Blocks.Off-Canvas
   cursor: pointer; }
 
 .cui-off-canvas {
-  background-color: #6a98a0; }
+  background-color: linear-gradient(to bottom, #1d6572, #6a98a0); }
 
 .cui-off-canvas__list-item,
 .cui-off-canvas__section {
@@ -2536,8 +2588,47 @@ snap-drawer,
 .snapjs-expand-right .snap-drawer-right {
   width: 100%; }
 
+.v2 .cui-menu__content-wrapper {
+  margin-left: 180px; }
+  .v2 .cui-menu__content-wrapper.desktop-menu--collapse {
+    margin-left: 80px; }
+
+.v2 .desktop-menu {
+  margin-top: 80px;
+  width: 180px; }
+  .v2 .desktop-menu--collapse {
+    left: -100px; }
+
+.v2 .cui-nav__content-wrapper.desktop-menu--collapse,
+.v2 .cui-menu__content-wrapper.desktop-menu--collapse {
+  margin-left: 80px; }
+
+@media screen and (max-width: 999px) {
+  .v2 .cui-nav__content-wrapper,
+  .v2 .cui-menu__content-wrapper {
+    margin-left: 0; } }
+
+.v2 .cui-menu__toggle-button--desktop {
+  background: #1d6572;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 80px;
+  padding-left: 27px;
+  width: 180px;
+  z-index: 1; }
+  @media screen and (max-width: 1000px) {
+    .v2 .cui-menu__toggle-button--desktop {
+      display: none; } }
+
+.v2 .cui-header {
+  z-index: 10; }
+  @media screen and (min-width: 1000px) {
+    .v2 .cui-header .cui-menu__toggle-button-container {
+      display: none; } }
+
 .desktop-menu {
-  background: #6a98a0;
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
   left: 0;
   position: absolute;
   top: 0;
@@ -2746,7 +2837,7 @@ Styleguide Blocks.Expandable
     position: absolute;
     top: 5px;
     right: 12px; }
-    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon {
+    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile .cui-profile__chevron, .cui-profile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__user .cui-profile__chevron, .cui-header__user .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile--active .cui-profile__chevron, .cui-profile--active .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__search {
       height: 14px;
       width: 14px; }
   .cui-expandable__body-pane .cui-expandable__pane-title {
