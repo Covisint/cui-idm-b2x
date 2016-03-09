@@ -283,7 +283,15 @@ function(API,$scope,$state,AppRequests){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    // AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    var appsBeingRequested=AppRequests.get();
+    newAppRequest.numberOfRequests=0;
+    newAppRequest.appsBeingRequested=[];
+    Object.keys(appsBeingRequested).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        newAppRequest.numberOfRequests++;
+        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
+    });
+
 
     var user;
     var getListOfCategories=function(services){
