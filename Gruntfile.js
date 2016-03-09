@@ -87,8 +87,8 @@ module.exports = function(grunt) {
         src: 'index.html',
         dest: 'build/index.html'
       },
-      angularTemplates: {
-        src: 'assets/angular-templates/**/*.html',
+      appTemplates: {
+        src: 'assets/app/**/*.html',
         dest: 'build/'
       },
       languageFiles: {
