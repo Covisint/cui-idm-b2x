@@ -1602,6 +1602,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         })
         .then(function() {
             usersEdit.loading = false;
+            $scope.$digest();
         })
         .fail(function(error) {
             console.log(error);
@@ -1612,6 +1613,16 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     usersEdit.resetEdit = function(master, temp) {
         // Reset temporary variable to the master variable
         angular.copy(master, temp);
+    };
+
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === '') {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
     };
 
     usersEdit.updatePersonSecurityAccount = function() {
@@ -1662,13 +1673,13 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.userPassword = res;
         usersEdit.tempUserPasswordAccount = res;
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     })
     .fail(function(err) {
         console.log(err);
-        $scope.$digest();
         usersEdit.loading = false;
+        $scope.$digest();
     });
 
     usersEdit.saveChallengeQuestions = function() {
