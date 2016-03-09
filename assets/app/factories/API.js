@@ -1,26 +1,47 @@
 angular.module('app')
-.factory('API',[function(){
+.factory('API',function($state){
 
-    var myCUI= cui.api();
-    myCUI.setServiceUrl('PRD'); // PRD
-    // myCUI.setServiceUrl('https://apistg.np.covapp.io'); // STG
+    var myCUI = cui.api();
+    cui.log('cui.js v', myCUI.version());
 
-    var doAuth = function(){
-        return myCUI.doSysAuth({
-            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
-            // clientSecret: '8xFdMSR1IFSeFJjC'
-            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
-            clientSecret: 'MqKZsqUtAVAIiWkg'
+    // myCUI.setServiceUrl('PRD'); // PRD
+    myCUI.setServiceUrl('STG'); // STG
+
+    var originUri = 'coke-idm.run.covapp.io'; // Coke
+    // var originUri = 'coke-idm.run.covapp.io'; // Covisint
+
+    // If not empty controller then fire cui stuff
+    if ($state.current.url !== '/empty' ) {
+        cui.log('Not Empty State : ', $state.current, window.location);
+
+
+        // CUIJS caches instance id for unsecure calls
+        myCUI.covAuthInfo({
+            // In PROD we need to verify that if we dont pass in originUri cui.js will
+            // pass the host for us dynamically!
+            originUri : originUri,
         });
+
+        function jwtAuthHandler() {
+            return myCUI.covAuth({
+                originUri: originUri,
+                authRedirect: window.location.href.split('#//')[0] + '/#/empty'
+                // authRedirect: 'http://localhost:9001/#/empty'
+            })
+            .fail(function (err) {
+            });
+        };
+
+        myCUI.setAuthHandler(jwtAuthHandler);
+
+    }
+    else {
+        cui.log('Empty State : ', $state.current);
+        myCUI.handleCovAuthResponse();
+    }
+
+    return {
+        cui: myCUI
     };
 
-    var token = function(){
-        return myCUI.getToken();
-    };
-
-    return{
-        token:token,
-        cui:myCUI,
-        doAuth:doAuth
-    };
-}]);
+});
