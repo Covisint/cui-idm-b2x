@@ -64,7 +64,7 @@ function($state,GetCountries,$scope,$translate,LocaleService,User){
     base.userEntitlements=[];
     $scope.$on('newEntitlements',function(newEntitlements){
         base.userEntitlements = newEntitlements;
-    })
+    });
 
     setCountries($translate.proposedLanguage());
 
