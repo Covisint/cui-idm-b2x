@@ -131,7 +131,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'profile/profile.html'
         })
         .state('profile.user',{
-            url: '/user',
+            url: '/user:id',
             templateUrl: templateBase + 'profile/user/users.edit.html',
             controller: returnCtrlAs('usersEdit')
         })
