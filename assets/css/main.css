@@ -364,12 +364,15 @@ fieldset {
   border: 0;
   margin: 0; }
 
+*[ui-sref] {
+  cursor: pointer; }
+
 .cui-radio, .cui-checkbox__legend, .cui-switch__input {
   left: -999em;
   position: absolute; }
 
-*[ui-sref] {
-  cursor: pointer; }
+.hide {
+  display: none !important; }
 
 /*
 Elements
@@ -1018,6 +1021,9 @@ Styleguide Elements.Forms.Checkbox
     list-style-type: none;
     padding-left: 0; }
   .cui-checkbox__container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
     height: 40px; }
   .cui-checkbox__label {
     -webkit-align-items: center;
@@ -2774,6 +2780,9 @@ Styleguide Blocks.Expandable
     display: block;
     padding: 10px 0 0; }
     .cui-expandable__title--flex {
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
@@ -4578,7 +4587,7 @@ inline-edit .angucomplete-dropdown {
   border-radius: 3px;
   box-sizing: border-box; }
 
-.cui-users__field, .cui-users__profile {
+.cui-applications__row, .cui-applications__review .cui-applications__review-apps, .cui-applications__new-request .cui-applications__categories, .cui-users__field, .cui-users__profile {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4651,7 +4660,7 @@ inline-edit .angucomplete-dropdown {
 .cui-applications .cui-media__title {
   cursor: pointer; }
 
-.cui-applications__row, .cui-applications__new-request .cui-applications__categories, .cui-applications__review .cui-applications__review-apps {
+.cui-applications__row, .cui-applications__review .cui-applications__review-apps, .cui-applications__new-request .cui-applications__categories, .cui-users__field, .cui-users__profile {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4659,7 +4668,7 @@ inline-edit .angucomplete-dropdown {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__categories, .cui-applications__new-request .cui-applications__review .cui-applications__review-apps, .cui-applications__review .cui-applications__new-request .cui-applications__review-apps {
+.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__review .cui-applications__review-apps, .cui-applications__review .cui-applications__new-request .cui-applications__review-apps {
   margin-top: 1em;
   margin-bottom: 3em; }
 
@@ -4685,17 +4694,19 @@ inline-edit .angucomplete-dropdown {
     .cui-form__next, .cui-applications__new-request .cui-card__button {
       margin: 0; } }
 
-@media screen and (min-width: 701px) {
-  .cui-applications__new-request .cui-applications__search-options {
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center; } }
+.cui-applications__new-request .cui-applications__search-options {
+  padding-bottom: 1.875em; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__new-request .cui-applications__search-options {
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center; } }
 
 @media screen and (min-width: 701px) {
   .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
@@ -4722,6 +4733,9 @@ inline-edit .angucomplete-dropdown {
             flex: .5; } }
 
 .cui-applications__search .cui-applications__expandable-info {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
