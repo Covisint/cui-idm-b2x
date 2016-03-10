@@ -5,7 +5,6 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     var usersEdit = this;
     var currentCountry;
-    var userId='RN3BJI54';
 
     usersEdit.loading = true;
     usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
@@ -74,7 +73,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
     API.doAuth()
     .then(function(res) {
-        return  API.cui.getPerson({personId: userId});
+        return  API.cui.getPerson({personId: $stateParams.id});
     })
     .then(function(res) {
         // If the person has no addresses set we need to initialize it as an array
