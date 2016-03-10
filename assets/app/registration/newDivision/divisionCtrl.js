@@ -1,7 +1,7 @@
 angular.module('app')
 .controller('divisionCtrl',['$scope', 'API', function($scope, API) {
-	var newDivision = this;
-	newDivision.userLogin = {};
+    var newDivision = this;
+    newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
     newDivision.passwordPolicies = [  // WORKAROUND CASE #5
@@ -24,10 +24,7 @@ angular.module('app')
         }
     ];
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getSecurityQuestions();
-    })
+    API.cui.getSecurityQuestions()
     .then(function(res){
             // Removes first question as it is blank
             res.splice(0,1);

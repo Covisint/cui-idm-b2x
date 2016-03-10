@@ -1,11 +1,10 @@
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
-function(localStorageService,$scope,$stateParams,$timeout,API){
+.controller('usersEditCtrl',['$scope','$timeout','API',
+function($scope,$timeout,API){
     'use strict';
 
     var usersEdit = this;
     var currentCountry;
-    var userId='RN3BJI54';
 
     usersEdit.loading = true;
     usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
@@ -24,10 +23,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
         angular.copy(usersEdit.tempUser, usersEdit.user);
 
-        API.doAuth()
-        .then(function() {
-            return API.cui.updatePerson({personId: usersEdit.user.id, data:usersEdit.user});
-        })
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.user})
         .then(function() {
             usersEdit.loading = false;
             $scope.$digest();
@@ -59,23 +55,23 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     var selectQuestionsForUser = function() {
+        usersEdit.challengeQuestion1={};
+        usersEdit.challengeQuestion1={}
         var questions = [];
         angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
             var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
             this.push(question);
         }, questions);
 
+        console.log('questions',questions);
         usersEdit.challengeQuestion1 = questions[0];
         usersEdit.challengeQuestion1.answer = '';
         usersEdit.challengeQuestion2 = questions[1];
         usersEdit.challengeQuestion2.answer = '';
-        $scope.$apply();
+        $scope.$digest();
     };
 
-    API.doAuth()
-    .then(function(res) {
-        return  API.cui.getPerson({personId: userId});
-    })
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
         // If the person has no addresses set we need to initialize it as an array
         // to follow the data structure
@@ -86,7 +82,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = angular.copy(res);
         usersEdit.tempUser = angular.copy(res);
         currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id});
+        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
         usersEdit.userSecurityQuestions = res;
@@ -96,7 +92,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.allSecurityQuestions = res;
         selectQuestionsForUser();
-        return API.cui.getPersonPassword({personId: usersEdit.user.id});
+        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
         usersEdit.userPassword = res;
@@ -136,10 +132,10 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.success = false;
 
         API.cui.updateSecurityQuestions({
-          personId: $stateParams.id,
+          personId: API.getUser(),
           data: {
             version: '1',
-            id: usersEdit.user.id,
+            id: API.getUser(),
             questions: updatedChallengeQuestions
             }
         })

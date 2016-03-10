@@ -4,19 +4,17 @@ angular.module('app')
     var usersSearch=this;
     usersSearch.listLoading=true;
 
-    API.doAuth()
-    .then(function(){
-        API.cui.getPersons()
-        .then(function(res){
-            usersSearch.listLoading=false;
-            usersSearch.list=res;
-            usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersSearch.listLoading=false;
-            // console.log(err);
-        });
+
+    API.cui.getPersons()
+    .then(function(res){
+        usersSearch.listLoading=false;
+        usersSearch.list=res;
+        usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersSearch.listLoading=false;
+        // console.log(err);
     });
 
 

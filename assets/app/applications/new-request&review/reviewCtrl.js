@@ -4,7 +4,7 @@ angular.module('app')
     var applicationReview=this;
     var appRequests=AppRequests.get(),
         appsBeingRequested=Object.keys(appRequests),
-        userId='RN3BJI54'; // this will be replaced with the current user ID;
+        userId='IT88ZQJ8';  // this will be replaced with the current user ID;
 
     var handleError=function(err){
         console.log('Error \n', err);

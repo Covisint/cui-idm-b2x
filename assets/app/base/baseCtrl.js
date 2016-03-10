@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService',
-function($state,GetCountries,$scope,$translate,LocaleService){
+.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService','User',
+function($state,GetCountries,$scope,$translate,LocaleService,User){
     var base=this;
 
     base.goBack=function(){
@@ -60,6 +60,11 @@ function($state,GetCountries,$scope,$translate,LocaleService){
         // console.log(e);
         setCountries(args);
     });
+
+    base.userEntitlements=[];
+    $scope.$on('newEntitlements',function(newEntitlements){
+        base.userEntitlements = newEntitlements;
+    })
 
     setCountries($translate.proposedLanguage());
 

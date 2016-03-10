@@ -2,7 +2,7 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
+    var userId='IT88ZQJ8'; // this will be replaced with the current user ID
     var services=[];
     var handleError=function(err){
         console.log('Error\n',err);
@@ -36,10 +36,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getPerson({personId:userId});
-    })
+    API.cui.getPerson({personId:userId})
     .then(function(res){
         user=res;
         return API.cui.getPackages(); // WORKAROUND CASE #1
