@@ -96,10 +96,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         .fail(handleError);
     };
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getPerson({personId:userId});
-    })
+
+    API.cui.getPerson({personId:userId})
     .then(function(res){
         userOrg=res.organization.id;
         user=res;

@@ -1,16 +1,16 @@
 angular.module('app')
 .controller('orgProfileCtrl',['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+    function($scope,$stateParams,API) {
 
     var orgProfile = this;
-    var userId = 'RN3BJI54'; // this will be replaced with the current user ID
+
+    var handleError=function(err){
+        console.log('Error', err);
+    };
 
     orgProfile.organization = {};
 
-    API.doAuth()
-    .then(function() {
-        return API.cui.getPerson({personId: userId});
-    })
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res) {
         return API.cui.getOrganization({organizationId: res.organization.id});
     })

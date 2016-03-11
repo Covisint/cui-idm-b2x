@@ -364,12 +364,15 @@ fieldset {
   border: 0;
   margin: 0; }
 
+*[ui-sref] {
+  cursor: pointer; }
+
 .cui-radio, .cui-checkbox__legend, .cui-switch__input {
   left: -999em;
   position: absolute; }
 
-*[ui-sref] {
-  cursor: pointer; }
+.hide {
+  display: none !important; }
 
 /*
 Elements

@@ -18,7 +18,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('base',{
             url: '/',
             templateUrl: templateBase + 'base/base.html',
-            controller: returnCtrlAs('base')
+            controller: returnCtrlAs('base'),
         })
         .state('users',{
             url: '/users',
@@ -139,6 +139,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/organization',
             templateUrl: templateBase + 'profile/organization/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
+        })
+        .state('empty', {
+            url: '/empty',
+            templateUrl: templateBase + 'empty/empty.html',
+            controller: returnCtrlAs('empty')
         });
 
     // $locationProvider.html5Mode(true);
@@ -194,15 +199,19 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
         LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
     };
 
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()
         $state.previous = {};
         $state.previous.name = fromState;
         $state.previous.params = fromParams;

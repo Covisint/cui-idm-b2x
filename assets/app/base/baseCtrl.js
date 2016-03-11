@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','GetTimezones', '$scope','$translate','LocaleService',
-function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API){
     var base=this;
 
     base.goBack=function(){
@@ -74,6 +74,26 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService){
         // console.log(e);
         setCountries(args);
         setTimezones(args);
+    });
+
+    API.handleCovAuthResponse()
+    .then(function(res){
+        console.log('TEST!!!');
+        API.setUser(res);
+        return API.cui.getPersonRoles({personId:API.getUser()});
+    })
+    .then(function(roles){
+        console.log('ROLES',roles);
+        var roleList=[];
+        roles.forEach(function(role){
+            roleList.push(role.name);
+        });
+        API.setUserEntitlements(roleList);
+    });
+
+    base.userEntitlements=[];
+    $scope.$on('newEntitlements',function(newEntitlements){
+        base.userEntitlements = newEntitlements;
     });
 
     setCountries($translate.proposedLanguage());

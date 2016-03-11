@@ -56,10 +56,7 @@ function(localStorageService,$scope,$stateParams,API){
             usersInvite.fail=false;
             usersInvite.user.timezone="EST5EDT";
             usersInvite.user.language=$scope.$parent.base.getLanguageCode();
-            API.doAuth()
-            .then(function(){
-                return API.cui.createPerson({data:usersInvite.user});
-            })
+            API.cui.createPerson({data:usersInvite.user})
             .then(function(res){
                 return API.cui.createPersonInvitation({data:build.personInvitation(res)});
             })
