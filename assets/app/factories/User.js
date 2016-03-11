@@ -1,23 +1,23 @@
 angular.module('app')
-.factory('User',['$rootScope',function($rootScope){
+.factory('User',['$rootScope',function($rootScope) {
 
-    var user={
-        entitlements:[]
+    var user = {
+        entitlements: []
     };
 
     return {
-        set : function(newUser){
-            user.cuid=newUser.cuid;
+        set : function(newUser) {
+            user.cuid = newUser.cuid;
         },
-        get : function(){
+        get : function() {
             return user.cuid || '[cuid]';
         },
-        setEntitlements : function(newEntitlements){
-            user.entitlements=newEntitlements;
-            $rootScope.$broadcast('newEntitlements',user.entitlements);
+        setEntitlements : function (newEntitlements) {
+            user.entitlements = newEntitlements;
+            $rootScope.$broadcast('newEntitlements', user.entitlements);
         },
-        getEntitlements : function(){
-            console.log('getting entitlements:', user.entitlements);
+        getEntitlements : function() {
+            console.log('Getting entitlements:', user.entitlements);
             return user.entitlements;
         }
     };

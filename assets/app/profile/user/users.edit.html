@@ -98,26 +98,36 @@
             </div>
             <!-- Password Edit -->
             <div ng-if="toggled">
-              <!-- User Password -->
-              <div>
-                <span class="cui-field-val__field">{{'cui-enter-password' | translate}}: </span>
-                <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
+              
+              <!-- Validating Password Loading -->
+              <div class="cui-loading__container" ng-if="usersEdit.validatingPassword">
+                <div class="cui-loading--center"><div class="cui-loading"></div></div>
               </div>
-              <!-- New Password -->
-              <div>
-                <span class="cui-field-val__field">{{'cui-enter-new-password' | translate}}: </span>
-                <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
+
+              <div ng-if="!usersEdit.validatingPassword">
+                <!-- User Password -->
+                <div>
+                  <span class="cui-field-val__field">{{'cui-enter-password' | translate}}: </span>
+                  <span ng-if="usersEdit.invalidPassword">{{'cui-invalid-password' | translate}}</span>
+                  <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
+                </div>
+                <!-- New Password -->
+                <div>
+                  <span class="cui-field-val__field">{{'cui-enter-new-password' | translate}}: </span>
+                  <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
+                </div>
+                <!-- New Password Re -->
+                <div>
+                  <span class="cui-field-val__field">{{'cui-re-enter-new-password' | translate}}: </span>
+                  <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
+                </div>
+                <!-- Password Edit Controls -->
+                <div class="cui-users__password-reset">
+                  <a class="cui-link" href="" ng-click="usersEdit.updatePassword()">{{'cui-update' | translate}}</a>
+                  <a class="cui-link" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+                </div>
               </div>
-              <!-- New Password Re -->
-              <div>
-                <span class="cui-field-val__field">{{'cui-re-enter-new-password' | translate}}: </span>
-                <input class="cui-field-val__val" type="text" ng-model="usersEdit.tempUser.currentPassword">
-              </div>
-              <!-- Password Edit Controls -->
-              <div class="cui-users__password-reset">
-                <a class="cui-link" href="" ng-click="toggleOff()">{{'cui-update' | translate}}</a>
-                <a class="cui-link" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
-              </div>
+
             </div>
           </div>
         </div>

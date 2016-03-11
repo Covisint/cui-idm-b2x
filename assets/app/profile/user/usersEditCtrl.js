@@ -158,4 +158,12 @@ function($scope,$timeout,API){
         selectQuestionsForUser();
     };
 
+    usersEdit.updatePassword = function() {
+        usersEdit.validatingPassword = true;
+
+        $timeout(function() {
+            usersEdit.validatingPassword = false;
+        }, 5000);
+    };
+
 }]);

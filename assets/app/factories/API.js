@@ -2,7 +2,7 @@ angular.module('app')
 .factory('API',['$state','User','$rootScope',function($state,User,$rootScope){
 
     var myCUI = cui.api();
-    cui.log('cui.js v', myCUI.version());
+    cui.log('cui.js v', myCUI.version()); // CUI Log
 
     // myCUI.setServiceUrl('PRD'); // PRD
     myCUI.setServiceUrl('STG'); // STG
@@ -40,10 +40,11 @@ angular.module('app')
         function jwtAuthHandler() {
             return myCUI.covAuth({
                 originUri: originUri,
-                authRedirect: window.location.href.split('#')[0] + '#/empty',
-                appRedirect: window.location.href
+                authRedirect: window.location.href.split('#')[0] + '#/empty'
+                // appRedirect: window.location.href
             });
         };
+
         myCUI.setAuthHandler(jwtAuthHandler);
 
         // myCUI.handleCovAuthResponse()
