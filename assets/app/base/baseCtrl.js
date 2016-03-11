@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService','User','API',
-function($state,GetCountries,$scope,$translate,LocaleService,User,API){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API){
     var base=this;
 
     base.goBack=function(){
@@ -56,9 +56,24 @@ function($state,GetCountries,$scope,$translate,LocaleService,User,API){
         });
     };
 
+    var setTimezones=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetTimezones(language)
+        .then(function(res){
+            base.timezones=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
         setCountries(args);
+        setTimezones(args);
     });
 
     API.handleCovAuthResponse()
@@ -82,6 +97,7 @@ function($state,GetCountries,$scope,$translate,LocaleService,User,API){
     });
 
     setCountries($translate.proposedLanguage());
+    setTimezones($translate.proposedLanguage());
 
 
 }]);
