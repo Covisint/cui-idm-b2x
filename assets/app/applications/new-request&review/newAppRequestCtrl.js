@@ -2,7 +2,7 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
     var services=[];
     var handleError=function(err){
         console.log('Error\n',err);
@@ -10,7 +10,15 @@ function(API,$scope,$state,AppRequests){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    // AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
+    var appsBeingRequested=AppRequests.get();
+    newAppRequest.numberOfRequests=0;
+    newAppRequest.appsBeingRequested=[];
+    Object.keys(appsBeingRequested).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
+        newAppRequest.numberOfRequests++;
+        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
+    });
+
 
     var user;
     var getListOfCategories=function(services){
@@ -28,10 +36,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getPerson({personId:userId});
-    })
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         user=res;
         return API.cui.getPackages(); // WORKAROUND CASE #1
@@ -40,7 +45,7 @@ function(API,$scope,$state,AppRequests){
         var i=0;
         var packages=res;
         packages.forEach(function(pkg){
-            API.cui.getServices({'packageId':pkg.id})
+            API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res){
                 i++;
                 res.forEach(function(service){

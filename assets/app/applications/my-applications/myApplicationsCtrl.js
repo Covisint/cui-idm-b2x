@@ -2,7 +2,6 @@ angular.module('app')
 .controller('myApplicationsCtrl',['API','$scope','$state',
 function(API,$scope,$state){
     var myApplications = this;
-    var userId='RN3BJI54';
 
     myApplications.list=[];
 
@@ -15,6 +14,11 @@ function(API,$scope,$state){
                 // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
+        if(grants.length===0){
+            // User has no packages granted
+            myApplications.doneLoading=true;
+            $scope.$digest();
+        }
         grants.forEach(function(grant){
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
@@ -33,10 +37,8 @@ function(API,$scope,$state){
         });
     };
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getPersonPackages({'personId':userId}); // this returns a list of grants
-    })
+
+   API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
     .then(function(res){
         getApplicationsFromGrants(res);
     })

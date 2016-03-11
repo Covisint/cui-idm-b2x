@@ -37,7 +37,7 @@
             <!-- <div class="cui-media__image-container"> API GAP Where do the icons come from? </div> -->
             <div class="cui-media__body cui-media__body--full">
                 <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
-                <span class="cui-media__content" ng-if="application.category" ng-bind="application.category"></span>
+                <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
                 <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
             </div>
         </div>
