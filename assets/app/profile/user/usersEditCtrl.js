@@ -7,7 +7,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     var currentCountry;
 
     usersEdit.loading = true;
-    usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
+    usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
 
     usersEdit.updatePerson = function() {

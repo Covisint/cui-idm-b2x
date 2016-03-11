@@ -110,6 +110,10 @@ module.exports = function(grunt) {
       countries: {
         src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json'],
         dest: 'build/'
+      },
+      countries: {
+        src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'],
+        dest: 'build/'
       }
     },
     filerev:{
