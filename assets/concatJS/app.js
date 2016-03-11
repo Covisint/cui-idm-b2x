@@ -181,7 +181,6 @@ function(API,$scope,$state){
 
    API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
     .then(function(res){
-        console.log('packages',res);
         getApplicationsFromGrants(res);
     })
     .fail(handleError);
@@ -268,7 +267,7 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
-    var userId='IT88ZQJ8'; // this will be replaced with the current user ID
+
     var services=[];
     var handleError=function(err){
         console.log('Error\n',err);
@@ -302,7 +301,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.cui.getPerson({personId:userId})
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         user=res;
         return API.cui.getPackages(); // WORKAROUND CASE #1
@@ -311,7 +310,7 @@ function(API,$scope,$state,AppRequests){
         var i=0;
         var packages=res;
         packages.forEach(function(pkg){
-            API.cui.getServices({'packageId':pkg.id})
+            API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res){
                 i++;
                 res.forEach(function(service){
@@ -666,8 +665,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService','User',
-function($state,GetCountries,$scope,$translate,LocaleService,User){
+.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService','User','API',
+function($state,GetCountries,$scope,$translate,LocaleService,User,API){
     var base=this;
 
     base.goBack=function(){
@@ -726,6 +725,21 @@ function($state,GetCountries,$scope,$translate,LocaleService,User){
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
         setCountries(args);
+    });
+
+    API.handleCovAuthResponse()
+    .then(function(res){
+        console.log('TEST!!!');
+        API.setUser(res);
+        return API.cui.getPersonRoles({personId:API.getUser()});
+    })
+    .then(function(roles){
+        console.log('ROLES',roles);
+        var roleList=[];
+        roles.forEach(function(role){
+            roleList.push(role.name);
+        });
+        API.setUserEntitlements(roleList);
     });
 
     base.userEntitlements=[];
@@ -969,9 +983,10 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('emptyCtrl',['$scope','API', function($scope,API) {
-
+.controller('emptyCtrl',['$scope','API','$window','$state', function($scope,API,$window,$state) {
     // This empty controller is used to prevent an authHandler loop in the JWT token process!
+    console.log('IM IN EMPTY CTR');
+    $state.go('applications.myApplications');
 
 }]);
 
@@ -988,41 +1003,65 @@ angular.module('app')
     var originUri = 'coke-idm.run.covapp.io'; // Coke
     // var originUri = 'coke-idm.run.covapp.io'; // Covisint
 
-    // CUIJS caches instance id for unsecure calls
-    myCUI.covAuthInfo({
-        // In PROD we need to verify that if we dont pass in originUri cui.js will
-        // pass the host for us dynamically!
-        originUri : originUri
-    });
+    // // CUIJS caches instance id for unsecure calls
+    // myCUI.covAuthInfo({
+    //     // In PROD we need to verify that if we dont pass in originUri cui.js will
+    //     // pass the host for us dynamically!
+    //     originUri : originUri
+    // });
+    // console.log('CURRENT STATE',$state.current);
 
-    function jwtAuthHandler() {
-        return myCUI.covAuth({
-            originUri: originUri,
-            authRedirect: window.location.href.split('#')[0] + '#/empty',
-            appRedirect: window.location.href
-        });
-    };
+    // if ($state.current.url === '/empty' ) {
+        // cui.log('Empty State : ', $state.current);
+        // myCUI.handleCovAuthResponse()
+        // .then(function(res){
+        //     console.log('TEST!!!');
+        //     User.set(res);
+        //     return myCUI.getPersonRoles({personId:User.get()});
+        // })
+        // .then(function(roles){
+        //     console.log('ROLES',roles);
+        //     var roleList=[];
+        //     roles.forEach(function(role){
+        //         roleList.push(role.name);
+        //     });
+        //     User.setEntitlements(roleList);
+        // });
+    // }
+    // else{
+        // cui.log('Im OUT of empty', $state.current);
+        function jwtAuthHandler() {
+            return myCUI.covAuth({
+                originUri: originUri,
+                authRedirect: window.location.href.split('#')[0] + '#/empty',
+                appRedirect: window.location.href
+            });
+        };
+        myCUI.setAuthHandler(jwtAuthHandler);
 
-    myCUI.setAuthHandler(jwtAuthHandler);
-    myCUI.handleCovAuthResponse()
-    .then(function(res){
-        console.log('RESOLVED',res);
-        User.set(res);
-        return myCUI.getPersonRoles({personId:User.get()})
-    })
-    .then(function(roles){
-        var roleList=[];
-        roles.forEach(function(role){
-            roleList.push(role.name);
-        });
-        User.setEntitlements(roleList);
-        $rootScope.$broadcast('newEntitlements',User.getEntitlements());
-    });
+        // myCUI.handleCovAuthResponse()
+        // .then(function(res){
+        //     console.log('TEST!!!');
+        //     User.set(res);
+        //     return myCUI.getPersonRoles({personId:User.get()});
+        // })
+        // .then(function(roles){
+        //     console.log('ROLES',roles);
+        //     var roleList=[];
+        //     roles.forEach(function(role){
+        //         roleList.push(role.name);
+        //     });
+        //     User.setEntitlements(roleList);
+        // });
+    // }
 
     return {
         cui: myCUI,
         getUser: User.get,
-        getUserEntitlements: User.getEntitlements
+        setUser: User.set,
+        getUserEntitlements: User.getEntitlements,
+        setUserEntitlements: User.setEntitlements,
+        handleCovAuthResponse: myCUI.handleCovAuthResponse
     };
 
 }]);
@@ -1037,16 +1076,15 @@ angular.module('app')
 .factory('User',['$rootScope',function($rootScope){
 
     var user={
-        cuid:'[cuid]', // we use [cuid] so that cui.js knows that we haven't gotten a cuid yet
         entitlements:[]
     };
 
     return {
         set : function(newUser){
-            user=newUser;
+            user.cuid=newUser.cuid;
         },
         get : function(){
-            return user.cuid;
+            return user.cuid || '[cuid]';
         },
         setEntitlements : function(newEntitlements){
             user.entitlements=newEntitlements;

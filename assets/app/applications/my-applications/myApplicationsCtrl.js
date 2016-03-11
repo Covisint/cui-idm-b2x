@@ -40,7 +40,6 @@ function(API,$scope,$state){
 
    API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
     .then(function(res){
-        console.log('packages',res);
         getApplicationsFromGrants(res);
     })
     .fail(handleError);

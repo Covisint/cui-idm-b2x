@@ -2,7 +2,7 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
-    var userId='IT88ZQJ8'; // this will be replaced with the current user ID
+
     var services=[];
     var handleError=function(err){
         console.log('Error\n',err);
@@ -36,7 +36,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.cui.getPerson({personId:userId})
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         user=res;
         return API.cui.getPackages(); // WORKAROUND CASE #1
@@ -45,7 +45,7 @@ function(API,$scope,$state,AppRequests){
         var i=0;
         var packages=res;
         packages.forEach(function(pkg){
-            API.cui.getServices({'packageId':pkg.id})
+            API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res){
                 i++;
                 res.forEach(function(service){
