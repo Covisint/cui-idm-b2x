@@ -56,7 +56,10 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('registration.walkup',{
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
-            controller: returnCtrlAs('usersWalkup')
+            controller: returnCtrlAs('usersWalkup'),
+            menu:{
+                desktop:false
+            }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -199,8 +202,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -209,6 +212,14 @@ angular.module('app')
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
+        if(toState.menu){
+            (angular.isDefined(toState.menu.desktop) && toState.menu.desktop=== false)? Menu.desktop.hide() : Menu.desktop.show();
+            (angular.isDefined(toState.menu.mobile) && toState.menu.mobile=== false)? Menu.mobile.hide() : Menu.mobile.show();
+        }
+        else {
+            Menu.desktop.show();
+            Menu.mobile.show();
+        }
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()

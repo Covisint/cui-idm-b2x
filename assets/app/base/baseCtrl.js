@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API',
-function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -15,6 +15,10 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
     base.generateHiddenPassword=function(password){
         return Array(password.length+1).join('•');
     };
+
+    base.menu=Menu;
+
+    console.log(base.menu);
 
     base.passwordPolicies=[
         {
