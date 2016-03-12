@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService',
-function($state,GetCountries,$scope,$translate,LocaleService){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -15,6 +15,10 @@ function($state,GetCountries,$scope,$translate,LocaleService){
     base.generateHiddenPassword=function(password){
         return Array(password.length+1).join('•');
     };
+
+    base.menu=Menu;
+
+    console.log(base.menu);
 
     base.passwordPolicies=[
         {
@@ -56,12 +60,48 @@ function($state,GetCountries,$scope,$translate,LocaleService){
         });
     };
 
+    var setTimezones=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetTimezones(language)
+        .then(function(res){
+            base.timezones=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
         setCountries(args);
+        setTimezones(args);
+    });
+
+    API.handleCovAuthResponse()
+    .then(function(res){
+        console.log('TEST!!!');
+        API.setUser(res);
+        return API.cui.getPersonRoles({personId:API.getUser()});
+    })
+    .then(function(roles){
+        console.log('ROLES',roles);
+        var roleList=[];
+        roles.forEach(function(role){
+            roleList.push(role.name);
+        });
+        API.setUserEntitlements(roleList);
+    });
+
+    base.userEntitlements=[];
+    $scope.$on('newEntitlements',function(newEntitlements){
+        base.userEntitlements = newEntitlements;
     });
 
     setCountries($translate.proposedLanguage());
+    setTimezones($translate.proposedLanguage());
 
 
 }]);

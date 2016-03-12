@@ -15,6 +15,13 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--folder" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
                   <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
                 </svg>
+              <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}} <!-- < this will be the little number above the folder icon --></sup>
+
+                <!-- @SHANE THESE 3 LINES ARE FOR THE POPOVER THAT WILL OPEN WHEN CLICKING ON THE FOLDER -->
+                {{'collected-items-for-request' | translate}}
+                <span ng-repeat="application in newAppRequest.appsBeingRequested">{{application.name | cuiI18n}}</span>
+                <span ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+
             </div>
             <div class="cui-applications__search-options">
                 <div class="cui-input-button">
