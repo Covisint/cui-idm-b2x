@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>CUI IDM B2X</title>
 
-  <link rel="stylesheet" href="assets/css/main.9d5603eb.css">
+  <link rel="stylesheet" href="assets/css/main.c6e09b7c.css">
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
@@ -29,15 +29,41 @@
       <span class="snap-menu--option" snap-close ui-sref="profile.user">My Profile</span>
 
     </snap-drawer>
-    <snap-content snap-opt-disable="'right'" class-toggle toggled-class="menu-toggled" class="menu-toggled">
+    <snap-content snap-opt-disable="'right'">
       <header class="cui-header">
         <div class="cui-header__top">
-          <div class="menu-toggle" snap-toggle="left" ng-click="toggleClass()" ng-class="{'active' : !toggled}" style="margin-right:20px">
+          <div class="menu-toggle menu-toggle--desktop active" snap-toggle="left" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
             <div class="menu-toggle--button"></div>
           </div>
+          <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()" ng-class="{'active' : base.menu.mobile.state==='open'}" ng-if="base.menu.mobile.enabled" style="margin-right:20px">
+            <div class="menu-toggle--button"></div>
+          </div>
+          <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg>
+          <div class="cui-profile">
+            <!-- @Ricardo, I tried using the class toggle directive, but when I tried it toggled the left menu. Is this because the class toggle directive cannot be nested? In order to get the profile menu to open, add '.cui-profile--active' to the above element -->
+              <span class="cui-profile__user-name">User Name</span>
+              <div class="cui-profile__user-avatar"></div>
+              <div id="cui-profile__popup" class="cui-profile__user-menu">
+                <div class="cui-profile__menu-item">
+                  <a href="" class="cui-profile__link">My Profile</a>
+                  <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+                  </svg>
+                </div>
+                <div class="cui-profile__menu-item">
+                  <a href="" class="cui-profile__link">Log Out</a>
+                  <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+                  </svg>
+                </div>
+              </div>
+              <svg class="cui-profile__chevron" viewBox="0 0 216 146">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+              </svg>
+            </div>
         </div>
       </header>
-      <div class="desktop-menu" ng-class="{'desktop-menu--collapse' : !toggled}">
+      <div class="desktop-menu" ng-class="{'desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
 
         <span class="desktop-menu--option"  ui-sref="welcome.screen">Welcome</span>
         <span class="desktop-menu--option"  ui-sref="users.search">Search Users</span>
@@ -56,7 +82,7 @@
         <span class="desktop-menu--option"  ui-sref="profile.user">My Profile</span>
 
       </div>
-      <div class="cui-nav__content-wrapper" ng-class="{'desktop-menu--collapse' : !toggled}">
+      <div class="cui-nav__content-wrapper" ng-class="{'desktop-menu--collapse' : base.menu.desktop.state==='closed' || !base.menu.desktop.enabled}">
         <div ui-view></div>
         <div class="cui-tile cui-footer">
           <div ng-translate-language-select class="cui-footer__translate"></div>
@@ -69,9 +95,9 @@
     </snap-content>
   </div>
 
-<script src="assets/js/vendor.ad0fb66a.js"></script>
+<script src="assets/js/vendor.947044c9.js"></script>
 
-<script src="assets/js/app.068cf4dd.js"></script>
+<script src="assets/js/app.bc237273.js"></script>
 
 </body>
 </html>

@@ -24,7 +24,7 @@
                     <td>{{user.status}}
                         <div ng-if="user.status==='pending'"><a class="cui-link" ui-sref="users.activate({id: user.id})">Activate!</a></div>
                     </td>
-                    <td><a class="cui-link" ui-sref="users.edit({id: user.id})">Edit</a></td>
+                    <td><a class="cui-link" ui-sref="profile.user({id: user.id})">Edit</a></td>
                 </tr>
             </tbody>
         </table>
