@@ -150,7 +150,7 @@
         <!-- Timezone/Language -->
         <span class="cui-field-val__field">{{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}: </span>
         <div>
-          <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone for timezone in usersEdit.tempTimezones" ng-change="usersEdit.updatePerson()"></select>
+          <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone.id as timezone.name for timezone in usersEdit.timezones" ng-change="usersEdit.updatePerson()"></select>
           <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="language for language in usersEdit.tempLanguages" ng-change="usersEdit.updatePerson()"></select>
         </div>
       </div>
