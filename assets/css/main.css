@@ -2449,6 +2449,9 @@ Styleguide Blocks.Off-Canvas
   min-height: 100vh;
   background: #E8F0F3;
   position: relative; }
+  @media screen and (min-width: 1000px) {
+    .cui-wrapper {
+      min-height: 1000px; } }
 
 .snapjs-left .cui-wrapper {
   overflow: hidden; }
@@ -4146,6 +4149,14 @@ Styleguide Blocks.Media-Object
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center; }
+  @media screen and (min-width: 701px) {
+    .cui-media__image-container {
+      -webkit-flex: .1;
+          -ms-flex: .1;
+              flex: .1;
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start; } }
 
 .cui-media__body {
   -webkit-flex: .75;
@@ -4165,6 +4176,25 @@ Styleguide Blocks.Media-Object
       -webkit-flex: 1;
           -ms-flex: 1;
               flex: 1; } }
+
+@media screen and (min-width: 701px) {
+  .cui-media__title,
+  .cui-media__content {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; } }
+
+@media screen and (min-width: 701px) {
+  .cui-status {
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; } }
 
 .cui-media__title {
   font-family: 'lato-black', sans-serif;
@@ -4609,6 +4639,9 @@ inline-edit .angucomplete-dropdown {
   border-left: 5px solid #85a6ad;
   border-radius: 3px;
   box-sizing: border-box; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
 
 .cui-applications__row, .cui-applications__review .cui-applications__review-apps, .cui-applications__new-request .cui-applications__categories, .cui-users__field, .cui-users__profile {
   display: -webkit-flex;

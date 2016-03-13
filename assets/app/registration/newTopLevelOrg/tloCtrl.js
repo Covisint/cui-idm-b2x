@@ -28,10 +28,7 @@ angular.module('app')
   ];
 
 
-  API.doAuth()
-  .then(function(){
-    return API.cui.getSecurityQuestions();
-  })
+  API.cui.getSecurityQuestions()
   .then(function(res){
     // Removes first question as it is blank
     res.splice(0,1);

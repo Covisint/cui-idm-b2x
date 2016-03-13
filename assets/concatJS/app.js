@@ -2,19 +2,12 @@
     'use strict';
 
     angular
-    .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule'])
-    .run(['$rootScope', '$state', 'cui.authorization.routing', function($rootScope,$state,routing){
-        // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-        //     event.preventDefault();
-        //     routing($rootScope, $state, toState, toParams, fromState, fromParams);
-        // })
-    }]);
+    .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
 
 angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
 function(API,$scope,$stateParams,$state){
     var myApplicationDetails = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
 
     var appId=$stateParams.appId; // get the appId from the url
     var packageId=$stateParams.packageId;  // get the packageId from the url
@@ -72,7 +65,7 @@ function(API,$scope,$stateParams,$state){
     var getRelatedApps=function(app){ // WORKAROUND CASE #3
         myApplicationDetails.related=[];
         var packagesGrantedToUser=[];
-        API.cui.getPersonPackages({'personId':userId }) // Check if that child package has been granted to the user
+        API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // Check if that child package has been granted to the user
         .then(function(res){
             res.forEach(function(pkg){
                 packagesGrantedToUser.push(pkg);
@@ -110,7 +103,7 @@ function(API,$scope,$stateParams,$state){
     };
 
     var getPackageGrantDetails=function(app){
-        API.cui.getPersonPackage({ 'personId':userId , 'packageId':packageId })
+        API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res){
             app.grantedDate=getDateGranted(res.creation);
             app.status=res.status;
@@ -122,10 +115,7 @@ function(API,$scope,$stateParams,$state){
     };
 
     if(appId){
-        API.doAuth()
-        .then(function(res){
-            return API.cui.getService({ 'serviceId':appId });
-        })
+        API.cui.getService({ 'serviceId':appId })
         .then(function(res){
             var app=res;
             getPackageGrantDetails(app);
@@ -153,7 +143,6 @@ angular.module('app')
 .controller('myApplicationsCtrl',['API','$scope','$state',
 function(API,$scope,$state){
     var myApplications = this;
-    var userId='RN3BJI54';
 
     myApplications.list=[];
 
@@ -166,6 +155,11 @@ function(API,$scope,$state){
                 // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
+        if(grants.length===0){
+            // User has no packages granted
+            myApplications.doneLoading=true;
+            $scope.$digest();
+        }
         grants.forEach(function(grant){
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
@@ -184,10 +178,8 @@ function(API,$scope,$state){
         });
     };
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getPersonPackages({'personId':userId}); // this returns a list of grants
-    })
+
+   API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
     .then(function(res){
         getApplicationsFromGrants(res);
     })
@@ -275,7 +267,7 @@ angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests){
     var newAppRequest = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
     var services=[];
     var handleError=function(err){
         console.log('Error\n',err);
@@ -309,10 +301,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getPerson({personId:userId});
-    })
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         user=res;
         return API.cui.getPackages(); // WORKAROUND CASE #1
@@ -321,7 +310,7 @@ function(API,$scope,$state,AppRequests){
         var i=0;
         var packages=res;
         packages.forEach(function(pkg){
-            API.cui.getServices({'packageId':pkg.id})
+            API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res){
                 i++;
                 res.forEach(function(service){
@@ -356,7 +345,7 @@ angular.module('app')
     var applicationReview=this;
     var appRequests=AppRequests.get(),
         appsBeingRequested=Object.keys(appRequests),
-        userId='RN3BJI54'; // this will be replaced with the current user ID;
+        userId='IT88ZQJ8';  // this will be replaced with the current user ID;
 
     var handleError=function(err){
         console.log('Error \n', err);
@@ -518,10 +507,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         .fail(handleError);
     };
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getPerson({personId:userId});
-    })
+
+    API.cui.getPerson({personId:userId})
     .then(function(res){
         userOrg=res.organization.id;
         user=res;
@@ -678,8 +665,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService',
-function($state,GetCountries,$scope,$translate,LocaleService){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -694,6 +681,10 @@ function($state,GetCountries,$scope,$translate,LocaleService){
     base.generateHiddenPassword=function(password){
         return Array(password.length+1).join('•');
     };
+
+    base.menu=Menu;
+
+    console.log(base.menu);
 
     base.passwordPolicies=[
         {
@@ -735,12 +726,48 @@ function($state,GetCountries,$scope,$translate,LocaleService){
         });
     };
 
+    var setTimezones=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetTimezones(language)
+        .then(function(res){
+            base.timezones=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
         setCountries(args);
+        setTimezones(args);
+    });
+
+    API.handleCovAuthResponse()
+    .then(function(res){
+        console.log('TEST!!!');
+        API.setUser(res);
+        return API.cui.getPersonRoles({personId:API.getUser()});
+    })
+    .then(function(roles){
+        console.log('ROLES',roles);
+        var roleList=[];
+        roles.forEach(function(role){
+            roleList.push(role.name);
+        });
+        API.setUserEntitlements(roleList);
+    });
+
+    base.userEntitlements=[];
+    $scope.$on('newEntitlements',function(newEntitlements){
+        base.userEntitlements = newEntitlements;
     });
 
     setCountries($translate.proposedLanguage());
+    setTimezones($translate.proposedLanguage());
 
 
 }]);
@@ -765,7 +792,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('base',{
             url: '/',
             templateUrl: templateBase + 'base/base.html',
-            controller: returnCtrlAs('base')
+            controller: returnCtrlAs('base'),
         })
         .state('users',{
             url: '/users',
@@ -803,7 +830,10 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('registration.walkup',{
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
-            controller: returnCtrlAs('usersWalkup')
+            controller: returnCtrlAs('usersWalkup'),
+            menu:{
+                desktop:false
+            }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -878,7 +908,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'profile/profile.html'
         })
         .state('profile.user',{
-            url: '/user',
+            url: '/user:id',
             templateUrl: templateBase + 'profile/user/users.edit.html',
             controller: returnCtrlAs('usersEdit')
         })
@@ -886,6 +916,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/organization',
             templateUrl: templateBase + 'profile/organization/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
+        })
+        .state('empty', {
+            url: '/empty',
+            templateUrl: templateBase + 'empty/empty.html',
+            controller: returnCtrlAs('empty')
         });
 
     // $locationProvider.html5Mode(true);
@@ -941,15 +976,27 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
         LocaleService.setLocales(LanguageKey,languageNameObject[LanguageKey]);
     };
 
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
+        if(toState.menu){
+            (angular.isDefined(toState.menu.desktop) && toState.menu.desktop=== false)? Menu.desktop.hide() : Menu.desktop.show();
+            (angular.isDefined(toState.menu.mobile) && toState.menu.mobile=== false)? Menu.mobile.hide() : Menu.mobile.show();
+        }
+        else {
+            Menu.desktop.show();
+            Menu.mobile.show();
+        }
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()
         $state.previous = {};
         $state.previous.name = fromState;
         $state.previous.params = fromParams;
@@ -967,37 +1014,171 @@ angular.module('app')
 
 
 angular.module('app')
-.factory('API',[function(){
+.controller('emptyCtrl',['$scope','API','$window','$state', function($scope,API,$window,$state) {
+    // This empty controller is used to prevent an authHandler loop in the JWT token process!
+    console.log('IM IN EMPTY CTR');
+    $state.go('applications.myApplications');
 
-    var myCUI= cui.api();
-    myCUI.setServiceUrl('PRD'); // PRD
-    // myCUI.setServiceUrl('https://apistg.np.covapp.io'); // STG
-
-    var doAuth = function(){
-        return myCUI.doSysAuth({
-            // clientId: 'GhpIVq1CqVX93L0lDLw0lG7QEGFhYl4c', // STG
-            // clientSecret: '8xFdMSR1IFSeFJjC'
-            clientId: 'wntKAjev5sE1RhZCHzXQ7ko2vCwq3wi2', // PRD
-            clientSecret: 'MqKZsqUtAVAIiWkg'
-        });
-    };
-
-    var token = function(){
-        return myCUI.getToken();
-    };
-
-    return{
-        token:token,
-        cui:myCUI,
-        doAuth:doAuth
-    };
 }]);
 
+
+angular.module('app')
+.factory('API',['$state','User','$rootScope',function($state,User,$rootScope){
+
+    var myCUI = cui.api();
+    cui.log('cui.js v', myCUI.version());
+
+    // myCUI.setServiceUrl('PRD'); // PRD
+    myCUI.setServiceUrl('STG'); // STG
+
+    var originUri = 'coke-idm.run.covapp.io'; // Coke
+    // var originUri = 'coke-idm.run.covapp.io'; // Covisint
+
+    // // CUIJS caches instance id for unsecure calls
+    // myCUI.covAuthInfo({
+    //     // In PROD we need to verify that if we dont pass in originUri cui.js will
+    //     // pass the host for us dynamically!
+    //     originUri : originUri
+    // });
+    // console.log('CURRENT STATE',$state.current);
+
+    // if ($state.current.url === '/empty' ) {
+        // cui.log('Empty State : ', $state.current);
+        // myCUI.handleCovAuthResponse()
+        // .then(function(res){
+        //     console.log('TEST!!!');
+        //     User.set(res);
+        //     return myCUI.getPersonRoles({personId:User.get()});
+        // })
+        // .then(function(roles){
+        //     console.log('ROLES',roles);
+        //     var roleList=[];
+        //     roles.forEach(function(role){
+        //         roleList.push(role.name);
+        //     });
+        //     User.setEntitlements(roleList);
+        // });
+    // }
+    // else{
+        // cui.log('Im OUT of empty', $state.current);
+        function jwtAuthHandler() {
+            return myCUI.covAuth({
+                originUri: originUri,
+                authRedirect: window.location.href.split('#')[0] + '#/empty',
+                appRedirect: window.location.href
+            });
+        };
+        myCUI.setAuthHandler(jwtAuthHandler);
+
+        // myCUI.handleCovAuthResponse()
+        // .then(function(res){
+        //     console.log('TEST!!!');
+        //     User.set(res);
+        //     return myCUI.getPersonRoles({personId:User.get()});
+        // })
+        // .then(function(roles){
+        //     console.log('ROLES',roles);
+        //     var roleList=[];
+        //     roles.forEach(function(role){
+        //         roleList.push(role.name);
+        //     });
+        //     User.setEntitlements(roleList);
+        // });
+    // }
+
+    return {
+        cui: myCUI,
+        getUser: User.get,
+        setUser: User.set,
+        getUserEntitlements: User.getEntitlements,
+        setUserEntitlements: User.setEntitlements,
+        handleCovAuthResponse: myCUI.handleCovAuthResponse
+    };
+
+}]);
 
 angular.module('app').factory('GetCountries',['$http',function($http){
     return function(locale){
         return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
     };
+}]);
+
+angular.module('app').factory('GetTimezones',['$http',function($http){
+    return function(locale){
+        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/' + locale + '.json');
+    };
+}]);
+
+angular.module('app')
+.factory('Menu',[ '$rootScope',function($rootScope){
+    return {
+        desktop:{
+            'state':'open', // default state for desktop menu
+            'enabled':true,
+            'open':function(){
+                this.state='open';
+            },
+            'close':function(){
+                this.state='closed';
+            },
+            'toggle':function(){
+                this.state==='open' ? this.state='closed' : this.state='open';
+            },
+            'hide':function(){
+                this.enabled=false;
+            },
+            'show':function(){
+                this.enabled=true;
+            }
+        },
+
+        mobile:{
+            'state':'closed', // default state for mobile menu
+            'enabled':true,
+            'open':function(){
+                this.state='open';
+            },
+            'close':function(){
+                this.state='close';
+            },
+            'toggle':function(){
+                this.state==='open' ? this.state='closed' : this.state='open';
+            },
+            'hide':function(){
+                this.enabled=false;
+            },
+            'show':function(){
+                this.state=true;
+            }
+        }
+    };
+}]);
+
+
+angular.module('app')
+.factory('User',['$rootScope',function($rootScope){
+
+    var user={
+        entitlements:[]
+    };
+
+    return {
+        set : function(newUser){
+            user.cuid=newUser.cuid;
+        },
+        get : function(){
+            return user.cuid || '[cuid]';
+        },
+        setEntitlements : function(newEntitlements){
+            user.entitlements=newEntitlements;
+            $rootScope.$broadcast('newEntitlements',user.entitlements);
+        },
+        getEntitlements : function(){
+            console.log('getting entitlements:', user.entitlements);
+            return user.entitlements;
+        }
+    };
+
 }]);
 
 angular.module('app')
@@ -1058,10 +1239,7 @@ function(localStorageService,$scope,$stateParams,API){
             usersInvite.fail=false;
             usersInvite.user.timezone="EST5EDT";
             usersInvite.user.language=$scope.$parent.base.getLanguageCode();
-            API.doAuth()
-            .then(function(){
-                return API.cui.createPerson({data:usersInvite.user});
-            })
+            API.cui.createPerson({data:usersInvite.user})
             .then(function(res){
                 return API.cui.createPersonInvitation({data:build.personInvitation(res)});
             })
@@ -1503,19 +1681,17 @@ angular.module('app')
     var usersSearch=this;
     usersSearch.listLoading=true;
 
-    API.doAuth()
-    .then(function(){
-        API.cui.getPersons()
-        .then(function(res){
-            usersSearch.listLoading=false;
-            usersSearch.list=res;
-            usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
-            $scope.$apply();
-        })
-        .fail(function(err){
-            usersSearch.listLoading=false;
-            // console.log(err);
-        });
+
+    API.cui.getPersons()
+    .then(function(res){
+        usersSearch.listLoading=false;
+        usersSearch.list=res;
+        usersSearch.list.splice(0,4); // removes superusers, won't be needed after cui.js uses 3legged auth
+        $scope.$apply();
+    })
+    .fail(function(err){
+        usersSearch.listLoading=false;
+        // console.log(err);
     });
 
 
@@ -1552,17 +1728,17 @@ angular.module('app')
 
 angular.module('app')
 .controller('orgProfileCtrl',['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+    function($scope,$stateParams,API) {
 
     var orgProfile = this;
-    var userId = 'RN3BJI54'; // this will be replaced with the current user ID
+
+    var handleError=function(err){
+        console.log('Error', err);
+    };
 
     orgProfile.organization = {};
 
-    API.doAuth()
-    .then(function() {
-        return API.cui.getPerson({personId: userId});
-    })
+    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
     .then(function(res) {
         return API.cui.getOrganization({organizationId: res.organization.id});
     })
@@ -1579,16 +1755,15 @@ function($scope,$stateParams,API) {
 
 
 angular.module('app')
-.controller('usersEditCtrl',['localStorageService','$scope','$stateParams','$timeout','API',
-function(localStorageService,$scope,$stateParams,$timeout,API){
+.controller('usersEditCtrl',['$scope','$timeout','API',
+function($scope,$timeout,API){
     'use strict';
 
     var usersEdit = this;
     var currentCountry;
-    var userId='RN3BJI54';
 
     usersEdit.loading = true;
-    usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
+    usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
 
     usersEdit.updatePerson = function() {
@@ -1604,10 +1779,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
         angular.copy(usersEdit.tempUser, usersEdit.user);
 
-        API.doAuth()
-        .then(function() {
-            return API.cui.updatePerson({personId: usersEdit.user.id, data:usersEdit.user});
-        })
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.user})
         .then(function() {
             usersEdit.loading = false;
             $scope.$digest();
@@ -1639,23 +1811,23 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     };
 
     var selectQuestionsForUser = function() {
+        usersEdit.challengeQuestion1={};
+        usersEdit.challengeQuestion1={}
         var questions = [];
         angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
             var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
             this.push(question);
         }, questions);
 
+        console.log('questions',questions);
         usersEdit.challengeQuestion1 = questions[0];
         usersEdit.challengeQuestion1.answer = '';
         usersEdit.challengeQuestion2 = questions[1];
         usersEdit.challengeQuestion2.answer = '';
-        $scope.$apply();
+        $scope.$digest();
     };
 
-    API.doAuth()
-    .then(function(res) {
-        return  API.cui.getPerson({personId: userId});
-    })
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
         // If the person has no addresses set we need to initialize it as an array
         // to follow the data structure
@@ -1666,7 +1838,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.user = angular.copy(res);
         usersEdit.tempUser = angular.copy(res);
         currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({personId: usersEdit.user.id});
+        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
         usersEdit.userSecurityQuestions = res;
@@ -1676,7 +1848,7 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
     .then(function(res) {
         usersEdit.allSecurityQuestions = res;
         selectQuestionsForUser();
-        return API.cui.getPersonPassword({personId: usersEdit.user.id});
+        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
         usersEdit.userPassword = res;
@@ -1716,10 +1888,10 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
         usersEdit.success = false;
 
         API.cui.updateSecurityQuestions({
-          personId: $stateParams.id,
+          personId: API.getUser(),
           data: {
             version: '1',
-            id: usersEdit.user.id,
+            id: API.getUser(),
             questions: updatedChallengeQuestions
             }
         })
@@ -1747,8 +1919,8 @@ function(localStorageService,$scope,$stateParams,$timeout,API){
 
 angular.module('app')
 .controller('divisionCtrl',['$scope', 'API', function($scope, API) {
-	var newDivision = this;
-	newDivision.userLogin = {};
+    var newDivision = this;
+    newDivision.userLogin = {};
     newDivision.orgSearch = {};
 
     newDivision.passwordPolicies = [  // WORKAROUND CASE #5
@@ -1771,10 +1943,7 @@ angular.module('app')
         }
     ];
 
-    API.doAuth()
-    .then(function(){
-        return API.cui.getSecurityQuestions();
-    })
+    API.cui.getSecurityQuestions()
     .then(function(res){
             // Removes first question as it is blank
             res.splice(0,1);
@@ -1850,10 +2019,7 @@ angular.module('app')
   ];
 
 
-  API.doAuth()
-  .then(function(){
-    return API.cui.getSecurityQuestions();
-  })
+  API.cui.getSecurityQuestions()
   .then(function(res){
     // Removes first question as it is blank
     res.splice(0,1);
@@ -1918,73 +2084,73 @@ angular.module('app')
         ];
 
 
-        API.doAuth()
-        // Preload user data from Invitation
-        .then(function() {
-            if(!$stateParams.id || !$stateParams.code) {
-                console.log('Invited user reg requires 2 url params: id (invitationId) and code (invitatioCode)')
-                return;
-            }
-            return API.cui.getPersonInvitation({invitationId: $stateParams.id});
-        })
-        .then(function(res){
-            if (res.invitationCode !== $stateParams.code) {
-                // Wrong Code
-                return;
-            }
-            return getUser(res.invitee.id);
-        })
-        .then(function(res){
-            usersRegister.invitedUser = res;
-            usersRegister.user = res;
-            usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
-            usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
-            usersRegister.user.phones = [];
-            return getOrganization(res.organization.id);
-        })
-        .then(function(res){
-            usersRegister.targetOrganization = res;
-            return API.cui.getSecurityQuestions();   // Load security questions for login form
-        })
-        .then(function(res) {
-            // Removes first question as it is blank
-            res.splice(0,1);
 
-            // Splits questions to use between both dropdowns
-            var numberOfQuestions = res.length,
-            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-            usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-            usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+        if(!$stateParams.id || !$stateParams.code) {
+            console.log('Invited user reg requires 2 url params: id (invitationId) and code (invitatioCode)');
+            // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE URL
+        }
+        else {
+            API.cui.getPersonInvitation({invitationId: $stateParams.id})
+            .then(function(res){
+                if (res.invitationCode !== $stateParams.code) {
+                    // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE
+                    console.log('Wrong invitation code.');
+                    return;
+                }
+                return getUser(res.invitee.id);
+            })
+            .then(function(res){
+                usersRegister.invitedUser = res;
+                usersRegister.user = res;
+                usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
+                usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
+                usersRegister.user.phones = [];
+                return getOrganization(res.organization.id);
+            })
+            .then(function(res){
+                usersRegister.targetOrganization = res;
+                return API.cui.getSecurityQuestions();   // Load security questions for login form
+            })
+            .then(function(res) {
+                // Removes first question as it is blank
+                res.splice(0,1);
 
-            // Preload question into input
-            usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
-            usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
-        })
-        // Populate Applications List
-        .then(function() {
-            return API.cui.getOrganizationPackages({'organizationId':usersRegister.targetOrganization.id});
-        })
-        .then(function(res) {
-            var listOfApps=[];
-            res.forEach(function(packageGrant){
-                var i=0;
-                API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
-                .then(function(res){
-                    i++;
-                    res.forEach(function(service){
-                        service.packageId=packageGrant.servicePackage.id;
-                        listOfApps.push(service);
+                // Splits questions to use between both dropdowns
+                var numberOfQuestions = res.length,
+                numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+                usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+                usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+                // Preload question into input
+                usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+                usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
+            })
+            // Populate Applications List
+            .then(function() {
+                return API.cui.getOrganizationPackages({'organizationId':usersRegister.targetOrganization.id});
+            })
+            .then(function(res) {
+                var listOfApps=[];
+                res.forEach(function(packageGrant){
+                    var i=0;
+                    API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
+                    .then(function(res){
+                        i++;
+                        res.forEach(function(service){
+                            service.packageId=packageGrant.servicePackage.id;
+                            listOfApps.push(service);
+                        });
+                        if(i===res.length){
+                            usersRegister.applications.list = listOfApps;
+                            $scope.$digest();
+                        }
                     });
-                    if(i===res.length){
-                        usersRegister.applications.list = listOfApps;
-                        $scope.$digest();
-                    }
                 });
+            })
+            .fail(function(err) {
+                console.log(err);
             });
-        })
-        .fail(function(err) {
-            console.log(err);
-        });
+        }
 
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
         usersRegister.applications.updateNumberOfSelected=function(a){
@@ -2028,12 +2194,7 @@ angular.module('app')
             usersRegister.submitting = true;
             var user;
 
-            API.doAuth()
-            // Update Person
-            .then(function() {
-                return API.cui.updatePerson({personId: usersRegister.invitedUser.id, data: build.user()});
-            })
-            // Create Password Account
+            API.cui.updatePerson({personId: usersRegister.invitedUser.id, data: build.user()})
             .then(function(res) {
                 user = res;
                 return API.cui.createPersonPassword(build.personPassword(user, usersRegister.targetOrganization));
@@ -2188,10 +2349,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         console.log(err);
     };
 
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getSecurityQuestions();
-    })
+    API.cui.getSecurityQuestions()
     .then(function(res){ // get all the security questions
         res.splice(0,1);
         // Splits questions to use between both dropdowns
@@ -2227,11 +2385,23 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]}) // TODO GET SERVICES INSTEAD
-            .then(function(res){
-                if(res.length===0) usersWalkup.applications.list=undefined;
-                else usersWalkup.applications.list=res;
-                $scope.$apply();
+            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO GET SERVICES INSTEAD
+            .then(function(grants){
+                usersWalkup.applications.list=[];
+                if(grantsg.length===0){
+                    usersWalkup.applications.list=undefined;
+                    $scope.$digest();
+                }
+                grants.forEach(function(grant){
+                    API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+                    .then(function(res){
+                        usersWalkup.applications.list.push(res);
+                        i++;
+                        if(i===grants.length){
+                            $scope.$digest();
+                        }
+                    });
+                });
             })
             .fail(handleError);
         }

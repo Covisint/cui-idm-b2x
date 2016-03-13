@@ -24,10 +24,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         console.log(err);
     };
 
-    API.doAuth()
-    .then(function(res){
-        return API.cui.getSecurityQuestions();
-    })
+    API.cui.getSecurityQuestions()
     .then(function(res){ // get all the security questions
         res.splice(0,1);
         // Splits questions to use between both dropdowns
@@ -63,11 +60,23 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         if(newOrgSelected){
             usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
             usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getPackages({'qs': [['owningOrganization.id', newOrgSelected.id]]}) // TODO GET SERVICES INSTEAD
-            .then(function(res){
-                if(res.length===0) usersWalkup.applications.list=undefined;
-                else usersWalkup.applications.list=res;
-                $scope.$apply();
+            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO GET SERVICES INSTEAD
+            .then(function(grants){
+                usersWalkup.applications.list=[];
+                if(grantsg.length===0){
+                    usersWalkup.applications.list=undefined;
+                    $scope.$digest();
+                }
+                grants.forEach(function(grant){
+                    API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+                    .then(function(res){
+                        usersWalkup.applications.list.push(res);
+                        i++;
+                        if(i===grants.length){
+                            $scope.$digest();
+                        }
+                    });
+                });
             })
             .fail(handleError);
         }
