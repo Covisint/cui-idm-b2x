@@ -374,6 +374,9 @@ fieldset {
 .hide {
   display: none !important; }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
 /*
 Elements
 
@@ -2727,6 +2730,24 @@ snap-drawer,
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
+  .menu-toggle--desktop,
+  .cui-menu__toggle-button-container--desktop {
+    display: none; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--desktop,
+      .cui-menu__toggle-button-container--desktop {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; } }
+  .menu-toggle--mobile,
+  .cui-menu__toggle-button-container--mobile {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--mobile,
+      .cui-menu__toggle-button-container--mobile {
+        display: none; } }
   .menu-toggle.active .menu-toggle--button,
   .menu-toggle.active .cui-menu__toggle-button,
   .cui-menu__toggle-button-container.active .menu-toggle--button,
