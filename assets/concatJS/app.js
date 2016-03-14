@@ -665,8 +665,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','$scope','$translate','LocaleService','User','API',
-function($state,GetCountries,$scope,$translate,LocaleService,User,API){
+.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
+function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -681,6 +681,10 @@ function($state,GetCountries,$scope,$translate,LocaleService,User,API){
     base.generateHiddenPassword=function(password){
         return Array(password.length+1).join('•');
     };
+
+    base.menu=Menu;
+
+    console.log(base.menu);
 
     base.passwordPolicies=[
         {
@@ -722,9 +726,24 @@ function($state,GetCountries,$scope,$translate,LocaleService,User,API){
         });
     };
 
+    var setTimezones=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetTimezones(language)
+        .then(function(res){
+            base.timezones=res.data;
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
     $scope.$on('languageChange',function(e,args){
         // console.log(e);
         setCountries(args);
+        setTimezones(args);
     });
 
     API.handleCovAuthResponse()
@@ -748,6 +767,7 @@ function($state,GetCountries,$scope,$translate,LocaleService,User,API){
     });
 
     setCountries($translate.proposedLanguage());
+    setTimezones($translate.proposedLanguage());
 
 
 }]);
@@ -810,7 +830,10 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         .state('registration.walkup',{
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
-            controller: returnCtrlAs('usersWalkup')
+            controller: returnCtrlAs('usersWalkup'),
+            menu:{
+                desktop:false
+            }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -885,7 +908,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'profile/profile.html'
         })
         .state('profile.user',{
-            url: '/user',
+            url: '/user:id',
             templateUrl: templateBase + 'profile/user/users.edit.html',
             controller: returnCtrlAs('usersEdit')
         })
@@ -953,8 +976,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -963,6 +986,14 @@ angular.module('app')
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
+        if(toState.menu){
+            (angular.isDefined(toState.menu.desktop) && toState.menu.desktop=== false)? Menu.desktop.hide() : Menu.desktop.show();
+            (angular.isDefined(toState.menu.mobile) && toState.menu.mobile=== false)? Menu.mobile.hide() : Menu.mobile.show();
+        }
+        else {
+            Menu.desktop.show();
+            Menu.mobile.show();
+        }
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()
@@ -1071,6 +1102,58 @@ angular.module('app').factory('GetCountries',['$http',function($http){
         return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
     };
 }]);
+
+angular.module('app').factory('GetTimezones',['$http',function($http){
+    return function(locale){
+        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/' + locale + '.json');
+    };
+}]);
+
+angular.module('app')
+.factory('Menu',[ '$rootScope',function($rootScope){
+    return {
+        desktop:{
+            'state':'open', // default state for desktop menu
+            'enabled':true,
+            'open':function(){
+                this.state='open';
+            },
+            'close':function(){
+                this.state='closed';
+            },
+            'toggle':function(){
+                this.state==='open' ? this.state='closed' : this.state='open';
+            },
+            'hide':function(){
+                this.enabled=false;
+            },
+            'show':function(){
+                this.enabled=true;
+            }
+        },
+
+        mobile:{
+            'state':'closed', // default state for mobile menu
+            'enabled':true,
+            'open':function(){
+                this.state='open';
+            },
+            'close':function(){
+                this.state='close';
+            },
+            'toggle':function(){
+                this.state==='open' ? this.state='closed' : this.state='open';
+            },
+            'hide':function(){
+                this.enabled=false;
+            },
+            'show':function(){
+                this.state=true;
+            }
+        }
+    };
+}]);
+
 
 angular.module('app')
 .factory('User',['$rootScope',function($rootScope){
@@ -1680,7 +1763,7 @@ function($scope,$timeout,API){
     var currentCountry;
 
     usersEdit.loading = true;
-    usersEdit.tempTimezones = ['CST6CDT', 'EST5EDT'];
+    usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
 
     usersEdit.updatePerson = function() {
