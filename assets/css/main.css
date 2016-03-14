@@ -2604,6 +2604,25 @@ snap-drawer,
 .snapjs-expand-right .snap-drawer-right {
   width: 100%; }
 
+.snapjs-left .menu-toggle--button,
+.snapjs-left .cui-menu__toggle-button {
+  width: 0;
+  transition: width .1s linear; }
+  .snapjs-left .menu-toggle--button:before,
+  .snapjs-left .cui-menu__toggle-button:before {
+    top: 0;
+    -webkit-transform: rotateZ(45deg);
+            transform: rotateZ(45deg);
+    transition: top .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: top .1s ease-in-out, transform .1s .1s ease-in-out; }
+  .snapjs-left .menu-toggle--button:after,
+  .snapjs-left .cui-menu__toggle-button:after {
+    bottom: 0;
+    -webkit-transform: rotateZ(-45deg);
+            transform: rotateZ(-45deg);
+    transition: bottom .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: bottom .1s ease-in-out, transform .1s .1s ease-in-out; }
+
 .v2 .cui-menu__content-wrapper {
   margin-left: 180px; }
   .v2 .cui-menu__content-wrapper.desktop-menu--collapse {
