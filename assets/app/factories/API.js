@@ -30,14 +30,11 @@ angular.module('app')
         setUserEntitlements: User.setEntitlements,
         handleCovAuthResponse: function(e,toState,toParams,fromState,fromParams){
             var self=this;
-            console.log('navigating to state',toState);
+            myCUI.covAuthInfo({originUri:originUri});
             myCUI.handleCovAuthResponse({selfRedirect:true})
             .then(function(res) {
-                console.log('handleCovAuthResponse ', res);
                 if(toState.name==='empty'){
-                    console.log('Going to ',res.appRedirect);
                     if(res.appRedirect!=='empty') {
-                        console.log('changing states to ',res.appRedirect);
                         Object.keys($location.search()).forEach(function(searchParam){
                             $location.search(searchParam,null);
                         });
