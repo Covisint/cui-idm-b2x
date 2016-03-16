@@ -374,6 +374,13 @@ fieldset {
 .hide {
   display: none !important; }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+.tether-element {
+  position: absolute;
+  z-index: 9999; }
+
 /*
 Elements
 
@@ -501,7 +508,22 @@ Styleguide Elements.Texts.Links
 .cui-header__user .cui-profile__link {
   color: #6a98a0;
   cursor: pointer;
-  text-decoration: none; }
+  text-decoration: none;
+  transition: color .15s ease-in-out; }
+  .cui-link:hover, .cui-expandable__review-button:hover, .cui-search__dropdown a:hover, .cui-expandable__link:hover, .cui-pagination__link a:hover, .cui-pagination__display-amount:hover, .cui-media__link:hover,
+  .cui-profile .cui-profile__link:hover,
+  .cui-header__user .cui-profile__link:hover {
+    color: #6a98a0;
+    transition: color .15s ease-in-out; }
+
+.cui-link--alt {
+  color: #6a98a0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .15s ease-in-out; }
+  .cui-link--alt:hover {
+    color: #6a98a0;
+    transition: color .15s ease-in-out; }
 
 /*
 Paragraphs
@@ -2601,6 +2623,25 @@ snap-drawer,
 .snapjs-expand-right .snap-drawer-right {
   width: 100%; }
 
+.snapjs-left .menu-toggle--button,
+.snapjs-left .cui-menu__toggle-button {
+  width: 0;
+  transition: width .1s linear; }
+  .snapjs-left .menu-toggle--button:before,
+  .snapjs-left .cui-menu__toggle-button:before {
+    top: 0;
+    -webkit-transform: rotateZ(45deg);
+            transform: rotateZ(45deg);
+    transition: top .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: top .1s ease-in-out, transform .1s .1s ease-in-out; }
+  .snapjs-left .menu-toggle--button:after,
+  .snapjs-left .cui-menu__toggle-button:after {
+    bottom: 0;
+    -webkit-transform: rotateZ(-45deg);
+            transform: rotateZ(-45deg);
+    transition: bottom .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: bottom .1s ease-in-out, transform .1s .1s ease-in-out; }
+
 .v2 .cui-menu__content-wrapper {
   margin-left: 180px; }
   .v2 .cui-menu__content-wrapper.desktop-menu--collapse {
@@ -2727,6 +2768,24 @@ snap-drawer,
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
+  .menu-toggle--desktop,
+  .cui-menu__toggle-button-container--desktop {
+    display: none; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--desktop,
+      .cui-menu__toggle-button-container--desktop {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; } }
+  .menu-toggle--mobile,
+  .cui-menu__toggle-button-container--mobile {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--mobile,
+      .cui-menu__toggle-button-container--mobile {
+        display: none; } }
   .menu-toggle.active .menu-toggle--button,
   .menu-toggle.active .cui-menu__toggle-button,
   .cui-menu__toggle-button-container.active .menu-toggle--button,
@@ -4485,6 +4544,10 @@ Modal example to be added via iframe
     color: #343534;
     margin-top: 0.75em;
     max-width: 9.375em; }
+
+.cui-footer {
+  padding-bottom: 1.25em;
+  padding-top: 1.25em; }
 
 .cui-nav__content-wrapper {
   min-height: 750px; }

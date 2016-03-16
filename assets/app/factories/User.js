@@ -14,10 +14,8 @@ angular.module('app')
         },
         setEntitlements : function(newEntitlements){
             user.entitlements=newEntitlements;
-            $rootScope.$broadcast('newEntitlements',user.entitlements);
         },
         getEntitlements : function(){
-            console.log('getting entitlements:', user.entitlements);
             return user.entitlements;
         }
     };

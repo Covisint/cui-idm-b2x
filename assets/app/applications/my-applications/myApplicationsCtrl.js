@@ -1,7 +1,10 @@
 angular.module('app')
-.controller('myApplicationsCtrl',['API','$scope','$state',
-function(API,$scope,$state){
-    var myApplications = this;
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state',
+function(localStorageService,$scope,$stateParams,API,$state){
+    var myApplications=this;
+    myApplications.doneLoading=false;
+    myApplications.sortFlag=false;
+    myApplications.categoriesFlag=false;
 
     myApplications.list=[];
 
@@ -11,14 +14,9 @@ function(API,$scope,$state){
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-                // WORKAROUND CASE #1
+    // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
-        if(grants.length===0){
-            // User has no packages granted
-            myApplications.doneLoading=true;
-            $scope.$digest();
-        }
         grants.forEach(function(grant){
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
@@ -30,16 +28,16 @@ function(API,$scope,$state){
                 });
                 if(i===grants.length){ // if this is the last grant
                     myApplications.doneLoading=true;
+                    console.log(myApplications.list);
                     $scope.$digest();
                 }
             })
             .fail(handleError);
         });
     };
-
-
-   API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
+    API.cui.getPersonPackages({personId:API.getUser(),useCuid:true}) // this returns a list of grant
     .then(function(res){
+        console.log(res);
         getApplicationsFromGrants(res);
     })
     .fail(handleError);
@@ -53,7 +51,5 @@ function(API,$scope,$state){
         $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
 
-
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
-
-}]);
+}])

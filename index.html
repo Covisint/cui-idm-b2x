@@ -34,7 +34,10 @@
     <snap-content snap-opt-disable="'right'">
       <header class="cui-header">
         <div class="cui-header__top">
-          <div class="menu-toggle active" snap-toggle="left" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
+          <div class="menu-toggle menu-toggle--desktop active" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
+            <div class="menu-toggle--button"></div>
+          </div>
+          <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
             <div class="menu-toggle--button"></div>
           </div>
           <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg>
@@ -95,6 +98,7 @@
   </div>
 
 <!-- build:js assets/js/vendor.js -->
+<script src="bower_components/tether/dist/js/tether.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
 <script src="bower_components/angular/angular.js"></script>
