@@ -1028,7 +1028,7 @@ angular.module('app')
             .then(function(res) {
                 if(toState.name==='empty'){
                     console.log('Going to ',res.appRedirect);
-                    $state.go(res.appRedirect);
+                    if(res.appRedirect!=='empty') $state.go(res.appRedirect);
                     return;
                 }
                 else {
