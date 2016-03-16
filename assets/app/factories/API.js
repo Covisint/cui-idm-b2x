@@ -34,6 +34,8 @@ angular.module('app')
                 self.setUser(res);
                 self.setAuthInfo(res.authInfo);
                 if(toState.name==='empty'){
+                    console.log('in empty');
+                    console.log('going to ', res.appRedirect);
                     $window.location.href = res.appRedirect;
                 }
                 return myCUI.getPersonRoles({ personId: self.getUser() });
