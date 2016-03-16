@@ -63,7 +63,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO GET SERVICES INSTEAD
             .then(function(grants){
                 usersWalkup.applications.list=[];
-                if(grantsg.length===0){
+                if(grants.length===0){
                     usersWalkup.applications.list=undefined;
                     $scope.$digest();
                 }

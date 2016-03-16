@@ -18,8 +18,6 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
 
     base.menu=Menu;
 
-    console.log(base.menu);
-
     base.passwordPolicies=[
         {
             'allowUpperChars':true,
@@ -80,25 +78,8 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
         setTimezones(args);
     });
 
-    API.handleCovAuthResponse()
-    .then(function(res){
-        console.log('TEST!!!');
-        API.setUser(res);
-        return API.cui.getPersonRoles({personId:API.getUser()});
-    })
-    .then(function(roles){
-        console.log('ROLES',roles);
-        var roleList=[];
-        roles.forEach(function(role){
-            roleList.push(role.name);
-        });
-        API.setUserEntitlements(roleList);
-    });
-
-    base.userEntitlements=[];
-    $scope.$on('newEntitlements',function(newEntitlements){
-        base.userEntitlements = newEntitlements;
-    });
+    base.user = User.user;
+    base.authInfo = API.authInfo;
 
     setCountries($translate.proposedLanguage());
     setTimezones($translate.proposedLanguage());

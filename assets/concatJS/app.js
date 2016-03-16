@@ -140,9 +140,12 @@ function(API,$scope,$stateParams,$state){
 
 
 angular.module('app')
-.controller('myApplicationsCtrl',['API','$scope','$state',
-function(API,$scope,$state){
-    var myApplications = this;
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state',
+function(localStorageService,$scope,$stateParams,API,$state){
+    var myApplications=this;
+    myApplications.doneLoading=false;
+    myApplications.sortFlag=false;
+    myApplications.categoriesFlag=false;
 
     myApplications.list=[];
 
@@ -152,14 +155,9 @@ function(API,$scope,$state){
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-                // WORKAROUND CASE #1
+    // WORKAROUND CASE #1
     var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
         var i=0;
-        if(grants.length===0){
-            // User has no packages granted
-            myApplications.doneLoading=true;
-            $scope.$digest();
-        }
         grants.forEach(function(grant){
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res){
@@ -171,16 +169,16 @@ function(API,$scope,$state){
                 });
                 if(i===grants.length){ // if this is the last grant
                     myApplications.doneLoading=true;
+                    console.log(myApplications.list);
                     $scope.$digest();
                 }
             })
             .fail(handleError);
         });
     };
-
-
-   API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // this returns a list of grants
+    API.cui.getPersonPackages({personId:API.getUser(),useCuid:true}) // this returns a list of grant
     .then(function(res){
+        console.log(res);
         getApplicationsFromGrants(res);
     })
     .fail(handleError);
@@ -194,11 +192,8 @@ function(API,$scope,$state){
         $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
     };
 
-
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
-
-}]);
-
+}])
 
 angular.module('app')
 .factory('AppRequests',['$filter',function($filter){
@@ -684,8 +679,6 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
 
     base.menu=Menu;
 
-    console.log(base.menu);
-
     base.passwordPolicies=[
         {
             'allowUpperChars':true,
@@ -746,25 +739,8 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
         setTimezones(args);
     });
 
-    API.handleCovAuthResponse()
-    .then(function(res){
-        console.log('TEST!!!');
-        API.setUser(res);
-        return API.cui.getPersonRoles({personId:API.getUser()});
-    })
-    .then(function(roles){
-        console.log('ROLES',roles);
-        var roleList=[];
-        roles.forEach(function(role){
-            roleList.push(role.name);
-        });
-        API.setUserEntitlements(roleList);
-    });
-
-    base.userEntitlements=[];
-    $scope.$on('newEntitlements',function(newEntitlements){
-        base.userEntitlements = newEntitlements;
-    });
+    base.user = User.user;
+    base.authInfo = API.authInfo;
 
     setCountries($translate.proposedLanguage());
     setTimezones($translate.proposedLanguage());
@@ -976,8 +952,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -985,15 +961,12 @@ angular.module('app')
     };
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        // cui Auth
+        API.handleCovAuthResponse(toState);
+        // determines if user is able to access the particular route we're navigation to
         routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
-        if(toState.menu){
-            (angular.isDefined(toState.menu.desktop) && toState.menu.desktop=== false)? Menu.desktop.hide() : Menu.desktop.show();
-            (angular.isDefined(toState.menu.mobile) && toState.menu.mobile=== false)? Menu.mobile.hide() : Menu.mobile.show();
-        }
-        else {
-            Menu.desktop.show();
-            Menu.mobile.show();
-        }
+        // for menu handling
+        Menu.handleStateChange(toState.menu);
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()
@@ -1014,19 +987,18 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('emptyCtrl',['$scope','API','$window','$state', function($scope,API,$window,$state) {
+.controller('emptyCtrl',[function() {
     // This empty controller is used to prevent an authHandler loop in the JWT token process!
-    console.log('IM IN EMPTY CTR');
-    $state.go('applications.myApplications');
-
 }]);
 
 
 angular.module('app')
-.factory('API',['$state','User','$rootScope',function($state,User,$rootScope){
+.factory('API',['$state','User','$rootScope','$window',function($state,User,$rootScope,$window){
 
     var myCUI = cui.api();
     cui.log('cui.js v', myCUI.version());
+
+    var authInfo={};
 
     // myCUI.setServiceUrl('PRD'); // PRD
     myCUI.setServiceUrl('STG'); // STG
@@ -1034,57 +1006,14 @@ angular.module('app')
     var originUri = 'coke-idm.run.covapp.io'; // Coke
     // var originUri = 'coke-idm.run.covapp.io'; // Covisint
 
-    // // CUIJS caches instance id for unsecure calls
-    // myCUI.covAuthInfo({
-    //     // In PROD we need to verify that if we dont pass in originUri cui.js will
-    //     // pass the host for us dynamically!
-    //     originUri : originUri
-    // });
-    // console.log('CURRENT STATE',$state.current);
+    function jwtAuthHandler() {
+        return myCUI.covAuth({
+            originUri: originUri,
+            authRedirect: window.location.href.split('#')[0] + '#/empty',
+        });
+    };
+    myCUI.setAuthHandler(jwtAuthHandler);
 
-    // if ($state.current.url === '/empty' ) {
-        // cui.log('Empty State : ', $state.current);
-        // myCUI.handleCovAuthResponse()
-        // .then(function(res){
-        //     console.log('TEST!!!');
-        //     User.set(res);
-        //     return myCUI.getPersonRoles({personId:User.get()});
-        // })
-        // .then(function(roles){
-        //     console.log('ROLES',roles);
-        //     var roleList=[];
-        //     roles.forEach(function(role){
-        //         roleList.push(role.name);
-        //     });
-        //     User.setEntitlements(roleList);
-        // });
-    // }
-    // else{
-        // cui.log('Im OUT of empty', $state.current);
-        function jwtAuthHandler() {
-            return myCUI.covAuth({
-                originUri: originUri,
-                authRedirect: window.location.href.split('#')[0] + '#/empty',
-                appRedirect: window.location.href
-            });
-        };
-        myCUI.setAuthHandler(jwtAuthHandler);
-
-        // myCUI.handleCovAuthResponse()
-        // .then(function(res){
-        //     console.log('TEST!!!');
-        //     User.set(res);
-        //     return myCUI.getPersonRoles({personId:User.get()});
-        // })
-        // .then(function(roles){
-        //     console.log('ROLES',roles);
-        //     var roleList=[];
-        //     roles.forEach(function(role){
-        //         roleList.push(role.name);
-        //     });
-        //     User.setEntitlements(roleList);
-        // });
-    // }
 
     return {
         cui: myCUI,
@@ -1092,10 +1021,33 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
-        handleCovAuthResponse: myCUI.handleCovAuthResponse
+        handleCovAuthResponse: function(toState){
+            var self=this;
+            myCUI.handleCovAuthResponse(toState.name==='empty'? {selfRedirect:true} : {})
+            .then(function(res) {
+                self.setUser(res);
+                self.setAuthInfo(res.authInfo);
+                if(toState.name==='empty'){
+                    $window.location.href = res.appRedirect;
+                }
+                return myCUI.getPersonRoles({ personId: self.getUser() });
+            })
+            .then(function(roles) {
+                var roleList = [];
+                roles.forEach(function(role) {
+                    roleList.push(role.name);
+                });
+                self.setUserEntitlements(roleList);
+                $rootScope.$digest();
+            });
+        },
+        setAuthInfo:function(newAuthInfo){
+            angular.copy(newAuthInfo[0],authInfo);
+        },
+        authInfo:authInfo
     };
-
 }]);
+
 
 angular.module('app').factory('GetCountries',['$http',function($http){
     return function(locale){
@@ -1150,6 +1102,17 @@ angular.module('app')
             'show':function(){
                 this.state=true;
             }
+        },
+
+        handleStateChange: function(stateMenuOptions){
+            if (!angular.isDefined(stateMenuOptions)){
+                this.desktop.show();
+                this.mobile.show();
+            }
+            else {
+                (angular.isDefined(stateMenuOptions.desktop) && stateMenuOptions.desktop=== false)? this.desktop.hide() : this.desktop.show();
+                (angular.isDefined(stateMenuOptions.mobile) && stateMenuOptions.mobile=== false)? this.mobile.hide() : this.mobile.show();
+            }
         }
     };
 }]);
@@ -1171,10 +1134,8 @@ angular.module('app')
         },
         setEntitlements : function(newEntitlements){
             user.entitlements=newEntitlements;
-            $rootScope.$broadcast('newEntitlements',user.entitlements);
         },
         getEntitlements : function(){
-            console.log('getting entitlements:', user.entitlements);
             return user.entitlements;
         }
     };
@@ -2388,7 +2349,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO GET SERVICES INSTEAD
             .then(function(grants){
                 usersWalkup.applications.list=[];
-                if(grantsg.length===0){
+                if(grants.length===0){
                     usersWalkup.applications.list=undefined;
                     $scope.$digest();
                 }

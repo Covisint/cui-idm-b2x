@@ -202,8 +202,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -211,15 +211,12 @@ angular.module('app')
     };
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        // cui Auth
+        API.handleCovAuthResponse(toState);
+        // determines if user is able to access the particular route we're navigation to
         routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
-        if(toState.menu){
-            (angular.isDefined(toState.menu.desktop) && toState.menu.desktop=== false)? Menu.desktop.hide() : Menu.desktop.show();
-            (angular.isDefined(toState.menu.mobile) && toState.menu.mobile=== false)? Menu.mobile.hide() : Menu.mobile.show();
-        }
-        else {
-            Menu.desktop.show();
-            Menu.mobile.show();
-        }
+        // for menu handling
+        Menu.handleStateChange(toState.menu);
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) { // this is for base.goBack()
