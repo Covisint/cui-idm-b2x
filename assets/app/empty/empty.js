@@ -1,8 +1,4 @@
 angular.module('app')
-.controller('emptyCtrl',['$scope','API','$window','$state', function($scope,API,$window,$state) {
-
+.controller('emptyCtrl',['API',function(API) {
     // This empty controller is used to prevent an authHandler loop in the JWT token process!
-    console.log('IM IN EMPTY CTR');
-    $state.go('applications.myApplications');
-
 }]);

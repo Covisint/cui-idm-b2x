@@ -12,12 +12,10 @@ angular.module('app')
         get : function() {
             return user.cuid || '[cuid]';
         },
-        setEntitlements : function (newEntitlements) {
-            user.entitlements = newEntitlements;
-            $rootScope.$broadcast('newEntitlements', user.entitlements);
+        setEntitlements : function(newEntitlements){
+            user.entitlements=newEntitlements;
         },
-        getEntitlements : function() {
-            console.log('Getting entitlements:', user.entitlements);
+        getEntitlements : function(){
             return user.entitlements;
         }
     };

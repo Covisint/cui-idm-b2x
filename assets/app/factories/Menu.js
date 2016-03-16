@@ -39,6 +39,17 @@ angular.module('app')
             'show':function(){
                 this.state=true;
             }
+        },
+
+        handleStateChange: function(stateMenuOptions){
+            if (!angular.isDefined(stateMenuOptions)){
+                this.desktop.show();
+                this.mobile.show();
+            }
+            else {
+                (angular.isDefined(stateMenuOptions.desktop) && stateMenuOptions.desktop=== false)? this.desktop.hide() : this.desktop.show();
+                (angular.isDefined(stateMenuOptions.mobile) && stateMenuOptions.mobile=== false)? this.mobile.hide() : this.mobile.show();
+            }
         }
     };
 }]);
