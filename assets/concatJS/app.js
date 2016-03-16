@@ -962,7 +962,7 @@ angular.module('app')
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         // cui Auth
-        API.handleCovAuthResponse(toState);
+        API.handleCovAuthResponse(toState,fromState);
         // determines if user is able to access the particular route we're navigation to
         routing($rootScope, $state, toState, toParams, fromState, fromParams, User.getEntitlements());
         // for menu handling
@@ -987,13 +987,13 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('emptyCtrl',[function() {
+.controller('emptyCtrl',['API',function(API) {
     // This empty controller is used to prevent an authHandler loop in the JWT token process!
 }]);
 
 
 angular.module('app')
-.factory('API',['$state','User','$rootScope','$window',function($state,User,$rootScope,$window){
+.factory('API',['$state','User','$rootScope','$window','$location',function($state,User,$rootScope,$window,$location){
 
     var myCUI = cui.api();
     cui.log('cui.js v', myCUI.version());
@@ -1010,6 +1010,7 @@ angular.module('app')
         return myCUI.covAuth({
             originUri: originUri,
             authRedirect: window.location.href.split('#')[0] + '#/empty',
+            appRedirect: $state.current.name
         });
     };
     myCUI.setAuthHandler(jwtAuthHandler);
@@ -1021,26 +1022,28 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
-        handleCovAuthResponse: function(toState){
+        handleCovAuthResponse: function(toState,fromState){
             var self=this;
-            myCUI.handleCovAuthResponse(toState.name==='empty'? {selfRedirect:true} : {})
+            myCUI.handleCovAuthResponse({selfRedirect:true})
             .then(function(res) {
-                self.setUser(res);
-                self.setAuthInfo(res.authInfo);
                 if(toState.name==='empty'){
-                    console.log('in empty');
-                    console.log('going to ', res.appRedirect);
-                    $window.location.href = res.appRedirect;
+                    console.log('Going to ',res.appRedirect);
+                    $state.go(res.appRedirect);
+                    return;
                 }
-                return myCUI.getPersonRoles({ personId: self.getUser() });
-            })
-            .then(function(roles) {
-                var roleList = [];
-                roles.forEach(function(role) {
-                    roleList.push(role.name);
-                });
-                self.setUserEntitlements(roleList);
-                $rootScope.$digest();
+                else {
+                    self.setUser(res);
+                    self.setAuthInfo(res.authInfo);
+                    myCUI.getPersonRoles({ personId: self.getUser() })
+                    .then(function(roles) {
+                        var roleList = [];
+                        roles.forEach(function(role) {
+                            roleList.push(role.name);
+                        });
+                        self.setUserEntitlements(roleList);
+                        $rootScope.$digest();
+                    });
+                }
             });
         },
         setAuthInfo:function(newAuthInfo){
