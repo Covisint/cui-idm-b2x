@@ -120,7 +120,7 @@
                 <!-- Password Edit Controls -->
                 <div>
                   <a class="cui-link" href="" ng-if="!edit.currentPassword.$error.required && !edit.newPassword.$invalid && !edit.newPasswordRe.$error.match" ng-click="usersEdit.updatePassword(); toggleOff();">{{'cui-update' | translate}}</a>
-                  <a class="cui-link" href="" ng-click="usersEdit.clearPasswords(); toggleOff();">{{'cui-cancel' | translate}}</a>
+                  <a class="cui-link" href="" ng-click="usersEdit.resetPasswordFields(); toggleOff();">{{'cui-cancel' | translate}}</a>
                 </div>
                 <!-- Current Password -->
                 <label for="currentPassword">{{'cui-enter-password' | translate}}: </label>

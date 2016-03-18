@@ -77,7 +77,7 @@ function($scope,$timeout,API){
 
     var selectQuestionsForUser = function() {
         usersEdit.challengeQuestion1={};
-        usersEdit.challengeQuestion1={}
+        usersEdit.challengeQuestion1={};
         var questions = [];
         angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
             var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
@@ -179,26 +179,29 @@ function($scope,$timeout,API){
     };
 
     usersEdit.updatePassword = function() {
+        console.log('Password Account: ', usersEdit.userPasswordAccount);
         usersEdit.loading = true;
 
-        API.cui.updatePersonPassword({personId: usersEdit.user.id, data: usersEdit.userPasswordAccount})
+        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
         .then(function(res) {
             usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
             usersEdit.loading = false;
+            usersEdit.clearPasswords();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            usersEdit.checkPasswordErrorFlag = err.responseJSON.api.message;
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
+            usersEdit.clearPasswords();
             usersEdit.loading = false;
             $scope.$digest();
         });
     };
 
-    usersEdit.clearPasswords = function() {
-        usersEdit.userPasswordAccount.currentPassword = null;
-        usersEdit.userPasswordAccount.password = null;
-        usersEdit.passwordRe = null;
+    usersEdit.resetPasswordFields = function() {
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
     };
 
 }]);
