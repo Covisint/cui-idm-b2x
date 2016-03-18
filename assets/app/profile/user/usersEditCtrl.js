@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API',
-function($scope,$timeout,API){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n',
+function($scope,$timeout,API,$cuiI18n){
     'use strict';
 
     var usersEdit = this;
@@ -11,7 +11,7 @@ function($scope,$timeout,API){
     usersEdit.success = false;
 
     usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.tempLanguages = ['en', 'zh'];
+    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
     usersEdit.passwordPolicies = [
         {
             'allowUpperChars':true,
@@ -71,7 +71,7 @@ function($scope,$timeout,API){
     };
 
     usersEdit.checkIfFieldsAreEmpty = function(field) {
-        if (field === '') {
+        if (field === undefined) {
             usersEdit.emptyFieldError = true;
         }
         else {
@@ -152,13 +152,13 @@ function($scope,$timeout,API){
         .then(function(res) {
             usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
             usersEdit.loading = false;
-            usersEdit.clearPasswords();
+            usersEdit.resetPasswordFields();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
             usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
-            usersEdit.clearPasswords();
+            usersEdit.resetPasswordFields();
             usersEdit.loading = false;
             $scope.$digest();
         });

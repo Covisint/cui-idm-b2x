@@ -180,7 +180,7 @@
             <!-- Timezone -->
             <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone.id as timezone.name for timezone in usersEdit.timezones" ng-change="usersEdit.updatePerson()"></select>
             <!-- Language -->
-            <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="language for language in usersEdit.tempLanguages" ng-change="usersEdit.updatePerson()"></select>
+            <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="key as value for (key,value) in usersEdit.languagePreference" ng-change="usersEdit.updatePerson()"></select>
           </div>
         </div>
 
@@ -265,10 +265,7 @@
                 <!-- Phone Fields -->
                 <div ng-repeat="phone in usersEdit.tempUser.phones">
                   <label for="phone">{{phone.type}}: </label>
-                  <div class="cui-error" ng-messages="edit.pgone.$error" ng-if="edit.phone.$touched">
-                    <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                  </div>
-                  <input class="cui-input" type="text" ng-model="phone.number" name="phone" ng-required="true">
+                  <input class="cui-input" type="text" ng-model="phone.number" name="phone" ng-required="true" ng-change="usersEdit.checkIfFieldsAreEmpty(phone.number);">
                 </div>
               </div>
             </div>
