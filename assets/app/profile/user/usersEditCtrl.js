@@ -95,8 +95,7 @@ function($scope,$timeout,API){
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
-        usersEdit.userPassword = res;
-        usersEdit.tempUserPasswordAccount = res;
+        usersEdit.userPasswordAccount = res;
         usersEdit.loading = false;
         $scope.$digest();
     })
@@ -159,11 +158,27 @@ function($scope,$timeout,API){
     };
 
     usersEdit.updatePassword = function() {
-        usersEdit.validatingPassword = true;
+        usersEdit.loading = true;
 
-        $timeout(function() {
-            usersEdit.validatingPassword = false;
-        }, 5000);
+        API.cui.updatePersonPassword({personId: usersEdit.user.id, data: usersEdit.userPasswordAccount})
+        .then(function(res) {
+            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
+            usersEdit.loading = false;
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.api.message;
+            usersEdit.loading = false;
+            $scope.$digest();
+        });
+    };
+
+    usersEdit.clearPasswords = function() {
+        console.log(usersEdit.userPasswordAccount.password);
+        usersEdit.userPasswordAccount.currentPassword = null;
+        usersEdit.userPasswordAccount.password = null;
+        usersEdit.passwordRe = null;
     };
 
 }]);
