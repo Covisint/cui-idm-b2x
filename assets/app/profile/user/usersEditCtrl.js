@@ -10,6 +10,26 @@ function($scope,$timeout,API){
     usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
 
+    usersEdit.passwordPolicies = [
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
     usersEdit.updatePerson = function() {
         // Updates user's Person object in IDM
         usersEdit.loading = true;

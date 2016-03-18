@@ -129,13 +129,15 @@
                 </div>
                 <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.currentPassword" name="currentPassword" ng-required="true">
                 <!-- New Password -->
-                <label for="newPassword">{{'cui-enter-new-password' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.newPassword.$error" ng-if="edit.newPassword.$touched">
-                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                </div>
-                <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.password" name="newPassword" ng-required="true" ng-class="{'cui-input--error': edit.newPassword.$touched && edit.newPassword.$invalid}" password-validation="usersEdit.passwordPolicies">
-                <div ng-message="edit.newPassword.$error" ng-messages-multiple ng-if="edit.newPassword.$invalid" class="cui-error__password">
-                  <div ng-messages-include="assets/app/registration/password-validation.html"></div>
+                <div class="cui-input__password-holder">
+                  <label for="newPassword">{{'cui-enter-new-password' | translate}}: </label>
+                  <div class="cui-error" ng-messages="edit.newPassword.$error" ng-if="edit.newPassword.$touched">
+                    <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+                  </div>
+                  <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.password" name="newPassword" ng-required="true" ng-class="{'cui-input--error': edit.newPassword.$touched && edit.newPassword.$invalid}" password-validation="usersEdit.passwordPolicies">
+                  <div ng-messages="edit.newPassword.$error" ng-messages-multiple ng-if="edit.newPassword.$invalid" class="cui-error__password">
+                    <div ng-messages-include="assets/app/profile/user/password-validation.html"></div>
+                  </div>
                 </div>
                 <!-- New Password Re -->
                 <label for="newPasswordRe">{{'cui-re-enter-new-password' | translate}}: </label>
