@@ -29,8 +29,9 @@ function($scope,$timeout,API){
             $scope.$digest();
         })
         .fail(function(error) {
-            console.log(error);
             usersEdit.loading = false;
+            console.log(error);
+            $scope.$digest();
         });
     };
 
