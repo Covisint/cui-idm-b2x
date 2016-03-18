@@ -52,7 +52,7 @@
               <div ng-if="toggled">
                 <!-- Name Edit Controls -->
                 <div>
-                  <a class="cui-link" href="" ng-if="usersEdit.tempUser.name.given && usersEdit.tempUser.name.surname" ng-click="usersEdit.upatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
+                  <a class="cui-link" href="" ng-if="usersEdit.tempUser.name.given && usersEdit.tempUser.name.surname" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
                   <a class="cui-link" href="" ng-click="usersEdit.resetEdit(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
                 </div>
                 <!-- First Name Edit -->
