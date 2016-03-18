@@ -4,12 +4,14 @@ function($scope,$timeout,API){
     'use strict';
 
     var usersEdit = this;
-    var currentCountry;
 
     usersEdit.loading = true;
+    usersEdit.saving = true;
+    usersEdit.fail = false;
+    usersEdit.success = false;
+
     usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
-
     usersEdit.passwordPolicies = [
         {
             'allowUpperChars':true,
@@ -30,34 +32,42 @@ function($scope,$timeout,API){
         }
     ];
 
-    usersEdit.updatePerson = function() {
-        // Updates user's Person object in IDM
-        usersEdit.loading = true;
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-        if (!usersEdit.userCountry) {
-            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
-        }
-        else {
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
-        }
+    var selectQuestionsForUser = function() {
+        usersEdit.challengeQuestion1 = {};
+        usersEdit.challengeQuestion1 = {};
+        var questions = [];
 
-        angular.copy(usersEdit.tempUser, usersEdit.user);
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
+            var question = _.find(usersEdit.allSecurityQuestions, function(question) {
+                return question.id === userQuestion.question.id;
+            });
+            this.push(question);
+        }, questions);
 
-        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.user})
-        .then(function() {
-            usersEdit.loading = false;
-            $scope.$digest();
-        })
-        .fail(function(error) {
-            usersEdit.loading = false;
-            console.log(error);
-            $scope.$digest();
-        });
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion1.answer = '';
+        usersEdit.challengeQuestion2 = questions[1];
+        usersEdit.challengeQuestion2.answer = '';
+        $scope.$digest();
     };
 
-    usersEdit.resetEdit = function(master, temp) {
-        // Reset temporary variable to the master variable
+    usersEdit.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
         angular.copy(master, temp);
+    };
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
     };
 
     usersEdit.checkIfFieldsAreEmpty = function(field) {
@@ -70,38 +80,20 @@ function($scope,$timeout,API){
         return usersEdit.emptyFieldError;
     };
 
-    usersEdit.updatePersonSecurityAccount = function() {
-        // Updates user's Security Account in IDM
-        // Currently API has issue when updating
-    };
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
-    var selectQuestionsForUser = function() {
-        usersEdit.challengeQuestion1={};
-        usersEdit.challengeQuestion1={};
-        var questions = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
-            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
-            this.push(question);
-        }, questions);
-
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$digest();
-    };
+    // ON LOAD START ---------------------------------------------------------------------------------
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
-        // If the person has no addresses set we need to initialize it as an array
-        // to follow the data structure
         if (!res.addresses) {
+            // If the person has no addresses set we need to initialize it as an array
+            // to follow the object structure
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
         usersEdit.user = angular.copy(res);
         usersEdit.tempUser = angular.copy(res);
-        currentCountry = res.addresses[0].country;
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -125,6 +117,58 @@ function($scope,$timeout,API){
         $scope.$digest();
     });
 
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
+
+    usersEdit.updatePerson = function() {
+        usersEdit.loading = true;
+
+        if (!usersEdit.userCountry) {
+            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
+        }
+        else {
+            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
+        }
+
+        angular.copy(usersEdit.tempUser, usersEdit.user);
+
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.user})
+        .then(function() {
+            usersEdit.loading = false;
+            $scope.$digest();
+        })
+        .fail(function(error) {
+            usersEdit.loading = false;
+            console.log(error);
+            $scope.$digest();
+        });
+    };
+
+    usersEdit.updatePassword = function() {
+        usersEdit.loading = true;
+
+        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        .then(function(res) {
+            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
+            usersEdit.loading = false;
+            usersEdit.clearPasswords();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
+            usersEdit.clearPasswords();
+            usersEdit.loading = false;
+            $scope.$digest();
+        });
+    };
+
+    usersEdit.updatePersonSecurityAccount = function() {
+        // Updates user's Security Account in IDM
+        // Currently API has issue when updating
+    };
+
     usersEdit.saveChallengeQuestions = function() {
         var updatedChallengeQuestions = {};
         updatedChallengeQuestions = [{
@@ -145,10 +189,6 @@ function($scope,$timeout,API){
                 id: usersEdit.challengeQuestion1.owner.id }
             }
         ];
-
-        usersEdit.saving = true;
-        usersEdit.fail = false;
-        usersEdit.success = false;
 
         API.cui.updateSecurityQuestions({
           personId: API.getUser(),
@@ -172,34 +212,6 @@ function($scope,$timeout,API){
         });
     };
 
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
-
-    usersEdit.updatePassword = function() {
-        usersEdit.loading = true;
-
-        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
-        .then(function(res) {
-            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
-            usersEdit.loading = false;
-            usersEdit.clearPasswords();
-            $scope.$digest();
-        })
-        .fail(function(err) {
-            console.log(err);
-            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
-            usersEdit.clearPasswords();
-            usersEdit.loading = false;
-            $scope.$digest();
-        });
-    };
-
-    usersEdit.resetPasswordFields = function() {
-        usersEdit.userPasswordAccount.currentPassword = '';
-        usersEdit.userPasswordAccount.password = '';
-        usersEdit.passwordRe = '';
-    };
+    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
