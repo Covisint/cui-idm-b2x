@@ -127,7 +127,7 @@
                 <div class="cui-error" ng-messages="edit.currentPassword.$error" ng-if="edit.currentPassword.$touched">
                   <div ng-messages-include="assets/app/common-templates/messages.html"></div>
                 </div>
-                <input class="cui-input" type="text" ng-model="usersEdit.userPasswordAccount.currentPassword" name="currentPassword" ng-required="true">
+                <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.currentPassword" name="currentPassword" ng-required="true">
                 <!-- New Password -->
                 <label for="newPassword">{{'cui-enter-new-password' | translate}}: </label>
                 <div class="cui-error" ng-messages="edit.newPassword.$error" ng-if="edit.newPassword.$touched">
@@ -139,10 +139,10 @@
                 </div>
                 <!-- New Password Re -->
                 <label for="newPasswordRe">{{'cui-re-enter-new-password' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.newPasswordRe.$error" ng-if="edit.newPasswordRe.$touched && edit.newPasswordRe.$error.match">
+                <div class="cui-error" ng-if="edit.newPasswordRe.$touched && edit.newPasswordRe.$error.match">
                   <div class="cui-error__message">{{'password-mismatch' | translate}}</div>
                 </div>
-                <input class="cui-input" type="text" ng-model="usersEdit.passwordRe" name="newPasswordRe" match="usersEdit.usersPasswordAccount.password">
+                <input class="cui-input cui-field-val__val" type="password" ng-model="usersEdit.passwordRe" name="newPasswordRe" match="usersEdit.userPasswordAccount.password">
               </div>
             </div>
           </div>

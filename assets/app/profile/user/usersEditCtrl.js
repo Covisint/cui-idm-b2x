@@ -176,7 +176,6 @@ function($scope,$timeout,API){
     };
 
     usersEdit.clearPasswords = function() {
-        console.log(usersEdit.userPasswordAccount.password);
         usersEdit.userPasswordAccount.currentPassword = null;
         usersEdit.userPasswordAccount.password = null;
         usersEdit.passwordRe = null;
