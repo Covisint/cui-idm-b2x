@@ -16,7 +16,7 @@ angular.module('app')
         return myCUI.covAuth({
             originUri: originUri,
             authRedirect: window.location.href.split('#')[0] + '#/empty',
-            appRedirect: $state.current.name
+            appRedirect: $location.path()
         });
     };
     myCUI.setAuthHandler(jwtAuthHandler);
@@ -28,13 +28,18 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
-        handleCovAuthResponse: function(toState,fromState){
+        handleCovAuthResponse: function(e,toState,toParams,fromState,fromParams){
             var self=this;
+            myCUI.covAuthInfo({originUri:originUri});
             myCUI.handleCovAuthResponse({selfRedirect:true})
             .then(function(res) {
                 if(toState.name==='empty'){
-                    console.log('Going to ',res.appRedirect);
-                    if(res.appRedirect!=='empty') $state.go(res.appRedirect);
+                    if(res.appRedirect!=='empty') {
+                        Object.keys($location.search()).forEach(function(searchParam){
+                            $location.search(searchParam,null);
+                        });
+                        $location.path(res.appRedirect).replace();
+                    }
                     return;
                 }
                 else {
