@@ -84,7 +84,6 @@ function($scope,$timeout,API){
             this.push(question);
         }, questions);
 
-        console.log('questions',questions);
         usersEdit.challengeQuestion1 = questions[0];
         usersEdit.challengeQuestion1.answer = '';
         usersEdit.challengeQuestion2 = questions[1];
@@ -179,7 +178,6 @@ function($scope,$timeout,API){
     };
 
     usersEdit.updatePassword = function() {
-        console.log('Password Account: ', usersEdit.userPasswordAccount);
         usersEdit.loading = true;
 
         API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
