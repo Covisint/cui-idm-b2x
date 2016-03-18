@@ -10,6 +10,26 @@ function($scope,$timeout,API){
     usersEdit.timezones = $scope.$parent.base.timezones;
     usersEdit.tempLanguages = ['en', 'zh'];
 
+    usersEdit.passwordPolicies = [
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
     usersEdit.updatePerson = function() {
         // Updates user's Person object in IDM
         usersEdit.loading = true;
@@ -29,8 +49,9 @@ function($scope,$timeout,API){
             $scope.$digest();
         })
         .fail(function(error) {
-            console.log(error);
             usersEdit.loading = false;
+            console.log(error);
+            $scope.$digest();
         });
     };
 
@@ -56,14 +77,13 @@ function($scope,$timeout,API){
 
     var selectQuestionsForUser = function() {
         usersEdit.challengeQuestion1={};
-        usersEdit.challengeQuestion1={}
+        usersEdit.challengeQuestion1={};
         var questions = [];
         angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
             var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
             this.push(question);
         }, questions);
 
-        console.log('questions',questions);
         usersEdit.challengeQuestion1 = questions[0];
         usersEdit.challengeQuestion1.answer = '';
         usersEdit.challengeQuestion2 = questions[1];
@@ -95,8 +115,7 @@ function($scope,$timeout,API){
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
-        usersEdit.userPassword = res;
-        usersEdit.tempUserPasswordAccount = res;
+        usersEdit.userPasswordAccount = res;
         usersEdit.loading = false;
         $scope.$digest();
     })
@@ -156,6 +175,31 @@ function($scope,$timeout,API){
     usersEdit.resetChallengeQuestion = function(question) {
         usersEdit['challengeAnswer' + question] = '';
         selectQuestionsForUser();
+    };
+
+    usersEdit.updatePassword = function() {
+        usersEdit.loading = true;
+
+        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        .then(function(res) {
+            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
+            usersEdit.loading = false;
+            usersEdit.clearPasswords();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
+            usersEdit.clearPasswords();
+            usersEdit.loading = false;
+            $scope.$digest();
+        });
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
     };
 
 }]);

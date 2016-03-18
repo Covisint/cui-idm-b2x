@@ -2,7 +2,7 @@ angular.module('app')
 .factory('API',['$state','User','$rootScope','$window','$location',function($state,User,$rootScope,$window,$location){
 
     var myCUI = cui.api();
-    cui.log('cui.js v', myCUI.version());
+    cui.log('cui.js v', myCUI.version()); // CUI Log
 
     var authInfo={};
 
@@ -19,8 +19,8 @@ angular.module('app')
             appRedirect: $location.path()
         });
     };
+    
     myCUI.setAuthHandler(jwtAuthHandler);
-
 
     return {
         cui: myCUI,
