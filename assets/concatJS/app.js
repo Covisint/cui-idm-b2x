@@ -142,58 +142,106 @@ function(API,$scope,$stateParams,$state){
 angular.module('app')
 .controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state',
 function(localStorageService,$scope,$stateParams,API,$state){
-    var myApplications=this;
-    myApplications.doneLoading=false;
-    myApplications.sortFlag=false;
-    myApplications.categoriesFlag=false;
+    'use strict';
 
-    myApplications.list=[];
+    var myApplications = this;
 
-    var handleError=function(err){
+    myApplications.doneLoading = false;
+    myApplications.sortFlag = false;
+    myApplications.categoriesFlag = false;
+
+    myApplications.list = [];
+
+    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
+
+    var handleError = function(err) {
         console.log('Error \n\n', err);
     };
+
+    var getDateGranted = function(creationUnixStamp) {
+        var dateGranted = new Date(creationUnixStamp);
+        var dateGrantedFormatted = dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+        return dateGrantedFormatted;
+    };
+
+    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
     // WORKAROUND CASE #1
-    var getApplicationsFromGrants=function(grants){ // from the list of grants, get the list of services from each of those service packages
-        var i=0;
-        grants.forEach(function(grant){
+    var getApplicationsFromGrants = function(grants) { 
+    // from the list of grants, get the list of services from each of those service packages
+        var i = 0;
+        grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-            .then(function(res){
+            .then(function(res) {
                 i++;
-                res.forEach(function(service){
-                    service.status=grant.status; // attach the status of the service package to the service
-                    service.parentPackage=grant.servicePackage.id;
+                res.forEach(function(service) {
+                    service.status = grant.status; // attach the status of the service package to the service
+                    service.dateCreated = getDateGranted(grant.creation);
+                    service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
-                if(i===grants.length){ // if this is the last grant
-                    myApplications.doneLoading=true;
-                    console.log(myApplications.list);
+                if(i === grants.length) { // if this is the last grant
+                    myApplications.doneLoading = true;
                     $scope.$digest();
                 }
             })
             .fail(handleError);
         });
     };
-    API.cui.getPersonPackages({personId:API.getUser(),useCuid:true}) // this returns a list of grant
-    .then(function(res){
-        console.log(res);
+
+    API.cui.getPersonPackages({personId:API.getUser(), useCuid:true}) // this returns a list of grant
+    .then(function(res) {
         getApplicationsFromGrants(res);
     })
     .fail(handleError);
 
+    // ON LOAD END --------------------------------------------------------------------------------------------
 
-    // ON LOAD END --------------------------------------------------------------------------------------------------
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 
-    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------------
-
-    myApplications.goToDetails=function(application){
-        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
+    myApplications.goToDetails = function(application) {
+        $state.go('applications.myApplicationDetails', {'packageId':application.parentPackage, 'appId':application.id});
     };
 
-    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------------
-}])
+    myApplications.listSort = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a < b) return -1;
+            else if (a > b) return 1;
+            else return 0;
+        });
+    };
+
+    myApplications.listSortReverse = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a > b) return -1;
+            else if (a < b) return 1;
+            else return 0;
+        });
+    };
+
+    myApplications.sort = function(sortType) {
+        if (myApplications.sortFlag) {
+            myApplications.listSortReverse(myApplications.list, sortType);
+            myApplications.sortFlag = false;
+        }
+        else {
+            myApplications.listSort(myApplications.list, sortType);
+            myApplications.sortFlag = true;
+        }
+    };
+
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
+
+}]);
+
 
 angular.module('app')
 .factory('AppRequests',['$filter',function($filter){
@@ -947,13 +995,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $cuiI18nProvider.setLocalePreference(languageKeys);
 
-    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
-    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
+    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 48 48');
+    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg','0 0 216 216');
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API','$cuiIcon',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -975,10 +1023,8 @@ angular.module('app')
         $state.previous.params = fromParams;
     });
 
-    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
-
-    angular.forEach(icons,function(icon){
-        $http.get(icon,{
+    angular.forEach($cuiIcon.getIconSets(),function(iconSettings,namespace){
+        $http.get(iconSettings.path,{
             cache: $templateCache
         });
     });
@@ -996,7 +1042,7 @@ angular.module('app')
 .factory('API',['$state','User','$rootScope','$window','$location',function($state,User,$rootScope,$window,$location){
 
     var myCUI = cui.api();
-    cui.log('cui.js v', myCUI.version());
+    cui.log('cui.js v', myCUI.version()); // CUI Log
 
     var authInfo={};
 
@@ -1013,8 +1059,8 @@ angular.module('app')
             appRedirect: $location.path()
         });
     };
+    
     myCUI.setAuthHandler(jwtAuthHandler);
-
 
     return {
         cui: myCUI,
@@ -1129,17 +1175,17 @@ angular.module('app')
 
 
 angular.module('app')
-.factory('User',['$rootScope',function($rootScope){
+.factory('User',['$rootScope',function($rootScope) {
 
-    var user={
-        entitlements:[]
+    var user = {
+        entitlements: []
     };
 
     return {
-        set : function(newUser){
-            user.cuid=newUser.cuid;
+        set : function(newUser) {
+            user.cuid = newUser.cuid;
         },
-        get : function(){
+        get : function() {
             return user.cuid || '[cuid]';
         },
         setEntitlements : function(newEntitlements){
@@ -1726,19 +1772,129 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API',
-function($scope,$timeout,API){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n',
+function($scope,$timeout,API,$cuiI18n){
     'use strict';
 
     var usersEdit = this;
-    var currentCountry;
 
     usersEdit.loading = true;
+    usersEdit.saving = true;
+    usersEdit.fail = false;
+    usersEdit.success = false;
+
     usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.tempLanguages = ['en', 'zh'];
+    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
+    usersEdit.passwordPolicies = [
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var selectQuestionsForUser = function() {
+        usersEdit.challengeQuestion1 = {};
+        usersEdit.challengeQuestion1 = {};
+        var questions = [];
+
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
+            var question = _.find(usersEdit.allSecurityQuestions, function(question) {
+                return question.id === userQuestion.question.id;
+            });
+            this.push(question);
+        }, questions);
+
+        usersEdit.challengeQuestion1 = questions[0];
+        usersEdit.challengeQuestion1.answer = '';
+        usersEdit.challengeQuestion2 = questions[1];
+        usersEdit.challengeQuestion2.answer = '';
+        $scope.$digest();
+    };
+
+    usersEdit.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
+        angular.copy(master, temp);
+    };
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
+    };
+
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === undefined) {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(res) {
+        if (!res.addresses) {
+            // If the person has no addresses set we need to initialize it as an array
+            // to follow the object structure
+            res.addresses = [{}];
+            res.addresses[0].streets = [[]];
+        }
+        usersEdit.user = angular.copy(res);
+        usersEdit.tempUser = angular.copy(res);
+        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
+    })
+    .then(function(res) {
+        usersEdit.userSecurityQuestions = res;
+        usersEdit.tempUserSecurityQuestions = res;
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res) {
+        usersEdit.allSecurityQuestions = res;
+        selectQuestionsForUser();
+        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
+    })
+    .then(function(res) {
+        usersEdit.userPasswordAccount = res;
+        usersEdit.loading = false;
+        $scope.$digest();
+    })
+    .fail(function(err) {
+        console.log(err);
+        usersEdit.loading = false;
+        $scope.$digest();
+    });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
     usersEdit.updatePerson = function() {
-        // Updates user's Person object in IDM
         usersEdit.loading = true;
 
         if (!usersEdit.userCountry) {
@@ -1756,82 +1912,35 @@ function($scope,$timeout,API){
             $scope.$digest();
         })
         .fail(function(error) {
-            console.log(error);
             usersEdit.loading = false;
+            console.log(error);
+            $scope.$digest();
         });
     };
 
-    usersEdit.resetEdit = function(master, temp) {
-        // Reset temporary variable to the master variable
-        angular.copy(master, temp);
-    };
+    usersEdit.updatePassword = function() {
+        usersEdit.loading = true;
 
-    usersEdit.checkIfFieldsAreEmpty = function(field) {
-        if (field === '') {
-            usersEdit.emptyFieldError = true;
-        }
-        else {
-            usersEdit.emptyFieldError = false;
-        }
-        return usersEdit.emptyFieldError;
+        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        .then(function(res) {
+            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
+            usersEdit.loading = false;
+            usersEdit.resetPasswordFields();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
+            usersEdit.resetPasswordFields();
+            usersEdit.loading = false;
+            $scope.$digest();
+        });
     };
 
     usersEdit.updatePersonSecurityAccount = function() {
         // Updates user's Security Account in IDM
         // Currently API has issue when updating
     };
-
-    var selectQuestionsForUser = function() {
-        usersEdit.challengeQuestion1={};
-        usersEdit.challengeQuestion1={}
-        var questions = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
-            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
-            this.push(question);
-        }, questions);
-
-        console.log('questions',questions);
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$digest();
-    };
-
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        // If the person has no addresses set we need to initialize it as an array
-        // to follow the data structure
-        if (!res.addresses) {
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        usersEdit.user = angular.copy(res);
-        usersEdit.tempUser = angular.copy(res);
-        currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = res;
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        usersEdit.allSecurityQuestions = res;
-        selectQuestionsForUser();
-        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        usersEdit.userPassword = res;
-        usersEdit.tempUserPasswordAccount = res;
-        usersEdit.loading = false;
-        $scope.$digest();
-    })
-    .fail(function(err) {
-        console.log(err);
-        usersEdit.loading = false;
-        $scope.$digest();
-    });
 
     usersEdit.saveChallengeQuestions = function() {
         var updatedChallengeQuestions = {};
@@ -1853,10 +1962,6 @@ function($scope,$timeout,API){
                 id: usersEdit.challengeQuestion1.owner.id }
             }
         ];
-
-        usersEdit.saving = true;
-        usersEdit.fail = false;
-        usersEdit.success = false;
 
         API.cui.updateSecurityQuestions({
           personId: API.getUser(),
@@ -1880,10 +1985,7 @@ function($scope,$timeout,API){
         });
     };
 
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
+    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
 

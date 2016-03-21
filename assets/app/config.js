@@ -197,13 +197,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $cuiI18nProvider.setLocalePreference(languageKeys);
 
-    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg',48,true);
-    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg',216,true);
+    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 48 48');
+    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg','0 0 216 216');
 }]);
 
 angular.module('app')
-.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API',
-    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API){
+.run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User','cui.authorization.routing','Menu','API','$cuiIcon',
+    function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon){
     //add more locales here
     var languageNameObject=$cuiI18n.getLocaleCodesAndNames();
     for(var LanguageKey in languageNameObject){
@@ -225,10 +225,8 @@ angular.module('app')
         $state.previous.params = fromParams;
     });
 
-    var icons=['bower_components/cui-icons/dist/icons/icons-out.svg','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg'];
-
-    angular.forEach(icons,function(icon){
-        $http.get(icon,{
+    angular.forEach($cuiIcon.getIconSets(),function(iconSettings,namespace){
+        $http.get(iconSettings.path,{
             cache: $templateCache
         });
     });

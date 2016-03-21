@@ -1927,11 +1927,13 @@ Styleguide Blocks.Profile
     pointer-events: none;
     position: absolute;
     right: 0;
+    top: 0;
     -webkit-transform: translate(0, 80px);
         -ms-transform: translate(0, 80px);
             transform: translate(0, 80px);
     transition: all 80ms ease-in-out;
-    width: 250px; }
+    width: 250px;
+    z-index: 100; }
     .cui-avatar__user-menu.active,
     .cui-profile__user-menu.active,
     .active.cui-header__user-menu {
@@ -2012,6 +2014,11 @@ Styleguide Blocks.Profile
     fill: #fff; }
   .cui-profile--active {
     background-color: #E8F0F3; }
+    .cui-profile--active .cui-profile__popup,
+    .cui-profile--active .cui-profile__user-menu,
+    .cui-profile--active .cui-header__user-menu {
+      opacity: 1;
+      pointer-events: auto; }
     .cui-profile--active .cui-profile__user-name, .cui-profile--active .cui-header__user-name {
       color: #4A4A4A; }
     .cui-profile--active .cui-profile__user-menu, .cui-profile--active .cui-header__user-menu {
@@ -4932,6 +4939,19 @@ inline-edit .angucomplete-dropdown {
   margin: 2.5em 0; }
   .cui-applications__review .cui-applications__submit-options .cui-link, .cui-applications__review .cui-applications__submit-options .cui-expandable__review-button, .cui-applications__review .cui-applications__submit-options .cui-search__dropdown a, .cui-search__dropdown .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-expandable__link, .cui-applications__review .cui-applications__submit-options .cui-pagination__link a, .cui-pagination__link .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-pagination__display-amount, .cui-applications__review .cui-applications__submit-options .cui-media__link {
     margin-right: 2.6875em; }
+
+.cui-popover__sort-popover {
+  -webkit-transform: translate(-8.5em, -210%);
+      -ms-transform: translate(-8.5em, -210%);
+          transform: translate(-8.5em, -210%);
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-popover__sort-popover {
+    width: 275px;
+    -webkit-transform: translate(-8.5em, -480%);
+        -ms-transform: translate(-8.5em, -480%);
+            transform: translate(-8.5em, -480%); } }
 
 .cui-users__main-container {
   padding: 0.9375em 0.8125em;
