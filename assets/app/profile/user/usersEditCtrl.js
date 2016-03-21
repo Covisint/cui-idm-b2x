@@ -34,23 +34,12 @@ function($scope,$timeout,API,$cuiI18n){
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var selectQuestionsForUser = function() {
-        usersEdit.challengeQuestion1 = {};
-        usersEdit.challengeQuestion1 = {};
-        var questions = [];
-
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(usersEdit.allSecurityQuestions, function(question) {
-                return question.id === userQuestion.question.id;
-            });
-            this.push(question);
-        }, questions);
-
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$digest();
+    var selectTextsForQuestions = function() {
+        usersEdit.challengeQuestionsTexts=[];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+            this.push(question.question[0].text);
+        }, usersEdit.challengeQuestionsTexts);
     };
 
     usersEdit.resetTempObject = function(master, temp) {
@@ -98,12 +87,23 @@ function($scope,$timeout,API,$cuiI18n){
     })
     .then(function(res) {
         usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = res;
+        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
     })
     .then(function(res) {
         usersEdit.allSecurityQuestions = res;
-        selectQuestionsForUser();
+        usersEdit.allSecurityQuestionsDup = angular.copy(res);
+        usersEdit.allSecurityQuestions.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = usersEdit.allSecurityQuestions.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
+        //Allocating options to three questions
+        usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        
+        selectTextsForQuestions();
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -169,33 +169,20 @@ function($scope,$timeout,API,$cuiI18n){
         // Currently API has issue when updating
     };
 
-    usersEdit.saveChallengeQuestions = function() {
-        var updatedChallengeQuestions = {};
-        updatedChallengeQuestions = [{
-            question: {
-                text: usersEdit.challengeQuestion1.question[0].text,
-                lang: usersEdit.challengeQuestion1.question[0].lang,
-                answer:   usersEdit.challengeAnswer1,
-                index: 1 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            },{
-            question: {
-                text: usersEdit.challengeQuestion2.question[0].text,
-                lang: usersEdit.challengeQuestion2.question[0].lang,
-                answer:   usersEdit.challengeAnswer2,
-                index: 2 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            }
-        ];
+   usersEdit.saveChallengeQuestions = function() {
+        usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
+        selectTextsForQuestions();
 
-        API.cui.updateSecurityQuestions({
+        usersEdit.saving = true;
+        usersEdit.fail = false;
+        usersEdit.success = false;
+
+        API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),
           data: {
             version: '1',
             id: API.getUser(),
-            questions: updatedChallengeQuestions
+            questions: usersEdit.userSecurityQuestions.questions
             }
         })
         .then(function(res) {
@@ -212,6 +199,9 @@ function($scope,$timeout,API,$cuiI18n){
         });
     };
 
+    usersEdit.resetChallengeQuestion = function() {
+        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
+    };
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
