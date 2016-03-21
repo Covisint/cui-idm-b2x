@@ -98,7 +98,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
-                if(i === grants.length) { // if this is the last grant
+                if (i === grants.length) { // if this is the last grant
                     myApplications.categoryList = getListOfCategories(myApplications.list);
                     angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
                     myApplications.doneLoading = true;
