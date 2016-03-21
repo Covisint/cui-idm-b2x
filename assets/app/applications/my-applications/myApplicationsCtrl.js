@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state',
-function(localStorageService,$scope,$stateParams,API,$state){
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
     var myApplications = this;
@@ -10,6 +10,7 @@ function(localStorageService,$scope,$stateParams,API,$state){
     myApplications.categoriesFlag = false;
 
     myApplications.list = [];
+    myApplications.unparsedListOfAvailabeApps = [];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -23,13 +24,69 @@ function(localStorageService,$scope,$stateParams,API,$state){
         return dateGrantedFormatted;
     };
 
+    var getListOfCategories = function(services) {
+        // WORKAROUND CASE # 7
+        var categoryList = [[{lang:'en', text:'All'}]];
+        var categoryCount = [];
+
+        services.forEach(function(service) {
+            if (service.category) {
+
+                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
+                    if (angular.equals(category, service.category)) {
+                        categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
+                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!serviceCategoryInCategoryList) {
+                    categoryList.push(service.category);
+                    categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
+                    categoryCount[categoryList.length] = 1;
+                }
+            }
+        });
+        myApplications.categoryCount = categoryCount;
+        return categoryList;
+    };
+
+    var listSort = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a < b) return -1;
+            else if (a > b) return 1;
+            else return 0;
+        });
+    };
+
+    var listSortReverse = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a > b) return -1;
+            else if (a < b) return 1;
+            else return 0;
+        });
+    };
+
+    var categoryFilter = function (app, category) {
+        if (!app.category && category) return false;
+        if (!category) return true;
+        return $filter('cuiI18n')(app.category).indexOf(category) > -1;
+    };
+
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    // WORKAROUND CASE #1
-    var getApplicationsFromGrants = function(grants) { 
-    // from the list of grants, get the list of services from each of those service packages
+    var getApplicationsFromGrants = function(grants) {
+        // WORKAROUND CASE #1
+        // from the list of grants, get the list of services from each of those service packages
         var i = 0;
         grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
@@ -42,6 +99,8 @@ function(localStorageService,$scope,$stateParams,API,$state){
                     myApplications.list.push(service);
                 });
                 if(i === grants.length) { // if this is the last grant
+                    myApplications.categoryList = getListOfCategories(myApplications.list);
+                    angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
                     myApplications.doneLoading = true;
                     $scope.$digest();
                 }
@@ -64,36 +123,26 @@ function(localStorageService,$scope,$stateParams,API,$state){
         $state.go('applications.myApplicationDetails', {'packageId':application.parentPackage, 'appId':application.id});
     };
 
-    myApplications.listSort = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            else return 0;
-        });
-    };
-
-    myApplications.listSortReverse = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a > b) return -1;
-            else if (a < b) return 1;
-            else return 0;
-        });
-    };
-
     myApplications.sort = function(sortType) {
         if (myApplications.sortFlag) {
-            myApplications.listSortReverse(myApplications.list, sortType);
+            listSortReverse(myApplications.list, sortType);
             myApplications.sortFlag = false;
         }
         else {
-            myApplications.listSort(myApplications.list, sortType);
+            listSort(myApplications.list, sortType);
             myApplications.sortFlag = true;
+        }
+    };
+
+    myApplications.parseAppsByCategory = function(category) {
+        if (category === 'All') {
+            myApplications.list = myApplications.unparsedListOfAvailabeApps;
+        }
+        else {
+            var filteredApps = _.filter(myApplications.unparsedListOfAvailabeApps, function(app) {
+                return categoryFilter(app, category);
+            });
+            myApplications.list = filteredApps;
         }
     };
 
