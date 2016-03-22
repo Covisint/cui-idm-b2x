@@ -531,7 +531,7 @@ angular.module('app')
 .controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
 function(API,$scope,$stateParams,$state,$filter,AppRequests){
     var applicationSearch = this;
-    var userId='RN3BJI54'; // this will be replaced with the current user ID
+
     var nameSearch=$stateParams.name;
     var categorySearch=$stateParams.category;
     var packageList=[],
@@ -617,7 +617,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     };
 
     var getUserPackageGrants=function(){ // gets applications that are available for request
-        API.cui.getPersonPackages({personId:userId})
+        API.cui.getPersonPackages({personId:API.getUser(),useCuid:true})
         .then(function(res){
             userPackageList=res;
             getAvailableApplications(userPackageList);
@@ -626,7 +626,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     };
 
 
-    API.cui.getPerson({personId:userId})
+    API.cui.getPerson({personId:API.getUser(),useCuid:true})
     .then(function(res){
         userOrg=res.organization.id;
         user=res;
@@ -745,7 +745,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
             var z=0;
             var packages=res;
             var packagesToIgnore=[]; // WORKAROUND CASE #3
-            API.cui.getPersonPackages({'personId':userId})
+            API.cui.getPersonPackages({personId:API.getUser(),useCuid:true})
             .then(function(res){
                 res.forEach(function(pkgGrant,i){
                     if(_.some(packages,function(pkg){
