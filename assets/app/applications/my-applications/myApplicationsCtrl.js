@@ -20,7 +20,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
 
     var getDateGranted = function(creationUnixStamp) {
         var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
         return dateGrantedFormatted;
     };
 

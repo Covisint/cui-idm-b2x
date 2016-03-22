@@ -16,7 +16,7 @@ function(API,$scope,$stateParams,$state) {
 
     var getDateGranted = function(creationUnixStamp) {
         var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
         return dateGrantedFormatted;
     };
 
@@ -27,12 +27,14 @@ function(API,$scope,$stateParams,$state) {
             i++;
             res.forEach(function(app) {
                 if (app.id !== myApplicationDetails.app.id) {
+                    console.log('image?',app);
                     app.grantedDate = service.grantedDate;
                     app.status = service.status;
                     app.parentPackage = packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
                     myApplicationDetails.bundled.push(app);
                 }
                 else {
+                    console.log('image?',app);
                     myApplicationDetails.app.mangledUrl = app.mangledUrl;
                     myApplicationDetails.app.urls = app.urls;
                     myApplicationDetails.iconUrl = app.iconUrl;
@@ -62,7 +64,7 @@ function(API,$scope,$stateParams,$state) {
         return childService;
     };
 
-    var getRelatedApps = function(app) { 
+    var getRelatedApps = function(app) {
         // WORKAROUND CASE #3
         myApplicationDetails.related = [];
         var packagesGrantedToUser = [];
@@ -102,7 +104,7 @@ function(API,$scope,$stateParams,$state) {
                         childServices = _.uniq(childServices, function(x) {
                             return x.id;
                         });
-                        
+
                         childServices.forEach(function(service, z) {
                             app = checkIfAppIsGrantedToUser(service, childPackage, packagesGrantedToUser);
                             myApplicationDetails.related.push(app);
@@ -137,6 +139,7 @@ function(API,$scope,$stateParams,$state) {
     if (appId) {
         API.cui.getService({ 'serviceId':appId })
         .then(function(res) {
+            console.log('service',res);
             var app = res;
             getPackageGrantDetails(app);
         })
@@ -151,7 +154,7 @@ function(API,$scope,$stateParams,$state) {
     // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
 
     myApplicationDetails.goToDetails = function(application) {
-        $state.go('applications.myApplicationDetails', {'packageId':application.parentPackage, 'appId':application.id});
+        $state.go('applications.myApplicationDetails', {'packageId':application.packageId, 'appId':application.id});
     };
 
     // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
