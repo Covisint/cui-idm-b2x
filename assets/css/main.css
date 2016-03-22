@@ -1986,8 +1986,9 @@ Styleguide Blocks.Profile
   -webkit-justify-content: space-around;
       -ms-flex-pack: distribute;
           justify-content: space-around;
-  width: 250px;
-  transition: all 80ms ease-in-out; }
+  margin-left: auto;
+  transition: all 80ms ease-in-out;
+  width: 250px; }
   .cui-profile .cui-profile__menu-item, .cui-header__user .cui-profile__menu-item {
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -2032,6 +2033,9 @@ Header
 
 Markup: 
 <header class="cui-header">
+  <div class="cui-header__svg-logo-container">
+    <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
+  </div>
   <div class="cui-header__top">
     <div class="cui-menu__toggle-button-container" snap-toggle="left" onclick="Nav.navToggle()">
       <button class="cui-menu__toggle-button"></button>
@@ -2039,7 +2043,6 @@ Markup:
     <svg class="cui-header__search" viewBox="0 0 48 48">
       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#search" class="svg"></use>
     </svg>
-    <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
     <div class="cui-profile" >
       <span class="cui-profile__user-name">Bill Murray</span>
       <div class="cui-profile__user-avatar"></div>
@@ -2061,7 +2064,6 @@ Markup:
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
       </svg>
     </div>
-  </div>
   </div>
 </header>
 
@@ -2105,13 +2107,6 @@ Styleguide Blocks.Header
       .cui-header__user > .cui-chevron--left, .cui-header__user > .cui-avatar__chevron--left, .cui-header__user >
       .cui-profile__chevron--left, .cui-header__user > .cui-header__chevron--left {
         display: none; } }
-  .cui-header__svg-logo {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
-    height: 45px;
-    width: 200px;
-    margin-left: 20px; }
   .cui-header__logo {
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -2147,7 +2142,8 @@ Styleguide Blocks.Header
 
 .cui-header {
   background: linear-gradient(to bottom, #1d6572, #6a98a0);
-  padding: 0 30px; }
+  padding: 0 30px;
+  position: relative; }
   .cui-header__search {
     color: white;
     cursor: pointer;
@@ -2156,10 +2152,24 @@ Styleguide Blocks.Header
     .cui-header > .cui-chevron--left, .cui-header > .cui-avatar__chevron--left, .cui-header >
     .cui-profile__chevron--left, .cui-header > .cui-header__chevron--left {
       display: none; } }
+  .cui-header__svg-logo-container {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 80px;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 60px); }
   .cui-header__svg-logo {
     height: 45px;
-    width: 200px;
-    margin-left: 20px; }
+    position: relative;
+    width: 200px; }
   .cui-header__top {
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -2687,6 +2697,14 @@ snap-drawer,
   @media screen and (min-width: 1000px) {
     .v2 .cui-header .cui-menu__toggle-button-container {
       display: none; } }
+
+.v2 .cui-header__svg-logo {
+  margin-left: -180px;
+  transition: margin-left .15s ease-in-out; }
+
+.v2 .desktop-menu--collapse .cui-header__svg-logo {
+  margin-left: -80px;
+  transition: margin-left .15s ease-in-out; }
 
 .v2 .cui-off-canvas__section-link {
   display: -webkit-flex;
@@ -4941,17 +4959,30 @@ inline-edit .angucomplete-dropdown {
     margin-right: 2.6875em; }
 
 .cui-popover__sort-popover {
-  -webkit-transform: translate(-8.5em, -210%);
-      -ms-transform: translate(-8.5em, -210%);
-          transform: translate(-8.5em, -210%);
+  -webkit-transform: translate(-8.5em);
+      -ms-transform: translate(-8.5em);
+          transform: translate(-8.5em);
   font-size: 14px; }
 
 @media screen and (max-width: 700px) {
   .cui-popover__sort-popover {
     width: 275px;
-    -webkit-transform: translate(-8.5em, -480%);
-        -ms-transform: translate(-8.5em, -480%);
-            transform: translate(-8.5em, -480%); } }
+    -webkit-transform: translate(-8.5em);
+        -ms-transform: translate(-8.5em);
+            transform: translate(-8.5em); } }
+
+.cui-popover__categories-popover {
+  -webkit-transform: translate(-8em);
+      -ms-transform: translate(-8em);
+          transform: translate(-8em);
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-popover__categories-popover {
+    width: 275px;
+    -webkit-transform: translate(-8em);
+        -ms-transform: translate(-8em);
+            transform: translate(-8em); } }
 
 .cui-users__main-container {
   padding: 0.9375em 0.8125em;

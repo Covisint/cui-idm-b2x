@@ -6,94 +6,116 @@
 
 angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state){
+function(API,$scope,$stateParams,$state) {
     var myApplicationDetails = this;
 
-    var appId=$stateParams.appId; // get the appId from the url
-    var packageId=$stateParams.packageId;  // get the packageId from the url
+    var appId = $stateParams.appId; // get the appId from the url
+    var packageId = $stateParams.packageId;  // get the packageId from the url
+    var i = 0; // this is used to see if the process of getting related and bundled apps is done
 
-    var handleError=function(err){
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
         console.log('Error \n', err);
         $scope.$digest();
     };
 
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    var i=0; // this is used to see if the process of getting related and bundled apps is done
-
-    var getDateGranted=function(creationUnixStamp){
-        var dateGranted=new Date(creationUnixStamp);
-        var dateGrantedFormatted=dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
+    var getDateGranted = function(creationUnixStamp) {
+        var dateGranted = new Date(creationUnixStamp);
+        var dateGrantedFormatted = dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
         return dateGrantedFormatted;
     };
 
-
-    var getBundledApps=function(service){ // WORKAROUND CASE # 1
-        myApplicationDetails.bundled=[];
+    var getBundledApps = function(service) { // WORKAROUND CASE # 1
+        myApplicationDetails.bundled = [];
         API.cui.getPackageServices({ 'packageId':packageId })
-        .then(function(res){
+        .then(function(res) {
             i++;
-            res.forEach(function(app){
-                if(app.id!==myApplicationDetails.app.id){
-                    app.grantedDate=service.grantedDate;
-                    app.status=service.status;
-                    app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
+            res.forEach(function(app) {
+                if (app.id !== myApplicationDetails.app.id) {
+                    app.grantedDate = service.grantedDate;
+                    app.status = service.status;
+                    app.parentPackage = packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
                     myApplicationDetails.bundled.push(app);
                 }
+                else {
+                    myApplicationDetails.app.mangledUrl = app.mangledUrl;
+                    myApplicationDetails.app.urls = app.urls;
+                    myApplicationDetails.iconUrl = app.iconUrl;
+                }
             });
-            if(i===2) {
-                myApplicationDetails.doneLoading=true;
+            if (i === 2) {
+                myApplicationDetails.doneLoading = true;
                 $scope.$digest();
             }
         })
         .fail(handleError);
     };
 
-    var checkIfAppIsGrantedToUser=function(app,pkgThatAppBelongsTo,packagesGrantedToUser){
+    var checkIfAppIsGrantedToUser = function(childService, childPackage, packagesGrantedToUser){
         var pkgGrantThatMatches;
-        packagesGrantedToUser.some(function(pkg,i){
-            return pkgThatAppBelongsTo.id===pkg.servicePackage.id? (pkgGrantThatMatches=packagesGrantedToUser[i],true) : false;
+
+        packagesGrantedToUser.some(function(pkg, i) {
+            return childPackage.id === pkg.servicePackage.id ? (pkgGrantThatMatches = packagesGrantedToUser[i], true) : false;
         });
-        if(pkgGrantThatMatches) {
-            app.status=pkgGrantThatMatches.status;
-            app.grantedDate=getDateGranted(pkgGrantThatMatches.creation);
+
+        if (pkgGrantThatMatches) {
+            childService.status = pkgGrantThatMatches.status;
+            childService.grantedDate = getDateGranted(pkgGrantThatMatches.creation);
         }
-        app.packageId=pkgThatAppBelongsTo.id;
-        return app;
+
+        childService.packageId = childPackage.id;
+        return childService;
     };
 
-    var getRelatedApps=function(app){ // WORKAROUND CASE #3
-        myApplicationDetails.related=[];
-        var packagesGrantedToUser=[];
-        API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // Check if that child package has been granted to the user
-        .then(function(res){
-            res.forEach(function(pkg){
+    var getRelatedApps = function(app) { 
+        // WORKAROUND CASE #3
+        myApplicationDetails.related = [];
+        var packagesGrantedToUser = [];
+        var childServices = [];
+
+        API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // Get All Person Packages
+        .then(function(res) {
+            res.forEach(function(pkg) {
                 packagesGrantedToUser.push(pkg);
             });
-            return API.cui.getPackages({qs:[['parentPackage.id',packageId]]}) // Get the packages that are children of the package that the app
-        })                                                             // we're checking the details of belongs to
-        .then(function(res){
-            if(res.length===0) {
+            // Return all child packages of package we are currently viewing
+            return API.cui.getPackages({qs:[['parentPackage.id',packageId]]});
+        })
+        .then(function(res) {
+            // No Children Packages
+            if (res.length === 0) {
                 i++;
-                if(i===2) {
-                    myApplicationDetails.doneLoading=true; // if there's no packages that are children of the package the app we're
-                    $scope.$digest(); // checking out belongs to then we're done here.
+                if (i === 2) {
+                    myApplicationDetails.doneLoading = true;
+                    $scope.$digest();
                 }
             }
-            var packagesThatAreChildrenOfMainPacakge=res;
-            packagesThatAreChildrenOfMainPacakge.forEach(function(pkg,z){
-                API.cui.getServices({'packageId':pkg.id})
-                .then(function(res){
-                    res.forEach(function(app,z){ // for each of the services in that child package
-                        app=checkIfAppIsGrantedToUser(app,pkg,packagesGrantedToUser); // checks if the package has been granted to the user
-                        myApplicationDetails.related.push(app); // and re-assign that app to have status and granted date if it has
+
+            var packagesThatAreChildrenOfMainPacakge = res;
+
+            // Get services of each child package
+            packagesThatAreChildrenOfMainPacakge.forEach(function(childPackage, z) {
+                API.cui.getServices({'packageId':childPackage.id})
+                .then(function(res) {
+                    z++;
+
+                    res.forEach(function(service) {
+                        childServices.push(service);
                     });
-                    if(z===packagesThatAreChildrenOfMainPacakge.length-1){
-                        i++;
-                        if(i===2) {
-                            myApplicationDetails.doneLoading=true;
-                            $scope.$digest();
-                        }
+
+                    if (z === packagesThatAreChildrenOfMainPacakge.length) {
+                        childServices = _.uniq(childServices, function(x) {
+                            return x.id;
+                        });
+                        
+                        childServices.forEach(function(service, z) {
+                            app = checkIfAppIsGrantedToUser(service, childPackage, packagesGrantedToUser);
+                            myApplicationDetails.related.push(app);
+                        });
+
+                        myApplicationDetails.doneLoading = true;
+                        $scope.$digest();
                     }
                 })
                 .fail(handleError);
@@ -102,22 +124,26 @@ function(API,$scope,$stateParams,$state){
         .fail(handleError);
     };
 
-    var getPackageGrantDetails=function(app){
+    var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
-        .then(function(res){
-            app.grantedDate=getDateGranted(res.creation);
-            app.status=res.status;
-            myApplicationDetails.app=app;
+        .then(function(res) {
+            app.grantedDate = getDateGranted(res.creation);
+            app.status = res.status;
+            myApplicationDetails.app = app;
             getBundledApps(app);
-            getRelatedApps(app);
+            var thisList = getRelatedApps(app);
         })
         .fail(handleError);
     };
 
-    if(appId){
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    if (appId) {
         API.cui.getService({ 'serviceId':appId })
-        .then(function(res){
-            var app=res;
+        .then(function(res) {
+            var app = res;
             getPackageGrantDetails(app);
         })
         .fail(handleError);
@@ -126,22 +152,22 @@ function(API,$scope,$stateParams,$state){
         // message for no appId in the state
     }
 
-    // ON LOAD END ------------------------------------------------------------------------------------
+    // ON LOAD END -----------------------------------------------------------------------------------
 
-    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+    // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
 
-    myApplicationDetails.goToDetails=function(application){
-        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
+    myApplicationDetails.goToDetails = function(application) {
+        $state.go('applications.myApplicationDetails', {'packageId':application.parentPackage, 'appId':application.id});
     };
 
-    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+    // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state',
-function(localStorageService,$scope,$stateParams,API,$state){
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
     var myApplications = this;
@@ -151,6 +177,7 @@ function(localStorageService,$scope,$stateParams,API,$state){
     myApplications.categoriesFlag = false;
 
     myApplications.list = [];
+    myApplications.unparsedListOfAvailabeApps = [];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -164,13 +191,69 @@ function(localStorageService,$scope,$stateParams,API,$state){
         return dateGrantedFormatted;
     };
 
+    var getListOfCategories = function(services) {
+        // WORKAROUND CASE # 7
+        var categoryList = [[{lang:'en', text:'All'}]];
+        var categoryCount = [];
+
+        services.forEach(function(service) {
+            if (service.category) {
+
+                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
+                    if (angular.equals(category, service.category)) {
+                        categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
+                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!serviceCategoryInCategoryList) {
+                    categoryList.push(service.category);
+                    categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
+                    categoryCount[categoryList.length] = 1;
+                }
+            }
+        });
+        myApplications.categoryCount = categoryCount;
+        return categoryList;
+    };
+
+    var listSort = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a < b) return -1;
+            else if (a > b) return 1;
+            else return 0;
+        });
+    };
+
+    var listSortReverse = function(listToSort, sortType) {
+        listToSort.sort(function(a, b) {
+            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            else { a = a.dateCreated, b = b.dateCreated; }
+
+            if (a > b) return -1;
+            else if (a < b) return 1;
+            else return 0;
+        });
+    };
+
+    var categoryFilter = function (app, category) {
+        if (!app.category && category) return false;
+        if (!category) return true;
+        return $filter('cuiI18n')(app.category).indexOf(category) > -1;
+    };
+
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    // WORKAROUND CASE #1
-    var getApplicationsFromGrants = function(grants) { 
-    // from the list of grants, get the list of services from each of those service packages
+    var getApplicationsFromGrants = function(grants) {
+        // WORKAROUND CASE #1
+        // from the list of grants, get the list of services from each of those service packages
         var i = 0;
         grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
@@ -182,7 +265,9 @@ function(localStorageService,$scope,$stateParams,API,$state){
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
-                if(i === grants.length) { // if this is the last grant
+                if (i === grants.length) { // if this is the last grant
+                    myApplications.categoryList = getListOfCategories(myApplications.list);
+                    angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
                     myApplications.doneLoading = true;
                     $scope.$digest();
                 }
@@ -205,36 +290,26 @@ function(localStorageService,$scope,$stateParams,API,$state){
         $state.go('applications.myApplicationDetails', {'packageId':application.parentPackage, 'appId':application.id});
     };
 
-    myApplications.listSort = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            else return 0;
-        });
-    };
-
-    myApplications.listSortReverse = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a > b) return -1;
-            else if (a < b) return 1;
-            else return 0;
-        });
-    };
-
     myApplications.sort = function(sortType) {
         if (myApplications.sortFlag) {
-            myApplications.listSortReverse(myApplications.list, sortType);
+            listSortReverse(myApplications.list, sortType);
             myApplications.sortFlag = false;
         }
         else {
-            myApplications.listSort(myApplications.list, sortType);
+            listSort(myApplications.list, sortType);
             myApplications.sortFlag = true;
+        }
+    };
+
+    myApplications.parseAppsByCategory = function(category) {
+        if (category === 'All') {
+            myApplications.list = myApplications.unparsedListOfAvailabeApps;
+        }
+        else {
+            var filteredApps = _.filter(myApplications.unparsedListOfAvailabeApps, function(app) {
+                return categoryFilter(app, category);
+            });
+            myApplications.list = filteredApps;
         }
     };
 
@@ -708,8 +783,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
-function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -748,51 +823,14 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
     ];
 
     // This returns the current language being used by the cui-i18n library, used for registration processes.
-    base.getLanguageCode = function(){
-        if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
-        else return LocaleService.getLocaleCode();
-    };
+    base.getLanguageCode = Languages.getCurrentLanguageCode;
 
-    var setCountries=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
-        }
-        GetCountries(language)
-        .then(function(res){
-            base.countries=res.data;
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
-
-    var setTimezones=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
-        }
-        GetTimezones(language)
-        .then(function(res){
-            base.timezones=res.data;
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
-
-    $scope.$on('languageChange',function(e,args){
-        // console.log(e);
-        setCountries(args);
-        setTimezones(args);
-    });
+    base.countries=Countries;
+    base.timezones=Timezones;
+    base.Languages=Languages.all;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
-
-    setCountries($translate.proposedLanguage());
-    setTimezones($translate.proposedLanguage());
-
 
 }]);
 
@@ -959,16 +997,16 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         // ADD LANGUAGES HERE ONLY
         {
             'en':'English',
-            'pt':'Portuguese',
-            'tr':'Turkish',
-            'zh':'Chinese (Simplified)',
-            'fr':'French',
-            'es':'Spanish',
-            'it':'Italian',
-            'ru':'Russian',
-            'th':'Thai',
-            'ja':'Japanese',
-            'de':'German'
+            'pt':'Português (Portuguese)',
+            'tr':'Türk (Turkish)',
+            'zh':'中文 (Chinese - Simplified)',
+            'fr':'Français (French)',
+            'es':'Español (Spanish)',
+            'it':'Italiano (Italian)',
+            'ru':'Pусский (Russian)',
+            'th':'ไทย (Thai)',
+            'ja':'日本語 (Japanese)',
+            'de':'Deutsche (German)'
         }
     )
 
@@ -1105,15 +1143,51 @@ angular.module('app')
 }]);
 
 
-angular.module('app').factory('GetCountries',['$http',function($http){
-    return function(locale){
+angular.module('app')
+.factory('Countries',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
+
+    var countries=[];
+
+    var GetCountries=function(locale){
         return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
     };
+
+    var setCountries=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetCountries(language)
+        .then(function(res){
+            res.data.forEach(function(country){
+                countries.push(country);
+            });
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
+    $rootScope.$on('languageChange',function(e,args){
+        setCountries(args);
+    });
+
+    setCountries($translate.proposedLanguage());
+
+    return countries;
 }]);
 
-angular.module('app').factory('GetTimezones',['$http',function($http){
-    return function(locale){
-        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/' + locale + '.json');
+angular.module('app')
+.factory('Languages',['$cuiI18n','LocaleService',function($cuiI18n,LocaleService){
+
+    var languages=$cuiI18n.getLocaleCodesAndNames();
+
+    return {
+        all:languages,
+        getCurrentLanguageCode : function(){
+            if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
+            else return LocaleService.getLocaleCode();
+        }
     };
 }]);
 
@@ -1173,6 +1247,40 @@ angular.module('app')
     };
 }]);
 
+
+angular.module('app')
+.factory('Timezones',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
+
+    var timezones=[];
+
+    var GetTimezones=function(locale){
+        return $http.get('bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/' + locale + '.json');
+    };
+
+    var setTimezones=function(language){
+        language = language || 'en';
+        if(language.indexOf('_')>-1){
+            language=language.split('_')[0];
+        }
+        GetTimezones(language)
+        .then(function(res){
+            res.data.forEach(function(timezone){
+                timezones.push(timezone);
+            });
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    };
+
+    $rootScope.$on('languageChange',function(e,args){
+        setTimezones(args);
+    });
+
+    setTimezones($translate.proposedLanguage());
+
+    return timezones;
+}]);
 
 angular.module('app')
 .factory('User',['$rootScope',function($rootScope) {
@@ -1807,23 +1915,12 @@ function($scope,$timeout,API,$cuiI18n){
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var selectQuestionsForUser = function() {
-        usersEdit.challengeQuestion1 = {};
-        usersEdit.challengeQuestion1 = {};
-        var questions = [];
-
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(usersEdit.allSecurityQuestions, function(question) {
-                return question.id === userQuestion.question.id;
-            });
-            this.push(question);
-        }, questions);
-
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$digest();
+    var selectTextsForQuestions = function() {
+        usersEdit.challengeQuestionsTexts=[];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+            this.push(question.question[0].text);
+        }, usersEdit.challengeQuestionsTexts);
     };
 
     usersEdit.resetTempObject = function(master, temp) {
@@ -1853,6 +1950,10 @@ function($scope,$timeout,API,$cuiI18n){
         return usersEdit.emptyFieldError;
     };
 
+    usersEdit.resetChallengeQuestion = function() {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -1871,12 +1972,23 @@ function($scope,$timeout,API,$cuiI18n){
     })
     .then(function(res) {
         usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = res;
+        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
     })
     .then(function(res) {
         usersEdit.allSecurityQuestions = res;
-        selectQuestionsForUser();
+        usersEdit.allSecurityQuestionsDup = angular.copy(res);
+        usersEdit.allSecurityQuestions.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = usersEdit.allSecurityQuestions.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
+        //Allocating options to three questions
+        usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        
+        selectTextsForQuestions();
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -1942,33 +2054,20 @@ function($scope,$timeout,API,$cuiI18n){
         // Currently API has issue when updating
     };
 
-    usersEdit.saveChallengeQuestions = function() {
-        var updatedChallengeQuestions = {};
-        updatedChallengeQuestions = [{
-            question: {
-                text: usersEdit.challengeQuestion1.question[0].text,
-                lang: usersEdit.challengeQuestion1.question[0].lang,
-                answer:   usersEdit.challengeAnswer1,
-                index: 1 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            },{
-            question: {
-                text: usersEdit.challengeQuestion2.question[0].text,
-                lang: usersEdit.challengeQuestion2.question[0].lang,
-                answer:   usersEdit.challengeAnswer2,
-                index: 2 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            }
-        ];
+   usersEdit.saveChallengeQuestions = function() {
+        usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
+        selectTextsForQuestions();
 
-        API.cui.updateSecurityQuestions({
+        usersEdit.saving = true;
+        usersEdit.fail = false;
+        usersEdit.success = false;
+
+        API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),
           data: {
             version: '1',
             id: API.getUser(),
-            questions: updatedChallengeQuestions
+            questions: usersEdit.userSecurityQuestions.questions
             }
         })
         .then(function(res) {
@@ -1984,7 +2083,6 @@ function($scope,$timeout,API,$cuiI18n){
             }, 300);
         });
     };
-
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);

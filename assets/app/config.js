@@ -161,16 +161,16 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         // ADD LANGUAGES HERE ONLY
         {
             'en':'English',
-            'pt':'Portuguese',
-            'tr':'Turkish',
-            'zh':'Chinese (Simplified)',
-            'fr':'French',
-            'es':'Spanish',
-            'it':'Italian',
-            'ru':'Russian',
-            'th':'Thai',
-            'ja':'Japanese',
-            'de':'German'
+            'pt':'Português (Portuguese)',
+            'tr':'Türk (Turkish)',
+            'zh':'中文 (Chinese - Simplified)',
+            'fr':'Français (French)',
+            'es':'Español (Spanish)',
+            'it':'Italiano (Italian)',
+            'ru':'Pусский (Russian)',
+            'th':'ไทย (Thai)',
+            'ja':'日本語 (Japanese)',
+            'de':'Deutsche (German)'
         }
     )
 
