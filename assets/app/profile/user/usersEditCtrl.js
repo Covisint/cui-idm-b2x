@@ -69,6 +69,10 @@ function($scope,$timeout,API,$cuiI18n){
         return usersEdit.emptyFieldError;
     };
 
+    usersEdit.resetChallengeQuestion = function() {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -197,10 +201,6 @@ function($scope,$timeout,API,$cuiI18n){
                 usersEdit.fail = true;
             }, 300);
         });
-    };
-
-    usersEdit.resetChallengeQuestion = function() {
-        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
     };
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
