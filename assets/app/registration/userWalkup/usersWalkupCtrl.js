@@ -6,8 +6,9 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     var usersWalkup = this;
     usersWalkup.userLogin = {};
     usersWalkup.applications = {};
+    usersWalkup.errorMessage = '';
     usersWalkup.registering = false;
-    usersWalkup.registrationError = false;
+    usersWalkup.userNameExistsError = false;
     usersWalkup.applications.numberOfSelected = 0;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -188,6 +189,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     usersWalkup.submit = function() {
         usersWalkup.submitting = true;
+        usersWalkup.registrationError = false;
         var user = build.submitData();
 
         API.cui.registerPerson({data: user})
@@ -202,14 +204,16 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         .then(function(res) {
             usersWalkup.submitting = false;
             usersWalkup.success = true;
-            console.log('Registration Request Successful');
             $state.go('misc.success');
         })
         .fail(function(err) {
+            if (err.responseJSON.apiMessage === 'Username already exists') {
+                usersWalkup.registrationError = true;
+                usersWalkup.errorMessage = 'cui-error-username-exists';
+            }
             usersWalkup.success = false;
             usersWalkup.submitting = false;
-            console.log(err);
-            $state.go('welcome.screen');
+            $scope.$digest();
         });
     };
 
