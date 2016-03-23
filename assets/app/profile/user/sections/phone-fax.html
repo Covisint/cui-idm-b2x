@@ -1,0 +1,28 @@
+<div class="cui-users__contact-info" class-toggle toggled-class="edit-phones">
+  <div class="cui-users__field" ng-if="!toggled">
+    <span class="cui-field-val__field">{{'cui-phone-fax' | translate}}:</span>
+    <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
+  </div>
+  <!-- If user has phones -->
+  <div ng-if="usersEdit.tempUser.phones">
+    <!-- Phones Block -->
+    <div ng-if="!toggled" ng-repeat="phone in usersEdit.tempUser.phones">
+      <span class="cui-field-val__field">{{phone.type}}:</span>
+      <span class="cui-field-val__val">{{phone.number}}</span>
+    </div>
+
+    <!-- Phones Edit -->
+    <div ng-if="toggled">
+      <!-- Phones Edit Controls -->
+      <div>
+        <a class="cui-link" href="" ng-if="!usersEdit.emptyFieldError" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
+        <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
+      </div>
+      <!-- Phone Fields -->
+      <div ng-repeat="phone in usersEdit.tempUser.phones">
+        <label for="phone">{{phone.type}}: </label>
+        <input class="cui-input" type="text" ng-model="phone.number" name="phone" ng-required="true" ng-change="usersEdit.checkIfFieldsAreEmpty(phone.number);" />
+      </div>
+    </div>
+  </div>
+</div>

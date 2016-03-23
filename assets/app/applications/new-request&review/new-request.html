@@ -1,4 +1,4 @@
-<div class="code-info">Markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/angular-templates/applications/newRequest.html" target="blank">here</a>, the javascript <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/js/app/applications/app.newAppRequest.js" class="cui-link" target="blank">here</a>, and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss" class="cui-link" target="blank">here</a></div>
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/new-request%26review" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss" class="cui-link" target="blank">here</a></div>
 <div class="cui-applications__new-request">
     <div class="cui-action">
         <div class="cui-action__title">{{'new-request' | translate}}</div>
@@ -11,19 +11,20 @@
     <div class="cui-action cui-action--alt">
         <h3 class="cui-action__title">{{'select-applications' | translate}}</h3>
         <div class="cui-action__actions">
-            <svg ng-click="activeAppPopover = !activeAppPopover" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
             <!-- popover -->
-            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-class="{'hide--opacity': !activeAppPopover}">
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="newAppRequest.requestPopover">
               <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
               <div class="cui-action__popover-section">
-                <ul>
+                <span ng-if="newAppRequest.appsBeingRequested.length===0">{{'no-selected-apps' | translate}}<br/></span>
+                <ul ng-if="newAppRequest.appsBeingRequested.length > 0">
                     <li ng-repeat="application in newAppRequest.appsBeingRequested">{{application.name | cuiI18n}}</li>
                 </ul>
               </div>
-              <span class="cui-action__popover-button" ui-sref="applications.reviewRequest" ng-click="activeAppPopover = !activeAppPopover">{{'submit-request' | translate}}</span>
+              <span ng-if="newAppRequest.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
             </div>
         </div>
     </div>

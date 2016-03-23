@@ -5,8 +5,8 @@
     .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
+function(API,$scope,$stateParams,$state,Helper) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -18,12 +18,6 @@ function(API,$scope,$stateParams,$state) {
     var handleError = function(err) {
         console.log('Error \n', err);
         $scope.$digest();
-    };
-
-    var getDateGranted = function(creationUnixStamp) {
-        var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
     };
 
     var getBundledApps = function(service) { // WORKAROUND CASE # 1
@@ -63,7 +57,7 @@ function(API,$scope,$stateParams,$state) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = getDateGranted(pkgGrantThatMatches.creation);
+            childService.grantedDate = Helper.getDateFromUnixStamp(pkgGrantThatMatches.creation);
         }
 
         childService.packageId = childPackage.id;
@@ -129,7 +123,7 @@ function(API,$scope,$stateParams,$state) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = getDateGranted(res.creation);
+            app.grantedDate = Helper.getDateFromUnixStamp(res.creation);
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);
@@ -169,8 +163,8 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
-function(localStorageService,$scope,$stateParams,API,$state,$filter) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','Helper',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
     'use strict';
 
     var myApplications = this;
@@ -188,23 +182,15 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
-    var getDateGranted = function(creationUnixStamp) {
-        var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
-    };
-
     var getListOfCategories = function(services) {
         // WORKAROUND CASE # 7
-        var categoryList = [[{lang:'en', text:'All'}]];
-        var categoryCount = [];
+        var categoryList = [];
+        var categoryCount = [myApplications.unparsedListOfAvailabeApps.length];
 
         services.forEach(function(service) {
             if (service.category) {
-
                 var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
                     if (angular.equals(category, service.category)) {
-                        categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
                         categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
                         return true;
                     }
@@ -213,7 +199,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
 
                 if (!serviceCategoryInCategoryList) {
                     categoryList.push(service.category);
-                    categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
                     categoryCount[categoryList.length] = 1;
                 }
             }
@@ -222,24 +207,19 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         return categoryList;
     };
 
-    var listSort = function(listToSort, sortType) {
+    var listSort = function(listToSort, sortType, order) { // order is a boolean
         listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
             else { a = a.dateCreated, b = b.dateCreated; }
 
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            else return 0;
-        });
-    };
-
-    var listSortReverse = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a > b) return -1;
-            else if (a < b) return 1;
+            if ( a < b ) {
+                if (order) return 1;
+                else return -1
+            }
+            else if( a > b ) {
+                if (order) return -1;
+                else return 1;
+            }
             else return 0;
         });
     };
@@ -247,7 +227,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     var categoryFilter = function (app, category) {
         if (!app.category && category) return false;
         if (!category) return true;
-        return $filter('cuiI18n')(app.category).indexOf(category) > -1;
+        return $filter('cuiI18n')(app.category)===$filter('cuiI18n')(category);
     };
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
@@ -264,13 +244,13 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = getDateGranted(grant.creation);
+                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
                 if (i === grants.length) { // if this is the last grant
-                    myApplications.categoryList = getListOfCategories(myApplications.list);
                     angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+                    myApplications.categoryList = getListOfCategories(myApplications.list);
                     myApplications.doneLoading = true;
                     $scope.$digest();
                 }
@@ -294,18 +274,12 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     };
 
     myApplications.sort = function(sortType) {
-        if (myApplications.sortFlag) {
-            listSortReverse(myApplications.list, sortType);
-            myApplications.sortFlag = false;
-        }
-        else {
-            listSort(myApplications.list, sortType);
-            myApplications.sortFlag = true;
-        }
+        listSort(myApplications.list, sortType, myApplications.sortFlag);
+        myApplications.sortFlag=!myApplications.sortFlag;
     };
 
     myApplications.parseAppsByCategory = function(category) {
-        if (category === 'All') {
+        if (category === 'all') {
             myApplications.list = myApplications.unparsedListOfAvailabeApps;
         }
         else {
@@ -830,10 +804,13 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
 
     base.countries=Countries;
     base.timezones=Timezones;
-    base.Languages=Languages.all;
+    base.languages=Languages.all;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
+
+    base.logout=API.cui.covLogout;
+
 
 }]);
 
@@ -896,9 +873,9 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
             controller: returnCtrlAs('usersWalkup'),
-            menu:{
-                desktop:false
-            }
+            // menu:{
+            //     desktop:false
+            // }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -993,7 +970,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
-      $state.go('base');
+      $state.go('welcome.screen');
     });
 
     $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
@@ -1100,7 +1077,7 @@ angular.module('app')
             appRedirect: $location.path()
         });
     };
-    
+
     myCUI.setAuthHandler(jwtAuthHandler);
 
     return {
@@ -1178,6 +1155,20 @@ angular.module('app')
     setCountries($translate.proposedLanguage());
 
     return countries;
+}]);
+
+angular.module('app')
+.factory('Helper',[function(){
+
+    return {
+        getDateFromUnixStamp:function(unixTimeStamp){
+            var dateGranted = new Date(unixTimeStamp);
+            var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
+            return dateGrantedFormatted;
+        }
+
+    };
+
 }]);
 
 angular.module('app')
@@ -1914,8 +1905,7 @@ function($scope,$timeout,API,$cuiI18n){
     usersEdit.fail = false;
     usersEdit.success = false;
 
-    usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
+
     usersEdit.passwordPolicies = [
         {
             'allowUpperChars':true,
@@ -1951,11 +1941,6 @@ function($scope,$timeout,API,$cuiI18n){
         angular.copy(master, temp);
     };
 
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
-
     usersEdit.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
         usersEdit.userPasswordAccount.currentPassword = '';
@@ -1973,8 +1958,8 @@ function($scope,$timeout,API,$cuiI18n){
         return usersEdit.emptyFieldError;
     };
 
-    usersEdit.resetChallengeQuestion = function() {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
+    usersEdit.resetChallengeQuestion = function(index) {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -2010,7 +1995,7 @@ function($scope,$timeout,API,$cuiI18n){
         usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        
+
         selectTextsForQuestions();
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
@@ -2542,13 +2527,10 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     'use strict';
 
     var usersWalkup = this;
-
     usersWalkup.userLogin = {};
     usersWalkup.applications = {};
-
     usersWalkup.registering = false;
     usersWalkup.registrationError = false;
-
     usersWalkup.applications.numberOfSelected = 0;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -2571,14 +2553,14 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // collection of helper functions to build necessary calls on this controller
     var build = {
-        personRequest:function(user, org) {
+        personRequest:function(user) {
             return {
                 data: {
                     id: user.id,
                     registrant: {
                         id: user.id,
                         type: 'person',
-                        realm: org.realm
+                        realm: user.realm
                     },
                     justification: 'User walkup registration',
                     servicePackageRequest: this.packageRequests()
@@ -2586,36 +2568,27 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             };
         },
         packageRequests:function() {
-            // var packages = [];
-            // angular.forEach(usersWalkup.applications.selected,function(servicePackage) {
-            //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
-            // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-            // WORKAROUND CASE #4
-            var packages = {
-                'packageId': usersWalkup.applications.selected[0].split(',')[0]
-            };
+            var packages = [];
+            angular.forEach(usersWalkup.applications.selected,function(servicePackage) {
+                // usersWalkup.applications.selected is an array of strings that looks like
+                // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+                packages.push({packageId:servicePackage.split(',')[0]}); 
+            });
             return packages;
         },
-        personPassword:function(user, org) {
+        personPassword:function() {
             return {
-                personId: user.id,
-                data: {
-                    version: '1',
-                    username: usersWalkup.userLogin.username,
-                    password: usersWalkup.userLogin.password,
-                    passwordPolicy: org.passwordPolicy,
-                    authenticationPolicy: org.authenticationPolicy
-                }
+                version: '1',
+                username: usersWalkup.userLogin.username,
+                password: usersWalkup.userLogin.password,
+                passwordPolicy: usersWalkup.organization.passwordPolicy,
+                authenticationPolicy: usersWalkup.organization.authenticationPolicy
             };
         },
-        userSecurityQuestionAccount:function(user) {
+        userSecurityQuestionAccount:function() {
             return {
-                personId: user.id,
-                data: {
-                    version: '1',
-                    id: user.id,
-                    questions: this.userSecurityQuestions(user)
-                }
+                version: '1',
+                questions: this.userSecurityQuestions()
             };
         },
         user:function() {
@@ -2628,13 +2601,13 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             usersWalkup.user.language = $scope.$parent.base.getLanguageCode();
             return usersWalkup.user;
         },
-        userSecurityQuestions:function(user) {
+        userSecurityQuestions:function() {
             return [
                 {
                     question: {
                         id: usersWalkup.userLogin.question1.id,
                         type: 'question',
-                        realm: user.realm
+                        realm: usersWalkup.organization.realm
                     },
                     answer: usersWalkup.userLogin.challengeAnswer1,
                     index: 1
@@ -2643,12 +2616,19 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                     question: {
                         id: usersWalkup.userLogin.question2.id,
                         type: 'question',
-                        realm: user.realm
+                        realm: usersWalkup.organization.realm
                     },
                     answer: usersWalkup.userLogin.challengeAnswer2,
                     index: 2
                 }
             ];
+        },
+        submitData:function() {
+            var submitData = {};
+            submitData.person = this.user();
+            submitData.passwordAccount = this.personPassword();
+            submitData.securityQuestionAccount = this.userSecurityQuestionAccount();
+            return submitData;
         }
     };
 
@@ -2697,6 +2677,65 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         else usersWalkup.applications.numberOfSelected--;
     };
 
+    usersWalkup.applications.process = function() {
+        // Process the selected apps when you click next after selecting the apps you need
+        // returns number of apps selected
+        if (usersWalkup.applications.processedSelected) {
+            var oldSelected = usersWalkup.applications.processedSelected;
+        }
+        usersWalkup.applications.processedSelected = [];
+        angular.forEach(usersWalkup.applications.selected,function(app, i) {
+            if (app !== null) {
+                usersWalkup.applications.processedSelected.push({
+                    id: app.split(',')[0],
+                    name: app.split(',')[1],
+                    // this fixes an issue
+                    // where removing an app from the selected list that the user had accepted the terms for
+                    // would carry over that acceptance to the next app on the list
+                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) 
+                });
+            }
+        });
+        return usersWalkup.applications.processedSelected.length;
+    };
+
+    usersWalkup.applications.searchApplications=function() {
+        // Search apps by name
+        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
+        .then(function(res) {
+             usersWalkup.applications.list = res;
+            $scope.$apply();
+        })
+        .fail(handleError);
+    };
+
+    usersWalkup.submit = function() {
+        usersWalkup.submitting = true;
+        var user = build.submitData();
+
+        API.cui.registerPerson({data: user})
+        .then(function(res) {
+            if (usersWalkup.applications.selected) {
+                return API.cui.createPersonRequest(build.personRequest(res.person));
+            }
+            else {
+                return;
+            }
+        })
+        .then(function(res) {
+            usersWalkup.submitting = false;
+            usersWalkup.success = true;
+            console.log('Registration Request Successful');
+            $state.go('misc.success');
+        })
+        .fail(function(err) {
+            usersWalkup.success = false;
+            usersWalkup.submitting = false;
+            console.log(err);
+            $state.go('welcome.screen');
+        });
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // WATCHERS START --------------------------------------------------------------------------------
@@ -2713,7 +2752,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             // If the organization selected changes reset all the apps 
             usersWalkup.applications.numberOfSelected = 0; // Restart applications count
             usersWalkup.applications.processedSelected = undefined; // Restart applications selected
-            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO: GET SERVICES INSTEAD
+
+            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id})
             .then(function(grants) {
                 usersWalkup.applications.list = [];
                 if (grants.length === 0) {
@@ -2724,7 +2764,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                 grants.forEach(function(grant) {
                     API.cui.getPackageServices({'packageId':grant.servicePackage.id})
                     .then(function(res) {
-                        usersWalkup.applications.list.push(res);
+                        usersWalkup.applications.list.push(res[0]);
                         i++;
                         if (i === grants.length) {
                             $scope.$digest();
@@ -2735,69 +2775,6 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             .fail(handleError);
         }
     });
-
-    usersWalkup.applications.process = function() {
-        // Process the selected apps when you click next after selecting the apps you need
-        // returns number of apps selected
-        if (usersWalkup.applications.processedSelected) {
-            var oldSelected = usersWalkup.applications.processedSelected;
-        }
-        usersWalkup.applications.processedSelected = [];
-        angular.forEach(usersWalkup.applications.selected,function(app, i) {
-            if (app !== null) {
-                usersWalkup.applications.processedSelected.push({
-                    id: app.split(',')[0],
-                    name: app.split(',')[1],
-                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) // this fixes an issue
-                    // where removing an app from the selected list that the user had accepted the terms for
-                    // would carry over that acceptance to the next app on the list
-                });
-            }
-        });
-        return usersWalkup.applications.processedSelected.length;
-    };
-
-    usersWalkup.applications.searchApplications=function() {
-        // Search apps by name
-        // TODO : GET SERVICES INSTEAD
-        API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
-        .then(function(res) {
-             usersWalkup.applications.list = res;
-            $scope.$apply();
-        })
-        .fail(handleError);
-    };
-
-    usersWalkup.submit = function() {
-        usersWalkup.submitting = true;
-        var user,org;
-
-        API.cui.createPerson({data: build.user()})
-        .then(function(res){
-            user = res;
-            return API.cui.getOrganization({organizationId:user.organization.id});
-        })
-        .then(function(res){
-            org = res;
-            return API.cui.createSecurityQuestionAccount(build.userSecurityQuestionAccount(user));
-        })
-        .then(function() {
-            return API.cui.createPersonPassword(build.personPassword(user,org));
-        })
-        .then(function(){
-            return API.cui.createPersonRequest(build.personRequest(user,org));
-        })
-        .then(function() {
-            usersWalkup.submitting = false;
-            usersWalkup.success = true;
-            console.log('userCreated.');
-            $state.go('misc.success');
-        })
-        .fail(function(err){
-            usersWalkup.success=false;
-            handleError(err);
-        });
-    };
 
     // WATCHERS END ----------------------------------------------------------------------------------
 
