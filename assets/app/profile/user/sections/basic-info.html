@@ -1,57 +1,52 @@
-<div class-toggle toggled-class="show-full-name">
-  <div class="cui-users__field" ng-if="!toggled">
-    <div class="cui-field-val">
-      <span class="cui-field-val__field">{{"cui-name"| translate}}: </span>
-      <span class="cui-field-val__val" ng-if="!usersEdit.editName">{{usersEdit.tempUser.name.given}} {{usersEdit.tempUser.name.surname}}</span>
-    </div>
-    <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-  </div>
+<ng-form name="basicInfo">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">{{'basic-info' | translate}}</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="usersEdit.toggleAllOff();toggleOn()">{{'cui-open' | translate}}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+        </svg>
+      </div>
 
-  <!-- Name Edit -->
-  <div ng-if="toggled">
-    <!-- Name Edit Controls -->
-    <div>
-      <a class="cui-link" href="" ng-if="usersEdit.tempUser.name.given && usersEdit.tempUser.name.surname" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
-      <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
-    </div>
-    <!-- First Name Edit -->
-    <label for="firstName">{{'cui-first-name' | translate}}: </label>
-    <div class="cui-error" ng-messages="edit.firstName.$error" ng-if="edit.firstName.$touched">
-      <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-    </div>
-    <input class="cui-input" type="text" ng-model="usersEdit.tempUser.name.given" name="firstName" ng-required="true">
-    <!-- Last Name Edit -->
-    <label for="lastName">{{'cui-last-name' | translate}}: </label>
-    <div class="cui-error" ng-messages="edit.lastName.$error" ng-if="edit.firstName.$touched">
-      <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-    </div>
-    <input class="cui-input" type="text" ng-model="usersEdit.tempUser.name.surname" name="lastName" ng-required="true">
-  </div>
-</div>
+      <div ng-if="!toggled">
+        <span class="cui-field-val__field">{{'cui-name' | translate}}:</span>
+        <span class="cui-field-val__val">{{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}</span><br/>
+        <span class="cui-field-val__field">{{'cui-email' | translate}}:</span>
+        <span class="cui-field-val__val">{{usersEdit.user.email}} </span>
+      </div>
 
-<!-- Email -->
-<div class-toggle toggled-class="email-edit">
-  <!-- Email Block -->
-  <div class="cui-users__field" ng-if="!toggled">
-    <div class="cui-field-val">
-      <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
-      <span class="cui-field-val__val">{{usersEdit.tempUser.email}}</span>
+      <!-- Name/email edit -->
+      <div ng-if="toggled" ng-init="usersEdit.pushToggleOff({'name':'basicInfo','function':toggleOff})">
+        <!-- First Name -->
+        <label for="firstName">{{'cui-first-name' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.firstName.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="text" name="firstName" class="cui-input" ng-model="usersEdit.tempUser.name.given" ng-required="true" focus-if="toggled">
+        <!-- Last Name -->
+        <label for="lastName">{{'cui-last-name' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.lastName.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="text" name="lastName" class="cui-input" ng-model="usersEdit.tempUser.name.surname" ng-required="true">
+        <!-- Email -->
+        <label for="email">{{'cui-email' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.email.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="email" name="email" class="cui-input" ng-model="usersEdit.tempUser.email" ng-required="true">
+        <!-- Address Edit Controls -->
+        <div class="cui-users__address-submit">
+          <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-click="basicInfo.$valid && usersEdit.updatePerson('basicInfo',toggleOff);"
+            ng-class="{'cui-button--error':!basicInfo.$valid}">
+            <span ng-if="!usersEdit.basicInfo || !usersEdit.basicInfo.submitting">{{'cui-update' | translate}}</span>
+            <div class="cui-loading--medium-ctr" ng-if="usersEdit.basicInfo.submitting"></div>
+            <span ng-if="usersEdit.basicInfo.error">{{'cui-error-try-again'| translate}}</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
   </div>
-
-  <!-- Email Edit -->
-  <div ng-if="toggled">
-    <!-- Email Edit Controls -->
-    <div>
-      <a class="cui-link" href="" ng-if="usersEdit.tempUser.email" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
-      <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
-    </div>
-    <!-- Email Input Edit -->
-    <label for="email">{{'cui-email' | translate}}: </label>
-    <div class="cui-error" ng-messages="edit.email.$error" ng-if="edit.email.$touched">
-      <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-    </div>
-    <input class="cui-input" type="text" ng-model="usersEdit.tempUser.email" name="email" ng-required="true">
-  </div>
-</div>
+</ng-form>

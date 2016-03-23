@@ -23,11 +23,21 @@ angular.module('app')
         });
     };
 
+    var getTimezoneById=function(id){
+        if(!id) return '';
+        return _.find(timezones,function(timezone){
+            return timezone.id===id;
+        }).name;
+    };
+
     $rootScope.$on('languageChange',function(e,args){
         setTimezones(args);
     });
 
     setTimezones($translate.proposedLanguage());
 
-    return timezones;
+    return {
+        all:timezones,
+        timezoneById:getTimezoneById
+    }
 }]);

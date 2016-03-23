@@ -24,6 +24,9 @@
           <div class="cui-users__info-block">
             <!-- Basic info  (name and email)-->
             <div ng-include="'assets/app/profile/user/sections/basic-info.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
             <!-- Password -->
             <div ng-include="'assets/app/profile/user/sections/password.html'"></div>
           </div>
@@ -40,11 +43,15 @@
         </div>
 
         <div class="cui-users__profile-info">
-          <!-- Address -->
-          <div ng-include="'assets/app/profile/user/sections/address.html'"></div>
+          <div class="cui-users__info-block">
+            <!-- Address -->
+            <div ng-include="'assets/app/profile/user/sections/address.html'"></div>
+          </div>
 
-          <!-- Phones/Fax -->
-          <div ng-include="'assets/app/profile/user/sections/phone-fax.html'"></div>
+          <div class="cui-users__info-block">
+            <!-- Phones/Fax -->
+            <div ng-include="'assets/app/profile/user/sections/phone-fax.html'"></div>
+          </div>
         </div>
 
       </div>

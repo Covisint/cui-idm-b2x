@@ -1,8 +1,8 @@
 <div class="cui-users__field">
   <div class="cui-users__address-container" class-toggle toggled-class="show-address">
     <div class="cui-users__field">
-      <span class="cui-field-val__field">{{'cui-address' | translate}}: </span>
-      <span class="cui-link" href="" ng-if="!toggled" ng-click="toggleOn()">{{'cui-open' | translate}}</span>
+      <span class="cui-field-val__field">{{'cui-address' | translate}}</span>
+      <span class="cui-link" href="" ng-if="!toggled" ng-click="usersEdit.toggleAllOff();toggleOn()">{{'cui-open' | translate}}</span>
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
         <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
       </svg>
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Address Edit -->
-    <div ng-if='toggled'>
+    <div ng-if='toggled' ng-init="usersEdit.pushToggleOff({'name':'address','function':toggleOff})">
       <!-- Street Address -->
       <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
       <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="usersEdit.tempUser.addresses[0].streets[0]">

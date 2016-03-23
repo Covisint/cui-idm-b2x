@@ -803,7 +803,7 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
     base.countries=Countries;
-    base.timezones=Timezones;
+    base.timezones=Timezones.all;
     base.languages=Languages.all;
 
     base.user = User.user;
@@ -1267,13 +1267,23 @@ angular.module('app')
         });
     };
 
+    var getTimezoneById=function(id){
+        if(!id) return '';
+        return _.find(timezones,function(timezone){
+            return timezone.id===id;
+        }).name;
+    };
+
     $rootScope.$on('languageChange',function(e,args){
         setTimezones(args);
     });
 
     setTimezones($translate.proposedLanguage());
 
-    return timezones;
+    return {
+        all:timezones,
+        timezoneById:getTimezoneById
+    }
 }]);
 
 angular.module('app')
@@ -1894,8 +1904,8 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n',
-function($scope,$timeout,API,$cuiI18n){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones',
+function($scope,$timeout,API,$cuiI18n,Timezones){
     'use strict';
 
     var usersEdit = this;
@@ -1904,27 +1914,6 @@ function($scope,$timeout,API,$cuiI18n){
     usersEdit.saving = true;
     usersEdit.fail = false;
     usersEdit.success = false;
-
-
-    usersEdit.passwordPolicies = [
-        {
-            'allowUpperChars':true,
-            'allowLowerChars':true,
-            'allowNumChars':true,
-            'allowSpecialChars':true,
-            'requiredNumberOfCharClasses':3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min':8,
-            'max':18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -1936,9 +1925,13 @@ function($scope,$timeout,API,$cuiI18n){
         }, usersEdit.challengeQuestionsTexts);
     };
 
+    var resetTempUser=function(){
+        if(!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
+    };
+
     usersEdit.resetTempObject = function(master, temp) {
         // Used to reset the temp object to the original when a user cancels their edit changes
-        angular.copy(master, temp);
+        if(!angular.equals(master,temp)) angular.copy(master, temp);
     };
 
     usersEdit.resetChallengeQuestion = function(question) {
@@ -1953,23 +1946,35 @@ function($scope,$timeout,API,$cuiI18n){
         usersEdit.passwordRe = '';
     };
 
-    usersEdit.checkIfFieldsAreEmpty = function(field) {
-        if (field === undefined) {
-            usersEdit.emptyFieldError = true;
-        }
-        else {
-            usersEdit.emptyFieldError = false;
-        }
-        return usersEdit.emptyFieldError;
+    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+        securityQuestions.forEach(function(secQuestion,i){
+            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
+                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
+            });
+            if(securityAnswerRepeatedIndex>-1) {
+                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
+            }
+            else {
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
+            }
+        });
     };
 
     usersEdit.resetChallengeQuestion = function() {
         usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
     };
 
+    usersEdit.timezoneById=Timezones.timezoneById;
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
+
+    usersEdit.toggleOffFunctions={};
+    usersEdit.pushToggleOff=function(toggleOffObject){
+        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
+    };
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
@@ -1979,11 +1984,14 @@ function($scope,$timeout,API,$cuiI18n){
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
-        usersEdit.user = angular.copy(res);
-        usersEdit.tempUser = angular.copy(res);
+        usersEdit.user={};
+        usersEdit.tempUser={};
+        angular.copy(res,usersEdit.user);
+        angular.copy(res,usersEdit.tempUser);
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
+        console.log(res);
         usersEdit.userSecurityQuestions = res;
         usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
@@ -2017,11 +2025,27 @@ function($scope,$timeout,API,$cuiI18n){
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    usersEdit.toggleAllOff=function(){
+        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff){
+            toggleOff();
+        });
+        resetTempUser();
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
+
     // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
-    usersEdit.updatePerson = function() {
-        usersEdit.loading = true;
-
+    usersEdit.updatePerson = function(section,toggleOff) {
+        if(angular.equals(usersEdit.tempUser, usersEdit.user)){
+            if(toggleOff) toggleOff();
+            return;
+        }
+        if(section) usersEdit[section]={
+            submitting:true
+        };
         if (!usersEdit.userCountry) {
             usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
         }
@@ -2029,35 +2053,37 @@ function($scope,$timeout,API,$cuiI18n){
             usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
         }
 
-        angular.copy(usersEdit.tempUser, usersEdit.user);
-
-        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.user})
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.tempUser})
         .then(function() {
-            usersEdit.loading = false;
+            angular.copy(usersEdit.tempUser, usersEdit.user);
+            if(section) usersEdit[section].submitting=false;
+            if(toggleOff) toggleOff();
             $scope.$digest();
         })
         .fail(function(error) {
-            usersEdit.loading = false;
             console.log(error);
+            if(section) usersEdit[section].submitting=false;
+            if(section) usersEdit[section].error=true;
             $scope.$digest();
         });
     };
 
-    usersEdit.updatePassword = function() {
-        usersEdit.loading = true;
+    usersEdit.updatePassword = function(section,toggleOff) {
+        if(section) usersEdit[section]={
+            submitting:true
+        };
 
         API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
         .then(function(res) {
-            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
-            usersEdit.loading = false;
+            if(section) usersEdit[section].submitting=false;
+            if(toggleOff) toggleOff();
             usersEdit.resetPasswordFields();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
-            usersEdit.resetPasswordFields();
-            usersEdit.loading = false;
+            if(section) usersEdit[section].submitting=false;
+            if(section) usersEdit[section].error=true;
             $scope.$digest();
         });
     };
@@ -2067,13 +2093,12 @@ function($scope,$timeout,API,$cuiI18n){
         // Currently API has issue when updating
     };
 
-   usersEdit.saveChallengeQuestions = function() {
+   usersEdit.saveChallengeQuestions = function(section,toggleOff) {
+        if(section) usersEdit[section]={
+            submitting:true
+        };
         usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
         selectTextsForQuestions();
-
-        usersEdit.saving = true;
-        usersEdit.fail = false;
-        usersEdit.success = false;
 
         API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),
@@ -2084,16 +2109,15 @@ function($scope,$timeout,API,$cuiI18n){
             }
         })
         .then(function(res) {
-            $timeout(function() {
-                usersEdit.saving = false;
-                usersEdit.success = true;
-            }, 300);
+            if(section) usersEdit[section].submitting=false;
+            if(toggleOff) toggleOff();
+            $scope.$digest();
         })
         .fail(function(err) {
-            $timeout(function() {
-                usersEdit.saving = false;
-                usersEdit.fail = true;
-            }, 300);
+            console.log(err);
+            if(section) usersEdit[section].submitting=false;
+            if(section) usersEdit[section].error=true;
+            $scope.$digest();
         });
     };
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
