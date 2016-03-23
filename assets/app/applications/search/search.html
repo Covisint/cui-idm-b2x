@@ -17,16 +17,20 @@
             <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg ng-click="activeAppPopover = !activeAppPopover" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
-            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} <!-- < this will be the little number above the folder icon --></sup>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} </sup>
 
-
-              <!-- @SHANE THESE 3 LINES ARE FOR THE POPOVER THAT WILL OPEN WHEN CLICKING ON THE FOLDER -->
-            {{'collected-items-for-request' | translate}}
-            <span ng-repeat="(key,value) in applicationSearch.packageRequests">{{value.name | cuiI18n}}</span>
-            <span ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-class="{'hide--opacity': !activeAppPopover}">
+              <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+              <div class="cui-action__popover-section">
+                <ul>
+                    <li ng-repeat="(key,value) in applicationSearch.packageRequests">{{value.name | cuiI18n}}</li>
+                </ul>
+              </div>
+              <span class="cui-action__popover-button" ui-sref="applications.reviewRequest" ng-click="activeAppPopover = !activeAppPopover">{{'submit-request' | translate}}</span>
+            </div>
         </div>
     </div>
     <div class="cui-applications__main-container">
