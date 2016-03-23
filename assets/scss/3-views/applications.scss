@@ -206,3 +206,30 @@
   }
 
 }
+
+// My Applications
+// Sorry about my bad scss Shane! 
+
+.cui-popover__sort-popover {
+  transform: translate(-8.5em);
+  font-size: 14px;
+}
+
+@media screen and (max-width: 700px) {
+  .cui-popover__sort-popover {
+    width: 275px;
+    transform: translate(-8.5em);
+  }
+}
+
+.cui-popover__categories-popover {
+  transform: translate(-8.0em);
+  font-size: 14px;
+}
+
+@media screen and (max-width: 700px) {
+  .cui-popover__categories-popover {
+    width: 275px;
+    transform: translate(-8.0em);
+  }
+}

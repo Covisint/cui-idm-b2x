@@ -1,17 +1,131 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API',
-function($scope,$timeout,API){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n',
+function($scope,$timeout,API,$cuiI18n){
     'use strict';
 
     var usersEdit = this;
-    var currentCountry;
 
     usersEdit.loading = true;
+    usersEdit.saving = true;
+    usersEdit.fail = false;
+    usersEdit.success = false;
+
     usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.tempLanguages = ['en', 'zh'];
+    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
+    usersEdit.passwordPolicies = [
+        {
+            'allowUpperChars':true,
+            'allowLowerChars':true,
+            'allowNumChars':true,
+            'allowSpecialChars':true,
+            'requiredNumberOfCharClasses':3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min':8,
+            'max':18
+        },
+        {
+            'disallowedWords':['password','admin']
+        }
+    ];
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var selectTextsForQuestions = function() {
+        usersEdit.challengeQuestionsTexts=[];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+            var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+            this.push(question.question[0].text);
+        }, usersEdit.challengeQuestionsTexts);
+    };
+
+    usersEdit.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
+        angular.copy(master, temp);
+    };
+
+    usersEdit.resetChallengeQuestion = function(question) {
+        usersEdit['challengeAnswer' + question] = '';
+        selectQuestionsForUser();
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
+    };
+
+    usersEdit.checkIfFieldsAreEmpty = function(field) {
+        if (field === undefined) {
+            usersEdit.emptyFieldError = true;
+        }
+        else {
+            usersEdit.emptyFieldError = false;
+        }
+        return usersEdit.emptyFieldError;
+    };
+
+    usersEdit.resetChallengeQuestion = function() {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(res) {
+        if (!res.addresses) {
+            // If the person has no addresses set we need to initialize it as an array
+            // to follow the object structure
+            res.addresses = [{}];
+            res.addresses[0].streets = [[]];
+        }
+        usersEdit.user = angular.copy(res);
+        usersEdit.tempUser = angular.copy(res);
+        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
+    })
+    .then(function(res) {
+        usersEdit.userSecurityQuestions = res;
+        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res) {
+        usersEdit.allSecurityQuestions = res;
+        usersEdit.allSecurityQuestionsDup = angular.copy(res);
+        usersEdit.allSecurityQuestions.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = usersEdit.allSecurityQuestions.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
+        //Allocating options to three questions
+        usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        
+        selectTextsForQuestions();
+        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
+    })
+    .then(function(res) {
+        usersEdit.userPasswordAccount = res;
+        usersEdit.loading = false;
+        $scope.$digest();
+    })
+    .fail(function(err) {
+        console.log(err);
+        usersEdit.loading = false;
+        $scope.$digest();
+    });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
     usersEdit.updatePerson = function() {
-        // Updates user's Person object in IDM
         usersEdit.loading = true;
 
         if (!usersEdit.userCountry) {
@@ -29,24 +143,29 @@ function($scope,$timeout,API){
             $scope.$digest();
         })
         .fail(function(error) {
-            console.log(error);
             usersEdit.loading = false;
+            console.log(error);
+            $scope.$digest();
         });
     };
 
-    usersEdit.resetEdit = function(master, temp) {
-        // Reset temporary variable to the master variable
-        angular.copy(master, temp);
-    };
+    usersEdit.updatePassword = function() {
+        usersEdit.loading = true;
 
-    usersEdit.checkIfFieldsAreEmpty = function(field) {
-        if (field === '') {
-            usersEdit.emptyFieldError = true;
-        }
-        else {
-            usersEdit.emptyFieldError = false;
-        }
-        return usersEdit.emptyFieldError;
+        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        .then(function(res) {
+            usersEdit.checkPasswordErrorFlag = 'Password Updated Successfully';
+            usersEdit.loading = false;
+            usersEdit.resetPasswordFields();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            usersEdit.checkPasswordErrorFlag = err.responseJSON.apiStatusCode;
+            usersEdit.resetPasswordFields();
+            usersEdit.loading = false;
+            $scope.$digest();
+        });
     };
 
     usersEdit.updatePersonSecurityAccount = function() {
@@ -54,89 +173,20 @@ function($scope,$timeout,API){
         // Currently API has issue when updating
     };
 
-    var selectQuestionsForUser = function() {
-        usersEdit.challengeQuestion1={};
-        usersEdit.challengeQuestion1={}
-        var questions = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
-            var question = _.find(usersEdit.allSecurityQuestions, function(question){return question.id === userQuestion.question.id});
-            this.push(question);
-        }, questions);
-
-        console.log('questions',questions);
-        usersEdit.challengeQuestion1 = questions[0];
-        usersEdit.challengeQuestion1.answer = '';
-        usersEdit.challengeQuestion2 = questions[1];
-        usersEdit.challengeQuestion2.answer = '';
-        $scope.$digest();
-    };
-
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        // If the person has no addresses set we need to initialize it as an array
-        // to follow the data structure
-        if (!res.addresses) {
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        usersEdit.user = angular.copy(res);
-        usersEdit.tempUser = angular.copy(res);
-        currentCountry = res.addresses[0].country;
-        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = res;
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        usersEdit.allSecurityQuestions = res;
-        selectQuestionsForUser();
-        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        usersEdit.userPassword = res;
-        usersEdit.tempUserPasswordAccount = res;
-        usersEdit.loading = false;
-        $scope.$digest();
-    })
-    .fail(function(err) {
-        console.log(err);
-        usersEdit.loading = false;
-        $scope.$digest();
-    });
-
-    usersEdit.saveChallengeQuestions = function() {
-        var updatedChallengeQuestions = {};
-        updatedChallengeQuestions = [{
-            question: {
-                text: usersEdit.challengeQuestion1.question[0].text,
-                lang: usersEdit.challengeQuestion1.question[0].lang,
-                answer:   usersEdit.challengeAnswer1,
-                index: 1 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            },{
-            question: {
-                text: usersEdit.challengeQuestion2.question[0].text,
-                lang: usersEdit.challengeQuestion2.question[0].lang,
-                answer:   usersEdit.challengeAnswer2,
-                index: 2 },
-            owner: {
-                id: usersEdit.challengeQuestion1.owner.id }
-            }
-        ];
+   usersEdit.saveChallengeQuestions = function() {
+        usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
+        selectTextsForQuestions();
 
         usersEdit.saving = true;
         usersEdit.fail = false;
         usersEdit.success = false;
 
-        API.cui.updateSecurityQuestions({
+        API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),
           data: {
             version: '1',
             id: API.getUser(),
-            questions: updatedChallengeQuestions
+            questions: usersEdit.userSecurityQuestions.questions
             }
         })
         .then(function(res) {
@@ -152,10 +202,6 @@ function($scope,$timeout,API){
             }, 300);
         });
     };
-
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
+    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);

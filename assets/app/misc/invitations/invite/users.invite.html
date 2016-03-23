@@ -3,49 +3,44 @@
   <div class="cui-tile__title">Invite User</div>
     <div class="cui-tile__body">
       <cui-wizard class="cui-wizard" step="1" clickable-indicators minimum-padding="30">
-       <indicator-container class="indicator-container"></indicator-container>
+        <indicator-container class="indicator-container"></indicator-container>
         <step title="User details">
-        <form name="invite" novalidate>
-        </ng-include>
-
+          <form name="invite" novalidate>
 
             <!-- Email -->
             <label for="user-email">{{'cui-email' | translate}}</label>
             <div class="cui-error" ng-messages="invite.email.$error" ng-if="invite.email.$touched">
-              <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              <div ng-messages-include="assets/app/common-templates/messages.html"></div>
             </div>
-            <input type="text" name="email" class="cui-input" ng-required="true" ng-model="usersInvite.user.email" />
+            <input type="text" name="email" class="cui-input" ng-required="true" ng-model="usersInvite.userToInvite.email" />
 
-
-          <div class="cui-wizard__field-row">
-           <!-- First Name -->
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
-              <label for="user-name-given">{{'cui-first-name' | translate}}</label>
-              <!--    This adds error messages to the firstName input field. Notice the naming convention
-              ng-messages="<formName><inputName>.$error" -->
-              <div class="cui-error" ng-messages="invite.firstName.$error" ng-if="invite.firstName.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            <div class="cui-wizard__field-row">
+              <!-- First Name -->
+              <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                <label for="user-name-given">{{'cui-first-name' | translate}}</label>
+                <div class="cui-error" ng-messages="invite.firstName.$error" ng-if="invite.firstName.$touched">
+                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+                </div>
+                <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersInvite.userToInvite.name.given" />
               </div>
-              <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="usersInvite.user.name.given" />
-            </div>
 
-            <!-- Last Name -->
-            <div class="cui-wizard__field-container cui-wizard__field-container--half">
-              <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
-              <div class="cui-error" ng-messages="invite.lastName.$error" ng-if="invite.lastName.$touched">
-                <div ng-messages-include="assets/angular-templates/messages.html"></div>
+              <!-- Last Name -->
+              <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+                <div class="cui-error" ng-messages="invite.lastName.$error" ng-if="invite.lastName.$touched">
+                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+                </div>
+                <input type="text" ng-model="usersInvite.userToInvite.name.surname" name="lastName" class="cui-input" ng-required="true" />
               </div>
-              <input type="text" ng-model="usersInvite.user.name.surname" name="lastName" class="cui-input" ng-required="true" />
             </div>
-          </div>
 
-          <label for="custom-message">Custom message</label>
-          <textarea ng-model="usersInvite.message" class="cui-input" style="resize:vertical;height:100px" ></textarea>
+            <!-- Custom Message -->
+            <label for="custom-message">Custom message</label>
+            <textarea ng-model="usersInvite.message" class="cui-input" style="resize:vertical;height:100px" ></textarea>
 
         </form>
 
         <div class="cui-wizard__controls">
-          <!-- go to assets/js/app/app.profile.js to customize this function -->
           <button class="cui-wizard__next" ng-click="usersInvite.saveUser(invite)" ng-class="invite.$invalid? 'cui-wizard__next--error' : usersInvite.sent? 'success' : usersInvite.fail? 'fail' : ''" style="position:relative">
             <div class="cui-loading--medium-ctr" ng-if="usersInvite.sending && !usersInvite.sent"></div>
             <span ng-if="(!usersInvite.sending && !usersInvite.sent && !usersInvite.fail)">Send invite</span>

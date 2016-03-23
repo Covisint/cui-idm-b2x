@@ -1,15 +1,15 @@
 angular.module('app')
-.factory('User',['$rootScope',function($rootScope){
+.factory('User',['$rootScope',function($rootScope) {
 
-    var user={
-        entitlements:[]
+    var user = {
+        entitlements: []
     };
 
     return {
-        set : function(newUser){
-            user.cuid=newUser.cuid;
+        set : function(newUser) {
+            user.cuid = newUser.cuid;
         },
-        get : function(){
+        get : function() {
             return user.cuid || '[cuid]';
         },
         setEntitlements : function(newEntitlements){

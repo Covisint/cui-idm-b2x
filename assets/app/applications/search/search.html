@@ -62,7 +62,7 @@
                         <div class="cui-loading--center"><div class="cui-loading"></div></div>
                     </div>
                     <div class="cui-expandable__pane-col" ng-if="application.details.bundled.length!==0">
-                        <h4 class="cui-expandable__pane-title"><{{'bundled-applications' | translate}}</h4>
+                        <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
                         <div class="cui-expandable__pane-content">
                             <span ng-repeat="bundledApp in application.details.bundled" ng-if="application.details.bundled.length!==0">
                                 {{bundledApp.name | cuiI18n}}
