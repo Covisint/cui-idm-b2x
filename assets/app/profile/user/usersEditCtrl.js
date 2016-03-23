@@ -29,11 +29,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
         if(!angular.equals(master,temp)) angular.copy(master, temp);
     };
 
-    usersEdit.resetChallengeQuestion = function(question) {
-        usersEdit['challengeAnswer' + question] = '';
-        selectQuestionsForUser();
-    };
-
     usersEdit.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
         usersEdit.userPasswordAccount.currentPassword = '';
@@ -56,8 +51,8 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
         });
     };
 
-    usersEdit.resetChallengeQuestion = function() {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions, usersEdit.tempUserSecurityQuestions);
+    usersEdit.resetChallengeQuestion = function(index) {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
     };
 
     usersEdit.timezoneById=Timezones.timezoneById;

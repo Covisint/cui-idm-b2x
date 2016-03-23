@@ -87,10 +87,6 @@ module.exports = function(grunt) {
         src: 'index.html',
         dest: 'build/index.html'
       },
-      appTemplates: {
-        src: 'assets/app/**/*.html',
-        dest: 'build/'
-      },
       languageFiles: {
         src: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
         dest: 'build/'
@@ -143,9 +139,25 @@ module.exports = function(grunt) {
     },
     jshint: {
       app: ['assets/**/*.js']
+    },
+    ngtemplates: {
+      app: {
+        src: 'assets/app/**/*.html',
+        dest: 'assets/app/template-cache/template.js',
+        options: {
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhiteSpace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeReduntantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkAttributes: true,
+          }
+        }
+      }
     }
-
-
   });
 
 
@@ -153,9 +165,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-angular-templates');
 
-  grunt.registerTask('default', ['concat','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('default', ['ngtemplates','concat','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
-}
+};

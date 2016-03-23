@@ -8,30 +8,28 @@
             </svg>
         </div>
     </div>
+    <div class="cui-action cui-action--alt">
+        <h3 class="cui-action__title">{{'select-applications' | translate}}</h3>
+        <div class="cui-action__actions">
+            <svg ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
+            </svg>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
+            <!-- popover -->
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-class="{'hide--opacity': !newAppRequest.requestPopover}">
+              <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+              <div class="cui-action__popover-section">
+                <span ng-if="newAppRequest.appsBeingRequested.length===0">{{'no-selected-apps' | translate}}<br/></span>
+                <ul ng-if="newAppRequest.appsBeingRequested.length > 0">
+                    <li ng-repeat="application in newAppRequest.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                </ul>
+              </div>
+              <span ng-if="newAppRequest.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+            </div>
+        </div>
+    </div>
     <div class="cui-applications__main-container">
         <div>
-            <div class="cui-applications__row">
-                <h3 class="h6">{{'select-applications' | translate}}</h3>
-
-
-                <!-- @Shane this icon should be on the far right -->
-                <div class="cui-action__actions">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--folder" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33" id="folder-icon"
-                      ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false">
-                        <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
-                    </svg>
-                    <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
-                    <!-- @Shane this needs to be styled -->
-                    <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#folder-icon" attachment="top middle"
-                       target-attachment="bottom middle" offset="-15px 100" ng-if="newAppRequest.requestPopover">
-                        {{'collected-items-for-request' | translate}}<br/>
-                        <span ng-if="newAppRequest.appsBeingRequested.length===0">{{'no-selected-apps' | translate}}<br/></span>
-                        <span ng-if="newAppRequest.appsBeingRequested.length > 0" ng-repeat="application in newAppRequest.appsBeingRequested">{{application.name | cuiI18n}}<br/></span>
-                        <span ng-if="newAppRequest.appsBeingRequested.length > 0" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
-                    </div>
-                </div>
-
-            </div>
             <div class="cui-applications__search-options">
                 <div class="cui-input-button">
                     <input type="text" class="cui-input-button__input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/>
