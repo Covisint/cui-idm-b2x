@@ -4,17 +4,16 @@
   <span class="cui-action__title" ui-sref="applications.myApplications">{{'my-applications' | translate}}</span>
   <div class="cui-action__actions">
     <!-- Sort -->
-    <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked">
+    <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
       </svg>
       <span class="cui-action__action-label">Sort</span>
       <!-- Sort Popover -->
-      <div class="cui-styleguide__popover-container" ng-if="myApplications.sortClicked">
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover">
-          <p ng-click="myApplications.sort('alphabetically')">Alphabetically</p>
-          <p ng-click="myApplications.sort('date'); ">By Date Added</p>
-        </div>
+      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.sortClicked">
+        <p ng-click="myApplications.sort('alphabetically')">Alphabetically</p>
+        <p ng-click="myApplications.sort('date'); ">By Date Added</p>
       </div>
     </div>
     <!-- Refine -->
@@ -25,17 +24,17 @@
       <span class="cui-action__action-label">Refine</span>
     </div>
     <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked">
+    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button" off-click="myApplications.categoriesClicked=false">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
         <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#categories"></use>
       </svg>
       <span class="cui-action__action-label">Categories</span>
       <!-- Categories Popover -->
-      <div class="cui-styleguide__popover-container" ng-if="myApplications.categoriesClicked">
-        <div class="cui-popover cui-popover--top cui-popover__categories-popover">
-          <div ng-repeat="category in myApplications.categoryList">
-            <p ng-click="myApplications.parseAppsByCategory(category[0].text)">{{category| cuiI18n}} {{myApplications.categoryCount[$index+1]}}</p>
-          </div>
+      <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked">
+        <p ng-click="myApplications.parseAppsByCategory('all')">{{'all' | translate}} ({{myApplications.categoryCount[0]}})</p>
+        <div ng-repeat="category in myApplications.categoryList">
+          <p ng-click="myApplications.parseAppsByCategory(category)">{{category| cuiI18n}} ({{myApplications.categoryCount[$index+1]}})</p>
         </div>
       </div>
     </div>

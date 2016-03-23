@@ -5,8 +5,8 @@
     .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
+function(API,$scope,$stateParams,$state,Helper) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -18,12 +18,6 @@ function(API,$scope,$stateParams,$state) {
     var handleError = function(err) {
         console.log('Error \n', err);
         $scope.$digest();
-    };
-
-    var getDateGranted = function(creationUnixStamp) {
-        var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
     };
 
     var getBundledApps = function(service) { // WORKAROUND CASE # 1
@@ -63,7 +57,7 @@ function(API,$scope,$stateParams,$state) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = getDateGranted(pkgGrantThatMatches.creation);
+            childService.grantedDate = Helper.getDateFromUnixStamp(pkgGrantThatMatches.creation);
         }
 
         childService.packageId = childPackage.id;
@@ -129,7 +123,7 @@ function(API,$scope,$stateParams,$state) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = getDateGranted(res.creation);
+            app.grantedDate = Helper.getDateFromUnixStamp(res.creation);
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);
@@ -169,8 +163,8 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
-function(localStorageService,$scope,$stateParams,API,$state,$filter) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','Helper',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
     'use strict';
 
     var myApplications = this;
@@ -188,23 +182,15 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
-    var getDateGranted = function(creationUnixStamp) {
-        var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
-    };
-
     var getListOfCategories = function(services) {
         // WORKAROUND CASE # 7
-        var categoryList = [[{lang:'en', text:'All'}]];
-        var categoryCount = [];
+        var categoryList = [];
+        var categoryCount = [myApplications.unparsedListOfAvailabeApps.length];
 
         services.forEach(function(service) {
             if (service.category) {
-
                 var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
                     if (angular.equals(category, service.category)) {
-                        categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
                         categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
                         return true;
                     }
@@ -213,7 +199,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
 
                 if (!serviceCategoryInCategoryList) {
                     categoryList.push(service.category);
-                    categoryCount[1] ? categoryCount[1]++ : categoryCount[1] = 1;
                     categoryCount[categoryList.length] = 1;
                 }
             }
@@ -222,24 +207,19 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         return categoryList;
     };
 
-    var listSort = function(listToSort, sortType) {
+    var listSort = function(listToSort, sortType, order) { // order is a boolean
         listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
+            if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
             else { a = a.dateCreated, b = b.dateCreated; }
 
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            else return 0;
-        });
-    };
-
-    var listSortReverse = function(listToSort, sortType) {
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = a.name[0].text.toUpperCase(), b = b.name[0].text.toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
-
-            if (a > b) return -1;
-            else if (a < b) return 1;
+            if ( a < b ) {
+                if (order) return 1;
+                else return -1
+            }
+            else if( a > b ) {
+                if (order) return -1;
+                else return 1;
+            }
             else return 0;
         });
     };
@@ -247,7 +227,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     var categoryFilter = function (app, category) {
         if (!app.category && category) return false;
         if (!category) return true;
-        return $filter('cuiI18n')(app.category).indexOf(category) > -1;
+        return $filter('cuiI18n')(app.category)===$filter('cuiI18n')(category);
     };
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
@@ -264,13 +244,13 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = getDateGranted(grant.creation);
+                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
                 if (i === grants.length) { // if this is the last grant
-                    myApplications.categoryList = getListOfCategories(myApplications.list);
                     angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+                    myApplications.categoryList = getListOfCategories(myApplications.list);
                     myApplications.doneLoading = true;
                     $scope.$digest();
                 }
@@ -294,18 +274,12 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     };
 
     myApplications.sort = function(sortType) {
-        if (myApplications.sortFlag) {
-            listSortReverse(myApplications.list, sortType);
-            myApplications.sortFlag = false;
-        }
-        else {
-            listSort(myApplications.list, sortType);
-            myApplications.sortFlag = true;
-        }
+        listSort(myApplications.list, sortType, myApplications.sortFlag);
+        myApplications.sortFlag=!myApplications.sortFlag;
     };
 
     myApplications.parseAppsByCategory = function(category) {
-        if (category === 'All') {
+        if (category === 'all') {
             myApplications.list = myApplications.unparsedListOfAvailabeApps;
         }
         else {
@@ -1103,7 +1077,7 @@ angular.module('app')
             appRedirect: $location.path()
         });
     };
-    
+
     myCUI.setAuthHandler(jwtAuthHandler);
 
     return {
@@ -1181,6 +1155,20 @@ angular.module('app')
     setCountries($translate.proposedLanguage());
 
     return countries;
+}]);
+
+angular.module('app')
+.factory('Helper',[function(){
+
+    return {
+        getDateFromUnixStamp:function(unixTimeStamp){
+            var dateGranted = new Date(unixTimeStamp);
+            var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
+            return dateGrantedFormatted;
+        }
+
+    };
+
 }]);
 
 angular.module('app')

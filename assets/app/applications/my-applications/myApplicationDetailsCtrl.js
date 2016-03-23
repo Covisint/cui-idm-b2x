@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
+function(API,$scope,$stateParams,$state,Helper) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -12,12 +12,6 @@ function(API,$scope,$stateParams,$state) {
     var handleError = function(err) {
         console.log('Error \n', err);
         $scope.$digest();
-    };
-
-    var getDateGranted = function(creationUnixStamp) {
-        var dateGranted = new Date(creationUnixStamp);
-        var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
     };
 
     var getBundledApps = function(service) { // WORKAROUND CASE # 1
@@ -57,7 +51,7 @@ function(API,$scope,$stateParams,$state) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = getDateGranted(pkgGrantThatMatches.creation);
+            childService.grantedDate = Helper.getDateFromUnixStamp(pkgGrantThatMatches.creation);
         }
 
         childService.packageId = childPackage.id;
@@ -123,7 +117,7 @@ function(API,$scope,$stateParams,$state) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = getDateGranted(res.creation);
+            app.grantedDate = Helper.getDateFromUnixStamp(res.creation);
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);

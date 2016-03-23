@@ -19,7 +19,7 @@ angular.module('app')
             appRedirect: $location.path()
         });
     };
-    
+
     myCUI.setAuthHandler(jwtAuthHandler);
 
     return {
