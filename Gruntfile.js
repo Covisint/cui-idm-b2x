@@ -87,10 +87,6 @@ module.exports = function(grunt) {
         src: 'index.html',
         dest: 'build/index.html'
       },
-      appTemplates: {
-        src: 'assets/app/**/*.html',
-        dest: 'build/'
-      },
       languageFiles: {
         src: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
         dest: 'build/'
