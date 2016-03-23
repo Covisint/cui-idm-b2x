@@ -830,10 +830,13 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
 
     base.countries=Countries;
     base.timezones=Timezones;
-    base.Languages=Languages.all;
+    base.languages=Languages.all;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
+
+    base.logout=API.cui.covLogout;
+
 
 }]);
 
@@ -896,9 +899,9 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
             controller: returnCtrlAs('usersWalkup'),
-            menu:{
-                desktop:false
-            }
+            // menu:{
+            //     desktop:false
+            // }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -993,7 +996,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
-      $state.go('base');
+      $state.go('welcome.screen');
     });
 
     $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
@@ -1312,24 +1315,24 @@ angular.module('app')
 angular.module('app')
 .controller('usersInviteCtrl',['localStorageService','$scope','$stateParams','API',
 function(localStorageService,$scope,$stateParams,API){
-    var usersInvite=this;
-    usersInvite.user={};
-    usersInvite.user.organization={ // organization is hardcoded
-                                    // will be replaced once auth is in place
-        "id": "OCOVSMKT-CVDEV204002",
-        "type": "organization",
-        "realm": "APPCLOUD"
-    };
+    'use strict';
 
-    var sendInvitationEmail=function(invitation){
-        var message="You've received an invitation to join our organization.<p>" +
+    var usersInvite = this;
+    usersInvite.userToInvite = {};
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var sendInvitationEmail = function(invitation) {
+        var message = "You've received an invitation to join our organization.<p>" +
             "<a href='localhost:9001/#/users/register?id=" + invitation.id + "&code=" + invitation.invitationCode + "'>Click here" +
-            " to register</a>.",
-            text;
+            " to register</a>.", text;
+
         console.log(message);
-        usersInvite.sending=false;
-        usersInvite.sent=true;
+
+        usersInvite.sending = false;
+        usersInvite.sent = true;
         $scope.$digest();
+
         // if(usersInvite.message && usersInvite.message!==''){
         //     text=usersInvite.message + '<br/><br/>' + message;
         // }
@@ -1352,59 +1355,79 @@ function(localStorageService,$scope,$stateParams,API){
         // });
     };
 
-    usersInvite.saveUser=function(form){
-        // Sets every field to $touched, so that when the user
-        // clicks on 'sent invitation' he gets the warnings
-        // for each field that has an error.
-        angular.forEach(form.$error, function (field) {
-            angular.forEach(field, function(errorField){
-                errorField.$setTouched();
-            });
-        });
-        if(form.$valid){
-            usersInvite.sending=true;
-            usersInvite.sent=false;
-            usersInvite.fail=false;
-            usersInvite.user.timezone="EST5EDT";
-            usersInvite.user.language=$scope.$parent.base.getLanguageCode();
-            API.cui.createPerson({data:usersInvite.user})
-            .then(function(res){
-                return API.cui.createPersonInvitation({data:build.personInvitation(res)});
-            })
-            .then(function(res){
-                sendInvitationEmail(res);
-            })
-            .fail(function(err){
-                usersInvite.sending=false;
-                usersInvite.fail=true;
-                $scope.$digest();
-            });
-        }
-    };
-
-    var build={
-        personInvitation:function(invitee){
+    var build = {
+        personInvitation:function(user, invitee) {
             return {
-                email:invitee.email,
-                invitor:{
-                    id:'RN3BJI54',
-                    type:'person'
+                email: invitee.email,
+                invitor: {
+                    id: user.id,
+                    type: 'person'
                 },
-                invitee:{
-                    id:invitee.id,
-                    type:'person'
+                invitee: {
+                    id: invitee.id,
+                    type: 'person'
                 },
-                targetOrganization:{
-                    "id":"OCOVSMKT-CVDEV204002",
-                    "type":"organization"
+                targetOrganization: {
+                    'id': user.organization.id,
+                    'type': 'organization'
                 }
             };
         }
     };
 
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(res) {
+        usersInvite.user = res;
+        usersInvite.userToInvite.organization = res.organization;
+    })
+    .fail(function(error) {
+        console.log(error);
+    });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    usersInvite.saveUser = function(form) {
+        // Sets every field to $touched, so that when the user
+        // clicks on 'sent invitation' he gets the warnings
+        // for each field that has an error.
+        angular.forEach(form.$error, function (field) {
+            angular.forEach(field, function(errorField) {
+                errorField.$setTouched();
+            });
+        });
+
+        if (form.$valid) {
+            usersInvite.sending = true;
+            usersInvite.sent = false;
+            usersInvite.fail = false;
+
+            usersInvite.userToInvite.timezone = 'EST5EDT';
+            usersInvite.userToInvite.language = $scope.$parent.base.getLanguageCode();
+            API.cui.createPerson({data:usersInvite.userToInvite})
+            .then(function(res){
+                return API.cui.createPersonInvitation({data:build.personInvitation(usersInvite.user, res)});
+            })
+            .then(function(res){
+                sendInvitationEmail(res);
+            })
+            .fail(function(err) {
+                usersInvite.sending = false;
+                usersInvite.fail = true;
+                $scope.$digest();
+            });
+        }
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
+
 
 angular.module('app')
 .controller('usersInvitationsCtrl',['localStorageService','$scope','$stateParams','API','$timeout',
@@ -1894,8 +1917,7 @@ function($scope,$timeout,API,$cuiI18n){
     usersEdit.fail = false;
     usersEdit.success = false;
 
-    usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
+
     usersEdit.passwordPolicies = [
         {
             'allowUpperChars':true,
@@ -1990,7 +2012,7 @@ function($scope,$timeout,API,$cuiI18n){
         usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        
+
         selectTextsForQuestions();
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })
@@ -2216,330 +2238,327 @@ angular.module('app')
 
 angular.module('app')
 .controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state',
-    function(localStorageService,$scope,Person,$stateParams,API,$state){
-        var usersRegister=this;
+function(localStorageService,$scope,Person,$stateParams,API,$state){
+    'use strict';
 
-        usersRegister.loading = true;
-        usersRegister.userLogin = {};
-        usersRegister.registrationError = false;
-        usersRegister.applications = {};
-        usersRegister.applications.numberOfSelected = 0;
-        usersRegister.showCovisintInfo = false;
-        usersRegister.submitting = false;
-        usersRegister.targetOrganization = {};
+    var usersRegister=this;
 
-        // Pre polulates the form with info the admin inserted when he first created the invitation
-        var getUser = function(id) {
-            return API.cui.getPerson({personId:id});
-        };
+    usersRegister.loading = true;
+    usersRegister.registrationError = false;
+    usersRegister.showCovisintInfo = false;
+    usersRegister.submitting = false;
 
-        var getOrganization = function(id) {
-            return API.cui.getOrganization({organizationId: id});
-        };
+    usersRegister.userLogin = {};        
+    usersRegister.applications = {};
+    usersRegister.targetOrganization = {};
 
-        usersRegister.passwordPolicies=[
-            {
-                'allowUpperChars':true,
-                'allowLowerChars':true,
-                'allowNumChars':true,
-                'allowSpecialChars':true,
-                'requiredNumberOfCharClasses':3
-            },
-            {
-                'disallowedChars':'^&*)(#$'
-            },
-            {
-                'min':8,
-                'max':18
-            },
-            {
-                'disallowedWords':['password','admin']
-            }
-        ];
+    usersRegister.applications.numberOfSelected = 0;
 
-
-
-        if(!$stateParams.id || !$stateParams.code) {
-            console.log('Invited user reg requires 2 url params: id (invitationId) and code (invitatioCode)');
-            // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE URL
+    usersRegister.passwordPolicies = [
+        {
+            'allowUpperChars': true,
+            'allowLowerChars': true,
+            'allowNumChars': true,
+            'allowSpecialChars': true,
+            'requiredNumberOfCharClasses': 3
+        },
+        {
+            'disallowedChars':'^&*)(#$'
+        },
+        {
+            'min': 8,
+            'max': 18
+        },
+        {
+            'disallowedWords':['password','admin']
         }
-        else {
-            API.cui.getPersonInvitation({invitationId: $stateParams.id})
-            .then(function(res){
-                if (res.invitationCode !== $stateParams.code) {
-                    // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE
-                    console.log('Wrong invitation code.');
-                    return;
-                }
-                return getUser(res.invitee.id);
-            })
-            .then(function(res){
-                usersRegister.invitedUser = res;
-                usersRegister.user = res;
-                usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
-                usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
-                usersRegister.user.phones = [];
-                return getOrganization(res.organization.id);
-            })
-            .then(function(res){
-                usersRegister.targetOrganization = res;
-                return API.cui.getSecurityQuestions();   // Load security questions for login form
-            })
-            .then(function(res) {
-                // Removes first question as it is blank
-                res.splice(0,1);
+    ];
+            
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-                // Splits questions to use between both dropdowns
-                var numberOfQuestions = res.length,
-                numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-                usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-                usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+    var getUser = function(id) {
+        return API.cui.getPerson({personId:id});
+    };
 
-                // Preload question into input
-                usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
-                usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
-            })
-            // Populate Applications List
-            .then(function() {
-                return API.cui.getOrganizationPackages({'organizationId':usersRegister.targetOrganization.id});
-            })
-            .then(function(res) {
-                var listOfApps=[];
-                res.forEach(function(packageGrant){
-                    var i=0;
-                    API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
-                    .then(function(res){
-                        i++;
-                        res.forEach(function(service){
-                            service.packageId=packageGrant.servicePackage.id;
-                            listOfApps.push(service);
-                        });
-                        if(i===res.length){
-                            usersRegister.applications.list = listOfApps;
-                            $scope.$digest();
-                        }
-                    });
-                });
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
-        }
+    var getOrganization = function(id) {
+        return API.cui.getOrganization({organizationId: id});
+    };
 
-        // Update the number of selected apps everytime on of the boxes is checked/unchecked
-        usersRegister.applications.updateNumberOfSelected=function(a){
-            if(a!==null) { usersRegister.applications.numberOfSelected++; }
-            else { usersRegister.applications.numberOfSelected--; }
-        };
-
-        // Process the selected apps when you click next after selecting the apps you need
-        usersRegister.applications.process=function(){
-            if(usersRegister.applications.processedSelected) var oldSelected=usersRegister.applications.processedSelected;
-            usersRegister.applications.processedSelected=[];
-            angular.forEach(usersRegister.applications.selected,function(app,i){
-               if(app!==null) {
-                   usersRegister.applications.processedSelected.push({
-                       packageId:app.split(',')[0],
-                       name:app.split(',')[1],
-                       acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
-                   });
-               }
-           });
-            return usersRegister.applications.processedSelected.length;
-        };
-
-        // Search apps by name
-        usersRegister.applications.searchApplications = function() {
-            API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
-            .then(function(res){
-                usersRegister.applications.list = res;
-                $scope.$digest();
-            })
-            .fail(function(err){
-                console.log(err);
-            });
-        };
-
-        usersRegister.applications.toggleCovisintInfo=function(){
-            usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
-        };
-
-        usersRegister.submit = function() {
-            usersRegister.submitting = true;
-            var user;
-
-            API.cui.updatePerson({personId: usersRegister.invitedUser.id, data: build.user()})
-            .then(function(res) {
-                user = res;
-                return API.cui.createPersonPassword(build.personPassword(user, usersRegister.targetOrganization));
-            })
-            // Create Security Account
-            .then(function() {
-                return API.cui.createSecurityQuestionAccount(build.userSecurityQuestionAccount(user));
-            })
-            // Activate Person
-            .then(function() {
-                return API.cui.activatePerson({qs: [['personId', user.id]] });
-            })
-            // Get Selected Packages
-            .then(function() {
-                return build.packagesSelected();
-            })
-            // Create Package Requests
-            .then(function(res) {
-                if (res.length === 0) {
-                    // No Packages Selected
-                    return;
-                }
-                angular.forEach(res, function(servicePackage) {
-                    var i=0;
-                    API.cui.createPackageRequest(build.packageRequest(servicePackage))
-                    .then(function(res){
-                        i++;
-                        if(i===res.length) {
-                            usersRegister.submitting = false;
-                            usersRegister.success = true;
-                            console.log('User Created');
-                            $state.go('misc.success');
-                        }
-                    })
-                    .fail(function(err) {
-                        console.log(err);
-                    });
-                });
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
-        };
-
+    var build = {
         // Collection of helper functions to build necessaru calls on this controller
-        var build = {
-            user: function() {
-                usersRegister.user.addresses[0].country = usersRegister.userCountry.title;
-                usersRegister.user.organization = { id: usersRegister.targetOrganization.id,
-                                                    realm: usersRegister.targetOrganization.realm,
-                                                    type: 'organization' };
-                usersRegister.user.timezone = 'EST5EDT';
-                if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; };
-                // Get the current selected language
-                usersRegister.user.language = $scope.$parent.base.getLanguageCode();
-                return usersRegister.user;
-            },
-            personPassword: function(user, org) {
-                return {
-                    personId: user.id,
-                    data: {
-                        id: user.id,
-                        version: '1',
-                        username: usersRegister.userLogin.username,
-                        password: usersRegister.userLogin.password,
-                        passwordPolicy: org.passwordPolicy,
-                        authenticationPolicy: org.authenticationPolicy
-                    }
-                };
-            },
-            userSecurityQuestions: function(user) {
-                return [
-                    {
-                        question: {
-                            id: usersRegister.userLogin.question1.id,
-                            type: 'question',
-                            realm: user.realm
-                        },
-                        answer: usersRegister.userLogin.challengeAnswer1,
-                        index: 1
+        user: function() {
+            usersRegister.user.addresses[0].country = usersRegister.userCountry.title;
+            usersRegister.user.organization = { id: usersRegister.targetOrganization.id,
+                                                realm: usersRegister.targetOrganization.realm,
+                                                type: 'organization' };
+            usersRegister.user.timezone = 'EST5EDT';
+            if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; };
+            // Get the current selected language
+            usersRegister.user.language = $scope.$parent.base.getLanguageCode();
+            return usersRegister.user;
+        },
+        personPassword: function(user, org) {
+            return {
+                personId: user.id,
+                data: {
+                    id: user.id,
+                    version: '1',
+                    username: usersRegister.userLogin.username,
+                    password: usersRegister.userLogin.password,
+                    passwordPolicy: org.passwordPolicy,
+                    authenticationPolicy: org.authenticationPolicy
+                }
+            };
+        },
+        userSecurityQuestions: function(user) {
+            return [
+                {
+                    question: {
+                        id: usersRegister.userLogin.question1.id,
+                        type: 'question',
+                        realm: user.realm
                     },
-                    {
-                        question: {
-                            id: usersRegister.userLogin.question2.id,
-                            type: 'question',
-                            realm: user.realm
-                        },
-                        answer: usersRegister.userLogin.challengeAnswer2,
-                        index: 2
-                    }
-                ];
-            },
-            userSecurityQuestionAccount: function(user) {
-                return {
-                    personId: user.id,
-                    data: {
-                        version: '1',
-                        id: user.id,
-                        questions: this.userSecurityQuestions(user)
-                    }
-                };
-            },
-            packagesSelected: function() {
-                var packages=[];
-                angular.forEach(usersRegister.applications.selected,function(servicePackage){
-                    packages.push({packageId:servicePackage.split(',')[0]});
-                });
-                return packages;
-            },
-            packageRequest: function(packageId) {
-                return {
-                    data: {
-                        requestor: {
-                            id: usersRegister.user.id,
-                            type: 'person'
-                        },
-                        servicePackage: {
-                            id: packageId.packageId,
-                            type: 'servicePackage'
-                        },
-                        reason: 'Invited User Registration'
-                    }
-                };
+                    answer: usersRegister.userLogin.challengeAnswer1,
+                    index: 1
+                },
+                {
+                    question: {
+                        id: usersRegister.userLogin.question2.id,
+                        type: 'question',
+                        realm: user.realm
+                    },
+                    answer: usersRegister.userLogin.challengeAnswer2,
+                    index: 2
+                }
+            ];
+        },
+        userSecurityQuestionAccount: function(user) {
+            return {
+                personId: user.id,
+                data: {
+                    version: '1',
+                    id: user.id,
+                    questions: this.userSecurityQuestions(user)
+                }
+            };
+        },
+        packagesSelected: function() {
+            var packages = [];
+            angular.forEach(usersRegister.applications.selected,function(servicePackage){
+                packages.push({packageId:servicePackage.split(',')[0]});
+            });
+            return packages;
+        },
+        packageRequest: function(packageId) {
+            return {
+                data: {
+                    requestor: {
+                        id: usersRegister.user.id,
+                        type: 'person'
+                    },
+                    servicePackage: {
+                        id: packageId.packageId,
+                        type: 'servicePackage'
+                    },
+                    reason: 'Invited User Registration'
+                }
+            };
+        }
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    if(!$stateParams.id || !$stateParams.code) {
+        console.log('Invited user reg requires 2 url params: id (invitationId) and code (invitatioCode)');
+            // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE URL
+    }
+    else {
+        API.cui.getPersonInvitation({invitationId: $stateParams.id})
+        .then(function(res){
+            if (res.invitationCode !== $stateParams.code) {
+                // TODO : ADD MESSAGE IF USER HAS TAMPERED WITH THE
+                console.log('Wrong invitation code.');
+                return;
             }
-        };
+            return getUser(res.invitee.id);
+        })
+        .then(function(res){
+            usersRegister.invitedUser = res;
+            usersRegister.user = res;
+            usersRegister.user.addresses = []; // We need to initialize these arrays so ng-model treats them as arrays
+            usersRegister.user.addresses[0] = { streets:[] }; // rather than objects
+            usersRegister.user.phones = [];
+            return getOrganization(res.organization.id);
+        })
+        .then(function(res){
+            usersRegister.targetOrganization = res;
+            return API.cui.getSecurityQuestions(); // Load security questions for login form
+        })
+        .then(function(res) {
+            res.splice(0,1); // Removes first question as it is blank
+
+            // Splits questions to use between both dropdowns
+            var numberOfQuestions = res.length,
+            numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+            usersRegister.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
+            usersRegister.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+            // Preload question into input
+            usersRegister.userLogin.question1 = usersRegister.userLogin.challengeQuestions1[0];
+            usersRegister.userLogin.question2 = usersRegister.userLogin.challengeQuestions2[0];
+        })
+        .then(function() {
+            // Populate Applications List
+            return API.cui.getOrganizationPackages({'organizationId':usersRegister.targetOrganization.id});
+        })
+        .then(function(res) {
+            var listOfApps = [];
+
+            res.forEach(function(packageGrant) {
+                var i = 0;
+                API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
+                .then(function(res){
+                    i++;
+
+                    res.forEach(function(service) {
+                        service.packageId=packageGrant.servicePackage.id;
+                        listOfApps.push(service);
+                    });
+
+                    if(i === res.length) {
+                        usersRegister.applications.list = listOfApps;
+                        $scope.$digest();
+                    }
+                });
+            });
+        })
+        .fail(function(err) {
+            console.log(err);
+        });
+    }
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    usersRegister.applications.updateNumberOfSelected = function(a) {
+        // Update the number of selected apps everytime on of the boxes is checked/unchecked
+        if (a !== null) { usersRegister.applications.numberOfSelected++; }
+        else { usersRegister.applications.numberOfSelected--; }
+    };
+
+    usersRegister.applications.process = function() {
+        // Process the selected apps when you click next after selecting the apps you need
+        if (usersRegister.applications.processedSelected) {
+            var oldSelected = usersRegister.applications.processedSelected;
+        }
+        usersRegister.applications.processedSelected = [];
+
+        angular.forEach(usersRegister.applications.selected,function(app, i) {
+            if (app !== null) {
+                usersRegister.applications.processedSelected.push({
+                    packageId:app.split(',')[0],
+                    name:app.split(',')[1],
+                    acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                });
+            }
+        });
+        return usersRegister.applications.processedSelected.length;
+    };
+
+    usersRegister.applications.searchApplications = function() {
+        // Search apps by name
+        API.cui.getPackages({'qs': [['name', usersRegister.applications.search]]})
+        .then(function(res){
+            usersRegister.applications.list = res;
+            $scope.$digest();
+        })
+        .fail(function(err){
+            console.log(err);
+        });
+    };
+
+    usersRegister.applications.toggleCovisintInfo = function() {
+        usersRegister.showCovisintInfo = !usersRegister.showCovisintInfo;
+    };
+
+    usersRegister.submit = function() {
+        usersRegister.submitting = true;
+        var user;
+
+        API.cui.updatePerson({personId: usersRegister.invitedUser.id, data: build.user()})
+        .then(function(res) {
+            user = res;
+            return API.cui.createPersonPassword(build.personPassword(user, usersRegister.targetOrganization));
+        })
+        .then(function() {
+            // Create Security Account
+            return API.cui.createSecurityQuestionAccount(build.userSecurityQuestionAccount(user));
+        })
+        .then(function() {
+            // Activate Person
+            return API.cui.activatePerson({qs: [['personId', user.id]] });
+        })
+        .then(function() {
+            // Get Selected Packages
+            return build.packagesSelected();
+        })
+        .then(function(res) {
+            // Create Package Requests
+            if (res.length === 0) {
+                // No Packages Selected
+                return;
+            }
+            angular.forEach(res, function(servicePackage) {
+                var i = 0;
+                API.cui.createPackageRequest(build.packageRequest(servicePackage))
+                .then(function(res) {
+                    i++;
+                    if (i === res.length) {
+                        usersRegister.submitting = false;
+                        usersRegister.success = true;
+                        console.log('User Created');
+                        $state.go('misc.success');
+                    }
+                })
+                .fail(function(err) {
+                    console.log(err);
+                });
+            });
+        })
+        .fail(function(err) {
+            console.log(err);
+        });
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
+
 }]);
 
 
 angular.module('app')
 .controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state){
-    var usersWalkup=this;
+function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state) {
+    'use strict';
 
-    usersWalkup.userLogin={};
-    usersWalkup.applications={};
-    usersWalkup.registering=false;
-    usersWalkup.registrationError=false;
-    usersWalkup.applications.numberOfSelected=0;
-    if(!localStorageService.get('usersWalkup.user')){ // if it's not in the localstorage already
-        usersWalkup.user={ addresses:[] }; // We need to initialize these arrays so ng-model treats them as arrays
-        usersWalkup.user.addresses[0]={ streets:[] }; // rather than objects
-        usersWalkup.user.phones=[];
-    }
-    else usersWalkup.user=localStorageService.get('usersWalkup.user');
+    var usersWalkup = this;
 
-    $scope.$watch('usersWalkup.user',function(a){
-        if(a && Object.keys(a).length!==0) localStorageService.set('usersWalkup.user',a);
-    },true);
+    usersWalkup.userLogin = {};
+    usersWalkup.applications = {};
 
-    function handleError(err){
+    usersWalkup.registering = false;
+    usersWalkup.registrationError = false;
+
+    usersWalkup.applications.numberOfSelected = 0;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    function handleError(err) {
         console.log('Error!\n');
         console.log(err);
-    };
-
-    API.cui.getSecurityQuestions()
-    .then(function(res){ // get all the security questions
-        res.splice(0,1);
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-        usersWalkup.userLogin.challengeQuestions1 = res.slice(0,numberOfQuestionsFloor);
-        usersWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
-        // Preload question into input
-        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
-        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
-        return API.cui.getOrganizations();
-    })
-    .then(function(res){
-        usersWalkup.organizationList=res; // populate organization list
-    })
-    .fail(handleError);
+    }
 
     var searchOrganizations = function(newOrgToSearch) {
         if (newOrgToSearch) {
@@ -2552,26 +2571,164 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         }
     };
 
+    // collection of helper functions to build necessary calls on this controller
+    var build = {
+        personRequest:function(user, org) {
+            return {
+                data: {
+                    id: user.id,
+                    registrant: {
+                        id: user.id,
+                        type: 'person',
+                        realm: org.realm
+                    },
+                    justification: 'User walkup registration',
+                    servicePackageRequest: this.packageRequests()
+                }
+            };
+        },
+        packageRequests:function() {
+            // var packages = [];
+            // angular.forEach(usersWalkup.applications.selected,function(servicePackage) {
+            //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
+            // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+            // WORKAROUND CASE #4
+            var packages = {
+                'packageId': usersWalkup.applications.selected[0].split(',')[0]
+            };
+            return packages;
+        },
+        personPassword:function(user, org) {
+            return {
+                personId: user.id,
+                data: {
+                    version: '1',
+                    username: usersWalkup.userLogin.username,
+                    password: usersWalkup.userLogin.password,
+                    passwordPolicy: org.passwordPolicy,
+                    authenticationPolicy: org.authenticationPolicy
+                }
+            };
+        },
+        userSecurityQuestionAccount:function(user) {
+            return {
+                personId: user.id,
+                data: {
+                    version: '1',
+                    id: user.id,
+                    questions: this.userSecurityQuestions(user)
+                }
+            };
+        },
+        user:function() {
+            // Get title of selected country object
+            usersWalkup.user.addresses[0].country = usersWalkup.userCountry.title;
+            usersWalkup.user.organization = {id: usersWalkup.organization.id};
+            usersWalkup.user.timezone = 'EST5EDT';
+            if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type = 'main';
+            // Get current used language
+            usersWalkup.user.language = $scope.$parent.base.getLanguageCode();
+            return usersWalkup.user;
+        },
+        userSecurityQuestions:function(user) {
+            return [
+                {
+                    question: {
+                        id: usersWalkup.userLogin.question1.id,
+                        type: 'question',
+                        realm: user.realm
+                    },
+                    answer: usersWalkup.userLogin.challengeAnswer1,
+                    index: 1
+                },
+                {
+                    question: {
+                        id: usersWalkup.userLogin.question2.id,
+                        type: 'question',
+                        realm: user.realm
+                    },
+                    answer: usersWalkup.userLogin.challengeAnswer2,
+                    index: 2
+                }
+            ];
+        }
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    if (!localStorageService.get('usersWalkup.user')) {
+        // If it's not in the localstorage already
+        // We need to initialize these arrays so ng-model treats them as arrays
+        // Rather than objects
+        usersWalkup.user = { addresses:[] };
+        usersWalkup.user.addresses[0] = { streets:[] };
+        usersWalkup.user.phones = [];
+    }
+    else usersWalkup.user = localStorageService.get('usersWalkup.user');
+
+    // Get all security questions
+    API.cui.getSecurityQuestions()
+    .then(function(res) { 
+        res.splice(0,1);
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = res.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
+        usersWalkup.userLogin.challengeQuestions1 = res.slice(0, numberOfQuestionsFloor);
+        usersWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
+
+        // Preload question into input
+        usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
+        usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
+        return API.cui.getOrganizations();
+    })
+    .then(function(res){
+        // Populate organization list
+        usersWalkup.organizationList = res;
+    })
+    .fail(handleError);
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    usersWalkup.applications.updateNumberOfSelected = function(checkboxValue) {
+        // Update the number of selected apps everytime on of the boxes is checked/unchecked
+        if (checkboxValue !== null) usersWalkup.applications.numberOfSelected++;
+        else usersWalkup.applications.numberOfSelected--;
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
+
+    // WATCHERS START --------------------------------------------------------------------------------
+
+    $scope.$watch('usersWalkup.user',function(a) {
+        if (a && Object.keys(a).length!==0) localStorageService.set('usersWalkup.user',a);
+    }, true);
+
     $scope.$watchCollection('usersWalkup.orgSearch', searchOrganizations);
 
     // Populate Applications List based on the current organization
-    $scope.$watch('usersWalkup.organization',function(newOrgSelected){ // If the organization selected changes reset all the apps
-        if(newOrgSelected){
-            usersWalkup.applications.numberOfSelected=0; // restart the applications process when a new org
-            usersWalkup.applications.processedSelected=undefined; // is selected.
-            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO GET SERVICES INSTEAD
-            .then(function(grants){
-                usersWalkup.applications.list=[];
-                if(grants.length===0){
-                    usersWalkup.applications.list=undefined;
+    $scope.$watch('usersWalkup.organization', function(newOrgSelected) {
+        if (newOrgSelected) {
+            // If the organization selected changes reset all the apps 
+            usersWalkup.applications.numberOfSelected = 0; // Restart applications count
+            usersWalkup.applications.processedSelected = undefined; // Restart applications selected
+            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id}) // TODO: GET SERVICES INSTEAD
+            .then(function(grants) {
+                usersWalkup.applications.list = [];
+                if (grants.length === 0) {
+                    usersWalkup.applications.list = undefined;
                     $scope.$digest();
                 }
-                grants.forEach(function(grant){
+                var i = 0;
+                grants.forEach(function(grant) {
                     API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-                    .then(function(res){
+                    .then(function(res) {
                         usersWalkup.applications.list.push(res);
                         i++;
-                        if(i===grants.length){
+                        if (i === grants.length) {
                             $scope.$digest();
                         }
                     });
@@ -2581,23 +2738,19 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         }
     });
 
-    // Update the number of selected apps everytime on of the boxes is checked/unchecked
-    usersWalkup.applications.updateNumberOfSelected=function(checkboxValue){
-        if(checkboxValue!==null) usersWalkup.applications.numberOfSelected++;
-        else usersWalkup.applications.numberOfSelected--;
-    };
-
-    // Process the selected apps when you click next after selecting the apps you need
-    // returns number of apps selected
-    usersWalkup.applications.process=function(){
-        if(usersWalkup.applications.processedSelected) var oldSelected=usersWalkup.applications.processedSelected;
-        usersWalkup.applications.processedSelected=[];
-        angular.forEach(usersWalkup.applications.selected,function(app,i){
-            if(app!==null) {
+    usersWalkup.applications.process = function() {
+        // Process the selected apps when you click next after selecting the apps you need
+        // returns number of apps selected
+        if (usersWalkup.applications.processedSelected) {
+            var oldSelected = usersWalkup.applications.processedSelected;
+        }
+        usersWalkup.applications.processedSelected = [];
+        angular.forEach(usersWalkup.applications.selected,function(app, i) {
+            if (app !== null) {
                 usersWalkup.applications.processedSelected.push({
-                    id:app.split(',')[0],
-                    name:app.split(',')[1],
-                    acceptedTos:((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) // this fixes an issue
+                    id: app.split(',')[0],
+                    name: app.split(',')[1],
+                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) // this fixes an issue
                     // where removing an app from the selected list that the user had accepted the terms for
                     // would carry over that acceptance to the next app on the list
                 });
@@ -2606,39 +2759,39 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         return usersWalkup.applications.processedSelected.length;
     };
 
-    // Search apps by name
-    usersWalkup.applications.searchApplications=function(){
+    usersWalkup.applications.searchApplications=function() {
+        // Search apps by name
         // TODO : GET SERVICES INSTEAD
         API.cui.getPackages({'qs': [['name', usersWalkup.applications.search],['owningOrganization.id', usersWalkup.organization.id]]})
-        .then(function(res){
-
+        .then(function(res) {
              usersWalkup.applications.list = res;
             $scope.$apply();
         })
         .fail(handleError);
     };
 
-    usersWalkup.submit = function(){
-        usersWalkup.submitting=true;
+    usersWalkup.submit = function() {
+        usersWalkup.submitting = true;
         var user,org;
+
         API.cui.createPerson({data: build.user()})
         .then(function(res){
-            user=res;
-            return API.cui.getOrganization({ organizationId:user.organization.id });
+            user = res;
+            return API.cui.getOrganization({organizationId:user.organization.id});
         })
         .then(function(res){
-            org=res;
-            return API.cui.createSecurityQuestionAccount( build.userSecurityQuestionAccount(user) );
+            org = res;
+            return API.cui.createSecurityQuestionAccount(build.userSecurityQuestionAccount(user));
+        })
+        .then(function() {
+            return API.cui.createPersonPassword(build.personPassword(user,org));
         })
         .then(function(){
-            return API.cui.createPersonPassword( build.personPassword(user,org) );
+            return API.cui.createPersonRequest(build.personRequest(user,org));
         })
-        .then(function(){
-            return API.cui.createPersonRequest( build.personRequest(user,org) );
-        })
-        .then(function(){
-            usersWalkup.submitting=false;
-            usersWalkup.success=true;
+        .then(function() {
+            usersWalkup.submitting = false;
+            usersWalkup.success = true;
             console.log('userCreated.');
             $state.go('misc.success');
         })
@@ -2648,89 +2801,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
         });
     };
 
-    // collection of helper functions to build necessary calls on this controller
-    var build={
-        personRequest:function(user,org){
-            return {
-                data:{
-                    id:user.id,
-                    registrant:{
-                        id: user.id,
-                        type: 'person',
-                        realm: org.realm
-                    },
-                    justification:'User walkup registration.',
-                    servicePackageRequest:this.packageRequests()
-                }
-            };
-        },
-        packageRequests:function(){
-            // var packages=[];
-            // angular.forEach(usersWalkup.applications.selected,function(servicePackage){
-            //     packages.push({packageId:servicePackage.split(',')[0]}); // usersWalkup.applications.selected is an array of strings that looks like
-            // });                                                          // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-            // WORKAROUND CASE #4
-            var packages={
-                'packageId':usersWalkup.applications.selected[0].split(',')[0]
-            };
-            return packages;
-        },
-        personPassword:function(user,org){
-            return {
-                personId:user.id,
-                data:{
-                    version:'1',
-                    username:usersWalkup.userLogin.username,
-                    password:usersWalkup.userLogin.password,
-                    passwordPolicy:org.passwordPolicy,
-                    authenticationPolicy:org.authenticationPolicy
-                }
-            };
-        },
-        userSecurityQuestionAccount:function(user){
-            return {
-                personId:user.id,
-                data: {
-                    version:'1',
-                    id:user.id,
-                    questions: this.userSecurityQuestions(user)
-                }
-            };
-        },
-        user:function(){
-            // get the title of the country object selected
-            usersWalkup.user.addresses[0].country=usersWalkup.userCountry.title;
-            usersWalkup.user.organization={id:usersWalkup.organization.id};
-            usersWalkup.user.timezone='EST5EDT';
-            if(usersWalkup.user.phones[0]) usersWalkup.user.phones[0].type="main";
-            // get the current language being used
-            usersWalkup.user.language=$scope.$parent.base.getLanguageCode();
-            return usersWalkup.user;
-        },
-        userSecurityQuestions:function(user){
-            return [
-                {
-                    question:{
-                        id:usersWalkup.userLogin.question1.id,
-                        type:'question',
-                        realm:user.realm
-                    },
-                    answer:usersWalkup.userLogin.challengeAnswer1,
-                    index:1
-                },
-                {
-                    question:{
-                        id:usersWalkup.userLogin.question2.id,
-                        type:'question',
-                        realm:user.realm
-                    },
-                    answer:usersWalkup.userLogin.challengeAnswer2,
-                    index:2
-                }
-            ];
-        }
-    };
-
+    // WATCHERS END ----------------------------------------------------------------------------------
 
 }]);
 

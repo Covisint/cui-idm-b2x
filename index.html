@@ -41,18 +41,18 @@
             <div class="menu-toggle--button"></div>
           </div>
           <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg>
-          <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()">
+          <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()">
             <!-- @Ricardo, I tried using the class toggle directive, but when I tried it toggled the left menu. Is this because the class toggle directive cannot be nested? In order to get the profile menu to open, add '.cui-profile--active' to the above element -->
               <span class="cui-profile__user-name">User Name</span>
               <div class="cui-profile__user-avatar"></div>
               <div id="cui-profile__popup" class="cui-profile__user-menu">
-                <div class="cui-profile__menu-item">
+                <div class="cui-profile__menu-item" ui-sref="profile.user">
                   <a href="" class="cui-profile__link">My Profile</a>
                   <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
                   </svg>
                 </div>
-                <div class="cui-profile__menu-item">
+                <div class="cui-profile__menu-item" ng-click="base.logout()">
                   <a href="" class="cui-profile__link">Log Out</a>
                   <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
