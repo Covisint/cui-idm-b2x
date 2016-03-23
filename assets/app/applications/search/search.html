@@ -17,17 +17,20 @@
             <button class="cui-input-button__button" ng-click="applicationSearch.parseAppsByCategoryAndName()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}"preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33" id="folder-icon" ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false">
+            <svg ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
-            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}}</sup>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} </sup>
 
-            <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#folder-icon" attachment="top middle"
-               target-attachment="bottom middle" offset="-15px 100" ng-if="applicationSearch.requestPopover">
-                {{'collected-items-for-request' | translate}}<br/>
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-class="{'hide--opacity': !applicationSearch.requestPopover}">
+              <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+              <div class="cui-action__popover-section">
                 <span ng-if="applicationSearch.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
-                <span ng-if="applicationSearch.numberOfRequests > 0" ng-repeat="(appId,app) in applicationSearch.packageRequests">{{app.name | cuiI18n}}<br/></span>
-                <span ng-if="applicationSearch.numberOfRequests > 0" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+                <ul ng-if="applicationSearch.numberOfRequests > 0">
+                    <li ng-repeat="(key,value) in applicationSearch.packageRequests">{{value.name | cuiI18n}}</li>
+                </ul>
+              </div>
+              <span ng-if="applicationSearch.numberOfRequests > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
             </div>
         </div>
     </div>

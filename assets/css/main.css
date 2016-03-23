@@ -374,6 +374,10 @@ fieldset {
 .hide {
   display: none !important; }
 
+.hide--opacity {
+  opacity: 0 !important;
+  pointer-events: none !important; }
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
 
@@ -398,7 +402,7 @@ Markup:
 
 Styleguide Elements.Backgrounds
 */
-.cui-background, .cui-error__password, .cui-popover {
+.cui-background, .cui-error__password, .cui-popover, .cui-action__popover {
   background-color: #fff; }
 
 .cui-background--secondary {
@@ -475,18 +479,18 @@ h1, h2, h3, h4, h5, h6 {
 .h4, .cui-modal__secondary-message {
   font-size: 1.5em; }
 
-.h5, .cui-text-area__label, .cui-action__title, .cui-field-val__field, .cui-organization__page-title {
+.h5, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title {
   font-size: 1.25em; }
 
 .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-action__title, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   font-family: 'lato-black', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
 
-.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-modal__primary-message, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-modal__secondary-message, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-action__title, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category, .cui-organization__page-title {
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-modal__primary-message, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-modal__secondary-message, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category, .cui-organization__page-title {
   font-family: 'lato-bold', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -1269,7 +1273,7 @@ Markup: <button class="cui-button {{modifier_class}}">Button</button>
 Styleguide Elements.Buttons
 */
 .cui-button, .cui-wizard__next,
-.cui-form__next, .cui-card__button {
+.cui-form__next, .cui-card__button, .cui-action__popover-button {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -1288,16 +1292,16 @@ Styleguide Elements.Buttons
   position: relative;
   width: 10.6666666667em; }
   .cui-button:focus, .cui-wizard__next:focus,
-  .cui-form__next:focus, .cui-card__button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
-  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button {
+  .cui-form__next:focus, .cui-card__button:focus, .cui-action__popover-button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
+  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button, .pseudo-class-focus.cui-action__popover-button {
     box-shadow: 0 0 3px #343534, 0 0 7px #343534;
     outline: 0; }
   .cui-button--clicked {
     -webkit-animation: button-click 0.3s forwards;
             animation: button-click 0.3s forwards; }
   .cui-button:active, .cui-wizard__next:active,
-  .cui-form__next:active, .cui-card__button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next,
-  .pseudo-class-active.cui-form__next, .pseudo-class-active.cui-card__button {
+  .cui-form__next:active, .cui-card__button:active, .cui-action__popover-button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next,
+  .pseudo-class-active.cui-form__next, .pseudo-class-active.cui-card__button, .pseudo-class-active.cui-action__popover-button {
     background-color: #1d6572; }
   .cui-button--error, .cui-wizard__next--error,
   .cui-form__next--error {
@@ -1309,7 +1313,7 @@ Styleguide Elements.Buttons
       background-color: #343534; }
   .cui-button--cancel {
     background-color: #FF8C00; }
-  .cui-button--full-width {
+  .cui-button--full-width, .cui-action__popover-button {
     width: 100%; }
   .cui-button--small-rounded {
     font: 0.875em;
@@ -3194,7 +3198,7 @@ Markup:
 
 Styleguide Blocks.Popover
 */
-.cui-popover--top::before, .cui-popover--bottom::before, .cui-popover--left::before, .cui-popover--right::before {
+.cui-popover--top::before, .cui-action__popover::before, .cui-popover--bottom::before, .cui-popover--left::before, .cui-popover--right::before {
   color: #fff;
   content: '▼';
   font-size: 1em;
@@ -3214,7 +3218,7 @@ Styleguide Blocks.Popover
   position: relative;
   max-width: 19.375em; }
 
-.cui-popover {
+.cui-popover, .cui-action__popover {
   border-radius: 0.4375em;
   border: 0.0625em solid #DDD;
   box-shadow: 0 0 0.1875em 0.1875em rgba(0, 0, 0, 0.09);
@@ -3236,7 +3240,7 @@ Styleguide Blocks.Popover
       color: #fff; }
     .cui-popover--dark::before {
       color: rgba(0, 0, 0, 0.9); }
-  .cui-popover--top::before {
+  .cui-popover--top::before, .cui-action__popover::before {
     left: 50%;
     text-shadow: 0.125em 0.125em rgba(0, 0, 0, 0.09);
     top: 0;
@@ -3262,12 +3266,12 @@ Styleguide Blocks.Popover
         -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   @media all and (max-width: 700px) {
-    .cui-popover {
+    .cui-popover, .cui-action__popover {
       -webkit-transform: translate(-50%, -em(10));
           -ms-transform: translate(-50%, -em(10));
               transform: translate(-50%, -em(10));
       width: 90%; }
-      .cui-popover::before {
+      .cui-popover::before, .cui-action__popover::before {
         left: 50%;
         top: 0;
         -webkit-transform: rotate(180deg) translate(0.4375em, 0.9375em);
@@ -4476,6 +4480,35 @@ Styleguide Blocks.Action-Bar
     -webkit-flex: .18;
         -ms-flex: .18;
             flex: .18; }
+  .cui-action__popover {
+    border-radius: 0.1875em;
+    box-shadow: 0 1px 0.3125em 0 #1d6572;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    min-height: 12.5em;
+    padding-right: 1.875em;
+    width: 13.5em; }
+    .cui-action__popover::before {
+      left: 75%; }
+  .cui-action__popover-title {
+    color: #343534; }
+  .cui-action__popover-section {
+    font-size: 0.875em;
+    padding: 0.625em 0; }
+  .cui-action__popover-button {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 0.6875em;
+    height: 2.9090909091em;
+    letter-spacing: 1.6px; }
 
 /*
 Field Value
@@ -4831,11 +4864,11 @@ inline-edit .angucomplete-dropdown {
       margin: 0; } }
 
 .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
-.cui-form__next, .cui-applications__new-request .cui-card__button {
+.cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button {
   margin-top: 1.5625em; }
   @media screen and (min-width: 701px) {
     .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
-    .cui-form__next, .cui-applications__new-request .cui-card__button {
+    .cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button {
       margin: 0; } }
 
 .cui-applications__new-request .cui-applications__search-options {
@@ -4854,7 +4887,7 @@ inline-edit .angucomplete-dropdown {
 
 @media screen and (min-width: 701px) {
   .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
-  .cui-form__next, .cui-applications__new-request .cui-card__button,
+  .cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button,
   .cui-applications__new-request .cui-input-button {
     -webkit-flex: .45;
         -ms-flex: .45;
