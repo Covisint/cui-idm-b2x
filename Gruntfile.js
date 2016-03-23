@@ -143,7 +143,19 @@ module.exports = function(grunt) {
     ngtemplates: {
       app: {
         src: 'assets/app/**/*.html',
-        dest: 'assets/app/template-cache/template.js'
+        dest: 'assets/app/template-cache/template.js',
+        options: {
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhiteSpace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeReduntantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkAttributes: true,
+          }
+        }
       }
     }
   });
