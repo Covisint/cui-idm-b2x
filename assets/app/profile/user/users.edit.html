@@ -170,7 +170,7 @@
               </div>
               <!-- Challenge Edit Controls -->
               <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.saveChallengeQuestions()">{{'cui-save' | translate}}</a>
-              <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion()">{{'cui-cancel' | translate}}</a>
+              <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion($index)">{{'cui-cancel' | translate}}</a>
             </div>
           </div>
 
