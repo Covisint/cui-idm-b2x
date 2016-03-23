@@ -64,7 +64,7 @@ function($scope,$timeout,API,$cuiI18n){
     };
 
     usersEdit.resetChallengeQuestion = function(index) {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[$index], usersEdit.tempUserSecurityQuestions[index]);
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
