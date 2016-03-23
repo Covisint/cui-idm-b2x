@@ -17,260 +17,36 @@
         <div class="cui-loading--center"><div class="cui-loading"></div></div>
       </div>
 
-      <div class="cui-users__profile-media" ng-if="!usersEdit.loading">
-        <div class="cui-media">
-          <div class="cui-media__image-container">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
-              <!-- User image placeholder -->
-              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-            </svg>
-          </div>
-          <div class="cui-media__body">
-            <!-- User full name -->
-            <h3 class="cui-media__title">{{usersEdit.user.name.given}} {{usersEdit.user.name.surname}}</h3>
-            <!-- UserID -->
-            <p class="cui-media__content--small">{{'cui-registered' | translate}}:</p>
-            <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{usersEdit.user.id}}</p>
-          </div>
-        </div>
-      </div>
+      <div ng-include="'assets/app/profile/user/sections/header.html'"></div>
 
       <div class="cui-users__profile">
         <div class="cui-users__profile-info">
           <div class="cui-users__info-block">
-            <!-- Name Block -->
-            <div class="class-toggle" toggled-class="show-full-name">
-              <div class="cui-users__field" ng-if="!toggled">
-                <div class="cui-field-val">
-                  <span class="cui-field-val__field">{{"cui-name"| translate}}: </span>
-                  <span class="cui-field-val__val" ng-if="!usersEdit.editName">{{usersEdit.tempUser.name.given}} {{usersEdit.tempUser.name.surname}}</span>
-                </div>
-                <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-              </div>
-
-              <!-- Name Edit -->
-              <div ng-if="toggled">
-                <!-- Name Edit Controls -->
-                <div>
-                  <a class="cui-link" href="" ng-if="usersEdit.tempUser.name.given && usersEdit.tempUser.name.surname" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
-                  <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
-                </div>
-                <!-- First Name Edit -->
-                <label for="firstName">{{'cui-first-name' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.firstName.$error" ng-if="edit.firstName.$touched">
-                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                </div>
-                <input class="cui-input" type="text" ng-model="usersEdit.tempUser.name.given" name="firstName" ng-required="true">
-                <!-- Last Name Edit -->
-                <label for="lastName">{{'cui-last-name' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.lastName.$error" ng-if="edit.firstName.$touched">
-                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                </div>
-                <input class="cui-input" type="text" ng-model="usersEdit.tempUser.name.surname" name="lastName" ng-required="true">
-              </div>
-            </div>
-
-            <!-- User ID -->
-            <div class="cui-field-val">
-              <span class="cui-field-val__field">{{'cui-user-id' | translate}}: </span>
-              <span class="cui-field-val__val">{{usersEdit.user.id}}</span>
-            </div>
-
-            <!-- Email -->
-            <div class="class-toggle" toggled-class="email-edit">
-              <!-- Email Block -->
-              <div class="cui-users__field" ng-if="!toggled">
-                <div class="cui-field-val">
-                  <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
-                  <span class="cui-field-val__val">{{usersEdit.tempUser.email}}</span>
-                </div>
-                <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-              </div>
-
-              <!-- Email Edit -->
-              <div ng-if="toggled">
-                <!-- Email Edit Controls -->
-                <div>
-                  <a class="cui-link" href="" ng-if="usersEdit.tempUser.email" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
-                  <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
-                </div>
-                <!-- Email Input Edit -->
-                <label for="email">{{'cui-email' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.email.$error" ng-if="edit.email.$touched">
-                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                </div>
-                <input class="cui-input" type="text" ng-model="usersEdit.tempUser.email" name="email" ng-required="true">
-              </div>
-            </div>
-
+            <!-- Basic info  (name and email)-->
+            <div ng-include="'assets/app/profile/user/sections/basic-info.html'"></div>
             <!-- Password -->
-            <div class="class-toggle" toggled-class="password-reset">  
-              <!-- Password Block -->
-              <div class="cui-error"><label>{{usersEdit.checkPasswordErrorFlag}}</label></div>
-              <div class="cui-users__field" ng-if="!toggled">
-                <div class="cui-field-val">
-                  <span class="cui-field-val__field">{{'cui-password' | translate}}: </span>
-                  <span class="cui-field-val__val">***********</span>
-                </div>
-                <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-              </div>
-
-              <!-- Password Edit -->
-              <div ng-if="toggled">
-                <!-- Password Edit Controls -->
-                <div>
-                  <a class="cui-link" href="" ng-if="!edit.currentPassword.$error.required && !edit.newPassword.$invalid && !edit.newPasswordRe.$error.match" ng-click="usersEdit.updatePassword(); toggleOff();">{{'cui-update' | translate}}</a>
-                  <a class="cui-link" href="" ng-click="usersEdit.resetPasswordFields(); toggleOff();">{{'cui-cancel' | translate}}</a>
-                </div>
-                <!-- Current Password -->
-                <label for="currentPassword">{{'cui-enter-password' | translate}}: </label>
-                <div class="cui-error" ng-messages="edit.currentPassword.$error" ng-if="edit.currentPassword.$touched">
-                  <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                </div>
-                <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.currentPassword" name="currentPassword" ng-required="true">
-                <!-- New Password -->
-                <div class="cui-input__password-holder">
-                  <label for="newPassword">{{'cui-enter-new-password' | translate}}: </label>
-                  <div class="cui-error" ng-messages="edit.newPassword.$error" ng-if="edit.newPassword.$touched">
-                    <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-                  </div>
-                  <input class="cui-input" type="password" ng-model="usersEdit.userPasswordAccount.password" name="newPassword" ng-required="true" ng-class="{'cui-input--error': edit.newPassword.$touched && edit.newPassword.$invalid}" password-validation="usersEdit.passwordPolicies">
-                  <div ng-messages="edit.newPassword.$error" ng-messages-multiple ng-if="edit.newPassword.$invalid" class="cui-error__password">
-                    <div ng-messages-include="assets/app/profile/user/password-validation.html"></div>
-                  </div>
-                </div>
-                <!-- New Password Re -->
-                <label for="newPasswordRe">{{'cui-re-enter-new-password' | translate}}: </label>
-                <div class="cui-error" ng-if="edit.newPasswordRe.$touched && edit.newPasswordRe.$error.match">
-                  <div class="cui-error__message">{{'password-mismatch' | translate}}</div>
-                </div>
-                <input class="cui-input cui-field-val__val" type="password" ng-model="usersEdit.passwordRe" name="newPasswordRe" match="usersEdit.userPasswordAccount.password">
-              </div>
-            </div>
+            <div ng-include="'assets/app/profile/user/sections/password.html'"></div>
           </div>
 
-          <!-- Challenge Question -->
           <div class="cui-users__info-block">
-            <div class="class-toggle" toggled-class="show" ng-repeat="questionObject in usersEdit.tempUserSecurityQuestions.slice(0, 2)">
-              <div class="cui-users__field">
-                <div class="cui-field-val cui-field-val--stack">
-                  <span class="cui-field-val__field">{{'cui-challenge-question' | translate}} {{$index + 1}}: </span>
-                  <span class="cui-field-val__val">{{usersEdit.challengeQuestionsTexts[$index]}}</span>
-                </div>
-                <a class="cui-link" href="" ng-if="!toggled" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-              </div>
-              <!-- Challenge Edit -->
-              <div ng-if="toggled">
-                <!-- Question -->
-                <select class="cui-input cui-input--full cui-select" ng-model="questionObject.question.id" ng-options="question.id as (question.question | cuiI18n) for question in usersEdit['allChallengeQuestions' + $index]">
-                </select>
-                <!-- Answer -->
-                <label>{{'cui-answer' | translate}}</label>
-                <input type="text" ng-model="questionObject.answer" class="cui-input cui-input--full"/>
-              </div>
-              <!-- Challenge Edit Controls -->
-              <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.saveChallengeQuestions()">{{'cui-save' | translate}}</a>
-              <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion($index)">{{'cui-cancel' | translate}}</a>
-            </div>
+            <!-- Challenge Questions -->
+            <div ng-include="'assets/app/profile/user/sections/challenge-questions.html'"></div>
           </div>
 
-          <!-- Timezone/Language -->
-          <span class="cui-field-val__field">{{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}: </span>
-          <div>
-            <!-- Timezone -->
-            <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone.id as timezone.name for timezone in usersEdit.timezones" ng-change="usersEdit.updatePerson()"></select>
-            <!-- Language -->
-            <select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="key as value for (key,value) in usersEdit.languagePreference" ng-change="usersEdit.updatePerson()"></select>
+          <div class="cui-users__info-block">
+            <!-- Timezone/Language -->
+            <div ng-include="'assets/app/profile/user/sections/timezone-language.html'"></div>
           </div>
         </div>
 
-        <!-- Address -->
         <div class="cui-users__profile-info">
-          <div class="cui-users__field">
-            <div class="class-toggle cui-users__address-container" toggled-class="show-address">
-              <div class="cui-users__field">
-                <span class="cui-field-val__field">{{'cui-address' | translate}}: </span>
-                <span class="cui-link" href="" ng-if="!toggled" ng-click="toggleOn()">{{'cui-open' | translate}}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
-                  <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
-                </svg>
-              </div>
-              <!-- Address Block -->
-              <div ng-if="!toggled">
-                <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].streets[0]}} </div>
-                <div class="cui-field-val__val" ng-if="usersEdit.tempUser.addresses[0].streets[1]">{{usersEdit.tempUser.addresses[0].streets[1]}}</div>
-                <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].city}}</div>
-                <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].state}} {{usersEdit.tempUser.addresses[0].postal}}</div>
-                <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].country}}</div>
-              </div>
-
-              <!-- Address Edit -->
-              <div ng-if='toggled'>
-                <!-- Street Address -->
-                <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
-                <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="usersEdit.tempUser.addresses[0].streets[0]">
-                <!-- Address 2 -->
-                <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
-                <input type="text" name="{{'cui-address-2' | translate}}" ng-model="usersEdit.tempUser.addresses[0].streets[1]" class="cui-input">
-                <div class="cui-form__field-row">
-                  <!-- City -->
-                  <div class="cui-form__field-container cui-form__field-container--half">
-                    <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
-                    <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="usersEdit.tempUser.addresses[0].city">
-                  </div>
-                  <!-- Postal -->
-                  <div class="cui-form__field-container cui-form__field-container--half">
-                    <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
-                    <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="usersEdit.tempUser.addresses[0].postal">
-                  </div>
-                </div>
-                <!-- Country -->
-                <div class="cui-wizard__field-container">
-                  <label for="country">{{"cui-country" | translate}}</label>
-                  <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-                    <div ng-messages-include="assets/angular-templates/messages.html"></div>
-                  </div>
-                  <div auto-complete input-name="country" pause="100" selected-object="usersEdit.userCountry" initial-value="usersEdit.tempUser.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
-                </div>
-                <!-- Address Edit Controls -->
-                <div class="cui-users__address-submit">
-                  <a class="cui-link cui-form__cancel" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff()">cancel</a>
-                  <button class="cui-button" ng-click="usersEdit.updatePerson(); toggleOff()">{{'cui-update' | translate}}</button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Address -->
+          <div ng-include="'assets/app/profile/user/sections/address.html'"></div>
 
           <!-- Phones/Fax -->
-          <div class="class-toggle cui-users__contact-info" toggled-class="edit-phones">
-            <div class="cui-users__field" ng-if="!toggled">
-              <span class="cui-field-val__field">{{'cui-phone-fax' | translate}}:</span>
-              <a href="" class="cui-link" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
-            </div>
-            <!-- If user has phones -->
-            <div ng-if="usersEdit.tempUser.phones">
-              <!-- Phones Block -->
-              <div ng-if="!toggled" ng-repeat="phone in usersEdit.tempUser.phones">
-                <span class="cui-field-val__field">{{phone.type}}:</span>
-                <span class="cui-field-val__val">{{phone.number}}</span>
-              </div>
-
-              <!-- Phones Edit -->
-              <div ng-if="toggled">
-                <!-- Phones Edit Controls -->
-                <div>
-                  <a class="cui-link" href="" ng-if="!usersEdit.emptyFieldError" ng-click="usersEdit.updatePerson(); toggleOff();">{{'cui-update' | translate}}</a>
-                  <a class="cui-link" href="" ng-click="usersEdit.resetTempObject(usersEdit.user, usersEdit.tempUser); toggleOff();">{{'cui-cancel' | translate}}</a>
-                </div>
-                <!-- Phone Fields -->
-                <div ng-repeat="phone in usersEdit.tempUser.phones">
-                  <label for="phone">{{phone.type}}: </label>
-                  <input class="cui-input" type="text" ng-model="phone.number" name="phone" ng-required="true" ng-change="usersEdit.checkIfFieldsAreEmpty(phone.number);">
-                </div>
-              </div>
-            </div>
-          </div>
+          <div ng-include="'assets/app/profile/user/sections/phone-fax.html'"></div>
         </div>
+
       </div>
     </div>
   </div>

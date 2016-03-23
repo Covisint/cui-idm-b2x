@@ -43,9 +43,12 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
 
     base.countries=Countries;
     base.timezones=Timezones;
-    base.Languages=Languages.all;
+    base.languages=Languages.all;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
+
+    base.logout=API.cui.covLogout;
+
 
 }]);
