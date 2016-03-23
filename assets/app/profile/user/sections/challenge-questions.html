@@ -1,0 +1,21 @@
+<div class-toggle toggled-class="show" ng-repeat="questionObject in usersEdit.tempUserSecurityQuestions.slice(0, 2)">
+  <div class="cui-users__field">
+    <div class="cui-field-val cui-field-val--stack">
+      <span class="cui-field-val__field">{{'cui-challenge-question' | translate}} {{$index + 1}}: </span>
+      <span class="cui-field-val__val">{{usersEdit.challengeQuestionsTexts[$index]}}</span>
+    </div>
+    <a class="cui-link" href="" ng-if="!toggled" ng-click="toggleClass()">{{'cui-edit' | translate}}</a>
+  </div>
+  <!-- Challenge Edit -->
+  <div ng-if="toggled">
+    <!-- Question -->
+    <select class="cui-input cui-input--full cui-select" ng-model="questionObject.question.id" ng-options="question.id as (question.question | cuiI18n) for question in usersEdit['allChallengeQuestions' + $index]">
+    </select>
+    <!-- Answer -->
+    <label>{{'cui-answer' | translate}}</label>
+    <input type="text" ng-model="questionObject.answer" class="cui-input cui-input--full"/>
+  </div>
+  <!-- Challenge Edit Controls -->
+  <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.saveChallengeQuestions()">{{'cui-save' | translate}}</a>
+  <a class="cui-link" href="" ng-if="toggled" ng-click="toggleOff(); usersEdit.resetChallengeQuestion($index)">{{'cui-cancel' | translate}}</a>
+</div>
