@@ -1,0 +1,6 @@
+<span class="cui-field-val__field">{{'cui-timezone' | translate}} {{'cui-and' | translate}} {{'cui-language' | translate}}: </span>
+
+<!-- Timezone -->
+<select class="cui-input  cui-select" ng-model="usersEdit.tempUser.timezone" ng-options="timezone.id as timezone.name for timezone in base.timezones" ng-change="usersEdit.updatePerson()"></select>
+<!-- Language -->
+<select class="cui-input  cui-select" ng-model="usersEdit.tempUser.language" ng-options="key as value for (key,value) in base.languages" ng-change="usersEdit.updatePerson()"></select>

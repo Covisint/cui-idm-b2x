@@ -10,8 +10,7 @@ function($scope,$timeout,API,$cuiI18n){
     usersEdit.fail = false;
     usersEdit.success = false;
 
-    usersEdit.timezones = $scope.$parent.base.timezones;
-    usersEdit.languagePreference = $cuiI18n.getLocaleCodesAndNames();
+
     usersEdit.passwordPolicies = [
         {
             'allowUpperChars':true,
@@ -106,7 +105,7 @@ function($scope,$timeout,API,$cuiI18n){
         usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        
+
         selectTextsForQuestions();
         return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
     })

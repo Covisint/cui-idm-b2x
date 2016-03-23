@@ -57,9 +57,9 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
             controller: returnCtrlAs('usersWalkup'),
-            menu:{
-                desktop:false
-            }
+            // menu:{
+            //     desktop:false
+            // }
         })
         .state('registration.tlo',{
             url: '/top-level-org',
@@ -154,7 +154,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
       var $state = $injector.get("$state");
-      $state.go('base');
+      $state.go('welcome.screen');
     });
 
     $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
