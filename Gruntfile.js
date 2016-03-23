@@ -143,9 +143,13 @@ module.exports = function(grunt) {
     },
     jshint: {
       app: ['assets/**/*.js']
+    },
+    ngtemplates: {
+      app: {
+        src: 'assets/app/**/*.html',
+        dest: 'assets/app/template-cache/template.js'
+      }
     }
-
-
   });
 
 
@@ -153,9 +157,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-angular-templates');
 
-  grunt.registerTask('default', ['concat','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('default', ['ngtemplates','concat','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
-}
+};
