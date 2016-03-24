@@ -12,8 +12,8 @@
       <!-- Sort Popover -->
       <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
         target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.sortClicked">
-        <p ng-click="myApplications.sort('alphabetically')">Alphabetically</p>
-        <p ng-click="myApplications.sort('date'); ">By Date Added</p>
+        <p ng-click="myApplications.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
+        <p ng-click="myApplications.sort('date'); ">{{'cui-by-date-added' | translate}}</p>
       </div>
     </div>
     <!-- Refine -->
@@ -23,10 +23,10 @@
       </svg>
       <span class="cui-action__action-label">Refine</span>
       <!-- Refine Popover -->
-      <div class="cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.refineClicked">
+      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.refineClicked">
         <p ng-click="myApplications.parseAppsByStatus('all')">{{'all' | translate}} ({{myApplications.statusCount[0]}})</p>
-        <div ng-repeat="status in myApplications.statusList">
-          <p ng-click="myApplications.parseAppByStatus(status)">{{status | cuiI18n}} ({{myApplications.statusCount[$index+1]}})</p>
+        <div ng-repeat="status in myApplications.statusList" ng-if="myApplications.statusCount[$index+1]!==0">
+          <p ng-click="myApplications.parseAppsByStatus(status)">{{status | translate}} ({{myApplications.statusCount[$index+1]}})</p>
         </div>
       </div>
     </div>

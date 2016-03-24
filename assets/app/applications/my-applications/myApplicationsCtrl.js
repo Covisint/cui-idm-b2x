@@ -12,7 +12,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
 
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
-    myApplications.statusList = ['Active', 'Suspended', 'Pending'];
+    myApplications.statusList = ['active', 'suspended', 'pending'];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -143,7 +143,15 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
     };
 
     myApplications.parseAppsByStatus = function(status) {
-
+        if (status === 'all') {
+            myApplications.list = myApplications.unparsedListOfAvailabeApps;
+        }
+        else {
+            var filteredApps = _.filter(myApplications.unparsedListOfAvailabeApps, function(app) {
+                return app.status === status;
+            });
+            myApplications.list = filteredApps;
+        }
     };
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
