@@ -7,3 +7,4 @@ target
 .tmp/
 *.versionsBackup
 *.iml
+assets/angular-modules/templateCache.js
