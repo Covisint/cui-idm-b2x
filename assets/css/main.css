@@ -2663,25 +2663,26 @@ snap-drawer,
     transition: bottom .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
     transition: bottom .1s ease-in-out, transform .1s .1s ease-in-out; }
 
-.v2 .cui-menu__content-wrapper {
+.v2 .cui-menu__content-wrapper,
+.v2 .cui-nav__content-wrapper {
   margin-left: 180px; }
-  .v2 .cui-menu__content-wrapper.desktop-menu--collapse {
+  @media screen and (max-width: 999px) {
+    .v2 .cui-menu__content-wrapper,
+    .v2 .cui-nav__content-wrapper {
+      margin-left: 0; } }
+  .v2 .cui-menu__content-wrapper.desktop-menu--collapse,
+  .v2 .cui-nav__content-wrapper.desktop-menu--collapse {
     margin-left: 80px; }
+    @media screen and (max-width: 999px) {
+      .v2 .cui-menu__content-wrapper.desktop-menu--collapse,
+      .v2 .cui-nav__content-wrapper.desktop-menu--collapse {
+        margin-left: 0; } }
 
 .v2 .desktop-menu {
   margin-top: 80px;
   width: 180px; }
   .v2 .desktop-menu--collapse {
     left: -100px; }
-
-.v2 .cui-nav__content-wrapper.desktop-menu--collapse,
-.v2 .cui-menu__content-wrapper.desktop-menu--collapse {
-  margin-left: 80px; }
-
-@media screen and (max-width: 999px) {
-  .v2 .cui-nav__content-wrapper,
-  .v2 .cui-menu__content-wrapper {
-    margin-left: 0; } }
 
 .v2 .cui-menu__toggle-button--desktop {
   background: #1d6572;
