@@ -34,9 +34,7 @@
       <button class="cui-card__button" ui-sref="registration.division">{{ 'cui-sign-up' | translate }}</button>
     </div>
 
-    <!-- ng-show="welcome.divisionPopover" off-click-if="welcome.divisionPopover" -->
-
-    <!-- Popover -->
+    <!-- New Division Popover -->
     <div class="cui-styeguide__popover-container" ng-if="welcome.divisionPopover"  off-click="welcome.divisionPopover=false" tether target="#newDivision-header" attachment="top middle" target-attachment="bottom middle" offset="15px 145">
       <div class="cui-popover cui-popover--dark cui-popover--top cui-popover__new-division">
         <p class="">{{ 'cui-welcome-popover' | translate }}</p>
