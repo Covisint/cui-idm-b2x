@@ -1,15 +1,14 @@
 angular.module('app')
 .controller('orgProfileCtrl',['$scope','$stateParams','API',
-    function($scope,$stateParams,API) {
+function($scope,$stateParams,API) {
+    'use strict';
 
     var orgProfile = this;
 
     /*      Scope Variable List:
-
-    orgProfile.organization: Organization object of logged in user
-    orgProfile.securityAdmins: List of security admins in orgProfile.organization
-    orgProfile.loadingDone: When screen is loading
-
+        orgProfile.loadingDone: When screen is loading
+        orgProfile.organization: Organization object of logged in user
+        orgProfile.securityAdmins: List of security admins in orgProfile.organization
     */
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
