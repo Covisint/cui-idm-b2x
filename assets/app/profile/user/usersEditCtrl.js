@@ -2,7 +2,6 @@ angular.module('app')
 .controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
 function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
-
     var usersEdit = this;
 
     usersEdit.loading = true;
