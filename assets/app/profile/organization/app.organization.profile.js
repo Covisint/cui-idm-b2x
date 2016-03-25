@@ -4,23 +4,38 @@ angular.module('app')
 
     var orgProfile = this;
 
-    var handleError=function(err){
+    // SCOPE VARS USED START -------------------------------------------------------------------------
+
+    // orgProfile.organization; // Organization object of logged in user
+    // orgProfile.securityAdmins; // List of security admins of orgProfile.organization
+
+    // SCOPE VARS USED END ---------------------------------------------------------------------------
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
         console.log('Error', err);
     };
 
-    orgProfile.organization = {};
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
-    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-    .then(function(res) {
-        return API.cui.getOrganization({organizationId: res.organization.id});
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(person) {
+        return API.cui.getOrganization({organizationId: person.organization.id});
+    })
+    .then(function(organization) {
+        orgProfile.organization = organization;
+        return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
     })
     .then(function(res) {
-        orgProfile.organization = res;
+        orgProfile.securityAdmins = res;
         orgProfile.loadingDone = true;
         $scope.$digest();
     })
-    .fail(function(err) {
-        console.log(err);
-    });
+    .fail(handleError);
+
+    // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
