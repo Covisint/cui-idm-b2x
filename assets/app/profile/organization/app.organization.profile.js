@@ -4,12 +4,13 @@ angular.module('app')
 
     var orgProfile = this;
 
-    // SCOPE VARS USED START -------------------------------------------------------------------------
+    /*      Scope Variable List:
 
-    // orgProfile.organization; // Organization object of logged in user
-    // orgProfile.securityAdmins; // List of security admins of orgProfile.organization
+    orgProfile.organization: Organization object of logged in user
+    orgProfile.securityAdmins: List of security admins in orgProfile.organization
+    orgProfile.loadingDone: When screen is loading
 
-    // SCOPE VARS USED END ---------------------------------------------------------------------------
+    */
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
