@@ -8,14 +8,25 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
     myApplications.doneLoading = false;
     myApplications.sortFlag = false;
     myApplications.categoriesFlag = false;
+    myApplications.statusFlag = false;
 
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
+    myApplications.statusList = ['active', 'suspended', 'pending'];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
     var handleError = function(err) {
         console.log('Error \n\n', err);
+    };
+
+    var updateStatusCount = function(service) {
+        // Service status is limited to: Active, Suspended, Pending
+        if (service.status) {
+            if (service.status === 'active') { myApplications.statusCount[1]++; }
+            else if (service.status === 'suspended') { myApplications.statusCount[2]++; }
+            else { myApplications.statusCount[3]++; }
+        }
     };
 
     var getListOfCategories = function(services) {
@@ -38,9 +49,39 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
                     categoryCount[categoryList.length] = 1;
                 }
             }
+            updateStatusCount(service);
         });
+
         myApplications.categoryCount = categoryCount;
         return categoryList;
+    };
+
+    var getApplicationsFromGrants = function(grants) {
+        // WORKAROUND CASE #1
+        // from the list of grants, get the list of services from each of those service packages
+        var i = 0;
+
+        grants.forEach(function(grant) {
+            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
+            .then(function(res) {
+                i++;
+                res.forEach(function(service) {
+                    service.status = grant.status; // attach the status of the service package to the service
+                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
+                    service.parentPackage = grant.servicePackage.id;
+                    myApplications.list.push(service);
+                });
+                if (i === grants.length) { // if this is the last grant
+                    angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+                    // Note: myApplications.statusCount[IndexNumber] = [All, Active, Suspended, Pending]
+                    myApplications.statusCount = [myApplications.unparsedListOfAvailabeApps.length, 0, 0, 0];
+                    myApplications.categoryList = getListOfCategories(myApplications.list);
+                    myApplications.doneLoading = true;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
     };
 
     var listSort = function(listToSort, sortType, order) { // order is a boolean
@@ -70,32 +111,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    var getApplicationsFromGrants = function(grants) {
-        // WORKAROUND CASE #1
-        // from the list of grants, get the list of services from each of those service packages
-        var i = 0;
-        grants.forEach(function(grant) {
-            API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-            .then(function(res) {
-                i++;
-                res.forEach(function(service) {
-                    service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
-                    service.parentPackage = grant.servicePackage.id;
-                    myApplications.list.push(service);
-                });
-                if (i === grants.length) { // if this is the last grant
-                    angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-                    myApplications.categoryList = getListOfCategories(myApplications.list);
-                    myApplications.doneLoading = true;
-                    $scope.$digest();
-                }
-            })
-            .fail(handleError);
-        });
-    };
-
-    API.cui.getPersonPackages({personId:API.getUser(), useCuid:true}) // this returns a list of grant
+    API.cui.getPersonPackages({personId:API.getUser(), useCuid:true}) // this returns a list of grants
     .then(function(res) {
         getApplicationsFromGrants(res);
     })
@@ -121,6 +137,18 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
         else {
             var filteredApps = _.filter(myApplications.unparsedListOfAvailabeApps, function(app) {
                 return categoryFilter(app, category);
+            });
+            myApplications.list = filteredApps;
+        }
+    };
+
+    myApplications.parseAppsByStatus = function(status) {
+        if (status === 'all') {
+            myApplications.list = myApplications.unparsedListOfAvailabeApps;
+        }
+        else {
+            var filteredApps = _.filter(myApplications.unparsedListOfAvailabeApps, function(app) {
+                return app.status === status;
             });
             myApplications.list = filteredApps;
         }
