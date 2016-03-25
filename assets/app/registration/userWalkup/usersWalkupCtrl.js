@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state) {
+.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
+function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
     'use strict';
 
     var usersWalkup = this;
@@ -252,6 +252,12 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                         }
                     });
                 });
+            })
+            .then(function() {
+                return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
+            })
+            .then(function(res) {
+                CuiPasswordPolicies.set(res.rules);
             })
             .fail(handleError);
         }
