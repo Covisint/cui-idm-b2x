@@ -1,15 +1,16 @@
 angular.module('app')
-.controller('orgProfileCtrl',['$scope','$stateParams','API',
-    function($scope,$stateParams,API) {
-
+.controller('orgProfileCtrl', ['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+    'use strict';
     var orgProfile = this;
 
-    // SCOPE VARS USED START -------------------------------------------------------------------------
+    /*      Scope Variable List:
+        orgProfile.loading:         Show loading spinner when true
+        orgProfile.organization:    Organization object of logged in user
+        orgProfile.securityAdmins:  List of security admins in orgProfile.organization
+    */
 
-    // orgProfile.organization; // Organization object of logged in user
-    // orgProfile.securityAdmins; // List of security admins of orgProfile.organization
-
-    // SCOPE VARS USED END ---------------------------------------------------------------------------
+    orgProfile.loading = true;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ angular.module('app')
     })
     .then(function(res) {
         orgProfile.securityAdmins = res;
-        orgProfile.loadingDone = true;
+        orgProfile.loading = false;
         $scope.$digest();
     })
     .fail(handleError);

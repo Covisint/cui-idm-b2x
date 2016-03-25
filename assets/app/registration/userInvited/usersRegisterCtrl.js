@@ -1,40 +1,17 @@
 angular.module('app')
-.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state',
-function(localStorageService,$scope,Person,$stateParams,API,$state){
+.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state','CuiPasswordPolicies',
+function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPolicies){
     'use strict';
-
-    var usersRegister=this;
+    var usersRegister = this;
 
     usersRegister.loading = true;
     usersRegister.registrationError = false;
     usersRegister.showCovisintInfo = false;
     usersRegister.submitting = false;
-
     usersRegister.userLogin = {};        
     usersRegister.applications = {};
     usersRegister.targetOrganization = {};
-
     usersRegister.applications.numberOfSelected = 0;
-
-    usersRegister.passwordPolicies = [
-        {
-            'allowUpperChars': true,
-            'allowLowerChars': true,
-            'allowNumChars': true,
-            'allowSpecialChars': true,
-            'requiredNumberOfCharClasses': 3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min': 8,
-            'max': 18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
             
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -191,7 +168,11 @@ function(localStorageService,$scope,Person,$stateParams,API,$state){
 
                     if(i === res.length) {
                         usersRegister.applications.list = listOfApps;
-                        $scope.$digest();
+                        API.cui.getPasswordPolicy({policyId: usersRegister.targetOrganization.passwordPolicy.id})
+                        .then(function(res) {
+                            CuiPasswordPolicies.set(res.rules);
+                            $scope.$digest();
+                        });
                     }
                 });
             });

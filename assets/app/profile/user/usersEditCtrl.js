@@ -1,70 +1,33 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones',
-function($scope,$timeout,API,$cuiI18n,Timezones){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
-
     var usersEdit = this;
 
     usersEdit.loading = true;
     usersEdit.saving = true;
     usersEdit.fail = false;
     usersEdit.success = false;
+    usersEdit.timezoneById = Timezones.timezoneById;
+    usersEdit.toggleOffFunctions = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     var selectTextsForQuestions = function() {
-        usersEdit.challengeQuestionsTexts=[];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+        usersEdit.challengeQuestionsTexts = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
             var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
             this.push(question.question[0].text);
         }, usersEdit.challengeQuestionsTexts);
     };
 
-    var resetTempUser=function(){
-        if(!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
+    var resetTempUser = function() {
+        if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
     };
-
-    usersEdit.resetTempObject = function(master, temp) {
-        // Used to reset the temp object to the original when a user cancels their edit changes
-        if(!angular.equals(master,temp)) angular.copy(master, temp);
-    };
-
-    usersEdit.resetPasswordFields = function() {
-        // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount.currentPassword = '';
-        usersEdit.userPasswordAccount.password = '';
-        usersEdit.passwordRe = '';
-    };
-
-    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
-        securityQuestions.forEach(function(secQuestion,i){
-            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
-                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
-            });
-            if(securityAnswerRepeatedIndex>-1) {
-                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
-            }
-            else {
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
-            }
-        });
-    };
-
-    usersEdit.resetChallengeQuestion = function(index) {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
-    };
-
-    usersEdit.timezoneById=Timezones.timezoneById;
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-
-    usersEdit.toggleOffFunctions={};
-    usersEdit.pushToggleOff=function(toggleOffObject){
-        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
-    };
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
@@ -104,6 +67,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
     })
     .then(function(res) {
         usersEdit.userPasswordAccount = res;
+        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
+    })
+    .then(function(res) {
+        CuiPasswordPolicies.set(res.rules);
         usersEdit.loading = false;
         $scope.$digest();
     })
@@ -118,10 +85,45 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
     // ON CLICK START --------------------------------------------------------------------------------
 
     usersEdit.toggleAllOff=function(){
-        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff){
+        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff) {
             toggleOff();
         });
         resetTempUser();
+    };
+
+    usersEdit.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
+        if (!angular.equals(master,temp)) angular.copy(master, temp);
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
+    };
+
+    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+        securityQuestions.forEach(function(secQuestion,i){
+            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
+                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
+            });
+            if(securityAnswerRepeatedIndex>-1) {
+                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
+            }
+            else {
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
+            }
+        });
+    };
+
+    usersEdit.resetChallengeQuestion = function(index) {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
+    };
+
+    usersEdit.pushToggleOff=function(toggleOffObject){
+        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
@@ -178,11 +180,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
         });
     };
 
-    usersEdit.updatePersonSecurityAccount = function() {
-        // Updates user's Security Account in IDM
-        // Currently API has issue when updating
-    };
-
    usersEdit.saveChallengeQuestions = function(section,toggleOff) {
         if(section) usersEdit[section]={
             submitting:true
@@ -210,6 +207,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
             $scope.$digest();
         });
     };
+
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);

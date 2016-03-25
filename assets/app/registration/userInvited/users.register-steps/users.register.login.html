@@ -17,9 +17,9 @@
         <div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
           <div ng-messages-include="assets/app/common-templates/messages.html"></div>
         </div>
-        <input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.password" ng-class="{'cui-input--error': usersRegister.password.$touched && usersRegister.password.$invalid}" password-validation="base.passwordPolicies" ng-model-options="{allowInvalid:true}" ng-change="usersRegister.userLogin.hiddenPassword=base.generateHiddenPassword(usersRegister.userLogin.password)">
-        <div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
-          <div ng-messages-include="assets/app/registration/password-validation.html"></div>
+        <input type="password" name="password" class="cui-input" ng-required="true" ng-model="usersRegister.userLogin.password" ng-class="{'cui-input--error': usersRegister.password.$touched && usersRegister.password.$invalid}" password-validation ng-model-options="{allowInvalid:true}" ng-change="usersRegister.userLogin.hiddenPassword=base.generateHiddenPassword(usersRegister.userLogin.password)">
+        <div password-popover ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
+          <div ng-messages-include="assets/app/common-templates/password-validation.html"></div>
         </div>
       </div>
     </div>
