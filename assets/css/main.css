@@ -4705,20 +4705,12 @@ Modal example to be added via iframe
   text-align: center; }
 
 .cui-popover__new-division {
-  -webkit-transform: translate(-22.375em, 64%);
-      -ms-transform: translate(-22.375em, 64%);
-          transform: translate(-22.375em, 64%);
-  opacity: 0.85;
-  font-size: 14px; }
+  font-size: 14px;
+  height: 230px; }
 
 @media screen and (max-width: 700px) {
-  .cui-styeguide__popover-container {
-    position: absolute; }
-    .cui-styeguide__popover-container .cui-popover__new-division {
-      width: 275px;
-      -webkit-transform: translate(2.5em, -128%);
-          -ms-transform: translate(2.5em, -128%);
-              transform: translate(2.5em, -128%); } }
+  .cui-styeguide__popover-container .cui-popover__new-division {
+    width: 275px; } }
 
 inline-edit .angucomplete-dropdown {
   border: 1px solid #ececec;
@@ -5159,6 +5151,20 @@ inline-edit .angucomplete-dropdown {
 
 .cui-organization__info-block {
   margin-bottom: 1.3125em; }
+  .cui-organization__info-block .cui-organization__admin-block-wrapper {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap; }
+    .cui-organization__info-block .cui-organization__admin-block-wrapper .cui-organization__admin-block {
+      max-width: 275px;
+      margin-bottom: 1.3125em;
+      margin-right: 3.1875em; }
 
 .cui-organization__page-title {
   margin-bottom: 1.3125em; }

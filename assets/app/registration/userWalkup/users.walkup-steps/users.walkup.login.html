@@ -19,7 +19,7 @@
 				</div>
 				<input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="usersWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation ng-model-options="{allowInvalid:true}" ng-change="usersWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(usersWalkup.userLogin.password)">
 				<!-- Password Rules Popover -->
-				<div password-popover ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
+				<div ng-messages="userLogin.password.$error" ng-messages-multiple class="cui-error__password">
 					<div ng-messages-include="assets/app/common-templates/password-validation.html"></div>
 				</div>
 			</div>

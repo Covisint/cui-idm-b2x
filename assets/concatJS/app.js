@@ -1904,100 +1904,79 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('orgProfileCtrl',['$scope','$stateParams','API',
-    function($scope,$stateParams,API) {
-
+.controller('orgProfileCtrl', ['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+    'use strict';
     var orgProfile = this;
 
-    var handleError=function(err){
+    /*      Scope Variable List:
+        orgProfile.loading:         Show loading spinner when true
+        orgProfile.organization:    Organization object of logged in user
+        orgProfile.securityAdmins:  List of security admins in orgProfile.organization
+    */
+
+    orgProfile.loading = true;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
         console.log('Error', err);
     };
 
-    orgProfile.organization = {};
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
-    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-    .then(function(res) {
-        return API.cui.getOrganization({organizationId: res.organization.id});
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(person) {
+        return API.cui.getOrganization({organizationId: person.organization.id});
+    })
+    .then(function(organization) {
+        orgProfile.organization = organization;
+        return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
     })
     .then(function(res) {
-        orgProfile.organization = res;
-        orgProfile.loadingDone = true;
+        orgProfile.securityAdmins = res;
+        orgProfile.loading = false;
         $scope.$digest();
     })
-    .fail(function(err) {
-        console.log(err);
-    });
+    .fail(handleError);
+
+    // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones',
-function($scope,$timeout,API,$cuiI18n,Timezones){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
-
     var usersEdit = this;
 
     usersEdit.loading = true;
     usersEdit.saving = true;
     usersEdit.fail = false;
     usersEdit.success = false;
+    usersEdit.timezoneById = Timezones.timezoneById;
+    usersEdit.toggleOffFunctions = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     var selectTextsForQuestions = function() {
-        usersEdit.challengeQuestionsTexts=[];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion){
+        usersEdit.challengeQuestionsTexts = [];
+        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
             var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
             this.push(question.question[0].text);
         }, usersEdit.challengeQuestionsTexts);
     };
 
-    var resetTempUser=function(){
-        if(!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
+    var resetTempUser = function() {
+        if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
     };
-
-    usersEdit.resetTempObject = function(master, temp) {
-        // Used to reset the temp object to the original when a user cancels their edit changes
-        if(!angular.equals(master,temp)) angular.copy(master, temp);
-    };
-
-    usersEdit.resetPasswordFields = function() {
-        // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount.currentPassword = '';
-        usersEdit.userPasswordAccount.password = '';
-        usersEdit.passwordRe = '';
-    };
-
-    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
-        securityQuestions.forEach(function(secQuestion,i){
-            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
-                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
-            });
-            if(securityAnswerRepeatedIndex>-1) {
-                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
-            }
-            else {
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
-            }
-        });
-    };
-
-    usersEdit.resetChallengeQuestion = function(index) {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
-    };
-
-    usersEdit.timezoneById=Timezones.timezoneById;
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-
-    usersEdit.toggleOffFunctions={};
-    usersEdit.pushToggleOff=function(toggleOffObject){
-        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
-    };
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
     .then(function(res) {
@@ -2037,6 +2016,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
     })
     .then(function(res) {
         usersEdit.userPasswordAccount = res;
+        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
+    })
+    .then(function(res) {
+        CuiPasswordPolicies.set(res.rules);
         usersEdit.loading = false;
         $scope.$digest();
     })
@@ -2051,10 +2034,45 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
     // ON CLICK START --------------------------------------------------------------------------------
 
     usersEdit.toggleAllOff=function(){
-        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff){
+        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff) {
             toggleOff();
         });
         resetTempUser();
+    };
+
+    usersEdit.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
+        if (!angular.equals(master,temp)) angular.copy(master, temp);
+    };
+
+    usersEdit.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        usersEdit.userPasswordAccount.currentPassword = '';
+        usersEdit.userPasswordAccount.password = '';
+        usersEdit.passwordRe = '';
+    };
+
+    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+        securityQuestions.forEach(function(secQuestion,i){
+            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
+                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
+            });
+            if(securityAnswerRepeatedIndex>-1) {
+                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
+            }
+            else {
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
+            }
+        });
+    };
+
+    usersEdit.resetChallengeQuestion = function(index) {
+        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
+    };
+
+    usersEdit.pushToggleOff=function(toggleOffObject){
+        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
@@ -2111,11 +2129,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
         });
     };
 
-    usersEdit.updatePersonSecurityAccount = function() {
-        // Updates user's Security Account in IDM
-        // Currently API has issue when updating
-    };
-
    usersEdit.saveChallengeQuestions = function(section,toggleOff) {
         if(section) usersEdit[section]={
             submitting:true
@@ -2143,6 +2156,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones){
             $scope.$digest();
         });
     };
+
     // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
@@ -2272,42 +2286,19 @@ angular.module('app')
 
 
 angular.module('app')
-.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state',
-function(localStorageService,$scope,Person,$stateParams,API,$state){
+.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state','CuiPasswordPolicies',
+function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPolicies){
     'use strict';
-
-    var usersRegister=this;
+    var usersRegister = this;
 
     usersRegister.loading = true;
     usersRegister.registrationError = false;
     usersRegister.showCovisintInfo = false;
     usersRegister.submitting = false;
-
     usersRegister.userLogin = {};        
     usersRegister.applications = {};
     usersRegister.targetOrganization = {};
-
     usersRegister.applications.numberOfSelected = 0;
-
-    usersRegister.passwordPolicies = [
-        {
-            'allowUpperChars': true,
-            'allowLowerChars': true,
-            'allowNumChars': true,
-            'allowSpecialChars': true,
-            'requiredNumberOfCharClasses': 3
-        },
-        {
-            'disallowedChars':'^&*)(#$'
-        },
-        {
-            'min': 8,
-            'max': 18
-        },
-        {
-            'disallowedWords':['password','admin']
-        }
-    ];
             
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -2464,7 +2455,11 @@ function(localStorageService,$scope,Person,$stateParams,API,$state){
 
                     if(i === res.length) {
                         usersRegister.applications.list = listOfApps;
-                        $scope.$digest();
+                        API.cui.getPasswordPolicy({policyId: usersRegister.targetOrganization.passwordPolicy.id})
+                        .then(function(res) {
+                            CuiPasswordPolicies.set(res.rules);
+                            $scope.$digest();
+                        });
                     }
                 });
             });
@@ -2574,8 +2569,8 @@ function(localStorageService,$scope,Person,$stateParams,API,$state){
 
 
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state) {
+.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
+function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
     'use strict';
 
     var usersWalkup = this;
@@ -2598,7 +2593,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             API.cui.getOrganizations({'qs': [['name', newOrgToSearch.name]]})
             .then(function(res){
                 usersWalkup.organizationList = res;
-                $scope.$apply();
+                $scope.$digest();
             })
             .fail(handleError);
         }
@@ -2625,7 +2620,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             angular.forEach(usersWalkup.applications.selected,function(servicePackage) {
                 // usersWalkup.applications.selected is an array of strings that looks like
                 // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-                packages.push({packageId:servicePackage.split(',')[0]}); 
+                packages.push({packageId:servicePackage.split(',')[0]});
             });
             return packages;
         },
@@ -2701,7 +2696,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // Get all security questions
     API.cui.getSecurityQuestions()
-    .then(function(res) { 
+    .then(function(res) {
         res.splice(0,1);
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.length,
@@ -2745,7 +2740,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                     // this fixes an issue
                     // where removing an app from the selected list that the user had accepted the terms for
                     // would carry over that acceptance to the next app on the list
-                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) 
+                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
                 });
             }
         });
@@ -2805,7 +2800,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     // Populate Applications List based on the current organization
     $scope.$watch('usersWalkup.organization', function(newOrgSelected) {
         if (newOrgSelected) {
-            // If the organization selected changes reset all the apps 
+            // If the organization selected changes reset all the apps
             usersWalkup.applications.numberOfSelected = 0; // Restart applications count
             usersWalkup.applications.processedSelected = undefined; // Restart applications selected
 
@@ -2827,6 +2822,11 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                         }
                     });
                 });
+                return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
+            })
+            .then(function(res) {
+                CuiPasswordPolicies.set(res.rules);
+                $scope.$digest();
             })
             .fail(handleError);
         }

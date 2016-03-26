@@ -23,7 +23,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             API.cui.getOrganizations({'qs': [['name', newOrgToSearch.name]]})
             .then(function(res){
                 usersWalkup.organizationList = res;
-                $scope.$apply();
+                $scope.$digest();
             })
             .fail(handleError);
         }
@@ -50,7 +50,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
             angular.forEach(usersWalkup.applications.selected,function(servicePackage) {
                 // usersWalkup.applications.selected is an array of strings that looks like
                 // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-                packages.push({packageId:servicePackage.split(',')[0]}); 
+                packages.push({packageId:servicePackage.split(',')[0]});
             });
             return packages;
         },
@@ -126,7 +126,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
 
     // Get all security questions
     API.cui.getSecurityQuestions()
-    .then(function(res) { 
+    .then(function(res) {
         res.splice(0,1);
         // Splits questions to use between both dropdowns
         var numberOfQuestions = res.length,
@@ -170,7 +170,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                     // this fixes an issue
                     // where removing an app from the selected list that the user had accepted the terms for
                     // would carry over that acceptance to the next app on the list
-                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false) 
+                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
                 });
             }
         });
@@ -230,7 +230,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     // Populate Applications List based on the current organization
     $scope.$watch('usersWalkup.organization', function(newOrgSelected) {
         if (newOrgSelected) {
-            // If the organization selected changes reset all the apps 
+            // If the organization selected changes reset all the apps
             usersWalkup.applications.numberOfSelected = 0; // Restart applications count
             usersWalkup.applications.processedSelected = undefined; // Restart applications selected
 
@@ -252,12 +252,11 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                         }
                     });
                 });
-            })
-            .then(function() {
                 return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
             })
             .then(function(res) {
                 CuiPasswordPolicies.set(res.rules);
+                $scope.$digest();
             })
             .fail(handleError);
         }
