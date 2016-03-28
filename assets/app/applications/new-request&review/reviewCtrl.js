@@ -18,7 +18,6 @@ angular.module('app')
         applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
     }
 
-
     applicationReview.numberOfRequests=0;
     appsBeingRequested.forEach(function(){
         applicationReview.numberOfRequests++;

@@ -36,11 +36,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-    .then(function(res){
-        user=res;
-        return API.cui.getPackages(); // WORKAROUND CASE #1
-    })
+    API.cui.getRequestablePersonPackages({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         var i=0;
         var packages=res;
@@ -57,7 +53,14 @@ function(API,$scope,$state,AppRequests){
                     $scope.$digest();
                 }
             })
-            .fail(handleError);
+            .fail(function(){
+                i++;
+                if(i===packages.length){
+                    newAppRequest.categories=getListOfCategories(services);
+                    newAppRequest.loadingDone=true;
+                    $scope.$digest();
+                }
+            });
         });
     })
    .fail(handleError);

@@ -424,11 +424,7 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-    .then(function(res){
-        user=res;
-        return API.cui.getPackages(); // WORKAROUND CASE #1
-    })
+    API.cui.getRequestablePersonPackages({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         var i=0;
         var packages=res;
@@ -445,7 +441,14 @@ function(API,$scope,$state,AppRequests){
                     $scope.$digest();
                 }
             })
-            .fail(handleError);
+            .fail(function(){
+                i++;
+                if(i===packages.length){
+                    newAppRequest.categories=getListOfCategories(services);
+                    newAppRequest.loadingDone=true;
+                    $scope.$digest();
+                }
+            });
         });
     })
    .fail(handleError);
@@ -481,7 +484,6 @@ angular.module('app')
     for(var i=0; i<appsBeingRequested.length; i=i+2){
         applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
     }
-
 
     applicationReview.numberOfRequests=0;
     appsBeingRequested.forEach(function(){
@@ -552,8 +554,6 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
     applicationSearch.nameSearch=nameSearch; // get the url param for name and pre-populate the search field
     applicationSearch.category=categorySearch; // same as above
 
-    var user;
-
     var nameFilter=function(app,search){
         if(!search || search ==='') return true;
         return $filter('cuiI18n')(app.name).toLowerCase().indexOf(search.toLowerCase())>-1;
@@ -573,77 +573,34 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
         applicationSearch.doneLoading = true;
     };
 
-    var getApplications=function(packageListPassed, packagesTheOrgHasGrants){
-        var listOfAvailabeApps=[],i=0;
-        var listOfPackages=packageListPassed || packageList; // so we can call this without passing the orgPackageList again
-        listOfPackages.forEach(function(pkg){
-            if(pkg.requestable){
-                API.cui.getPackageServices({'packageId':pkg.id})
-                .then(function(res){
-                    i++
-                    res.forEach(function(service){
-                        if(packagesTheOrgHasGrants.indexOf(pkg.id)>-1) service.orgHasGrants=true; // if the org has grants to the package
-                        service.packageId=pkg.id;
-                        listOfAvailabeApps.push(service);
-                    });
-                    if(i===listOfPackages.length){
-                        applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
-                        applicationSearch.parseAppsByCategoryAndName()
-                        $scope.$digest();
-                    }
-                })
-                .fail(handleError);
-            }
-            else i++;
-            if(i===listOfPackages.length){
-                applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
-                applicationSearch.parseAppsByCategoryAndName();
-                $scope.$digest();
-            }
-        });
-    };
-
-    var getAvailableApplications=function(userPackageGrantList){ // get apps that the user can request and doesn't already have grants to
-        packageList.forEach(function(pkg,i){
-            var userGrantInPackageList = _.some(userPackageList,function(userPackageGrant){ // if the user has grants to a package in the list
-                return pkg.id===userPackageGrant.servicePackage.id; // remove that package from the list.
-            });
-            if(userGrantInPackageList) packageList.splice(i,1);
-        });
-        API.cui.getOrganizationPackages({'organizationId':userOrg})
-        .then(function(res){
-            var packagesTheOrgHasGrants=[];
-            res.forEach(function(pkgGrant){
-                packagesTheOrgHasGrants.push(pkgGrant.servicePackage.id);
-            });
-            getApplications(packageList, packagesTheOrgHasGrants);
-        })
-        .fail(handleError);
-    };
-
-    var getUserPackageGrants=function(){ // gets applications that are available for request
-        API.cui.getPersonPackages({personId:API.getUser(),useCuid:true})
-        .then(function(res){
-            userPackageList=res;
-            getAvailableApplications(userPackageList);
-        })
-        .fail(handleError);
-    };
-
-
-    API.cui.getPerson({personId:API.getUser(),useCuid:true})
-    .then(function(res){
-        userOrg=res.organization.id;
-        user=res;
-        return API.cui.getPackages(); // WORKAROUND CASE #1
-    })
+    var listOfAvailabeApps=[];
+    API.cui.getRequestablePersonPackages({ personId: API.getUser(), useCuid:true })
     .then(function(res){
         var i=0;
-        var packages=res;
-        packages.forEach(function(pkg){
-            packageList.push(pkg);
+        var listOfPackages=res;
+        listOfPackages.forEach(function(pkg){
+            API.cui.getPackageServices({'packageId':pkg.id})
+            .then(function(res){
+                i++
+                res.forEach(function(service){
+                    service.packageId=pkg.id;
+                    listOfAvailabeApps.push(service);
+                });
+                if(i===listOfPackages.length){
+                    applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                    applicationSearch.parseAppsByCategoryAndName()
+                    $scope.$digest();
+                }
+            })
+            .fail(function(){
+                i++;
+                if(i===listOfPackages.length){
+                    applicationSearch.unparsedListOfAvailabeApps=listOfAvailabeApps;
+                    applicationSearch.parseAppsByCategoryAndName()
+                    $scope.$digest();
+                }
+            });
         });
-        getUserPackageGrants();
     })
    .fail(handleError);
 
