@@ -20,6 +20,7 @@
     "cui-i18n": "#master",
     "cui-icons": "#master",
     "cui.js": "#master",
-    "cui-styleguide": "#master"
+    "cui-styleguide": "#master",
+    "svg4everybody": "^2.0.3"
   }
 }
