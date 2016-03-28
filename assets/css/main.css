@@ -1396,7 +1396,8 @@ Markup:
 
 Styleguide Elements.Icons
 */
-.cui-icon, .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron, .cui-profile--active .cui-profile__chevron, .cui-header__search, .v2 .cui-desktop-menu__icon {
+.cui-icon, .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron, .cui-profile--active .cui-profile__chevron, .v2 .cui-profile--mobile .cui-profile__chevron, .cui-header__search, .v2 .cui-desktop-menu__icon,
+.v2 .snap-menu__icon {
   fill: #85a6ad;
   height: 24px;
   width: 24px; }
@@ -2017,18 +2018,18 @@ Styleguide Blocks.Profile
     width: 15px; }
   .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron {
     fill: #fff; }
-  .cui-profile--active {
+  .cui-profile--active, .v2 .cui-profile--mobile {
     background-color: #E8F0F3; }
-    .cui-profile--active .cui-profile__popup,
-    .cui-profile--active .cui-profile__user-menu,
-    .cui-profile--active .cui-header__user-menu {
+    .cui-profile--active .cui-profile__popup, .v2 .cui-profile--mobile .cui-profile__popup,
+    .cui-profile--active .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-profile__user-menu,
+    .cui-profile--active .cui-header__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
       opacity: 1;
       pointer-events: auto; }
-    .cui-profile--active .cui-profile__user-name, .cui-profile--active .cui-header__user-name {
+    .cui-profile--active .cui-profile__user-name, .v2 .cui-profile--mobile .cui-profile__user-name, .cui-profile--active .cui-header__user-name, .v2 .cui-profile--mobile .cui-header__user-name {
       color: #4A4A4A; }
-    .cui-profile--active .cui-profile__user-menu, .cui-profile--active .cui-header__user-menu {
+    .cui-profile--active .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-profile__user-menu, .cui-profile--active .cui-header__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
       opacity: 1; }
-    .cui-profile--active .cui-profile__chevron {
+    .cui-profile--active .cui-profile__chevron, .v2 .cui-profile--mobile .cui-profile__chevron {
       color: #4A4A4A;
       fill: #4A4A4A; }
 
@@ -2694,7 +2695,8 @@ snap-drawer,
   .v2 .cui-desktop-menu--collapse {
     left: -100px; }
 
-.v2 .cui-desktop-menu__option {
+.v2 .cui-desktop-menu__option,
+.v2 .snap-menu--option {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -2711,26 +2713,37 @@ snap-drawer,
   min-height: 3.75em;
   padding: 10px 20px;
   transition: background-color .15s linear, color .15s linear; }
-  .v2 .cui-desktop-menu__option:hover {
+  .v2 .cui-desktop-menu__option:hover,
+  .v2 .snap-menu--option:hover {
     color: #FF8C00; }
-    .v2 .cui-desktop-menu__option:hover .cui-desktop-menu__icon {
+    .v2 .cui-desktop-menu__option:hover .cui-desktop-menu__icon,
+    .v2 .cui-desktop-menu__option:hover .snap-menu__icon,
+    .v2 .snap-menu--option:hover .cui-desktop-menu__icon,
+    .v2 .snap-menu--option:hover .snap-menu__icon {
       fill: #FF8C00; }
-  .v2 .cui-desktop-menu__option.active {
+  .v2 .cui-desktop-menu__option.active,
+  .v2 .snap-menu--option.active {
     background: #E8F0F3;
     color: #6a98a0; }
-    .v2 .cui-desktop-menu__option.active .cui-desktop-menu__icon {
+    .v2 .cui-desktop-menu__option.active .cui-desktop-menu__icon,
+    .v2 .cui-desktop-menu__option.active .snap-menu__icon,
+    .v2 .snap-menu--option.active .cui-desktop-menu__icon,
+    .v2 .snap-menu--option.active .snap-menu__icon {
       fill: #6a98a0; }
 
-.v2 .cui-desktop-menu__option:first-of-type {
+.v2 .cui-desktop-menu__option:first-of-type,
+.v2 .snap-menu--option:first-of-type {
   margin-top: 0; }
 
-.v2 .cui-desktop-menu__option-name {
+.v2 .cui-desktop-menu__option-name,
+.v2 .snap-menu__option-name {
   font-size: 0.875em;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1; }
 
-.v2 .cui-desktop-menu__icon {
+.v2 .cui-desktop-menu__icon,
+.v2 .snap-menu__icon {
   fill: #fff;
   -webkit-flex: .5;
       -ms-flex: .5;
@@ -2774,6 +2787,26 @@ snap-drawer,
       -ms-flex-align: center;
           align-items: center;
   padding-left: 15px; }
+
+.v2 .cui-profile--mobile {
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: auto; }
+  @media screen and (min-width: 1000px) {
+    .v2 .cui-profile--mobile {
+      display: none; } }
+  .v2 .cui-profile--mobile .cui-profile__row {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .v2 .cui-profile--mobile .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none; }
 
 .desktop-menu {
   background: linear-gradient(to bottom, #1d6572, #6a98a0);
@@ -3017,7 +3050,9 @@ Styleguide Blocks.Expandable
     position: absolute;
     top: 5px;
     right: 12px; }
-    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile .cui-profile__chevron, .cui-profile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__user .cui-profile__chevron, .cui-header__user .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile--active .cui-profile__chevron, .cui-profile--active .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__search, .cui-expandable__body-pane .cui-expandable__body-close .v2 .cui-desktop-menu__icon, .v2 .cui-expandable__body-pane .cui-expandable__body-close .cui-desktop-menu__icon {
+    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile .cui-profile__chevron, .cui-profile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__user .cui-profile__chevron, .cui-header__user .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile--active .cui-profile__chevron, .cui-profile--active .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .v2 .cui-profile--mobile .cui-profile__chevron, .v2 .cui-profile--mobile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__search, .cui-expandable__body-pane .cui-expandable__body-close .v2 .cui-desktop-menu__icon, .v2 .cui-expandable__body-pane .cui-expandable__body-close .cui-desktop-menu__icon, .cui-expandable__body-pane .cui-expandable__body-close
+    .v2 .snap-menu__icon,
+    .v2 .cui-expandable__body-pane .cui-expandable__body-close .snap-menu__icon {
       height: 14px;
       width: 14px; }
   .cui-expandable__body-pane .cui-expandable__pane-title {
