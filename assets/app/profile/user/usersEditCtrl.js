@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies','Helper',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,Helper){
     'use strict';
     var usersEdit = this;
 
@@ -41,6 +41,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.tempUser={};
         angular.copy(res,usersEdit.user);
         angular.copy(res,usersEdit.tempUser);
+        usersEdit.userRegisterDate=Helper.getDateFromUnixStamp(res.creation);
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -63,10 +64,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
+        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id})
     })
-    .then(function(res) {
-        usersEdit.userPasswordAccount = res;
+    .then(function(res){
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {
