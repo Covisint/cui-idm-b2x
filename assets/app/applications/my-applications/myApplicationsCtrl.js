@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','Helper',
-function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','AppConfig',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,AppConfig) {
     'use strict';
 
     var myApplications = this;
@@ -67,7 +67,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
+                    service.dateCreated = $filter('date')(grant.creation,AppConfig.dateFormat);
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });

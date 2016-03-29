@@ -6,8 +6,8 @@
 
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
-function(API,$scope,$stateParams,$state,Helper) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','$filter','AppConfig',
+function(API,$scope,$stateParams,$state,$filter,AppConfig) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -58,7 +58,7 @@ function(API,$scope,$stateParams,$state,Helper) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = Helper.getDateFromUnixStamp(pkgGrantThatMatches.creation);
+            childService.grantedDate = $filter('date')(pkgGrantThatMatches.creation,AppConfig.dateFormat);
         }
 
         childService.packageId = childPackage.id;
@@ -124,7 +124,7 @@ function(API,$scope,$stateParams,$state,Helper) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = Helper.getDateFromUnixStamp(res.creation);
+            app.grantedDate = $filter('date')(res.creation,AppConfig.dateFormat);
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);
@@ -164,8 +164,8 @@ function(API,$scope,$stateParams,$state,Helper) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','Helper',
-function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','AppConfig',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,AppConfig) {
     'use strict';
 
     var myApplications = this;
@@ -232,7 +232,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
+                    service.dateCreated = $filter('date')(grant.creation,AppConfig.dateFormat);
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
@@ -1110,6 +1110,15 @@ angular.module('app')
 
 
 angular.module('app')
+.factory('AppConfig',[function(){
+
+    return {
+        dateFormat:'shortDate'
+    };
+
+}]);
+
+angular.module('app')
 .factory('Countries',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
 
     var countries=[];
@@ -1141,20 +1150,6 @@ angular.module('app')
     setCountries($translate.proposedLanguage());
 
     return countries;
-}]);
-
-angular.module('app')
-.factory('Helper',[function(){
-
-    return {
-        getDateFromUnixStamp:function(unixTimeStamp){
-            var dateGranted = new Date(unixTimeStamp);
-            var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-            return dateGrantedFormatted;
-        }
-
-    };
-
 }]);
 
 angular.module('app')
@@ -1906,8 +1901,8 @@ function($scope,$stateParams,API) {
 
 
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies','Helper',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,Helper){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies','$filter','AppConfig',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,$filter,AppConfig){
     'use strict';
     var usersEdit = this;
 
@@ -1948,7 +1943,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,Helper){
         usersEdit.tempUser={};
         angular.copy(res,usersEdit.user);
         angular.copy(res,usersEdit.tempUser);
-        usersEdit.userRegisterDate=Helper.getDateFromUnixStamp(res.creation);
+        usersEdit.userRegisterDate=$filter('date')(res.creation,'shortDate');
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
