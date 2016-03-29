@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         tasks: ['sass','autoprefixer']
       },
       scripts:{
-        files: ['assets/app/**/*.js'],
+        files: ['assets/app/**/*.js','assets/angular-modules/**/*.js'],
         tasks: ['concat'],
         options: {
           spawn: false,

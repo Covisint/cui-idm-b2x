@@ -4,6 +4,7 @@
     angular
     .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
 
+
 angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
 function(API,$scope,$stateParams,$state,Helper) {
@@ -2004,8 +2005,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     usersEdit.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount.currentPassword = '';
-        usersEdit.userPasswordAccount.password = '';
+        usersEdit.userPasswordAccount={
+            currentPassword:'',
+            password:''
+        };
         usersEdit.passwordRe = '';
     };
 
