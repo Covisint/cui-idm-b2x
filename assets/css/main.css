@@ -5136,7 +5136,7 @@ inline-edit .angucomplete-dropdown {
       padding: 0.9375em 3.4375em 0 4.0625em; } }
 
 .cui-users__profile-media {
-  max-width: 250px; }
+  max-width: 50%; }
 
 .cui-users__field {
   -webkit-align-items: baseline;
@@ -5199,6 +5199,9 @@ inline-edit .angucomplete-dropdown {
   margin-bottom: 0.3125em; }
   .cui-users__address-info:first-of-type {
     margin-top: 0.3125em; }
+
+.cui-media__image-container {
+  margin-right: 15px; }
 
 .cui-organization {
   position: relative; }

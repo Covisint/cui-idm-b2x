@@ -10,7 +10,7 @@
 
 .cui-users__profile-media {
   @extend %flex-row-vert;
-  max-width: 250px;
+  max-width: 50%;
 }
 
 .cui-users__field {
@@ -80,4 +80,8 @@
   &:first-of-type {
     margin-top: em(5);
   }
+}
+
+.cui-media__image-container {
+  margin-right: 15px;
 }
