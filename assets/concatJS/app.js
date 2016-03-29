@@ -6,8 +6,8 @@
 
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','$filter','AppConfig',
-function(API,$scope,$stateParams,$state,$filter,AppConfig) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -58,7 +58,7 @@ function(API,$scope,$stateParams,$state,$filter,AppConfig) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = $filter('date')(pkgGrantThatMatches.creation,AppConfig.dateFormat);
+            childService.grantedDate = pkgGrantThatMatches.creation;
         }
 
         childService.packageId = childPackage.id;
@@ -124,7 +124,7 @@ function(API,$scope,$stateParams,$state,$filter,AppConfig) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = $filter('date')(res.creation,AppConfig.dateFormat);
+            app.grantedDate = res.creation;
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);
@@ -164,8 +164,8 @@ function(API,$scope,$stateParams,$state,$filter,AppConfig) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','AppConfig',
-function(localStorageService,$scope,$stateParams,API,$state,$filter,AppConfig) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
     var myApplications = this;
@@ -232,7 +232,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,AppConfig) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = $filter('date')(grant.creation,AppConfig.dateFormat);
+                    service.dateCreated = grant.creation;
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
@@ -746,8 +746,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu',
-function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu','AppConfig',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu,AppConfig){
     var base=this;
 
     base.goBack=function(){
@@ -791,9 +791,11 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.countries=Countries;
     base.timezones=Timezones.all;
     base.languages=Languages.all;
+    base.appConfig=AppConfig;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
+
 
     base.logout=API.cui.covLogout;
 
@@ -1901,8 +1903,8 @@ function($scope,$stateParams,API) {
 
 
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies','$filter','AppConfig',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,$filter,AppConfig){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
     var usersEdit = this;
 
@@ -1943,7 +1945,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,$filter,AppC
         usersEdit.tempUser={};
         angular.copy(res,usersEdit.user);
         angular.copy(res,usersEdit.tempUser);
-        usersEdit.userRegisterDate=$filter('date')(res.creation,'shortDate');
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {

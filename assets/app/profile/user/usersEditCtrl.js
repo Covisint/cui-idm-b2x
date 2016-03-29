@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies','$filter','AppConfig',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,$filter,AppConfig){
+.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
     var usersEdit = this;
 
@@ -41,7 +41,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies,$filter,AppC
         usersEdit.tempUser={};
         angular.copy(res,usersEdit.user);
         angular.copy(res,usersEdit.tempUser);
-        usersEdit.userRegisterDate=$filter('date')(res.creation,'shortDate');
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
