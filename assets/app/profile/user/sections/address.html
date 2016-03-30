@@ -16,7 +16,6 @@
         <div class="cui-field-val__val">{{usersEdit.tempUser.addresses[0].state}} {{usersEdit.tempUser.addresses[0].postal}}</div>
         <div class="cui-field-val__val">{{base.countries.getCountryByCode(usersEdit.tempUser.addresses[0].country).name}}</div>
       </div>
-
       <!-- Address Edit -->
       <div ng-if='toggled' ng-init="usersEdit.pushToggleOff({'name':'address','function':toggleOff})">
         <!-- Street Address -->
