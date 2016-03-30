@@ -1,5 +1,5 @@
 .cui-users__main-container {
-  padding: em(15) em(13);
+  padding: 0 em(15) em(13);
   position: relative;
   min-height: 400px;
 
@@ -10,6 +10,7 @@
 
 .cui-users__profile-media {
   @extend %flex-row-vert;
+  border-bottom: 1px solid #e8f0f3;
   max-width: 50%;
 
   @media screen and (max-width: 700px) {
@@ -27,6 +28,7 @@
 
   @media screen and (max-width: 700px) {
     flex-direction: column;
+    margin-top: em(25);
   }
 }
 

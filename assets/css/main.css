@@ -5128,7 +5128,7 @@ inline-edit .angucomplete-dropdown {
             transform: translate(-8em); } }
 
 .cui-users__main-container {
-  padding: 0.9375em 0.8125em;
+  padding: 0 0.9375em 0.8125em;
   position: relative;
   min-height: 400px; }
   @media screen and (min-width: 701px) {
@@ -5136,6 +5136,7 @@ inline-edit .angucomplete-dropdown {
       padding: 0.9375em 3.4375em 0 4.0625em; } }
 
 .cui-users__profile-media {
+  border-bottom: 1px solid #e8f0f3;
   max-width: 50%; }
   @media screen and (max-width: 700px) {
     .cui-users__profile-media {
@@ -5150,7 +5151,8 @@ inline-edit .angucomplete-dropdown {
   .cui-users__profile {
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
-            flex-direction: column; } }
+            flex-direction: column;
+    margin-top: 1.5625em; } }
 
 .cui-users__profile-info {
   -webkit-flex: .5;
