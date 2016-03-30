@@ -5136,10 +5136,10 @@ inline-edit .angucomplete-dropdown {
       padding: 0.9375em 3.4375em 0 4.0625em; } }
 
 .cui-users__profile-media {
-  border-bottom: 1px solid #e8f0f3;
   max-width: 50%; }
   @media screen and (max-width: 700px) {
     .cui-users__profile-media {
+      border-bottom: 1px solid #E8F0F3;
       max-width: none; } }
 
 .cui-users__field {
