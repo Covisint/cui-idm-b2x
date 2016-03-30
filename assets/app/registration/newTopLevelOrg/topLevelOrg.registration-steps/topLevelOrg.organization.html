@@ -80,7 +80,7 @@
       <div class="cui-error" ng-messages="organization.country.$error" ng-if="organization.country.$touched">
         <div ng-messages-include="assets/app/common-templates/messages.html"></div>
       </div>
-      <div auto-complete input-name="country" pause="100" selected-object="newTLO.organization.addresses[0].country" local-data="base.countries" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="newTLO.organization.addresses[0].country">
+      <div auto-complete input-name="country" pause="100" selected-object="newTLO.organization.addresses[0].country" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="newTLO.organization.addresses[0].country">
         <input type="text" name="country" class="cui-input" ng-model="newTLO.organization.addresses[0].country">
       </div>
     </div>

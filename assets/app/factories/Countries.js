@@ -27,7 +27,16 @@ angular.module('app')
         setCountries(args);
     });
 
+    var getCountryByCode=function(countryCode){
+        return _.find(countries,function(countryObject){
+            return countryObject.code===countryCode;
+        });
+    };
+
     setCountries($translate.proposedLanguage());
 
-    return countries;
+    return {
+        list:countries,
+        getCountryByCode:getCountryByCode
+    };
 }]);

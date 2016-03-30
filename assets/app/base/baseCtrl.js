@@ -42,6 +42,7 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
     base.countries=Countries;
+
     base.timezones=Timezones.all;
     base.languages=Languages.all;
     base.appConfig=AppConfig;

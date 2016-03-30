@@ -789,6 +789,7 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
     base.countries=Countries;
+
     base.timezones=Timezones.all;
     base.languages=Languages.all;
     base.appConfig=AppConfig;
@@ -1149,9 +1150,18 @@ angular.module('app')
         setCountries(args);
     });
 
+    var getCountryByCode=function(countryCode){
+        return _.find(countries,function(countryObject){
+            return countryObject.code===countryCode;
+        });
+    };
+
     setCountries($translate.proposedLanguage());
 
-    return countries;
+    return {
+        list:countries,
+        getCountryByCode:getCountryByCode
+    };
 }]);
 
 angular.module('app')
@@ -2036,10 +2046,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
     usersEdit.updatePerson = function(section,toggleOff) {
-        if(angular.equals(usersEdit.tempUser, usersEdit.user)){
-            if(toggleOff) toggleOff();
-            return;
-        }
         if(section) usersEdit[section]={
             submitting:true
         };

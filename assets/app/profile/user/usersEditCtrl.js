@@ -132,10 +132,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
     usersEdit.updatePerson = function(section,toggleOff) {
-        if(angular.equals(usersEdit.tempUser, usersEdit.user)){
-            if(toggleOff) toggleOff();
-            return;
-        }
         if(section) usersEdit[section]={
             submitting:true
         };
