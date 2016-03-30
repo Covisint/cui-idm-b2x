@@ -63,10 +63,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
+        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id})
     })
-    .then(function(res) {
-        usersEdit.userPasswordAccount = res;
+    .then(function(res){
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {

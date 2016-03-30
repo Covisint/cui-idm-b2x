@@ -6,8 +6,8 @@
 
 
 angular.module('app')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','Helper',
-function(API,$scope,$stateParams,$state,Helper) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
+function(API,$scope,$stateParams,$state) {
     var myApplicationDetails = this;
 
     var appId = $stateParams.appId; // get the appId from the url
@@ -58,7 +58,7 @@ function(API,$scope,$stateParams,$state,Helper) {
 
         if (pkgGrantThatMatches) {
             childService.status = pkgGrantThatMatches.status;
-            childService.grantedDate = Helper.getDateFromUnixStamp(pkgGrantThatMatches.creation);
+            childService.grantedDate = pkgGrantThatMatches.creation;
         }
 
         childService.packageId = childPackage.id;
@@ -124,7 +124,7 @@ function(API,$scope,$stateParams,$state,Helper) {
     var getPackageGrantDetails = function(app) {
         API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
         .then(function(res) {
-            app.grantedDate = Helper.getDateFromUnixStamp(res.creation);
+            app.grantedDate = res.creation;
             app.status = res.status;
             myApplicationDetails.app = app;
             getBundledApps(app);
@@ -164,8 +164,8 @@ function(API,$scope,$stateParams,$state,Helper) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter','Helper',
-function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
     var myApplications = this;
@@ -232,7 +232,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Helper) {
                 i++;
                 res.forEach(function(service) {
                     service.status = grant.status; // attach the status of the service package to the service
-                    service.dateCreated = Helper.getDateFromUnixStamp(grant.creation);
+                    service.dateCreated = grant.creation;
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
@@ -746,8 +746,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests){
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu',
-function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu','AppConfig',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu,AppConfig){
     var base=this;
 
     base.goBack=function(){
@@ -791,9 +791,11 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.countries=Countries;
     base.timezones=Timezones.all;
     base.languages=Languages.all;
+    base.appConfig=AppConfig;
 
     base.user = User.user;
     base.authInfo = API.authInfo;
+
 
     base.logout=API.cui.covLogout;
 
@@ -1110,6 +1112,15 @@ angular.module('app')
 
 
 angular.module('app')
+.factory('AppConfig',[function(){
+
+    return {
+        dateFormat:'shortDate'
+    };
+
+}]);
+
+angular.module('app')
 .factory('Countries',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
 
     var countries=[];
@@ -1141,20 +1152,6 @@ angular.module('app')
     setCountries($translate.proposedLanguage());
 
     return countries;
-}]);
-
-angular.module('app')
-.factory('Helper',[function(){
-
-    return {
-        getDateFromUnixStamp:function(unixTimeStamp){
-            var dateGranted = new Date(unixTimeStamp);
-            var dateGrantedFormatted = (dateGranted.getMonth()+1) + '.' + dateGranted.getDate() + '.' + dateGranted.getFullYear();
-            return dateGrantedFormatted;
-        }
-
-    };
-
 }]);
 
 angular.module('app')
@@ -1970,10 +1967,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getPersonPassword({ personId: API.getUser(), useCuid:true });
+        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id})
     })
-    .then(function(res) {
-        usersEdit.userPasswordAccount = res;
+    .then(function(res){
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {

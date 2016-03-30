@@ -22,7 +22,7 @@
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}} </sup>
 
-            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-class="{'hide--opacity': !applicationSearch.requestPopover}">
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="applicationSearch.requestPopover">
               <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
               <div class="cui-action__popover-section">
                 <span ng-if="applicationSearch.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>

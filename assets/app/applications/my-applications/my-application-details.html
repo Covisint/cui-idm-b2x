@@ -30,7 +30,7 @@
         <!-- Summary Information -->
         <div>
           <h3 class="cui-media__title">{{myApplicationDetails.app.name | cuiI18n}}</h3>
-          <span class="cui-media__content" >{{ 'granted' | translate }}: {{myApplicationDetails.app.grantedDate}}</span>
+          <span class="cui-media__content" >{{ 'granted' | translate }}: {{myApplicationDetails.app.grantedDate | date:base.appConfig.dateFormat}}</span>
           <span ng-class="'cui-status--'+myApplicationDetails.app.status">{{myApplicationDetails.app.status | uppercase}}</span>
         </div>
       </div>
@@ -56,7 +56,7 @@
                   <div class="cui-media__body">
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
                     <span class="cui-media__content" ng-if="!application.status">{{application.name | cuiI18n}}</span>
-                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate}}</span> <!-- If the user has a grant on that service -->
+                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                     <span ng-if="!application.status">{{'request' | translate}}</span>
                   </div>
                   <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.status | uppercase}}</span>  <!-- If the user has a grant on that service -->
@@ -69,7 +69,7 @@
                   <div class="cui-media__body">
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
                     <span class="cui-media__content" ng-if="!application.status">{{application.name | cuiI18n}}</span>
-                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate}}</span> <!-- If the user has a grant on that service -->
+                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                     <span ng-if="!application.status">{{'request' | translate}}</span>
                   </div>
                   <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.status | uppercase}}</span>  <!-- If the user has a grant on that service -->
@@ -104,7 +104,7 @@
                 <div class="cui-media__body">
                   <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
                   <span class="cui-media__content" ng-if="!application.status">{{application.name | cuiI18n}}</span>
-                  <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate}}</span> <!-- If the user has a grant on that service -->
+                  <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                   <span ng-if="!application.status">{{'request' | translate}}</span>
                 </div>
                 <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.status | uppercase}}</span>  <!-- If the user has a grant on that service -->
@@ -117,7 +117,7 @@
                   <div class="cui-media__body">
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
                     <span class="cui-media__content" ng-if="!application.status">{{application.name | cuiI18n}}</span>
-                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate}}</span> <!-- If the user has a grant on that service -->
+                    <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                     <span class="cui-button" ng-if="!application.status">{{'request' | translate}}</span>
                   </div>
                   <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.status | uppercase}}</span>  <!-- If the user has a grant on that service -->
