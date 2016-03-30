@@ -5137,17 +5137,32 @@ inline-edit .angucomplete-dropdown {
 
 .cui-users__profile-media {
   max-width: 50%; }
+  @media screen and (max-width: 700px) {
+    .cui-users__profile-media {
+      max-width: none; } }
 
 .cui-users__field {
   -webkit-align-items: baseline;
       -ms-flex-align: baseline;
           align-items: baseline; }
 
+@media screen and (max-width: 700px) {
+  .cui-users__profile {
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; } }
+
 .cui-users__profile-info {
-  width: 40%;
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5;
   -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
           justify-content: flex-start; }
+
+@media screen and (min-width: 701px) {
+  .cui-users__profile-info:first-of-type {
+    margin-right: 15.5%; } }
 
 .cui-users__address-container {
   -webkit-flex: 1;
@@ -5156,6 +5171,9 @@ inline-edit .angucomplete-dropdown {
   .cui-users__address-container.show-address {
     background-color: #d4e2e6;
     padding: 1em 1em 1.875em; }
+    @media screen and (max-width: 700px) {
+      .cui-users__address-container.show-address {
+        margin: 0 -15px; } }
     .cui-users__address-container.show-address .cui-users__field {
       margin-bottom: 1.5625em; }
 
