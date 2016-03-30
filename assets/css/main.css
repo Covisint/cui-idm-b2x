@@ -2761,7 +2761,7 @@ snap-drawer,
   padding-left: 27px;
   width: 180px;
   z-index: 1; }
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 999px) {
     .v2 .cui-menu__toggle-button--desktop {
       display: none; } }
 
@@ -2788,14 +2788,22 @@ snap-drawer,
           align-items: center;
   padding-left: 15px; }
 
+@media screen and (max-width: 999px) {
+  .v2 .cui-profile, .v2 .cui-header__user {
+    display: none; } }
+
 .v2 .cui-profile--mobile {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: auto; }
-  @media screen and (min-width: 1000px) {
+  height: auto;
+  margin-left: 0;
+  margin-top: 80px; }
+  @media screen and (max-width: 999px) {
     .v2 .cui-profile--mobile {
-      display: none; } }
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; } }
   .v2 .cui-profile--mobile .cui-profile__row {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -2807,6 +2815,12 @@ snap-drawer,
     -webkit-transform: none;
         -ms-transform: none;
             transform: none; }
+  .v2 .cui-profile--mobile .cui-profile__user-name, .v2 .cui-profile--mobile .cui-header__user-name {
+    display: block; }
+
+@media screen and (min-width: 1000px) {
+  .v2 .menu-toggle--mobile {
+    display: none; } }
 
 .desktop-menu {
   background: linear-gradient(to bottom, #1d6572, #6a98a0);
@@ -4019,16 +4033,23 @@ step,
   .cui-wizard[mobile-stack] .mobile-element {
     display: none; } }
 
-.cui-steps {
-  position: relative; }
+.cui-steps,
+.steps {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%; }
 
 /*
 Step Indicator With Icons
 
 Markup:
-<div class="cui-steps">
+<div class="indicator-container indicator-container--icons">
   <div class="steps-bar steps-bar--no-js"><div class="steps-bar-fill"></div></div>
-  <div class="indicator-container indicator-container--icons">
+  <div class="cui-steps">
     <span class="step-indicator ng-binding ng-scope active">Step 1
       <div class="icon-container">
         <div class="icon">
