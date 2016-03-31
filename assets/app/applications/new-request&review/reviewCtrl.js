@@ -3,12 +3,7 @@ angular.module('app')
 
     var applicationReview=this;
     var appRequests=AppRequests.get(),
-        appsBeingRequested=Object.keys(appRequests),
-        userId='IT88ZQJ8';  // this will be replaced with the current user ID;
-
-    var handleError=function(err){
-        console.log('Error \n', err);
-    };
+        appsBeingRequested=Object.keys(appRequests);
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -47,7 +42,7 @@ angular.module('app')
             });
         });
         if(applicationReview.error) return;
-        var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
+        var appRequests=AppRequests.getPackageRequests(API.getUser(),applicationRequestArray),
             i=0;
         appRequests.forEach(function(appRequest){
             API.cui.createPackageRequest({data:appRequest})
