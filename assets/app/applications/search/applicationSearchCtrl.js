@@ -23,7 +23,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    Object.keys(applicationSearch.packageRequests).forEach(function(appId) { 
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId) {
         // This sets the checkboxes back to marked when the user clicks back
         applicationSearch.appCheckbox[appId] = true;  // after being in request review
         applicationSearch.numberOfRequests++;
@@ -42,11 +42,11 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     var categoryFilter = function(app, category) {
         if (!app.category && category) {
-            return false;  
+            return false;
         }
         if (!category) {
-            return true;  
-        } 
+            return true;
+        }
         return $filter('cuiI18n')(app.category).indexOf(category) > -1;
     };
 
@@ -59,7 +59,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         }
     };
 
-    var getBundledApps = function($index, application) { 
+    var getBundledApps = function($index, application) {
         // WORKAROUND CASE # 1
         bundled[$index] = [];
 
@@ -157,7 +157,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-    
+
     API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true})
     .then(function(res) {
         var i = 0;
@@ -201,12 +201,6 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         applicationSearch.doneLoading = true;
     };
 
-    applicationSearch.listenForEnter = function($event) {
-        if ($event.keyCode===13) {
-            applicationSearch.parseAppsByCategoryAndName();
-        }
-    };
-
     applicationSearch.toggleRequest = function(application) {
         if (!applicationSearch.packageRequests[application.id]) {
             applicationSearch.packageRequests[application.id] = application;
@@ -218,7 +212,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     };
 
     applicationSearch.getRelatedAndBundled = function($index, application) {
-        if (applicationSearch.detailsLoadingDone[application.id]) { 
+        if (applicationSearch.detailsLoadingDone[application.id]) {
             // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }

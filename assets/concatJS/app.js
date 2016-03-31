@@ -482,12 +482,7 @@ angular.module('app')
 
     var applicationReview=this;
     var appRequests=AppRequests.get(),
-        appsBeingRequested=Object.keys(appRequests),
-        userId='IT88ZQJ8';  // this will be replaced with the current user ID;
-
-    var handleError=function(err){
-        console.log('Error \n', err);
-    };
+        appsBeingRequested=Object.keys(appRequests);
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -526,7 +521,7 @@ angular.module('app')
             });
         });
         if(applicationReview.error) return;
-        var appRequests=AppRequests.getPackageRequests(userId,applicationRequestArray),
+        var appRequests=AppRequests.getPackageRequests(API.getUser(),applicationRequestArray),
             i=0;
         appRequests.forEach(function(appRequest){
             API.cui.createPackageRequest({data:appRequest})
@@ -571,7 +566,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    Object.keys(applicationSearch.packageRequests).forEach(function(appId) { 
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId) {
         // This sets the checkboxes back to marked when the user clicks back
         applicationSearch.appCheckbox[appId] = true;  // after being in request review
         applicationSearch.numberOfRequests++;
@@ -590,11 +585,11 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     var categoryFilter = function(app, category) {
         if (!app.category && category) {
-            return false;  
+            return false;
         }
         if (!category) {
-            return true;  
-        } 
+            return true;
+        }
         return $filter('cuiI18n')(app.category).indexOf(category) > -1;
     };
 
@@ -607,7 +602,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         }
     };
 
-    var getBundledApps = function($index, application) { 
+    var getBundledApps = function($index, application) {
         // WORKAROUND CASE # 1
         bundled[$index] = [];
 
@@ -705,7 +700,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-    
+
     API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true})
     .then(function(res) {
         var i = 0;
@@ -749,12 +744,6 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         applicationSearch.doneLoading = true;
     };
 
-    applicationSearch.listenForEnter = function($event) {
-        if ($event.keyCode===13) {
-            applicationSearch.parseAppsByCategoryAndName();
-        }
-    };
-
     applicationSearch.toggleRequest = function(application) {
         if (!applicationSearch.packageRequests[application.id]) {
             applicationSearch.packageRequests[application.id] = application;
@@ -766,7 +755,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     };
 
     applicationSearch.getRelatedAndBundled = function($index, application) {
-        if (applicationSearch.detailsLoadingDone[application.id]) { 
+        if (applicationSearch.detailsLoadingDone[application.id]) {
             // If we've already loaded the bundled and related apps for this app then we don't do it again
             return;
         }
@@ -1991,6 +1980,19 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
     };
 
+    var build = {
+        personPasswordAccount: function() {
+            return {
+                version: '1',
+                username: usersEdit.user.username,
+                currentPassword: usersEdit.userPasswordAccount.currentPassword,
+                password: usersEdit.userPasswordAccount.password,
+                passwordPolicy: usersEdit.organization.passwordPolicy,
+                authenticationPolicy: usersEdit.organization.authenticationPolicy
+            };
+        }
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -2003,10 +2005,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
-        usersEdit.user={};
-        usersEdit.tempUser={};
-        angular.copy(res,usersEdit.user);
-        angular.copy(res,usersEdit.tempUser);
+        usersEdit.user = {};
+        usersEdit.tempUser = {};
+        angular.copy(res, usersEdit.user);
+        angular.copy(res, usersEdit.tempUser);
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -2028,9 +2030,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id})
+        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id});
     })
-    .then(function(res){
+    .then(function(res) {
+        usersEdit.organization = res;
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {
@@ -2062,9 +2065,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     usersEdit.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount={
-            currentPassword:'',
-            password:''
+        usersEdit.userPasswordAccount = {
+            currentPassword: '',
+            password: ''
         };
         usersEdit.passwordRe = '';
     };
@@ -2123,21 +2126,21 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     };
 
     usersEdit.updatePassword = function(section,toggleOff) {
-        if(section) usersEdit[section]={
-            submitting:true
-        };
+        if (section) {
+            usersEdit[section] = { submitting:true };
+        } 
 
-        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
         .then(function(res) {
-            if(section) usersEdit[section].submitting=false;
-            if(toggleOff) toggleOff();
+            if (section) usersEdit[section].submitting = false;  
+            if (toggleOff) toggleOff();
             usersEdit.resetPasswordFields();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
+            if (section) usersEdit[section].submitting = false;
+            if (section) usersEdit[section].error = true;
             $scope.$digest();
         });
     };
