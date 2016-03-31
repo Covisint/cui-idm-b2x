@@ -199,6 +199,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 48 48');
     $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg','0 0 216 216');
+    $cuiIconProvider.iconSet('icon','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 49 49');
 }]);
 
 angular.module('app')

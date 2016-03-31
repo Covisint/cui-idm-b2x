@@ -10,3 +10,4 @@ target
 assets/angular-modules/templateCache.js
 assets/concatJS/app.js
 assets/css/main.css
+build
