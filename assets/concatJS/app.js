@@ -429,7 +429,7 @@ function(API,$scope,$state,AppRequests) {
         newAppRequest.numberOfRequests++;
         newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
     });
-    
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -468,10 +468,8 @@ function(API,$scope,$state,AppRequests) {
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-    newAppRequest.listenForEnter = function($event) {
-        if ($event.keyCode === 13) {
-            $state.go('applications.search', {name: newAppRequest.search});
-        } 
+    newAppRequest.searchCallback = function(searchWord) {
+        $state.go('applications.search', {name: searchWord});
     };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
@@ -837,6 +835,8 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.appConfig=AppConfig;
 
     base.user = User.user;
+    base.userName = User.userName;
+
     base.authInfo = API.authInfo;
 
 
@@ -1107,7 +1107,7 @@ angular.module('app')
             authRedirect: window.location.href.split('#')[0] + '#/empty',
             appRedirect: $location.path()
         });
-    };
+    }
 
     myCUI.setAuthHandler(jwtAuthHandler);
 
@@ -1134,7 +1134,11 @@ angular.module('app')
                 else {
                     self.setUser(res);
                     self.setAuthInfo(res.authInfo);
-                    myCUI.getPersonRoles({ personId: self.getUser() })
+                    myCUI.getPerson({ personId: res.cuid })
+                    .then(function(res) {
+                        angular.copy(res.name, User.userName);
+                        return myCUI.getPersonRoles({ personId: self.getUser() });
+                    })
                     .then(function(roles) {
                         var roleList = [];
                         roles.forEach(function(role) {
@@ -1328,6 +1332,8 @@ angular.module('app')
         entitlements: []
     };
 
+    var userName = {};
+
     return {
         set : function(newUser) {
             user.cuid = newUser.cuid;
@@ -1340,10 +1346,14 @@ angular.module('app')
         },
         getEntitlements : function(){
             return user.entitlements;
-        }
+        },
+
+        userName: userName
+
     };
 
 }]);
+
 
 angular.module('app')
 .controller('usersInviteCtrl',['localStorageService','$scope','$stateParams','API',
@@ -2000,7 +2010,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
-        console.log(res);
         usersEdit.userSecurityQuestions = res;
         usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
@@ -2829,6 +2838,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                 return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
             })
             .then(function(res) {
+                console.log(res);
                 CuiPasswordPolicies.set(res.rules);
                 $scope.$digest();
             })

@@ -16,7 +16,7 @@
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
             <!-- popover -->
-            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if-"newAppRequest.requestPopover">
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="newAppRequest.requestPopover">
               <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
               <div class="cui-action__popover-section">
                 <span ng-if="newAppRequest.appsBeingRequested.length===0">{{'no-selected-apps' | translate}}<br/></span>
@@ -32,7 +32,7 @@
         <div>
             <div class="cui-applications__search-options">
                 <div class="cui-input-button">
-                    <input type="text" class="cui-input-button__input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}"/>
+                    <input type="text" class="cui-input-button__input" ng-model="newAppRequest.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="newAppRequest.searchCallback"/>
                     <button class="cui-input-button__button" ui-sref="applications.search({name:newAppRequest.search})">{{'go' | translate}}</button>
                 </div>
                 <div class="cui-applications__center-text">or</div>

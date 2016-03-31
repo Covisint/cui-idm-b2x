@@ -40,7 +40,7 @@ function(API,$scope,$state,AppRequests) {
         newAppRequest.numberOfRequests++;
         newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
     });
-    
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -79,10 +79,8 @@ function(API,$scope,$state,AppRequests) {
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-    newAppRequest.listenForEnter = function($event) {
-        if ($event.keyCode === 13) {
-            $state.go('applications.search', {name: newAppRequest.search});
-        } 
+    newAppRequest.searchCallback = function(searchWord) {
+        $state.go('applications.search', {name: searchWord});
     };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------

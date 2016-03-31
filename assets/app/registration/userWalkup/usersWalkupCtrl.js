@@ -255,6 +255,7 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
                 return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
             })
             .then(function(res) {
+                console.log(res);
                 CuiPasswordPolicies.set(res.rules);
                 $scope.$digest();
             })

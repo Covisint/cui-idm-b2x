@@ -2068,7 +2068,10 @@ Styleguide Blocks.Profile
     height: 15px;
     width: 15px; }
   .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron {
-    fill: #fff; }
+    fill: #fff;
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
   .cui-profile--active, .v2 .cui-profile--mobile {
     background-color: #E8F0F3; }
     .cui-profile--active .cui-profile__popup, .v2 .cui-profile--mobile .cui-profile__popup,
@@ -2082,7 +2085,10 @@ Styleguide Blocks.Profile
       opacity: 1; }
     .cui-profile--active .cui-profile__chevron, .v2 .cui-profile--mobile .cui-profile__chevron {
       color: #4A4A4A;
-      fill: #4A4A4A; }
+      fill: #4A4A4A;
+      -webkit-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+              transform: rotate(0deg); }
 
 .cui-avatar__image-container {
   background-size: cover;
@@ -4474,6 +4480,9 @@ Styleguide Blocks.Media-Object
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    -webkit-flex: .2;
+        -ms-flex: .2;
+            flex: .2;
     -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end; } }
@@ -4484,7 +4493,7 @@ Styleguide Blocks.Media-Object
   letter-spacing: 1.6px; }
 
 .cui-media__image {
-  border: 2px solid black;
+  border: 0;
   border-radius: 50%;
   height: 3.125em;
   width: 3.125em; }
