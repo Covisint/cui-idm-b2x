@@ -2084,6 +2084,30 @@ Styleguide Blocks.Profile
       color: #4A4A4A;
       fill: #4A4A4A; }
 
+.cui-avatar__image-container {
+  background-size: cover;
+  border-radius: 50%;
+  height: 46px;
+  width: auto; }
+
+.cui-avatar__initials {
+  color: white; }
+
+.cui-avatar__color1 {
+  background-color: #cde6f0; }
+
+.cui-avatar__color2 {
+  background-color: #85a6ad; }
+
+.cui-avatar__color3 {
+  background-color: #6a98a0; }
+
+.cui-avatar__color4 {
+  background-color: #1d6572; }
+
+.cui-avatar__color5 {
+  background-color: #343534; }
+
 /*
 Header
 

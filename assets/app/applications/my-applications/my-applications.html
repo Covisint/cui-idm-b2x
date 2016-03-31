@@ -61,7 +61,7 @@
   <div ng-if="myApplications.doneLoading">
     <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list track by application.id" ng-click="myApplications.goToDetails(application)">
       <div class="cui-media__image-container">
-        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
       <div class="cui-media__body cui-media__body--full">
         <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>

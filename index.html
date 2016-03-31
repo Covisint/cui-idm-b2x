@@ -172,7 +172,7 @@
               </div>
           </div>
         </header>
-        <div ui-view></div>
+        <div ui-view ng-cloak></div>
         <div class="cui-tile cui-footer">
           <div ng-translate-language-select class="cui-footer__translate"></div>
           <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Covisint</a></div>
@@ -185,6 +185,7 @@
   </div>
 
 <!-- build:js assets/js/vendor.js -->
+<script src="node_modules/blueimp-md5/js/md5.js"></script>
 <script src="bower_components/tether/dist/js/tether.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
