@@ -1,10 +1,8 @@
 <div class="cui-users__profile-media" ng-if="!usersEdit.loading">
   <div class="cui-media">
     <div class="cui-media__image-container">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
-        <!-- User image placeholder -->
-        <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-      </svg>
+      <!-- Profile Image: Currently displays users initials only -->
+      <div class="cui-media__image" cui-avatar cui-avatar-names="[usersEdit.user.name.given, usersEdit.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
     </div>
     <div class="cui-media__body">
       <!-- User full name -->

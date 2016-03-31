@@ -18,7 +18,7 @@ angular.module('app')
             authRedirect: window.location.href.split('#')[0] + '#/empty',
             appRedirect: $location.path()
         });
-    };
+    }
 
     myCUI.setAuthHandler(jwtAuthHandler);
 
@@ -28,6 +28,8 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
+        getName: User.getUserName,
+        setName: User.setUserName,
         handleCovAuthResponse: function(e,toState,toParams,fromState,fromParams){
             var self=this;
             myCUI.covAuthInfo({originUri:originUri});
@@ -45,7 +47,11 @@ angular.module('app')
                 else {
                     self.setUser(res);
                     self.setAuthInfo(res.authInfo);
-                    myCUI.getPersonRoles({ personId: self.getUser() })
+                    myCUI.getPerson({ personId: res.cuid })
+                    .then(function(res) {
+                        angular.copy(res.name, User.userName);
+                        return myCUI.getPersonRoles({ personId: self.getUser() });
+                    })
                     .then(function(roles) {
                         var roleList = [];
                         roles.forEach(function(role) {

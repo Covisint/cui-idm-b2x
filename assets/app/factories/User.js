@@ -5,6 +5,8 @@ angular.module('app')
         entitlements: []
     };
 
+    var userName = {};
+
     return {
         set : function(newUser) {
             user.cuid = newUser.cuid;
@@ -17,7 +19,10 @@ angular.module('app')
         },
         getEntitlements : function(){
             return user.entitlements;
-        }
+        },
+
+        userName: userName
+
     };
 
 }]);
