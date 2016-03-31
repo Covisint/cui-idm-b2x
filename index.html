@@ -16,8 +16,11 @@
 
       <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()">
         <div class="cui-profile__row">
-          <span class="cui-profile__user-name">User Name</span>
-          <div class="cui-profile__user-avatar"></div>
+          <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
+          <!-- Avatar Mobile -->
+          <div class="cui-media__image-container">
+            <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+          </div>
           <svg class="cui-profile__chevron" viewBox="0 0 216 146">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
           </svg>
@@ -151,13 +154,10 @@
             <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
             <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
                 <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
-
+                <!-- Avatar Desktop -->
                 <div class="cui-media__image-container">
-                <div class="cui-media__image" cui-avatar  cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="[base.userName.given, base.userName.surname]"></div>
+                  <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 </div>
-
-
-                <!-- <div class="cui-profile__user-avatar"></div> -->
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="profile.user">
                     <a href="" class="cui-profile__link">My Profile</a>
