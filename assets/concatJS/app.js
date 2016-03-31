@@ -1980,6 +1980,19 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
     };
 
+    var build = {
+        personPasswordAccount: function() {
+            return {
+                version: '1',
+                username: usersEdit.user.username,
+                currentPassword: usersEdit.userPasswordAccount.currentPassword,
+                password: usersEdit.userPasswordAccount.password,
+                passwordPolicy: usersEdit.organization.passwordPolicy,
+                authenticationPolicy: usersEdit.organization.authenticationPolicy
+            };
+        }
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -1992,10 +2005,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
-        usersEdit.user={};
-        usersEdit.tempUser={};
-        angular.copy(res,usersEdit.user);
-        angular.copy(res,usersEdit.tempUser);
+        usersEdit.user = {};
+        usersEdit.tempUser = {};
+        angular.copy(res, usersEdit.user);
+        angular.copy(res, usersEdit.tempUser);
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
@@ -2017,9 +2030,10 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id})
+        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id});
     })
-    .then(function(res){
+    .then(function(res) {
+        usersEdit.organization = res;
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {
@@ -2051,9 +2065,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     usersEdit.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount={
-            currentPassword:'',
-            password:''
+        usersEdit.userPasswordAccount = {
+            currentPassword: '',
+            password: ''
         };
         usersEdit.passwordRe = '';
     };
@@ -2112,21 +2126,21 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     };
 
     usersEdit.updatePassword = function(section,toggleOff) {
-        if(section) usersEdit[section]={
-            submitting:true
-        };
+        if (section) {
+            usersEdit[section] = { submitting:true };
+        } 
 
-        API.cui.updatePersonPassword({personId: API.getUser(), data: usersEdit.userPasswordAccount})
+        API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
         .then(function(res) {
-            if(section) usersEdit[section].submitting=false;
-            if(toggleOff) toggleOff();
+            if (section) usersEdit[section].submitting = false;  
+            if (toggleOff) toggleOff();
             usersEdit.resetPasswordFields();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
+            if (section) usersEdit[section].submitting = false;
+            if (section) usersEdit[section].error = true;
             $scope.$digest();
         });
     };
