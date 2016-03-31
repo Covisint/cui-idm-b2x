@@ -48,6 +48,8 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     base.appConfig=AppConfig;
 
     base.user = User.user;
+    base.userName = User.userName;
+
     base.authInfo = API.authInfo;
 
 

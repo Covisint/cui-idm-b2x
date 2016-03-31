@@ -44,7 +44,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
-        console.log(res);
         usersEdit.userSecurityQuestions = res;
         usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
