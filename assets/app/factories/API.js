@@ -28,8 +28,6 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
-        getName: User.getUserName,
-        setName: User.setUserName,
         handleCovAuthResponse: function(e,toState,toParams,fromState,fromParams){
             var self=this;
             myCUI.covAuthInfo({originUri:originUri});
