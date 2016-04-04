@@ -104,10 +104,12 @@ function(API,$scope,$stateParams,$state) {
         .then(function(res) {
             app.grantedDate = res.creation;
             app.status = res.status;
+            app.packageId = packageId;
             myApplicationDetails.app = app;
             bundled.forEach(function(app){
                 app.grantedDate = res.creation;
                 app.status = res.status;
+                app.packageId = packageId;
                 myApplicationDetails.bundled.push(app);
             });
             myApplicationDetails.doneLoading=true;
