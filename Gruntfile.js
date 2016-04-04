@@ -164,13 +164,6 @@ module.exports = function(grunt) {
     }
   });
 
-
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browser-sync');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-angular-templates');
-
   grunt.registerTask('default', ['concat:dev','sass','autoprefixer','browserSync:dev','watch']);
   grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','clean','copy','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);

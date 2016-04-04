@@ -54,7 +54,11 @@ angular.module('app')
                     $scope.$digest();
                 }
             })
-            .fail(handleError);
+            .fail(function(){
+                applicationReview.attempting=false;
+                applicationReview.error=true;
+                $scope.$digest();
+            });
         });
     };
 

@@ -13,6 +13,10 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
     myApplications.statusList = ['active', 'suspended', 'pending'];
+    myApplications.statusCount = [0,0,0,0];
+
+    var stepsDone=0,
+        stepsRequired=2;
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -20,8 +24,25 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
+    var checkIfDone=function(){
+        stepsDone++;
+        if(stepsDone===stepsRequired){
+            listSort(myApplications.list);
+            myApplications.list=_.uniq(myApplications.list,function(app){
+                return app.id;
+            });
+            myApplications.list.forEach(function(service){
+                updateStatusCount(service);
+            });
+            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+            myApplications.statusCount[0]=myApplications.list.length; // set "all" to the number of total apps
+            myApplications.categoryList = getListOfCategories(myApplications.list);
+            myApplications.doneLoading = true;
+            $scope.$digest();
+        }
+    };
+
     var updateStatusCount = function(service) {
-        // Service status is limited to: Active, Suspended, Pending
         if (service.status && myApplications.statusList.indexOf(service.status)>-1) {
             myApplications.statusCount[myApplications.statusList.indexOf(service.status)+1]++;
         }
@@ -47,7 +68,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                     categoryCount[categoryList.length] = 1;
                 }
             }
-            updateStatusCount(service);
         });
 
         myApplications.categoryCount = categoryCount;
@@ -58,7 +78,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         // WORKAROUND CASE #1
         // from the list of grants, get the list of services from each of those service packages
         var i = 0;
-
         grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res) {
@@ -69,13 +88,29 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                     service.parentPackage = grant.servicePackage.id;
                     myApplications.list.push(service);
                 });
+
                 if (i === grants.length) { // if this is the last grant
-                    angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-                    // Note: myApplications.statusCount[IndexNumber] = [All, Active, Suspended, Pending]
-                    myApplications.statusCount = [myApplications.unparsedListOfAvailabeApps.length, 0, 0, 0];
-                    myApplications.categoryList = getListOfCategories(myApplications.list);
-                    myApplications.doneLoading = true;
-                    $scope.$digest();
+                    checkIfDone();
+                }
+            })
+            .fail(handleError);
+        });
+    };
+
+    var getApplicationsFromPendingRequests = function(requests) {
+        var i = 0;
+        requests.forEach(function(request) {
+            API.cui.getPackageServices({'packageId':request.servicePackage.id})
+            .then(function(res) {
+                i++;
+                res.forEach(function(service) {
+                    service.status = 'pending';
+                    service.dateCreated = request.creation;
+                    service.parentPackage = request.servicePackage.id;
+                    myApplications.list.push(service);
+                });
+                if (i === requests.length) {
+                    checkIfDone();
                 }
             })
             .fail(handleError);
@@ -85,7 +120,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     var listSort = function(listToSort, sortType, order) { // order is a boolean
         listToSort.sort(function(a, b) {
             if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-            else { a = a.dateCreated, b = b.dateCreated; }
+            else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
+            else { a=a.status, b=b.status; }
 
             if ( a < b ) {
                 if (order) return 1;
@@ -112,6 +148,12 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     API.cui.getPersonPackages({personId:API.getUser(), useCuid:true, pageSize:200}) // this returns a list of grants
     .then(function(res) {
         getApplicationsFromGrants(res);
+    })
+    .fail(handleError);
+
+    API.cui.getPackageRequests({'requestor.id':API.getUser(),'requestor.type':'person', pageSize:200})
+    .then(function(res){
+        getApplicationsFromPendingRequests(res);
     })
     .fail(handleError);
 
