@@ -22,10 +22,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
 
     var updateStatusCount = function(service) {
         // Service status is limited to: Active, Suspended, Pending
-        if (service.status) {
-            if (service.status === 'active') { myApplications.statusCount[1]++; }
-            else if (service.status === 'suspended') { myApplications.statusCount[2]++; }
-            else { myApplications.statusCount[3]++; }
+        if (service.status && myApplications.statusList.indexOf(service.status)>-1) {
+            myApplications.statusCount[myApplications.statusList.indexOf(service.status)+1]++;
         }
     };
 
@@ -111,7 +109,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    API.cui.getPersonPackages({personId:API.getUser(), useCuid:true}) // this returns a list of grants
+    API.cui.getPersonPackages({personId:API.getUser(), useCuid:true, pageSize:200}) // this returns a list of grants
     .then(function(res) {
         getApplicationsFromGrants(res);
     })

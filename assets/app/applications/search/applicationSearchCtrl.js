@@ -23,12 +23,6 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    Object.keys(applicationSearch.packageRequests).forEach(function(appId) {
-        // This sets the checkboxes back to marked when the user clicks back
-        applicationSearch.appCheckbox[appId] = true;  // after being in request review
-        applicationSearch.numberOfRequests++;
-    });
-
     var handleError = function(err) {
         console.log('Error \n', err);
     };
@@ -158,7 +152,13 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true})
+    Object.keys(applicationSearch.packageRequests).forEach(function(appId) { // Gets the list of package requests saved in memory
+        // This sets the checkboxes back to marked when the user clicks back
+        applicationSearch.appCheckbox[appId] = true;  // after being in request review
+        applicationSearch.numberOfRequests++;
+    });
+
+    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true, pageSize:200})
     .then(function(res) {
         var i = 0;
         var listOfPackages = res;

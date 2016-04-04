@@ -45,7 +45,7 @@ function(API,$scope,$state,AppRequests) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true})
+    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true, pageSize:200})
     .then(function(res) {
         var i = 0;
         var packages = res;

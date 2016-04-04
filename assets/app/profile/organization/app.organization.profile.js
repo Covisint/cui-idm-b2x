@@ -15,6 +15,8 @@ function($scope,$stateParams,API) {
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     var handleError = function(err) {
+        orgProfile.loading = false;
+        $scope.$digest();
         console.log('Error', err);
     };
 
