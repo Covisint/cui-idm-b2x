@@ -4,13 +4,13 @@ angular.module('app')
     var myCUI = cui.api();
     cui.log('cui.js v', myCUI.version()); // CUI Log
 
-    var authInfo={};
+    var authInfo = {};
 
     // myCUI.setServiceUrl('PRD'); // PRD
     myCUI.setServiceUrl('STG'); // STG
 
-    var originUri = 'coke-idm.run.covapp.io'; // Coke
-    // var originUri = 'coke-idm.run.covapp.io'; // Covisint
+    var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
+    // var originUri = 'https://s-3rdwave-dev01.login.stg.covapp.io'; // Thirdwave STG Instance
 
     function jwtAuthHandler() {
         return myCUI.covAuth({
