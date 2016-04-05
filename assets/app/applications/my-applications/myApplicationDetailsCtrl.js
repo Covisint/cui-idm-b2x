@@ -9,6 +9,7 @@ function(API,$scope,$stateParams,$state) {
         stepsRequired=2;
 
     myApplicationDetails.bundled = [];
+    myApplicationDetails.related = [];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -16,12 +17,13 @@ function(API,$scope,$stateParams,$state) {
         console.log('Error \n', err);
     };
 
-    // var checkIfDone = function() {
-    //     stepsDone++;
-    //     if(stepsDone===stepsRequired){
-
-    //     }
-    // };
+    var checkIfDone = function() {
+        stepsDone++;
+        if(stepsDone===stepsRequired){
+            myApplicationDetails.doneLoading=true;
+            $scope.$digest();
+        }
+    };
 
 
     // var checkIfAppIsGrantedToUser = function(childService, childPackage, packagesGrantedToUser){
@@ -105,8 +107,7 @@ function(API,$scope,$stateParams,$state) {
                 app.packageId = packageId;
                 myApplicationDetails.bundled.push(app);
             });
-            myApplicationDetails.doneLoading=true;
-            $scope.$digest();
+            checkIfDone();
         })
         .fail(handleError);
     };
@@ -132,6 +133,17 @@ function(API,$scope,$stateParams,$state) {
             parseAppAndBundled(res,getPackageGrantDetails); // parseAppAndBundled returns the app we're trying to check
         })
         .fail(handleError);
+
+        API.cui.getPersonPackageClaims({personId:API.getUser(), useCuid:true, 'packageId':packageId })
+        .then(function(res){
+            myApplicationDetails.claims=res;
+            checkIfDone();
+        })
+        .fail(function(){
+            // claims endpoint returns 400 if there are no claims
+            myApplicationDetails.claims=null;
+            checkIfDone();
+        });
     }
     else {
         // message for no appId in the state
