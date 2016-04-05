@@ -25,7 +25,10 @@
       <div class="cui-media cui-media--vertical">
         <!-- Application Image -->
         <div class="cui-media__image-container">
-          <a ng-href="{{myApplicationDetails.app.mangledUrl}}" target="_blank"><img class="cui-media__image" ng-src="{{myApplicationDetails.app.iconUrl}}" alt=""></img></a>
+          <a ng-href="{{myApplicationDetails.app.mangledUrl}}" target="_blank">
+            <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="myApplicationDetails.app.name"
+            cui-avatar-cuii18n-filter cui-avatar="myApplicationDetails.app.iconUrl"></div>
+          </a>
         </div>
         <!-- Summary Information -->
         <div>
@@ -80,8 +83,10 @@
 
           <!-- My Claims -->
           <div id="tab2" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':myApplicationDetails.inClaims}">
-            <!-- CLAIMS WILL GO HERE, OUT OF SCOPE FOR MARCH RELEASE -->
-            <p>{{'cui-no-claims' | translate}}</p>
+            <p ng-if="!myApplicationDetails.claims">{{'cui-no-claims' | translate}}</p>
+            <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">
+              <p ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
+            </span>
           </div>
         </div>
       </div>
@@ -130,8 +135,10 @@
           <div class="cui-tile cui-applications__right">
             <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">My Claims</h4>
             <div class="cui-tile__body">
-              <!-- CLAIMS WILL GO HERE, OUT OF SCOPE FOR MARCH RELEASE -->
-              <p>{{'cui-no-claims' | translate}}</p>
+              <p ng-if="!myApplicationDetails.claims">{{'cui-no-claims' | translate}}</p>
+              <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">
+                <p ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
+              </span>
             </div>
           </div>
 
