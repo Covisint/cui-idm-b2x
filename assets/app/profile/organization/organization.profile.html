@@ -19,8 +19,8 @@
 
     <!-- Admins -->
     <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
-      <h4 class="cui-field-val__field">{{'cui-admins' | translate}}</h4>
-      <div class="cui-organization__admin-block-wrapper">
+      <h4 class="cui-field-val__field" ng-if="orgProfile.securityAdmins">{{'cui-admins' | translate}}</h4>
+      <div class="cui-organization__admin-block-wrapper" ng-if="orgProfile.securityAdmins">
         <div class="cui-organization__admin-block" ng-repeat="admin in orgProfile.securityAdmins">
           <!-- Name -->
           <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
