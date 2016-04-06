@@ -2,13 +2,8 @@
   <p>{{'cui-all-organizations' | translate}}</p>
   <input class="cui-input--half" placeholder="{{'cui-filter-org-name' | translate}}" ng-model="usersWalkup.orgSearch.name">
 
-  <!-- Organization List Loading -->
-  <div class="cui-loading__container--organization-list" ng-if="usersWalkup.orgLoading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
-  <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList | orderBy:'name' track by organization.id" ng-if="!usersWalkup.orgLoading">
-    <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+  <cui-expandable class="cui-expandable" ng-repeat="organization in usersWalkup.organizationList | orderBy:'name' track by organization.id">
+    <cui-expandable-title class="cui-expandable__title cui-expandable__title--alt-layout" ng-click="toggleExpand()">
       {{organization.name}}
       <span class="chevron">></span>
     </cui-expandable-title>
