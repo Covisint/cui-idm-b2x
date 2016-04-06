@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
 function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 

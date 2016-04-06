@@ -101,17 +101,26 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/organization.html'
         })
         .state('organization.profile', {
-            url: '/profile',
+            url: '/profile?id',
             templateUrl: templateBase + 'organization/profile/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory',
+            url: '/directory?id',
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('directory', {
+            url: '/organization/directory',
+            templateUrl: templateBase + 'organization/directory/directory.html'
+        })
+        .state('directory.userDetails', {
+            url: '/user-details',
+            templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
+            controller: returnCtrlAs('userDetails')
+        })
         .state('organization.hierarchy', {
-            url: '/hierarchy',
+            url: '/hierarchy?id',
             templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
