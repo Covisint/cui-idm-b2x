@@ -27,7 +27,7 @@
         </div>
         <div class="cui-profile__row">
           <div id="cui-profile__popup" class="cui-profile__user-menu" style="display:block; opacity: 1; position: relative;">
-            <div class="cui-profile__menu-item" ui-sref="profile.user">
+            <div class="cui-profile__menu-item" ui-sref="user.profile">
               <a href="" class="cui-profile__link">My Profile</a>
               <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <span class="snap-menu--option" snap-close ui-sref="welcome.screen">
+      <span class="snap-menu--option" snap-close ui-sref="welcome">
         <span class="snap-menu__option-name">Welcome</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#four29"></use>
@@ -55,7 +55,7 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
         </svg>
       </span>
-      <span class="snap-menu--option" snap-close ui-sref="profile.organization">
+      <span class="snap-menu--option" snap-close ui-sref="organization.profile">
         <span class="snap-menu__option-name">Organization</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#organization"></use>
@@ -83,7 +83,7 @@
     <snap-content snap-opt-disable="'right'">
        <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
 
-        <span class="cui-desktop-menu__option" ui-sref="welcome.screen" ui-sref-active="active">
+        <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
           <span class="cui-desktop-menu__option-name">Welcome</span>
           <cui-icon cui-svg-icon="fa:four29" svg-class="cui-desktop-menu__icon" viewBox="-15 -10 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
@@ -93,7 +93,7 @@
           <cui-icon cui-svg-icon="icon:applications_v2" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
 
-        <span class="cui-desktop-menu__option"  ui-sref="profile.organization" ui-sref-active-nested="active">
+        <span class="cui-desktop-menu__option"  ui-sref="organization.profile" ui-sref-active-nested="active">
           <span class="cui-desktop-menu__option-name">Organization</span>
           <cui-icon cui-svg-icon="icon:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
@@ -147,7 +147,7 @@
                   <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 </div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
-                  <div class="cui-profile__menu-item" ui-sref="profile.user">
+                  <div class="cui-profile__menu-item" ui-sref="user.profile">
                     <a href="" class="cui-profile__link">My Profile</a>
                     <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>

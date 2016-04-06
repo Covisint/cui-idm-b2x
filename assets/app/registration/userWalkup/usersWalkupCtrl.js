@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
+.controller('usersWalkupCtrl',['localStorageService','$scope','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
+function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
     'use strict';
 
     var usersWalkup = this;
@@ -10,12 +10,15 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     usersWalkup.registering = false;
     usersWalkup.userNameExistsError = false;
     usersWalkup.applications.numberOfSelected = 0;
+    usersWalkup.orgLoading = true;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     function handleError(err) {
         console.log('Error!\n');
         console.log(err);
+        usersWalkup.orgLoading = false;
+        $scope.$digest();
     }
 
     var searchOrganizations = function(newOrgToSearch) {
@@ -142,6 +145,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     .then(function(res){
         // Populate organization list
         usersWalkup.organizationList = res;
+        usersWalkup.orgLoading = false;
+        $scope.$digest();
     })
     .fail(handleError);
 
