@@ -2311,7 +2311,7 @@ Styleguide Blocks.Tile
     background: #fff;
     border: 1px solid #cde6f0;
     border-radius: 0;
-    color: #6a98a0;
+    color: #000;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -2321,8 +2321,6 @@ Styleguide Blocks.Tile
     @media screen and (min-width: 701px) {
       .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
         border-radius: 0; } }
-  .cui-tile__title--bg-light {
-    background: #E8F0F3; }
   @media all and (max-width: 600px) {
     .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
       padding: 20px; } }
@@ -3373,13 +3371,14 @@ Modifiers for Popover Element
 .cui-popover--right         - right arrow
 .cui-popover--top           - top arrow
 .cui-popover--bottom        - bottom arrow
+.cui-popover__menu          - border-separated menu
 
 Markup:
 <div class="cui-styeguide__popover-container">
   <div class="cui-popover {{modifier_class}}">
     <p class="">Passwords must:</p>
-    <div class="cui-error__message">have at least 1 lower case letter</div>
-    <div class="cui-error__message">have at least 1 upper case letter</div>
+    <div class="cui-error__message"><p>have at least 1 lower case letter</p></div>
+    <div class="cui-error__message"><p>have at least 1 upper case letter</p></div>
   </div>
 </div>
 
@@ -3452,6 +3451,14 @@ Styleguide Blocks.Popover
     -webkit-transform: rotate(-90deg);
         -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
+  .cui-popover__menu {
+    padding: 0; }
+    .cui-popover__menu p {
+      border-bottom: 1px solid #eee;
+      padding: 1em 1.25em;
+      margin: 0; }
+    .cui-popover__menu > div:last-of-type p {
+      border: none; }
   @media all and (max-width: 700px) {
     .cui-popover, .cui-action__popover {
       -webkit-transform: translate(-50%, -em(10));
@@ -4400,8 +4407,12 @@ Styleguide Blocks.Tabs
 /*
 Media Object
 
+Modifiers for Media Object
+
+.cui-media--centered       - Centered Media Object
+
 Markup:
-<div class="cui-media">
+<div class="cui-media {{modifier_class}}">
   <div class="cui-media__image-container">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
       <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
@@ -4422,9 +4433,23 @@ Styleguide Blocks.Media-Object
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 1em 0; }
+  padding: 1em 0;
+  /* Centered Media Object */ }
   .cui-media--border {
     border-bottom: 1px solid #cde6f0; }
+  .cui-media--centered {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 20%; }
+    .cui-media--centered .cui-media__image-container {
+      margin: 0; }
+      .cui-media--centered .cui-media__image-container svg {
+        margin: 0 auto; }
+      .cui-media--centered .cui-media__image-container a {
+        width: 100%; }
+    .cui-media--centered .cui-media__content {
+      display: inline; }
 
 .cui-media__image-container {
   display: -webkit-flex;
@@ -4496,7 +4521,8 @@ Styleguide Blocks.Media-Object
   border: 0;
   border-radius: 50%;
   height: 3.125em;
-  width: 3.125em; }
+  width: 3.125em;
+  position: relative; }
 
 .cui-media__content {
   letter-spacing: 1.6px;
