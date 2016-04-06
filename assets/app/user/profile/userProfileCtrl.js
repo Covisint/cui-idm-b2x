@@ -1,39 +1,39 @@
 angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
 function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     'use strict';
-    var usersEdit = this;
+    var userProfile = this;
 
-    usersEdit.loading = true;
-    usersEdit.saving = true;
-    usersEdit.fail = false;
-    usersEdit.success = false;
-    usersEdit.timezoneById = Timezones.timezoneById;
-    usersEdit.toggleOffFunctions = {};
+    userProfile.loading = true;
+    userProfile.saving = true;
+    userProfile.fail = false;
+    userProfile.success = false;
+    userProfile.timezoneById = Timezones.timezoneById;
+    userProfile.toggleOffFunctions = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     var selectTextsForQuestions = function() {
-        usersEdit.challengeQuestionsTexts = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+        userProfile.challengeQuestionsTexts = [];
+        angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
+            var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
             this.push(question.question[0].text);
-        }, usersEdit.challengeQuestionsTexts);
+        }, userProfile.challengeQuestionsTexts);
     };
 
     var resetTempUser = function() {
-        if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
+        if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
     };
 
     var build = {
         personPasswordAccount: function() {
             return {
                 version: '1',
-                username: usersEdit.user.username,
-                currentPassword: usersEdit.userPasswordAccount.currentPassword,
-                password: usersEdit.userPasswordAccount.password,
-                passwordPolicy: usersEdit.organization.passwordPolicy,
-                authenticationPolicy: usersEdit.organization.authenticationPolicy
+                username: userProfile.user.username,
+                currentPassword: userProfile.userPasswordAccount.currentPassword,
+                password: userProfile.userPasswordAccount.password,
+                passwordPolicy: userProfile.organization.passwordPolicy,
+                authenticationPolicy: userProfile.organization.authenticationPolicy
             };
         }
     };
@@ -50,45 +50,45 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
             res.addresses = [{}];
             res.addresses[0].streets = [[]];
         }
-        usersEdit.user = {};
-        usersEdit.tempUser = {};
-        angular.copy(res, usersEdit.user);
-        angular.copy(res, usersEdit.tempUser);
+        userProfile.user = {};
+        userProfile.tempUser = {};
+        angular.copy(res, userProfile.user);
+        angular.copy(res, userProfile.tempUser);
         return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
     })
     .then(function(res) {
-        usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
+        userProfile.userSecurityQuestions = res;
+        userProfile.tempUserSecurityQuestions = angular.copy(userProfile.userSecurityQuestions.questions);
         return API.cui.getSecurityQuestions();
     })
     .then(function(res) {
-        usersEdit.allSecurityQuestions = res;
-        usersEdit.allSecurityQuestionsDup = angular.copy(res);
-        usersEdit.allSecurityQuestions.splice(0,1);
+        userProfile.allSecurityQuestions = res;
+        userProfile.allSecurityQuestionsDup = angular.copy(res);
+        userProfile.allSecurityQuestions.splice(0,1);
 
         // Splits questions to use between both dropdowns
-        var numberOfQuestions = usersEdit.allSecurityQuestions.length,
+        var numberOfQuestions = userProfile.allSecurityQuestions.length,
         numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
         //Allocating options to three questions
-        usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        userProfile.allChallengeQuestions0 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        userProfile.allChallengeQuestions1 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        userProfile.allChallengeQuestions2 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
 
         selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id});
+        return API.cui.getOrganization({organizationId:userProfile.user.organization.id});
     })
     .then(function(res) {
-        usersEdit.organization = res;
+        userProfile.organization = res;
         return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
     })
     .then(function(res) {
         CuiPasswordPolicies.set(res.rules);
-        usersEdit.loading = false;
+        userProfile.loading = false;
         $scope.$digest();
     })
     .fail(function(err) {
         console.log(err);
-        usersEdit.loading = false;
+        userProfile.loading = false;
         $scope.$digest();
     });
 
@@ -96,28 +96,28 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    usersEdit.toggleAllOff=function(){
-        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff) {
+    userProfile.toggleAllOff=function(){
+        angular.forEach(userProfile.toggleOffFunctions,function(toggleOff) {
             toggleOff();
         });
         resetTempUser();
     };
 
-    usersEdit.resetTempObject = function(master, temp) {
+    userProfile.resetTempObject = function(master, temp) {
         // Used to reset the temp object to the original when a user cancels their edit changes
         if (!angular.equals(master,temp)) angular.copy(master, temp);
     };
 
-    usersEdit.resetPasswordFields = function() {
+    userProfile.resetPasswordFields = function() {
         // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount = {
+        userProfile.userPasswordAccount = {
             currentPassword: '',
             password: ''
         };
-        usersEdit.passwordRe = '';
+        userProfile.passwordRe = '';
     };
 
-    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+    userProfile.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
         securityQuestions.forEach(function(secQuestion,i){
             var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
                 return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
@@ -132,69 +132,69 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
         });
     };
 
-    usersEdit.resetChallengeQuestion = function(index) {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
+    userProfile.resetChallengeQuestion = function(index) {
+        userProfile.resetTempObject(userProfile.userSecurityQuestions.questions[index], userProfile.tempUserSecurityQuestions[index]);
     };
 
-    usersEdit.pushToggleOff=function(toggleOffObject){
-        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
+    userProfile.pushToggleOff=function(toggleOffObject){
+        userProfile.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // UPDATE FUNCTIONS START ------------------------------------------------------------------------
 
-    usersEdit.updatePerson = function(section,toggleOff) {
-        if(section) usersEdit[section]={
+    userProfile.updatePerson = function(section,toggleOff) {
+        if(section) userProfile[section]={
             submitting:true
         };
-        if (!usersEdit.userCountry) {
-            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
+        if (!userProfile.userCountry) {
+            userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
         }
         else {
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
+            userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
         }
 
-        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.tempUser})
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})
         .then(function() {
-            angular.copy(usersEdit.tempUser, usersEdit.user);
-            if(section) usersEdit[section].submitting=false;
+            angular.copy(userProfile.tempUser, userProfile.user);
+            if(section) userProfile[section].submitting=false;
             if(toggleOff) toggleOff();
             $scope.$digest();
         })
         .fail(function(error) {
             console.log(error);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
+            if(section) userProfile[section].submitting=false;
+            if(section) userProfile[section].error=true;
             $scope.$digest();
         });
     };
 
-    usersEdit.updatePassword = function(section,toggleOff) {
+    userProfile.updatePassword = function(section,toggleOff) {
         if (section) {
-            usersEdit[section] = { submitting:true };
+            userProfile[section] = { submitting:true };
         } 
 
         API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
         .then(function(res) {
-            if (section) usersEdit[section].submitting = false;  
+            if (section) userProfile[section].submitting = false;  
             if (toggleOff) toggleOff();
-            usersEdit.resetPasswordFields();
+            userProfile.resetPasswordFields();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            if (section) usersEdit[section].submitting = false;
-            if (section) usersEdit[section].error = true;
+            if (section) userProfile[section].submitting = false;
+            if (section) userProfile[section].error = true;
             $scope.$digest();
         });
     };
 
-   usersEdit.saveChallengeQuestions = function(section,toggleOff) {
-        if(section) usersEdit[section]={
+   userProfile.saveChallengeQuestions = function(section,toggleOff) {
+        if(section) userProfile[section]={
             submitting:true
         };
-        usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
+        userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
         selectTextsForQuestions();
 
         API.cui.updateSecurityQuestionAccount({
@@ -202,18 +202,18 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
           data: {
             version: '1',
             id: API.getUser(),
-            questions: usersEdit.userSecurityQuestions.questions
+            questions: userProfile.userSecurityQuestions.questions
             }
         })
         .then(function(res) {
-            if(section) usersEdit[section].submitting=false;
+            if(section) userProfile[section].submitting=false;
             if(toggleOff) toggleOff();
             $scope.$digest();
         })
         .fail(function(err) {
             console.log(err);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
+            if(section) userProfile[section].submitting=false;
+            if(section) userProfile[section].error=true;
             $scope.$digest();
         });
     };
