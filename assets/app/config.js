@@ -106,7 +106,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory',
+            url: '/directory?id',
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
@@ -120,7 +120,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             controller: returnCtrlAs('userDetails')
         })
         .state('organization.hierarchy', {
-            url: '/hierarchy',
+            url: '/hierarchy?id',
             templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
