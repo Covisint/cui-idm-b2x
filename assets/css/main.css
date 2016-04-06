@@ -3256,7 +3256,7 @@ Styleguide Blocks.Expandable
     display: none;
     pointer-events: none; }
     .indicator-container--icons.small .step-indicator.active {
-      color: #429DD1; }
+      color: #6a98a0; }
     .indicator-container--icons.small .step-indicator.visited {
       color: #666; }
 
@@ -4281,6 +4281,9 @@ Styleguide Blocks.Step-Indicator-With-Icons
   width: 2.5em;
   z-index: 1; }
 
+.cui-form--mobile-steps .mobile-element .icon-container {
+  text-align: center; }
+
 .cui-form--mobile-steps .mobile-element.expanded .icon {
   border: 2px solid #6a98a0; }
 
@@ -4302,6 +4305,11 @@ Styleguide Blocks.Step-Indicator-With-Icons
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
+
+.cui-form--mobile-steps .mobile-element .cui-expandable__title--alt-layout {
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 /*
 Tabs
