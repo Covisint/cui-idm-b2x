@@ -5375,3 +5375,11 @@ inline-edit .angucomplete-dropdown {
 
 .cui-organization__page-title {
   margin-bottom: 1.3125em; }
+
+.cui-loading__container--organization-list {
+  position: relative;
+  background: none; }
+  .cui-loading__container--organization-list .cui-loading--center {
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em; }

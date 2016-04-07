@@ -892,143 +892,162 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     localStorageServiceProvider.setPrefix('cui');
 
-    var templateBase='assets/app/'; // base directori of your partials
+    var templateBase = 'assets/app/'; // base directory of your partials
 
 
-    var returnCtrlAs=function(name,asPrefix){ // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
+    var returnCtrlAs = function(name, asPrefix) { 
+        // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
         // returnCtrlAs('test') returns 'testCtrl as test'
         return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
     };
 
     $stateProvider
+        // Base ----------------------------------------------------------
         .state('base',{
             url: '/',
             templateUrl: templateBase + 'base/base.html',
             controller: returnCtrlAs('base'),
         })
-        .state('users',{
-            url: '/users',
-            templateUrl: templateBase + 'misc/users/users.html'
+        // Welcome -------------------------------------------------------
+        .state('welcome',{
+            url: '/welcome',
+            templateUrl: templateBase + 'welcome/welcome.html'
         })
-        .state('users.search',{
-            url: '/',
-            templateUrl: templateBase + 'misc/users/search/users.search.html',
-            controller: returnCtrlAs('usersSearch')
-        })
-        .state('users.invitations',{
-            url: '/invitations',
-            templateUrl: templateBase + 'misc/invitations/search/users.invitations.search.html',
-            controller: returnCtrlAs('usersInvitations')
-        })
-        .state('users.invite',{
-            url: '/invite',
-            templateUrl: templateBase + 'misc/invitations/invite/users.invite.html',
-            controller: returnCtrlAs('usersInvite')
-        })
-        .state('users.activate',{
-            url: '/activate/:id',
-            templateUrl: templateBase + 'users/users.activate/users.activate.html',
-            controller: returnCtrlAs('usersActivate')
-        })
-        .state('registration',{
+        // Registration --------------------------------------------------
+        .state('registration', {
             url: '/register',
             templateUrl: templateBase + 'registration/registration.html'
         })
-        .state('registration.invited',{ // invited Registration
+        .state('registration.invited', {
             url: '/invitation?id&code',
             templateUrl: templateBase + 'registration/userInvited/users.register.html',
             controller: returnCtrlAs('usersRegister')
         })
-        .state('registration.walkup',{
+        .state('registration.walkup', {
             url: '/walkup',
             templateUrl:templateBase + 'registration/userWalkup/users.walkup.html',
-            controller: returnCtrlAs('usersWalkup'),
+            controller: returnCtrlAs('usersWalkup')
             // menu:{
             //     desktop:false
             // }
         })
-        .state('registration.tlo',{
+        .state('registration.tlo', {
             url: '/top-level-org',
             templateUrl: templateBase + 'registration/newTopLevelOrg/topLevelOrg.registration.html',
             controller: returnCtrlAs('tlo','new')
         })
-        .state('registration.division',{
+        .state('registration.division', {
             url: '/new-division',
             templateUrl: templateBase + 'registration/newDivision/division.registration.html',
             controller: returnCtrlAs('division','new')
         })
-        .state('applications',{
+        // User ----------------------------------------------------------
+        .state('user', {
+            url: '/user',
+            templateUrl: templateBase + 'user/user.html'
+        })
+        .state('user.profile', {
+            url: '/profile',
+            templateUrl: templateBase + 'user/profile/user.profile.html',
+            controller: returnCtrlAs('userProfile')
+        })
+        // Applications --------------------------------------------------
+        .state('applications', {
             url: '/applications',
             templateUrl : templateBase + 'applications/applications.html'
         })
-        .state('applications.myApplications',{
+        .state('applications.myApplications', {
             url: '/',
             templateUrl: templateBase + 'applications/my-applications/my-applications.html',
             controller: returnCtrlAs('myApplications')
         })
-        .state('applications.myApplicationDetails',{
+        .state('applications.myApplicationDetails', {
             url: '/:packageId/:appId',
             templateUrl: templateBase + 'applications/my-applications/my-application-details.html',
             controller: returnCtrlAs('myApplicationDetails')
         })
-        .state('applications.newRequest',{
+        .state('applications.newRequest', {
             url: '/request',
             templateUrl: templateBase + 'applications/new-request&review/new-request.html',
             controller: returnCtrlAs('newAppRequest')
         })
-        .state('applications.search',{
+        .state('applications.search', {
             url: '/search?name&category&page',
             templateUrl: templateBase + 'applications/search/search.html',
             controller: returnCtrlAs('applicationSearch')
         })
-        .state('applications.reviewRequest',{
+        .state('applications.reviewRequest', {
             url: '/review',
             templateUrl: templateBase + 'applications/new-request&review/review.html',
             controller: returnCtrlAs('applicationReview')
         })
-        .state('welcome',{
-            url: '/welcome',
-            templateUrl: templateBase + 'misc/welcome/welcome.html'
+        // Organization --------------------------------------------------
+        .state('organization', {
+            url: '/organization',
+            templateUrl: templateBase + 'organization/organization.html'
         })
-        .state('welcome.screen',{
-            url: '/welcome',
-            templateUrl: templateBase + 'misc/welcome/welcome.screen.html',
-            controller: returnCtrlAs('welcome')
+        .state('organization.profile', {
+            url: '/profile',
+            templateUrl: templateBase + 'organization/profile/organization.profile.html',
+            controller: returnCtrlAs('orgProfile')
         })
-        .state('misc',{
+        .state('organization.directory', {
+            url: '/directory',
+            templateUrl: templateBase + 'organization/directory/organization.directory.html',
+            controller: returnCtrlAs('orgDirectory')
+        })
+        .state('organization.hierarchy', {
+            url: '/hierarchy',
+            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
+            controller: returnCtrlAs('orgHierarchy')
+        })
+        // Misc ----------------------------------------------------------
+        .state('misc', {
             url: '/status',
             templateUrl: templateBase + 'misc/misc.html'
         })
-        .state('misc.404',{
+        .state('misc.404', {
             url: '/404',
             templateUrl: templateBase + 'misc/misc.404.html'
         })
-        .state('misc.notAuth',{
+        .state('misc.notAuth', {
             url: '/notAuthorized',
             templateUrl: templateBase + 'misc/misc.notAuth.html'
         })
-        .state('misc.pendingStatus',{
+        .state('misc.pendingStatus', {
             url: '/pendingStatus',
             templateUrl: templateBase + 'misc/misc.pendingStatus.html'
         })
-        .state('misc.success',{
+        .state('misc.success', {
             url: '/success',
             templateUrl: templateBase + 'misc/misc.success.html'
         })
-        .state('profile', {
-            url: '/profile',
-            templateUrl: templateBase + 'profile/profile.html'
+        // Misc/Users ----------------------------------------------------
+        .state('users', {
+            url: '/users',
+            templateUrl: templateBase + 'misc/users/users.html'
         })
-        .state('profile.user',{
-            url: '/user:id',
-            templateUrl: templateBase + 'profile/user/users.edit.html',
-            controller: returnCtrlAs('usersEdit')
+        .state('users.search', {
+            url: '/',
+            templateUrl: templateBase + 'misc/users/search/users.search.html',
+            controller: returnCtrlAs('usersSearch')
         })
-        .state('profile.organization', {
-            url: '/organization',
-            templateUrl: templateBase + 'profile/organization/organization.profile.html',
-            controller: returnCtrlAs('orgProfile')
+        .state('users.invitations', {
+            url: '/invitations',
+            templateUrl: templateBase + 'misc/invitations/search/users.invitations.search.html',
+            controller: returnCtrlAs('usersInvitations')
         })
+        .state('users.invite', {
+            url: '/invite',
+            templateUrl: templateBase + 'misc/invitations/invite/users.invite.html',
+            controller: returnCtrlAs('usersInvite')
+        })
+        .state('users.activate', {
+            url: '/activate/:id',
+            templateUrl: templateBase + 'users/users.activate/users.activate.html',
+            controller: returnCtrlAs('usersActivate')
+        })
+        // Empty ---------------------------------------------------------
         .state('empty', {
             url: '/empty',
             templateUrl: templateBase + 'empty/empty.html',
@@ -1039,8 +1058,8 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     //fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
     $urlRouterProvider.otherwise( function($injector) {
-      var $state = $injector.get("$state");
-      $state.go('welcome.screen');
+      var $state = $injector.get('$state');
+      $state.go('welcome');
     });
 
     $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
@@ -1058,17 +1077,17 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             'ja':'日本語 (Japanese)',
             'de':'Deutsche (German)'
         }
-    )
+    );
 
     var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
     var returnRegisterAvailableLanguageKeys=function(){
         var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
         languageKeys.forEach(function(languageKey){
-            object[languageKey+'*']=languageKey //redirect language keys such as en_US to en or en-US to en
-        })
+            object[languageKey+'*'] = languageKey; //redirect language keys such as en_US to en or en-US to en
+        });
         return object;
-    }
+    };
 
     $translateProvider
     .useLoader('LocaleLoader',{
@@ -1120,7 +1139,6 @@ angular.module('app')
 }]);
 
 
-
 angular.module('app')
 .controller('emptyCtrl',['API',function(API) {
     // This empty controller is used to prevent an authHandler loop in the JWT token process!
@@ -1133,13 +1151,13 @@ angular.module('app')
     var myCUI = cui.api();
     cui.log('cui.js v', myCUI.version()); // CUI Log
 
-    var authInfo={};
+    var authInfo = {};
 
-    // myCUI.setServiceUrl('PRD'); // PRD
     myCUI.setServiceUrl('STG'); // STG
+    // myCUI.setServiceUrl('PRD'); // PRD
 
-    var originUri = 'coke-idm.run.covapp.io'; // Coke
-    // var originUri = 'coke-idm.run.covapp.io'; // Covisint
+    var originUri = 'cui-sdk.run.covisintrnd.com'; // Thirdwave STG Instance
+    // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
 
     function jwtAuthHandler() {
         return myCUI.covAuth({
@@ -1588,302 +1606,6 @@ function(localStorageService,$scope,$stateParams,API,$timeout){
 }]);
 
 angular.module('app')
-.factory('Person',['$http','$q','API',function($http,$q,API){
-
-
-    
-    var getPeople=function(){
-        return API.cui.getPersons;
-    };
-
-    var getById=function(id){
-        return $http({
-            method:'GET',
-            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var getInvitations=function(){
-        return $http({
-            method:'GET',
-            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/',
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
-                Authorization:'Bearer ' + API.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var getInvitationById=function(id){
-        return $http({
-            method:'GET',
-            url:API.cui.getServiceUrl() + '/person/v1/personInvitations/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
-                Authorization:'Bearer ' + API.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var createInvitation=function(invitee,invitor){
-        return $http({
-            method:'POST',
-            url:API.cui.getServiceUrl() + '/person/v1/personInvitations',
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.invitation.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-type':'application/vnd.com.covisint.platform.person.invitation.v1+json'
-            },
-            data:{
-                email:invitee.email,
-                invitor:{
-                    id:invitor.id,
-                    type:'person'
-                },
-                invitee:{
-                    id:invitee.id,
-                    type:'person'
-                },
-                targetOrganization:{
-                    "id":"OCOVSMKT-CVDEV204002",
-                    "type":"organization"
-                }
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var update=function(id,data){
-        return $http({
-            method:'PUT',
-            url:API.cui.getServiceUrl() + '/person/v1/persons/' + id,
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:data
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var create=function(data){
-        return $http({
-            method:'POST',
-            url:API.cui.getServiceUrl() + '/person/v1/persons',
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.person.v1+json',
-                Authorization:'Bearer ' + API.token(),
-                'Content-Type':'application/vnd.com.covisint.platform.person.v1+json'
-            },
-            data:data
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(res){
-            return $q.reject(res);
-        });
-    };
-
-    var sendUserInvitationEmail=function(body){
-        return $http({
-            'method':'POST',
-            'url':'http://localhost:8000/invitation/person',
-            'Content-Type': 'application/json',
-            'data':body
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var getSecurityQuestions=function(){
-        return $http({
-            method:'GET',
-            url: API.cui.getServiceUrl() + '/authn/v2/securityQuestions',
-            headers:{
-                Accept:'application/vnd.com.covisint.platform.securityquestion.v1+json',
-                Authorization:'Bearer ' + API.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var getPasswordAccount=function(id){
-        return $http({
-            method:'GET',
-            url: API.cui.getServiceUrl() + '/person/v1/persons/' + id + '/accounts/password',
-            headers:{
-                Accept: 'application/vnd.com.covisint.platform.person.account.password.v1+json',
-                Authorization:'Bearer ' + API.token()
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var createPasswordAccount=function(id,data){
-        return $http({
-            method: 'PUT',
-            url: API.cui.getServiceUrl() + '/person/v1/persons/' + id + '/accounts/password',
-            headers: {
-                Accept: 'application/vnd.com.covisint.platform.person.account.password.v1+json',
-                Authorization: 'Bearer ' + API.token(),
-                'Content-Type': 'application/vnd.com.covisint.platform.person.account.password.v1+json'
-            },
-            data:data
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var createSecurityQuestions=function(id,data){
-        return $http({
-            method: 'PUT',
-            url: API.cui.getServiceUrl() + '/authn/v2/persons/' + id + '/accounts/securityQuestion',
-            headers: {
-                Accept: 'application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json',
-                Authorization: 'Bearer ' + API.token(),
-                'Content-Type': 'application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json'
-            },
-            data:data
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var grantExchangePackage=function(id){
-        return $http({
-            method:'PUT',
-            url: API.cui.getServiceUrl() + '/service/v1/persons/' + id + '/packages/PCOVSMKT-CVDEV204003000',
-            headers:{
-                Accept: 'application/vnd.com.covisint.platform.package.grant.v1+json',
-                Authorization : 'Bearer ' + API.token(),
-                'Content-Type': 'application/vnd.com.covisint.platform.package.grant.v1+json',
-            },
-            data:{
-                "version": 1,
-                "grantee": {
-                    "id": id,
-                    "type": "person"
-                },
-                "servicePackage": {
-                    "id": "PCOVSMKT-CVDEV204003000"
-                }
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var grantCcaPackage=function(id){
-        return $http({
-            method:'PUT',
-            url: API.cui.getServiceUrl() + '/service/v1/persons/' + id + '/packages/PAPC2040605',
-            headers:{
-                Accept: 'application/vnd.com.covisint.platform.package.grant.v1+json',
-                Authorization : 'Bearer ' + API.token(),
-                'Content-Type': 'application/vnd.com.covisint.platform.package.grant.v1+json',
-            },
-            data:{
-                "version": 1,
-                "grantee": {
-                    "id": id,
-                    "type": "person"
-                },
-                "servicePackage": {
-                    "id": "PAPC2040605"
-                }
-            }
-        })
-        .then(function(res){
-            return res;
-        })
-        .catch(function(err){
-            return $q.reject(err);
-        });
-    };
-
-    var person={
-        getAll:API.cui.getUsers,
-        getById:getById,
-        update:update,
-        getInvitations:getInvitations,
-        create:create,
-        createInvitation:createInvitation,
-        sendUserInvitationEmail:sendUserInvitationEmail,
-        getInvitationById:getInvitationById,
-        getSecurityQuestions:getSecurityQuestions,
-        getPasswordAccount:getPasswordAccount,
-        createPasswordAccount:createPasswordAccount,
-        createSecurityQuestions:createSecurityQuestions,
-        grantCcaPackage:grantCcaPackage,
-        grantExchangePackage:grantExchangePackage
-    };
-
-
-    return person;
-
-}]);
-
-angular.module('app')
 .controller('usersActivateCtrl',['$stateParams','API','Person',
 function($stateParams,API,Person){
     var usersActivate=this;
@@ -1954,10 +1676,80 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('welcomeCtrl',['$scope', 
-	function($scope) {
-		var welcome = this;
-}]); 
+.controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+    'use strict';
+    var orgDirectory = this;
+
+    orgDirectory.loading = true;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
+        orgDirectory.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(person) {
+        return API.cui.getOrganization({organizationId: person.organization.id});
+    })
+    .then(function(res) {
+        orgDirectory.organization = res;
+        orgDirectory.loading = false;
+        $scope.$digest();
+    })
+    .fail(handleError);
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('orgHierarchyCtrl', ['$scope','$stateParams','API',
+function($scope,$stateParams,API) {
+    'use strict';
+    var orgHierarchy = this;
+
+    orgHierarchy.loading = true;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
+        orgHierarchy.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(person) {
+        return API.cui.getOrganization({organizationId: person.organization.id});
+    })
+    .then(function(res) {
+    	console.log(res);
+        orgHierarchy.organization = res;
+        return API.cui.getOrganizationHierarchy({ id: orgHierarchy.organization.id });
+	})
+    .then(function(res) {
+    	console.log('Organization Hierarchy: ', res);
+        orgHierarchy.loading = false;
+        $scope.$digest();
+    })
+    .fail(handleError);
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
 
 
 angular.module('app')
@@ -1965,12 +1757,6 @@ angular.module('app')
 function($scope,$stateParams,API) {
     'use strict';
     var orgProfile = this;
-
-    /*      Scope Variable List:
-        orgProfile.loading:         Show loading spinner when true
-        orgProfile.organization:    Organization object of logged in user
-        orgProfile.securityAdmins:  List of security admins in orgProfile.organization
-    */
 
     orgProfile.loading = true;
 
@@ -1990,8 +1776,8 @@ function($scope,$stateParams,API) {
     .then(function(person) {
         return API.cui.getOrganization({organizationId: person.organization.id});
     })
-    .then(function(organization) {
-        orgProfile.organization = organization;
+    .then(function(res) {
+        orgProfile.organization = res;
         return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
     })
     .then(function(res) {
@@ -2002,231 +1788,6 @@ function($scope,$stateParams,API) {
     .fail(handleError);
 
     // ON LOAD END -----------------------------------------------------------------------------------
-
-}]);
-
-
-angular.module('app')
-.controller('usersEditCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
-    'use strict';
-    var usersEdit = this;
-
-    usersEdit.loading = true;
-    usersEdit.saving = true;
-    usersEdit.fail = false;
-    usersEdit.success = false;
-    usersEdit.timezoneById = Timezones.timezoneById;
-    usersEdit.toggleOffFunctions = {};
-
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var selectTextsForQuestions = function() {
-        usersEdit.challengeQuestionsTexts = [];
-        angular.forEach(usersEdit.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(usersEdit.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
-            this.push(question.question[0].text);
-        }, usersEdit.challengeQuestionsTexts);
-    };
-
-    var resetTempUser = function() {
-        if (!angular.equals(usersEdit.tempUser,usersEdit.user)) angular.copy(usersEdit.user,usersEdit.tempUser);
-    };
-
-    var build = {
-        personPasswordAccount: function() {
-            return {
-                version: '1',
-                username: usersEdit.user.username,
-                currentPassword: usersEdit.userPasswordAccount.currentPassword,
-                password: usersEdit.userPasswordAccount.password,
-                passwordPolicy: usersEdit.organization.passwordPolicy,
-                authenticationPolicy: usersEdit.organization.authenticationPolicy
-            };
-        }
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        if (!res.addresses) {
-            // If the person has no addresses set we need to initialize it as an array
-            // to follow the object structure
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        usersEdit.user = {};
-        usersEdit.tempUser = {};
-        angular.copy(res, usersEdit.user);
-        angular.copy(res, usersEdit.tempUser);
-        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        usersEdit.userSecurityQuestions = res;
-        usersEdit.tempUserSecurityQuestions = angular.copy(usersEdit.userSecurityQuestions.questions);
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        usersEdit.allSecurityQuestions = res;
-        usersEdit.allSecurityQuestionsDup = angular.copy(res);
-        usersEdit.allSecurityQuestions.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = usersEdit.allSecurityQuestions.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
-        //Allocating options to three questions
-        usersEdit.allChallengeQuestions0 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        usersEdit.allChallengeQuestions1 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        usersEdit.allChallengeQuestions2 = usersEdit.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-
-        selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:usersEdit.user.organization.id});
-    })
-    .then(function(res) {
-        usersEdit.organization = res;
-        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
-    })
-    .then(function(res) {
-        CuiPasswordPolicies.set(res.rules);
-        usersEdit.loading = false;
-        $scope.$digest();
-    })
-    .fail(function(err) {
-        console.log(err);
-        usersEdit.loading = false;
-        $scope.$digest();
-    });
-
-    // ON LOAD END -----------------------------------------------------------------------------------
-
-    // ON CLICK START --------------------------------------------------------------------------------
-
-    usersEdit.toggleAllOff=function(){
-        angular.forEach(usersEdit.toggleOffFunctions,function(toggleOff) {
-            toggleOff();
-        });
-        resetTempUser();
-    };
-
-    usersEdit.resetTempObject = function(master, temp) {
-        // Used to reset the temp object to the original when a user cancels their edit changes
-        if (!angular.equals(master,temp)) angular.copy(master, temp);
-    };
-
-    usersEdit.resetPasswordFields = function() {
-        // Used to set the password fields to empty when a user clicks cancel during password edit
-        usersEdit.userPasswordAccount = {
-            currentPassword: '',
-            password: ''
-        };
-        usersEdit.passwordRe = '';
-    };
-
-    usersEdit.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
-        securityQuestions.forEach(function(secQuestion,i){
-            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
-                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
-            });
-            if(securityAnswerRepeatedIndex>-1) {
-                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
-            }
-            else {
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
-            }
-        });
-    };
-
-    usersEdit.resetChallengeQuestion = function(index) {
-        usersEdit.resetTempObject(usersEdit.userSecurityQuestions.questions[index], usersEdit.tempUserSecurityQuestions[index]);
-    };
-
-    usersEdit.pushToggleOff=function(toggleOffObject){
-        usersEdit.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
-    };
-
-    // ON CLICK END ----------------------------------------------------------------------------------
-
-    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
-
-    usersEdit.updatePerson = function(section,toggleOff) {
-        if(section) usersEdit[section]={
-            submitting:true
-        };
-        if (!usersEdit.userCountry) {
-            usersEdit.tempUser.addresses[0].country = usersEdit.user.addresses[0].country;
-        }
-        else {
-            usersEdit.tempUser.addresses[0].country = usersEdit.userCountry.description.code;
-        }
-
-        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:usersEdit.tempUser})
-        .then(function() {
-            angular.copy(usersEdit.tempUser, usersEdit.user);
-            if(section) usersEdit[section].submitting=false;
-            if(toggleOff) toggleOff();
-            $scope.$digest();
-        })
-        .fail(function(error) {
-            console.log(error);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
-            $scope.$digest();
-        });
-    };
-
-    usersEdit.updatePassword = function(section,toggleOff) {
-        if (section) {
-            usersEdit[section] = { submitting:true };
-        } 
-
-        API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
-        .then(function(res) {
-            if (section) usersEdit[section].submitting = false;  
-            if (toggleOff) toggleOff();
-            usersEdit.resetPasswordFields();
-            $scope.$digest();
-        })
-        .fail(function(err) {
-            console.log(err);
-            if (section) usersEdit[section].submitting = false;
-            if (section) usersEdit[section].error = true;
-            $scope.$digest();
-        });
-    };
-
-   usersEdit.saveChallengeQuestions = function(section,toggleOff) {
-        if(section) usersEdit[section]={
-            submitting:true
-        };
-        usersEdit.userSecurityQuestions.questions = angular.copy(usersEdit.tempUserSecurityQuestions);
-        selectTextsForQuestions();
-
-        API.cui.updateSecurityQuestionAccount({
-          personId: API.getUser(),
-          data: {
-            version: '1',
-            id: API.getUser(),
-            questions: usersEdit.userSecurityQuestions.questions
-            }
-        })
-        .then(function(res) {
-            if(section) usersEdit[section].submitting=false;
-            if(toggleOff) toggleOff();
-            $scope.$digest();
-        })
-        .fail(function(err) {
-            console.log(err);
-            if(section) usersEdit[section].submitting=false;
-            if(section) usersEdit[section].error=true;
-            $scope.$digest();
-        });
-    };
-
-    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
 
@@ -2638,8 +2199,8 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
 
 
 angular.module('app')
-.controller('usersWalkupCtrl',['localStorageService','$scope','Person','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
-function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
+.controller('usersWalkupCtrl',['localStorageService','$scope','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
+function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
     'use strict';
 
     var usersWalkup = this;
@@ -2649,12 +2210,15 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     usersWalkup.registering = false;
     usersWalkup.userNameExistsError = false;
     usersWalkup.applications.numberOfSelected = 0;
+    usersWalkup.orgLoading = true;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     function handleError(err) {
         console.log('Error!\n');
         console.log(err);
+        usersWalkup.orgLoading = false;
+        $scope.$digest();
     }
 
     var searchOrganizations = function(newOrgToSearch) {
@@ -2781,6 +2345,8 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     .then(function(res){
         // Populate organization list
         usersWalkup.organizationList = res;
+        usersWalkup.orgLoading = false;
+        $scope.$digest();
     })
     .fail(handleError);
 
@@ -2902,6 +2468,231 @@ function(localStorageService,$scope,Person,$stateParams,API,LocaleService,$state
     });
 
     // WATCHERS END ----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
+function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
+    'use strict';
+    var userProfile = this;
+
+    userProfile.loading = true;
+    userProfile.saving = true;
+    userProfile.fail = false;
+    userProfile.success = false;
+    userProfile.timezoneById = Timezones.timezoneById;
+    userProfile.toggleOffFunctions = {};
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var selectTextsForQuestions = function() {
+        userProfile.challengeQuestionsTexts = [];
+        angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
+            var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+            this.push(question.question[0].text);
+        }, userProfile.challengeQuestionsTexts);
+    };
+
+    var resetTempUser = function() {
+        if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
+    };
+
+    var build = {
+        personPasswordAccount: function() {
+            return {
+                version: '1',
+                username: userProfile.user.username,
+                currentPassword: userProfile.userPasswordAccount.currentPassword,
+                password: userProfile.userPasswordAccount.password,
+                passwordPolicy: userProfile.organization.passwordPolicy,
+                authenticationPolicy: userProfile.organization.authenticationPolicy
+            };
+        }
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    .then(function(res) {
+        if (!res.addresses) {
+            // If the person has no addresses set we need to initialize it as an array
+            // to follow the object structure
+            res.addresses = [{}];
+            res.addresses[0].streets = [[]];
+        }
+        userProfile.user = {};
+        userProfile.tempUser = {};
+        angular.copy(res, userProfile.user);
+        angular.copy(res, userProfile.tempUser);
+        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
+    })
+    .then(function(res) {
+        userProfile.userSecurityQuestions = res;
+        userProfile.tempUserSecurityQuestions = angular.copy(userProfile.userSecurityQuestions.questions);
+        return API.cui.getSecurityQuestions();
+    })
+    .then(function(res) {
+        userProfile.allSecurityQuestions = res;
+        userProfile.allSecurityQuestionsDup = angular.copy(res);
+        userProfile.allSecurityQuestions.splice(0,1);
+
+        // Splits questions to use between both dropdowns
+        var numberOfQuestions = userProfile.allSecurityQuestions.length,
+        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
+        //Allocating options to three questions
+        userProfile.allChallengeQuestions0 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        userProfile.allChallengeQuestions1 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+        userProfile.allChallengeQuestions2 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+
+        selectTextsForQuestions();
+        return API.cui.getOrganization({organizationId:userProfile.user.organization.id});
+    })
+    .then(function(res) {
+        userProfile.organization = res;
+        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
+    })
+    .then(function(res) {
+        CuiPasswordPolicies.set(res.rules);
+        userProfile.loading = false;
+        $scope.$digest();
+    })
+    .fail(function(err) {
+        console.log(err);
+        userProfile.loading = false;
+        $scope.$digest();
+    });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    userProfile.toggleAllOff=function(){
+        angular.forEach(userProfile.toggleOffFunctions,function(toggleOff) {
+            toggleOff();
+        });
+        resetTempUser();
+    };
+
+    userProfile.resetTempObject = function(master, temp) {
+        // Used to reset the temp object to the original when a user cancels their edit changes
+        if (!angular.equals(master,temp)) angular.copy(master, temp);
+    };
+
+    userProfile.resetPasswordFields = function() {
+        // Used to set the password fields to empty when a user clicks cancel during password edit
+        userProfile.userPasswordAccount = {
+            currentPassword: '',
+            password: ''
+        };
+        userProfile.passwordRe = '';
+    };
+
+    userProfile.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+        securityQuestions.forEach(function(secQuestion,i){
+            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
+                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
+            });
+            if(securityAnswerRepeatedIndex>-1) {
+                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
+            }
+            else {
+                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
+            }
+        });
+    };
+
+    userProfile.resetChallengeQuestion = function(index) {
+        userProfile.resetTempObject(userProfile.userSecurityQuestions.questions[index], userProfile.tempUserSecurityQuestions[index]);
+    };
+
+    userProfile.pushToggleOff=function(toggleOffObject){
+        userProfile.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
+
+    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
+
+    userProfile.updatePerson = function(section,toggleOff) {
+        if(section) userProfile[section]={
+            submitting:true
+        };
+        if (!userProfile.userCountry) {
+            userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
+        }
+        else {
+            userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
+        }
+
+        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})
+        .then(function() {
+            angular.copy(userProfile.tempUser, userProfile.user);
+            if(section) userProfile[section].submitting=false;
+            if(toggleOff) toggleOff();
+            $scope.$digest();
+        })
+        .fail(function(error) {
+            console.log(error);
+            if(section) userProfile[section].submitting=false;
+            if(section) userProfile[section].error=true;
+            $scope.$digest();
+        });
+    };
+
+    userProfile.updatePassword = function(section,toggleOff) {
+        if (section) {
+            userProfile[section] = { submitting:true };
+        } 
+
+        API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
+        .then(function(res) {
+            if (section) userProfile[section].submitting = false;  
+            if (toggleOff) toggleOff();
+            userProfile.resetPasswordFields();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            if (section) userProfile[section].submitting = false;
+            if (section) userProfile[section].error = true;
+            $scope.$digest();
+        });
+    };
+
+   userProfile.saveChallengeQuestions = function(section,toggleOff) {
+        if(section) userProfile[section]={
+            submitting:true
+        };
+        userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
+        selectTextsForQuestions();
+
+        API.cui.updateSecurityQuestionAccount({
+          personId: API.getUser(),
+          data: {
+            version: '1',
+            id: API.getUser(),
+            questions: userProfile.userSecurityQuestions.questions
+            }
+        })
+        .then(function(res) {
+            if(section) userProfile[section].submitting=false;
+            if(toggleOff) toggleOff();
+            $scope.$digest();
+        })
+        .fail(function(err) {
+            console.log(err);
+            if(section) userProfile[section].submitting=false;
+            if(section) userProfile[section].error=true;
+            $scope.$digest();
+        });
+    };
+
+    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
 
 }]);
 
