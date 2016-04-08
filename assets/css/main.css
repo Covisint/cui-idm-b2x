@@ -970,13 +970,23 @@ Styleguide Elements.Forms.Dropdown
 select.cui-select, select.cui-expandable__review-select,
 .cui-select,
 .cui-expandable__review-select {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMTlweCIgaGVpZ2h0PSIxMHB4IiB2aWV3Qm94PSIwIDAgMTkgMTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+QmFjayBBcnJvdyBDb3B5PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8cGF0aCBkPSJNOS44NDI0NjMyMSw5LjY5MzQ4NTA5IEM5LjQyNzUwMTIsMTAuMTAyMTcxNiA4Ljc1NDg0ODMxLDEwLjEwMjE3MTYgOC4zMzkzNTQ5OCw5LjY5MzQ4NTA5IEwwLjE1NTQxMTUwOCwxLjYzMzMwNzE3IEMtMC4wNTE4MDM4MzYxLDEuNDI4NzAyMjUgLTAuMDUxODAzODM2MSwxLjA5NzQ2MjA2IDAuMTU1NDExNTA4LDAuODkzMzgwNDI5IEwwLjkwNjY5OTk2MywwLjE1MzQ1MzY4OSBDMS4xMTQ0NDY2MywtMC4wNTExNTEyMjk3IDEuNDUwNzczMDcsLTAuMDUxMTUxMjI5NyAxLjY1Nzk4ODQyLDAuMTUzNDUzNjg5IEw4LjcxNDk5OTIsNy4xMDM3NDE1IEM4LjkyMjc0NTg3LDcuMzA3ODIzMTMgOS4yNTkwNzIzMSw3LjMwNzgyMzEzIDkuNDY2ODE4OTgsNy4xMDM3NDE1IEwxNi41MjM4Mjk4LDAuMTUzNDUzNjg5IEMxNi43MzEwNDUxLC0wLjA1MTE1MTIyOTcgMTcuMDY3MzcxNiwtMC4wNTExNTEyMjk3IDE3LjI3NTExODIsMC4xNTM0NTM2ODkgTDE4LjAyNjQwNjcsMC44OTMzODA0MjkgQzE4LjIzMzYyMiwxLjA5NzQ2MjA2IDE4LjIzMzYyMiwxLjQyODcwMjI1IDE4LjAyNjQwNjcsMS42MzMzMDcxNyBMOS44NDI0NjMyMSw5LjY5MzQ4NTA5IFoiIGlkPSJCYWNrLUFycm93LUNvcHkiIGZpbGw9IiMzNDM1MzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkuMDkwOTA5LCA1LjAwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtOS4wOTA5MDksIC01LjAwMDAwMCkgIj48L3BhdGg+ICAgIDwvZz48L3N2Zz4=") right 20px center no-repeat;
   background-color: #fff;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMTlweCIgaGVpZ2h0PSIxMHB4IiB2aWV3Qm94PSIwIDAgMTkgMTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+QmFjayBBcnJvdyBDb3B5PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8cGF0aCBkPSJNOS44NDI0NjMyMSw5LjY5MzQ4NTA5IEM5LjQyNzUwMTIsMTAuMTAyMTcxNiA4Ljc1NDg0ODMxLDEwLjEwMjE3MTYgOC4zMzkzNTQ5OCw5LjY5MzQ4NTA5IEwwLjE1NTQxMTUwOCwxLjYzMzMwNzE3IEMtMC4wNTE4MDM4MzYxLDEuNDI4NzAyMjUgLTAuMDUxODAzODM2MSwxLjA5NzQ2MjA2IDAuMTU1NDExNTA4LDAuODkzMzgwNDI5IEwwLjkwNjY5OTk2MywwLjE1MzQ1MzY4OSBDMS4xMTQ0NDY2MywtMC4wNTExNTEyMjk3IDEuNDUwNzczMDcsLTAuMDUxMTUxMjI5NyAxLjY1Nzk4ODQyLDAuMTUzNDUzNjg5IEw4LjcxNDk5OTIsNy4xMDM3NDE1IEM4LjkyMjc0NTg3LDcuMzA3ODIzMTMgOS4yNTkwNzIzMSw3LjMwNzgyMzEzIDkuNDY2ODE4OTgsNy4xMDM3NDE1IEwxNi41MjM4Mjk4LDAuMTUzNDUzNjg5IEMxNi43MzEwNDUxLC0wLjA1MTE1MTIyOTcgMTcuMDY3MzcxNiwtMC4wNTExNTEyMjk3IDE3LjI3NTExODIsMC4xNTM0NTM2ODkgTDE4LjAyNjQwNjcsMC44OTMzODA0MjkgQzE4LjIzMzYyMiwxLjA5NzQ2MjA2IDE4LjIzMzYyMiwxLjQyODcwMjI1IDE4LjAyNjQwNjcsMS42MzMzMDcxNyBMOS44NDI0NjMyMSw5LjY5MzQ4NTA5IFoiIGlkPSJCYWNrLUFycm93LUNvcHkiIGZpbGw9IiMzNDM1MzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkuMDkwOTA5LCA1LjAwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtOS4wOTA5MDksIC01LjAwMDAwMCkgIj48L3BhdGg+ICAgIDwvZz48L3N2Zz4=") right 20px center no-repeat;
   border-radius: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   padding-right: 50px; }
+  select.cui-select:hover, select.cui-expandable__review-select:hover,
+  .cui-select:hover,
+  .cui-expandable__review-select:hover {
+    cursor: pointer; }
   select.cui-select::-ms-expand, select.cui-expandable__review-select::-ms-expand,
   .cui-select::-ms-expand,
   .cui-expandable__review-select::-ms-expand {
@@ -985,6 +995,18 @@ select.cui-select, select.cui-expandable__review-select,
   .cui-select:focus,
   .cui-expandable__review-select:focus {
     outline: 0; }
+
+.cui-dropdown {
+  background-color: #fff;
+  border: 1px solid #cde6f0; }
+
+.cui-dropdown__item {
+  font-color: #ECEAEA;
+  padding: 0.625em 1.875em; }
+  .cui-dropdown__item:hover {
+    background-color: #6a98a0;
+    color: #fff;
+    cursor: pointer; }
 
 /*
 Radio
@@ -4102,8 +4124,9 @@ Styleguide Blocks.Step-Indicator
   text-align: center;
   text-transform: capitalize;
   white-space: nowrap; }
-  .step-indicator .icon-container {
-    margin-top: 0.625em; }
+  @media screen and (min-width: 701px) {
+    .step-indicator .icon-container {
+      margin-top: 0.625em; } }
   .step-indicator .icon {
     background: #fff;
     border-radius: 50%;
@@ -4268,7 +4291,7 @@ Styleguide Blocks.Step-Indicator-With-Icons
     height: 100%;
     position: absolute;
     width: 1px; }
-  .cui-form--mobile-steps .mobile-element > .cui-expandable__title span {
+  .cui-form--mobile-steps .mobile-element > .cui-expandable__title .step-indicator__title {
     color: #D0D0D0;
     font-size: 1.5em;
     padding-left: 1.0416666667em; }
@@ -4278,14 +4301,14 @@ Styleguide Blocks.Step-Indicator-With-Icons
   border-bottom: 1px solid #929292; }
   .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title::before {
     background-color: #979797; }
-  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title span {
+  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title .step-indicator__title {
     color: #6a98a0; }
 
 .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title {
   background-color: #D9EAEE; }
   .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title::before {
     background-color: #979797; }
-  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title span {
+  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title .step-indicator__title {
     color: #6D6D6D; }
 
 .cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title::before {
@@ -4300,7 +4323,7 @@ Styleguide Blocks.Step-Indicator-With-Icons
   bottom: 0;
   height: 50%; }
 
-.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title span {
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title .step-indicator__title {
   font-size: 1.5em;
   padding-left: 1.0416666667em; }
 
