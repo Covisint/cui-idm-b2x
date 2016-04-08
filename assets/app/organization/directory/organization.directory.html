@@ -1,11 +1,6 @@
 <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
 
 <div class="cui-organization">
-  <!-- Page Loading -->
-  <div class="cui-loading__container" ng-if="orgDirectory.loading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
   <!-- Menu Header -->
   <div class="cui-action">
     <span class="cui-action__title">
@@ -54,16 +49,15 @@
         </div>
       </div>
       <!-- Organizations -->
-      <div class="cui-action__action-container" ng-click="" id="categories-button" off-click="">
+      <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked =! orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked = false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
         </svg>
         <span class="cui-action__action-label">Organizations</span>
         <!-- Organizations Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="">
-          <p ng-click="">TODO!</p>
-          <div ng-repeat="">
-            <p ng-click="">TODO!</p>
+        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
+          <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
+            <p ng-click="orgDirectory.getOrgMembers(organization.id, organization.name)">{{organization.name}}</p>
           </div>
         </div>
       </div>
@@ -72,6 +66,11 @@
 
   <!-- Profile Content -->
   <div class="cui-organization__main-container">
+    <!-- User List Loading -->
+    <div class="cui-loading__container" ng-if="orgDirectory.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
     <table class="cui-table cui-table--borderless">
       <thead>
         <tr>
