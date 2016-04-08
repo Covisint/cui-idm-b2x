@@ -634,7 +634,8 @@ Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/
 
 Styleguide Elements.Forms.Input
 */
-.cui-input, select.cui-select, select.cui-expandable__review-select, .cui-expandable__review-input {
+.cui-input, select.cui-select, select.cui-expandable__review-select,
+.cui-select, .cui-expandable__review-select, .cui-expandable__review-input {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -647,7 +648,9 @@ Styleguide Elements.Forms.Input
   padding: 8px 12px;
   position: relative;
   width: 100%; }
-  .cui-input.pseudo-class-focus, select.pseudo-class-focus.cui-select, select.pseudo-class-focus.cui-expandable__review-select, .pseudo-class-focus.cui-expandable__review-input, .cui-input:focus, select.cui-select:focus, select.cui-expandable__review-select:focus, .cui-expandable__review-input:focus {
+  .cui-input.pseudo-class-focus,
+  .pseudo-class-focus.cui-select, .pseudo-class-focus.cui-expandable__review-select, .pseudo-class-focus.cui-expandable__review-input, .cui-input:focus,
+  .cui-select:focus, .cui-expandable__review-select:focus, .cui-expandable__review-input:focus {
     border: 1px solid #828483;
     outline: 0; }
   .cui-input--display {
@@ -658,7 +661,9 @@ Styleguide Elements.Forms.Input
     width: 200px; }
   .cui-input--half {
     width: 48%; }
-  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid.cui-select, select.ng-touched.ng-invalid.cui-expandable__review-select, .ng-touched.ng-invalid.cui-expandable__review-input, .cui-input.ng-touched.ng-invalid:focus, select.ng-touched.ng-invalid.cui-select:focus, select.ng-touched.ng-invalid.cui-expandable__review-select:focus, .ng-touched.ng-invalid.cui-expandable__review-input:focus {
+  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid,
+  .ng-touched.ng-invalid.cui-select, .ng-touched.ng-invalid.cui-expandable__review-select, .ng-touched.ng-invalid.cui-expandable__review-input, .cui-input.ng-touched.ng-invalid:focus,
+  .ng-touched.ng-invalid.cui-select:focus, .ng-touched.ng-invalid.cui-expandable__review-select:focus, .ng-touched.ng-invalid.cui-expandable__review-input:focus {
     border: 1px solid #FF4400; }
   .cui-input__password-holder {
     display: -webkit-flex;
@@ -674,9 +679,11 @@ Styleguide Elements.Forms.Input
         -ms-flex-pack: justify;
             justify-content: space-between;
     position: relative; }
-  .cui-input[type="password"]:focus + .cui-error__password, select[type="password"].cui-select:focus + .cui-error__password, select[type="password"].cui-expandable__review-select:focus + .cui-error__password, [type="password"].cui-expandable__review-input:focus + .cui-error__password {
+  .cui-input[type="password"]:focus + .cui-error__password,
+  [type="password"].cui-select:focus + .cui-error__password, [type="password"].cui-expandable__review-select:focus + .cui-error__password, [type="password"].cui-expandable__review-input:focus + .cui-error__password {
     display: inline-block; }
-  .cui-input.ng-touched.ng-valid, select.ng-touched.ng-valid.cui-select, select.ng-touched.ng-valid.cui-expandable__review-select, .ng-touched.ng-valid.cui-expandable__review-input, .cui-input--valid {
+  .cui-input.ng-touched.ng-valid,
+  .ng-touched.ng-valid.cui-select, .ng-touched.ng-valid.cui-expandable__review-select, .ng-touched.ng-valid.cui-expandable__review-input, .cui-input--valid {
     border: 1px solid #47CBB4; }
   @media all and (max-width: 700px) {
     .cui-input--half {
@@ -960,7 +967,9 @@ Markup:
 
 Styleguide Elements.Forms.Dropdown
 */
-select.cui-select, select.cui-expandable__review-select {
+select.cui-select, select.cui-expandable__review-select,
+.cui-select,
+.cui-expandable__review-select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -968,9 +977,13 @@ select.cui-select, select.cui-expandable__review-select {
   background-color: #fff;
   border-radius: 0;
   padding-right: 50px; }
-  select.cui-select::-ms-expand, select.cui-expandable__review-select::-ms-expand {
+  select.cui-select::-ms-expand, select.cui-expandable__review-select::-ms-expand,
+  .cui-select::-ms-expand,
+  .cui-expandable__review-select::-ms-expand {
     display: none; }
-  select.cui-select:focus, select.cui-expandable__review-select:focus {
+  select.cui-select:focus, select.cui-expandable__review-select:focus,
+  .cui-select:focus,
+  .cui-expandable__review-select:focus {
     outline: 0; }
 
 /*

@@ -45,6 +45,7 @@
 			</div>
 			<select ng-model="usersWalkup.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions1">
 			</select>
+			<cui-dropdown ng-model="usersWalkup.userLogin.question1" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions1" name="challenge1" return-value="option.name" class="cui-select"></cui-dropdown>
 		</div>
 
 		<!-- Challenge Answer 1 -->
