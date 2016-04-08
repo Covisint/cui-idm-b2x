@@ -1,7 +1,7 @@
-<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a>.</div>
 
 <div class="cui-organization">
-  <!-- Menu Header -->
+  <!-- Page Header -->
   <div class="cui-action">
     <span class="cui-action__title">
       <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
@@ -17,39 +17,41 @@
     </div>
   </div>
 
-  <!-- Action Header -->
+  <!-- Action Sub-header -->
   <div class="cui-action">
     <span class="cui-action__title">{{orgDirectory.organization.name}}</span>
     <div class="cui-action__actions">
       <!-- Sort -->
-      <div class="cui-action__action-container" ng-click="" id="sort-button" off-click="">
+      <div class="cui-action__action-container" ng-click="orgDirectory.sortClicked=!orgDirectory.sortClicked" id="sort-button" off-click="orgDirectory.sortClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
         </svg>
         <span class="cui-action__action-label">Sort</span>
         <!-- Sort Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="">
-          <p ng-click="">{{'cui-alphabetically' | translate}}</p>
-          <p ng-click="">{{'cui-by-date-added' | translate}}</p>
+        target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
+          <p>{{'cui-alphabetically' | translate}}</p>
+          <p>{{'cui-by-date-added' | translate}}</p>
         </div>
       </div>
       <!-- Refine -->
-      <div class="cui-action__action-container" ng-click="" id="refine-button" off-click="">
+      <div class="cui-action__action-container" ng-click="orgDirectory.refineClicked=!orgDirectory.refineClicked" id="refine-button" off-click="orgDirectory.refineClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
         </svg>
         <span class="cui-action__action-label">Refine</span>
         <!-- Refine Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="">
-          <p ng-click="">TODO!</p>
-          <div ng-repeat="" ng-if="">
-            <p ng-click="">TODO!</p>
-          </div>
+        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
+          <p>{{'active' | translate}} (0)</p>
+          <p>{{'locked' | translate}} (0)</p>
+          <p>{{'pending' | translate}} (0)</p>
+          <p>{{'suspended' | translate}} (0)</p>
+          <p>{{'rejected' | translate}} (0)</p>
+          <p>{{'removed' | translate}} (0)</p>
         </div>
       </div>
       <!-- Organizations -->
-      <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked =! orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked = false">
+      <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
         </svg>
@@ -57,7 +59,7 @@
         <!-- Organizations Popover -->
         <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
           <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
-            <p ng-click="orgDirectory.getOrgMembers(organization.id, organization.name)">{{organization.name}}</p>
+            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization.id, organization.name)">{{organization.name}}</p>
           </div>
         </div>
       </div>
@@ -74,26 +76,23 @@
     <table class="cui-table cui-table--borderless">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>UserID</th>
-          <th>Registered</th>
-          <th>Status</th>
+          <th>{{'cui-name' | translate}}</th>
+          <th>{{'userID' | translate}}</th>
+          <th>{{'cui-registered' | translate}}</th>
+          <th>{{'status' | translate}}</th>
         </tr>
       </thead>
       <tbody>
-        <tr ui-sref="directory.userDetails">
+        <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({id:user.id})">
           <th>
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-              <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#linux3"></use>
-            </svg>
-            <span>Mike Z</span>
+            <div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+            <span>{{user.name.given}} {{user.name.surname}}</span>
           </th>
-          <th>C01DP1@Y</th>
-          <th>1/1/2016</th>
-          <th>Denied</th>
+          <th>{{user.username}}</th>
+          <th>{{user.creation}}</th>
+          <th>{{user.status}}</th>
         </tr>
       </tbody>
     </table>
-    <p>API Blocker: Get all organization members</p>
   </div>
 </div>

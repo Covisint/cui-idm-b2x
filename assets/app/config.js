@@ -115,7 +115,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/directory/directory.html'
         })
         .state('directory.userDetails', {
-            url: '/user-details',
+            url: '/user-details?id',
             templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
             controller: returnCtrlAs('userDetails')
         })
