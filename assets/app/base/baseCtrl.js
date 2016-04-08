@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu','AppConfig',
-function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu,AppConfig){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -45,7 +45,8 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
 
     base.timezones=Timezones.all;
     base.languages=Languages.all;
-    base.appConfig=AppConfig;
+
+    base.appConfig=appConfig;
 
     base.user = User.user;
     base.userName = User.userName;

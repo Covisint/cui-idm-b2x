@@ -1,8 +1,11 @@
 (function(angular){
     'use strict';
 
-    angular
-    .module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
+    $.get('./appConfig.json',function (configData) {
+        var appConfig=configData;
+
+        angular.element(document).ready(function () {
+            angular.module('app',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule']);
 
 
 angular.module('app')
@@ -170,7 +173,7 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
 function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
@@ -484,6 +487,11 @@ function(API,$scope,$state,AppRequests) {
     .then(function(res) {
         var i = 0;
         var packages = res;
+
+        if(res.length===0){
+            newAppRequest.loadingDone = true;
+            $scope.$digest();
+        }
 
         packages.forEach(function(pkg) {
             API.cui.getPackageServices({'packageId':pkg.id})
@@ -825,8 +833,8 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
 
 
 angular.module('app')
-.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu','AppConfig',
-function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu,AppConfig){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu){
     var base=this;
 
     base.goBack=function(){
@@ -871,7 +879,8 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
 
     base.timezones=Timezones.all;
     base.languages=Languages.all;
-    base.appConfig=AppConfig;
+
+    base.appConfig=appConfig;
 
     base.user = User.user;
     base.userName = User.userName;
@@ -895,7 +904,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     var templateBase = 'assets/app/'; // base directory of your partials
 
 
-    var returnCtrlAs = function(name, asPrefix) { 
+    var returnCtrlAs = function(name, asPrefix) {
         // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
         // returnCtrlAs('test') returns 'testCtrl as test'
         return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
@@ -987,17 +996,26 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/organization.html'
         })
         .state('organization.profile', {
-            url: '/profile',
+            url: '/profile?id',
             templateUrl: templateBase + 'organization/profile/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory',
+            url: '/directory?id',
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('directory', {
+            url: '/organization/directory',
+            templateUrl: templateBase + 'organization/directory/directory.html'
+        })
+        .state('directory.userDetails', {
+            url: '/user-details',
+            templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
+            controller: returnCtrlAs('userDetails')
+        })
         .state('organization.hierarchy', {
-            url: '/hierarchy',
+            url: '/hierarchy?id',
             templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
@@ -1062,49 +1080,37 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
       $state.go('welcome');
     });
 
-    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
-        // ADD LANGUAGES HERE ONLY
-        {
-            'en':'English',
-            'pt':'Português (Portuguese)',
-            'tr':'Türk (Turkish)',
-            'zh':'中文 (Chinese - Simplified)',
-            'fr':'Français (French)',
-            'es':'Español (Spanish)',
-            'it':'Italiano (Italian)',
-            'ru':'Pусский (Russian)',
-            'th':'ไทย (Thai)',
-            'ja':'日本語 (Japanese)',
-            'de':'Deutsche (German)'
-        }
-    );
+    if(appConfig.languages){
+        $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
+        var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
-    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
+        var returnRegisterAvailableLanguageKeys=function(){
+            var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
+            languageKeys.forEach(function(languageKey){
+                object[languageKey+'*'] = languageKey; //redirect language keys such as en_US to en or en-US to en
+            });
+            return object;
+        };
 
-    var returnRegisterAvailableLanguageKeys=function(){
-        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
-        languageKeys.forEach(function(languageKey){
-            object[languageKey+'*'] = languageKey; //redirect language keys such as en_US to en or en-US to en
-        });
-        return object;
-    };
+        $translateProvider
+        .useLoader('LocaleLoader',{
+            url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
+            prefix:'locale-',
+            suffix:'.json'
+        })
+        .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
+        .uniformLanguageTag('java')
+        .determinePreferredLanguage()
+        .fallbackLanguage(languageKeys);
 
-    $translateProvider
-    .useLoader('LocaleLoader',{
-        url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-        prefix:'locale-',
-        suffix:'.json'
-    })
-    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
-    .uniformLanguageTag('java')
-    .determinePreferredLanguage()
-    .fallbackLanguage(languageKeys);
+        $cuiI18nProvider.setLocalePreference(languageKeys);
+    }
 
-    $cuiI18nProvider.setLocalePreference(languageKeys);
-
-    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 48 48');
-    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg','0 0 216 216');
-    $cuiIconProvider.iconSet('icon','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 49 49');
+    if(appConfig.iconSets){
+        appConfig.iconSets.forEach(function(iconSet){
+            $cuiIconProvider.iconSet(iconSet.name,iconSet.path,iconSet.defaultViewBox || null);
+        })
+    }
 }]);
 
 angular.module('app')
@@ -1156,7 +1162,7 @@ angular.module('app')
     myCUI.setServiceUrl('STG'); // STG
     // myCUI.setServiceUrl('PRD'); // PRD
 
-    var originUri = 'cui-sdk.run.covisintrnd.com'; // Thirdwave STG Instance
+    var originUri = appConfig.originUri; // Thirdwave STG Instance
     // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
 
     function jwtAuthHandler() {
@@ -1215,15 +1221,6 @@ angular.module('app')
     };
 }]);
 
-
-angular.module('app')
-.factory('AppConfig',[function(){
-
-    return {
-        dateFormat:'shortDate'
-    };
-
-}]);
 
 angular.module('app')
 .factory('Countries',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
@@ -1679,7 +1676,9 @@ angular.module('app')
 .controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';
+
     var orgDirectory = this;
+    var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
 
@@ -1695,17 +1694,56 @@ function($scope,$stateParams,API) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
-    })
-    .then(function(res) {
-        orgDirectory.organization = res;
-        orgDirectory.loading = false;
-        $scope.$digest();
-    })
-    .fail(handleError);
+    if (!organizationId) {
+        // If no id parameter is passed load organization directory of logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(person) {
+            return API.cui.getOrganization({ organizationId: person.organization.id });
+        })
+        .then(function(res) {
+            orgDirectory.organization = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load organization directory of id parameter
+        API.cui.getOrganization({ organizationId: organizationId })
+        .then(function(res) {
+            orgDirectory.organization = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
 
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('userDetailsCtrl', ['$scope', '$stateParams', 'API',
+function($scope,$stateParams,API) {
+    'use strict';
+    var userDetails = this;
+
+    // userDetails.loading = true;
+    userDetails.profileRolesSwitch = true;
+
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
+        userDetails.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
     // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
@@ -1756,7 +1794,9 @@ angular.module('app')
 .controller('orgProfileCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';
+
     var orgProfile = this;
+    var organizationId = $stateParams.id;
 
     orgProfile.loading = true;
 
@@ -1772,20 +1812,37 @@ function($scope,$stateParams,API) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
-    })
-    .then(function(res) {
-        orgProfile.organization = res;
-        return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
-    })
-    .then(function(res) {
-        orgProfile.securityAdmins = res;
-        orgProfile.loading = false;
-        $scope.$digest();
-    })
-    .fail(handleError);
+    if (!organizationId) {
+        // If no id parameter is passed we load the organization of the logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(person) {
+            return API.cui.getOrganization({organizationId: person.organization.id});
+        })
+        .then(function(res) {
+            orgProfile.organization = res;
+            return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
+        })
+        .then(function(res) {
+            orgProfile.securityAdmins = res;
+            orgProfile.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load organization based on id parameter
+        API.cui.getOrganization({ organizationId: organizationId })
+        .then(function(res) {
+            orgProfile.organization = res;
+            return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
+        })
+        .then(function(res) {
+            orgProfile.securityAdmins = res;
+            orgProfile.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -2697,4 +2754,8 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 }]);
 
 
+
+            angular.bootstrap(document,['app']);
+        });
+    });
 })(angular);

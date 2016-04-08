@@ -50,6 +50,11 @@ function(API,$scope,$state,AppRequests) {
         var i = 0;
         var packages = res;
 
+        if(res.length===0){
+            newAppRequest.loadingDone = true;
+            $scope.$digest();
+        }
+
         packages.forEach(function(pkg) {
             API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res) {
