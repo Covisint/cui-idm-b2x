@@ -9,7 +9,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
     var templateBase = 'assets/app/'; // base directory of your partials
 
 
-    var returnCtrlAs = function(name, asPrefix) { 
+    var returnCtrlAs = function(name, asPrefix) {
         // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
         // returnCtrlAs('test') returns 'testCtrl as test'
         return name + 'Ctrl as ' + ( asPrefix? asPrefix : '' ) + ( asPrefix? name[0].toUpperCase() + name.slice(1,name.length) : name );
@@ -185,49 +185,37 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
       $state.go('welcome');
     });
 
-    $cuiI18nProvider.setLocaleCodesAndNames( // put these in the order of preference for language fallback
-        // ADD LANGUAGES HERE ONLY
-        {
-            'en':'English',
-            'pt':'Português (Portuguese)',
-            'tr':'Türk (Turkish)',
-            'zh':'中文 (Chinese - Simplified)',
-            'fr':'Français (French)',
-            'es':'Español (Spanish)',
-            'it':'Italiano (Italian)',
-            'ru':'Pусский (Russian)',
-            'th':'ไทย (Thai)',
-            'ja':'日本語 (Japanese)',
-            'de':'Deutsche (German)'
-        }
-    );
+    if(appConfig.languages){
+        $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
+        var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
-    var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
+        var returnRegisterAvailableLanguageKeys=function(){
+            var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
+            languageKeys.forEach(function(languageKey){
+                object[languageKey+'*'] = languageKey; //redirect language keys such as en_US to en or en-US to en
+            });
+            return object;
+        };
 
-    var returnRegisterAvailableLanguageKeys=function(){
-        var object={'*':languageKeys[0]}; // set unknown languages to reroute to prefered language
-        languageKeys.forEach(function(languageKey){
-            object[languageKey+'*'] = languageKey; //redirect language keys such as en_US to en or en-US to en
-        });
-        return object;
-    };
+        $translateProvider
+        .useLoader('LocaleLoader',{
+            url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
+            prefix:'locale-',
+            suffix:'.json'
+        })
+        .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
+        .uniformLanguageTag('java')
+        .determinePreferredLanguage()
+        .fallbackLanguage(languageKeys);
 
-    $translateProvider
-    .useLoader('LocaleLoader',{
-        url:'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-        prefix:'locale-',
-        suffix:'.json'
-    })
-    .registerAvailableLanguageKeys(languageKeys,returnRegisterAvailableLanguageKeys())
-    .uniformLanguageTag('java')
-    .determinePreferredLanguage()
-    .fallbackLanguage(languageKeys);
+        $cuiI18nProvider.setLocalePreference(languageKeys);
+    }
 
-    $cuiI18nProvider.setLocalePreference(languageKeys);
-
-    $cuiIconProvider.iconSet('cui','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 48 48');
-    $cuiIconProvider.iconSet('fa','bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg','0 0 216 216');
-    $cuiIconProvider.iconSet('icon','bower_components/cui-icons/dist/icons/icons-out.svg','0 0 49 49');
+    if(appConfig.iconSets){
+        appConfig.iconSets.forEach(function(iconSet){
+            $cuiIconProvider.iconSet(iconSet.name,iconSet.path,iconSet.defaultViewBox || null);
+        })
+    }
 }]);
 
 angular.module('app')

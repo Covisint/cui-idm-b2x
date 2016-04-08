@@ -87,6 +87,10 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      appConfig:{
+        src:'appConfig.json',
+        dest:'build/appConfig.json'
+      },
       index: {
         src: 'index.html',
         dest: 'build/index.html'
