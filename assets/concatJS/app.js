@@ -1162,7 +1162,11 @@ angular.module('app')
     myCUI.setServiceUrl('STG'); // STG
     // myCUI.setServiceUrl('PRD'); // PRD
 
+<<<<<<< HEAD
     var originUri = appConfig.originUri; // Thirdwave STG Instance
+=======
+    var originUri = 'cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build'; // Thirdwave STG Instance
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
     // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
 
     function jwtAuthHandler() {
@@ -1684,10 +1688,25 @@ function($scope,$stateParams,API) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function(err) {
+    var handleError = function handleError(err) {
         orgDirectory.loading = false;
         $scope.$digest();
         console.log('Error', err);
+    };
+
+    var onLoadFinish = function onLoadFinish(organizationResponse) {
+        orgDirectory.organization = organizationResponse;
+        API.cui.getOrganizations()
+        .then(function(res) {
+            orgDirectory.organizationList = res;
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+        })
+        .then(function(res) {
+            orgDirectory.userList = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -1695,15 +1714,23 @@ function($scope,$stateParams,API) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     if (!organizationId) {
+<<<<<<< HEAD
         // If no id parameter is passed load organization directory of logged in user
+=======
+        // If no id parameter is passed load directory of logged in user's organization.
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
         API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(person) {
             return API.cui.getOrganization({ organizationId: person.organization.id });
         })
         .then(function(res) {
+<<<<<<< HEAD
             orgDirectory.organization = res;
             orgDirectory.loading = false;
             $scope.$digest();
+=======
+            onLoadFinish(res);
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
         })
         .fail(handleError);
     }
@@ -1711,15 +1738,39 @@ function($scope,$stateParams,API) {
         // Load organization directory of id parameter
         API.cui.getOrganization({ organizationId: organizationId })
         .then(function(res) {
+<<<<<<< HEAD
             orgDirectory.organization = res;
             orgDirectory.loading = false;
             $scope.$digest();
+=======
+            onLoadFinish(res);
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
         })
         .fail(handleError);
     }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
+<<<<<<< HEAD
+=======
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    orgDirectory.getOrgMembers = function getOrgMembers(organizationId, organizationName) {
+        orgDirectory.loading = true;
+        orgDirectory.organization.id = organizationId;
+        orgDirectory.organization.name = organizationName;
+        API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
+        .then(function(res) {
+            orgDirectory.userList = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
+
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
 }]);
 
 
@@ -1808,6 +1859,17 @@ function($scope,$stateParams,API) {
         console.log('Error', err);
     };
 
+    var onLoadFinish = function onLoadFinish(organizationResponse) {
+        orgProfile.organization = organizationResponse;
+        API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]})
+        .then(function(res) {
+            orgProfile.securityAdmins = res;
+            orgProfile.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -1819,6 +1881,7 @@ function($scope,$stateParams,API) {
             return API.cui.getOrganization({organizationId: person.organization.id});
         })
         .then(function(res) {
+<<<<<<< HEAD
             orgProfile.organization = res;
             return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
         })
@@ -1826,6 +1889,9 @@ function($scope,$stateParams,API) {
             orgProfile.securityAdmins = res;
             orgProfile.loading = false;
             $scope.$digest();
+=======
+            onLoadFinish(res);
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
         })
         .fail(handleError);
     }
@@ -1833,6 +1899,7 @@ function($scope,$stateParams,API) {
         // Load organization based on id parameter
         API.cui.getOrganization({ organizationId: organizationId })
         .then(function(res) {
+<<<<<<< HEAD
             orgProfile.organization = res;
             return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
         })
@@ -1840,6 +1907,9 @@ function($scope,$stateParams,API) {
             orgProfile.securityAdmins = res;
             orgProfile.loading = false;
             $scope.$digest();
+=======
+            onLoadFinish(res);
+>>>>>>> a2b002498c2a12c94e5ec2a8226ef8393ff44689
         })
         .fail(handleError);
     }
