@@ -2,7 +2,7 @@
 <div class="cui-form--mobile-steps">
   <div class="cui-form__title">{{'create-account' | translate}}</div>
   <div class="cui-form__body">
-    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators>
+    <cui-wizard-proto bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators>
       <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
 
       <ng-form name="userWalkupRegForm" novalidate>
@@ -26,6 +26,6 @@
           <div ng-include="'assets/app/registration/userWalkup/users.walkup-steps/users.walkup.review.html'"></div>
         </step>
       </ng-form>
-    </cui-wizard>
+    </cui-wizard-proto>
   </div>
 </div>
