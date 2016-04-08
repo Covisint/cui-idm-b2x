@@ -43,7 +43,7 @@
 			<div class="cui-error" ng-messages="userLogin.challenge1.$error" ng-if="userLogin.challenge1.$touched">
 				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
 			</div>
-			<select ng-model="usersWalkup.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions1">
+			<!-- <select ng-model="usersWalkup.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions1"> -->
 			</select>
 			<cui-dropdown ng-model="usersWalkup.userLogin.question1" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions1" name="challenge1" return-value="option.name" class="cui-select"></cui-dropdown>
 		</div>
@@ -66,8 +66,10 @@
 			<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
 				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
 			</div>
-			<select ng-model="usersWalkup.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions2">
+			<!-- <select ng-model="usersWalkup.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions2"> -->
 			</select>
+			<cui-dropdown ng-model="usersWalkup.userLogin.question2" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions2" name="challenge2" return-value="option.name" class="cui-select"></cui-dropdown>
+
 		</div>
 
 		<!-- Challenge Answer 2 -->
