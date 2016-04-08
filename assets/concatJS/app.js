@@ -170,7 +170,7 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams', 'API','$state','$filter',
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
 function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     'use strict';
 
@@ -987,17 +987,26 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/organization.html'
         })
         .state('organization.profile', {
-            url: '/profile',
+            url: '/profile?id',
             templateUrl: templateBase + 'organization/profile/organization.profile.html',
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory',
+            url: '/directory?id',
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('directory', {
+            url: '/organization/directory',
+            templateUrl: templateBase + 'organization/directory/directory.html'
+        })
+        .state('directory.userDetails', {
+            url: '/user-details',
+            templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
+            controller: returnCtrlAs('userDetails')
+        })
         .state('organization.hierarchy', {
-            url: '/hierarchy',
+            url: '/hierarchy?id',
             templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
@@ -1156,7 +1165,7 @@ angular.module('app')
     myCUI.setServiceUrl('STG'); // STG
     // myCUI.setServiceUrl('PRD'); // PRD
 
-    var originUri = 'cui-sdk.run.covisintrnd.com'; // Thirdwave STG Instance
+    var originUri = 'cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build'; // Thirdwave STG Instance
     // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
 
     function jwtAuthHandler() {
@@ -1679,7 +1688,9 @@ angular.module('app')
 .controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';
+
     var orgDirectory = this;
+    var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
 
@@ -1695,17 +1706,56 @@ function($scope,$stateParams,API) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
-    })
-    .then(function(res) {
-        orgDirectory.organization = res;
-        orgDirectory.loading = false;
-        $scope.$digest();
-    })
-    .fail(handleError);
+    if (!organizationId) {
+        // If no id parameter is passed load organization directory of logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(person) {
+            return API.cui.getOrganization({ organizationId: person.organization.id });
+        })
+        .then(function(res) {
+            orgDirectory.organization = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load organization directory of id parameter
+        API.cui.getOrganization({ organizationId: organizationId })
+        .then(function(res) {
+            orgDirectory.organization = res;
+            orgDirectory.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
 
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('userDetailsCtrl', ['$scope', '$stateParams', 'API',
+function($scope,$stateParams,API) {
+    'use strict';
+    var userDetails = this;
+
+    // userDetails.loading = true;
+    userDetails.profileRolesSwitch = true;
+
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
+        userDetails.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
     // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
@@ -1756,7 +1806,9 @@ angular.module('app')
 .controller('orgProfileCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';
+
     var orgProfile = this;
+    var organizationId = $stateParams.id;
 
     orgProfile.loading = true;
 
@@ -1772,20 +1824,37 @@ function($scope,$stateParams,API) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
-    })
-    .then(function(res) {
-        orgProfile.organization = res;
-        return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
-    })
-    .then(function(res) {
-        orgProfile.securityAdmins = res;
-        orgProfile.loading = false;
-        $scope.$digest();
-    })
-    .fail(handleError);
+    if (!organizationId) {
+        // If no id parameter is passed we load the organization of the logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(person) {
+            return API.cui.getOrganization({organizationId: person.organization.id});
+        })
+        .then(function(res) {
+            orgProfile.organization = res;
+            return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
+        })
+        .then(function(res) {
+            orgProfile.securityAdmins = res;
+            orgProfile.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load organization based on id parameter
+        API.cui.getOrganization({ organizationId: organizationId })
+        .then(function(res) {
+            orgProfile.organization = res;
+            return API.cui.getPersons({'qs': [['organization.id', orgProfile.organization.id], ['securityadmin', true]]});
+        })
+        .then(function(res) {
+            orgProfile.securityAdmins = res;
+            orgProfile.loading = false;
+            $scope.$digest();
+        })
+        .fail(handleError);
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
