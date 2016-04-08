@@ -96,7 +96,7 @@
 
         <!-- Application Details -->
         <div class="cui-tile cui-applications__left">
-          <h4 class="cui-tile__title cui-applications__title">Application Details</h4>
+          <h4 class="cui-tile__title cui-applications__title">{{'application-details' | translate}}</h4>
           <div class="cui-tile__body cui-applications__details">
             <!-- No Details -->
             <div ng-if="myApplicationDetails.bundled.length===0 && myApplicationDetails.related.length===0">
@@ -133,7 +133,7 @@
 
           <!-- My Claims -->
           <div class="cui-tile cui-applications__right">
-            <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">My Claims</h4>
+            <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">{{'my-claims' | translate}}</h4>
             <div class="cui-tile__body">
               <p ng-if="!myApplicationDetails.claims">{{'cui-no-claims' | translate}}</p>
               <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">

@@ -46,7 +46,7 @@
         </div>
         <!-- Address Edit Controls -->
         <div class="cui-users__address-submit">
-          <a class="cui-link cui-form__cancel" href="" ng-click="userProfile.resetTempObject(userProfile.user, userProfile.tempUser); toggleOff()">cancel</a>
+          <a class="cui-link cui-form__cancel" href="" ng-click="userProfile.resetTempObject(userProfile.user, userProfile.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
           <button class="cui-button" ng-click="userProfile.updatePerson('address',toggleOff);">
             <span ng-if="!userProfile.address || !userProfile.address.submitting">{{'cui-update' | translate}}</span>
             <div class="cui-loading--medium-ctr" ng-if="userProfile.address.submitting"></div>
