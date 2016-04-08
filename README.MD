@@ -2,6 +2,11 @@
 
 ## List of reference implementations for CUI IDM.
 
+### How to use
+
+Configure your own `appConfig.json` file in the root of the project.
+Run `bower install`, `npm install`, and then `grunt` to start a local server in which you can see changes in real time.
+
 ### OPTIMIZATION TARGET
 The following list outlines the areas in wich this UI Framework has made concessions.  In these areas, we have created extraneous calls to the API because of the lack of efficiency within the API itself.
 
