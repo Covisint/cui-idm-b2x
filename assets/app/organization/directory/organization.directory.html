@@ -26,7 +26,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
         </svg>
-        <span class="cui-action__action-label">Sort</span>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
         <!-- Sort Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
         target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
@@ -39,7 +39,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
         </svg>
-        <span class="cui-action__action-label">Refine</span>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span>
         <!-- Refine Popover -->
         <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
           <p>{{'active' | translate}} (0)</p>
@@ -55,7 +55,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
         </svg>
-        <span class="cui-action__action-label">Organizations</span>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
         <!-- Organizations Popover -->
         <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
           <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
@@ -77,6 +77,7 @@
       <thead>
         <tr>
           <th>{{'cui-name' | translate}}</th>
+          <th></th>
           <th>{{'userID' | translate}}</th>
           <th>{{'cui-registered' | translate}}</th>
           <th>{{'status' | translate}}</th>
@@ -84,12 +85,10 @@
       </thead>
       <tbody>
         <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({id:user.id})">
-          <th>
-            <div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
-            <span>{{user.name.given}} {{user.name.surname}}</span>
-          </th>
+          <th><div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div></th>
+          <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
           <th>{{user.username}}</th>
-          <th>{{user.creation}}</th>
+          <th>{{user.creation | date:base.appConfig.dateFormat}}</th>
           <th>{{user.status}}</th>
         </tr>
       </tbody>
