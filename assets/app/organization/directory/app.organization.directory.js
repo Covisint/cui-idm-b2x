@@ -7,6 +7,7 @@ function($scope,$stateParams,API) {
     var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
+    orgDirectory.userList = [];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -21,10 +22,14 @@ function($scope,$stateParams,API) {
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // I am populating all organization directories with the logged in user info until we 
+            // can get all the members of an organization.
+            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
         })
         .then(function(res) {
-            orgDirectory.userList = res;
+            orgDirectory.userList.push(res);
+            console.log(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
