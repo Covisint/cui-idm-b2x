@@ -1,133 +1,162 @@
 angular.module('app')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state){
+function(API,$scope,$stateParams,$state) {
     var myApplicationDetails = this;
 
-    var appId=$stateParams.appId; // get the appId from the url
-    var packageId=$stateParams.packageId;  // get the packageId from the url
+    var appId = $stateParams.appId; // get the appId from the url
+    var packageId = $stateParams.packageId;  // get the packageId from the url
+    var stepsDone=0,
+        stepsRequired=2;
 
-    var handleError=function(err){
+    myApplicationDetails.bundled = [];
+    myApplicationDetails.related = [];
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
         console.log('Error \n', err);
-        $scope.$digest();
     };
+
+    var checkIfDone = function() {
+        stepsDone++;
+        if(stepsDone===stepsRequired){
+            myApplicationDetails.doneLoading=true;
+            $scope.$digest();
+        }
+    };
+
+
+    // var checkIfAppIsGrantedToUser = function(childService, childPackage, packagesGrantedToUser){
+    //     var pkgGrantThatMatches;
+
+    //     packagesGrantedToUser.some(function(pkg, i) {
+    //         return childPackage.id === pkg.servicePackage.id ? (pkgGrantThatMatches = packagesGrantedToUser[i], true) : false;
+    //     });
+
+    //     if (pkgGrantThatMatches) {
+    //         childService.status = pkgGrantThatMatches.status;
+    //         childService.grantedDate = pkgGrantThatMatches.creation;
+    //     }
+
+    //     childService.packageId = childPackage.id;
+    //     return childService;
+    // };
+
+    // var getRelatedApps = function(app) {
+    //     // WORKAROUND CASE #3
+    //     myApplicationDetails.related = [];
+    //     var packagesGrantedToUser = [];
+    //     var childServices = [];
+
+    //     API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // Get All Person Packages
+    //     .then(function(res) {
+    //         res.forEach(function(pkg) {
+    //             packagesGrantedToUser.push(pkg);
+    //         });
+    //         // Return all child packages of package we are currently viewing
+    //         return API.cui.getPackages({qs:[['parentPackage.id',packageId]]});
+    //     })
+    //     .then(function(res) {
+    //         // No Children Packages
+    //         if (res.length === 0) {
+    //             checkIfDone();
+    //         }
+
+    //         var packagesThatAreChildrenOfMainPacakge = res;
+
+    //         // Get services of each child package
+    //         packagesThatAreChildrenOfMainPacakge.forEach(function(childPackage, z) {
+    //             API.cui.getServices({'packageId':childPackage.id})
+    //             .then(function(res) {
+    //                 z++;
+
+    //                 res.forEach(function(service) {
+    //                     childServices.push(service);
+    //                 });
+
+    //                 if (z === packagesThatAreChildrenOfMainPacakge.length) {
+    //                     childServices = _.uniq(childServices, function(x) {
+    //                         return x.id;
+    //                     });
+
+    //                     childServices.forEach(function(service, z) {
+    //                         app = checkIfAppIsGrantedToUser(service, childPackage, packagesGrantedToUser);
+    //                         myApplicationDetails.related.push(app);
+    //                     });
+
+    //                     myApplicationDetails.doneLoading = true;
+    //                     $scope.$digest();
+    //                 }
+    //             })
+    //             .fail(handleError);
+    //         });
+    //     })
+    //     .fail(handleError);
+    // };
+
+    var getPackageGrantDetails = function(app,bundled) {
+        API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
+        .then(function(res) {
+            app.grantedDate = res.creation;
+            app.status = res.status;
+            app.packageId = packageId;
+            myApplicationDetails.app = app;
+            bundled.forEach(function(app){
+                app.grantedDate = res.creation;
+                app.status = res.status;
+                app.packageId = packageId;
+                myApplicationDetails.bundled.push(app);
+            });
+            checkIfDone();
+        })
+        .fail(handleError);
+    };
+
+    var parseAppAndBundled=function(listOfBundledAndMainApp,callback){
+        var mainApp;
+        var bundledApps=[];
+        listOfBundledAndMainApp.forEach(function(app){
+            app.parentPackage=packageId;
+            if(app.id === appId) mainApp=app;
+            else bundledApps.push(app);
+        });
+        callback(mainApp,bundledApps);
+    }
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    var i=0; // this is used to see if the process of getting related and bundled apps is done
-
-    var getDateGranted=function(creationUnixStamp){
-        var dateGranted=new Date(creationUnixStamp);
-        var dateGrantedFormatted=dateGranted.getMonth() + '.' + dateGranted.getDay() + '.' + dateGranted.getFullYear();
-        return dateGrantedFormatted;
-    };
-
-
-    var getBundledApps=function(service){ // WORKAROUND CASE # 1
-        myApplicationDetails.bundled=[];
-        API.cui.getPackageServices({ 'packageId':packageId })
+    if (appId) {
+        API.cui.getPackageServices({packageId:packageId})
         .then(function(res){
-            i++;
-            res.forEach(function(app){
-                if(app.id!==myApplicationDetails.app.id){
-                    app.grantedDate=service.grantedDate;
-                    app.status=service.status;
-                    app.parentPackage=packageId; // put the package ID on it so we can redirect the user to the right place when he clicks on the app's name
-                    myApplicationDetails.bundled.push(app);
-                }
-            });
-            if(i===2) {
-                myApplicationDetails.doneLoading=true;
-                $scope.$digest();
-            }
+            parseAppAndBundled(res,getPackageGrantDetails); // parseAppAndBundled returns the app we're trying to check
         })
         .fail(handleError);
-    };
 
-    var checkIfAppIsGrantedToUser=function(app,pkgThatAppBelongsTo,packagesGrantedToUser){
-        var pkgGrantThatMatches;
-        packagesGrantedToUser.some(function(pkg,i){
-            return pkgThatAppBelongsTo.id===pkg.servicePackage.id? (pkgGrantThatMatches=packagesGrantedToUser[i],true) : false;
+        API.cui.getPersonPackageClaims({personId:API.getUser(), useCuid:true, 'packageId':packageId })
+        .then(function(res){
+            myApplicationDetails.claims=res;
+            checkIfDone();
+        })
+        .fail(function(){
+            // claims endpoint returns 400 if there are no claims
+            myApplicationDetails.claims=null;
+            checkIfDone();
         });
-        if(pkgGrantThatMatches) {
-            app.status=pkgGrantThatMatches.status;
-            app.grantedDate=getDateGranted(pkgGrantThatMatches.creation);
-        }
-        app.packageId=pkgThatAppBelongsTo.id;
-        return app;
-    };
-
-    var getRelatedApps=function(app){ // WORKAROUND CASE #3
-        myApplicationDetails.related=[];
-        var packagesGrantedToUser=[];
-        API.cui.getPersonPackages({ personId: API.getUser(), useCuid:true }) // Check if that child package has been granted to the user
-        .then(function(res){
-            res.forEach(function(pkg){
-                packagesGrantedToUser.push(pkg);
-            });
-            return API.cui.getPackages({qs:[['parentPackage.id',packageId]]}) // Get the packages that are children of the package that the app
-        })                                                             // we're checking the details of belongs to
-        .then(function(res){
-            if(res.length===0) {
-                i++;
-                if(i===2) {
-                    myApplicationDetails.doneLoading=true; // if there's no packages that are children of the package the app we're
-                    $scope.$digest(); // checking out belongs to then we're done here.
-                }
-            }
-            var packagesThatAreChildrenOfMainPacakge=res;
-            packagesThatAreChildrenOfMainPacakge.forEach(function(pkg,z){
-                API.cui.getServices({'packageId':pkg.id})
-                .then(function(res){
-                    res.forEach(function(app,z){ // for each of the services in that child package
-                        app=checkIfAppIsGrantedToUser(app,pkg,packagesGrantedToUser); // checks if the package has been granted to the user
-                        myApplicationDetails.related.push(app); // and re-assign that app to have status and granted date if it has
-                    });
-                    if(z===packagesThatAreChildrenOfMainPacakge.length-1){
-                        i++;
-                        if(i===2) {
-                            myApplicationDetails.doneLoading=true;
-                            $scope.$digest();
-                        }
-                    }
-                })
-                .fail(handleError);
-            });
-        })
-        .fail(handleError);
-    };
-
-    var getPackageGrantDetails=function(app){
-        API.cui.getPersonPackage({ personId: API.getUser(), useCuid:true, packageId:packageId })
-        .then(function(res){
-            app.grantedDate=getDateGranted(res.creation);
-            app.status=res.status;
-            myApplicationDetails.app=app;
-            getBundledApps(app);
-            getRelatedApps(app);
-        })
-        .fail(handleError);
-    };
-
-    if(appId){
-        API.cui.getService({ 'serviceId':appId })
-        .then(function(res){
-            var app=res;
-            getPackageGrantDetails(app);
-        })
-        .fail(handleError);
     }
     else {
         // message for no appId in the state
     }
 
-    // ON LOAD END ------------------------------------------------------------------------------------
+    // ON LOAD END -----------------------------------------------------------------------------------
 
-    // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
+    // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
 
-    myApplicationDetails.goToDetails=function(application){
-        $state.go('applications.myApplicationDetails' , { 'packageId':application.parentPackage, 'appId':application.id } );
+    myApplicationDetails.goToDetails = function(application) {
+        $state.go('applications.myApplicationDetails', {'packageId':application.packageId, 'appId':application.id});
     };
 
-    // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+    // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
 
 }]);

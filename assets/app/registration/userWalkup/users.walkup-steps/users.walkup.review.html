@@ -93,9 +93,12 @@
 </cui-expandable>
 
 <div class="cui-wizard__controls">
+
+  <div class="cui-error" ng-if="usersWalkup.registrationError"><label>{{usersWalkup.errorMessage | translate}}</label></div>
+
   <button class="cui-wizard__next" ng-click="userWalkupRegForm.$valid && usersWalkup.submit()" ng-class="(!userWalkupRegForm.$valid)? 'cui-wizard__next--error' : usersWalkup.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
     <div class="cui-loading--medium-ctr" ng-if="usersWalkup.submitting"></div>
     <span ng-if="!usersWalkup.submitting && usersWalkup.success!=false">{{'cui-submit' | translate}}</span>
-    <span ng-if="usersWalkup.success===false">Error! Try again?</span>
+    <span ng-if="usersWalkup.success===false" name="review.btnError">Error! Try again?</span>
   </button>
 </div>

@@ -1,0 +1,100 @@
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
+
+<div class="cui-organization">
+  <!-- Page Loading -->
+  <div class="cui-loading__container" ng-if="orgDirectory.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <!-- Menu Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a>
+    </span>
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">{{orgDirectory.organization.name}}</span>
+    <div class="cui-action__actions">
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="" id="sort-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">Sort</span>
+        <!-- Sort Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="">
+          <p ng-click="">{{'cui-alphabetically' | translate}}</p>
+          <p ng-click="">{{'cui-by-date-added' | translate}}</p>
+        </div>
+      </div>
+      <!-- Refine -->
+      <div class="cui-action__action-container" ng-click="" id="refine-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+        </svg>
+        <span class="cui-action__action-label">Refine</span>
+        <!-- Refine Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="">
+          <p ng-click="">TODO!</p>
+          <div ng-repeat="" ng-if="">
+            <p ng-click="">TODO!</p>
+          </div>
+        </div>
+      </div>
+      <!-- Organizations -->
+      <div class="cui-action__action-container" ng-click="" id="categories-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
+        </svg>
+        <span class="cui-action__action-label">Organizations</span>
+        <!-- Organizations Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="">
+          <p ng-click="">TODO!</p>
+          <div ng-repeat="">
+            <p ng-click="">TODO!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="cui-organization__main-container">
+    <table class="cui-table cui-table--borderless">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>UserID</th>
+          <th>Registered</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ui-sref="directory.userDetails">
+          <th>
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+              <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#linux3"></use>
+            </svg>
+            <span>Mike Z</span>
+          </th>
+          <th>C01DP1@Y</th>
+          <th>1/1/2016</th>
+          <th>Denied</th>
+        </tr>
+      </tbody>
+    </table>
+    <p>API Blocker: Get all organization members</p>
+  </div>
+</div>

@@ -7,3 +7,7 @@ target
 .tmp/
 *.versionsBackup
 *.iml
+assets/angular-modules/templateCache.js
+assets/concatJS/app.js
+assets/css/main.css
+build

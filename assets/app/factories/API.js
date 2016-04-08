@@ -1,66 +1,26 @@
 angular.module('app')
-.factory('API',['$state','User','$rootScope',function($state,User,$rootScope){
+.factory('API',['$state','User','$rootScope','$window','$location',function($state,User,$rootScope,$window,$location){
 
     var myCUI = cui.api();
-    cui.log('cui.js v', myCUI.version());
+    cui.log('cui.js v', myCUI.version()); // CUI Log
 
-    // myCUI.setServiceUrl('PRD'); // PRD
+    var authInfo = {};
+
     myCUI.setServiceUrl('STG'); // STG
+    // myCUI.setServiceUrl('PRD'); // PRD
 
-    var originUri = 'coke-idm.run.covapp.io'; // Coke
-    // var originUri = 'coke-idm.run.covapp.io'; // Covisint
+    var originUri = 'cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build'; // Thirdwave STG Instance
+    // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
 
-    // // CUIJS caches instance id for unsecure calls
-    // myCUI.covAuthInfo({
-    //     // In PROD we need to verify that if we dont pass in originUri cui.js will
-    //     // pass the host for us dynamically!
-    //     originUri : originUri
-    // });
-    // console.log('CURRENT STATE',$state.current);
+    function jwtAuthHandler() {
+        return myCUI.covAuth({
+            originUri: originUri,
+            authRedirect: window.location.href.split('#')[0] + '#/empty',
+            appRedirect: $location.path()
+        });
+    }
 
-    // if ($state.current.url === '/empty' ) {
-        // cui.log('Empty State : ', $state.current);
-        // myCUI.handleCovAuthResponse()
-        // .then(function(res){
-        //     console.log('TEST!!!');
-        //     User.set(res);
-        //     return myCUI.getPersonRoles({personId:User.get()});
-        // })
-        // .then(function(roles){
-        //     console.log('ROLES',roles);
-        //     var roleList=[];
-        //     roles.forEach(function(role){
-        //         roleList.push(role.name);
-        //     });
-        //     User.setEntitlements(roleList);
-        // });
-    // }
-    // else{
-        // cui.log('Im OUT of empty', $state.current);
-        function jwtAuthHandler() {
-            return myCUI.covAuth({
-                originUri: originUri,
-                authRedirect: window.location.href.split('#')[0] + '#/empty',
-                appRedirect: window.location.href
-            });
-        };
-        myCUI.setAuthHandler(jwtAuthHandler);
-
-        // myCUI.handleCovAuthResponse()
-        // .then(function(res){
-        //     console.log('TEST!!!');
-        //     User.set(res);
-        //     return myCUI.getPersonRoles({personId:User.get()});
-        // })
-        // .then(function(roles){
-        //     console.log('ROLES',roles);
-        //     var roleList=[];
-        //     roles.forEach(function(role){
-        //         roleList.push(role.name);
-        //     });
-        //     User.setEntitlements(roleList);
-        // });
-    // }
+    myCUI.setAuthHandler(jwtAuthHandler);
 
     return {
         cui: myCUI,
@@ -68,7 +28,42 @@ angular.module('app')
         setUser: User.set,
         getUserEntitlements: User.getEntitlements,
         setUserEntitlements: User.setEntitlements,
-        handleCovAuthResponse: myCUI.handleCovAuthResponse
+        handleCovAuthResponse: function(e,toState,toParams,fromState,fromParams){
+            var self=this;
+            myCUI.covAuthInfo({originUri:originUri});
+            myCUI.handleCovAuthResponse({selfRedirect:true})
+            .then(function(res) {
+                if(toState.name==='empty'){
+                    if(res.appRedirect!=='empty') {
+                        Object.keys($location.search()).forEach(function(searchParam){
+                            $location.search(searchParam,null);
+                        });
+                        $location.path(res.appRedirect).replace();
+                    }
+                    return;
+                }
+                else {
+                    self.setUser(res);
+                    self.setAuthInfo(res.authInfo);
+                    myCUI.getPerson({ personId: res.cuid })
+                    .then(function(res) {
+                        angular.copy(res.name, User.userName);
+                        return myCUI.getPersonRoles({ personId: self.getUser() });
+                    })
+                    .then(function(roles) {
+                        var roleList = [];
+                        roles.forEach(function(role) {
+                            roleList.push(role.name);
+                        });
+                        self.setUserEntitlements(roleList);
+                        $rootScope.$digest();
+                    });
+                }
+            });
+        },
+        setAuthInfo:function(newAuthInfo){
+            angular.copy(newAuthInfo[0],authInfo);
+        },
+        authInfo:authInfo
     };
-
 }]);

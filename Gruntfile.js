@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         tasks: ['sass','autoprefixer']
       },
       scripts:{
-        files: ['assets/app/**/*.js'],
+        files: ['assets/app/**/*.js','assets/angular-modules/**/*.js'],
         tasks: ['concat'],
         options: {
           spawn: false,
@@ -72,7 +72,11 @@ module.exports = function(grunt) {
       options: {
            separator: '\n\n',
       },
-      dist: {
+      build:{
+        src: ['assets/angular-modules/app.intro.js','assets/angular-modules/templateCache.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
+        dest: 'assets/concatJS/app.js'
+      },
+      dev: {
         src: ['assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
       }
@@ -86,10 +90,6 @@ module.exports = function(grunt) {
       index: {
         src: 'index.html',
         dest: 'build/index.html'
-      },
-      appTemplates: {
-        src: 'assets/app/**/*.html',
-        dest: 'build/'
       },
       languageFiles: {
         src: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
@@ -143,19 +143,29 @@ module.exports = function(grunt) {
     },
     jshint: {
       app: ['assets/**/*.js']
+    },
+    ngtemplates: {
+      app: {
+        src: 'assets/app/**/*.html',
+        dest: 'assets/angular-modules/templateCache.js',
+        options: {
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhiteSpace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeReduntantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkAttributes: true,
+          }
+        }
+      }
     }
-
-
   });
 
-
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browser-sync');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-
-  grunt.registerTask('default', ['concat','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','concat','clean','copy','concat','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('default', ['concat:dev','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','clean','copy','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
-}
+};

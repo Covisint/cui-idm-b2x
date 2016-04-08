@@ -1,0 +1,52 @@
+<ng-form name="profile">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">Profile Section TODO</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="">{{'cui-open' | translate}}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+        </svg>
+      </div>
+
+      <div ng-if="!toggled">
+        <span class="cui-field-val__field">{{'cui-name' | translate}}:</span>
+        <span class="cui-field-val__val">Mike Z</span><br/>
+        <span class="cui-field-val__field">{{'cui-email' | translate}}:</span>
+        <span class="cui-field-val__val">unr8tedC0ldPl@y</span>
+      </div>
+
+      <!-- Name/email edit -->
+      <div ng-if="toggled" ng-init="">
+        <!-- First Name -->
+        <label for="firstName">{{'cui-first-name' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.firstName.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="text" name="firstName" class="cui-input" ng-model="" ng-required="true" focus-if="toggled">
+        <!-- Last Name -->
+        <label for="lastName">{{'cui-last-name' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.lastName.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="text" name="lastName" class="cui-input" ng-model="" ng-required="true">
+        <!-- Email -->
+        <label for="email">{{'cui-email' | translate}}</label>
+        <div class="cui-error" ng-messages="basicInfo.email.$error">
+          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        </div>
+        <input type="email" name="email" class="cui-input" ng-model="" ng-required="true">
+        <!-- Address Edit Controls -->
+        <div class="cui-users__address-submit">
+          <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-click=""
+            ng-class="{'cui-button--error':!basicInfo.$valid}">
+            <span ng-if="">{{'cui-update' | translate}}</span>
+            <div class="" ng-if=""></div>
+            <span ng-if="">{{'cui-error-try-again'| translate}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

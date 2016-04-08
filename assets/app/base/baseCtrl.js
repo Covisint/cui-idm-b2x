@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('baseCtrl',['$state','GetCountries','GetTimezones','$scope','$translate','LocaleService','User','API','Menu',
-function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,API,Menu){
+.controller('baseCtrl',['$state','Countries','Timezones','Languages','$scope','$translate','LocaleService','User','API','Menu','AppConfig',
+function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,User,API,Menu,AppConfig){
     var base=this;
 
     base.goBack=function(){
@@ -17,8 +17,6 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
     };
 
     base.menu=Menu;
-
-    console.log(base.menu);
 
     base.passwordPolicies=[
         {
@@ -41,67 +39,21 @@ function($state,GetCountries,GetTimezones,$scope,$translate,LocaleService,User,A
     ];
 
     // This returns the current language being used by the cui-i18n library, used for registration processes.
-    base.getLanguageCode = function(){
-        if(LocaleService.getLocaleCode().indexOf('_')>-1) return LocaleService.getLocaleCode().split('_')[0];
-        else return LocaleService.getLocaleCode();
-    };
+    base.getLanguageCode = Languages.getCurrentLanguageCode;
 
-    var setCountries=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
-        }
-        GetCountries(language)
-        .then(function(res){
-            base.countries=res.data;
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
+    base.countries=Countries;
 
-    var setTimezones=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
-        }
-        GetTimezones(language)
-        .then(function(res){
-            base.timezones=res.data;
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
+    base.timezones=Timezones.all;
+    base.languages=Languages.all;
+    base.appConfig=AppConfig;
 
-    $scope.$on('languageChange',function(e,args){
-        // console.log(e);
-        setCountries(args);
-        setTimezones(args);
-    });
+    base.user = User.user;
+    base.userName = User.userName;
 
-    API.handleCovAuthResponse()
-    .then(function(res){
-        console.log('TEST!!!');
-        API.setUser(res);
-        return API.cui.getPersonRoles({personId:API.getUser()});
-    })
-    .then(function(roles){
-        console.log('ROLES',roles);
-        var roleList=[];
-        roles.forEach(function(role){
-            roleList.push(role.name);
-        });
-        API.setUserEntitlements(roleList);
-    });
+    base.authInfo = API.authInfo;
 
-    base.userEntitlements=[];
-    $scope.$on('newEntitlements',function(newEntitlements){
-        base.userEntitlements = newEntitlements;
-    });
 
-    setCountries($translate.proposedLanguage());
-    setTimezones($translate.proposedLanguage());
+    base.logout=API.cui.covLogout;
 
 
 }]);

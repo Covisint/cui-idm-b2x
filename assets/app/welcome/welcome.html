@@ -1,0 +1,59 @@
+<div class="welcome-wrapper">
+
+  <!-- Title -->
+  <div class="welcome-title">
+    <h1>{{ 'welcome-title' | translate }}:</h1>
+  </div>
+
+  <div class="cui-card__container">
+    <!-- Tile: New Top-level Organization -->
+    <div class="cui-card">
+      <div class="cui-card__image-container">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+          <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+        </svg>
+      </div>
+      <div class="cui-card__content">
+        <p class="cui-card__content-header">{{ 'cui-new-TLO' | translate }}</p>
+        <p>{{ 'cui-new-TLO-description' | translate }}</p>
+      </div>
+      <button class="cui-card__button" ui-sref="registration.tlo">{{ 'cui-sign-up' | translate }}</button>
+    </div>
+
+    <!-- Tile: New Division -->
+    <div class="cui-card">
+      <div class="cui-card__image-container">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+          <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
+        </svg>
+      </div>
+      <div class="cui-card__content">
+        <p class="cui-card__content-header" id="newDivision-header">{{ 'cui-new-division' | translate }}</p>
+        <p>{{ 'cui-new-division-description-start' | translate }} <a href="" class="cui-link--medium-light" ng-click="welcome.divisionPopover=true">{{ 'cui-security-administrator' | translate }}</a>* {{ 'cui-new-division-description-end' | translate }}</p>
+      </div>
+      <button class="cui-card__button" ui-sref="registration.division">{{ 'cui-sign-up' | translate }}</button>
+    </div>
+
+    <!-- New Division Popover -->
+    <div class="cui-styeguide__popover-container" ng-if="welcome.divisionPopover"  off-click="welcome.divisionPopover=false" tether target="#newDivision-header" attachment="top middle" target-attachment="bottom middle" offset="15px 145">
+      <div class="cui-popover cui-popover--dark cui-popover--top cui-popover__new-division">
+        <p class="">{{ 'cui-welcome-popover' | translate }}</p>
+        <p class="cui-popover_link"><a href="" ng-click="welcome.divisionPopover=false">Cool, got it!</a></p>
+      </div>
+    </div>
+
+    <!-- Tile: New User -->
+    <div class="cui-card">
+      <div class="cui-card__image-container">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px" height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+          <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+        </svg>
+      </div>
+      <div class="cui-card__content">
+        <p class="cui-card__content-header">{{ 'cui-new-user' | translate }}</p>
+        <p>{{ 'cui-new-user-description' | translate }}</p>
+      </div>
+      <button class="cui-card__button" ui-sref="registration.walkup">{{ 'cui-sign-up' | translate }}</button>
+    </div>
+  </div>
+</div>

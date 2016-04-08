@@ -1,34 +1,33 @@
 angular.module('app')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
-function(API,$scope,$state,AppRequests){
+function(API,$scope,$state,AppRequests) {
+    'use strict';
     var newAppRequest = this;
 
-    var services=[];
-    var handleError=function(err){
-        console.log('Error\n',err);
+    var user;
+    var services = [];
+    var appsBeingRequested = AppRequests.get();
+
+    newAppRequest.numberOfRequests = 0;
+    newAppRequest.appsBeingRequested = [];
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function(err) {
+        console.log('Error\n', err);
     };
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    var getListOfCategories = function(services) {
+        // WORKAROUND CASE # 7
+        var categoryList = [];
 
-    // AppRequests.set({}); // This resets the package requests, in case the user had selected some and left the page unexpectedly
-    var appsBeingRequested=AppRequests.get();
-    newAppRequest.numberOfRequests=0;
-    newAppRequest.appsBeingRequested=[];
-    Object.keys(appsBeingRequested).forEach(function(appId){ // This sets the checkboxes back to marked when the user clicks back
-        newAppRequest.numberOfRequests++;
-        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
-    });
-
-
-    var user;
-    var getListOfCategories=function(services){
-        var categoryList=[]; // WORKAROUND CASE # 7
-        services.forEach(function(service){
-            if(service.category){
-                var serviceCategoryInCategoryList = _.some(categoryList,function(category){
-                    return angular.equals(category,service.category);
+        services.forEach(function(service) {
+            if (service.category) {
+                var serviceCategoryInCategoryList = _.some(categoryList, function(category) {
+                    return angular.equals(category, service.category);
                 });
-                if(!serviceCategoryInCategoryList){
+
+                if (!serviceCategoryInCategoryList) {
                     categoryList.push(service.category);
                 }
             }
@@ -36,28 +35,42 @@ function(API,$scope,$state,AppRequests){
         return categoryList;
     };
 
-    API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-    .then(function(res){
-        user=res;
-        return API.cui.getPackages(); // WORKAROUND CASE #1
-    })
-    .then(function(res){
-        var i=0;
-        var packages=res;
-        packages.forEach(function(pkg){
+    Object.keys(appsBeingRequested).forEach(function(appId) {
+        // This sets the checkboxes back to marked when the user clicks back
+        newAppRequest.numberOfRequests++;
+        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
+    });
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true, pageSize:200})
+    .then(function(res) {
+        var i = 0;
+        var packages = res;
+
+        packages.forEach(function(pkg) {
             API.cui.getPackageServices({'packageId':pkg.id})
-            .then(function(res){
+            .then(function(res) {
                 i++;
-                res.forEach(function(service){
+                res.forEach(function(service) {
                     services.push(service);
                 });
-                if(i===packages.length){
-                    newAppRequest.categories=getListOfCategories(services);
-                    newAppRequest.loadingDone=true;
+                if (i === packages.length) {
+                    newAppRequest.categories = getListOfCategories(services);
+                    newAppRequest.loadingDone = true;
                     $scope.$digest();
                 }
             })
-            .fail(handleError);
+            .fail(function() {
+                i++;
+                if (i === packages.length) {
+                    newAppRequest.categories = getListOfCategories(services);
+                    newAppRequest.loadingDone = true;
+                    $scope.$digest();
+                }
+            });
         });
     })
    .fail(handleError);
@@ -66,9 +79,10 @@ function(API,$scope,$state,AppRequests){
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-    newAppRequest.listenForEnter=function($event){
-        if($event.keyCode===13) $state.go('applications.search',{name:newAppRequest.search})
+    newAppRequest.searchCallback = function(searchWord) {
+        $state.go('applications.search', {name: searchWord});
     };
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
+
 }]);

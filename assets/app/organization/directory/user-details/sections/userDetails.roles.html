@@ -1,0 +1,13 @@
+<ng-form name="profile">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">Roles Section TODO</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="">{{'cui-open' | translate}}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+</ng-form>
