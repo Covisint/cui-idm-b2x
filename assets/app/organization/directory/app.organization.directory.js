@@ -59,8 +59,6 @@ function($scope,$stateParams,API,$filter,Sort) {
             orgDirectory.userList.push(res);
             orgDirectory.unparsedUserList.push(res);
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
-            console.log('Status List: ', orgDirectory.statusList);
-            console.log('Status Count: ', orgDirectory.statusCount);
             orgDirectory.loading = false;
             $scope.$digest();
         })
