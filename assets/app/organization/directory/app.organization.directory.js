@@ -31,7 +31,7 @@ function($scope,$stateParams,API,$filter,Sort) {
         .then(function(res) {
             orgDirectory.userList.push(res);
             orgDirectory.loading = false;
-            $scope.$digest();
+           // $scope.$digest();
         })
         .fail(handleError);
     };

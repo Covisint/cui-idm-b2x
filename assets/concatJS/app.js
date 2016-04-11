@@ -173,8 +173,8 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
-function(localStorageService,$scope,$stateParams,API,$state,$filter) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter','Sort',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
     'use strict';
 
     var myApplications = this;
@@ -183,7 +183,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     myApplications.sortFlag = false;
     myApplications.categoriesFlag = false;
     myApplications.statusFlag = false;
-
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
     myApplications.statusList = ['active', 'suspended', 'pending'];
@@ -198,26 +197,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
-    var checkIfDone=function(){
-        stepsDone++;
-        if(stepsDone===stepsRequired){
-            listSort(myApplications.list);
-            myApplications.list=_.uniq(myApplications.list,function(app){
-                return app.id;
-            });
-            myApplications.list.forEach(function(service){
-                updateStatusCount(service);
-            });
-            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-            myApplications.statusCount[0]=myApplications.list.length; // set "all" to the number of total apps
-            myApplications.categoryList = getListOfCategories(myApplications.list);
-            myApplications.doneLoading = true;
-            $scope.$digest();
-        }
-    };
-
     var updateStatusCount = function(service) {
-        if (service.status && myApplications.statusList.indexOf(service.status)>-1) {
+        if (service.status && myApplications.statusList.indexOf(service.status) > -1) {
             myApplications.statusCount[myApplications.statusList.indexOf(service.status)+1]++;
         }
     };
@@ -243,9 +224,25 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                 }
             }
         });
-
         myApplications.categoryCount = categoryCount;
         return categoryList;
+    };
+
+    var checkIfDone=function() {
+        stepsDone++;
+        if (stepsDone === stepsRequired) {
+            myApplications.list = _.uniq(myApplications.list, function(app) {
+                return app.id;
+            });
+            myApplications.list.forEach(function(service) {
+                updateStatusCount(service);
+            });
+            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+            myApplications.statusCount[0] = myApplications.list.length; // set "all" to the number of total apps
+            myApplications.categoryList = getListOfCategories(myApplications.list);
+            myApplications.doneLoading = true;
+            $scope.$digest();
+        }
     };
 
     var getApplicationsFromGrants = function(grants) {
@@ -291,24 +288,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         });
     };
 
-    var listSort = function(listToSort, sortType, order) { // order is a boolean
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-            else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
-            else { a=a.status, b=b.status; }
-
-            if ( a < b ) {
-                if (order) return 1;
-                else return -1
-            }
-            else if( a > b ) {
-                if (order) return -1;
-                else return 1;
-            }
-            else return 0;
-        });
-    };
-
     var categoryFilter = function (app, category) {
         if (!app.category && category) return false;
         if (!category) return true;
@@ -340,8 +319,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     };
 
     myApplications.sort = function(sortType) {
-        listSort(myApplications.list, sortType, myApplications.sortFlag);
-        myApplications.sortFlag=!myApplications.sortFlag;
+        Sort.listSort(myApplications.list, sortType, myApplications.sortFlag);
+        myApplications.sortFlag =! myApplications.sortFlag;
     };
 
     myApplications.parseAppsByCategory = function(category) {
@@ -1005,19 +984,24 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('organization.hierarchy', {
+            url: '/hierarchy?id',
+            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
+            controller: returnCtrlAs('orgHierarchy')
+        })
+        .state('organization.roles', {
+            url: '/roles',
+            templateUrl: templateBase + 'organization/roles/organization.roles.html',
+            controller: returnCtrlAs('orgRoles')
+        })
         .state('directory', {
             url: '/organization/directory',
             templateUrl: templateBase + 'organization/directory/directory.html'
         })
         .state('directory.userDetails', {
-            url: '/user-details',
+            url: '/user-details?id',
             templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
             controller: returnCtrlAs('userDetails')
-        })
-        .state('organization.hierarchy', {
-            url: '/hierarchy?id',
-            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
-            controller: returnCtrlAs('orgHierarchy')
         })
         // Misc ----------------------------------------------------------
         .state('misc', {
@@ -1337,6 +1321,30 @@ angular.module('app')
 
 
 angular.module('app')
+.factory('Sort',['$filter',function($filter) {
+    return {
+        listSort: function(listToSort, sortType, order) {
+            listToSort.sort(function(a, b) {
+                if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
+                else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
+                else { a = a.status, b = b.status; }
+
+                if ( a < b ) {
+                    if (order) return 1;
+                    else return -1;
+                }
+                else if( a > b ) {
+                    if (order) return -1;
+                    else return 1;
+                }
+                else return 0;
+            });
+        }
+    };
+}]);
+
+
+angular.module('app')
 .factory('Timezones',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
 
     var timezones=[];
@@ -1409,6 +1417,81 @@ angular.module('app')
 
 }]);
 
+
+angular.module('app')
+    .factory('UserService',['$rootScope','$q','API','CuiPasswordPolicies', function($rootScope,$q,API,CuiPasswordPolicies) {
+    'use strict';
+
+        var self = {
+            getProfile : function(userCredentials){
+
+                var defer = $q.defer();
+                var userProfile = {};
+
+                API.cui.getPerson(userCredentials)
+                    .then(function(res) {
+                        if (!res.addresses) {
+                            // If the person has no addresses set we need to initialize it as an array
+                            // to follow the object structure
+                            res.addresses = [{}];
+                            res.addresses[0].streets = [[]];
+                        }
+                        userProfile.user = {};
+                        userProfile.tempUser = {};
+                        angular.copy(res, userProfile.user);
+                        angular.copy(res, userProfile.tempUser);
+                        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
+                    })
+                    .then(function(res) {
+                        userProfile.userSecurityQuestions = res;
+                        userProfile.tempUserSecurityQuestions = angular.copy(userProfile.userSecurityQuestions.questions);
+                        return API.cui.getSecurityQuestions();
+                    })
+                    .then(function(res) {
+                        userProfile.allSecurityQuestions = res;
+                        userProfile.allSecurityQuestionsDup = angular.copy(res);
+                        userProfile.allSecurityQuestions.splice(0,1);
+
+                        // Splits questions to use between both dropdowns
+                        var numberOfQuestions = userProfile.allSecurityQuestions.length,
+                            numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
+                        //Allocating options to three questions
+                        userProfile.allChallengeQuestions0 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+                        userProfile.allChallengeQuestions1 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+                        userProfile.allChallengeQuestions2 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
+
+                        self.selectTextsForQuestions(userProfile);
+
+                        return API.cui.getOrganization({organizationId:userProfile.user.organization.id});
+                    })
+                    .then(function(res) {
+
+                        userProfile.organization = res;
+                        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
+                    })
+                    .then(function(res) {
+                        CuiPasswordPolicies.set(res.rules);
+                        defer.resolve( userProfile );
+                    })
+                    .fail(function(err) {
+                        console.error("UserService.getProfile",err);
+                        defer.reject( err );
+                    });
+
+                return defer.promise;
+            },
+            // HELPER FUNCTIONS START ------------------------------------------------------------------------
+            selectTextsForQuestions : function(userProfile) {
+                userProfile.challengeQuestionsTexts = [];
+                angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
+                    var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
+                    this.push(question.question[0].text);
+                }, userProfile.challengeQuestionsTexts);
+            }
+        };
+
+        return self;
+    }]);
 
 angular.module('app')
 .controller('usersInviteCtrl',['localStorageService','$scope','$stateParams','API',
@@ -1673,14 +1756,16 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort',
+function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
     var orgDirectory = this;
     var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
+    orgDirectory.sortFlag = false;
+    orgDirectory.userList = [];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -1695,12 +1780,15 @@ function($scope,$stateParams,API) {
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // I am populating all organization directories with the logged in user info until we 
+            // can get all the members of an organization.
+            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
         })
         .then(function(res) {
-            orgDirectory.userList = res;
+            orgDirectory.userList.push(res);
             orgDirectory.loading = false;
-            $scope.$digest();
+           // $scope.$digest();
         })
         .fail(handleError);
     };
@@ -1746,16 +1834,22 @@ function($scope,$stateParams,API) {
         .fail(handleError);
     };
 
+    orgDirectory.sort = function(sortType) {
+        Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
+        orgDirectory.sortFlag =! orgDirectory.sortFlag;
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('userDetailsCtrl', ['$scope', '$stateParams', 'API',
-function($scope,$stateParams,API) {
+.controller('userDetailsCtrl', ['$scope','$stateParams','API','UserService',
+function($scope,$stateParams,API,UserService) {
     'use strict';
     var userDetails = this;
+    var userID = $stateParams.id;
 
     // userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
@@ -1763,15 +1857,29 @@ function($scope,$stateParams,API) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function(err) {
+    var handleError = function handleError(err) {
         userDetails.loading = false;
         $scope.$digest();
         console.log('Error', err);
     };
 
+    var onLoadFinish = function onLoadFinish() {
+        return;
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
+    var userParams = angular.isDefined( userID )? { personId: userID }:{personId: API.getUser(), useCuid:true};
+
+    UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
+        angular.copy( res, userDetails );
+        console.log( "userDetails", userDetails );
+        userDetails.loading = false;
+    },function(err){
+        userDetails.loading = false;
+    });
+
     // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
@@ -1798,8 +1906,8 @@ function($scope,$stateParams,API) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
+    .then(function(res) {
+        return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
     	console.log(res);
@@ -1872,6 +1980,34 @@ function($scope,$stateParams,API) {
     }
 
     // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('orgRolesCtrl', ['$scope',
+function($scope) {
+    'use strict';
+    var orgRoles = this;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function handleError(err) {
+        orgRoles.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    console.log('Roles Screen!');
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
 
@@ -2557,8 +2693,8 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
 
 
 angular.module('app')
-.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
+.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserService',
+function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     'use strict';
     var userProfile = this;
 
@@ -2570,14 +2706,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     userProfile.toggleOffFunctions = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var selectTextsForQuestions = function() {
-        userProfile.challengeQuestionsTexts = [];
-        angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
-            this.push(question.question[0].text);
-        }, userProfile.challengeQuestionsTexts);
-    };
 
     var resetTempUser = function() {
         if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
@@ -2600,54 +2728,11 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        if (!res.addresses) {
-            // If the person has no addresses set we need to initialize it as an array
-            // to follow the object structure
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        userProfile.user = {};
-        userProfile.tempUser = {};
-        angular.copy(res, userProfile.user);
-        angular.copy(res, userProfile.tempUser);
-        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        userProfile.userSecurityQuestions = res;
-        userProfile.tempUserSecurityQuestions = angular.copy(userProfile.userSecurityQuestions.questions);
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        userProfile.allSecurityQuestions = res;
-        userProfile.allSecurityQuestionsDup = angular.copy(res);
-        userProfile.allSecurityQuestions.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = userProfile.allSecurityQuestions.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
-        //Allocating options to three questions
-        userProfile.allChallengeQuestions0 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        userProfile.allChallengeQuestions1 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        userProfile.allChallengeQuestions2 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-
-        selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:userProfile.user.organization.id});
-    })
-    .then(function(res) {
-        userProfile.organization = res;
-        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
-    })
-    .then(function(res) {
-        CuiPasswordPolicies.set(res.rules);
+    UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
+        angular.copy( res, userProfile );
         userProfile.loading = false;
-        $scope.$digest();
-    })
-    .fail(function(err) {
-        console.log(err);
+    },function(err){
         userProfile.loading = false;
-        $scope.$digest();
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------
@@ -2731,11 +2816,11 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     userProfile.updatePassword = function(section,toggleOff) {
         if (section) {
             userProfile[section] = { submitting:true };
-        } 
+        }
 
         API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
         .then(function(res) {
-            if (section) userProfile[section].submitting = false;  
+            if (section) userProfile[section].submitting = false;
             if (toggleOff) toggleOff();
             userProfile.resetPasswordFields();
             $scope.$digest();
@@ -2753,7 +2838,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
             submitting:true
         };
         userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
-        selectTextsForQuestions();
+        UserService.selectTextsForQuestions(userProfile);
 
         API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),
