@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','CuiPasswordPolicies',
-function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
+.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserService',
+function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     'use strict';
     var userProfile = this;
 
@@ -12,14 +12,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     userProfile.toggleOffFunctions = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var selectTextsForQuestions = function() {
-        userProfile.challengeQuestionsTexts = [];
-        angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
-            var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
-            this.push(question.question[0].text);
-        }, userProfile.challengeQuestionsTexts);
-    };
 
     var resetTempUser = function() {
         if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
@@ -42,54 +34,11 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        if (!res.addresses) {
-            // If the person has no addresses set we need to initialize it as an array
-            // to follow the object structure
-            res.addresses = [{}];
-            res.addresses[0].streets = [[]];
-        }
-        userProfile.user = {};
-        userProfile.tempUser = {};
-        angular.copy(res, userProfile.user);
-        angular.copy(res, userProfile.tempUser);
-        return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
-    })
-    .then(function(res) {
-        userProfile.userSecurityQuestions = res;
-        userProfile.tempUserSecurityQuestions = angular.copy(userProfile.userSecurityQuestions.questions);
-        return API.cui.getSecurityQuestions();
-    })
-    .then(function(res) {
-        userProfile.allSecurityQuestions = res;
-        userProfile.allSecurityQuestionsDup = angular.copy(res);
-        userProfile.allSecurityQuestions.splice(0,1);
-
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = userProfile.allSecurityQuestions.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/3);
-        //Allocating options to three questions
-        userProfile.allChallengeQuestions0 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        userProfile.allChallengeQuestions1 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-        userProfile.allChallengeQuestions2 = userProfile.allSecurityQuestions.splice(0,numberOfQuestionsFloor);
-
-        selectTextsForQuestions();
-        return API.cui.getOrganization({organizationId:userProfile.user.organization.id});
-    })
-    .then(function(res) {
-        userProfile.organization = res;
-        return API.cui.getPasswordPolicy({policyId: res.passwordPolicy.id});
-    })
-    .then(function(res) {
-        CuiPasswordPolicies.set(res.rules);
+    UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
+        angular.copy( res, userProfile );
         userProfile.loading = false;
-        $scope.$digest();
-    })
-    .fail(function(err) {
-        console.log(err);
+    },function(err){
         userProfile.loading = false;
-        $scope.$digest();
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------
@@ -173,11 +122,11 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
     userProfile.updatePassword = function(section,toggleOff) {
         if (section) {
             userProfile[section] = { submitting:true };
-        } 
+        }
 
         API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
         .then(function(res) {
-            if (section) userProfile[section].submitting = false;  
+            if (section) userProfile[section].submitting = false;
             if (toggleOff) toggleOff();
             userProfile.resetPasswordFields();
             $scope.$digest();
@@ -195,7 +144,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,CuiPasswordPolicies){
             submitting:true
         };
         userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
-        selectTextsForQuestions();
+        UserService.selectTextsForQuestions(userProfile);
 
         API.cui.updateSecurityQuestionAccount({
           personId: API.getUser(),

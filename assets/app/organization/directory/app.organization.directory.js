@@ -60,7 +60,7 @@ function($scope,$stateParams,API,$filter,Sort) {
             orgDirectory.unparsedUserList.push(res);
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
-            $scope.$digest();
+           // $scope.$digest();
         })
         .fail(handleError);
     };
