@@ -29,7 +29,7 @@
       <!-- Refine Popover -->
       <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.refineClicked">
         <p ng-click="orgApplications.parseAppsByStatus('all')">{{'all' | translate}} ({{orgApplications.statusCount[0]}})</p>
-        <div ng-repeat="status in orgApplications.statusList" ng-if="orgApplications.statusCount[$index+1]!==0">
+        <div ng-repeat="status in orgApplications.categoryList" ng-if="orgApplications.statusCount[$index+1]!==0">
           <p ng-click="orgApplications.parseAppsByStatus(status)">{{status | translate}} ({{orgApplications.statusCount[$index+1]}})</p>
         </div>
       </div>
@@ -63,8 +63,7 @@
   </div>
 
   <div ng-if="!orgApplications.loading">
-    <p>Organization Applications</p>
-<!--     <div class="cui-media cui-media--border" ng-repeat="application in orgApplications.list track by application.id" ng-click="orgApplications.goToDetails(application)">
+    <div class="cui-media cui-media--border" ng-repeat="application in orgApplications.appList track by application.id" ng-click="orgApplications.goToDetails(application)">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
@@ -73,6 +72,6 @@
         <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
         <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
