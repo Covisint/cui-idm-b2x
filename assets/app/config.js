@@ -110,6 +110,16 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('organization.hierarchy', {
+            url: '/hierarchy?id',
+            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
+            controller: returnCtrlAs('orgHierarchy')
+        })
+        .state('organization.roles', {
+            url: '/roles',
+            templateUrl: templateBase + 'organization/roles/organization.roles.html',
+            controller: returnCtrlAs('orgRoles')
+        })
         .state('directory', {
             url: '/organization/directory',
             templateUrl: templateBase + 'organization/directory/directory.html'
@@ -118,11 +128,6 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/user-details?id',
             templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
             controller: returnCtrlAs('userDetails')
-        })
-        .state('organization.hierarchy', {
-            url: '/hierarchy?id',
-            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
-            controller: returnCtrlAs('orgHierarchy')
         })
         // Misc ----------------------------------------------------------
         .state('misc', {
