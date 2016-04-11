@@ -9,6 +9,9 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
+    orgDirectory.unparsedUserList = [];
+    orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
+    orgDirectory.statusCount = [0,0,0,0,0,0,0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -16,6 +19,30 @@ function($scope,$stateParams,API,$filter,Sort) {
         orgDirectory.loading = false;
         $scope.$digest();
         console.log('Error', err);
+    };
+
+    var getStatusList = function(users) {
+        var statusList = [];
+        var statusCount = [orgDirectory.unparsedUserList.length];
+
+        users.forEach(function(user) {
+            if (user.status) {
+                var statusInStatusList = _.some(statusList, function(status, i) {
+                    if (angular.equals(status, user.status)) {
+                        statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!statusInStatusList) {
+                    statusList.push(user.status);
+                    statusCount[statusList.length] = 1;
+                }
+            }
+        });
+        orgDirectory.statusCount = statusCount;
+        return statusList;
     };
 
     var onLoadFinish = function onLoadFinish(organizationResponse) {
@@ -30,6 +57,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         })
         .then(function(res) {
             orgDirectory.userList.push(res);
+            orgDirectory.unparsedUserList.push(res);
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -80,6 +109,18 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.sort = function(sortType) {
         Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
         orgDirectory.sortFlag =! orgDirectory.sortFlag;
+    };
+
+    orgDirectory.parseUsersByStatus = function(status) {
+        if (status === 'all') {
+            orgDirectory.userList = orgDirectory.unparsedUserList;
+        }
+        else {
+            var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
+                return user.status === status;
+            });
+            orgDirectory.list = filteredUsers;
+        }
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

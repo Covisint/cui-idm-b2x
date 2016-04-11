@@ -23,7 +23,6 @@ function($scope,$stateParams,API) {
         return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
-    	console.log(res);
         orgHierarchy.organization = res;
         return API.cui.getOrganizationHierarchy({ id: orgHierarchy.organization.id });
 	})
