@@ -95,6 +95,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'applications/new-request&review/review.html',
             controller: returnCtrlAs('applicationReview')
         })
+        .state('applications.orgApplications', {
+            url: '/organization',
+            templateUrl: templateBase + 'applications/org-applications/org-applications.html',
+            controller: returnCtrlAs('orgApplications')
+        })
         // Organization --------------------------------------------------
         .state('organization', {
             url: '/organization',
