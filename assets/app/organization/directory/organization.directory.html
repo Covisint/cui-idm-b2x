@@ -6,7 +6,8 @@
     <span class="cui-action__title">
       <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
       <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a>
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
     </span>
     <div class="cui-action__actions">
       <div class="cui-action__action-container">
@@ -30,8 +31,8 @@
         <!-- Sort Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
         target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
-          <p>{{'cui-alphabetically' | translate}}</p>
-          <p>{{'cui-by-date-added' | translate}}</p>
+          <p ng-click="orgDirectory.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
+          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>
         </div>
       </div>
       <!-- Refine -->

@@ -19,8 +19,8 @@ function($scope,$stateParams,API) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
+    .then(function(res) {
+        return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
     	console.log(res);

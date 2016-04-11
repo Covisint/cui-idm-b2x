@@ -1,12 +1,13 @@
 angular.module('app')
-.controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort',
+function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
     var orgDirectory = this;
     var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
+    orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -29,7 +30,6 @@ function($scope,$stateParams,API) {
         })
         .then(function(res) {
             orgDirectory.userList.push(res);
-            console.log(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -75,6 +75,11 @@ function($scope,$stateParams,API) {
             $scope.$digest();
         })
         .fail(handleError);
+    };
+
+    orgDirectory.sort = function(sortType) {
+        Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
+        orgDirectory.sortFlag =! orgDirectory.sortFlag;
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
