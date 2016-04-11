@@ -1,6 +1,6 @@
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
-function(localStorageService,$scope,$stateParams,API,$state,$filter) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter','Sort',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
     'use strict';
 
     var myApplications = this;
@@ -9,7 +9,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     myApplications.sortFlag = false;
     myApplications.categoriesFlag = false;
     myApplications.statusFlag = false;
-
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
     myApplications.statusList = ['active', 'suspended', 'pending'];
@@ -24,26 +23,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
-    var checkIfDone=function(){
-        stepsDone++;
-        if(stepsDone===stepsRequired){
-            listSort(myApplications.list);
-            myApplications.list=_.uniq(myApplications.list,function(app){
-                return app.id;
-            });
-            myApplications.list.forEach(function(service){
-                updateStatusCount(service);
-            });
-            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-            myApplications.statusCount[0]=myApplications.list.length; // set "all" to the number of total apps
-            myApplications.categoryList = getListOfCategories(myApplications.list);
-            myApplications.doneLoading = true;
-            $scope.$digest();
-        }
-    };
-
     var updateStatusCount = function(service) {
-        if (service.status && myApplications.statusList.indexOf(service.status)>-1) {
+        if (service.status && myApplications.statusList.indexOf(service.status) > -1) {
             myApplications.statusCount[myApplications.statusList.indexOf(service.status)+1]++;
         }
     };
@@ -69,9 +50,25 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                 }
             }
         });
-
         myApplications.categoryCount = categoryCount;
         return categoryList;
+    };
+
+    var checkIfDone=function() {
+        stepsDone++;
+        if (stepsDone === stepsRequired) {
+            myApplications.list = _.uniq(myApplications.list, function(app) {
+                return app.id;
+            });
+            myApplications.list.forEach(function(service) {
+                updateStatusCount(service);
+            });
+            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+            myApplications.statusCount[0] = myApplications.list.length; // set "all" to the number of total apps
+            myApplications.categoryList = getListOfCategories(myApplications.list);
+            myApplications.doneLoading = true;
+            $scope.$digest();
+        }
     };
 
     var getApplicationsFromGrants = function(grants) {
@@ -117,24 +114,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         });
     };
 
-    var listSort = function(listToSort, sortType, order) { // order is a boolean
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-            else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
-            else { a=a.status, b=b.status; }
-
-            if ( a < b ) {
-                if (order) return 1;
-                else return -1
-            }
-            else if( a > b ) {
-                if (order) return -1;
-                else return 1;
-            }
-            else return 0;
-        });
-    };
-
     var categoryFilter = function (app, category) {
         if (!app.category && category) return false;
         if (!category) return true;
@@ -166,8 +145,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     };
 
     myApplications.sort = function(sortType) {
-        listSort(myApplications.list, sortType, myApplications.sortFlag);
-        myApplications.sortFlag=!myApplications.sortFlag;
+        Sort.listSort(myApplications.list, sortType, myApplications.sortFlag);
+        myApplications.sortFlag =! myApplications.sortFlag;
     };
 
     myApplications.parseAppsByCategory = function(category) {
