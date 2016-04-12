@@ -88,7 +88,7 @@
           <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
           <th>{{user.username}}</th>
           <th>{{user.creation | date:base.appConfig.dateFormat}}</th>
-          <th>{{user.status}}</th>
+          <th>{{user.status | translate}}</th>
         </tr>
       </tbody>
     </table>

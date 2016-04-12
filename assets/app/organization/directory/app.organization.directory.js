@@ -50,14 +50,11 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
-            // I am populating all organization directories with the logged in user info until we 
-            // can get all the members of an organization.
-            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
         })
         .then(function(res) {
-            orgDirectory.userList.push(res);
-            orgDirectory.unparsedUserList.push(res);
+            orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
            // $scope.$digest();
@@ -100,6 +97,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
         .then(function(res) {
             orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -119,7 +118,7 @@ function($scope,$stateParams,API,$filter,Sort) {
             var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
                 return user.status === status;
             });
-            orgDirectory.list = filteredUsers;
+            orgDirectory.userList = filteredUsers;
         }
     };
 
