@@ -77,7 +77,7 @@ module.exports = function(grunt) {
         dest: 'assets/concatJS/app.js'
       },
       dev: {
-        src: ['assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
+        src: [ 'assets/_ajax.cache.js', 'assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
       }
     },

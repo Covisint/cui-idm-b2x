@@ -1,23 +1,45 @@
 /**
- * Created by juan on 4/12/2016.
+ * Mock ajax calls for stored calls and results in localstorage.
+ * Otherwise make the ajax calls saving the result for the next call.
+ * Prevent from caching calls found at nonCachable.
  */
-(function($, win){
+(function($){
+    'use strict'
 
     var ajax = $.ajax;
-    var win = $(win);
+    var nonCachable = ["POST", "PUT", "DELETE"];
 
-    console.log( "testing" );
+    $.ajax = function(params){
 
-    $.ajax = function(){
+        return (function( params){
 
-        var $d = $.
+            var strParams = JSON.stringify( params );
+            var cachedResult = localStorage.getItem(strParams);
+            var $d = $.Deferred();
 
-        ajax.apply($,arguments).then(function(){
+            //prevent caching ./appConfig.json
+            var isCachable = nonCachable.indexOf( params.type ) === -1 && params.url !== './appConfig.json';
 
-        },function(){
+            if( cachedResult && isCachable ){
 
-        });
+                setTimeout(function(){
+                    $d.resolve( JSON.parse( cachedResult ) );
+                }, 100 );
+            }
+            else{
+
+                ajax.apply(null,arguments).then(function(res){
+
+                    if( isCachable )
+                        localStorage.setItem( strParams, JSON.stringify( res ) );
+
+                    $d.resolve( res );
+                },function(err){
+                    $d.reject(err);
+                });
+            }
+
+            return $d.promise();
+        })( params);
     }
-
-
-})($, window);
+})($);
