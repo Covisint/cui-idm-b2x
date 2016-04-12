@@ -1,6 +1,8 @@
 <div class="class-toggle cui-modal" ng-if="applicationReview.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
     <div class="cui-modal__pane">
-        <cui-icon cui-svg-icon="cui:check_with_border" class="cui-modal__icon"></cui-icon>
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
         <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span>
     </div>

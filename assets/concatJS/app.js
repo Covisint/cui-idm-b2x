@@ -173,8 +173,8 @@ function(API,$scope,$stateParams,$state) {
 
 
 angular.module('app')
-.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter',
-function(localStorageService,$scope,$stateParams,API,$state,$filter) {
+.controller('myApplicationsCtrl', ['localStorageService','$scope','$stateParams','API','$state','$filter','Sort',
+function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
     'use strict';
 
     var myApplications = this;
@@ -183,7 +183,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     myApplications.sortFlag = false;
     myApplications.categoriesFlag = false;
     myApplications.statusFlag = false;
-
     myApplications.list = [];
     myApplications.unparsedListOfAvailabeApps = [];
     myApplications.statusList = ['active', 'suspended', 'pending'];
@@ -198,26 +197,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         console.log('Error \n\n', err);
     };
 
-    var checkIfDone=function(){
-        stepsDone++;
-        if(stepsDone===stepsRequired){
-            listSort(myApplications.list);
-            myApplications.list=_.uniq(myApplications.list,function(app){
-                return app.id;
-            });
-            myApplications.list.forEach(function(service){
-                updateStatusCount(service);
-            });
-            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-            myApplications.statusCount[0]=myApplications.list.length; // set "all" to the number of total apps
-            myApplications.categoryList = getListOfCategories(myApplications.list);
-            myApplications.doneLoading = true;
-            $scope.$digest();
-        }
-    };
-
     var updateStatusCount = function(service) {
-        if (service.status && myApplications.statusList.indexOf(service.status)>-1) {
+        if (service.status && myApplications.statusList.indexOf(service.status) > -1) {
             myApplications.statusCount[myApplications.statusList.indexOf(service.status)+1]++;
         }
     };
@@ -243,9 +224,25 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
                 }
             }
         });
-
         myApplications.categoryCount = categoryCount;
         return categoryList;
+    };
+
+    var checkIfDone=function() {
+        stepsDone++;
+        if (stepsDone === stepsRequired) {
+            myApplications.list = _.uniq(myApplications.list, function(app) {
+                return app.id;
+            });
+            myApplications.list.forEach(function(service) {
+                updateStatusCount(service);
+            });
+            angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
+            myApplications.statusCount[0] = myApplications.list.length; // set "all" to the number of total apps
+            myApplications.categoryList = getListOfCategories(myApplications.list);
+            myApplications.doneLoading = true;
+            $scope.$digest();
+        }
     };
 
     var getApplicationsFromGrants = function(grants) {
@@ -291,24 +288,6 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
         });
     };
 
-    var listSort = function(listToSort, sortType, order) { // order is a boolean
-        listToSort.sort(function(a, b) {
-            if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-            else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
-            else { a=a.status, b=b.status; }
-
-            if ( a < b ) {
-                if (order) return 1;
-                else return -1
-            }
-            else if( a > b ) {
-                if (order) return -1;
-                else return 1;
-            }
-            else return 0;
-        });
-    };
-
     var categoryFilter = function (app, category) {
         if (!app.category && category) return false;
         if (!category) return true;
@@ -340,8 +319,8 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter) {
     };
 
     myApplications.sort = function(sortType) {
-        listSort(myApplications.list, sortType, myApplications.sortFlag);
-        myApplications.sortFlag=!myApplications.sortFlag;
+        Sort.listSort(myApplications.list, sortType, myApplications.sortFlag);
+        myApplications.sortFlag =! myApplications.sortFlag;
     };
 
     myApplications.parseAppsByCategory = function(category) {
@@ -1005,19 +984,24 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             templateUrl: templateBase + 'organization/directory/organization.directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
+        .state('organization.hierarchy', {
+            url: '/hierarchy?id',
+            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
+            controller: returnCtrlAs('orgHierarchy')
+        })
+        .state('organization.roles', {
+            url: '/roles',
+            templateUrl: templateBase + 'organization/roles/organization.roles.html',
+            controller: returnCtrlAs('orgRoles')
+        })
         .state('directory', {
             url: '/organization/directory',
             templateUrl: templateBase + 'organization/directory/directory.html'
         })
         .state('directory.userDetails', {
-            url: '/user-details',
+            url: '/user-details?id',
             templateUrl: templateBase + 'organization/directory/user-details/directory.userDetails.html',
             controller: returnCtrlAs('userDetails')
-        })
-        .state('organization.hierarchy', {
-            url: '/hierarchy?id',
-            templateUrl: templateBase + 'organization/hierarchy/organization.hierarchy.html',
-            controller: returnCtrlAs('orgHierarchy')
         })
         // Misc ----------------------------------------------------------
         .state('misc', {
@@ -1331,6 +1315,30 @@ angular.module('app')
                 (angular.isDefined(stateMenuOptions.desktop) && stateMenuOptions.desktop=== false)? this.desktop.hide() : this.desktop.show();
                 (angular.isDefined(stateMenuOptions.mobile) && stateMenuOptions.mobile=== false)? this.mobile.hide() : this.mobile.show();
             }
+        }
+    };
+}]);
+
+
+angular.module('app')
+.factory('Sort',['$filter',function($filter) {
+    return {
+        listSort: function(listToSort, sortType, order) {
+            listToSort.sort(function(a, b) {
+                if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
+                else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
+                else { a = a.status, b = b.status; }
+
+                if ( a < b ) {
+                    if (order) return 1;
+                    else return -1;
+                }
+                else if( a > b ) {
+                    if (order) return -1;
+                    else return 1;
+                }
+                else return 0;
+            });
         }
     };
 }]);
@@ -1673,14 +1681,16 @@ angular.module('app')
 }]);
 
 angular.module('app')
-.controller('orgDirectoryCtrl', ['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort',
+function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
     var orgDirectory = this;
     var organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
+    orgDirectory.sortFlag = false;
+    orgDirectory.userList = [];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -1695,10 +1705,13 @@ function($scope,$stateParams,API) {
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            // I am populating all organization directories with the logged in user info until we 
+            // can get all the members of an organization.
+            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
         })
         .then(function(res) {
-            orgDirectory.userList = res;
+            orgDirectory.userList.push(res);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -1746,16 +1759,22 @@ function($scope,$stateParams,API) {
         .fail(handleError);
     };
 
+    orgDirectory.sort = function(sortType) {
+        Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
+        orgDirectory.sortFlag =! orgDirectory.sortFlag;
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('userDetailsCtrl', ['$scope', '$stateParams', 'API',
+.controller('userDetailsCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';
     var userDetails = this;
+    var userID = $stateParams.id;
 
     // userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
@@ -1763,15 +1782,39 @@ function($scope,$stateParams,API) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function(err) {
+    var handleError = function handleError(err) {
         userDetails.loading = false;
         $scope.$digest();
         console.log('Error', err);
     };
 
+    var onLoadFinish = function onLoadFinish() {
+        return;
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
+
+    if (userID) {
+        // Load organization based on id parameter
+        API.cui.getPerson({ personId: userID })
+        .then(function(res) {
+            userDetails.user = res;
+            onLoadFinish();
+        })
+        .fail(handleError);
+    }
+    else {
+        // If no id parameter is passed we load the organization of the logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(res) {
+            userDetails.user = res;
+            onLoadFinish();
+        })
+        .fail(handleError);
+    }
+
     // ON LOAD END -----------------------------------------------------------------------------------
 
 }]);
@@ -1798,8 +1841,8 @@ function($scope,$stateParams,API) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     API.cui.getPerson({personId: API.getUser(), useCuid:true})
-    .then(function(person) {
-        return API.cui.getOrganization({organizationId: person.organization.id});
+    .then(function(res) {
+        return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
     	console.log(res);
@@ -1872,6 +1915,34 @@ function($scope,$stateParams,API) {
     }
 
     // ON LOAD END -----------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
+.controller('orgRolesCtrl', ['$scope',
+function($scope) {
+    'use strict';
+    var orgRoles = this;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    var handleError = function handleError(err) {
+        orgRoles.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    console.log('Roles Screen!');
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
 
