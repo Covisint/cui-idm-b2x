@@ -511,7 +511,7 @@ function(API,$scope,$state,AppRequests) {
 
 
 angular.module('app')
-.controller('applicationReviewCtrl',['$scope','API','AppRequests',function($scope,API,AppRequests){;
+.controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout',function($scope,API,AppRequests,$timeout){;
 
     var applicationReview=this;
     var appRequests=AppRequests.get(),
@@ -564,6 +564,9 @@ angular.module('app')
                     applicationReview.attempting=false;
                     applicationReview.success=true;
                     $scope.$digest();
+                    $timeout(function () {
+                        applicationReview.success=false;
+                    }, 3000);
                 }
             })
             .fail(function(){
