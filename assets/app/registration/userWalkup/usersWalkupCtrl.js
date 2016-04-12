@@ -4,13 +4,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
     'use strict';
 
     var usersWalkup = this;
+
     usersWalkup.userLogin = {};
     usersWalkup.applications = {};
     usersWalkup.errorMessage = '';
     usersWalkup.registering = false;
     usersWalkup.userNameExistsError = false;
-    usersWalkup.applications.numberOfSelected = 0;
     usersWalkup.orgLoading = true;
+    usersWalkup.applications.numberOfSelected = 0;
+    usersWalkup.orgPaginationCurrentPage = 1;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -140,11 +142,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
-        return API.cui.getOrganizations();
+        return API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page',1]]});
     })
     .then(function(res){
         // Populate organization list
         usersWalkup.organizationList = res;
+        return API.cui.countOrganizations();
+    })
+    .then(function(res) {
+        usersWalkup.organizationCount = res;
         usersWalkup.orgLoading = false;
         $scope.$digest();
     })
@@ -222,6 +228,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         });
     };
 
+    usersWalkup.orgPaginationPageHandler = function orgPaginationHandler(page) {
+        API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', page]]})
+        .then(function(res) {
+            usersWalkup.organizationList = res;
+            usersWalkup.orgPaginationCurrentPage = page;
+        })
+        .fail(handleError);
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // WATCHERS START --------------------------------------------------------------------------------
@@ -262,6 +277,17 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
             .then(function(res) {
                 CuiPasswordPolicies.set(res.rules);
                 $scope.$digest();
+            })
+            .fail(handleError);
+        }
+    });
+
+    $scope.$watch('usersWalkup.orgPaginationSize', function(newValue) {
+        if (newValue) {
+            API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', 1]]})
+            .then(function(res) {
+                usersWalkup.organizationList = res;
+                usersWalkup.orgPaginationCurrentPage = 1;
             })
             .fail(handleError);
         }

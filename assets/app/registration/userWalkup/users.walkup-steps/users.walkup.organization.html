@@ -18,6 +18,13 @@
       </div>
     </cui-expandable-body>
   </cui-expandable>
+
+  <!-- Pagination Controls -->
+  <div ng-if="!usersWalkup.orgLoading">
+    <span>{{'cui-num-results-page' | translate}}</span>
+    <results-per-page ng-model="usersWalkup.orgPaginationSize"></results-per-page>
+    <paginate class="paginate" results-per-page="usersWalkup.orgPaginationSize" count="usersWalkup.organizationCount" on-page-change="usersWalkup.orgPaginationPageHandler" ng-model="usersWalkup.orgPaginationCurrentPage"></paginate>
+  </div>
 </ng-form>
 
 <div class="cui-wizard__controls">

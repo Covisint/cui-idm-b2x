@@ -25,5 +25,6 @@
             "path":"bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg",
             "defaultViewBox":"0 0 216 216"
         }
-    ]
+    ],
+    "paginationOptions": [3, 10, 25, 50, 100, 200]
 }

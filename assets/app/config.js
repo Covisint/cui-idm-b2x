@@ -1,13 +1,14 @@
 angular.module('app')
 .config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
     '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
+    '$paginationProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,
+    $paginationProvider) {
 
     localStorageServiceProvider.setPrefix('cui');
 
     var templateBase = 'assets/app/'; // base directory of your partials
-
 
     var returnCtrlAs = function(name, asPrefix) {
         // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
@@ -17,13 +18,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $stateProvider
         // Base ----------------------------------------------------------
-        .state('base',{
+        .state('base', {
             url: '/',
             templateUrl: templateBase + 'base/base.html',
             controller: returnCtrlAs('base'),
         })
         // Welcome -------------------------------------------------------
-        .state('welcome',{
+        .state('welcome', {
             url: '/welcome',
             templateUrl: templateBase + 'welcome/welcome.html'
         })
@@ -195,7 +196,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
       $state.go('welcome');
     });
 
-    if(appConfig.languages){
+    if (appConfig.languages) {
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
@@ -221,11 +222,17 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         $cuiI18nProvider.setLocalePreference(languageKeys);
     }
 
-    if(appConfig.iconSets){
-        appConfig.iconSets.forEach(function(iconSet){
-            $cuiIconProvider.iconSet(iconSet.name,iconSet.path,iconSet.defaultViewBox || null);
-        })
+    if (appConfig.iconSets) {
+        appConfig.iconSets.forEach(function(iconSet) {
+            $cuiIconProvider.iconSet(iconSet.name, iconSet.path, iconSet.defaultViewBox || null);
+        });
     }
+
+    // Pagination Results Per Page Options
+    if (appConfig.paginationOptions) {
+        $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
+    }
+
 }]);
 
 angular.module('app')
