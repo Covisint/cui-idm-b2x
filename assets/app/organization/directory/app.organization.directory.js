@@ -9,6 +9,9 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
+    orgDirectory.unparsedUserList = [];
+    orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
+    orgDirectory.statusCount = [0,0,0,0,0,0,0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -18,18 +21,41 @@ function($scope,$stateParams,API,$filter,Sort) {
         console.log('Error', err);
     };
 
+    var getStatusList = function(users) {
+        var statusList = [];
+        var statusCount = [orgDirectory.unparsedUserList.length];
+
+        users.forEach(function(user) {
+            if (user.status) {
+                var statusInStatusList = _.some(statusList, function(status, i) {
+                    if (angular.equals(status, user.status)) {
+                        statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!statusInStatusList) {
+                    statusList.push(user.status);
+                    statusCount[statusList.length] = 1;
+                }
+            }
+        });
+        orgDirectory.statusCount = statusCount;
+        return statusList;
+    };
+
     var onLoadFinish = function onLoadFinish(organizationResponse) {
         orgDirectory.organization = organizationResponse;
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
-            // I am populating all organization directories with the logged in user info until we 
-            // can get all the members of an organization.
-            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
         })
         .then(function(res) {
-            orgDirectory.userList.push(res);
+            orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -71,6 +97,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
         .then(function(res) {
             orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -80,6 +108,18 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.sort = function(sortType) {
         Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
         orgDirectory.sortFlag =! orgDirectory.sortFlag;
+    };
+
+    orgDirectory.parseUsersByStatus = function(status) {
+        if (status === 'all') {
+            orgDirectory.userList = orgDirectory.unparsedUserList;
+        }
+        else {
+            var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
+                return user.status === status;
+            });
+            orgDirectory.userList = filteredUsers;
+        }
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

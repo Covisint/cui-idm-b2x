@@ -43,12 +43,10 @@
         <span class="cui-action__action-label">{{'refine' | translate}}</span>
         <!-- Refine Popover -->
         <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
-          <p>{{'active' | translate}} (0)</p>
-          <p>{{'locked' | translate}} (0)</p>
-          <p>{{'pending' | translate}} (0)</p>
-          <p>{{'suspended' | translate}} (0)</p>
-          <p>{{'rejected' | translate}} (0)</p>
-          <p>{{'removed' | translate}} (0)</p>
+          <p ng-click="orgDirectory.parseUsersByStatus('all')">{{'all' | translate}} ({{orgDirectory.statusCount[0]}})</p>
+          <div ng-repeat="status in orgDirectory.statusList" ng-if="myApplications.statusCount[$index+1]!==0">
+            <p ng-click="orgDirectory.parseUsersByStatus(status)">{{status | translate}} ({{orgDirectory.statusCount[$index+1]}})</p>
+          </div>
         </div>
       </div>
       <!-- Organizations -->
@@ -90,7 +88,7 @@
           <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
           <th>{{user.username}}</th>
           <th>{{user.creation | date:base.appConfig.dateFormat}}</th>
-          <th>{{user.status}}</th>
+          <th>{{user.status | translate}}</th>
         </tr>
       </tbody>
     </table>
