@@ -41,20 +41,17 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     // This returns the current language being used by the cui-i18n library, used for registration processes.
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
-    base.countries=Countries;
+    base.countries = Countries;
+    base.timezones = Timezones.all;
+    base.languages = Languages.all;
 
-    base.timezones=Timezones.all;
-    base.languages=Languages.all;
-
-    base.appConfig=appConfig;
+    base.appConfig = appConfig;
 
     base.user = User.user;
     base.userName = User.userName;
 
     base.authInfo = API.authInfo;
 
-
-    base.logout=API.cui.covLogout;
-
+    base.logout = API.cui.covLogout;
 
 }]);
