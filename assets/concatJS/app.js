@@ -1448,9 +1448,27 @@ angular.module('app')
     return {
         listSort: function(listToSort, sortType, order) {
             listToSort.sort(function(a, b) {
-                if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-                else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
-                else { a = a.status, b = b.status; }
+                if (sortType === 'alphabetically') { 
+                    if (a.name[0]) {
+                        a = $filter('cuiI18n')(a.name).toUpperCase(),
+                        b = $filter('cuiI18n')(b.name).toUpperCase();    
+                    }
+                    else {
+                        a = a.name.given.toUpperCase(),
+                        b = b.name.given.toUpperCase();
+                    }
+                }
+                else if (sortType=== 'date') { 
+                    if (a.dateCreated) {
+                        a = a.dateCreated, b = b.dateCreated;
+                    }
+                    else {
+                        a = a.creation, b = b.creation;
+                    }
+                }
+                else { 
+                    a = a.status, b = b.status; 
+                }
 
                 if ( a < b ) {
                     if (order) return 1;
@@ -2077,14 +2095,11 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
-            // I am populating all organization directories with the logged in user info until we 
-            // can get all the members of an organization.
-            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
         })
         .then(function(res) {
-            orgDirectory.userList.push(res);
-            orgDirectory.unparsedUserList.push(res);
+            orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
            // $scope.$digest();
@@ -2127,6 +2142,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
         .then(function(res) {
             orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -2146,7 +2163,7 @@ function($scope,$stateParams,API,$filter,Sort) {
             var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
                 return user.status === status;
             });
-            orgDirectory.list = filteredUsers;
+            orgDirectory.userList = filteredUsers;
         }
     };
 
