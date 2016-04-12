@@ -23,23 +23,26 @@
   </div>
 
   <!-- Name Header -->
-	<div>
-  	<div class="cui-media">
-  		<div class="cui-media__image-container">
-    		<svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
-      		<use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-    		</svg>
-  		</div>
-		</div>
-		<span>userID: Mike Z</span><br/>
-		<span>Registered: 1/1/1969</span><br/>
-		<span>Active</span><br/>
-		<span>
-			<button class="cui-button">Suspend</button>
-			<button class="cui-button">Password Reset</button>
-			<button class="cui-button">New Grants</button>
-		</span>	
-	</div>
+    <div class="cui-media [modifier class]">
+        <div class="cui-media__image-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+                <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+            </svg>
+        </div>
+        <div class="cui-profile">
+            <!-- User full name -->
+            <span class="cui-profile__user-name">{{'cui-name' | translate}}: {{userProfile.user.name.given}} {{userProfile.user.name.surname}}</span>
+            <!-- UserID -->
+            <p class="cui-media__content--small">{{'cui-registered' | translate}}: {{userProfile.user.creation | date:base.appConfig.dateFormat}}</p>
+            <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.id}}</p>
+
+            <span>
+                <button class="cui-button">Suspend</button>
+                <button class="cui-button">Password Reset</button>
+                <button class="cui-button">New Grants</button>
+		    </span>
+        </div>
+    </div>
 
   <!-- Action Header -->
   <div class="cui-action">

@@ -579,6 +579,120 @@ angular.module('app')
 }]);
 
 angular.module('app')
+.controller('orgApplicationsCtrl', ['$scope','API','Sort','$stateParams',
+function($scope,API,Sort,$stateParams) {
+    'use strict';
+
+    var orgApplications = this;
+    var organizationId = $stateParams.id;
+
+    orgApplications.loading = true;
+    orgApplications.sortFlag = false;
+    orgApplications.categoriesFlag = false;
+    orgApplications.statusFlag = false;
+    orgApplications.appList = [];
+    orgApplications.unparsedAppList = [];
+    orgApplications.categoryList = [];
+    orgApplications.statusList = ['active', 'suspended', 'pending'];
+    orgApplications.statusCount = [0,0,0,0];
+
+    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
+
+    var handleError = function handleError(err) {
+        orgApplications.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    var getListOfCategories = function(services) {
+        // WORKAROUND CASE # 7
+        var categoryList = [];
+        var categoryCount = [orgApplications.unparsedAppList.length];
+
+        services.forEach(function(service) {
+            if (service.category) {
+                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
+                    if (angular.equals(category, service.category)) {
+                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!serviceCategoryInCategoryList) {
+                    categoryList.push(service.category);
+                    categoryCount[categoryList.length] = 1;
+                }
+            }
+        });
+        orgApplications.categoryCount = categoryCount;
+        return categoryList;
+    };
+
+    var getApplicationsFromGrants = function(grants) {
+        // WORKAROUND CASE #1
+        // Get services from each grant
+        var i = 0;
+        grants.forEach(function(grant) {
+            API.cui.getPackageServices({ 'packageId': grant.servicePackage.id })
+            .then(function(res) {
+                i++;
+                res.forEach(function(service) {
+                    // Set some of the grant attributes to its associated service
+                    service.status = grant.status;
+                    service.dateCreated = grant.creation;
+                    service.parentPackage = grant.servicePackage.id;
+                    orgApplications.appList.push(service);
+                });
+
+                if (i === grants.length) {
+                    orgApplications.appList = _.uniq(orgApplications.appList, function(app) {
+                        return app.id;
+                    });
+                    angular.copy(orgApplications.appList, orgApplications.unparsedAppList);
+                    orgApplications.statusCount[0] = orgApplications.appList.length;
+                    orgApplications.categoryList = getListOfCategories(orgApplications.appList);
+                    orgApplications.loading = false;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
+    };
+
+    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
+
+    // ON LOAD START ------------------------------------------------------------------------------------------
+
+    if (organizationId) {
+        // Load organization applications of id parameter
+        API.cui.getOrganizationPackages({ organizationId: organizationId })
+        .then(function(res) {
+            getApplicationsFromGrants(res);
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load logged in user's organization applications
+        API.cui.getPerson({ personId: API.getUser(), useCuid:true })
+        .then(function(res) {
+            return API.cui.getOrganizationPackages({ organizationId: res.organization.id });
+        })
+        .then(function(res) {
+            getApplicationsFromGrants(res);
+        })
+        .fail(handleError);
+    }
+
+    // ON LOAD END --------------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
 .controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
 function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     'use strict';
@@ -968,6 +1082,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/review',
             templateUrl: templateBase + 'applications/new-request&review/review.html',
             controller: returnCtrlAs('applicationReview')
+        })
+        .state('applications.orgApplications', {
+            url: '/organization?id',
+            templateUrl: templateBase + 'applications/org-applications/org-applications.html',
+            controller: returnCtrlAs('orgApplications')
         })
         // Organization --------------------------------------------------
         .state('organization', {
@@ -1419,7 +1538,7 @@ angular.module('app')
 
 
 angular.module('app')
-    .factory('UserService',['$rootScope','$q','API','CuiPasswordPolicies', function($rootScope,$q,API,CuiPasswordPolicies) {
+    .factory('UserService',['$q','API','CuiPasswordPolicies', function($q,API,CuiPasswordPolicies) {
     'use strict';
 
         var self = {
@@ -1480,14 +1599,161 @@ angular.module('app')
 
                 return defer.promise;
             },
+
             // HELPER FUNCTIONS START ------------------------------------------------------------------------
-            selectTextsForQuestions : function(userProfile) {
+            selectTextsForQuestions:function(userProfile) {
                 userProfile.challengeQuestionsTexts = [];
                 angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
                     var question = _.find(userProfile.allSecurityQuestionsDup, function(question){return question.id === userQuestion.question.id});
                     this.push(question.question[0].text);
                 }, userProfile.challengeQuestionsTexts);
+            },
+
+            resetTempUser : function(userProfile) {
+                if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
+            },
+
+            getPersonPasswordAccount : function(userProfile){
+                return {
+                    version: '1',
+                    username: userProfile.user.username,
+                    currentPassword: userProfile.userPasswordAccount.currentPassword,
+                    password: userProfile.userPasswordAccount.password,
+                    passwordPolicy: userProfile.organization.passwordPolicy,
+                    authenticationPolicy: userProfile.organization.authenticationPolicy
+                };
+            },
+
+            injectUI: function(userProfile, $scope){
+
+                // ON CLICK START --------------------------------------------------------------------------------
+
+                userProfile.toggleAllOff=function(){
+                    angular.forEach(userProfile.toggleOffFunctions,function(toggleOff) {
+                        toggleOff();
+                    });
+
+                    self.resetTempUser(userProfile);
+                };
+
+                userProfile.resetTempObject = function(master, temp) {
+                    // Used to reset the temp object to the original when a user cancels their edit changes
+                    if (!angular.equals(master,temp)) angular.copy(master, temp);
+                };
+
+                userProfile.resetPasswordFields = function() {
+                    // Used to set the password fields to empty when a user clicks cancel during password edit
+                    userProfile.userPasswordAccount = {
+                        currentPassword: '',
+                        password: ''
+                    };
+                    userProfile.passwordRe = '';
+                };
+
+                userProfile.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
+                    securityQuestions.forEach(function(secQuestion,i){
+                        var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
+                            return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
+                        });
+                        if(securityAnswerRepeatedIndex>-1) {
+                            if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
+                            if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
+                        }
+                        else {
+                            if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
+                        }
+                    });
+                };
+
+                userProfile.resetChallengeQuestion = function(index) {
+                    userProfile.resetTempObject(userProfile.userSecurityQuestions.questions[index], userProfile.tempUserSecurityQuestions[index]);
+                };
+
+                userProfile.pushToggleOff=function(toggleOffObject){
+                    userProfile.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
+                };
+
+                // ON CLICK END ----------------------------------------------------------------------------------
+
+                // UPDATE FUNCTIONS START ------------------------------------------------------------------------
+
+                userProfile.updatePerson = function(section,toggleOff) {
+                    if(section) userProfile[section]={
+                        submitting:true
+                    };
+                    if (!userProfile.userCountry) {
+                        userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
+                    }
+                    else {
+                        userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
+                    }
+
+                    API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})
+                        .then(function() {
+                            angular.copy(userProfile.tempUser, userProfile.user);
+                            if(section) userProfile[section].submitting=false;
+                            if(toggleOff) toggleOff();
+                            $scope.$digest();
+                        })
+                        .fail(function(error) {
+                            console.log(error);
+                            if(section) userProfile[section].submitting=false;
+                            if(section) userProfile[section].error=true;
+                            $scope.$digest();
+                        });
+                };
+
+                userProfile.updatePassword = function(section,toggleOff) {
+                    if (section) {
+                        userProfile[section] = { submitting:true };
+                    }
+
+                    API.cui.updatePersonPassword({ personId: API.getUser(), data: self.getPersonPasswordAccount(userProfile) })
+                        .then(function(res) {
+                            if (section) userProfile[section].submitting = false;
+                            if (toggleOff) toggleOff();
+                            userProfile.resetPasswordFields();
+                            $scope.$digest();
+                        })
+                        .fail(function(err) {
+                            console.log(err);
+                            if (section) userProfile[section].submitting = false;
+                            if (section) userProfile[section].error = true;
+                            $scope.$digest();
+                        });
+                };
+
+                userProfile.saveChallengeQuestions = function(section,toggleOff) {
+                    if(section) userProfile[section]={
+                        submitting:true
+                    };
+                    userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
+                    self.selectTextsForQuestions(userProfile);
+
+                    API.cui.updateSecurityQuestionAccount({
+                            personId: API.getUser(),
+                            data: {
+                                version: '1',
+                                id: API.getUser(),
+                                questions: userProfile.userSecurityQuestions.questions
+                            }
+                        })
+                        .then(function(res) {
+                            if(section) userProfile[section].submitting=false;
+                            if(toggleOff) toggleOff();
+                            $scope.$digest();
+                        })
+                        .fail(function(err) {
+                            console.log(err);
+                            if(section) userProfile[section].submitting=false;
+                            if(section) userProfile[section].error=true;
+                            $scope.$digest();
+                        });
+                };
+                // UPDATE FUNCTIONS END --------------------------------------------------------------------------
             }
+
+            // HELPER FUNCTIONS END ------------------------------------------------------------------------
         };
 
         return self;
@@ -1766,6 +2032,9 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
+    orgDirectory.unparsedUserList = [];
+    orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
+    orgDirectory.statusCount = [0,0,0,0,0,0,0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -1773,6 +2042,30 @@ function($scope,$stateParams,API,$filter,Sort) {
         orgDirectory.loading = false;
         $scope.$digest();
         console.log('Error', err);
+    };
+
+    var getStatusList = function(users) {
+        var statusList = [];
+        var statusCount = [orgDirectory.unparsedUserList.length];
+
+        users.forEach(function(user) {
+            if (user.status) {
+                var statusInStatusList = _.some(statusList, function(status, i) {
+                    if (angular.equals(status, user.status)) {
+                        statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!statusInStatusList) {
+                    statusList.push(user.status);
+                    statusCount[statusList.length] = 1;
+                }
+            }
+        });
+        orgDirectory.statusCount = statusCount;
+        return statusList;
     };
 
     var onLoadFinish = function onLoadFinish(organizationResponse) {
@@ -1787,6 +2080,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         })
         .then(function(res) {
             orgDirectory.userList.push(res);
+            orgDirectory.unparsedUserList.push(res);
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
            // $scope.$digest();
         })
@@ -1839,19 +2134,31 @@ function($scope,$stateParams,API,$filter,Sort) {
         orgDirectory.sortFlag =! orgDirectory.sortFlag;
     };
 
+    orgDirectory.parseUsersByStatus = function(status) {
+        if (status === 'all') {
+            orgDirectory.userList = orgDirectory.unparsedUserList;
+        }
+        else {
+            var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
+                return user.status === status;
+            });
+            orgDirectory.list = filteredUsers;
+        }
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
 
 
 angular.module('app')
-.controller('userDetailsCtrl', ['$scope','$stateParams','API','UserService',
-function($scope,$stateParams,API,UserService) {
+.controller('userDetailsCtrl', ['$scope','$stateParams','API','Timezones','UserService',
+function($scope,$stateParams,API,Timezones,UserService) {
     'use strict';
     var userDetails = this;
     var userID = $stateParams.id;
 
-    // userDetails.loading = true;
+    userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
 
 
@@ -1860,7 +2167,6 @@ function($scope,$stateParams,API,UserService) {
     var handleError = function handleError(err) {
         userDetails.loading = false;
         $scope.$digest();
-        console.log('Error', err);
     };
 
     var onLoadFinish = function onLoadFinish() {
@@ -1874,7 +2180,17 @@ function($scope,$stateParams,API,UserService) {
 
     UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
         angular.copy( res, userDetails );
-        console.log( "userDetails", userDetails );
+
+        //In order to reuse a view which specifies its databinding to userProfile.
+        $scope.userProfile = {};
+        $scope.userProfile.saving = true;
+        $scope.userProfile.fail = false;
+        $scope.userProfile.success = false;
+        $scope.userProfile.timezoneById = Timezones.timezoneById;
+        $scope.userProfile.toggleOffFunctions = {};
+        UserService.injectUI( $scope.userProfile, $scope );
+        angular.copy( res, $scope.userProfile );
+
         userDetails.loading = false;
     },function(err){
         userDetails.loading = false;
@@ -1910,7 +2226,6 @@ function($scope,$stateParams,API) {
         return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
-    	console.log(res);
         orgHierarchy.organization = res;
         return API.cui.getOrganizationHierarchy({ id: orgHierarchy.organization.id });
 	})
@@ -2704,29 +3019,9 @@ function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     userProfile.success = false;
     userProfile.timezoneById = Timezones.timezoneById;
     userProfile.toggleOffFunctions = {};
+    UserService.injectUI( userProfile, $scope );
 
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var resetTempUser = function() {
-        if (!angular.equals(userProfile.tempUser,userProfile.user)) angular.copy(userProfile.user,userProfile.tempUser);
-    };
-
-    var build = {
-        personPasswordAccount: function() {
-            return {
-                version: '1',
-                username: userProfile.user.username,
-                currentPassword: userProfile.userPasswordAccount.currentPassword,
-                password: userProfile.userPasswordAccount.password,
-                passwordPolicy: userProfile.organization.passwordPolicy,
-                authenticationPolicy: userProfile.organization.authenticationPolicy
-            };
-        }
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-    // ON LOAD START ---------------------------------------------------------------------------------
+   // ON LOAD START ---------------------------------------------------------------------------------
 
     UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
         angular.copy( res, userProfile );
@@ -2734,135 +3029,6 @@ function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     },function(err){
         userProfile.loading = false;
     });
-
-    // ON LOAD END -----------------------------------------------------------------------------------
-
-    // ON CLICK START --------------------------------------------------------------------------------
-
-    userProfile.toggleAllOff=function(){
-        angular.forEach(userProfile.toggleOffFunctions,function(toggleOff) {
-            toggleOff();
-        });
-        resetTempUser();
-    };
-
-    userProfile.resetTempObject = function(master, temp) {
-        // Used to reset the temp object to the original when a user cancels their edit changes
-        if (!angular.equals(master,temp)) angular.copy(master, temp);
-    };
-
-    userProfile.resetPasswordFields = function() {
-        // Used to set the password fields to empty when a user clicks cancel during password edit
-        userProfile.userPasswordAccount = {
-            currentPassword: '',
-            password: ''
-        };
-        userProfile.passwordRe = '';
-    };
-
-    userProfile.checkIfRepeatedSecurityAnswer = function(securityQuestions,formObject) {
-        securityQuestions.forEach(function(secQuestion,i){
-            var securityAnswerRepeatedIndex=_.findIndex(securityQuestions,function(secQuestionToCompareTo,z){
-                return z!==i && secQuestion.answer && secQuestionToCompareTo.answer && secQuestion.answer.toUpperCase()===secQuestionToCompareTo.answer.toUpperCase();
-            });
-            if(securityAnswerRepeatedIndex>-1) {
-                if(formObject['answer'+securityAnswerRepeatedIndex]) formObject['answer'+securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated',false);
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',false);
-            }
-            else {
-                if(formObject['answer'+i]) formObject['answer'+i].$setValidity('securityAnswerRepeated',true);
-            }
-        });
-    };
-
-    userProfile.resetChallengeQuestion = function(index) {
-        userProfile.resetTempObject(userProfile.userSecurityQuestions.questions[index], userProfile.tempUserSecurityQuestions[index]);
-    };
-
-    userProfile.pushToggleOff=function(toggleOffObject){
-        userProfile.toggleOffFunctions[toggleOffObject.name]=toggleOffObject.function;
-    };
-
-    // ON CLICK END ----------------------------------------------------------------------------------
-
-    // UPDATE FUNCTIONS START ------------------------------------------------------------------------
-
-    userProfile.updatePerson = function(section,toggleOff) {
-        if(section) userProfile[section]={
-            submitting:true
-        };
-        if (!userProfile.userCountry) {
-            userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
-        }
-        else {
-            userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
-        }
-
-        API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})
-        .then(function() {
-            angular.copy(userProfile.tempUser, userProfile.user);
-            if(section) userProfile[section].submitting=false;
-            if(toggleOff) toggleOff();
-            $scope.$digest();
-        })
-        .fail(function(error) {
-            console.log(error);
-            if(section) userProfile[section].submitting=false;
-            if(section) userProfile[section].error=true;
-            $scope.$digest();
-        });
-    };
-
-    userProfile.updatePassword = function(section,toggleOff) {
-        if (section) {
-            userProfile[section] = { submitting:true };
-        }
-
-        API.cui.updatePersonPassword({ personId: API.getUser(), data: build.personPasswordAccount() })
-        .then(function(res) {
-            if (section) userProfile[section].submitting = false;
-            if (toggleOff) toggleOff();
-            userProfile.resetPasswordFields();
-            $scope.$digest();
-        })
-        .fail(function(err) {
-            console.log(err);
-            if (section) userProfile[section].submitting = false;
-            if (section) userProfile[section].error = true;
-            $scope.$digest();
-        });
-    };
-
-   userProfile.saveChallengeQuestions = function(section,toggleOff) {
-        if(section) userProfile[section]={
-            submitting:true
-        };
-        userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
-        UserService.selectTextsForQuestions(userProfile);
-
-        API.cui.updateSecurityQuestionAccount({
-          personId: API.getUser(),
-          data: {
-            version: '1',
-            id: API.getUser(),
-            questions: userProfile.userSecurityQuestions.questions
-            }
-        })
-        .then(function(res) {
-            if(section) userProfile[section].submitting=false;
-            if(toggleOff) toggleOff();
-            $scope.$digest();
-        })
-        .fail(function(err) {
-            console.log(err);
-            if(section) userProfile[section].submitting=false;
-            if(section) userProfile[section].error=true;
-            $scope.$digest();
-        });
-    };
-
-    // UPDATE FUNCTIONS END --------------------------------------------------------------------------
-
 }]);
 
 
