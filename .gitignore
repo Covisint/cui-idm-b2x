@@ -12,4 +12,4 @@ assets/concatJS/app.js
 assets/css/main.css
 build
 .idea
-.gitignore
+appConfig.json
