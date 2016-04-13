@@ -28,13 +28,13 @@
         <div class="cui-profile__row">
           <div id="cui-profile__popup" class="cui-profile__user-menu" style="display:block; opacity: 1; position: relative;">
             <div class="cui-profile__menu-item" ui-sref="user.profile">
-              <a href="" class="cui-profile__link">My Profile</a>
+              <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
               <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
               </svg>
             </div>
             <div class="cui-profile__menu-item" ng-click="base.logout()">
-              <a href="" class="cui-profile__link">Log Out</a>
+              <a href="" class="cui-profile__link">{{'log-out' | translate}}</a>
               <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
               </svg>
@@ -44,19 +44,19 @@
       </div>
 
       <span class="snap-menu--option" snap-close ui-sref="welcome">
-        <span class="snap-menu__option-name">Welcome</span>
+        <span class="snap-menu__option-name">{{'welcome' | translate}}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#four29"></use>
         </svg>
       </span>
       <span class="snap-menu--option" snap-close ui-sref="applications">
-        <span class="snap-menu__option-name">Applications</span>
+        <span class="snap-menu__option-name">{{'cui-applications' | translate}}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 49 49">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
         </svg>
       </span>
       <span class="snap-menu--option" snap-close ui-sref="organization.profile">
-        <span class="snap-menu__option-name">Organization</span>
+        <span class="snap-menu__option-name">{{'cui-org' | translate}}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#organization"></use>
         </svg>
@@ -84,17 +84,17 @@
        <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
-          <span class="cui-desktop-menu__option-name">Welcome</span>
+          <span class="cui-desktop-menu__option-name">{{'welcome' | translate}}</span>
           <cui-icon cui-svg-icon="fa:four29" svg-class="cui-desktop-menu__icon" viewBox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
 
         <span class="cui-desktop-menu__option" ui-sref="applications.myApplications" ui-sref-active-nested="active">
-          <span class="cui-desktop-menu__option-name">Applications</span>
+          <span class="cui-desktop-menu__option-name">{{'cui-applications' | translate}}</span>
           <cui-icon cui-svg-icon="cui:applications_v2" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
 
         <span class="cui-desktop-menu__option"  ui-sref="organization.profile" ui-sref-active-nested="active">
-          <span class="cui-desktop-menu__option-name">Organization</span>
+          <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
           <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </span>
 
@@ -148,13 +148,13 @@
                 </div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="user.profile">
-                    <a href="" class="cui-profile__link">My Profile</a>
+                    <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
                     <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
                     </svg>
                   </div>
                   <div class="cui-profile__menu-item" ng-click="base.logout()">
-                    <a href="" class="cui-profile__link">Log Out</a>
+                    <a href="" class="cui-profile__link">{{'log-out' | translate}}</a>
                     <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
                     </svg>
@@ -170,9 +170,9 @@
         <div class="cui-tile cui-footer">
           <div ng-translate-language-select class="cui-footer__translate"></div>
           <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Covisint</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Privacy & Terms</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Help</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Learn more</a> about why we ask for this information</div>
+          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy' | translate}} &amp; {{'terms' | translate}} </a></div>
+          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'help' | translate}}</a></div>
+          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'cui-learn-more-start' | translate}}</a> {{'cui-learn-more-end' | translate}}</div>
         </div>
       </div>
     </snap-content>
