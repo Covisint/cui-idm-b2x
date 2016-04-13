@@ -10,43 +10,58 @@
       </div>
 
       <div ng-if="!toggled">
-        <span class="cui-field-val__field">{{'cui-name' | translate}}:</span>
-        <span class="cui-field-val__val">Mike Z</span><br/>
+
+        <!-- User full name -->
+        <h3 class="cui-media__title">{{'cui-name' | translate}}: {{userProfile.user.name.given}} {{userProfile.user.name.surname}}</h3>
+        <!-- UserID -->
+        <p class="cui-media__content--small">{{'cui-registered' | translate}}: {{userProfile.user.creation | date:base.appConfig.dateFormat}}</p>
+        <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.id}}</p>
+
+
+        <!--<span class="cui-field-val__field">{{'cui-name' | translate}}:</span>
+        <span class="cui-field-val__val">{{userProfile.user.name}}</span><br/>
         <span class="cui-field-val__field">{{'cui-email' | translate}}:</span>
-        <span class="cui-field-val__val">unr8tedC0ldPl@y</span>
+        <span class="cui-field-val__val">unr8tedC0ldPl@y</span>-->
       </div>
 
-      <!-- Name/email edit -->
-      <div ng-if="toggled" ng-init="">
-        <!-- First Name -->
-        <label for="firstName">{{'cui-first-name' | translate}}</label>
-        <div class="cui-error" ng-messages="basicInfo.firstName.$error">
-          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+
+      <div class="cui-users__profile">
+        <div class="cui-users__profile-info">
+          <div class="cui-users__info-block">
+            <!-- Basic info  (name and email)-->
+            <div ng-include="'assets/app/user/profile/sections/basic-info.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Password -->
+            <div ng-include="'assets/app/user/profile/sections/password.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Challenge Questions -->
+            <div ng-include="'assets/app/user/profile/sections/challenge-questions.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Timezone/Language -->
+            <div ng-include="'assets/app/user/profile/sections/timezone-language.html'"></div>
+          </div>
         </div>
-        <input type="text" name="firstName" class="cui-input" ng-model="" ng-required="true" focus-if="toggled">
-        <!-- Last Name -->
-        <label for="lastName">{{'cui-last-name' | translate}}</label>
-        <div class="cui-error" ng-messages="basicInfo.lastName.$error">
-          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+
+        <div class="cui-users__profile-info">
+          <div class="cui-users__info-block">
+            <!-- Address -->
+            <div ng-include="'assets/app/user/profile/sections/address.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Phones/Fax -->
+            <div ng-include="'assets/app/user/profile/sections/phone-fax.html'"></div>
+          </div>
         </div>
-        <input type="text" name="lastName" class="cui-input" ng-model="" ng-required="true">
-        <!-- Email -->
-        <label for="email">{{'cui-email' | translate}}</label>
-        <div class="cui-error" ng-messages="basicInfo.email.$error">
-          <div ng-messages-include="assets/app/common-templates/messages.html"></div>
-        </div>
-        <input type="email" name="email" class="cui-input" ng-model="" ng-required="true">
-        <!-- Address Edit Controls -->
-        <div class="cui-users__address-submit">
-          <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
-          <button class="cui-button" ng-click=""
-            ng-class="{'cui-button--error':!basicInfo.$valid}">
-            <span ng-if="">{{'cui-update' | translate}}</span>
-            <div class="" ng-if=""></div>
-            <span ng-if="">{{'cui-error-try-again'| translate}}</span>
-          </button>
-        </div>
+
       </div>
+
     </div>
   </div>
 </ng-form>
