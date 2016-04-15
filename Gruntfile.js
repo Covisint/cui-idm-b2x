@@ -83,39 +83,27 @@ module.exports = function(grunt) {
     },
     clean: {
       build: {
-        src: ["build"]
+        src: ['build']
       }
     },
     copy: {
       build: {
-        index: {
-          src: 'index.html',
-          dest: 'build/index.html'
-        },
-        languageFiles: {
-          src: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
-          dest: 'build/'
-        },
-        localeFiles: {
-          src: 'bower_components/angular-i18n/*.js',
-          dest: 'build/'
-        },
-        svgList: {
-          src: 'bower_components/cui-icons/iconList',
-          dest: 'build/'
-        },
-        svgs: {
-          src: ['bower_components/cui-icons/dist/**/*.svg'],
-          dest: 'build/'
-        },
-        countries: {
-          src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json'],
-          dest: 'build/'
-        },
-        timezones: {
-          src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'],
-          dest: 'build/'
-        }
+        files: [
+          {
+            src: 'index.html',
+            dest: 'build/index.html'
+          }, {
+            src: [
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
+              'bower_components/angular-i18n/*.js',
+              'bower_components/cui-icons/iconList',
+              'bower_components/cui-icons/dist/**/*.svg',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json',
+            ],
+            dest: 'build/'
+          }
+        ]
       },
       dev: {
         src:'appConfig-example.json',
