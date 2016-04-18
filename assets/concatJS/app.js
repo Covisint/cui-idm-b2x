@@ -583,6 +583,120 @@ angular.module('app')
 }]);
 
 angular.module('app')
+.controller('orgApplicationsCtrl', ['$scope','API','Sort','$stateParams',
+function($scope,API,Sort,$stateParams) {
+    'use strict';
+
+    var orgApplications = this;
+    var organizationId = $stateParams.id;
+
+    orgApplications.loading = true;
+    orgApplications.sortFlag = false;
+    orgApplications.categoriesFlag = false;
+    orgApplications.statusFlag = false;
+    orgApplications.appList = [];
+    orgApplications.unparsedAppList = [];
+    orgApplications.categoryList = [];
+    orgApplications.statusList = ['active', 'suspended', 'pending'];
+    orgApplications.statusCount = [0,0,0,0];
+
+    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
+
+    var handleError = function handleError(err) {
+        orgApplications.loading = false;
+        $scope.$digest();
+        console.log('Error', err);
+    };
+
+    var getListOfCategories = function(services) {
+        // WORKAROUND CASE # 7
+        var categoryList = [];
+        var categoryCount = [orgApplications.unparsedAppList.length];
+
+        services.forEach(function(service) {
+            if (service.category) {
+                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
+                    if (angular.equals(category, service.category)) {
+                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!serviceCategoryInCategoryList) {
+                    categoryList.push(service.category);
+                    categoryCount[categoryList.length] = 1;
+                }
+            }
+        });
+        orgApplications.categoryCount = categoryCount;
+        return categoryList;
+    };
+
+    var getApplicationsFromGrants = function(grants) {
+        // WORKAROUND CASE #1
+        // Get services from each grant
+        var i = 0;
+        grants.forEach(function(grant) {
+            API.cui.getPackageServices({ 'packageId': grant.servicePackage.id })
+            .then(function(res) {
+                i++;
+                res.forEach(function(service) {
+                    // Set some of the grant attributes to its associated service
+                    service.status = grant.status;
+                    service.dateCreated = grant.creation;
+                    service.parentPackage = grant.servicePackage.id;
+                    orgApplications.appList.push(service);
+                });
+
+                if (i === grants.length) {
+                    orgApplications.appList = _.uniq(orgApplications.appList, function(app) {
+                        return app.id;
+                    });
+                    angular.copy(orgApplications.appList, orgApplications.unparsedAppList);
+                    orgApplications.statusCount[0] = orgApplications.appList.length;
+                    orgApplications.categoryList = getListOfCategories(orgApplications.appList);
+                    orgApplications.loading = false;
+                    $scope.$digest();
+                }
+            })
+            .fail(handleError);
+        });
+    };
+
+    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
+
+    // ON LOAD START ------------------------------------------------------------------------------------------
+
+    if (organizationId) {
+        // Load organization applications of id parameter
+        API.cui.getOrganizationPackages({ organizationId: organizationId })
+        .then(function(res) {
+            getApplicationsFromGrants(res);
+        })
+        .fail(handleError);
+    }
+    else {
+        // Load logged in user's organization applications
+        API.cui.getPerson({ personId: API.getUser(), useCuid:true })
+        .then(function(res) {
+            return API.cui.getOrganizationPackages({ organizationId: res.organization.id });
+        })
+        .then(function(res) {
+            getApplicationsFromGrants(res);
+        })
+        .fail(handleError);
+    }
+
+    // ON LOAD END --------------------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
+
+}]);
+
+
+angular.module('app')
 .controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
 function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     'use strict';
@@ -858,34 +972,33 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     // This returns the current language being used by the cui-i18n library, used for registration processes.
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
-    base.countries=Countries;
+    base.countries = Countries;
+    base.timezones = Timezones.all;
+    base.languages = Languages.all;
 
-    base.timezones=Timezones.all;
-    base.languages=Languages.all;
-
-    base.appConfig=appConfig;
+    base.appConfig = appConfig;
 
     base.user = User.user;
     base.userName = User.userName;
 
     base.authInfo = API.authInfo;
 
-
-    base.logout=API.cui.covLogout;
-
+    base.logout = API.cui.covLogout;
 
 }]);
+
 
 angular.module('app')
 .config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
     '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
+    '$paginationProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,
+    $paginationProvider) {
 
     localStorageServiceProvider.setPrefix('cui');
 
     var templateBase = 'assets/app/'; // base directory of your partials
-
 
     var returnCtrlAs = function(name, asPrefix) {
         // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
@@ -895,13 +1008,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $stateProvider
         // Base ----------------------------------------------------------
-        .state('base',{
+        .state('base', {
             url: '/',
             templateUrl: templateBase + 'base/base.html',
             controller: returnCtrlAs('base'),
         })
         // Welcome -------------------------------------------------------
-        .state('welcome',{
+        .state('welcome', {
             url: '/welcome',
             templateUrl: templateBase + 'welcome/welcome.html'
         })
@@ -972,6 +1085,11 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
             url: '/review',
             templateUrl: templateBase + 'applications/new-request&review/review.html',
             controller: returnCtrlAs('applicationReview')
+        })
+        .state('applications.orgApplications', {
+            url: '/organization?id',
+            templateUrl: templateBase + 'applications/org-applications/org-applications.html',
+            controller: returnCtrlAs('orgApplications')
         })
         // Organization --------------------------------------------------
         .state('organization', {
@@ -1068,7 +1186,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
       $state.go('welcome');
     });
 
-    if(appConfig.languages){
+    if (appConfig.languages) {
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
@@ -1094,11 +1212,17 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         $cuiI18nProvider.setLocalePreference(languageKeys);
     }
 
-    if(appConfig.iconSets){
-        appConfig.iconSets.forEach(function(iconSet){
-            $cuiIconProvider.iconSet(iconSet.name,iconSet.path,iconSet.defaultViewBox || null);
-        })
+    if (appConfig.iconSets) {
+        appConfig.iconSets.forEach(function(iconSet) {
+            $cuiIconProvider.iconSet(iconSet.name, iconSet.path, iconSet.defaultViewBox || null);
+        });
     }
+
+    // Pagination Results Per Page Options
+    if (appConfig.paginationOptions) {
+        $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
+    }
+
 }]);
 
 angular.module('app')
@@ -1329,9 +1453,27 @@ angular.module('app')
     return {
         listSort: function(listToSort, sortType, order) {
             listToSort.sort(function(a, b) {
-                if (sortType === 'alphabetically') { a = $filter('cuiI18n')(a.name).toUpperCase(), b = $filter('cuiI18n')(b.name).toUpperCase(); }
-                else if (sortType=== 'date') { a = a.dateCreated, b = b.dateCreated; }
-                else { a = a.status, b = b.status; }
+                if (sortType === 'alphabetically') { 
+                    if (a.name[0]) {
+                        a = $filter('cuiI18n')(a.name).toUpperCase(),
+                        b = $filter('cuiI18n')(b.name).toUpperCase();    
+                    }
+                    else {
+                        a = a.name.given.toUpperCase(),
+                        b = b.name.given.toUpperCase();
+                    }
+                }
+                else if (sortType=== 'date') { 
+                    if (a.dateCreated) {
+                        a = a.dateCreated, b = b.dateCreated;
+                    }
+                    else {
+                        a = a.creation, b = b.creation;
+                    }
+                }
+                else { 
+                    a = a.status, b = b.status; 
+                }
 
                 if ( a < b ) {
                     if (order) return 1;
@@ -1695,6 +1837,9 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
+    orgDirectory.unparsedUserList = [];
+    orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
+    orgDirectory.statusCount = [0,0,0,0,0,0,0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -1704,18 +1849,41 @@ function($scope,$stateParams,API,$filter,Sort) {
         console.log('Error', err);
     };
 
+    var getStatusList = function(users) {
+        var statusList = [];
+        var statusCount = [orgDirectory.unparsedUserList.length];
+
+        users.forEach(function(user) {
+            if (user.status) {
+                var statusInStatusList = _.some(statusList, function(status, i) {
+                    if (angular.equals(status, user.status)) {
+                        statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!statusInStatusList) {
+                    statusList.push(user.status);
+                    statusCount[statusList.length] = 1;
+                }
+            }
+        });
+        orgDirectory.statusCount = statusCount;
+        return statusList;
+    };
+
     var onLoadFinish = function onLoadFinish(organizationResponse) {
         orgDirectory.organization = organizationResponse;
         API.cui.getOrganizations()
         .then(function(res) {
             orgDirectory.organizationList = res;
-            // return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
-            // I am populating all organization directories with the logged in user info until we 
-            // can get all the members of an organization.
-            return API.cui.getPerson({personId: API.getUser(), useCuid:true});
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
         })
         .then(function(res) {
-            orgDirectory.userList.push(res);
+            orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -1757,6 +1925,8 @@ function($scope,$stateParams,API,$filter,Sort) {
         API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
         .then(function(res) {
             orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -1766,6 +1936,18 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.sort = function(sortType) {
         Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
         orgDirectory.sortFlag =! orgDirectory.sortFlag;
+    };
+
+    orgDirectory.parseUsersByStatus = function(status) {
+        if (status === 'all') {
+            orgDirectory.userList = orgDirectory.unparsedUserList;
+        }
+        else {
+            var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
+                return user.status === status;
+            });
+            orgDirectory.userList = filteredUsers;
+        }
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
@@ -1849,7 +2031,6 @@ function($scope,$stateParams,API) {
         return API.cui.getOrganization({ organizationId: res.organization.id });
     })
     .then(function(res) {
-    	console.log(res);
         orgHierarchy.organization = res;
         return API.cui.getOrganizationHierarchy({ id: orgHierarchy.organization.id });
 	})
@@ -2363,13 +2544,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
     'use strict';
 
     var usersWalkup = this;
+
     usersWalkup.userLogin = {};
     usersWalkup.applications = {};
     usersWalkup.errorMessage = '';
     usersWalkup.registering = false;
     usersWalkup.userNameExistsError = false;
-    usersWalkup.applications.numberOfSelected = 0;
     usersWalkup.orgLoading = true;
+    usersWalkup.applications.numberOfSelected = 0;
+    usersWalkup.orgPaginationCurrentPage = 1;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -2499,11 +2682,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
-        return API.cui.getOrganizations();
+        return API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page',1]]});
     })
     .then(function(res){
         // Populate organization list
         usersWalkup.organizationList = res;
+        return API.cui.countOrganizations();
+    })
+    .then(function(res) {
+        usersWalkup.organizationCount = res;
         usersWalkup.orgLoading = false;
         $scope.$digest();
     })
@@ -2581,6 +2768,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         });
     };
 
+    usersWalkup.orgPaginationPageHandler = function orgPaginationHandler(page) {
+        API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', page]]})
+        .then(function(res) {
+            usersWalkup.organizationList = res;
+            usersWalkup.orgPaginationCurrentPage = page;
+        })
+        .fail(handleError);
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // WATCHERS START --------------------------------------------------------------------------------
@@ -2621,6 +2817,17 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
             .then(function(res) {
                 CuiPasswordPolicies.set(res.rules);
                 $scope.$digest();
+            })
+            .fail(handleError);
+        }
+    });
+
+    $scope.$watch('usersWalkup.orgPaginationSize', function(newValue) {
+        if (newValue) {
+            API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', 1]]})
+            .then(function(res) {
+                usersWalkup.organizationList = res;
+                usersWalkup.orgPaginationCurrentPage = 1;
             })
             .fail(handleError);
         }

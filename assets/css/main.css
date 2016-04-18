@@ -479,13 +479,13 @@ h1, h2, h3, h4, h5, h6 {
 .h4, .cui-modal__secondary-message {
   font-size: 1.5em; }
 
-.h5, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title {
+.h5, .cui-text-area__label, .cui-paginate__select, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title {
   font-size: 1.25em; }
 
 .h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   font-size: 1em; }
 
-.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-paginate__select, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
   font-family: 'lato-black', sans-serif;
   font-weight: 700;
   letter-spacing: 1.6px; }
@@ -1499,6 +1499,48 @@ Weight: 200
 
 Styleguide Blocks
 */
+/*
+Breadcrumb Navigation
+
+Markup:
+<nav class="cui-breadcrumb">
+  <ul class="cui-breadcrumb__links">
+    <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
+      <a href="#">Organization Profile</a>
+    </li>
+    <li class="cui-breadcrumb__link">
+      <a href="#">Hierarchy</a>
+    </li>
+    <li class="cui-breadcrumb__link">
+      <a href="#">Directory</a>
+    </li>
+    <li class="cui-breadcrumb__link">
+      <a href="#">Roles</a>
+    </li>
+  </ul>
+</nav>
+
+Styleguide Blocks.Breadcrumb
+*/
+.cui-breadcrumb__links {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%; }
+  .cui-breadcrumb__links .cui-breadcrumb__link {
+    border-right: 1px solid #6a98a0;
+    padding: 0 8px; }
+    .cui-breadcrumb__links .cui-breadcrumb__link:first-child {
+      padding-left: 0; }
+    .cui-breadcrumb__links .cui-breadcrumb__link:last-child {
+      padding-right: 0;
+      border-right: none; }
+    .cui-breadcrumb__links .cui-breadcrumb__link a {
+      color: #6a98a0;
+      text-decoration: none; }
+  .cui-breadcrumb__links .cui-breadcrumb__link--current a {
+    color: #1d6572; }
+
 /*
 Form
 
@@ -3951,38 +3993,6 @@ Styleguide Blocks.Expandable With Table Layout
   .cui-expandable__td:nth-of-type(3) {
     text-align: center; }
 
-/*
-Pagination
-
-Markup:
-<nav class="cui-pagination">
-  <span class="cui-pagination__total">Showing 1-300 of 1500 items</span>
-  <a class="cui-pagination__display-amount" href="#">Show 50</a> 
-  <ul class="cui-pagination__links">
-    <li class="cui-pagination__link">
-      <a href="#" aria-label="Previous">
-        <span class="cui-pagination__previous cui-pagination__previous--disabled" aria-hidden="true">&lsaquo;Prev</span>
-      </a>
-    </li>
-    <li class="cui-pagination__link cui-pagination__link--current">
-      <a href="">1</a>
-    </li>
-    <li class="cui-pagination__link">
-      <a href="">2</a>
-    </li>
-    <li class="cui-pagination__link">
-      <a href="">3</a>
-    </li>
-    <li class="cui-pagination__link">
-      <a href="#" aria-label="Next">
-        <span class="cui-pagination__next" aria-hidden="true">Next&rsaquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-
-Styleguide Blocks.Pagination
-*/
 .cui-pagination {
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -4059,6 +4069,157 @@ Styleguide Blocks.Pagination
     .cui-pagination__display-amount {
       border-left: 1px solid black;
       margin-left: -1px; } }
+
+/*
+Pagination
+
+Markup:
+<div class="cui-paginate__container">
+  <span class="cui-paginate__results-label">Number of results per page</span>
+  <select class="cui-paginate__select">
+    <option label="3" value="number:3" selected="selected">3</option>
+    <option label="10" value="number:10">10</option><option label="25" value="number:25">25</option>
+    <option label="50" value="number:50">50</option><option label="100" value="number:100">100</option>
+    <option label="200" value="number:200">200</option>
+  </select>
+  <div class="cui-paginate">
+    <span class="cui-paginate__previous"></span>
+    <span class="cui-paginate__page-container">
+      <span class="cui-paginate__page cui-paginate__page--active">1</span>
+      <span class="cui-paginate__page">2</span>
+      <span class="cui-paginate__page">3</span>
+    </span>
+    <span class="cui-paginate__next"></span>
+  </div>
+</div>
+
+Styleguide Blocks.Pagination
+*/
+.cui-paginate__container {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.cui-paginate__select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMTNweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMyA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPkFycm93PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iOS5BcHAtTmV3cmVxLVJlcWFsZXJ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzM3LjAwMDAwMCwgLTEzNTguMDAwMDAwKSIgZmlsbD0iIzgzOEQ4RiI+ICAgICAgICAgICAgPGcgaWQ9IlBhZ2luYXRpb24jMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLjAwMDAwMCwgMTMzMi4wMDAwMDApIj4gICAgICAgICAgICAgICAgPGcgaWQ9InJlc3VsdHMtcGVyLXBhZ2U6Ij4gICAgICAgICAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTU4LjAwMDAwMCwgMTguMDAwMDAwKSI+ICAgICAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IkFycm93IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNS41MDAwMDAsIDEyLjAwMDAwMCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSgtMjcwLjAwMDAwMCkgdHJhbnNsYXRlKC0zNS41MDAwMDAsIC0xMi4wMDAwMDApICIgcG9pbnRzPSIzMy4zNjg0MjExIDUuNSAzMS41IDcuNDg5MjI0MTQgMzUuNzM2ODQyMSAxMiAzMS41IDE2LjUxMDc3NTkgMzMuMzY4NDIxMSAxOC41IDM5LjUgMTIiPjwvcG9seWdvbj4gICAgICAgICAgICAgICAgICAgIDwvZz4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==") right 20px center no-repeat;
+  background-color: #fff;
+  background-position: 55px;
+  background-size: 12px;
+  border-radius: 0;
+  border: 1px solid #eee;
+  color: #838d8f;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 56px;
+  margin: 0;
+  min-width: 75px;
+  padding: 0 0 0 9px;
+  position: relative;
+  outline: 0;
+  width: 75px; }
+  .cui-paginate__select::-ms-expand {
+    display: none; }
+
+.cui-paginate__results-label {
+  font-size: 0.75em; }
+
+.cui-paginate {
+  border-bottom: 1px solid #f1f1f1;
+  border-top: 1px solid #f1f1f1;
+  box-sizing: border-box;
+  color: #828483;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  margin-left: 7.012750455373%;
+  min-width: 282px;
+  width: 75%; }
+
+.cui-paginate__page {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  line-height: 40px;
+  text-align: center;
+  width: 60px; }
+
+.cui-paginate__page-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  margin-right: auto; }
+
+.cui-paginate__previous {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOHB4IiBoZWlnaHQ9IjEzcHgiIHZpZXdCb3g9IjAgMCA4IDEzIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPkFycm93PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iOS5BcHAtTmV3cmVxLVJlcWFsZXJ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDQ5LjAwMDAwMCwgLTEzNTUuMDAwMDAwKSIgZmlsbD0iIzgzOEQ4RiI+ICAgICAgICAgICAgPGcgaWQ9IlBhZ2luYXRpb24jMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLjAwMDAwMCwgMTMzMi4wMDAwMDApIj4gICAgICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI3Mi4wMDAwMDAsIDAuMDAwMDAwKSI+ICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iQXJyb3ciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxLjAwMDAwMCwgMjkuNTAwMDAwKSBzY2FsZSgtMSwgMSkgdHJhbnNsYXRlKC0zMS4wMDAwMDAsIC0yOS41MDAwMDApICIgcG9pbnRzPSIyOC44Njg0MjExIDIzIDI3IDI0Ljk4OTIyNDEgMzEuMjM2ODQyMSAyOS41IDI3IDM0LjAxMDc3NTkgMjguODY4NDIxMSAzNiAzNSAyOS41Ij48L3BvbHlnb24+ICAgICAgICAgICAgICAgIDwvZz4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=") center center no-repeat;
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  line-height: 40px;
+  text-align: center;
+  width: 60px; }
+
+.cui-paginate__next {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOHB4IiBoZWlnaHQ9IjEzcHgiIHZpZXdCb3g9IjAgMCA4IDEzIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPkFycm93PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iOS5BcHAtTmV3cmVxLVJlcWFsZXJ0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTIxNi4wMDAwMDAsIC0xMzU1LjAwMDAwMCkiIGZpbGw9IiM4MzhEOEYiPiAgICAgICAgICAgIDxnIGlkPSJQYWdpbmF0aW9uIzMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MC4wMDAwMDAsIDEzMzIuMDAwMDAwKSI+ICAgICAgICAgICAgICAgIDxnIGlkPSJHcm91cC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNzIuMDAwMDAwLCAwLjAwMDAwMCkiPiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IkFycm93IiBwb2ludHM9Ijc5NS44Njg0MjEgMjMgNzk0IDI0Ljk4OTIyNDEgNzk4LjIzNjg0MiAyOS41IDc5NCAzNC4wMTA3NzU5IDc5NS44Njg0MjEgMzYgODAyIDI5LjUiPjwvcG9seWdvbj4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==") center center no-repeat;
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  line-height: 40px;
+  text-align: center;
+  width: 60px; }
+
+.cui-paginate__page--active {
+  background: #f7f7f7; }
+
+.cui-paginate__ellipses {
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  display: inline-block;
+  line-height: 40px;
+  text-align: center;
+  width: 40px; }
 
 /*
 Loading
@@ -4926,7 +5087,7 @@ Modal example to be added via iframe
         -ms-flex-direction: column;
             flex-direction: column;
     min-height: 19.25em;
-    padding: 1.875em 5em 2.125em;
+    padding: 1.875em 1.875em 2.125em;
     text-align: center;
     width: 80%; }
     @media screen and (min-width: 701px) {
@@ -5492,3 +5653,6 @@ inline-edit .angucomplete-dropdown {
     position: relative;
     margin-top: 2em;
     margin-bottom: 2em; }
+
+.cui-select-wrapper {
+  width: 80px; }
