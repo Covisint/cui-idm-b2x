@@ -146,7 +146,7 @@ angular.module('app')
                         userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
                     }
                     else {
-                        userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
+                        userProfile.tempUser.addresses[0].country = userProfile.userCountry.originalObject.code;
                     }
 
                     API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})

@@ -295,6 +295,10 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
         // WORKAROUND CASE #1
         // from the list of grants, get the list of services from each of those service packages
         var i = 0;
+        if(grants.length===0) {
+            checkIfDone();
+            return;
+        }
         grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res) {
@@ -316,6 +320,10 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
 
     var getApplicationsFromPendingRequests = function(requests) {
         var i = 0;
+        if(requests.length===0) {
+            checkIfDone();
+            return;
+        }
         requests.forEach(function(request) {
             API.cui.getPackageServices({'packageId':request.servicePackage.id})
             .then(function(res) {
@@ -1396,6 +1404,7 @@ angular.module('app')
         }
         GetCountries(language)
         .then(function(res){
+            countries.lenght=0;
             res.data.forEach(function(country){
                 countries.push(country);
             });
@@ -1758,7 +1767,7 @@ angular.module('app')
                         userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
                     }
                     else {
-                        userProfile.tempUser.addresses[0].country = userProfile.userCountry.description.code;
+                        userProfile.tempUser.addresses[0].country = userProfile.userCountry.originalObject.code;
                     }
 
                     API.cui.updatePerson({ personId: API.getUser(), useCuid:true , data:userProfile.tempUser})
@@ -3122,7 +3131,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
    // ON LOAD START ---------------------------------------------------------------------------------
 
     UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
-        angular.copy( res, userProfile );
+        angular.merge( userProfile,res );
         userProfile.loading = false;
     },function(err){
         userProfile.loading = false;
