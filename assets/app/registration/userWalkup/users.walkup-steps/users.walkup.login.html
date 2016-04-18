@@ -40,7 +40,7 @@
 		<!-- Challenge Question 1 -->
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-question' | translate}} 1</label>
-			<cui-dropdown ng-model="usersWalkup.userLogin.question1" class="cui-input" return-value="question" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions1">
+			<cui-dropdown ng-model="usersWalkup.userLogin.question1" class="cui-dropdown" return-value="question" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions1">
 			</cui-dropdown>
 		</div>
 
@@ -64,7 +64,7 @@
 			</div>
 			<!-- <select ng-model="usersWalkup.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as (question.question | cuiI18n) for question in usersWalkup.userLogin.challengeQuestions2"> -->
 			</select>
-			<cui-dropdown ng-model="usersWalkup.userLogin.question2" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions2" name="challenge2" return-value="option.name" class="cui-select"></cui-dropdown>
+			<cui-dropdown ng-model="usersWalkup.userLogin.question2" display-value="(question.question | cuiI18n)" options="usersWalkup.userLogin.challengeQuestions2" name="challenge2" return-value="option.name" class="cui-dropdown"></cui-dropdown>
 
 		</div>
 
