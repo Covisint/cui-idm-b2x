@@ -163,6 +163,11 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         var i = 0;
         var listOfPackages = res;
 
+        if(listOfPackages.length===0) {
+            applicationSearch.list = [];
+            applicationSearch.doneLoading = true;
+            scope.$digest();
+        }
         listOfPackages.forEach(function(pkg) {
             API.cui.getPackageServices({'packageId':pkg.id})
             .then(function(res){
