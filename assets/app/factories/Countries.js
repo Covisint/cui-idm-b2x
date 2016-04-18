@@ -14,6 +14,7 @@ angular.module('app')
         }
         GetCountries(language)
         .then(function(res){
+            countries.lenght=0;
             res.data.forEach(function(country){
                 countries.push(country);
             });
