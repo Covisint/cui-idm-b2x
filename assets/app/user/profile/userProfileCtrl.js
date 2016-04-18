@@ -15,7 +15,7 @@ function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
    // ON LOAD START ---------------------------------------------------------------------------------
 
     UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
-        angular.copy( res, userProfile );
+        angular.merge( userProfile,res );
         userProfile.loading = false;
     },function(err){
         userProfile.loading = false;

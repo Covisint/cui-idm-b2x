@@ -75,6 +75,10 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
         // WORKAROUND CASE #1
         // from the list of grants, get the list of services from each of those service packages
         var i = 0;
+        if(grants.length===0) {
+            checkIfDone();
+            return;
+        }
         grants.forEach(function(grant) {
             API.cui.getPackageServices({'packageId':grant.servicePackage.id})
             .then(function(res) {
@@ -96,6 +100,10 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
 
     var getApplicationsFromPendingRequests = function(requests) {
         var i = 0;
+        if(requests.length===0) {
+            checkIfDone();
+            return;
+        }
         requests.forEach(function(request) {
             API.cui.getPackageServices({'packageId':request.servicePackage.id})
             .then(function(res) {
