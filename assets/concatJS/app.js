@@ -18,7 +18,7 @@
             var $d = $.Deferred();
 
             //prevent caching ./appConfig.json
-            var isCachable = nonCachable.indexOf( params.type ) == -1 && params.url != './appConfig.json';
+            var isCachable = nonCachable.indexOf( params.type ) === -1 && params.url !== './appConfig.json';
 
             if( cachedResult && isCachable ){
 
@@ -27,6 +27,7 @@
                 }, 100 );
             }
             else{
+
                 ajax.apply(null,arguments).then(function(res){
 
                     if( isCachable )
@@ -1017,34 +1018,33 @@ function($state,Countries,Timezones,Languages,$scope,$translate,LocaleService,Us
     // This returns the current language being used by the cui-i18n library, used for registration processes.
     base.getLanguageCode = Languages.getCurrentLanguageCode;
 
-    base.countries=Countries;
+    base.countries = Countries;
+    base.timezones = Timezones.all;
+    base.languages = Languages.all;
 
-    base.timezones=Timezones.all;
-    base.languages=Languages.all;
-
-    base.appConfig=appConfig;
+    base.appConfig = appConfig;
 
     base.user = User.user;
     base.userName = User.userName;
 
     base.authInfo = API.authInfo;
 
-
-    base.logout=API.cui.covLogout;
-
+    base.logout = API.cui.covLogout;
 
 }]);
+
 
 angular.module('app')
 .config(['$translateProvider','$locationProvider','$stateProvider','$urlRouterProvider',
     '$injector','localStorageServiceProvider','$cuiIconProvider','$cuiI18nProvider',
+    '$paginationProvider',
 function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
-    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider){
+    $injector,localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,
+    $paginationProvider) {
 
     localStorageServiceProvider.setPrefix('cui');
 
     var templateBase = 'assets/app/'; // base directory of your partials
-
 
     var returnCtrlAs = function(name, asPrefix) {
         // build controller as syntax easily. returnCtrlAs('test','new') returns 'testCtrl as newTest'
@@ -1054,13 +1054,13 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
 
     $stateProvider
         // Base ----------------------------------------------------------
-        .state('base',{
+        .state('base', {
             url: '/',
             templateUrl: templateBase + 'base/base.html',
             controller: returnCtrlAs('base'),
         })
         // Welcome -------------------------------------------------------
-        .state('welcome',{
+        .state('welcome', {
             url: '/welcome',
             templateUrl: templateBase + 'welcome/welcome.html'
         })
@@ -1232,7 +1232,7 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
       $state.go('welcome');
     });
 
-    if(appConfig.languages){
+    if (appConfig.languages) {
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         var languageKeys=Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
@@ -1258,11 +1258,17 @@ function($translateProvider,$locationProvider,$stateProvider,$urlRouterProvider,
         $cuiI18nProvider.setLocalePreference(languageKeys);
     }
 
-    if(appConfig.iconSets){
-        appConfig.iconSets.forEach(function(iconSet){
-            $cuiIconProvider.iconSet(iconSet.name,iconSet.path,iconSet.defaultViewBox || null);
-        })
+    if (appConfig.iconSets) {
+        appConfig.iconSets.forEach(function(iconSet) {
+            $cuiIconProvider.iconSet(iconSet.name, iconSet.path, iconSet.defaultViewBox || null);
+        });
     }
+
+    // Pagination Results Per Page Options
+    if (appConfig.paginationOptions) {
+        $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
+    }
+
 }]);
 
 angular.module('app')
@@ -2805,13 +2811,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
     'use strict';
 
     var usersWalkup = this;
+
     usersWalkup.userLogin = {};
     usersWalkup.applications = {};
     usersWalkup.errorMessage = '';
     usersWalkup.registering = false;
     usersWalkup.userNameExistsError = false;
-    usersWalkup.applications.numberOfSelected = 0;
     usersWalkup.orgLoading = true;
+    usersWalkup.applications.numberOfSelected = 0;
+    usersWalkup.orgPaginationCurrentPage = 1;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -2941,11 +2949,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         // Preload question into input
         usersWalkup.userLogin.question1 = usersWalkup.userLogin.challengeQuestions1[0];
         usersWalkup.userLogin.question2 = usersWalkup.userLogin.challengeQuestions2[0];
-        return API.cui.getOrganizations();
+        return API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page',1]]});
     })
     .then(function(res){
         // Populate organization list
         usersWalkup.organizationList = res;
+        return API.cui.countOrganizations();
+    })
+    .then(function(res) {
+        usersWalkup.organizationCount = res;
         usersWalkup.orgLoading = false;
         $scope.$digest();
     })
@@ -3023,6 +3035,15 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         });
     };
 
+    usersWalkup.orgPaginationPageHandler = function orgPaginationHandler(page) {
+        API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', page]]})
+        .then(function(res) {
+            usersWalkup.organizationList = res;
+            usersWalkup.orgPaginationCurrentPage = page;
+        })
+        .fail(handleError);
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // WATCHERS START --------------------------------------------------------------------------------
@@ -3063,6 +3084,17 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
             .then(function(res) {
                 CuiPasswordPolicies.set(res.rules);
                 $scope.$digest();
+            })
+            .fail(handleError);
+        }
+    });
+
+    $scope.$watch('usersWalkup.orgPaginationSize', function(newValue) {
+        if (newValue) {
+            API.cui.getOrganizations({'qs': [['pageSize', usersWalkup.orgPaginationSize],['page', 1]]})
+            .then(function(res) {
+                usersWalkup.organizationList = res;
+                usersWalkup.orgPaginationCurrentPage = 1;
             })
             .fail(handleError);
         }
