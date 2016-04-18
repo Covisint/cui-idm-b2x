@@ -77,47 +77,37 @@ module.exports = function(grunt) {
         dest: 'assets/concatJS/app.js'
       },
       dev: {
-        src: ['assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
+        src: [ 'assets/_ajax.cache.js', 'assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
       }
     },
     clean: {
       build: {
-        src: ["build"]
+        src: ['build']
       }
     },
     copy: {
-      appConfig:{
-        src:'appConfig.json',
-        dest:'build/appConfig.json'
+      build: {
+        files: [
+          {
+            src: 'index.html',
+            dest: 'build/index.html'
+          }, {
+            src: [
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
+              'bower_components/angular-i18n/*.js',
+              'bower_components/cui-icons/iconList',
+              'bower_components/cui-icons/dist/**/*.svg',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json',
+            ],
+            dest: 'build/'
+          }
+        ]
       },
-      index: {
-        src: 'index.html',
-        dest: 'build/index.html'
-      },
-      languageFiles: {
-        src: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
-        dest: 'build/'
-      },
-      localeFiles: {
-        src: 'bower_components/angular-i18n/*.js',
-        dest: 'build/'
-      },
-      svgList: {
-        src: 'bower_components/cui-icons/iconList',
-        dest: 'build/'
-      },
-      svgs: {
-        src: ['bower_components/cui-icons/dist/**/*.svg'],
-        dest: 'build/'
-      },
-      countries: {
-        src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json'],
-        dest: 'build/'
-      },
-      timezones: {
-        src: ['bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'],
-        dest: 'build/'
+      dev: {
+        src:'appConfig-example.json',
+        dest:'appConfig.json'
       }
     },
     filerev:{
@@ -168,8 +158,8 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['concat:dev','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','clean','copy','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('default', ['copy:dev','concat:dev','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','clean','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
 };

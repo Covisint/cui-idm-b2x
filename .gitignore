@@ -8,6 +8,8 @@ target
 *.versionsBackup
 *.iml
 assets/angular-modules/templateCache.js
-assets/concatJS/app.js
-assets/css/main.css
+assets/concatJS
+assets/css
 build
+.idea
+appConfig.json

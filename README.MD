@@ -4,7 +4,7 @@
 
 ### How to use
 
-Configure your own `appConfig.json` file in the root of the project.
+Configure your own `appConfig-example.json` file in the root of the project.
 Run `bower install`, `npm install`, and then `grunt` to start a local server in which you can see changes in real time.
 
 ### OPTIMIZATION TARGET
@@ -24,4 +24,3 @@ Case No. - Reason
 ### Person related actions
 CASE No. - Reason
 * 4 - When submiting a personRequest we need to submit exactly 1 package request. This needs be be an array of package requests.
-* 5 - We can't get password policies for a given org from the API.
