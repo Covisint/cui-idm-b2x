@@ -6,11 +6,12 @@ angular.module('app')
 
     var authInfo = {};
 
-    myCUI.setServiceUrl('STG'); // STG
-    // myCUI.setServiceUrl('PRD'); // PRD
+    if(appConfig.serviceUrl){
+        myCUI.setServiceUrl(appConfig.serviceUrl);
+    }
+    else myCUI.setServiceUrl('STG')
 
-    var originUri = appConfig.originUri; // Thirdwave STG Instance
-    // var originUri = 'coke-idm.run.covapp.io'; // Coke STG Instance
+    var originUri = appConfig.originUri;
 
     function jwtAuthHandler() {
         return myCUI.covAuth({
