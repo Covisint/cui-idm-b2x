@@ -166,7 +166,7 @@ function(API,$scope,$stateParams,$state,$filter,AppRequests) {
         if(listOfPackages.length===0) {
             applicationSearch.list = [];
             applicationSearch.doneLoading = true;
-            scope.$digest();
+            $scope.$digest();
         }
         listOfPackages.forEach(function(pkg) {
             API.cui.getPackageServices({'packageId':pkg.id})
