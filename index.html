@@ -14,7 +14,7 @@
   <div class="cui-wrapper v2">
     <snap-drawer>
 
-      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()">
+      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
         <div class="cui-profile__row">
           <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
           <!-- Avatar Mobile -->
