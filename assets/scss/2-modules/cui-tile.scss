@@ -1,25 +1,24 @@
 .cui-nav__content-wrapper {
-    min-height: 750px;
+  min-height: 750px;
 }
 
 .cui-wrapper {
-    background: #fff;
-}
-
-.cui-footer{
-    padding-bottom: 30px;
-    &__translate {
-        float: right;
-        display: inline-block;;
-    }
-
-    &__link {
-        float: left;
-        display: inline-block;
-        padding-right: 40px;
-    }
+  background: #fff;
 }
 
 .cui-tile__title {
-    border-radius: 0;
+  border-radius: 0;
+}
+
+.cui-footer {
+  padding: 0.9375em 0.8125em;
+
+  @media screen and (min-width: 701px) {
+    padding: 0.9375em 3.4375em 0.9375em 4.0625em; 
+  }
+  
+  @media screen and (max-width: 700px) {
+  .cui-applications__main-container--full {
+    padding: 0.9375em 0; } 
+  }
 }
