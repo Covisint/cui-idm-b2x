@@ -84,6 +84,9 @@ module.exports = function(grunt) {
     clean: {
       build: {
         src: ['build']
+      },
+      processedHtml: {
+        src: ['assets/angular-modules/processedHtml']
       }
     },
     copy: {
@@ -151,15 +154,50 @@ module.exports = function(grunt) {
             removeEmptyAttributes: true,
             removeReduntantAttributes: true,
             removeScriptTypeAttributes: true,
-            removeStyleLinkAttributes: true,
-          }
+            removeStyleLinkAttributes: true
+          },
+          module: 'app'
         }
+      },
+      prod: {
+        src: 'assets/angular-modules/processedHtml/assets/app/**/*.html',
+        dest: 'assets/angular-modules/templateCache.js',
+        options: {
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhiteSpace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeReduntantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkAttributes: true
+          },
+          module: 'app',
+          url: function(url) { return url.replace('assets/angular-modules/processedHtml/', ''); }
+        }
+      }
+    },
+    processhtml: {
+      prodBuild: {
+        options: {
+          commentMarker: 'processHTML'
+        },
+        files: [{
+          expand: true,
+          cwd: './',
+          src: ['assets/app/**/**.html'],
+          dest: 'assets/angular-modules/processedHtml/',
+          extDot: '.html'
+        }]
       }
     }
   });
 
   grunt.registerTask('default', ['copy:dev','concat:dev','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates','clean','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates:app','clean:build','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
+  grunt.registerTask('buildProd', ['sass','autoprefixer','processhtml:prodBuild','ngtemplates:prod','clean:build','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin','clean:processedHtml']);
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('jslint', ['jshint']);
+
 };
