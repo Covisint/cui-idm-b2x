@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         },
       }
     },
+
     sass:{
       dist:{
         files:{
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     autoprefixer: {
       options: {
         browsers: ['last 3 versions']
@@ -31,6 +33,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     browserSync: {
       dev: {
         bsFiles: {
@@ -66,13 +69,31 @@ module.exports = function(grunt) {
             baseDir: 'build/'
           }
         }
+      },
+      demosdk: {
+        bsFiles: {
+          src : [
+            '**/*.html',
+            '**/*.js',
+            '**/*.css'
+          ]
+        },
+        options: {
+          ghostMode: false,
+          watchTask: false,
+          online: true,
+          server: {
+            baseDir: 'build-sdk/'
+          }
+        }
       }
     },
+
     concat: {
       options: {
-           separator: '\n\n',
+        separator: '\n\n'
       },
-      build:{
+      build: {
         src: ['assets/angular-modules/app.intro.js','assets/angular-modules/templateCache.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
       },
@@ -81,14 +102,19 @@ module.exports = function(grunt) {
         dest: 'assets/concatJS/app.js'
       }
     },
+
     clean: {
       build: {
         src: ['build']
       },
-      processedHtml: {
+      buildsdk: {
+        src: ['build-sdk']
+      },
+      processhtml: {
         src: ['assets/angular-modules/processedHtml']
       }
     },
+
     copy: {
       build: {
         files: [
@@ -102,29 +128,61 @@ module.exports = function(grunt) {
               'bower_components/cui-icons/iconList',
               'bower_components/cui-icons/dist/**/*.svg',
               'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
-              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
             ],
             dest: 'build/'
           }
         ]
       },
+      buildsdk: {
+        files: [
+          {
+            src: 'index.html',
+            dest: 'build-sdk/index.html'
+          }, {
+            src: [
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
+              'bower_components/angular-i18n/*.js',
+              'bower_components/cui-icons/iconList',
+              'bower_components/cui-icons/dist/**/*.svg',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
+              'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
+            ],
+            dest: 'build-sdk/'
+          }
+        ]
+      },
       dev: {
-        src:'appConfig-example.json',
-        dest:'appConfig.json'
+        src: 'appConfig-example.json',
+        dest: 'appConfig.json'
       }
     },
-    filerev:{
-      dist:{
-        src:['build/assets/css/main.css','build/assets/js/vendor.js','build/assets/js/app.js']
+
+    filerev: {
+      build: {
+        src: ['build/assets/css/main.css','build/assets/js/vendor.js','build/assets/js/app.js']
+      },
+      buildsdk: {
+        src: ['build-sdk/assets/css/main.css','build-sdk/assets/js/vendor.js','build-sdk/assets/js/app.js']
       }
     },
+
     useminPrepare: {
-      html: './index.html',
+      html: 'index.html',
       options: {
         src: './',
         dest: './build'
       }
     },
+
+    useminPreparesdk: {
+      html: './index.html',
+      options: {
+        src: './',
+        dest: './build-sdk'
+      }
+    },
+
     usemin: {
       options: {
         assetsDirs: ['./build']
@@ -133,33 +191,28 @@ module.exports = function(grunt) {
       js: ['./build/assets/app/**/*.js'],
       html: ['./build/index.html']
     },
+
+    useminsdk: {
+      options: {
+        assetsDirs: ['./build-sdk']
+      },
+      css: ['./build-sdk/assets/css/**/*.css'],
+      js: ['./build-sdk/assets/app/**/*.js'],
+      html: ['./build-sdk/index.html']
+    },
+
     uglify: {
       options: {
         mangle: false
       }
     },
+
     jshint: {
       app: ['assets/**/*.js']
     },
+
     ngtemplates: {
-      app: {
-        src: 'assets/app/**/*.html',
-        dest: 'assets/angular-modules/templateCache.js',
-        options: {
-          htmlmin: {
-            collapseBooleanAttributes: true,
-            collapseWhiteSpace: true,
-            removeAttributeQuotes: true,
-            removeComments: true,
-            removeEmptyAttributes: true,
-            removeReduntantAttributes: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkAttributes: true
-          },
-          module: 'app'
-        }
-      },
-      prod: {
+      build: {
         src: 'assets/angular-modules/processedHtml/assets/app/**/*.html',
         dest: 'assets/angular-modules/templateCache.js',
         options: {
@@ -176,10 +229,28 @@ module.exports = function(grunt) {
           module: 'app',
           url: function(url) { return url.replace('assets/angular-modules/processedHtml/', ''); }
         }
+      },
+      buildsdk: {
+        src: 'assets/app/**/*.html',
+        dest: 'assets/angular-modules/templateCache.js',
+        options: {
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhiteSpace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeReduntantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkAttributes: true
+          },
+          module: 'app'
+        }
       }
     },
+
     processhtml: {
-      prodBuild: {
+      build: {
         options: {
           commentMarker: 'processHTML'
         },
@@ -194,10 +265,37 @@ module.exports = function(grunt) {
     }
   });
 
+  // Workaround for multiple useminPrepare tasks
+  grunt.registerTask('useminPreparesdk', function() {
+    var useminPreparesdkConfig = grunt.config('useminPreparesdk');
+    grunt.config.set('useminPrepare', useminPreparesdkConfig);
+    grunt.task.run('useminPrepare');
+  });
+
+  // Workaround for multiple usemin tasks
+  grunt.registerTask('useminsdk', function() {
+    var useminsdkConfig = grunt.config('useminsdk');
+    grunt.config.set('usemin', useminsdkConfig);
+    grunt.task.run('usemin');
+  });
+
+  // Default task for development
   grunt.registerTask('default', ['copy:dev','concat:dev','sass','autoprefixer','browserSync:dev','watch']);
-  grunt.registerTask('build', ['sass','autoprefixer','ngtemplates:app','clean:build','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin']);
-  grunt.registerTask('buildProd', ['sass','autoprefixer','processhtml:prodBuild','ngtemplates:prod','clean:build','copy:build','concat:build','useminPrepare','concat:generated','cssmin:generated','uglify:generated','filerev','usemin','clean:processedHtml']);
+
+  // Clean build
+  grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
+                                'concat:build','useminPrepare','concat:generated','cssmin:generated',
+                                'uglify:generated','filerev:build','usemin','clean:processhtml']);
+
+  // Build with comments referencing documentation and code
+  grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
+                                  'concat:build','useminPreparesdk','concat:generated','cssmin:generated',
+                                  'uglify:generated','filerev:buildsdk','useminsdk']);
+
+  // Run project from demo/demosdk folders
   grunt.registerTask('demo', ['browserSync:demo']);
+  grunt.registerTask('demosdk', ['browserSync:demosdk']);
+
   grunt.registerTask('jslint', ['jshint']);
 
 };
