@@ -62,13 +62,17 @@
     <!-- API GAP None of the sorting mechanisms are available from the Person Package Grant API -->
   </div>
   <div ng-if="myApplications.doneLoading">
-    <div class="cui-media cui-media--border" ng-repeat="application in myApplications.list track by application.id" ng-click="myApplications.goToDetails(application)">
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
       <div class="cui-media__body cui-media__body--full">
-        <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
-        <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
+        <div class="cui-media__title-container">
+          <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--'+application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+          <h3 class="cui-media__title" ng-bind="application.name | cuiI18n" ng-click="myApplications.goToDetails(application)"></h3>
+        </div>
+        <!-- <a href="{{application.iconUrl}}">test</a> -->
+        <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
         <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
       </div>
     </div>
