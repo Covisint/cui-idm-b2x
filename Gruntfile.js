@@ -262,6 +262,20 @@ module.exports = function(grunt) {
           extDot: '.html'
         }]
       }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['es2015'],
+        retainLines: true,
+        compact: true
+      },
+      babel: {
+        files: {
+          'assets/concatJS/app.js': 'assets/concatJS/app.js'
+        }
+      }
     }
   });
 
@@ -280,16 +294,16 @@ module.exports = function(grunt) {
   });
 
   // Default task for development
-  grunt.registerTask('default', ['copy:dev','concat:dev','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('default', ['copy:dev','concat:dev','babel','sass','autoprefixer','browserSync:dev','watch']);
 
   // Clean build
   grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
-                                'concat:build','useminPrepare','concat:generated','cssmin:generated',
+                                'concat:build','babel','useminPrepare','concat:generated','cssmin:generated',
                                 'uglify:generated','filerev:build','usemin','clean:processhtml']);
 
   // Build with comments referencing documentation and code
   grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
-                                  'concat:build','useminPreparesdk','concat:generated','cssmin:generated',
+                                  'concat:build','babel','useminPreparesdk','concat:generated','cssmin:generated',
                                   'uglify:generated','filerev:buildsdk','useminsdk']);
 
   // Run project from demo/demosdk folders
