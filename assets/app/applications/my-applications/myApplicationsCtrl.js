@@ -128,6 +128,11 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
         return $filter('cuiI18n')(app.category)===$filter('cuiI18n')(category);
     };
 
+    var disableAppLaunch = function (status) {
+        if (status == 'active') return false;
+        else return true;
+    };
+
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------

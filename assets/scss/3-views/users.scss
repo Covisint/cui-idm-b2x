@@ -6,6 +6,10 @@
   @media screen and (min-width: 701px) {
     padding: em(15) em(55) 0 em(65);
   }
+
+  .cui-media__image-container {
+    margin-right: 15px;
+  }
 }
 
 .cui-users__profile-media {
@@ -99,6 +103,3 @@
   }
 }
 
-.cui-media__image-container {
-  margin-right: 15px;
-}
