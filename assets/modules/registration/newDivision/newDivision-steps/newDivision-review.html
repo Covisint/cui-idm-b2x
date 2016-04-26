@@ -1,0 +1,74 @@
+<!-- User Information -->
+<cui-expandable class="cui-expandable expanded">
+	<cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+  	{{'cui-user-information' | translate}}
+    <span class="chevron">></span>
+  </cui-expandable-title>
+
+  <cui-expandable-body class="cui-expandable__body">
+  	<!-- First Name -->
+  	<inline-edit label="cui-first-name" model="newDivision.user.name.given"></inline-edit>
+		<!-- Last Name -->
+		<inline-edit label="cui-last-name" model="newDivision.user.name.surname"></inline-edit>
+		<!-- Email -->
+		<inline-edit label="cui-email" model="newDivision.user.email"></inline-edit>
+		<!-- Country -->
+		<inline-edit type="auto-complete" model="newDivision.user.addresses[0].country" display="newDivision.user.addresses[0].country.title || newDivision.user.addresses[0].country" label="cui-country" selected-object="newDivision.user.addresses[0].country" model="newDivision.user.addresses[0].country" local-data="base.countries.list" search-fields="name" title-field="name"></inline-edit>
+		<!-- Address 1 -->
+		<inline-edit label="cui-address-1" model="newDivision.user.addresses[0].streets[0]"></inline-edit>
+		<!-- Address 2 -->
+		<inline-edit label="cui-address-2" model="newDivision.user.addresses[0].streets[1]"></inline-edit>
+		<!-- City -->
+		<inline-edit label="cui-city" model="newDivision.user.addresses[0].city"></inline-edit>
+		<!-- State -->
+		<inline-edit label="cui-state" model="newDivision.user.addresses[0].state"></inline-edit>
+	  <!-- Postal -->
+	  <inline-edit label="cui-postal" model="newDivision.user.addresses[0].postal"></inline-edit>
+	  <!-- Phone Number -->
+	  <inline-edit label="cui-telephone" model="newDivision.user.phones[0].number"></inline-edit>
+	</cui-expandable-body>
+</cui-expandable>
+
+<!-- Organization Information -->
+<cui-expandable class="cui-expandable">
+  <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+      {{'cui-organization-information' | translate}}
+      <span class="chevron">></span>
+    </cui-expandable-title>
+
+    <cui-expandable-body class="cui-expandable__body">
+      <!-- Company/Division -->
+      <inline-edit type="dropdown" display="newDivision.organizationSelect.organization.name" label="cui-org" options="newDivision.organizationList" options-expression="organization as organization.name for organization in options" model="newDivision.organizationSelect.organization"></inline-edit>
+  </cui-expandable-body>
+</cui-expandable>
+
+<!-- Sign In Information -->
+<cui-expandable class="cui-expandable">
+  <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+    {{'cui-sign-in-information' | translate}}
+    <span class="chevron">></span>
+  </cui-expandable-title>
+
+  <cui-expandable-body class="cui-expandable__body">
+    <!-- User ID -->
+    <inline-edit label="cui-user-id" model="newDivision.userLogin.username"></inline-edit>
+    <!-- Password -->
+    <inline-edit label="cui-password" model="newDivision.userLogin.password"></inline-edit>
+    <!-- Re-Enter Password -->
+    <inline-edit label="cui-password-re" model="newDivision.userLogin.passwordRe"></inline-edit>
+    <!-- Challenge Question 1 -->
+    test
+    <inline-edit type="dropdown" display="newDivision.userLogin.question1.question | cuiI18n" label="cui-challenge-question" options="newDivision.userLogin.challengeQuestions1" options-expression="question as (question.question | cuiI18n) for question in options" model="newDivision.userLogin.question1"></inline-edit>
+    <!-- Challenge Answer 1 -->
+    <inline-edit label="cui-challenge-answer" model="newDivision.userLogin.challengeAnswer1"></inline-edit>
+    <!-- Challenge Question 2 -->
+    <inline-edit type="dropdown" display="newDivision.userLogin.question2.question[0].text" label="cui-challenge-question" options="newDivision.userLogin.challengeQuestions2" options-expression="question as question.question[0].text for question in options" model="newDivision.userLogin.question2"></inline-edit>
+    <!-- Challenge Answer 2 -->
+    <inline-edit label="cui-challenge-answer" model="newDivision.userLogin.challengeAnswer2"></inline-edit>
+  </cui-expandable-body>
+</cui-expandable>
+
+<div class="cui-wizard__controls">
+	<button class="cui-wizard__previous" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__next" ng-click="">{{'cui-submit' | translate}}</button>
+</div>

@@ -1,0 +1,104 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-organization">
+  <!-- Page Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+    </span>
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+        <!-- Invitation Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
+          <p>{{'user' | translate}}</p>
+          <p>{{'cui-org' | translate}}</p>
+          <p>{{'top-level-orgs' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Sub-header -->
+  <div class="cui-action">
+    <span class="cui-action__title">{{orgDirectory.organization.name}}</span>
+    <div class="cui-action__actions">
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="orgDirectory.sortClicked=!orgDirectory.sortClicked" id="sort-button" off-click="orgDirectory.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
+          <p ng-click="orgDirectory.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
+          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>
+        </div>
+      </div>
+      <!-- Refine -->
+      <div class="cui-action__action-container" ng-click="orgDirectory.refineClicked=!orgDirectory.refineClicked" id="refine-button" off-click="orgDirectory.refineClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span>
+        <!-- Refine Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
+          <p ng-click="orgDirectory.parseUsersByStatus('all')">{{'all' | translate}} ({{orgDirectory.statusCount[0]}})</p>
+          <div ng-repeat="status in orgDirectory.statusList" ng-if="myApplications.statusCount[$index+1]!==0">
+            <p ng-click="orgDirectory.parseUsersByStatus(status)">{{status | translate}} ({{orgDirectory.statusCount[$index+1]}})</p>
+          </div>
+        </div>
+      </div>
+      <!-- Organizations -->
+      <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
+        <!-- Organizations Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
+          <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
+            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization.id, organization.name)">{{organization.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="cui-organization__main-container">
+    <!-- User List Loading -->
+    <div class="cui-loading__container" ng-if="orgDirectory.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <table class="cui-table cui-table--borderless">
+      <thead>
+        <tr>
+          <th>{{'cui-name' | translate}}</th>
+          <th></th>
+          <th>{{'userID' | translate}}</th>
+          <th>{{'cui-registered' | translate}}</th>
+          <th>{{'status' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({id:user.id})">
+          <th><div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div></th>
+          <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
+          <th>{{user.username}}</th>
+          <th>{{user.creation | date:base.appConfig.dateFormat}}</th>
+          <th>{{user.status | translate}}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
