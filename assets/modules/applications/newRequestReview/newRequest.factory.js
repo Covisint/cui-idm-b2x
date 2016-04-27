@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .factory('AppRequests',['$filter',function($filter){
     var appRequestsObject={},
         appRequests={};

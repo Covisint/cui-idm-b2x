@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
 function(API,$scope,$stateParams,$state,$filter,AppRequests) {
     'use strict';

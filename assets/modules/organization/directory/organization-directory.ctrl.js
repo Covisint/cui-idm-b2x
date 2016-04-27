@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('organization')
 .controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort',
 function($scope,$stateParams,API,$filter,Sort) {
     'use strict';

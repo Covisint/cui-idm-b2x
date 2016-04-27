@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .controller('newAppRequestCtrl',['API','$scope','$state','AppRequests',
 function(API,$scope,$state,AppRequests) {
     'use strict';

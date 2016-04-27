@@ -1,4 +1,4 @@
-angular.module('application')
+angular.module('applications')
 .config(['$stateProvider', function($stateProvider) {
 
 	const templateBase = 'assets/modules/applications/';

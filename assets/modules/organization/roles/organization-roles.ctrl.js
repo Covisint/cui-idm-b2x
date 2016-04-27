@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('organization')
 .controller('orgRolesCtrl', ['$scope',
 function($scope) {
     'use strict';

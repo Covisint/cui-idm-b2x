@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout','$state',function($scope,API,AppRequests,$timeout,$state){;
 
     var applicationReview=this;

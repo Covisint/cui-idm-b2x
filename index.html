@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
   <meta charset="UTF-8">
   <title>CUI IDM B2X</title>
@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
 <body ng-cloak ng-controller="baseCtrl as base">
+  {{base}}
   <div class="cui-wrapper v2">
     <snap-drawer>
 
@@ -81,7 +82,8 @@
       </span> -->
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
-       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
+       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}">
+       <!-- ng-if="base.menu.desktop.enabled" -->
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
           <span class="cui-desktop-menu__option-name">{{'welcome' | translate}}</span>
@@ -204,7 +206,14 @@
 <!-- endbuild -->
 
 <!-- build:js assets/js/app.js -->
-<script src="assets/concatJS/app.js"></script>
+<script src="assets/concat/app.js"></script>
+<!-- <script src="assets/concat/js/common.js"></script>
+<script src="assets/concat/js/applications.js"></script>
+<script src="assets/concat/js/misc.js"></script>
+<script src="assets/concat/js/organization.js"></script>
+<script src="assets/concat/js/registration.js"></script>
+<script src="assets/concat/js/user.js"></script>
+<script src="assets/concat/js/app.js"></script> -->
 <!-- endbuild -->
 
 <script>svg4everybody();</script>

@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('organization')
 .controller('userDetailsCtrl', ['$scope','$stateParams','API','Timezones','UserService',
 function($scope,$stateParams,API,Timezones,UserService) {
     'use strict';

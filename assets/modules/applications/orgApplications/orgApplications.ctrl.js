@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .controller('orgApplicationsCtrl', ['$scope','API','Sort','$stateParams',
 function($scope,API,Sort,$stateParams) {
     'use strict';

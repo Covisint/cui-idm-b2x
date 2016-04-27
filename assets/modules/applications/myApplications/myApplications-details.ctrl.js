@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('applications')
 .controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
 function(API,$scope,$stateParams,$state) {
     var myApplicationDetails = this;

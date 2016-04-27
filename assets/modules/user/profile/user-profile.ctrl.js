@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('user')
 .controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserService',
 function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     'use strict';

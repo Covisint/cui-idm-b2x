@@ -1,4 +1,4 @@
-angular.module('app')
+angular.module('organization')
 .controller('orgProfileCtrl', ['$scope','$stateParams','API',
 function($scope,$stateParams,API) {
     'use strict';

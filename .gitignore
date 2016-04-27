@@ -5,6 +5,7 @@ target
 assets/angular-modules/templateCache.js
 assets/angular-modules/processedHtml/
 assets/concatJS/
+assets/concat/
 assets/css/
 build
 build-sdk

@@ -1,5 +1,4 @@
 
-            angular.bootstrap(document, ['app']);
-        });
-    });
-})(angular);
+angular.bootstrap(document, ['app']);
+});
+

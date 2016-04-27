@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         tasks: ['sass','autoprefixer']
       },
       scripts:{
-        files: ['assets/app/**/*.js','assets/angular-modules/**/*.js'],
+        files: ['assets/app/**/*.js','assets/angular-modules/**/*.js','assets/modules/**/*.js'],
         tasks: ['concat'],
         options: {
           spawn: false,
@@ -35,6 +35,24 @@ module.exports = function(grunt) {
     },
 
     browserSync: {
+      devMod: {
+        bsFiles: {
+            src : [
+                '**/*.html',
+                'assets/concat/**/*.js',
+                '**/*.css'
+            ]
+        },
+        options: {
+          ghostMode: false,
+          watchTask: true,
+          online: true,
+          port: 9001,
+          server:{
+            baseDir: './'
+          }
+        }
+      },
       dev: {
         bsFiles: {
             src : [
@@ -100,7 +118,7 @@ module.exports = function(grunt) {
       dev: {
         src: [ 'assets/_ajax.cache.js', 'assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
         dest: 'assets/concatJS/app.js'
-      }
+      },
     },
 
     clean: {
@@ -275,41 +293,97 @@ module.exports = function(grunt) {
         files: {
           'assets/concatJS/app.js': 'assets/concatJS/app.js'
         }
+      },
+      babelMod: {
+        files: {
+          'assets/concat/app.js': 'assets/concat/app.js' 
+        }
       }
     }
   });
 
-  // Workaround for multiple useminPrepare tasks
   grunt.registerTask('useminPreparesdk', function() {
+    // Workaround for multiple useminPrepare tasks
     var useminPreparesdkConfig = grunt.config('useminPreparesdk');
     grunt.config.set('useminPrepare', useminPreparesdkConfig);
     grunt.task.run('useminPrepare');
   });
 
-  // Workaround for multiple usemin tasks
   grunt.registerTask('useminsdk', function() {
+    // Workaround for multiple usemin tasks
     var useminsdkConfig = grunt.config('useminsdk');
     grunt.config.set('usemin', useminsdkConfig);
     grunt.task.run('usemin');
   });
 
+  
+  grunt.registerTask('concatModules', 'Task to concat all project modules.', function() {
+    var angularModules=[], sourceArray=[];
+
+    // Get all angular-modules directories and push them into angularModules array
+    grunt.file.expand('assets/angular-modules/*').forEach(function(dir) {
+      if (dir.indexOf('.') === -1) {
+        if (dir.substr(dir.lastIndexOf('/')+1) !== 'jsWrapper') {
+          // Check for periods to make sure we only look at directories
+          angularModules.push(dir.substr(dir.lastIndexOf('/')+1));  
+        }
+      }
+    });
+
+    // Get concat object from initConfig
+    var concat = grunt.config.get('concat') || {};
+
+    // Create  array of all module sources
+    angularModules.forEach(function(module) {
+      if (module !== 'jsWrapper') {
+        if (module !== 'app') {
+          sourceArray = ['assets/angular-modules/' + module + '/' + module + '.intro.js','assets/modules/' + module + '/**/*.js',
+                        'assets/angular-modules/' + module + '/' + module + '.outro.js'].concat(sourceArray);
+        }
+        else {
+          sourceArray = sourceArray.concat(['assets/angular-modules/' + module + '/' + module + '.intro.js',
+              'assets/modules/' + module + '/**/*.js','assets/angular-modules/' + module + '/' + module + '.outro.js']);
+        }
+      }
+    });
+
+    // Task: concat modules into one files
+    concat['modules'] = {
+      src: sourceArray,
+      dest: 'assets/concat/js/modules.js'
+    };
+
+    // Task: wrap modules with jsWrapper module
+    concat['wrapModules'] = {
+      src: ['assets/angular-modules/jsWrapper/jsWrapper.intro.js','assets/concat/js/modules.js','assets/angular-modules/jsWrapper/jsWrapper.outro.js'],
+      dest: 'assets/concat/app.js'
+    };
+
+    // Add new subtasks to concat in initConfig
+    grunt.config.set('concat', concat);
+
+    // Run creates tasks
+    grunt.task.run('concat:modules');
+    grunt.task.run('concat:wrapModules');
+  });
+
   // Default task for development
-  grunt.registerTask('default', ['copy:dev','concat:dev','babel','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('default', ['copy:dev','concatModules','babel:babelMod','sass','autoprefixer','browserSync:devMod','watch']);
 
   // Clean build
-  grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
-                                'concat:build','babel','useminPrepare','concat:generated','cssmin:generated',
-                                'uglify:generated','filerev:build','usemin','clean:processhtml']);
+  // grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
+  //                               'concat:build','babel','useminPrepare','concat:generated','cssmin:generated',
+  //                               'uglify:generated','filerev:build','usemin','clean:processhtml']);
 
   // Build with comments referencing documentation and code
-  grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
-                                  'concat:build','babel','useminPreparesdk','concat:generated','cssmin:generated',
-                                  'uglify:generated','filerev:buildsdk','useminsdk']);
+  // grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
+  //                                 'concat:build','babel','useminPreparesdk','concat:generated','cssmin:generated',
+  //                                 'uglify:generated','filerev:buildsdk','useminsdk']);
 
   // Run project from demo/demosdk folders
-  grunt.registerTask('demo', ['browserSync:demo']);
-  grunt.registerTask('demosdk', ['browserSync:demosdk']);
+  // grunt.registerTask('demo', ['browserSync:demo']);
+  // grunt.registerTask('demosdk', ['browserSync:demosdk']);
 
-  grunt.registerTask('jslint', ['jshint']);
+  // grunt.registerTask('jslint', ['jshint']);
 
 };
