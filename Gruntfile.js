@@ -232,7 +232,7 @@ module.exports = function(grunt) {
       },
       buildsdk: {
         src: ['assets/modules/**/*.html','assets/common-templates/**/*.html'],
-        dest: 'assets/angular-modules/templateCache.js',
+        dest: 'assets/app/templateCache.js',
         options: {
           htmlmin: {
             collapseBooleanAttributes: true,

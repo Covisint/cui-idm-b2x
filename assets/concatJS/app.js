@@ -309,68 +309,6 @@ angular.module('app')
 angular.module('app').run(['$templateCache', function($templateCache) {
   'use strict';
 
-  $templateCache.put('assets/common-templates/messages.html',
-    "<div class=cui-error__message ng-message=required>{{'cui-this-field-is-required' | translate}}</div>\n" +
-    "<div class=cui-error__message ng-message=minlength>{{'cui-this-field-needs-to-be-longer' | translate}}</div>\n" +
-    "<div class=cui-error__message ng-message=tosRequired>{{'cui-you-need-to-agree-to-toc' | translate}}</div>\n" +
-    "<div class=cui-error__message ng-message=email>{{'cui-this-is-not-valid-email' | translate}}</div>"
-  );
-
-
-  $templateCache.put('assets/common-templates/password-validation.html',
-    "<p>{{'passwords-must' | translate}}</p>\n" +
-    "\n" +
-    "<div class=cui-error__message ng-message=lowercaseNotAllowed>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.lowercaseNotAllowed}\"></div>\n" +
-    "    {{'lowercase-not-allowed' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-message=uppercaseNotAllowed>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.uppercaseNotAllowed}\"></div>\n" +
-    "    {{'uppercase-not-allowed' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-message=numberNotAllowed>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.numberNotAllowed}\"></div>\n" +
-    "    {{'numbers-not-allowed' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-message=specialNotAllowed>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass':!errors.specialNotAllowed}\"></div>\n" +
-    "    {{'special-not-allowed' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-message=disallowedWords>\n" +
-    "    <div class=cui-error__status></div> \n" +
-    "    {{'words-not-allowed' | translate:errors}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-message=disallowedChars>\n" +
-    "    <div class=cui-error__status></div>\n" +
-    "    {{'chars-not-allowed' | translate:errors}}\n" +
-    "</div>\n" +
-    "\n" +
-    "<div class=cui-error__message>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.length}\"></div>\n" +
-    "        {{'password-length' | translate:policies}}<br><br>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div class=cui-error__message ng-if=\"policies.requiredNumberOfCharClasses>1\">{{'password-rules' | translate:policies}}<br></div>\n" +
-    "\n" +
-    "<div class=cui-error__message ng-if=policies.allowLowerChars>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.lowercase}\"></div>\n" +
-    "    {{'password-lowercase' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-if=policies.allowUpperChars>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.uppercase}\"></div>\n" +
-    "    {{'password-uppercase' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-if=policies.allowNumChars>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.number}\"></div>\n" +
-    "    {{'password-number' | translate}}\n" +
-    "</div>\n" +
-    "<div class=cui-error__message ng-if=policies.allowSpecialChars>\n" +
-    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.special}\"></div>\n" +
-    "    {{'password-special' | translate}}\n" +
-    "</div>"
-  );
-
-
   $templateCache.put('assets/modules/applications/applications.html',
     "<div ui-view class=cui-applications></div>"
   );
@@ -378,6 +316,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('assets/modules/applications/myApplications/myApplications-details.html',
     "<div>\n" +
+    "  \n" +
+    "  <div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/my-applications target=blank>here</a></div>\n" +
+    "  \n" +
+    "\n" +
     "  \n" +
     "  <div class=cui-action>\n" +
     "    <span class=cui-action__title ui-sref=applications.myApplications>{{'my-applications' | translate}}</span>\n" +
@@ -525,6 +467,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/applications/myApplications/myApplications.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/my-applications target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-action>\n" +
     "  <span class=cui-action__title>\n" +
     "    <a ui-sref=applications.orgApplications class=\"cui-link--medium-light cui-link--no-decoration\">{{'organization-applications' | translate}}</a> | \n" +
@@ -605,6 +551,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/applications/newRequestReview/newRequest.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/new-request%26review target=blank>here</a> and the layout styles <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-applications__new-request>\n" +
     "    <div class=cui-action>\n" +
     "        <div class=cui-action__title>{{'new-request' | translate}}</div>\n" +
@@ -749,6 +699,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('assets/modules/applications/orgApplications/orgApplications.html',
     "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/org-applications target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-action>\n" +
     "  <span class=cui-action__title>\n" +
     "    <a ui-sref=applications.orgApplications class=\"cui-link--medium-light cui-link--no-decoration\">{{'organization-applications' | translate}}</a> | \n" +
@@ -809,12 +763,15 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "  </div>\n" +
     "\n" +
     "  <div ng-if=!orgApplications.loading>\n" +
-    "    <div class=\"cui-media cui-media--border\" ng-repeat=\"application in orgApplications.appList track by application.id\" ng-click=orgApplications.goToDetails(application)>\n" +
+    "    <div class=\"cui-media cui-media--border cui-media--tr\" ng-repeat=\"application in orgApplications.appList track by application.id\" ng-click=orgApplications.goToDetails(application)>\n" +
     "      <div class=cui-media__image-container>\n" +
     "        <a ng-href={{application.mangledUrl}} target=_blank><div class=cui-media__image cui-avatar-color-class-prefix=cui-avatar__color cui-avatar-color-count=5 cui-avatar-names=application.name cui-avatar-cuii18n-filter cui-avatar=application.iconUrl></div></a>\n" +
     "      </div>\n" +
     "      <div class=\"cui-media__body cui-media__body--full\">\n" +
-    "        <h3 class=cui-media__title ng-bind=\"application.name | cuiI18n\"></h3>\n" +
+    "        <div class=cui-media__title-container>\n" +
+    "          <a class=cui-media__app-launch ng-class=\"'cui-media__app-launch--'+application.status\" href={{application.urls[0].value}} title=\"launch application\" aria-labelledby=\"launch application\" target=_blank><cui-icon cui-svg-icon=cui:launch svg-class=cui-media__app-launch-icon viewbox=\"0 0 35 48\" preserveaspectratio=\"xMidYMid meet\"></cui-icon></a>\n" +
+    "          <h3 class=cui-media__title ng-bind=\"application.name | cuiI18n\"></h3>\n" +
+    "        </div>\n" +
     "        <span class=cui-media__content ng-if=application.category> {{application.category | cuiI18n}}</span>\n" +
     "        <span class=cui-status ng-class=\"'cui-status--'+application.status\" ng-bind=\"application.status | lowercase\"></span>\n" +
     "      </div>\n" +
@@ -825,6 +782,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/applications/search/applicationSearch.html',
+    "<!-- processHTML:remove -->\n" +
+    "<div class=\"code-info\">Markup for this page can be found <a class=\"cui-link\" href=\"https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/search\" target=\"blank\">here</a> and the layout styles <a href=\"https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss\" class=\"cui-link\" target=\"blank\">here</a></div>\n" +
+    "<!-- /processHTML -->\n" +
     "\n" +
     "<div class=\"cui-applications__search\">\n" +
     "    <div class=\"cui-action\">\n" +
@@ -1083,6 +1043,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/organization/directory/organization-directory.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory target=blank>here</a>.</div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-organization>\n" +
     "  \n" +
     "  <div class=cui-action>\n" +
@@ -1186,6 +1150,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/organization/directory/user-details/directory-userDetails.html',
+    "\n" +
+    "<div class=code-info>**UPDATE THIS REMINDER*** Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory target=blank>here</a> and the layout styles <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-organization>\n" +
     "  \n" +
     "  <div class=cui-loading__container ng-if=orgDirectory.loading>\n" +
@@ -1392,6 +1360,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/organization/hierarchy/organization-hierarchy.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/hierarchy target=blank>here</a> and the layout styles <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-organization>\n" +
     "  \n" +
     "  <div class=cui-loading__container ng-if=orgHierarchy.loading>\n" +
@@ -1442,6 +1414,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/organization/profile/organization-profile.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/profile target=blank>here</a> and the layout styles <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-organization>\n" +
     "  \n" +
     "  <div class=cui-action>\n" +
@@ -1524,6 +1500,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/organization/roles/organization-roles.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/roles target=blank>here</a>.</div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-organization>\n" +
     "  \n" +
     "  <div class=cui-action>\n" +
@@ -1867,6 +1847,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/registration/newDivision/newDivision.html',
+    "\n" +
+    "<div class=code-info>Markup for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/angular-templates/registration/newDivision/division.registration target=blank>here</a> and the javascript <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/js/app/registration/newDivision class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-form--mobile-steps>\n" +
     "  <div class=cui-form__title>{{'create-account' | translate}}</div>\n" +
     "  <div class=cui-form__body>\n" +
@@ -2293,6 +2277,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/registration/newTopLevelOrg/newTLO.html',
+    "\n" +
+    "<div class=code-info>Markup for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration target=blank>here</a> and the javascript <a href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/js/app/registration/newTopLevelOrg class=cui-link target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-form--mobile-steps>\n" +
     "  <div class=cui-form__title>{{'create-account' | translate}}</div>\n" +
     "  <div class=cui-form__body>\n" +
@@ -2713,6 +2701,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/registration/userInvited/userInvited.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/registration/userInvited target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-form--mobile-steps>\n" +
     "  <div class=cui-form__title>{{'create-account' | translate}}</div>\n" +
     "  <div class=cui-form__body>\n" +
@@ -3187,6 +3179,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('assets/modules/registration/userWalkup/userWalkup.html',
+    "\n" +
+    "<div class=code-info>Code for this page can be found <a class=cui-link href=https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/modules/registration/userWalkup target=blank>here</a></div>\n" +
+    "\n" +
+    "\n" +
     "<div class=cui-form--mobile-steps>\n" +
     "  <div class=cui-form__title>{{'create-account' | translate}}</div>\n" +
     "  <div class=cui-form__body>\n" +
@@ -3613,6 +3609,68 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('assets/modules/user/user.html',
     "<div ui-view></div>"
+  );
+
+
+  $templateCache.put('assets/common-templates/messages.html',
+    "<div class=cui-error__message ng-message=required>{{'cui-this-field-is-required' | translate}}</div>\n" +
+    "<div class=cui-error__message ng-message=minlength>{{'cui-this-field-needs-to-be-longer' | translate}}</div>\n" +
+    "<div class=cui-error__message ng-message=tosRequired>{{'cui-you-need-to-agree-to-toc' | translate}}</div>\n" +
+    "<div class=cui-error__message ng-message=email>{{'cui-this-is-not-valid-email' | translate}}</div>"
+  );
+
+
+  $templateCache.put('assets/common-templates/password-validation.html',
+    "<p>{{'passwords-must' | translate}}</p>\n" +
+    "\n" +
+    "<div class=cui-error__message ng-message=lowercaseNotAllowed>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.lowercaseNotAllowed}\"></div>\n" +
+    "    {{'lowercase-not-allowed' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-message=uppercaseNotAllowed>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.uppercaseNotAllowed}\"></div>\n" +
+    "    {{'uppercase-not-allowed' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-message=numberNotAllowed>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.numberNotAllowed}\"></div>\n" +
+    "    {{'numbers-not-allowed' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-message=specialNotAllowed>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass':!errors.specialNotAllowed}\"></div>\n" +
+    "    {{'special-not-allowed' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-message=disallowedWords>\n" +
+    "    <div class=cui-error__status></div> \n" +
+    "    {{'words-not-allowed' | translate:errors}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-message=disallowedChars>\n" +
+    "    <div class=cui-error__status></div>\n" +
+    "    {{'chars-not-allowed' | translate:errors}}\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=cui-error__message>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.length}\"></div>\n" +
+    "        {{'password-length' | translate:policies}}<br><br>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=cui-error__message ng-if=\"policies.requiredNumberOfCharClasses>1\">{{'password-rules' | translate:policies}}<br></div>\n" +
+    "\n" +
+    "<div class=cui-error__message ng-if=policies.allowLowerChars>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.lowercase}\"></div>\n" +
+    "    {{'password-lowercase' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-if=policies.allowUpperChars>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.uppercase}\"></div>\n" +
+    "    {{'password-uppercase' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-if=policies.allowNumChars>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.number}\"></div>\n" +
+    "    {{'password-number' | translate}}\n" +
+    "</div>\n" +
+    "<div class=cui-error__message ng-if=policies.allowSpecialChars>\n" +
+    "    <div class=cui-error__status ng-class=\"{'cui-error__status--pass': !errors.special}\"></div>\n" +
+    "    {{'password-special' | translate}}\n" +
+    "</div>"
   );
 
 }]);
