@@ -16,7 +16,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
     $stateProvider
     .state('empty', {
         url: '/empty',
-        templateUrl: templateBase + 'empty/empty.html',
+        templateUrl: templateBase + 'common/empty/empty.html',
         controller: returnCtrlAs('empty')
     });
 

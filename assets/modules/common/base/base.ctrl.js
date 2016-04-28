@@ -1,8 +1,8 @@
 angular
 .module('common')
-.controller('baseCtrl', ['Base', function(Base) {
+.controller('baseCtrl', ['Base','$scope', function(Base,$scope) {
 
-	var base = this;
-	base.base = Base;
+	$scope.base = this;
+	$scope.base = Base;
 
 }]);

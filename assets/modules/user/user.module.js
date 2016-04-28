@@ -14,7 +14,7 @@ angular.module('user')
         })
         .state('user.profile', {
             url: '/profile',
-            templateUrl: templateBase + 'profile/user.profile.html',
+            templateUrl: templateBase + 'profile/user-profile.html',
             controller: returnCtrlAs('userProfile')
         });
 
