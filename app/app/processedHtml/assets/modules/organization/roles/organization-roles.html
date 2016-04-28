@@ -1,0 +1,23 @@
+
+<div class="cui-organization">
+  <!-- Page Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+    </span>
+  </div>
+
+  <!-- Roles Content -->
+  <div class="cui-organization__main-container">
+    <!-- Roles Loading -->
+    <div class="cui-loading__container" ng-if="orgRoles.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <p>Organization Roles Page</p>
+
+  </div>
+</div>

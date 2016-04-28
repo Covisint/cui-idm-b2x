@@ -1,0 +1,109 @@
+
+<div class="cui-organization">
+  <!-- Page Loading -->
+  <div class="cui-loading__container" ng-if="orgDirectory.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <!-- Menu Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a>
+    </span>
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Name Header -->
+    <div class="cui-media [modifier class]">
+        <div class="cui-media__image-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+                <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+            </svg>
+        </div>
+        <div class="cui-profile">
+            <!-- User full name -->
+            <span class="cui-profile__user-name">{{'cui-name' | translate}}: {{userProfile.user.name.given}} {{userProfile.user.name.surname}}</span>
+            <!-- UserID -->
+            <p class="cui-media__content--small">{{'cui-registered' | translate}}: {{userProfile.user.creation | date:base.appConfig.dateFormat}}</p>
+            <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.id}}</p>
+
+            <span>
+                <button class="cui-button">Suspend</button>
+                <button class="cui-button">Password Reset</button>
+                <button class="cui-button">New Grants</button>
+		    </span>
+        </div>
+    </div>
+
+  <!-- Action Header -->
+  <div class="cui-action">
+    <div class="cui-action__actions">
+      <!-- Profile -->
+      <div class="cui-action__action-container" ng-click="userDetails.profileRolesSwitch=true" id="profile-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile"></use>
+        </svg>
+        <span class="cui-action__action-label">Profile</span>
+      </div>
+      <!-- Roles -->
+      <div class="cui-action__action-container" ng-click="userDetails.profileRolesSwitch=false" id="roles-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#help"></use>
+        </svg>
+        <span class="cui-action__action-label">Roles</span>
+      </div>
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="" id="sort-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">Sort</span>
+        <!-- Sort Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="">
+          <p ng-click="">{{'cui-alphabetically' | translate}}</p>
+          <p ng-click="">{{'cui-by-date-added' | translate}}</p>
+        </div>
+      </div>
+      <!-- Organizations -->
+      <div class="cui-action__action-container" ng-click="" id="categories-button" off-click="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#categories"></use>
+        </svg>
+        <span class="cui-action__action-label">Categories</span>
+        <!-- Organizations Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="">
+          <p ng-click="">TODO!</p>
+          <div ng-repeat="">
+            <p ng-click="">TODO!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Profile Content -->
+  <div class="cui-organization__main-container">
+    
+		<div class="cui-users__info-block" ng-if="userDetails.profileRolesSwitch">
+    	<!-- Profile -->
+     	<div ng-include="'assets/app/organization/directory/user-details/sections/userDetails.profile.html'"></div>
+    </div>
+
+    <div class="cui-users__info-block" ng-if="!userDetails.profileRolesSwitch">
+    	<!-- Roles -->
+     	<div ng-include="'assets/app/organization/directory/user-details/sections/userDetails.roles.html'"></div>
+    </div>
+
+  </div>
+</div>
