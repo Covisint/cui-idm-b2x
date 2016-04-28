@@ -1,2 +1,1 @@
-
-    angular.module('misc',[]);
+angular.module('misc',[]);

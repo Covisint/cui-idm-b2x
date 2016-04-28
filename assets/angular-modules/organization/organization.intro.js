@@ -1,2 +1,1 @@
-
-    angular.module('organization',[]);
+angular.module('organization',[]);

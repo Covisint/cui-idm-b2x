@@ -1,2 +1,1 @@
-
-    angular.module('registration',[]);
+angular.module('registration',[]);

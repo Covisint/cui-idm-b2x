@@ -1,2 +1,1 @@
-
-    angular.module('applications',[]);
+angular.module('applications',[]);

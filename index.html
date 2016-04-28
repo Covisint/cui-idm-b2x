@@ -11,16 +11,15 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
 <body ng-cloak ng-controller="baseCtrl as base">
-  {{base}}
   <div class="cui-wrapper v2">
     <snap-drawer>
 
-      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
+      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.base.userName.given">
         <div class="cui-profile__row">
-          <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
+          <span class="cui-profile__user-name">{{base.base.userName.given}} {{base.base.userName.surname}}</span>
           <!-- Avatar Mobile -->
           <div class="cui-media__image-container">
-            <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+            <div class="cui-media__image" cui-avatar cui-avatar-names="[base.base.userName.given, base.base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
           </div>
           <svg class="cui-profile__chevron" viewBox="0 0 216 146">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
@@ -34,7 +33,7 @@
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
               </svg>
             </div>
-            <div class="cui-profile__menu-item" ng-click="base.logout()">
+            <div class="cui-profile__menu-item" ng-click="base.base.logout()">
               <a href="" class="cui-profile__link">{{'log-out' | translate}}</a>
               <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
@@ -82,7 +81,7 @@
       </span> -->
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
-       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}">
+       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.base.menu.desktop.state==='closed'}">
        <!-- ng-if="base.menu.desktop.enabled" -->
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
@@ -132,21 +131,21 @@
         <!-- <span class="desktop-menu--option"  ui-sref="profile.user">My Profile</span> -->
 
       </div>
-      <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed' || !base.menu.desktop.enabled}">
-        <div class="cui-menu__toggle-button--desktop cui-menu__toggle-button-container active" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
+      <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.base.menu.desktop.state==='closed' || !base.base.menu.desktop.enabled}">
+        <div class="cui-menu__toggle-button--desktop cui-menu__toggle-button-container active" ng-click="base.base.menu.desktop.toggle()" ng-class="{'active' : base.base.menu.desktop.state==='open'}" ng-if="base.base.menu.desktop.enabled" style="margin-right:20px">
           <div class="cui-menu__toggle-button"></div>
         </div>
         <header class="cui-header">
           <div class="cui-header__top">
-            <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
+            <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.base.menu.mobile.toggle()"  ng-if="base.base.menu.mobile.enabled" style="margin-right:20px">
               <div class="menu-toggle--button"></div>
             </div>
             <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
-            <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
-                <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
+            <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.base.userName.given">
+                <span class="cui-profile__user-name">{{base.base.userName.given}} {{base.base.userName.surname}}</span>
                 <!-- Avatar Desktop -->
                 <div class="cui-media__image-container">
-                  <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+                  <div class="cui-media__image" cui-avatar cui-avatar-names="[base.base.userName.given, base.base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 </div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="user.profile">
@@ -155,7 +154,7 @@
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
                     </svg>
                   </div>
-                  <div class="cui-profile__menu-item" ng-click="base.logout()">
+                  <div class="cui-profile__menu-item" ng-click="base.base.logout()">
                     <a href="" class="cui-profile__link">{{'log-out' | translate}}</a>
                     <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
@@ -207,13 +206,6 @@
 
 <!-- build:js assets/js/app.js -->
 <script src="assets/concat/app.js"></script>
-<!-- <script src="assets/concat/js/common.js"></script>
-<script src="assets/concat/js/applications.js"></script>
-<script src="assets/concat/js/misc.js"></script>
-<script src="assets/concat/js/organization.js"></script>
-<script src="assets/concat/js/registration.js"></script>
-<script src="assets/concat/js/user.js"></script>
-<script src="assets/concat/js/app.js"></script> -->
 <!-- endbuild -->
 
 <script>svg4everybody();</script>

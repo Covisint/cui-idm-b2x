@@ -367,23 +367,19 @@ module.exports = function(grunt) {
     grunt.task.run('concat:wrapModules');
   });
 
-  // Default task for development
+  // Tasks ------------------------------------------------------------
   grunt.registerTask('default', ['copy:dev','concatModules','babel:babelMod','sass','autoprefixer','browserSync:devMod','watch']);
 
-  // Clean build
   // grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
   //                               'concat:build','babel','useminPrepare','concat:generated','cssmin:generated',
   //                               'uglify:generated','filerev:build','usemin','clean:processhtml']);
 
-  // Build with comments referencing documentation and code
   // grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
   //                                 'concat:build','babel','useminPreparesdk','concat:generated','cssmin:generated',
   //                                 'uglify:generated','filerev:buildsdk','useminsdk']);
-
-  // Run project from demo/demosdk folders
+  
   // grunt.registerTask('demo', ['browserSync:demo']);
   // grunt.registerTask('demosdk', ['browserSync:demosdk']);
-
   // grunt.registerTask('jslint', ['jshint']);
 
 };

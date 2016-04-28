@@ -1,4 +1,2 @@
-
 angular.bootstrap(document, ['app']);
 });
-
