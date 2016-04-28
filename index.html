@@ -49,7 +49,7 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#four29"></use>
         </svg>
       </span>
-      <span class="snap-menu--option" snap-close ui-sref="applications">
+      <span class="snap-menu--option" snap-close ui-sref="applications.myApplications">
         <span class="snap-menu__option-name">{{'cui-applications' | translate}}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 49 49">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
@@ -140,7 +140,15 @@
             <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
               <div class="menu-toggle--button"></div>
             </div>
+            
+            <!-- Uncomment below to reveal header -->
             <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
+
+            <!-- Uncomment below to reveal global search icon -->
+            <!-- <div class="cui-header__search-container" ng-model="searchEnabled" ng-click="searchEnabled = !searchEnabled">
+              <cui-icon cui-svg-icon="cui:search" svg-class="cui-header__search-icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+            </div> -->
+
             <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
                 <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
                 <!-- Avatar Desktop -->
@@ -167,6 +175,11 @@
               </div>
           </div>
         </header>
+        <!-- Uncomment below to reveal global search -->
+        <!-- <div class="cui-input-button cui-input-button--global-search" ng-class="{'show': searchEnabled}">
+          <input type="text" placeholder="Search for applications in your org" class="cui-input-button__input"/>
+          <button class="cui-input-button__button">{{'go' | translate}}</button>
+        </div> -->
         <div ui-view ng-cloak></div>
         <div class="cui-footer">
           <div class="cui-footer__col"><a href="" class="cui-footer__link">Covisint</a></div>
