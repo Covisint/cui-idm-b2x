@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       scripts:{
         files: ['assets/**/*.js'],
-        tasks: ['concat'],
+        tasks: ['concatModules'],
         options: {
           spawn: false,
         },
