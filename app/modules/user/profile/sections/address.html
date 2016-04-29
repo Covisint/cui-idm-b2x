@@ -43,7 +43,7 @@
         <div class="cui-wizard__field-container">
           <label for="country">{{"cui-country" | translate}}</label>
           <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-            <div ng-messages-include="assets/angular-templates/messages.html"></div>
+            <div ng-messages-include="app/angular-templates/messages.html"></div>
           </div>
           <div auto-complete input-name="country" pause="100" selected-object="userProfile.userCountry" initial-value="base.countries.getCountryByCode(userProfile.tempUser.addresses[0].country)" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
         </div>

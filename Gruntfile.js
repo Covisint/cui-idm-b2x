@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       scripts:{
         files: ['app/**/*.js'],
-        tasks: ['concatModules'],
+        tasks: ['concatModules','babel'],
         options: {
           spawn: false,
         },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     sass:{
       dist:{
         files:{
-          'app/concat/main.css': 'app/scss/main.scss'
+          'assets/concat/css/main.css': 'app/scss/main.scss'
         }
       }
     },
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'app/concat/main.css': 'app/concat/main.css'
+          'assets/concat/css/main.css': 'assets/concat/css/main.css'
         }
       }
     },
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         bsFiles: {
             src : [
                 '**/*.html',
-                'app/concat/**/*.js',
+                '**/*.js',
                 '**/*.css'
             ]
         },
@@ -110,8 +110,8 @@ module.exports = function(grunt) {
       buildsdk: {
         src: ['build-sdk']
       },
-      processhtml: {
-        src: ['app/app/processedHtml']
+      temp: {
+        src: ['assets/processedHtml','.tmp','assets/concat/js/app.js.map','assets/concat/js/modules.js','assets/concat/js/templateCache.js']
       }
     },
 
@@ -213,8 +213,8 @@ module.exports = function(grunt) {
 
     ngtemplates: {
       build: {
-        src: 'app/app/processedHtml/app/**/*.html',
-        dest: 'app/app/templateCache.js',
+        src: 'assets/processedHtml/**/*.html',
+        dest: 'assets/concat/js/templateCache.js',
         options: {
           htmlmin: {
             collapseBooleanAttributes: true,
@@ -227,12 +227,12 @@ module.exports = function(grunt) {
             removeStyleLinkAttributes: true
           },
           module: 'app',
-          url: function(url) { return url.replace('app/app/processedHtml/', ''); }
+          url: function(url) { return url.replace('assets/processedHtml/', ''); }
         }
       },
       buildsdk: {
         src: ['app/modules/**/*.html','app/common-templates/**/*.html'],
-        dest: 'app/app/templateCache.js',
+        dest: 'assets/concat/js/templateCache.js',
         options: {
           htmlmin: {
             collapseBooleanAttributes: true,
@@ -258,7 +258,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: './',
           src: ['app/modules/**/**.html', 'app/common-templates/**/*.html'],
-          dest: 'app/app/processedHtml/',
+          dest: 'assets/processedHtml/',
           extDot: '.html'
         }]
       }
@@ -273,7 +273,7 @@ module.exports = function(grunt) {
       },
       babel: {
         files: {
-          'app/concat/app.js': 'app/concat/app.js'
+          'assets/concat/js/app.js': 'assets/concat/js/app.js'
         }
       }
     }
@@ -302,7 +302,6 @@ module.exports = function(grunt) {
       angularModules.push(dir.substr(dir.lastIndexOf('/')+1));
     });
 
-
     // Get concat object from initConfig
     var concat = grunt.config.get('concat') || {};
 
@@ -311,36 +310,38 @@ module.exports = function(grunt) {
       if (module !== 'jsWrapper') {
         if (module !== 'app') {
           var fileNames=[];
-          grunt.file.expand('app/modules/'+module+'/**/*.js').forEach(function(file) {
-            if(file.indexOf('.module')>-1) {
+          grunt.file.expand('app/modules/' + module + '/**/*.js').forEach(function(file) {
+            if(file.indexOf('.module') > -1) {
               fileNames = [file].concat(fileNames);
             }
-            else fileNames.push(file);
+            else {
+              fileNames.push(file);
+            }
           });
           sourceArray = fileNames.concat(sourceArray);
         }
         else {
-          sourceArray = sourceArray.concat(['app/angular-modules/' + module + '/' + module + '.intro.js', // concat 'app' module last
+          // Concat 'app' module last
+          sourceArray = sourceArray.concat(['app/wrappers/' + module + '/' + module + '.intro.js',
                                             'app/modules/' + module + '/**/*.js',
-                                            'app/app/templateCache.js',
-                                            'app/angular-modules/' + module + '/' + module + '.outro.js']);
+                                            'assets/concat/js/templateCache.js',
+                                            'app/wrappers/' + module + '/' + module + '.outro.js']);
         }
       }
     });
 
-
     // Task: concat modules into one file
     concat['modules'] = {
       src: sourceArray,
-      dest: 'app/concat/js/modules.js'
+      dest: 'assets/concat/js/modules.js'
     };
 
     // Task: wrap modules.js with jsWrapper module
     concat['wrapModules'] = {
-      src: ['app/angular-modules/jsWrapper/jsWrapper.intro.js',
-            'app/concat/js/modules.js',
-            'app/angular-modules/jsWrapper/jsWrapper.outro.js'],
-      dest: 'app/concat/app.js'
+      src: ['app/wrappers/jsWrapper/jsWrapper.intro.js',
+            'assets/concat/js/modules.js',
+            'app/wrappers/jsWrapper/jsWrapper.outro.js'],
+      dest: 'assets/concat/js/app.js'
     };
 
     // Add new subtasks to concat in initConfig
@@ -357,11 +358,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['sass','autoprefixer','processhtml','ngtemplates:build','clean:build','copy:build',
                                 'concatModules','babel','useminPrepare','concat:generated',
-                                'cssmin:generated','uglify:generated','filerev:build','usemin']);
+                                'cssmin:generated','uglify:generated','filerev:build','usemin','clean:temp']);
 
   grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
                                   'concatModules','babel','useminPreparesdk','concat:generated','cssmin:generated',
-                                  'uglify:generated','filerev:buildsdk','useminsdk']);
+                                  'uglify:generated','filerev:buildsdk','useminsdk','clean:temp']);
 
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('demosdk', ['browserSync:demosdk']);

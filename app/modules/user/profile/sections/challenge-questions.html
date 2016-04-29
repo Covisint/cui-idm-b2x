@@ -23,7 +23,7 @@
           <select class="cui-input cui-input--full cui-select" ng-model="question.question.id" ng-options="question.id as (question.question | cuiI18n) for question in userProfile['allChallengeQuestions' + $index]"></select>
           {{'cui-answer' | translate}}
           <div class="cui-error" ng-messages="challengeQuestions['answer' + $index].$error">
-            <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+            <div ng-messages-include="app/common-templates/messages.html"></div>
           </div>
           <input type="text" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userProfile.checkIfRepeatedSecurityAnswer(userProfile.tempUserSecurityQuestions,challengeQuestions)" ng-required="true"/>
           <br/><br/>

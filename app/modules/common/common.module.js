@@ -7,7 +7,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
 
-    const templateBase = 'assets/modules/';
+    const templateBase = 'app/modules/';
 
     const returnCtrlAs =  function(name, asPrefix) {
         return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);

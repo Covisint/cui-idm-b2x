@@ -4,7 +4,7 @@
 	<!-- User ID -->
 	<label for="userID">{{'cui-user-id' | translate}}</label>
 	<div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.userID.$touched">
-		<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+		<div ng-messages-include="app/common-templates/messages.html"></div>
 	</div>
 	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.username" ng-class="{'cui-input--error' : userLogin.userID.$touched &&  userLogin.userID.$touched}">
 
@@ -15,12 +15,12 @@
 			<div class="cui-input__password-holder">
 				<label>{{'cui-password' | translate}}</label>
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
-					<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+					<div ng-messages-include="app/common-templates/messages.html"></div>
 				</div>
-				<input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation ng-model-options="{allowInvalid:true}" ng-change="userWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(userWalkup.userLogin.password)">
+				<input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="userWalkup.passwordRules" ng-model-options="{allowInvalid:true}" ng-change="userWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(userWalkup.userLogin.password)">
 				<!-- Password Rules Popover -->
 				<div password-popover ng-messages="userLogin.password.$error" ng-messages-multiple class="cui-error__password">
-					<div ng-messages-include="assets/app/common-templates/password-validation.html"></div>
+					<div ng-messages-include="app/common-templates/password-validation.html"></div>
 				</div>
 			</div>
 		</div>
@@ -48,7 +48,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-answer' | translate}} 1</label>
 			<div class="cui-error" ng-messages="userLogin.answer1.$error" ng-if="userLogin.answer1.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer1">
 		</div>
@@ -60,7 +60,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-question' | translate}} 2</label>
 			<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<!-- <select ng-model="userWalkup.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as (question.question | cuiI18n) for question in userWalkup.userLogin.challengeQuestions2"> -->
 			</select>
@@ -72,7 +72,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-answer' | translate}} 2</label>
 			<div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer2">
 		</div>

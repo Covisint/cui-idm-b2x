@@ -1,5 +1,5 @@
 angular.module('user')
-.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserService',
+.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserProfile',
 function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     'use strict';
     var userProfile = this;

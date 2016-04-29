@@ -1,7 +1,7 @@
 angular.module('misc',[])
 .config(['$stateProvider', function($stateProvider) {
 
-	const templateBase = 'assets/modules/misc/';
+	const templateBase = 'app/modules/misc/';
 
     const returnCtrlAs = function(name, asPrefix) {
         return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);

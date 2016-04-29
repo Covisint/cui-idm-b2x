@@ -20,7 +20,7 @@
         <div ng-repeat="phone in userProfile.tempUser.phones">
           <label>{{phone.type}}</label>
           <div ng-messages="phoneFax['phone'+$index].$error" class="cui-error">
-            <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+            <div ng-messages-include="app/common-templates/messages.html"></div>
           </div>
           <input class="cui-input" type="text" ng-model="phone.number" name="phone{{$index}}" ng-required="true" />
         </div>
