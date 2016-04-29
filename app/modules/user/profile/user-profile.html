@@ -1,0 +1,60 @@
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/profile/user" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/users.scss" class="cui-link" target="blank">here</a></div>
+
+<ng-form name="edit" novalidate>
+  <div class="cui-users__edit">
+
+    <!-- Title -->
+    <div class="cui-action">
+      <div class="cui-action__title">
+        {{'cui-my-profile' | translate}}
+      </div>
+    </div>
+
+    <div class="cui-users__main-container">
+
+      <!-- Page Loading -->
+      <div class="cui-loading__container" ng-if="userProfile.loading">
+        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+      </div>
+
+      <div ng-include="'app/modules/user/profile/sections/header.html'"></div>
+
+      <div class="cui-users__profile">
+        <div class="cui-users__profile-info">
+          <div class="cui-users__info-block">
+            <!-- Basic info  (name and email)-->
+            <div ng-include="'app/modules/user/profile/sections/basic-info.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Password -->
+            <div ng-include="'app/modules/user/profile/sections/password.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Challenge Questions -->
+            <div ng-include="'app/modules/user/profile/sections/challenge-questions.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Timezone/Language -->
+            <div ng-include="'app/modules/user/profile/sections/timezone-language.html'"></div>
+          </div>
+        </div>
+
+        <div class="cui-users__profile-info">
+          <div class="cui-users__info-block">
+            <!-- Address -->
+            <div ng-include="'app/modules/user/profile/sections/address.html'"></div>
+          </div>
+
+          <div class="cui-users__info-block">
+            <!-- Phones/Fax -->
+            <div ng-include="'app/modules/user/profile/sections/phone-fax.html'"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-form>

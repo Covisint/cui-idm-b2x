@@ -3,12 +3,12 @@ module.exports = function(grunt) {
   grunt.initConfig ({
     watch:{
       css:{
-        files: 'assets/scss/**/*',
+        files: 'app/scss/**/*',
         tasks: ['sass','autoprefixer']
       },
       scripts:{
-        files: ['assets/app/**/*.js','assets/angular-modules/**/*.js'],
-        tasks: ['concat'],
+        files: ['app/**/*.js'],
+        tasks: ['concatModules','babel'],
         options: {
           spawn: false,
         },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     sass:{
       dist:{
         files:{
-          'assets/css/main.css': 'assets/scss/main.scss'
+          'assets/concat/css/main.css': 'app/scss/main.scss'
         }
       }
     },
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'assets/css/main.css': 'assets/css/main.css'
+          'assets/concat/css/main.css': 'assets/concat/css/main.css'
         }
       }
     },
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         bsFiles: {
             src : [
                 '**/*.html',
-                'assets/concatJS/**/*.js',
+                '**/*.js',
                 '**/*.css'
             ]
         },
@@ -94,13 +94,13 @@ module.exports = function(grunt) {
         separator: '\n\n'
       },
       build: {
-        src: ['assets/angular-modules/app.intro.js','assets/angular-modules/templateCache.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
-        dest: 'assets/concatJS/app.js'
+        src: ['app/angular-modules/app.intro.js','app/angular-modules/templateCache.js','app/app/**/*.js','app/angular-modules/app.outro.js'],
+        dest: 'app/concatJS/app.js'
       },
       dev: {
-        src: [ 'assets/_ajax.cache.js', 'assets/angular-modules/app.intro.js','assets/app/**/*.js','assets/angular-modules/app.outro.js'],
-        dest: 'assets/concatJS/app.js'
-      }
+        src: [ 'app/_ajax.cache.js', 'app/angular-modules/app.intro.js','app/app/**/*.js','app/angular-modules/app.outro.js'],
+        dest: 'app/concatJS/app.js'
+      },
     },
 
     clean: {
@@ -110,8 +110,8 @@ module.exports = function(grunt) {
       buildsdk: {
         src: ['build-sdk']
       },
-      processhtml: {
-        src: ['assets/angular-modules/processedHtml']
+      temp: {
+        src: ['assets/processedHtml','.tmp','assets/concat/js/app.js.map','assets/concat/js/modules.js','assets/concat/js/templateCache.js']
       }
     },
 
@@ -160,10 +160,10 @@ module.exports = function(grunt) {
 
     filerev: {
       build: {
-        src: ['build/assets/css/main.css','build/assets/js/vendor.js','build/assets/js/app.js']
+        src: ['build/app/css/main.css','build/app/js/vendor.js','build/app/js/app.js']
       },
       buildsdk: {
-        src: ['build-sdk/assets/css/main.css','build-sdk/assets/js/vendor.js','build-sdk/assets/js/app.js']
+        src: ['build-sdk/app/css/main.css','build-sdk/app/js/vendor.js','build-sdk/app/js/app.js']
       }
     },
 
@@ -187,8 +187,8 @@ module.exports = function(grunt) {
       options: {
         assetsDirs: ['./build']
       },
-      css: ['./build/assets/css/**/*.css'],
-      js: ['./build/assets/app/**/*.js'],
+      css: ['./build/app/css/**/*.css'],
+      js: ['./build/app/js/**/*.js'],
       html: ['./build/index.html']
     },
 
@@ -196,8 +196,8 @@ module.exports = function(grunt) {
       options: {
         assetsDirs: ['./build-sdk']
       },
-      css: ['./build-sdk/assets/css/**/*.css'],
-      js: ['./build-sdk/assets/app/**/*.js'],
+      css: ['./build-sdk/app/css/**/*.css'],
+      js: ['./build-sdk/app/app/**/*.js'],
       html: ['./build-sdk/index.html']
     },
 
@@ -208,13 +208,13 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      app: ['assets/**/*.js']
+      app: ['app/**/*.js']
     },
 
     ngtemplates: {
       build: {
-        src: 'assets/angular-modules/processedHtml/assets/app/**/*.html',
-        dest: 'assets/angular-modules/templateCache.js',
+        src: 'assets/processedHtml/**/*.html',
+        dest: 'assets/concat/js/templateCache.js',
         options: {
           htmlmin: {
             collapseBooleanAttributes: true,
@@ -227,12 +227,12 @@ module.exports = function(grunt) {
             removeStyleLinkAttributes: true
           },
           module: 'app',
-          url: function(url) { return url.replace('assets/angular-modules/processedHtml/', ''); }
+          url: function(url) { return url.replace('assets/processedHtml/', ''); }
         }
       },
       buildsdk: {
-        src: 'assets/app/**/*.html',
-        dest: 'assets/angular-modules/templateCache.js',
+        src: ['app/modules/**/*.html','app/common-templates/**/*.html'],
+        dest: 'assets/concat/js/templateCache.js',
         options: {
           htmlmin: {
             collapseBooleanAttributes: true,
@@ -257,8 +257,8 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: './',
-          src: ['assets/app/**/**.html'],
-          dest: 'assets/angular-modules/processedHtml/',
+          src: ['app/modules/**/**.html', 'app/common-templates/**/*.html'],
+          dest: 'assets/processedHtml/',
           extDot: '.html'
         }]
       }
@@ -273,7 +273,7 @@ module.exports = function(grunt) {
       },
       babel: {
         files: {
-          'assets/concatJS/app.js': 'assets/concatJS/app.js'
+          'assets/concat/js/app.js': 'assets/concat/js/app.js'
         }
       }
     }
@@ -293,23 +293,79 @@ module.exports = function(grunt) {
     grunt.task.run('usemin');
   });
 
-  // Default task for development
-  grunt.registerTask('default', ['copy:dev','concat:dev','babel','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('concatModules', 'Task to concat all project modules.', function() {
+    var angularModules = [],
+        sourceArray = [];
 
-  // Clean build
-  grunt.registerTask('build', ['sass','autoprefixer','processhtml:build','ngtemplates:build','clean:build','copy:build',
-                                'concat:build','babel','useminPrepare','concat:generated','cssmin:generated',
-                                'uglify:generated','filerev:build','usemin','clean:processhtml']);
+    // Get all angular-modules directories and push them into angularModules array
+    grunt.file.expand('app/modules/*').forEach(function(dir) {
+      angularModules.push(dir.substr(dir.lastIndexOf('/')+1));
+    });
 
-  // Build with comments referencing documentation and code
+    // Get concat object from initConfig
+    var concat = grunt.config.get('concat') || {};
+
+    // Create  array of all module sources
+    angularModules.forEach(function(module) {
+      if (module !== 'jsWrapper') {
+        if (module !== 'app') {
+          var fileNames=[];
+          grunt.file.expand('app/modules/' + module + '/**/*.js').forEach(function(file) {
+            if(file.indexOf('.module') > -1) {
+              fileNames = [file].concat(fileNames);
+            }
+            else {
+              fileNames.push(file);
+            }
+          });
+          sourceArray = fileNames.concat(sourceArray);
+        }
+        else {
+          // Concat 'app' module last
+          sourceArray = sourceArray.concat(['app/wrappers/' + module + '/' + module + '.intro.js',
+                                            'app/modules/' + module + '/**/*.js',
+                                            'assets/concat/js/templateCache.js',
+                                            'app/wrappers/' + module + '/' + module + '.outro.js']);
+        }
+      }
+    });
+
+    // Task: concat modules into one file
+    concat['modules'] = {
+      src: sourceArray,
+      dest: 'assets/concat/js/modules.js'
+    };
+
+    // Task: wrap modules.js with jsWrapper module
+    concat['wrapModules'] = {
+      src: ['app/wrappers/jsWrapper/jsWrapper.intro.js',
+            'assets/concat/js/modules.js',
+            'app/wrappers/jsWrapper/jsWrapper.outro.js'],
+      dest: 'assets/concat/js/app.js'
+    };
+
+    // Add new subtasks to concat in initConfig
+    grunt.config.set('concat', concat);
+
+    // Run creates tasks
+    grunt.task.run('concat:modules');
+    grunt.task.run('concat:wrapModules');
+  });
+
+
+  // Tasks ------------------------------------------------------------
+  grunt.registerTask('default', ['copy:dev','concatModules','babel','sass','autoprefixer','browserSync:dev','watch']);
+
+  grunt.registerTask('build', ['sass','autoprefixer','processhtml','ngtemplates:build','clean:build','copy:build',
+                                'concatModules','babel','useminPrepare','concat:generated',
+                                'cssmin:generated','uglify:generated','filerev:build','usemin','clean:temp']);
+
   grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
-                                  'concat:build','babel','useminPreparesdk','concat:generated','cssmin:generated',
-                                  'uglify:generated','filerev:buildsdk','useminsdk']);
+                                  'concatModules','babel','useminPreparesdk','concat:generated','cssmin:generated',
+                                  'uglify:generated','filerev:buildsdk','useminsdk','clean:temp']);
 
-  // Run project from demo/demosdk folders
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('demosdk', ['browserSync:demosdk']);
-
   grunt.registerTask('jslint', ['jshint']);
 
 };

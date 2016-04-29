@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>CUI IDM B2X</title>
 
-  <!-- build:css assets/css/main.css -->
-  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- build:css app/css/main.css -->
+  <link rel="stylesheet" href="assets/concat/css/main.css">
   <!-- endbuild -->
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
@@ -81,7 +81,8 @@
       </span> -->
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
-       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
+       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}">
+       <!-- ng-if="base.menu.desktop.enabled" -->
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
           <span class="cui-desktop-menu__option-name">{{'welcome' | translate}}</span>
@@ -139,7 +140,7 @@
             <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
               <div class="menu-toggle--button"></div>
             </div>
-            
+
             <!-- Uncomment below to reveal header -->
             <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
 
@@ -191,7 +192,7 @@
     </snap-content>
   </div>
 
-<!-- build:js assets/js/vendor.js -->
+<!-- build:js app/js/vendor.js -->
 <script src="bower_components/thirdwave-tether/dist/js/tether.js"></script>
 <script src="node_modules/blueimp-md5/js/md5.min.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -216,8 +217,8 @@
 <script src="bower_components/svg4everybody/dist/svg4everybody.min.js"></script>
 <!-- endbuild -->
 
-<!-- build:js assets/js/app.js -->
-<script src="assets/concatJS/app.js"></script>
+<!-- build:js app/js/app.js -->
+<script src="assets/concat/js/app.js"></script>
 <!-- endbuild -->
 
 <script>svg4everybody();</script>
