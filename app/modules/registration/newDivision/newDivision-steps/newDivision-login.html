@@ -4,7 +4,7 @@
 	<!-- User ID -->
 	<label for="userID">{{'cui-user-id' | translate}}</label>
 	<div class="cui-error" ng-messages="userLogin.name.$error" ng-if="userLogin.name.$touched">
-		<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+		<div ng-messages-include="app/common-templates/messages.html"></div>
 	</div>
 	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="newDivision.userLogin.username">
 
@@ -15,11 +15,11 @@
 			<div class="cui-input__password-holder">
 				<label>{{'cui-password' | translate}}</label>
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
-					<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+					<div ng-messages-include="app/common-templates/messages.html"></div>
 				</div>
 				<input type="password" name="password" class="cui-input" ng-required="true" ng-model="newDivision.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="newDivision.passwordPolicies">
 				<div ng-messages="userLogin.password.$error" ng-messages-multiple ng-if="userLogin.password.$invalid" class="cui-error__password">
-					<div ng-messages-include="assets/app/registration/password-validation.html"></div>
+					<div ng-messages-include="app/registration/password-validation.html"></div>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-question' | translate}} 1</label>
 			<div class="cui-error" ng-messages="userLogin.challenge1.$error" ng-if="userLogin.challenge1.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<select ng-model="newDivision.userLogin.question1" name="challenge1" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge1.$touched && userLogin.challenge1.$invalid }" ng-options="question as question.question[0].text for question in newDivision.userLogin.challengeQuestions1">
 			</select>
@@ -50,7 +50,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-answer' | translate}} 1</label>
 			<div class="cui-error" ng-messages="userLogin.answer1.$error" ng-if="userLogin.answer1.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="newDivision.userLogin.challengeAnswer1">
 		</div>
@@ -62,7 +62,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-question' | translate}} 2</label>
 			<div class="cui-error" ng-messages="userLogin.challenge2.$error" ng-if="userLogin.challenge2.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<select ng-model="newDivision.userLogin.question2" name="challenge2" ng-required="true" class="cui-select" ng-class="{'cui-input---error' : userLogin.challenge2.$touched && userLogin.challenge2.$invalid}" ng-options="question as question.question[0].text for question in newDivision.userLogin.challengeQuestions2">
 			</select>
@@ -72,7 +72,7 @@
 		<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			<label>{{'cui-challenge-answer' | translate}} 2</label>
 			<div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$touched">
-				<div ng-messages-include="assets/app/common-templates/messages.html"></div>
+				<div ng-messages-include="app/common-templates/messages.html"></div>
 			</div>
 			<input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="newDivision.userLogin.challengeAnswer2">
 		</div>

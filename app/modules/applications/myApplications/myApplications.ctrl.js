@@ -5,6 +5,9 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
 
     var myApplications = this;
 
+    var stepsDone = 0,
+        stepsRequired = 2;
+
     myApplications.doneLoading = false;
     myApplications.sortFlag = false;
     myApplications.categoriesFlag = false;
@@ -14,8 +17,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
     myApplications.statusList = ['active', 'suspended', 'pending'];
     myApplications.statusCount = [0,0,0,0];
 
-    var stepsDone=0,
-        stepsRequired=2;
+    
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -54,17 +56,18 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
         return categoryList;
     };
 
-    var checkIfDone=function() {
+    var checkIfDone = function() {
         stepsDone++;
         if (stepsDone === stepsRequired) {
-            myApplications.list = _.uniq(myApplications.list, function(app) {
-                return app.id;
-            });
+            myApplications.list = _.uniqBy(myApplications.list, 'id');
+
             myApplications.list.forEach(function(service) {
                 updateStatusCount(service);
             });
+
             angular.copy(myApplications.list, myApplications.unparsedListOfAvailabeApps);
-            myApplications.statusCount[0] = myApplications.list.length; // set "all" to the number of total apps
+            // Set refine/categories:all to the number of total apps
+            myApplications.statusCount[0] = myApplications.list.length;
             myApplications.categoryList = getListOfCategories(myApplications.list);
             myApplications.doneLoading = true;
             $scope.$digest();
@@ -75,7 +78,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
         // WORKAROUND CASE #1
         // from the list of grants, get the list of services from each of those service packages
         var i = 0;
-        if(grants.length===0) {
+        if (grants.length === 0) {
             checkIfDone();
             return;
         }
@@ -100,7 +103,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,Sort) {
 
     var getApplicationsFromPendingRequests = function(requests) {
         var i = 0;
-        if(requests.length===0) {
+        if (requests.length === 0) {
             checkIfDone();
             return;
         }

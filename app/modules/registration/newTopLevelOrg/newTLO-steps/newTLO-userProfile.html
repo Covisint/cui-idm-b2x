@@ -6,7 +6,7 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="user-name-given">{{'cui-first-name' | translate}}</label>
       <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
-        <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        <div ng-messages-include="app/common-templates/messages.html"></div>
       </div>
       <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="newTLO.user.name.given"/>
     </div>
@@ -15,7 +15,7 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
       <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
-        <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        <div ng-messages-include="app/common-templates/messages.html"></div>
       </div>
       <input type="text" ng-model="newTLO.user.name.surname" name="lastName" class="cui-input" ng-required="true"/>
     </div>
@@ -27,7 +27,7 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-email' | translate}}</label>
       <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
-        <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        <div ng-messages-include="app/common-templates/messages.html"></div>
       </div>
       <input type="email" name="email" class="cui-input" ng-required="true" ng-model="newTLO.user.email"/>
     </div>
@@ -48,7 +48,7 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="country">{{"cui-country" | translate}}</label>
       <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-        <div ng-messages-include="assets/app/common-templates/messages.html"></div>
+        <div ng-messages-include="app/common-templates/messages.html"></div>
       </div>
       <div auto-complete input-name="country" pause="100" selected-object="newTLO.user.addresses[0].country" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="newTLO.user.addresses[0].country"></div>
     </div>
