@@ -19,7 +19,7 @@ angular.module('applications',[])
         })
         .state('applications.myApplicationDetails', {
             url: '/:packageId/:appId',
-            templateUrl: templateBase + 'myApplications/myAapplications-details.html',
+            templateUrl: templateBase + 'myApplications/myApplications-details.html',
             controller: returnCtrlAs('myApplicationDetails')
         })
         .state('applications.newRequest', {
