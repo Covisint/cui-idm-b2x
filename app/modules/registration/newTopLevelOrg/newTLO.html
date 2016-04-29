@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">Markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/angular-templates/registration/newTopLevelOrg/topLevelOrg.registration" target="blank">here</a> and the javascript <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/js/app/registration/newTopLevelOrg" class="cui-link" target="blank">here</a></div>
+<div class="code-info">The markup and javascript used to create this page can be found <a class="cui-link" href="https://github.com/piotrbogun/cui-idm-b2x/tree/master/app/modules/registration/newTopLevelOrg" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
 <div class="cui-form--mobile-steps">
@@ -9,19 +9,19 @@
       <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
 
       <step step-title="{{'cui-user-profile' | translate}}" icon="cui:user">
-        <div ng-include="'assets/app/registration/newTopLevelOrg/topLevelOrg.registration-steps/topLevelOrg.userProfile.html'"></div>
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-userProfile.html'"></div>
       </step>
 
       <step step-title="{{'cui-org' | translate}}" icon="cui:skyscraper">
-        <div ng-include="'assets/app/registration/newTopLevelOrg/topLevelOrg.registration-steps/topLevelOrg.organization.html'"></div>
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-organization.html'"></div>
       </step>
 
       <step step-title="{{'cui-login' | translate}}" icon="cui:login">
-        <div ng-include="'assets/app/registration/newTopLevelOrg/topLevelOrg.registration-steps/topLevelOrg.login.html'"></div>
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-login.html'"></div>
       </step>
 
       <step step-title="{{'cui-review' | translate}}" icon="cui:review">
-        <div ng-include="'assets/app/registration/newTopLevelOrg/topLevelOrg.registration-steps/topLevelOrg.review.html'"></div>
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-review.html'"></div>
       </step>
 
     </cui-wizard>
