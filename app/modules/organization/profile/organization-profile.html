@@ -41,7 +41,7 @@
     <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
       <h4 class="cui-field-val__field" ng-if="orgProfile.securityAdmins">{{'cui-admins' | translate}}</h4>
       <div class="cui-organization__admin-block-wrapper" ng-if="orgProfile.securityAdmins">
-        <div class="cui-organization__admin-block" ng-repeat="admin in orgProfile.securityAdmins">
+        <div class="cui-organization__admin-block" ng-repeat="admin in orgProfile.securityAdmins track by admin.id">
           <!-- Name -->
           <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
           <span class="cui-field-val__val">{{admin.name.given}} {{admin.name.surname}}</span><br/>
@@ -52,8 +52,8 @@
           <span class="cui-field-val__field">{{'title' | translate}}: </span>
           <span class="cui-field-val__val">{{admin.title}}</span><br/>
           <!-- Phone -->
-          <span class="cui-field-val__field" ng-if="admin.phones">{{'cui-phone' | translate}}: </span>
-          <span class="cui-field-val__val" ng-if="admin.phones">{{admin.phones[0].number}}</span><br/>
+          <span class="cui-field-val__field">{{'cui-phone' | translate}}: </span>
+          <span class="cui-field-val__val">{{admin.phones[0].number}}</span><br/>
           <!-- Email -->
           <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
           <span class="cui-field-val__val">{{admin.email}}</span>
