@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/directory" target="blank">here</a>.</div>
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/directory" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
 <div class="cui-organization">
@@ -18,9 +18,8 @@
         </svg>
         <!-- Invitation Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
-          <p>{{'user' | translate}}</p>
-          <p>{{'cui-org' | translate}}</p>
-          <p>{{'top-level-orgs' | translate}}</p>
+          <p>{{'invite-user' | translate}}</p>
+          <p>{{'invite-division' | translate}}</p>
         </div>
       </div>
     </div>
@@ -28,8 +27,9 @@
 
   <!-- Action Sub-header -->
   <div class="cui-action">
-    <span class="cui-action__title">{{orgDirectory.organization.name}}</span>
+    <span class="cui-action__title">{{orgDirectory.organization.name | cuiI18n}}</span>
     <div class="cui-action__actions">
+
       <!-- Sort -->
       <div class="cui-action__action-container" ng-click="orgDirectory.sortClicked=!orgDirectory.sortClicked" id="sort-button" off-click="orgDirectory.sortClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -43,6 +43,7 @@
           <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>
         </div>
       </div>
+
       <!-- Refine -->
       <div class="cui-action__action-container" ng-click="orgDirectory.refineClicked=!orgDirectory.refineClicked" id="refine-button" off-click="orgDirectory.refineClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -57,6 +58,7 @@
           </div>
         </div>
       </div>
+
       <!-- Organizations -->
       <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -66,7 +68,7 @@
         <!-- Organizations Popover -->
         <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
           <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
-            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization.id, organization.name)">{{organization.name}}</p>
+            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization)">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
       </div>

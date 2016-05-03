@@ -3,8 +3,8 @@ angular.module('organization')
 function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
-    var orgDirectory = this;
-    var organizationId = $stateParams.id;
+    const orgDirectory = this;
+    let organizationId = $stateParams.id;
 
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
@@ -15,19 +15,19 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function handleError(err) {
+    const handleError = function handleError(err) {
         orgDirectory.loading = false;
         $scope.$digest();
         console.log('Error', err);
     };
 
-    var getStatusList = function(users) {
-        var statusList = [];
-        var statusCount = [orgDirectory.unparsedUserList.length];
+    const getStatusList = function(users) {
+        let statusList = [];
+        let statusCount = [orgDirectory.unparsedUserList.length];
 
         users.forEach(function(user) {
             if (user.status) {
-                var statusInStatusList = _.some(statusList, function(status, i) {
+                let statusInStatusList = _.some(statusList, function(status, i) {
                     if (angular.equals(status, user.status)) {
                         statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
                         return true;
@@ -45,11 +45,30 @@ function($scope,$stateParams,API,$filter,Sort) {
         return statusList;
     };
 
-    var onLoadFinish = function onLoadFinish(organizationResponse) {
-        orgDirectory.organization = organizationResponse;
-        API.cui.getOrganizations()
+    const flattenHierarchy = function flattenHierarchy(orgChildrenArray) {
+        let childrenArray = orgChildrenArray;
+        let orgList = [];
+
+        childrenArray.forEach(function(childOrg) {
+            if (childOrg.children) {
+                let newchildArray = childOrg.children;
+                delete childOrg.children;
+                orgList.push(childOrg);
+                flattenHierarchy(childrenArray);
+            }
+            else {
+                orgList.push(childOrg);
+            }
+        });
+
+        return orgList;
+    };
+
+    const onLoadFinish = function onLoadFinish(organizationResponse) {
+        API.cui.getOrganizationHierarchy({organizationId: organizationResponse.id})
         .then(function(res) {
-            orgDirectory.organizationList = res;
+            orgDirectory.organization = res;
+            orgDirectory.organizationList = flattenHierarchy(res.children);
             return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
         })
         .then(function(res) {
@@ -57,7 +76,7 @@ function($scope,$stateParams,API,$filter,Sort) {
             orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.loading = false;
-           // $scope.$digest();
+            $scope.$digest();
         })
         .fail(handleError);
     };
@@ -70,7 +89,7 @@ function($scope,$stateParams,API,$filter,Sort) {
         // If no id parameter is passed load directory of logged in user's organization.
         API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(person) {
-            return API.cui.getOrganization({ organizationId: person.organization.id });
+            return API.cui.getOrganization({organizationId: person.organization.id});
         })
         .then(function(res) {
             onLoadFinish(res);
@@ -79,7 +98,7 @@ function($scope,$stateParams,API,$filter,Sort) {
     }
     else {
         // Load organization directory of id parameter
-        API.cui.getOrganization({ organizationId: organizationId })
+        API.cui.getOrganization({organizationId: organizationId})
         .then(function(res) {
             onLoadFinish(res);
         })
@@ -90,10 +109,9 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    orgDirectory.getOrgMembers = function getOrgMembers(organizationId, organizationName) {
+    orgDirectory.getOrgMembers = function getOrgMembers(organization) {
         orgDirectory.loading = true;
-        orgDirectory.organization.id = organizationId;
-        orgDirectory.organization.name = organizationName;
+        orgDirectory.organization = organization;
         API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
         .then(function(res) {
             orgDirectory.userList = res;
@@ -105,17 +123,17 @@ function($scope,$stateParams,API,$filter,Sort) {
         .fail(handleError);
     };
 
-    orgDirectory.sort = function(sortType) {
+    orgDirectory.sort = function sort(sortType) {
         Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag);
         orgDirectory.sortFlag =! orgDirectory.sortFlag;
     };
 
-    orgDirectory.parseUsersByStatus = function(status) {
+    orgDirectory.parseUsersByStatus = function parseUsersByStatus(status) {
         if (status === 'all') {
             orgDirectory.userList = orgDirectory.unparsedUserList;
         }
         else {
-            var filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
+            let filteredUsers = _.filter(orgDirectory.unparsedUserList, function(user) {
                 return user.status === status;
             });
             orgDirectory.userList = filteredUsers;
