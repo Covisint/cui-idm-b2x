@@ -6,6 +6,7 @@ function($scope,$stateParams,API,$filter,Sort) {
     const orgDirectory = this;
     let organizationId = $stateParams.id;
 
+    orgDirectory.organization = {};
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
@@ -69,12 +70,17 @@ function($scope,$stateParams,API,$filter,Sort) {
         .then(function(res) {
             orgDirectory.organization = res;
             orgDirectory.organizationList = flattenHierarchy(res.children);
-            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]});
+            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
+                                                ['pageSize', orgDirectory.paginationSize], ['page',1]]});
         })
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
+            return API.cui.countPersons({'qs': ['organization.id', orgDirectory.organization.id]});
+        })
+        .then(function(res) {
+            orgDirectory.orgPersonCount = res;
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -140,6 +146,35 @@ function($scope,$stateParams,API,$filter,Sort) {
         }
     };
 
+    orgDirectory.paginationHandler = function paginationHandler(page) {
+        API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
+                                    ['pageSize', orgDirectory.paginationSize], ['page', page]]})
+        .then(function(res) {
+            orgDirectory.userList = res;
+            orgDirectory.unparsedUserList = res;
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
+        })
+        .fail(handleError);
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
+
+    // WATCHERS START --------------------------------------------------------------------------------
+
+    $scope.$watch('orgDirectory.paginationSize', function(newValue) {
+        if (newValue) {
+            API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
+                                ['pageSize', orgDirectory.paginationSize], ['page', 1]]})
+            .then(function(res) {
+                orgDirectory.userList = res;
+                orgDirectory.unparsedUserList = res;
+                orgDirectory.paginationCurrentPage = 1;
+                orgDirectory.statusList = getStatusList(orgDirectory.userList);
+            })
+            .fail(handleError);
+        }
+    });
+
+    // WATCHERS END ----------------------------------------------------------------------------------
 
 }]);
