@@ -232,7 +232,6 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         API.cui.getOrganizations({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', page]]})
         .then(function(res) {
             userWalkup.organizationList = res;
-            userWalkup.orgPaginationCurrentPage = page;
         })
         .fail(handleError);
     };
