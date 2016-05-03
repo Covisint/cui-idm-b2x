@@ -151,9 +151,7 @@
             <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
                 <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
                 <!-- Avatar Desktop -->
-                <div class="cui-media__image-container">
-                  <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
-                </div>
+                  <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="user.profile">
                     <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
@@ -179,7 +177,7 @@
           <input type="text" placeholder="Search for applications in your org" class="cui-input-button__input"/>
           <button class="cui-input-button__button">{{'go' | translate}}</button>
         </div> -->
-        <div ui-view ng-cloak></div>
+        <div ui-view class="js-main-content" ng-cloak ng-class="{'js-main-content--search-open': searchEnabled}"></div>
         <div class="cui-footer">
           <div class="cui-footer__col"><a href="" class="cui-footer__link">Covisint</a></div>
           <div class="cui-footer__col"><a href="" class="cui-footer__link">{{'privacy' | translate}} &amp; {{'terms' | translate}} </a></div>
