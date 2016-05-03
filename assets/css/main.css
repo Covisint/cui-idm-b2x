@@ -1,0 +1,5495 @@
+@charset "UTF-8";
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0; }
+
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block; }
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */ }
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+[hidden],
+template {
+  display: none; }
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+a {
+  background-color: transparent; }
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+a:active,
+a:hover {
+  outline: 0; }
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+b,
+strong {
+  font-weight: bold; }
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+dfn {
+  font-style: italic; }
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+small {
+  font-size: 80%; }
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+img {
+  border: 0; }
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+figure {
+  margin: 1em 40px; }
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+hr {
+  box-sizing: content-box;
+  height: 0; }
+
+/**
+ * Contain overflow in all browsers.
+ */
+pre {
+  overflow: auto; }
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */ }
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+button {
+  overflow: visible; }
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+button,
+select {
+  text-transform: none; }
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+input {
+  line-height: normal; }
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  /* 2 */
+  box-sizing: content-box; }
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+textarea {
+  overflow: auto; }
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+optgroup {
+  font-weight: bold; }
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td,
+th {
+  padding: 0; }
+
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+fieldset {
+  border: 0;
+  margin: 0; }
+
+*[ui-sref] {
+  cursor: pointer; }
+
+.cui-radio, .cui-checkbox__legend, .cui-switch__input {
+  left: -999em;
+  position: absolute; }
+
+.hide {
+  display: none !important; }
+
+.hide--opacity {
+  opacity: 0 !important;
+  pointer-events: none !important; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+.tether-element {
+  position: absolute;
+  z-index: 9999; }
+
+/*
+Elements
+
+A constituent part of a block that can't be used outside of it.
+
+Styleguide Elements
+*/
+/* 
+Backgrounds
+
+Markup: 
+<div class="cui-background">Primary</div>
+<div class="cui-background--secondary">Secondary</div>
+<div class="cui-background--gradient">Gradient</div>
+
+Styleguide Elements.Backgrounds
+*/
+.cui-background, .cui-error__password, .cui-popover, .cui-action__popover {
+  background-color: #fff; }
+
+.cui-background--secondary {
+  background-color: #E8F0F3; }
+
+.cui-background--gradient {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0); }
+
+/*
+Texts
+
+Styles for text. Please refer to _vars.scss for variable values.
+
+Styleguide Elements.Texts
+*/
+/*
+Headers
+
+Header styling is applied through the use of classes. Our recommended method for applying h1 styling is to @extend the %h1 placeholder selector in a class's CSS style declaration block and apply that class to your element.
+
+Markup:
+<h1 class="h1">H1 Heading</h1>
+<h2 class="h2">H2 Heading</h2>
+<h3 class="h3">H3 Heading</h3>
+<h4 class="h4">H4 Heading</h4>
+<h5 class="h5">H5 Heading</h5>
+<h6 class="h6">H6 Heading</h6>
+<div class="cui-styleguide__text-section">
+</div>
+
+Weight: -20
+
+Styleguide Elements.Texts.Headers
+*/
+@font-face {
+  font-family: "lato-regular";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/bower_components/lato/font/lato-regular/lato-regular.woff2") format("woff2"), url("/bower_components/lato/font/lato-regular/lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: "lato-black";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/bower_components/lato/font/lato-black/lato-black.woff2") format("woff2"), url("/bower_components/lato/font/lato-black/lato-black.woff") format("woff"); }
+
+@font-face {
+  font-family: "lato-bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/bower_components/lato/font/lato-bold/lato-bold.woff2") format("woff2"), url("/bower_components/lato/font/lato-bold/lato-bold.woff") format("woff"); }
+
+body {
+  color: #929292;
+  font-size: 16px;
+  font-family: "lato-regular", sans-serif;
+  font-weight: 400; }
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000;
+  font-size: 1em;
+  font-weight: 400;
+  margin: 0; }
+
+.h1 {
+  font-size: 2.5em; }
+
+.h2 {
+  font-size: 2em; }
+
+.h3 {
+  font-size: 1.75em; }
+
+.h4, .cui-modal__secondary-message {
+  font-size: 1.5em; }
+
+.h5, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title {
+  font-size: 1.25em; }
+
+.h6, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  font-size: 1em; }
+
+.h1, .h2, .h3, .h4, .h5, .h6, .cui-modal__secondary-message, .cui-text-area__label, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-organization__page-title, .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  font-family: 'lato-black', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.6px; }
+
+.h1--bold, .h2--bold, .h3--bold, .h4--bold, .h5--bold, .h6--bold, .cui-modal__primary-message, .cui-expandable__body-pane .cui-expandable__pane-title, .cui-modal__secondary-message, .cui-text-area__label, .cui-expandable__title .cui-expandable__title-left, .cui-expandable__body-pane .cui-expandable__pane-content, .cui-action__title, .cui-action__popover-title, .cui-field-val__field, .cui-applications__new-request .cui-applications__categories .cui-applications__category, .cui-organization__page-title {
+  font-family: 'lato-bold', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.6px; }
+
+p {
+  color: #929292; }
+
+/*
+Links
+
+Also available as the placeholder selector %cui-link.
+
+Markup: <a class="cui-link" href="">Link Style</a>
+
+Styleguide Elements.Texts.Links
+*/
+.cui-link, .cui-expandable__review-button, .cui-search__dropdown a, .cui-expandable__link, .cui-pagination__link a, .cui-pagination__display-amount, .cui-media__link,
+.cui-profile .cui-profile__link,
+.cui-header__user .cui-profile__link {
+  color: #6a98a0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .15s ease-in-out; }
+  .cui-link:hover, .cui-expandable__review-button:hover, .cui-search__dropdown a:hover, .cui-expandable__link:hover, .cui-pagination__link a:hover, .cui-pagination__display-amount:hover, .cui-media__link:hover,
+  .cui-profile .cui-profile__link:hover,
+  .cui-header__user .cui-profile__link:hover {
+    color: #6a98a0;
+    transition: color .15s ease-in-out; }
+
+.cui-link--alt {
+  color: #6a98a0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .15s ease-in-out; }
+  .cui-link--alt:hover {
+    color: #6a98a0;
+    transition: color .15s ease-in-out; }
+
+/*
+Paragraphs
+
+Default styling for paragraphs
+
+Markup:
+<p>Paragraph text. Donec sed odio dui. Cras justo odio, dapibus
+ac facilisis in. Egestas eget quam. Maecenas faucibus mollis
+interdum maecenas faucibus.</p>
+
+Weight: -10
+
+Styleguide Elements.Texts.Paragraphs
+*/
+/*
+Unordered Lists
+
+Browser styles are removed from lists in order to separate visual presentation from semantic meaning. If you want to restore the default styling, @extend the placeholder selector %cui-ul--default in your list's CSS style declaration block.
+
+.cui-ul--default    - restores browser styling
+
+Markup:
+<ul class="{{modifier_class}}">
+  <li>Unordered List</li>
+  <li>Unordered List</li>
+  <li>Unordered List</li>
+</ul>
+
+Styleguide Elements.Texts.Unordered-Lists
+*/
+ul,
+ol,
+.cui-ul,
+.cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list,
+.cui-expandable__body,
+.cui-top-nav__section ul,
+.cui-ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0; }
+
+.cui-ul--default {
+  list-style-type: disc;
+  list-style-position: inside; }
+
+/*
+Ordered Lists
+
+Browser styles are removed from lists in order to separate visual presentation from semantic meaning. If you want to restore the default styling, @extend the placeholder selector %cui-ol--default in your list's CSS style declaration block.
+
+.cui-ol--default    - restores browser styling
+
+Markup:
+<ol class="{{modifier_class}}">
+  <li>Ordered List</li>
+  <li>Ordered List</li>
+  <li>Ordered List</li>
+</ol>
+
+Styleguide Elements.Texts.Ordered-Lists
+*/
+.cui-ol--default {
+  list-style-type: decimal;
+  list-style-position: inside; }
+
+/*
+Status
+
+Markup:
+<span class="cui-status--active">Active</span>
+<span class="cui-status--pending">Pending</span>
+<span class="cui-status--suspended">Suspended</span>
+<span class="cui-status--locked">Locked</span>
+
+Styleguide Elements.Texts.Status
+*/
+.cui-status--active, .cui-status--pending, .cui-status--suspended, .cui-status--locked {
+  font-family: 'lato-black', sans-serif;
+  font-size: 0.625em; }
+  @media screen and (min-width: 701px) {
+    .cui-status--active, .cui-status--pending, .cui-status--suspended, .cui-status--locked {
+      font-size: 1em;
+      letter-spacing: 1.1px; } }
+
+.cui-status--active {
+  color: #6a98a0; }
+
+.cui-status--pending {
+  color: #FF8C00; }
+
+.cui-status--suspended {
+  color: #ff4400; }
+
+.cui-status--locked {
+  color: #ff4400; }
+
+/*
+Inputs
+
+:disabled               - Styling for a disabled input field
+:focus                  - Styling when user clicks in a field to enter input
+.cui-input--error       - Styling after user has entered input that is invalid
+.cui-input--valid       - Styling after user has entered input that is valid
+
+Markup: <input type="text" class="cui-input {{modifier_class}} cui-input--full"/>
+
+Styleguide Elements.Forms.Input
+*/
+.cui-input, select.cui-select, select.cui-expandable__review-select,
+.cui-select, .cui-expandable__review-select, .cui-expandable__review-input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 0;
+  border: 1px solid #DEE9EE;
+  box-sizing: border-box;
+  font-size: 0.875em;
+  height: 56px;
+  margin: 5px 0 20px;
+  padding: 8px 12px;
+  position: relative;
+  width: 100%; }
+  .cui-input.pseudo-class-focus,
+  .pseudo-class-focus.cui-select, .pseudo-class-focus.cui-expandable__review-select, .pseudo-class-focus.cui-expandable__review-input, .cui-input:focus,
+  .cui-select:focus, .cui-expandable__review-select:focus, .cui-expandable__review-input:focus {
+    border: 1px solid #828483;
+    outline: 0; }
+  .cui-input--display {
+    border: 0;
+    height: 14px;
+    margin: -3px 0 -3px 1px;
+    padding: 0;
+    width: 200px; }
+  .cui-input--half {
+    width: 48%; }
+  .cui-input--error, .cui-input--error:focus, .cui-input.ng-touched.ng-invalid,
+  .ng-touched.ng-invalid.cui-select, .ng-touched.ng-invalid.cui-expandable__review-select, .ng-touched.ng-invalid.cui-expandable__review-input, .cui-input.ng-touched.ng-invalid:focus,
+  .ng-touched.ng-invalid.cui-select:focus, .ng-touched.ng-invalid.cui-expandable__review-select:focus, .ng-touched.ng-invalid.cui-expandable__review-input:focus {
+    border: 1px solid #FF4400; }
+  .cui-input__password-holder {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    position: relative; }
+  .cui-input[type="password"]:focus + .cui-error__password,
+  [type="password"].cui-select:focus + .cui-error__password, [type="password"].cui-expandable__review-select:focus + .cui-error__password, [type="password"].cui-expandable__review-input:focus + .cui-error__password {
+    display: inline-block; }
+  .cui-input.ng-touched.ng-valid,
+  .ng-touched.ng-valid.cui-select, .ng-touched.ng-valid.cui-expandable__review-select, .ng-touched.ng-valid.cui-expandable__review-input, .cui-input--valid {
+    border: 1px solid #47CBB4; }
+  @media all and (max-width: 700px) {
+    .cui-input--half {
+      width: 100%; } }
+
+/*
+Input with button
+
+Markup:
+<div class="cui-input-button">
+  <input type="text" placeholder="This is placeholder text" class="cui-input-button__input"/>
+  <button class="cui-input-button__button">Go</button>
+</div>
+
+Styleguide Elements.Forms.Input-With-Button
+*/
+.cui-input-button {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 2.625em; }
+  .cui-input-button--alt-bg {
+    background-color: #fff; }
+
+.cui-input-button__input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border-bottom: 1px solid #c3c3c3;
+  border-left: 1px solid #c3c3c3;
+  border-right: 0;
+  border-top: 1px solid #c3c3c3;
+  color: #444544;
+  -webkit-flex: .75;
+      -ms-flex: .75;
+          flex: .75;
+  font-size: 0.875em;
+  letter-spacing: 2.1px; }
+  @media screen and (min-width: 701px) {
+    .cui-input-button__input {
+      padding-left: 1.8125em; } }
+  .cui-input-button__input::-webkit-input-placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+  .cui-input-button__input::-moz-placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+  .cui-input-button__input:-ms-input-placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+  .cui-input-button__input::placeholder {
+    color: #444544;
+    text-align: center;
+    vertical-align: center; }
+    @media screen and (min-width: 701px) {
+      .cui-input-button__input::-webkit-input-placeholder {
+        text-align: left; }
+      .cui-input-button__input::-moz-placeholder {
+        text-align: left; }
+      .cui-input-button__input:-ms-input-placeholder {
+        text-align: left; }
+      .cui-input-button__input::placeholder {
+        text-align: left; } }
+
+.cui-input-button__button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: rgba(232, 240, 243, 0.3);
+  border: 1px solid #c3c3c3;
+  color: #6a98a0;
+  -webkit-flex: .25;
+      -ms-flex: .25;
+          flex: .25;
+  font-family: 'lato-black', sans-serif;
+  font-size: 0.8125em;
+  letter-spacing: 1.6px; }
+  @media screen and (min-width: 701px) {
+    .cui-input-button__button {
+      font-size: 1.125em; } }
+
+/*
+Email tags field
+
+Markup:
+<div name="emails" class="cui-tags">
+  <div class="cui-tags__host" tabindex="-1">
+    <div class="cui-tags__container">
+      <ul class="cui-tags__tag-list">
+        <li class="cui-tags__tag"><span>example@gmail.com</span> 
+          <a class="cui-tags__remove">×</a>
+        </li>
+      </ul>
+      <input class="cui-tags__input" autocomplete="off" type="text" placeholder="" spellcheck="true"><span class="cui-tags__registered-tag" style="visibility: hidden; width: auto; white-space: pre; display: none;">example@gmail.com</span>
+    </div> 
+  </div>
+</div>
+
+Styleguide Elements.Forms.Tags
+*/
+.cui-tags-input,
+.cui-tags {
+  display: block;
+  font-size: 0.875em; }
+  .cui-tags-input.ng-touched.ng-invalid .tags,
+  .cui-tags-input.ng-touched.ng-invalid .cui-tags__container,
+  .cui-tags.ng-touched.ng-invalid .tags,
+  .cui-tags.ng-touched.ng-invalid .cui-tags__container {
+    border: 1px solid #FF4400; }
+  .cui-tags-input.ng-touched.ng-valid .tags,
+  .cui-tags-input.ng-touched.ng-valid .cui-tags__container,
+  .cui-tags.ng-touched.ng-valid .tags,
+  .cui-tags.ng-touched.ng-valid .cui-tags__container {
+    border: 1px solid #47CBB4; }
+
+.cui-tags-input *, .cui-tags-input *:before, .cui-tags-input *:after {
+  box-sizing: border-box; }
+
+.cui-tags-input .host,
+.cui-tags__host {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  position: relative; }
+
+.cui-tags-input .host:active,
+.cui-tags__host:active {
+  outline: 0; }
+
+.cui-tags-input .tags,
+.cui-tags__container {
+  background-color: #fff;
+  border: 1px solid #DEE9EE;
+  cursor: text;
+  min-height: 56px;
+  overflow: hidden;
+  padding: 8px 12px;
+  word-wrap: break-word; }
+
+.cui-tags-input .tags.focused,
+.cui-tags__container--focused {
+  border: 1px solid #828483;
+  outline: 0; }
+
+.cui-tags-input .tags .tag-list,
+.cui-tags__tag-list {
+  list-style-type: none;
+  margin: 0 10px 0 0;
+  padding: 4px 20px 0 0; }
+
+.cui-tags-input .tags .tag-item,
+.cui-tags__tag {
+  background: #85a6ad;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  float: left;
+  margin: 0 10px 5px 0;
+  padding: 5px; }
+
+.cui-tags-input .tags .tag-item.selected,
+.cui-tags__tag--selected {
+  background: #ff4400; }
+
+.cui-tags-input .tags .tag-item .remove-button,
+.cui-tags__remove {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font: bold 16px Arial, sans-serif;
+  margin: 0 0 0 5px;
+  padding: 0;
+  vertical-align: middle; }
+
+.cui-tags-input .tags .tag-item .remove-button:active,
+.cui-tags__remove:active {
+  color: #FFD700; }
+
+.cui-tags-input .tags .input,
+.cui-tags__input {
+  border: 0;
+  float: left;
+  outline: 0;
+  padding: 5px 0 0 0;
+  width: 3px; }
+
+.cui-tags-input .tags .input.invalid-tag,
+.cui-tags__input--invalid {
+  color: #ff4400; }
+
+.cui-tags-input .tags .input::-ms-clear,
+.cui-tags__input::-ms-clear {
+  display: none; }
+
+.cui-tags-input[disabled] .host:focus,
+.cui-tags__host:focus {
+  outline: 0; }
+
+.cui-tags-input[disabled] .tags,
+.cui-tags[disabled] .cui-tags__container {
+  background-color: #eee;
+  cursor: default; }
+
+.cui-tags-input[disabled] .tags .tag-item,
+.cui-tags[disabled] .cui-tags__tag {
+  background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+  opacity: 0.65; }
+
+.cui-tags-input[disabled] .tags .tag-item .remove-button,
+.cui-tags[disabled] .cui-tags__remove {
+  cursor: default; }
+
+.cui-tags-input[disabled] .tags .tag-item .remove-button:active,
+.cui-tags[disabled] .cui-tags__remove {
+  color: #585858; }
+
+.cui-tags-input[disabled] .tags .input,
+.cui-tags[disabled] .cui-tags__input {
+  background-color: #eee;
+  cursor: default; }
+
+.cui-tags-input .autocomplete,
+.cui-tags .autocomplete {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  padding: 5px 0;
+  position: absolute;
+  width: 100%;
+  z-index: 999; }
+
+.cui-tags-input .autocomplete .suggestion-list,
+.cui-tags .autocomplete .suggestion-list {
+  list-style-type: none;
+  margin: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0;
+  position: relative; }
+
+.cui-tags-input .autocomplete .suggestion-item,
+.cui-tags .autocomplete .suggestion-item {
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 5px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.cui-tags-input .autocomplete .suggestion-item.selected,
+.cui-tags .autocomplete .suggestion-item.selected {
+  background-color: #0097cf;
+  color: #fff; }
+
+.cui-tags-input .autocomplete .suggestion-item.selected em,
+.cui-tags .autocomplete .suggestion-item.selected em {
+  background-color: #0097cf;
+  color: #fff; }
+
+.cui-tags-input .autocomplete .suggestion-item em,
+.cui-tags .autocomplete .suggestion-item em {
+  background-color: #fff;
+  color: #000; }
+
+/*
+Dropdown
+
+Markup: 
+<select class="cui-input cui-input--full cui-select">
+  <option value="helloo"></option>
+  <option value="hellloooo"></option>
+  <option value="hellllooooooo"></option>
+  <option value="HELLO"></option>
+</select>
+
+Styleguide Elements.Forms.Dropdown
+*/
+select.cui-select, select.cui-expandable__review-select,
+.cui-select,
+.cui-expandable__review-select {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMTlweCIgaGVpZ2h0PSIxMHB4IiB2aWV3Qm94PSIwIDAgMTkgMTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+QmFjayBBcnJvdyBDb3B5PC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8cGF0aCBkPSJNOS44NDI0NjMyMSw5LjY5MzQ4NTA5IEM5LjQyNzUwMTIsMTAuMTAyMTcxNiA4Ljc1NDg0ODMxLDEwLjEwMjE3MTYgOC4zMzkzNTQ5OCw5LjY5MzQ4NTA5IEwwLjE1NTQxMTUwOCwxLjYzMzMwNzE3IEMtMC4wNTE4MDM4MzYxLDEuNDI4NzAyMjUgLTAuMDUxODAzODM2MSwxLjA5NzQ2MjA2IDAuMTU1NDExNTA4LDAuODkzMzgwNDI5IEwwLjkwNjY5OTk2MywwLjE1MzQ1MzY4OSBDMS4xMTQ0NDY2MywtMC4wNTExNTEyMjk3IDEuNDUwNzczMDcsLTAuMDUxMTUxMjI5NyAxLjY1Nzk4ODQyLDAuMTUzNDUzNjg5IEw4LjcxNDk5OTIsNy4xMDM3NDE1IEM4LjkyMjc0NTg3LDcuMzA3ODIzMTMgOS4yNTkwNzIzMSw3LjMwNzgyMzEzIDkuNDY2ODE4OTgsNy4xMDM3NDE1IEwxNi41MjM4Mjk4LDAuMTUzNDUzNjg5IEMxNi43MzEwNDUxLC0wLjA1MTE1MTIyOTcgMTcuMDY3MzcxNiwtMC4wNTExNTEyMjk3IDE3LjI3NTExODIsMC4xNTM0NTM2ODkgTDE4LjAyNjQwNjcsMC44OTMzODA0MjkgQzE4LjIzMzYyMiwxLjA5NzQ2MjA2IDE4LjIzMzYyMiwxLjQyODcwMjI1IDE4LjAyNjQwNjcsMS42MzMzMDcxNyBMOS44NDI0NjMyMSw5LjY5MzQ4NTA5IFoiIGlkPSJCYWNrLUFycm93LUNvcHkiIGZpbGw9IiMzNDM1MzQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkuMDkwOTA5LCA1LjAwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtOS4wOTA5MDksIC01LjAwMDAwMCkgIj48L3BhdGg+ICAgIDwvZz48L3N2Zz4=") right 20px center no-repeat;
+  border-radius: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 50px; }
+  select.cui-select:hover, select.cui-expandable__review-select:hover,
+  .cui-select:hover,
+  .cui-expandable__review-select:hover {
+    cursor: pointer; }
+  select.cui-select::-ms-expand, select.cui-expandable__review-select::-ms-expand,
+  .cui-select::-ms-expand,
+  .cui-expandable__review-select::-ms-expand {
+    display: none; }
+  select.cui-select:focus, select.cui-expandable__review-select:focus,
+  .cui-select:focus,
+  .cui-expandable__review-select:focus {
+    outline: 0; }
+
+.cui-dropdown {
+  background-color: #fff;
+  border: 1px solid #cde6f0; }
+
+.cui-dropdown__item {
+  font-color: #ECEAEA;
+  padding: 0.625em 1.875em; }
+  .cui-dropdown__item:hover {
+    background-color: #6a98a0;
+    color: #fff;
+    cursor: pointer; }
+
+/*
+Radio
+
+
+Markup:
+<fieldset class="cui-radio__fieldset">
+  <legend class="cui-radio__legend">Accessible description for radio button collection</legend>
+  <div class="cui-radio__container">
+      <input class="cui-radio" type="radio" name="radio-choice" id="radio-choice-1" value="choice-1" />
+      <label class="cui-radio__label" for="radio-choice-1"><span></span>Choice 1</label>
+  </div>
+  <div class="cui-radio__container">
+      <input class="cui-radio" type="radio" name="radio-choice" id="radio-choice-2" value="choice-2" />
+      <label class="cui-radio__label" for="radio-choice-2"><span></span>Choice 2</label>
+  </div>
+    <div class="cui-radio__container">
+      <input class="cui-radio cui-radio--approve" type="radio" name="radio-choice" id="radio-approve" value="choice-2" />
+      <label class="cui-radio__label" for="radio-approve">Approve</label>
+  </div>
+    <div class="cui-radio__container">
+      <input class="cui-radio cui-radio--deny" type="radio" name="radio-choice" id="radio-deny" value="choice-2" />
+      <label class="cui-radio__label" for="radio-deny">Deny</label>
+  </div>
+</fieldset>
+
+Styleguide Elements.Forms.Radio
+*/
+.cui-radio {
+  /* &:focus + .cui-radio__label.cui-radio__label:before {
+    box-shadow: inset 0 0 0 2px #fff,0 0 7px $cui-greyscale--medium-light;
+  } */ }
+  .cui-radio__legend {
+    left: -999em;
+    position: absolute; }
+  .cui-radio__fieldset {
+    border: 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .cui-radio__container {
+    height: 1.875em;
+    position: relative; }
+  .cui-radio__label:before {
+    background: #d4e2e6;
+    border-radius: 50%;
+    content: "\00a0";
+    display: inline-block;
+    height: 1.25rem;
+    margin: -0.125em 0.5em 0 0;
+    vertical-align: top;
+    text-align: center;
+    width: 1.25rem; }
+  .cui-radio:checked + .cui-radio__label:before {
+    /* @extend .cui-primary-colors--medium-light; */
+    border: 4px solid #d4e2e6;
+    background: #006c77;
+    /* box-shadow: inset 0 0 0 2px #fff; */ }
+  .cui-radio--approve + .cui-radio__label:before {
+    background: #fff;
+    border: 2px solid #0D6C76; }
+  .cui-radio--approve:checked + .cui-radio__label:before {
+    background: #0D6C76;
+    border: none; }
+  .cui-radio--deny + .cui-radio__label:before {
+    background: #fff;
+    border: 2px solid #FC5729; }
+  .cui-radio--deny:checked + .cui-radio__label:before {
+    background: #FC5729;
+    border: none; }
+
+/*
+Checkbox
+
+Markup:
+<fieldset>
+  <legend class="cui-checkbox__legend">Accessible description for checkbox collection</legend>
+  <ul class="cui-checkbox__group">
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1"/><label class="cui-checkbox__label" for="option-1">Option 1</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-2"/><label class="cui-checkbox__label" for="option-2">Option 2</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-3"/><label class="cui-checkbox__label" for="option-3">Option 3</label></li>
+    <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-4"/><label class="cui-checkbox__label" for="option-4">Option 4</label></li>
+  </ul>
+</fieldset>
+
+Styleguide Elements.Forms.Checkbox
+*/
+.cui-checkbox {
+  left: -999em;
+  position: absolute;
+  /* &:focus + .cui-checkbox__label:before {
+    box-shadow: 0 0 7px $cui-greyscale--medium-light;
+  } */ }
+  .cui-checkbox__group {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    list-style-type: none;
+    padding-left: 0; }
+  .cui-checkbox__container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 40px; }
+  .cui-checkbox__label {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    cursor: pointer;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex; }
+    .cui-checkbox__label:before {
+      background: white;
+      border-radius: 2px;
+      border: 2px solid rgba(84, 84, 84, 0.4);
+      content: '\a0';
+      display: inline-block;
+      height: 1.5rem;
+      line-height: 1.4;
+      margin-right: .6em;
+      text-indent: .15em;
+      vertical-align: .2em;
+      width: 1.5rem; }
+  .cui-checkbox:checked + .cui-checkbox__label:before {
+    background: url('data:image/svg+xml;utf8, <svg width="14px" height="11px" viewBox="0 0 28 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><g id="Apps" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" ><g class="cui-svg__checked" transform="translate(-689.000000, -709.000000)" fill="#545454"><g transform="translate(25.000000, 516.000000)"><g transform="translate(0.000000, 180.000000)"><g transform="translate(654.000000, 0.000000)"><path d="M38.0349501,16.4514127 L34.7343616,13.1800554 L20.5418313,27.6270014 L13.3874572,20.8031544 L10.1426534,24.1418906 L20.6022646,34.1743629 L38.0349501,16.4537361 L38.0349501,16.4514127 Z"></path></g></g></g></g></g></svg>') center no-repeat;
+    box-shadow: inset 0 0 0 2px #fff;
+    border-color: #545454; }
+
+/*
+Switch
+
+Markup:
+<div class="cui-switch">
+  <input class="cui-switch__input" name="switch" id="cui-switch-1" type="checkbox" /> 
+  <label class="cui-switch__label" for="cui-switch-1">
+    <div class="cui-switch__container">
+      <span class="cui-switch__checked-message">Accept</span>
+      <span class="cui-switch__unchecked-message">Don't Accept</span>
+    </div>
+  </label> 
+</div>
+
+Styleguide Elements.Forms.Switch
+*/
+.cui-switch {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.cui-switch__container {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #6D6D6D;
+  border-radius: 8px;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 12px;
+  height: 35px;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+  width: 209px; }
+  .cui-switch__container span {
+    margin-left: 15px; }
+
+.cui-switch__checked-message {
+  color: black;
+  transition: color .5s ease-in-out;
+  z-index: 10; }
+
+.cui-switch__unchecked-message {
+  color: white;
+  transition: color .5s ease-in-out;
+  z-index: 10; }
+
+.cui-switch__label {
+  content: '';
+  position: relative; }
+
+.cui-switch__label:before {
+  background-color: #343534;
+  border-radius: 0 6px 6px 0;
+  content: '';
+  cursor: pointer;
+  height: calc(100% - 2px);
+  position: absolute;
+  left: 50%;
+  top: 1px;
+  transition: all .15s ease-in;
+  width: calc(50% - 1px); }
+
+.cui-switch__label:after {
+  background-color: #6a98a0;
+  border-radius: 6px 0 0 6px;
+  content: '';
+  cursor: pointer;
+  height: calc(100% - 2px);
+  position: absolute;
+  right: calc(50% - 1px);
+  top: 1px;
+  transition: all .15s ease-in;
+  width: 0; }
+
+.cui-switch__input:checked + .cui-switch__label:before {
+  width: 0;
+  border-radius: 0; }
+
+.cui-switch__input:checked + .cui-switch__label:after {
+  width: 50%;
+  border-radius: 6px 0 0 6px; }
+
+.cui-switch__input:checked + .cui-switch__label .cui-switch__unchecked-message {
+  color: black;
+  transition: color .5s; }
+
+.cui-switch__input:checked + .cui-switch__label .cui-switch__checked-message {
+  color: white;
+  transition: color .5s; }
+
+/*
+Badge
+
+Markup: 
+<div class="cui-badge">5</div>
+
+Styleguide Elements.Forms.Badge
+*/
+.cui-badge {
+  background: red;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 0.75em;
+  min-width: 25px;
+  padding: 5px 9px;
+  text-align: center; }
+
+/* 
+Colors
+
+A color palette for the Covisint Next Gen UI Framework. Values are available as Sass variables. Variable names are indicated inside each color panel.
+
+Styleguide Elements.Colors
+*/
+/*
+Primary Colors
+
+
+Markup: 
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--light">$cui-primary-colors--light #87CEEC</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-light">$cui-primary-colors--medium-light #429DD1</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium">$cui-primary-colors--medium #4582B4</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--medium-dark">$cui-primary-colors--medium-dark #165E9B</div>
+<div class="cui-styleguide__colors cui-primary-colors cui-primary-colors--dark">$cui-primary-colors--dark #0A2741</div>
+
+Styleguide Elements.Colors.Primary-Colors
+*/
+.cui-primary-colors--light {
+  background-color: #cde6f0; }
+
+.cui-primary-colors--medium-light {
+  background-color: #85a6ad; }
+
+.cui-primary-colors--medium {
+  background-color: #6a98a0; }
+
+.cui-primary-colors--medium-dark, .cui-off-canvas__option {
+  background-color: #1d6572; }
+
+.cui-primary-colors--dark {
+  background-color: #343534; }
+
+/*
+Secondary Colors
+
+
+Markup: 
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--light">$cui-secondary-colors--light #3CB371</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium-light">$cui-secondary-colors--medium-light #FFD700</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--medium">$cui-secondary-colors--medium #FF8C00</div>
+<div class="cui-styleguide__colors cui-secondary-colors cui-secondary-colors--dark">$cui-secondary-colors--dark #FF4400</div>
+
+Styleguide Elements.Colors.Secondary-Colors
+*/
+.cui-secondary-colors--light {
+  background-color: #3CB371; }
+
+.cui-secondary-colors--medium-light {
+  background-color: #FFD700; }
+
+.cui-secondary-colors--medium {
+  background-color: #FF8C00; }
+
+.cui-secondary-colors--dark {
+  background-color: #ff4400; }
+
+/* 
+Logos
+
+Markup: <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
+
+Styleguide Elements.Logo
+*/
+/* 
+Buttons
+
+Styles for button elements
+
+:focus                      - Focus styling
+:active                     - Selected styling
+.cui-button--error          - Error styling 
+.cui-button--error:active   - Error selected styling
+.cui-button--cancel         - Cancel button styling
+.cui-button--full-width     - Full width of container
+.cui-button--small-rounded  - Small and rounded
+.cui-button--inverted       - Inverted
+
+Markup: <button class="cui-button {{modifier_class}}">Button</button>
+
+Styleguide Elements.Buttons
+*/
+.cui-button, .cui-wizard__next,
+.cui-form__next, .cui-card__button, .cui-action__popover-button {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #85a6ad;
+  border-radius: 0.1875em;
+  border: 0;
+  color: #fff;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: 15px;
+  height: 2.8em;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+  width: 10.6666666667em; }
+  .cui-button:focus, .cui-wizard__next:focus,
+  .cui-form__next:focus, .cui-card__button:focus, .cui-action__popover-button:focus, .cui-button.pseudo-class-focus, .pseudo-class-focus.cui-wizard__next,
+  .pseudo-class-focus.cui-form__next, .pseudo-class-focus.cui-card__button, .pseudo-class-focus.cui-action__popover-button {
+    box-shadow: 0 0 3px #343534, 0 0 7px #343534;
+    outline: 0; }
+  .cui-button--clicked {
+    -webkit-animation: button-click 0.3s forwards;
+            animation: button-click 0.3s forwards; }
+  .cui-button:active, .cui-wizard__next:active,
+  .cui-form__next:active, .cui-card__button:active, .cui-action__popover-button:active, .cui-button.pseudo-class-active, .pseudo-class-active.cui-wizard__next,
+  .pseudo-class-active.cui-form__next, .pseudo-class-active.cui-card__button, .pseudo-class-active.cui-action__popover-button {
+    background-color: #1d6572; }
+  .cui-button--error, .cui-wizard__next--error,
+  .cui-form__next--error {
+    background-color: #dbdbdb;
+    cursor: default; }
+    .cui-button--error:active, .cui-wizard__next--error:active,
+    .cui-form__next--error:active, .cui-button--error.pseudo-class-active, .pseudo-class-active.cui-wizard__next--error,
+    .pseudo-class-active.cui-form__next--error {
+      background-color: #343534; }
+  .cui-button--cancel {
+    background-color: #FF8C00; }
+  .cui-button--full-width, .cui-action__popover-button {
+    width: 100%; }
+  .cui-button--small-rounded {
+    font: 0.875em;
+    width: 100px; }
+  .cui-button--inverted {
+    background: #fff;
+    border: 1px solid #85a6ad;
+    color: #85a6ad; }
+
+@-webkit-keyframes button-click {
+  60% {
+    -webkit-transform: scale3d(0.8, 0.8, 1);
+            transform: scale3d(0.8, 0.8, 1); }
+  85% {
+    -webkit-transform: scale3d(1.1, 1.1, 1);
+            transform: scale3d(1.1, 1.1, 1); }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); } }
+
+@keyframes button-click {
+  60% {
+    -webkit-transform: scale3d(0.8, 0.8, 1);
+            transform: scale3d(0.8, 0.8, 1); }
+  85% {
+    -webkit-transform: scale3d(1.1, 1.1, 1);
+            transform: scale3d(1.1, 1.1, 1); }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); } }
+
+/*
+Grid
+
+An example of a few grid layouts that can be used. We utilize thoughtbot's lightweight semantic grid system, <a class="cui-link" href="http://neat.bourbon.io/">Neat</a>. Please refer to their documentation for recommended usage. 
+
+Markup:
+<div class="cui-styleguide__outer-container">
+  <code>@include outer-container;</code>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__half">
+      <code>@include span-columns(6);</code>
+    </div>
+    <div class="cui-styleguide__half">
+      <code>@include span-columns(6);</code>
+    </div>  
+  </div>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+    <div class="cui-styleguide__thirds">
+      <code>@include span-columns(4);</code>
+    </div>
+  </div>
+  <div class="cui-styleguide__row">
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+    <div class="cui-styleguide__quarters">
+      <code>@include span-columns(3);</code>
+    </div>
+  </div>
+</div>
+
+Styleguide Elements.Grid
+*/
+/*
+Icons
+
+Markup:
+<svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51">
+  <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+</svg>
+
+Styleguide Elements.Icons
+*/
+.cui-icon, .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron, .cui-profile--active .cui-profile__chevron, .v2 .cui-profile--mobile .cui-profile__chevron, .cui-header__search, .v2 .cui-desktop-menu__icon,
+.v2 .snap-menu__icon {
+  fill: #85a6ad;
+  height: 24px;
+  width: 24px; }
+  .cui-icon--link {
+    cursor: pointer; }
+  .cui-icon--light-grey {
+    fill: #9B9B9B; }
+  .cui-icon--grey {
+    fill: #828483; }
+  .cui-icon--dark {
+    fill: #444544; }
+  .cui-icon--black {
+    fill: #343534; }
+  .cui-icon--folder {
+    fill: #343534;
+    height: 33px;
+    width: 40px; }
+
+.cui-icon__ref {
+  color: #85a6ad; }
+
+/*
+Blocks
+
+A logically and functionally independent page component, the equivalent of a component in Web Components. Blocks being independent allows for their re-use, as well as facilitating the project development and support process.
+
+Weight: 200
+
+Styleguide Blocks
+*/
+/*
+Form
+
+Markup: 
+<div class="cui-form">
+  <div class="cui-form__title ">A description of this form</div>
+  <div class="cui-form__body">
+    <div class="cui-form__contents">
+      <div class="indicator-container">
+        <span class="step-indicator active">Step One</span>
+        <span class="step-indicator">Step Two</span>
+      </div>
+      <div title="Organization info" class="step active">
+        <form name="organization">
+          <label for="field-1">Input Field Disabled</label>
+          <input type="text" name="field-1" class="cui-input" disabled="">
+          <label for="field-2">Select Field</label>
+          <select name="field-2" class="cui-input cui-select" required="required">
+            <option value="" disabled="" selected="" class=""></option>
+          </select>
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-3">Input Field</label>
+              <input type="text" name="field-3" class="cui-input" required="required">
+            </div>
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-4">Input Field</label>
+              <input type="text" name="field-4" class="cui-input">
+            </div>
+          </div>
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-5">Select Field</label>
+              <select name="field-5" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-6">Select Field</label>
+              <select name="field-6" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="cui-form__field-row">
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-7">Select Field</label>
+              <select name="field-7" class="cui-input cui-select">
+                <option value="" disabled="" selected="" class=""></option>
+              </select>
+            </div>
+            <div class="cui-form__field-container cui-form__field-container--half">
+              <label for="field-8">Input Field</label>
+              <input type="text" name="field-8" class="cui-input">
+            </div>
+          </div>
+          <div class="cui-form__controls">
+            <button class="cui-form__next">Button</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+Styleguide Blocks.Form
+*/
+.cui-wizard,
+.cui-form {
+  border-radius: 6px; }
+  .cui-wizard__body,
+  .cui-form__body {
+    background: white;
+    border-radius: 0 0 6px 6px;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0.75em 0.9375em 0.625em 0.9375em; }
+  .cui-wizard__title,
+  .cui-form__title {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background-color: #85a6ad;
+    border-radius: 6px 6px 0 0;
+    color: white;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 3.125em;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 0 0 0 10px;
+    text-align: center; }
+  @media all and (max-width: 600px) {
+    .cui-wizard,
+    .cui-form {
+      width: 90%; }
+      .cui-wizard__body,
+      .cui-form__body {
+        padding: 20px; } }
+  .cui-wizard__contents,
+  .cui-form__contents {
+    display: block;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%; }
+  .cui-wizard__controls,
+  .cui-form__controls {
+    text-align: right; }
+  .cui-wizard__cancel,
+  .cui-form__cancel {
+    font-size: 1.125em;
+    margin-right: 1.5555555556em; }
+  .cui-wizard__next.success,
+  .cui-form__next.success {
+    background: #3CB371; }
+  .cui-wizard__next.fail,
+  .cui-form__next.fail {
+    background: #ff4400; }
+  .cui-wizard__previous,
+  .cui-form__previous {
+    background: #fff;
+    border: 0;
+    color: #53abd0;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 20px; }
+    .cui-wizard__previous.active,
+    .cui-form__previous.active {
+      display: inline-block; }
+  .cui-wizard__skip,
+  .cui-form__skip {
+    background: #fff;
+    border: 0;
+    color: #53abd0;
+    cursor: pointer;
+    font-size: 12px;
+    display: none;
+    margin-left: 20px; }
+    .cui-wizard__skip--show,
+    .cui-form__skip--show {
+      display: inline-block; }
+  .cui-wizard__field-row,
+  .cui-form__field-row {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    @media screen and (min-width: 700px) {
+      .cui-wizard__field-row,
+      .cui-form__field-row {
+        -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+                flex-direction: row; } }
+  .cui-wizard__field-container,
+  .cui-form__field-container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    @media screen and (min-width: 700px) {
+      .cui-wizard__field-container--half,
+      .cui-form__field-container--half {
+        width: 48%; } }
+  .cui-wizard label,
+  .cui-form label {
+    text-transform: capitalize; }
+
+.cui-error, .cui-error--half {
+  color: red;
+  font-size: 14px;
+  margin-top: 0;
+  padding: 5px 0 5px;
+  position: relative; }
+  .cui-error.ng-active, .ng-active.cui-error--half {
+    -webkit-animation: error-opacity .3s;
+            animation: error-opacity .3s;
+    min-height: 26px;
+    opacity: 1;
+    transition: min-height .15s ease-in, opacity .3s ease-in; }
+  .cui-error.ng-inactive, .ng-inactive.cui-error--half {
+    min-height: 0px;
+    opacity: 0;
+    padding: 0;
+    transition: min-height .15s ease-out, opacity .3s ease-out; }
+  .cui-error--half {
+    width: 48%; }
+    @media all and (max-width: 700px) {
+      .cui-error--half {
+        width: 100%; } }
+  .cui-error__password {
+    display: none;
+    border: 1px solid #DDD;
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.09);
+    padding: 10px 20px 20px;
+    position: absolute;
+    left: 100%;
+    top: 30%;
+    width: 310px;
+    border-radius: 7px;
+    z-index: 2;
+    -webkit-transform: translate(10px, -30%);
+        -ms-transform: translate(10px, -30%);
+            transform: translate(10px, -30%);
+    color: #888; }
+    .cui-error__password::before {
+      color: white;
+      content: '▼';
+      font-size: 16px;
+      left: 0;
+      position: absolute;
+      text-shadow: 2px 2px rgba(0, 0, 0, 0.09);
+      top: 30%;
+      -webkit-transform: rotate(90deg) translate(7px, 15px);
+          -ms-transform: rotate(90deg) translate(7px, 15px);
+              transform: rotate(90deg) translate(7px, 15px); }
+    @media all and (max-width: 700px) {
+      .cui-error__password {
+        left: 50%;
+        top: 100%;
+        width: 90%;
+        -webkit-transform: translate(-50%, -10px);
+            -ms-transform: translate(-50%, -10px);
+                transform: translate(-50%, -10px); }
+        .cui-error__password:before {
+          top: 3px;
+          left: 20%;
+          -webkit-transform: rotate(180deg) translate(0, 100%);
+              -ms-transform: rotate(180deg) translate(0, 100%);
+                  transform: rotate(180deg) translate(0, 100%); } }
+
+.cui-text-area {
+  background-color: #F7F7F7;
+  min-height: 235px;
+  padding: 1.4375em 1.3125em; }
+
+.cui-text-area__label {
+  color: #343534;
+  margin-bottom: 0.625em; }
+
+.cui-error__status {
+  width: 9px;
+  height: 9px;
+  background: #ff4400;
+  display: inline-block;
+  border-radius: 50%;
+  -webkit-transform: translate(0, -1px);
+      -ms-transform: translate(0, -1px);
+          transform: translate(0, -1px); }
+  .cui-error__status.cui-error__status--pass {
+    background: #3CB371; }
+
+.cui-wizard__step-error {
+  color: red;
+  text-align: right;
+  margin-bottom: 20px; }
+
+.chevron {
+  color: #53abd0;
+  float: right;
+  margin-right: 20px;
+  transition: all 200ms ease-in-out; }
+
+.angucomplete-holder {
+  position: relative; }
+
+.angucomplete-dropdown {
+  background-color: #ffffff;
+  border-radius: 0.125em;
+  border: 0.0625em solid #ececec;
+  cursor: pointer;
+  margin-top: -6px;
+  max-height: 12.5em;
+  overflow-y: auto;
+  padding: 0.375em;
+  position: absolute;
+  width: 100%;
+  z-index: 9999; }
+
+.angucomplete-searching {
+  color: #acacac;
+  font-size: 0.875em; }
+
+.angucomplete-description {
+  font-size: 0.875em; }
+
+.angucomplete-row {
+  clear: both;
+  color: #000;
+  margin-bottom: 0.25em;
+  padding: 0.3125em; }
+
+.angucomplete-selected-row {
+  background-color: #FF8C00;
+  color: #fff; }
+  .angucomplete-selected-row .highlight {
+    color: #fff; }
+
+.angucomplete-image-holder {
+  float: left;
+  margin-left: 5px;
+  margin-right: 0.625em;
+  padding-top: 0.125em; }
+
+.angucomplete-image {
+  border-radius: 50%;
+  border: 0.0625em solid #ececec;
+  height: 2.125em;
+  width: 2.125em; }
+
+.angucomplete-image-default {
+  /* Add your own default image here
+     background-image: url('/assets/default.png');
+    */
+  background-position: center;
+  background-size: contain;
+  height: 2.125em;
+  width: 2.125em; }
+
+.highlight {
+  color: #FF8C00; }
+
+/*
+Profile
+
+Markup:
+<div class="cui-profile" >
+  <span class="cui-profile__user-name">Bill Murray</span>
+  <div class="cui-profile__user-avatar"></div>
+  <div id="cui-profile__popup" class="cui-profile__user-menu">
+    <div class="cui-profile__menu-item">
+      <a href="" class="cui-profile__link">My Profile</a>
+      <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+      </svg>
+    </div>
+    <div class="cui-profile__menu-item">
+      <a href="" class="cui-profile__link">Log Out</a>
+      <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+      </svg>
+    </div>
+  </div>
+  <svg class="cui-profile__chevron" viewBox="0 0 216 146">
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+  </svg>
+</div>
+
+Styleguide Blocks.Profile
+*/
+.cui-chevron, .cui-chevron--left, .cui-avatar__chevron--left,
+.cui-profile__chevron--left, .cui-header__chevron--left, .cui-chevron--right, .cui-avatar__chevron--right,
+.cui-profile__chevron--right, .cui-header__chevron--right, .cui-chevron--top, .cui-avatar__chevron--top,
+.cui-profile__chevron--top, .cui-header__chevron--top, .cui-chevron--bottom, .cui-avatar__chevron--bottom,
+.cui-profile__chevron--bottom, .cui-header__chevron--bottom, .cui-avatar__chevron,
+.cui-profile__chevron, .cui-header__chevron {
+  margin-right: 15px;
+  width: 0;
+  height: 0;
+  position: relative; }
+  .cui-chevron:after, .cui-chevron--left:after, .cui-avatar__chevron--left:after,
+  .cui-profile__chevron--left:after, .cui-header__chevron--left:after, .cui-chevron--right:after, .cui-avatar__chevron--right:after,
+  .cui-profile__chevron--right:after, .cui-header__chevron--right:after, .cui-chevron--top:after, .cui-avatar__chevron--top:after,
+  .cui-profile__chevron--top:after, .cui-header__chevron--top:after, .cui-chevron--bottom:after, .cui-avatar__chevron--bottom:after,
+  .cui-profile__chevron--bottom:after, .cui-header__chevron--bottom:after, .cui-avatar__chevron:after,
+  .cui-profile__chevron:after, .cui-header__chevron:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-right: 8px solid #AAA;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent; }
+  .cui-chevron--left, .cui-avatar__chevron--left,
+  .cui-profile__chevron--left, .cui-header__chevron--left {
+    cursor: pointer; }
+  .cui-chevron--right, .cui-avatar__chevron--right,
+  .cui-profile__chevron--right, .cui-header__chevron--right {
+    -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg); }
+  .cui-chevron--top, .cui-avatar__chevron--top,
+  .cui-profile__chevron--top, .cui-header__chevron--top {
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
+
+.cui-avatar,
+.cui-profile,
+.cui-header__user {
+  position: relative; }
+  .cui-avatar--popup,
+  .cui-profile--popup {
+    background: white;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.16);
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    -webkit-transform: translate(0, 19px);
+        -ms-transform: translate(0, 19px);
+            transform: translate(0, 19px);
+    transition: all 80ms ease-in-out;
+    pointer-events: none; }
+    .cui-avatar--popup.active,
+    .cui-profile--popup.active {
+      opacity: 1;
+      pointer-events: auto; }
+      .cui-avatar--popup.active .cui-chevron, .cui-avatar--popup.active .cui-chevron--left, .cui-avatar--popup.active .cui-avatar__chevron--left, .cui-avatar--popup.active
+      .cui-profile__chevron--left, .cui-avatar--popup.active .cui-header__chevron--left, .cui-avatar--popup.active .cui-chevron--right, .cui-avatar--popup.active .cui-avatar__chevron--right, .cui-avatar--popup.active
+      .cui-profile__chevron--right, .cui-avatar--popup.active .cui-header__chevron--right, .cui-avatar--popup.active .cui-chevron--top, .cui-avatar--popup.active .cui-avatar__chevron--top, .cui-avatar--popup.active
+      .cui-profile__chevron--top, .cui-avatar--popup.active .cui-header__chevron--top, .cui-avatar--popup.active .cui-chevron--bottom, .cui-avatar--popup.active .cui-avatar__chevron--bottom, .cui-avatar--popup.active
+      .cui-profile__chevron--bottom, .cui-avatar--popup.active .cui-header__chevron--bottom, .cui-avatar--popup.active .cui-avatar__chevron, .cui-avatar--popup.active
+      .cui-profile__chevron, .cui-avatar--popup.active .cui-header__chevron,
+      .cui-profile--popup.active .cui-chevron,
+      .cui-profile--popup.active .cui-chevron--left,
+      .cui-profile--popup.active .cui-avatar__chevron--left,
+      .cui-profile--popup.active
+      .cui-profile__chevron--left,
+      .cui-profile--popup.active .cui-header__chevron--left,
+      .cui-profile--popup.active .cui-chevron--right,
+      .cui-profile--popup.active .cui-avatar__chevron--right,
+      .cui-profile--popup.active
+      .cui-profile__chevron--right,
+      .cui-profile--popup.active .cui-header__chevron--right,
+      .cui-profile--popup.active .cui-chevron--top,
+      .cui-profile--popup.active .cui-avatar__chevron--top,
+      .cui-profile--popup.active
+      .cui-profile__chevron--top,
+      .cui-profile--popup.active .cui-header__chevron--top,
+      .cui-profile--popup.active .cui-chevron--bottom,
+      .cui-profile--popup.active .cui-avatar__chevron--bottom,
+      .cui-profile--popup.active
+      .cui-profile__chevron--bottom,
+      .cui-profile--popup.active .cui-header__chevron--bottom,
+      .cui-profile--popup.active .cui-avatar__chevron,
+      .cui-profile--popup.active
+      .cui-profile__chevron,
+      .cui-profile--popup.active .cui-header__chevron {
+        -webkit-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+                transform: rotate(180deg); }
+    .cui-avatar--popup hr,
+    .cui-profile--popup hr {
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.15); }
+    .cui-avatar--popup__greet,
+    .cui-profile--popup__greet {
+      display: block;
+      color: #AAA;
+      font-size: 0.9375em;
+      padding: 3px 10px;
+      cursor: default; }
+      .cui-avatar--popup__greet .small,
+      .cui-profile--popup__greet .small {
+        font-size: 13px; }
+    .cui-avatar--popup__option,
+    .cui-profile--popup__option {
+      color: #AAA;
+      display: block;
+      font-size: 0.875em;
+      padding: 3px 10px; }
+      .cui-avatar--popup__option:hover,
+      .cui-profile--popup__option:hover {
+        color: #888; }
+      .cui-avatar--popup__option.logout,
+      .cui-profile--popup__option.logout {
+        color: #6b9bc8;
+        text-align: right; }
+        .cui-avatar--popup__option.logout:hover,
+        .cui-profile--popup__option.logout:hover {
+          color: #386895; }
+  .cui-avatar__user,
+  .cui-profile__user {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    height: 50px;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .cui-avatar__user-avatar,
+  .cui-profile__user-avatar,
+  .cui-header__user-avatar {
+    background-size: contain;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 50px;
+    position: relative;
+    width: 50px; }
+  .cui-avatar__user-name,
+  .cui-profile__user-name,
+  .cui-header__user-name {
+    color: #fff;
+    cursor: pointer;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    font-size: 1.125em;
+    letter-spacing: 0.9px;
+    margin: 0 15px;
+    text-transform: capitalize; }
+    @media all and (max-width: 600px) {
+      .cui-avatar__user-name,
+      .cui-profile__user-name,
+      .cui-header__user-name {
+        display: none; } }
+  .cui-avatar__user-menu,
+  .cui-profile__user-menu,
+  .cui-header__user-menu {
+    background: #E8F0F3;
+    opacity: 0;
+    padding: 10px 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-transform: translate(0, 80px);
+        -ms-transform: translate(0, 80px);
+            transform: translate(0, 80px);
+    transition: all 80ms ease-in-out;
+    width: 100%;
+    z-index: 100; }
+    .cui-avatar__user-menu.active,
+    .cui-profile__user-menu.active,
+    .active.cui-header__user-menu {
+      opacity: 1;
+      pointer-events: auto; }
+    .cui-avatar__user-menu hr,
+    .cui-profile__user-menu hr, .cui-header__user-menu hr {
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.15); }
+  .cui-avatar__menu-greet,
+  .cui-profile__menu-greet,
+  .cui-header__menu-greet {
+    display: block;
+    color: #AAA;
+    font-size: 0.9375em;
+    padding: 3px 10px;
+    cursor: default; }
+    .cui-avatar__menu-greet .small,
+    .cui-profile__menu-greet .small, .cui-header__menu-greet .small {
+      font-size: 13px; }
+  .cui-avatar__option,
+  .cui-profile__option {
+    color: #AAA;
+    display: block;
+    font-size: 0.875em;
+    padding: 3px 10px; }
+    .cui-avatar__option:hover,
+    .cui-profile__option:hover {
+      color: #888; }
+    .cui-avatar__option.logout,
+    .cui-profile__option.logout {
+      color: #6b9bc8;
+      text-align: right; }
+      .cui-avatar__option.logout:hover,
+      .cui-profile__option.logout:hover {
+        color: #386895; }
+  .cui-avatar__svg-logo,
+  .cui-profile__svg-logo {
+    height: 45px;
+    width: 200px; }
+  .cui-avatar__image-container,
+  .cui-profile__image-container {
+    background-size: cover;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%; }
+  .cui-avatar__initials,
+  .cui-profile__initials {
+    font-size: 1.3em;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
+
+.cui-profile, .cui-header__user {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 80px;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+  margin-left: auto;
+  max-width: 350px;
+  transition: all 80ms ease-in-out;
+  width: auto; }
+  .cui-profile .cui-profile__menu-item, .cui-header__user .cui-profile__menu-item {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 0 30px 12px 24px;
+    cursor: pointer; }
+    .cui-profile .cui-profile__menu-item:first-of-type, .cui-header__user .cui-profile__menu-item:first-of-type {
+      padding: 9px 30px 12px 24px; }
+  .cui-profile .cui-profile__link, .cui-header__user .cui-profile__link {
+    font-size: 0.875em; }
+    .cui-profile .cui-profile__link:hover, .cui-header__user .cui-profile__link:hover {
+      cursor: pointer; }
+  .cui-profile .cui-profile__link-icon, .cui-header__user .cui-profile__link-icon {
+    color: #1d6572;
+    height: 15px;
+    width: 15px; }
+  .cui-profile .cui-profile__chevron, .cui-header__user .cui-profile__chevron {
+    fill: #fff;
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
+  .cui-profile--active, .v2 .cui-profile--mobile {
+    background-color: #E8F0F3; }
+    .cui-profile--active .cui-profile__popup, .v2 .cui-profile--mobile .cui-profile__popup,
+    .cui-profile--active .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-profile__user-menu,
+    .cui-profile--active .cui-header__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
+      opacity: 1;
+      pointer-events: auto;
+      width: 100%; }
+    .cui-profile--active .cui-profile__user-name, .v2 .cui-profile--mobile .cui-profile__user-name, .cui-profile--active .cui-header__user-name, .v2 .cui-profile--mobile .cui-header__user-name {
+      color: #4A4A4A; }
+    .cui-profile--active .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-profile__user-menu, .cui-profile--active .cui-header__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
+      opacity: 1; }
+    .cui-profile--active .cui-profile__chevron, .v2 .cui-profile--mobile .cui-profile__chevron {
+      color: #4A4A4A;
+      fill: #4A4A4A;
+      -webkit-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+              transform: rotate(0deg); }
+
+.cui-avatar__image-container {
+  background-size: cover;
+  border-radius: 50%;
+  height: 46px;
+  width: auto; }
+
+.cui-avatar__initials {
+  color: white; }
+
+.cui-avatar__color1 {
+  background-color: #cde6f0; }
+
+.cui-avatar__color2 {
+  background-color: #85a6ad; }
+
+.cui-avatar__color3 {
+  background-color: #6a98a0; }
+
+.cui-avatar__color4 {
+  background-color: #1d6572; }
+
+.cui-avatar__color5 {
+  background-color: #343534; }
+
+/*
+Header
+
+Markup: 
+<header class="cui-header">
+  <div class="cui-header__svg-logo-container">
+    <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xlink:href="bower_components/cui-icons/dist/logos/logos-out.svg#covisint-logo"></use></svg>
+  </div>
+  <div class="cui-header__top">
+    <div class="cui-menu__toggle-button-container" snap-toggle="left" onclick="Nav.navToggle()">
+      <button class="cui-menu__toggle-button"></button>
+    </div>
+    <svg class="cui-header__search" viewBox="0 0 48 48">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#search" class="svg"></use>
+    </svg>
+    <div class="cui-profile" >
+      <span class="cui-profile__user-name">Bill Murray</span>
+      <div class="cui-profile__user-avatar"></div>
+      <div id="cui-profile__popup" class="cui-profile__user-menu">
+        <div class="cui-profile__menu-item">
+          <a href="" class="cui-profile__link">My Profile</a>
+          <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+          </svg>
+        </div>
+        <div class="cui-profile__menu-item">
+          <a href="" class="cui-profile__link">Log Out</a>
+          <svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+          </svg>
+        </div>
+      </div>
+      <svg class="cui-profile__chevron" viewBox="0 0 216 146">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+      </svg>
+    </div>
+  </div>
+</header>
+
+Styleguide Blocks.Header
+*/
+.cui-header {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
+  padding: 0 30px; }
+  .cui-header__search {
+    color: white;
+    cursor: pointer;
+    fill: white; }
+  .cui-header__user {
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    height: 50px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .cui-header__user--avatar {
+      background-size: contain;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 50px;
+      width: 50px; }
+    .cui-header__user--name {
+      color: #AAA;
+      cursor: pointer;
+      margin-right: 15px; }
+      @media all and (max-width: 600px) {
+        .cui-header__user--name {
+          display: none; } }
+    @media all and (max-width: 600px) {
+      .cui-header__user > .cui-chevron--left, .cui-header__user > .cui-avatar__chevron--left, .cui-header__user >
+      .cui-profile__chevron--left, .cui-header__user > .cui-header__chevron--left {
+        display: none; } }
+  .cui-header__logo {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  .cui-header__top {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 80px;
+    padding: 0 0;
+    border-bottom: 1px solid #EEE; }
+  .cui-header__bottom {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 60px;
+    padding: 0 0; }
+
+.cui-header {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
+  padding: 0 30px;
+  position: relative; }
+  .cui-header__search {
+    color: white;
+    cursor: pointer;
+    fill: white; }
+  @media all and (max-width: 600px) {
+    .cui-header > .cui-chevron--left, .cui-header > .cui-avatar__chevron--left, .cui-header >
+    .cui-profile__chevron--left, .cui-header > .cui-header__chevron--left {
+      display: none; } }
+  .cui-header__svg-logo-container {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 80px;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 60px); }
+  .cui-header__svg-logo {
+    height: 45px;
+    position: relative;
+    width: 200px; }
+  .cui-header__top {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 80px;
+    padding: 0 0;
+    border-bottom: 0; }
+  .cui-header__bottom {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 60px;
+    padding: 0 0; }
+
+/*
+Tile
+
+Markup: 
+<div class="cui-tile">
+  <div class="cui-tile__title">Tile Title</div>
+  <div class="cui-tile__body">
+    <p>Tile Body</p>
+  </div>
+</div>
+
+Styleguide Blocks.Tile
+*/
+.cui-tile, .cui-form--mobile-steps, .code-info {
+  border-radius: 6px; }
+  .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
+    background: white;
+    border: 1px solid #cde6f0;
+    border-radius: 0;
+    border-top: 0;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0.75em 0.9375em 0.625em 0.9375em;
+    position: relative; }
+    @media screen and (min-width: 701px) {
+      .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
+        border-radius: 0;
+        padding: 0.75em 0.9375em 0.625em 0.9375em; } }
+  .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background: #fff;
+    border: 1px solid #cde6f0;
+    border-radius: 0;
+    color: #000;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 3.125em;
+    padding: 0 0 0 10px;
+    text-align: left; }
+    @media screen and (min-width: 701px) {
+      .cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+        border-radius: 0; } }
+  @media all and (max-width: 600px) {
+    .cui-tile__body, .cui-form--mobile-steps .cui-form__body {
+      padding: 20px; } }
+
+.cui-tile--headless {
+  border: 1px solid #cde6f0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 1.875em 1.875em; }
+
+/*
+Off Canvas Nav
+
+Markup:
+<div class="cui-wrapper">
+  <div class="snap-drawers">
+    <div class="snap-drawer">
+      <nav class="cui-off-canvas">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <snap-content class="snap-content">
+    <header class="cui-header">
+      <div class="cui-header__top">
+        <div class="cui-menu__toggle-button-container active" snap-toggle="left" onclick="Nav.navToggle()">
+          <button class="cui-menu__toggle-button"></button>
+        </div>
+        <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#">
+    </div></header>
+    <div class="cui-menu__content-wrapper" style="min-height:0;height:400px">
+      <div class="cui-styleguide__main-container" style="min-height:0;height:400px">
+        <!--   <header class="cui-styleguide__header">
+            <h1 class="cui-styleguide__doc-title"></h1>
+          </header> -->
+      <nav id="desktop-menu" class="cui-off-canvas desktop-menu">
+        <ul class="cui-off-canvas__list">
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__list-item-name">Overview</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+          </li>
+          <li class="cui-off-canvas__section">
+            <a class="cui-off-canvas__section-link" href="#">
+              <span class="cui-styleguide__nav__ref"></span><span class="cui-styleguide__nav__name">Parent Link</span>
+            </a>
+            <ul class="cui-off-canvas__sub-section">
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+                <li class="cui-off-canvas__sub-section">
+                  <a href="#">
+                    <span class="cui-styleguide__nav__ref">  </span><span class="cui-styleguide__nav__name">Child Link</span>
+                  </a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+        <article role="main" class="cui-styleguide__main" style="min-height:0">
+
+              <div id="kssref-2" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-1">
+              </div>
+              <section id="kssref-2-6" class="cui-tile cui-styleguide__section cui-styleguide__section--depth-2">
+            
+
+            <div class="cui-styleguide__style">
+              <div clas="cui-tile__title"></div>
+              <h2 class="cui-tile__title cui-styleguide__title cui-styleguide__title--level-2">
+                <a class="cui-styleguide__title__permalink" href="#">
+                  <span class="cui-styleguide__title__ref">
+                      
+                  </span>
+                  Example
+                </a>
+              </h2>
+
+            </div>
+
+            <div class="cui-tile__body">
+              <div>PAGE CONTENT</div>
+              </div></section>
+        </article>
+      </div>
+    </div>
+  </snap-content>
+</div>
+
+
+Styleguide Blocks.Off-Canvas
+*/
+.cui-search__dropdown .cui-search__filter-title, .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title {
+  display: block;
+  margin: 10px 0;
+  cursor: pointer; }
+
+.cui-off-canvas {
+  background-color: linear-gradient(to bottom, #1d6572, #6a98a0); }
+
+.cui-off-canvas__list-item,
+.cui-off-canvas__section {
+  background-color: transparent;
+  display: block;
+  margin: 10px 0;
+  cursor: pointer; }
+  .cui-off-canvas__list-item a,
+  .cui-off-canvas__section a {
+    color: white;
+    text-decoration: none; }
+
+.cui-off-canvas__option {
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px; }
+  .cui-off-canvas__option:hover {
+    color: orange; }
+  .cui-off-canvas__option:first-of-type {
+    margin-top: 30px; }
+
+.cui-off-canvas__list-item-link,
+.cui-off-canvas__section-link {
+  display: block;
+  min-height: 2.5em;
+  padding-left: 2.5em;
+  padding-top: 0.625em; }
+
+.cui-off-canvas__list-item a:hover,
+.cui-off-canvas__list-item.active a,
+.cui-off-canvas__section a:hover,
+.cui-off-canvas__section.active a {
+  color: #FF8C00; }
+
+.cui-off-canvas__list--child,
+.cui-off-canvas__sub-section-list {
+  background-color: transparent;
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 2.5em;
+  padding-top: 0;
+  transition: max-height 0.3s linear, padding-top 0.05s 0.25s linear; }
+  .cui-off-canvas__list--child a:hover,
+  .cui-off-canvas__list--child.active a,
+  .cui-off-canvas__sub-section-list a:hover,
+  .cui-off-canvas__sub-section-list.active a {
+    color: #cde6f0; }
+
+.cui-off-canvas__list-item--active .cui-off-canvas__list--child,
+.cui-off-canvas__list-item--active .cui-off-canvas__sub-section-list,
+.cui-off-canvas__section--active .cui-off-canvas__list--child,
+.cui-off-canvas__section--active .cui-off-canvas__sub-section-list {
+  max-height: 3000px;
+  padding-top: 0.625em;
+  transition: max-height 0.3s linear; }
+
+.cui-off-canvas__list-item--child,
+.cui-off-canvas__sub-section {
+  font-weight: 500;
+  padding: 0.3125em 0; }
+
+.cui-wrapper {
+  min-height: 100vh;
+  background: #E8F0F3;
+  position: relative; }
+  @media screen and (min-width: 1000px) {
+    .cui-wrapper {
+      min-height: 1000px; } }
+
+.snapjs-left .cui-wrapper {
+  overflow: hidden; }
+
+.cui-nav__content-wrapper,
+.cui-menu__content-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-left: 300px;
+  transition: all 150ms ease-in-out; }
+  .cui-nav__content-wrapper.desktop-menu--collapse,
+  .cui-menu__content-wrapper.desktop-menu--collapse {
+    margin-left: 0; }
+  @media screen and (max-width: 999px) {
+    .cui-nav__content-wrapper,
+    .cui-menu__content-wrapper {
+      margin-left: 0; } }
+
+.cui-main {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.snap-content,
+snap-content {
+  background: #fff;
+  padding: 0;
+  transition: all .15s linear; }
+
+.snap-drawer,
+snap-drawer {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
+  min-height: 100vh; }
+  .snap-drawer .cui-off-canvas,
+  snap-drawer .cui-off-canvas {
+    background: transparent; }
+  .snap-drawer .cui-off-canvas__sub-section-list,
+  snap-drawer .cui-off-canvas__sub-section-list {
+    background: transparent; }
+
+@media screen and (min-width: 1000px) {
+  .snap-drawer {
+    display: none; } }
+
+.snap-menu--option {
+  background: #1d6572;
+  color: white;
+  display: block;
+  padding: 10px 20px;
+  margin: 10px 0;
+  cursor: pointer; }
+  .snap-menu--option:hover {
+    color: orange; }
+  .snap-menu--option:first-of-type {
+    margin-top: 30px; }
+
+snap-content,
+[snap\:content],
+[snap-content],
+[data-snap-content],
+[x-snap-content],
+.snap-content,
+.x-snap-content,
+snap-drawers,
+[snap\:drawers],
+[snap-drawers],
+[data-snap-drawers],
+[x-snap-drawers],
+.snap-drawers,
+.x-snap-drawers,
+.snap-drawers,
+.snap-content {
+  position: static;
+  background: #fff; }
+  @media screen and (max-width: 999px) {
+    snap-content,
+    [snap\:content],
+    [snap-content],
+    [data-snap-content],
+    [x-snap-content],
+    .snap-content,
+    .x-snap-content,
+    snap-drawers,
+    [snap\:drawers],
+    [snap-drawers],
+    [data-snap-drawers],
+    [x-snap-drawers],
+    .snap-drawers,
+    .x-snap-drawers,
+    .snap-drawers,
+    .snap-content {
+      position: absolute;
+      height: auto;
+      top: 0;
+      width: auto;
+      left: 0;
+      right: 0; } }
+
+snap-drawer,
+[snap\:drawer],
+[snap-drawer],
+[data-snap-drawer],
+[x-snap-drawer],
+.snap-drawer,
+.x-snap-drawer,
+.snap-drawer {
+  height: auto;
+  overflow: auto;
+  transition: top 0.2s linear;
+  transition: bottom 0.2s linear;
+  -webkit-overflow-scrolling: touch;
+  -moz-overflow-scrolling: touch;
+  -o-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  width: 265px;
+  position: absolute; }
+
+.snap-content {
+  z-index: 2;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -moz-overflow-scrolling: touch;
+  -o-overflow-scrolling: touch;
+  overflow-scrolling: touch; }
+
+.snap-drawer-left {
+  height: 100vh;
+  left: 0;
+  z-index: 1; }
+
+.snap-drawer-right {
+  height: 100vh;
+  right: 0;
+  z-index: 1; }
+
+.snapjs-left .snap-drawer-right,
+.snapjs-right .snap-drawer-left {
+  display: none; }
+
+.snapjs-expand-left .snap-drawer-left,
+.snapjs-expand-right .snap-drawer-right {
+  width: 100%; }
+
+.snapjs-left .menu-toggle--button,
+.snapjs-left .cui-menu__toggle-button {
+  width: 0;
+  transition: width .1s linear; }
+  .snapjs-left .menu-toggle--button:before,
+  .snapjs-left .cui-menu__toggle-button:before {
+    top: 0;
+    -webkit-transform: rotateZ(45deg);
+            transform: rotateZ(45deg);
+    transition: top .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: top .1s ease-in-out, transform .1s .1s ease-in-out; }
+  .snapjs-left .menu-toggle--button:after,
+  .snapjs-left .cui-menu__toggle-button:after {
+    bottom: 0;
+    -webkit-transform: rotateZ(-45deg);
+            transform: rotateZ(-45deg);
+    transition: bottom .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+    transition: bottom .1s ease-in-out, transform .1s .1s ease-in-out; }
+
+.v2 .cui-menu__content-wrapper,
+.v2 .cui-nav__content-wrapper {
+  margin-left: 180px; }
+  @media screen and (max-width: 999px) {
+    .v2 .cui-menu__content-wrapper,
+    .v2 .cui-nav__content-wrapper {
+      margin-left: 0; } }
+  .v2 .cui-menu__content-wrapper.cui-desktop-menu--collapse,
+  .v2 .cui-nav__content-wrapper.cui-desktop-menu--collapse {
+    margin-left: 80px; }
+    @media screen and (max-width: 999px) {
+      .v2 .cui-menu__content-wrapper.cui-desktop-menu--collapse,
+      .v2 .cui-nav__content-wrapper.cui-desktop-menu--collapse {
+        margin-left: 0; } }
+
+.v2 .cui-desktop-menu {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
+  height: calc(100% - 80px);
+  left: 0;
+  margin-top: 80px;
+  position: absolute;
+  top: 0;
+  transition: all 150ms ease-in-out;
+  width: 180px;
+  display: none; }
+  @media screen and (min-width: 1000px) {
+    .v2 .cui-desktop-menu {
+      display: inline-block; } }
+  .v2 .cui-desktop-menu--collapse {
+    left: -100px; }
+
+.v2 .cui-desktop-menu__option,
+.v2 .snap-menu--option {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 10px 0;
+  min-height: 3.75em;
+  padding: 10px 20px;
+  transition: background-color .15s linear, color .15s linear; }
+  .v2 .cui-desktop-menu__option:hover,
+  .v2 .snap-menu--option:hover {
+    color: #FF8C00; }
+    .v2 .cui-desktop-menu__option:hover .cui-desktop-menu__icon,
+    .v2 .cui-desktop-menu__option:hover .snap-menu__icon,
+    .v2 .snap-menu--option:hover .cui-desktop-menu__icon,
+    .v2 .snap-menu--option:hover .snap-menu__icon {
+      fill: #FF8C00; }
+  .v2 .cui-desktop-menu__option.active,
+  .v2 .snap-menu--option.active {
+    background: #E8F0F3;
+    color: #6a98a0; }
+    .v2 .cui-desktop-menu__option.active .cui-desktop-menu__icon,
+    .v2 .cui-desktop-menu__option.active .snap-menu__icon,
+    .v2 .snap-menu--option.active .cui-desktop-menu__icon,
+    .v2 .snap-menu--option.active .snap-menu__icon {
+      fill: #6a98a0; }
+
+.v2 .cui-desktop-menu__option:first-of-type,
+.v2 .snap-menu--option:first-of-type {
+  margin-top: 0; }
+
+.v2 .cui-desktop-menu__option-name,
+.v2 .snap-menu__option-name {
+  font-size: 0.875em;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.v2 .cui-desktop-menu__icon,
+.v2 .snap-menu__icon {
+  fill: #fff;
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5;
+  height: 2em;
+  padding-left: 15px;
+  transition: fill .15s linear; }
+
+.v2 .cui-menu__toggle-button--desktop {
+  background: #1d6572;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 80px;
+  padding-left: 27px;
+  width: 180px;
+  z-index: 1; }
+  @media screen and (max-width: 999px) {
+    .v2 .cui-menu__toggle-button--desktop {
+      display: none; } }
+
+.v2 .cui-header {
+  z-index: 10; }
+  @media screen and (min-width: 1000px) {
+    .v2 .cui-header .cui-menu__toggle-button-container {
+      display: none; } }
+
+.v2 .cui-header__svg-logo {
+  margin-left: -180px;
+  transition: margin-left .15s ease-in-out; }
+
+.v2 .cui-desktop-menu--collapse .cui-header__svg-logo {
+  margin-left: -80px;
+  transition: margin-left .15s ease-in-out; }
+
+.v2 .cui-off-canvas__section-link {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 15px; }
+
+@media screen and (max-width: 999px) {
+  .v2 .cui-profile, .v2 .cui-header__user {
+    display: none; } }
+
+.v2 .cui-profile--mobile {
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: auto;
+  margin-left: 0;
+  margin-top: 80px; }
+  @media screen and (max-width: 999px) {
+    .v2 .cui-profile--mobile {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; } }
+  .v2 .cui-profile--mobile .cui-profile__row {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%; }
+    .v2 .cui-profile--mobile .cui-profile__row:first-of-type {
+      padding: 15px 10px 0; }
+  .v2 .cui-profile--mobile .cui-profile__user-menu, .v2 .cui-profile--mobile .cui-header__user-menu {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none; }
+  .v2 .cui-profile--mobile .cui-profile__user-name, .v2 .cui-profile--mobile .cui-header__user-name {
+    display: block; }
+
+@media screen and (min-width: 1000px) {
+  .v2 .menu-toggle--mobile {
+    display: none; } }
+
+.desktop-menu {
+  background: linear-gradient(to bottom, #1d6572, #6a98a0);
+  height: calc(100% - 80px);
+  left: 0;
+  margin-top: 80px;
+  position: absolute;
+  top: 0;
+  transition: all 150ms ease-in-out;
+  width: 300px;
+  display: none; }
+  @media screen and (min-width: 1000px) {
+    .desktop-menu {
+      display: inline-block; } }
+  .desktop-menu--collapse {
+    left: -300px; }
+
+.desktop-menu--option {
+  background: #1d6572;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px; }
+  .desktop-menu--option:hover {
+    color: #FF8C00; }
+  .desktop-menu--option:first-of-type {
+    margin-top: 30px; }
+
+.menu-toggle--button,
+.cui-menu__toggle-button {
+  background: #fff;
+  border: none;
+  height: 1px;
+  padding: 0;
+  position: relative;
+  transition: width .1s linear;
+  width: 25px; }
+  .menu-toggle--button:before,
+  .cui-menu__toggle-button:before {
+    background: #fff;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: -9px;
+    transition: -webkit-transform .1s ease-in-out, top .1s .1s ease-in-out;
+    transition: transform .1s ease-in-out, top .1s .1s ease-in-out;
+    width: 25px; }
+  .menu-toggle--button:after,
+  .cui-menu__toggle-button:after {
+    background: #fff;
+    bottom: -9px;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transition: -webkit-transform .1s ease-in-out, bottom .1s .1s ease-in-out;
+    transition: transform .1s ease-in-out, bottom .1s .1s ease-in-out;
+    width: 25px; }
+
+.cui-menu__toggle-button:focus {
+  box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+  outline: 0; }
+  .cui-menu__toggle-button:focus:before, .cui-menu__toggle-button:focus:after {
+    box-shadow: 0 1px 3px rgba(100, 100, 100, 0.6);
+    outline: 0; }
+
+.menu-toggle,
+.cui-menu__toggle-button-container {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .menu-toggle--desktop,
+  .cui-menu__toggle-button-container--desktop {
+    display: none; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--desktop,
+      .cui-menu__toggle-button-container--desktop {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; } }
+  .menu-toggle--mobile,
+  .cui-menu__toggle-button-container--mobile {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    @media screen and (min-width: 1001px) {
+      .menu-toggle--mobile,
+      .cui-menu__toggle-button-container--mobile {
+        display: none; } }
+  .menu-toggle.active .menu-toggle--button,
+  .menu-toggle.active .cui-menu__toggle-button,
+  .cui-menu__toggle-button-container.active .menu-toggle--button,
+  .cui-menu__toggle-button-container.active .cui-menu__toggle-button {
+    width: 0;
+    transition: width .1ms linear; }
+    .menu-toggle.active .menu-toggle--button:before,
+    .menu-toggle.active .cui-menu__toggle-button:before,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:before,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:before {
+      top: 0;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
+      transition: top .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+      transition: top .1s ease-in-out, transform .1s .1s ease-in-out; }
+    .menu-toggle.active .menu-toggle--button:after,
+    .menu-toggle.active .cui-menu__toggle-button:after,
+    .cui-menu__toggle-button-container.active .menu-toggle--button:after,
+    .cui-menu__toggle-button-container.active .cui-menu__toggle-button:after {
+      bottom: 0;
+      -webkit-transform: rotateZ(-45deg);
+              transform: rotateZ(-45deg);
+      transition: bottom .1s ease-in-out, -webkit-transform .1s .1s ease-in-out;
+      transition: bottom .1s ease-in-out, transform .1s .1s ease-in-out; }
+
+/*
+Expandable
+
+Markup:
+<div class="cui-expandable expanded">
+  <div class="cui-expandable__title">
+    Expandable Group #1
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+    <li class="cui-expandable__review-item">Revealed item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    Expandable Group #2
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+    <li class="cui-expandable__review-item">Hidden item</li>
+  </ul>
+</div>
+<div class="cui-expandable">
+  <div class="cui-expandable__title">
+    Expandable Group #3
+    <span class="chevron">></span>
+  </div>
+  <ul class="cui-expandable__body">
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+    <li class="cui-expandable__review-item">Another hidden item</li>
+  </ul>
+</div>
+
+Styleguide Blocks.Expandable
+*/
+.cui-expandable {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  padding-bottom: 10px;
+  position: relative;
+  width: 100%; }
+  @media screen and (min-width: 701px) {
+    .cui-expandable--wizard {
+      border-bottom: 0; } }
+  .cui-expandable--wizard .step-indicator {
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border-bottom: 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 1em;
+    padding: 0; }
+    @media screen and (min-width: 701px) {
+      .cui-expandable--wizard .step-indicator {
+        font-size: 1.5em; } }
+  .cui-expandable__title {
+    color: #333;
+    cursor: pointer;
+    display: block;
+    padding: 10px 0 0; }
+    .cui-expandable__title--flex {
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+    .cui-expandable__title .cui-expandable__title-left,
+    .cui-expandable__title .cui-expandable__title-middle,
+    .cui-expandable__title .cui-expandable__title-end {
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1; }
+    .cui-expandable__title .cui-expandable__title-middle {
+      color: #4A4A4A;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      font-size: 0.875em; }
+    .cui-expandable__title .cui-expandable__title-end {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end; }
+  .cui-expandable__title--error {
+    color: red;
+    font-weight: 700; }
+  .cui-expandable__review-item {
+    color: #666;
+    font-size: 0.875em;
+    line-height: .75;
+    margin: 1em 0; }
+  .cui-expandable:last-of-type {
+    margin-bottom: 20px; }
+  .cui-expandable__body {
+    display: block;
+    overflow: hidden;
+    width: 100%; }
+  .cui-expandable.expanded > .cui-expandable__title > .chevron {
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg); }
+
+.cui-expandable__body-pane {
+  background-color: #d4e2e6;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 3.75em;
+  position: relative;
+  width: 90%;
+  margin-left: 5%; }
+  .cui-expandable__body-pane .cui-expandable__body-close {
+    position: absolute;
+    top: 5px;
+    right: 12px; }
+    .cui-expandable__body-pane .cui-expandable__body-close .cui-icon, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile .cui-profile__chevron, .cui-profile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__user .cui-profile__chevron, .cui-header__user .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-profile--active .cui-profile__chevron, .cui-profile--active .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .v2 .cui-profile--mobile .cui-profile__chevron, .v2 .cui-profile--mobile .cui-expandable__body-pane .cui-expandable__body-close .cui-profile__chevron, .cui-expandable__body-pane .cui-expandable__body-close .cui-header__search, .cui-expandable__body-pane .cui-expandable__body-close .v2 .cui-desktop-menu__icon, .v2 .cui-expandable__body-pane .cui-expandable__body-close .cui-desktop-menu__icon, .cui-expandable__body-pane .cui-expandable__body-close
+    .v2 .snap-menu__icon,
+    .v2 .cui-expandable__body-pane .cui-expandable__body-close .snap-menu__icon {
+      height: 14px;
+      width: 14px; }
+  .cui-expandable__body-pane .cui-expandable__pane-title {
+    color: #4A4A4A;
+    margin-bottom: 2.1875em; }
+  .cui-expandable__body-pane .cui-expandable__pane-col {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .cui-expandable__body-pane .cui-expandable__pane-content {
+    color: #4A4A4A; }
+    .cui-expandable__body-pane .cui-expandable__pane-content .cui-checkbox__label:before {
+      background-color: transparent;
+      border: 2px solid #4A4A4A; }
+    .cui-expandable__body-pane .cui-expandable__pane-content .cui-checkbox:checked + .cui-checkbox__label:before {
+      box-shadow: none; }
+  .cui-expandable__body-pane .cui-expandable__pane-content-item {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+.cui-expandable__review-button {
+  cursor: pointer; }
+
+.cui-expandable__review-input {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
+.cui-expandable__review-select {
+  display: inline-block;
+  font-size: 1em;
+  height: auto;
+  margin: -6px 0 -6px 0;
+  padding: 0 2px;
+  width: 300px; }
+
+.cui-expandable__body {
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.cui-expandable__edit-button {
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  -webkit-transform: translate(-100%, 0px);
+      -ms-transform: translate(-100%, 0px);
+          transform: translate(-100%, 0px); }
+  .cui-expandable__edit-button .cui-expandable__edit-icon {
+    fill: #333;
+    height: 30px;
+    width: 30px; }
+  .cui-expandable__edit-button:hover .cui-expandable__edit-icon {
+    fill: #85a6ad; }
+
+.steps-bar {
+  background-color: #ccc;
+  height: 0.125em;
+  position: absolute;
+  top: 62%;
+  z-index: 0; }
+  .steps-bar--no-js {
+    width: 100%; }
+  .steps-bar .steps-bar-fill {
+    background-color: #D0D0D0;
+    display: inline-block;
+    height: 0.125em;
+    position: absolute; }
+
+.indicator-container {
+  border-bottom: 1px solid #ddd;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: space-between;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-bottom: 2.5em;
+  position: relative; }
+  .indicator-container.small .step-indicator {
+    display: none;
+    pointer-events: none; }
+    .indicator-container.small .step-indicator.active {
+      border: 0;
+      display: inline-block;
+      margin: 0 auto;
+      text-align: center;
+      color: #bbb; }
+
+.indicator-container--icons {
+  border-bottom: 0; }
+  .indicator-container--icons.small .steps-bar {
+    display: none; }
+  .indicator-container--icons.small .step-indicator {
+    display: none;
+    pointer-events: none; }
+    .indicator-container--icons.small .step-indicator.active {
+      color: #6a98a0; }
+    .indicator-container--icons.small .step-indicator.visited {
+      color: #666; }
+
+/*
+Tables
+
+Markup:
+<table class="cui-table cui-table--borderless">
+  <thead>
+    <tr>
+      <th scope="col">Column Title 1</th>
+      <th scope="col">Column Title 2</th>
+      <th scope="col">Column Title 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="">
+      <td data-label="Column Title 1 "scope="row">Row Information</td>
+      <td data-label="Column Title 2">Row Information</td>
+      <td data-label="Column Title 3">Row Information</td>
+    </tr>
+    <tr>
+      <td data-label="Column Title 1 "scope="row">Row Information</td>
+      <td data-label="Column Title 2">Row Information</td>
+      <td data-label="Column Title 3">Row Information</td>
+    </tr>
+    <tr>
+      <td data-label="Column Title 1 "scope="row">Row Information</td>
+      <td data-label="Column Title 2">Row Information</td>
+      <td data-label="Column Title 3">Row Information</td>
+    </tr>
+    <tr>
+      <td data-label="Column Title 1 "scope="row">Row Information</td>
+      <td data-label="Column Title 2">Row Information</td>
+      <td data-label="Column Title 3">Row Information</td>
+    </tr>      
+  </tbody>
+</table>
+
+Styleguide Elements.Tables
+
+*/
+.cui-table {
+  border-spacing: 0;
+  margin: 2em 0;
+  min-width: 100%; }
+  .cui-table thead tr {
+    background-color: #343534; }
+  .cui-table thead th {
+    text-align: left; }
+  .cui-table th, .cui-table td {
+    border: 1px solid #343534;
+    padding: 1.5rem; }
+
+.cui-table--borderless thead tr {
+  background-color: transparent; }
+  .cui-table--borderless thead tr th {
+    border-top: 0; }
+
+.cui-table--borderless th, .cui-table--borderless td {
+  border-left: 0;
+  border-right: 0; }
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .cui-table--borderless {
+    /* Force table to not be like tables anymore */
+    /*
+  Label the data
+  */ }
+    .cui-table--borderless table, .cui-table--borderless thead, .cui-table--borderless tbody, .cui-table--borderless th, .cui-table--borderless td, .cui-table--borderless tr {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; }
+    .cui-table--borderless thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px; }
+    .cui-table--borderless tbody {
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column; }
+    .cui-table--borderless tr {
+      border: 1px solid #ccc;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column; }
+    .cui-table--borderless td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid #eee; }
+    .cui-table--borderless td:before {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      font-weight: 900;
+      padding-right: 20px;
+      max-width: 40%; }
+    .cui-table--borderless td:nth-of-type(1):before {
+      content: attr(data-label); }
+    .cui-table--borderless td:nth-of-type(2):before {
+      content: attr(data-label); }
+    .cui-table--borderless td:nth-of-type(3):before {
+      content: attr(data-label); } }
+
+/*
+Popover
+
+Modifiers for Popover Element
+
+.cui-popover--dark          - a dark version of the popover
+.cui-popover--left          - left arrow
+.cui-popover--right         - right arrow
+.cui-popover--top           - top arrow
+.cui-popover--bottom        - bottom arrow
+.cui-popover__menu          - border-separated menu
+
+Markup:
+<div class="cui-styeguide__popover-container">
+  <div class="cui-popover {{modifier_class}}">
+    <p class="">Passwords must:</p>
+    <div class="cui-error__message"><p>have at least 1 lower case letter</p></div>
+    <div class="cui-error__message"><p>have at least 1 upper case letter</p></div>
+  </div>
+</div>
+
+Styleguide Blocks.Popover
+*/
+.cui-popover--top::before, .cui-action__popover::before, .cui-popover--bottom::before, .cui-popover--left::before, .cui-popover--right::before {
+  color: #fff;
+  content: '▼';
+  font-size: 1em;
+  position: absolute; }
+
+.cui-styeguide__popover-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  height: 18.75em;
+  position: relative;
+  max-width: 19.375em; }
+
+.cui-popover, .cui-action__popover {
+  border-radius: 0.4375em;
+  border: 0.0625em solid #DDD;
+  box-shadow: 0 1px 5px rgba(106, 152, 160, 0.9);
+  color: #888;
+  display: block;
+  padding: 0.625em 1.25em 1.25em;
+  position: absolute;
+  top: 30%;
+  -webkit-transform: translate(0.625em, -30%);
+      -ms-transform: translate(0.625em, -30%);
+          transform: translate(0.625em, -30%);
+  width: 19.375em;
+  z-index: 2; }
+  .cui-popover--dark {
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: none;
+    color: #fff; }
+    .cui-popover--dark p {
+      color: #fff; }
+    .cui-popover--dark::before {
+      color: rgba(0, 0, 0, 0.9); }
+  .cui-popover--top::before, .cui-action__popover::before {
+    left: 50%;
+    text-shadow: 0.125em 0.125em rgba(106, 152, 160, 0.09);
+    top: 0;
+    -webkit-transform: rotate(180deg) translate(0.4375em, 0.9375em);
+        -ms-transform: rotate(180deg) translate(0.4375em, 0.9375em);
+            transform: rotate(180deg) translate(0.4375em, 0.9375em); }
+  .cui-popover--bottom::before {
+    left: 50%;
+    text-shadow: 0.125em 0.125em rgba(106, 152, 160, 0.09);
+    top: calc(100% - 5px); }
+  .cui-popover--left::before {
+    left: 2px;
+    text-shadow: 0.125em 0.125em rgba(106, 152, 160, 0.09);
+    top: 30%;
+    -webkit-transform: rotate(90deg) translate(0.4375em, 0.9375em);
+        -ms-transform: rotate(90deg) translate(0.4375em, 0.9375em);
+            transform: rotate(90deg) translate(0.4375em, 0.9375em); }
+  .cui-popover--right::before {
+    left: calc(100% - 4px);
+    text-shadow: -2px 0.125em rgba(106, 152, 160, 0.09);
+    top: 30%;
+    -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg); }
+  .cui-popover__menu {
+    padding: 0; }
+    .cui-popover__menu p {
+      border-bottom: 1px solid #eee;
+      padding: 1em 1.25em;
+      margin: 0; }
+    .cui-popover__menu > div:last-of-type p {
+      border: none; }
+  @media all and (max-width: 700px) {
+    .cui-popover, .cui-action__popover {
+      -webkit-transform: translate(-50%, -em(10));
+          -ms-transform: translate(-50%, -em(10));
+              transform: translate(-50%, -em(10));
+      width: 90%; }
+      .cui-popover::before, .cui-action__popover::before {
+        left: 50%;
+        top: 0;
+        -webkit-transform: rotate(180deg) translate(0.4375em, 0.9375em);
+            -ms-transform: rotate(180deg) translate(0.4375em, 0.9375em);
+                transform: rotate(180deg) translate(0.4375em, 0.9375em); } }
+
+/*
+Card
+
+Markup:
+<div>
+  <div class="cui-card">
+    <div class="cui-card__image-container">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="88px"
+         height="88px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+        <use class="cui-card__icon" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+      </svg>
+    </div>
+    <div class="cui-card__content">
+      <h3 class="cui-card__content-header">Header</h3>
+      <p>Some text that appropriately describes the context of this card. Some text that appropriately describes the context of this card.</p>
+    </div>
+    <button class="cui-card__button">Button</button>
+  </div>
+</div>
+
+Styleguide Blocks.Cards
+*/
+.cui-card__container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-height: 31.25em; }
+  @media screen and (min-width: 600px) {
+    .cui-card__container {
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; } }
+
+.cui-card, .cui-popover-container--relative {
+  background: #fff;
+  border: 1px solid #cde6f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 28.75em;
+  margin: 0.625em;
+  max-width: 20em;
+  padding: 2.5em;
+  transition: box-shadow .2s ease, -webkit-transform .2s ease;
+  transition: box-shadow .2s ease, transform .2s ease; }
+  .cui-card:hover, .cui-popover-container--relative:hover {
+    box-shadow: 0 1px 5px rgba(106, 152, 160, 0.9);
+    -webkit-transform: translateY(-3px);
+        -ms-transform: translateY(-3px);
+            transform: translateY(-3px); }
+
+.cui-card__image-container {
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.cui-card__image {
+  width: 100%; }
+
+p {
+  max-width: 100%; }
+
+.cui-card__content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  line-height: 1.4; }
+
+.cui-card__content-header {
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center;
+  color: #828483;
+  font-size: 1.75em;
+  font-weight: 900;
+  margin: 0.3125em 0; }
+
+.cui-card__icon {
+  fill: #85a6ad; }
+
+.cui-card__button {
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center;
+  border-radius: 0.1875em;
+  height: 3.5em; }
+
+/*
+Global Navigation
+
+Markup:
+<div class="cui-top-nav__container">
+  <nav class="cui-top-nav" role='navigation'>
+    <ul class="cui-top-nav__nav-list">
+      <li class="cui-top-nav__section cui-top-nav__section--active">
+        <a href="#">Nav section</a>
+        <div class="cui-top-nav__sub-nav-dropdown">
+          <ul class="cui-top-nav__sub-nav-list">
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+              <ul class="cui-top-nav__sub-nav-items">
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+                <li class="cui-top-nav__sub-nav-item" ><a href="#">Sub link</a></li>
+              </ul>
+            </li>
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+            </li>
+            <li>
+              <span class="cui-top-nav__sub-title" >Sub section</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="cui-top-nav__section">
+        <a href="#">Nav section</a>
+      </li>
+      <li class="cui-top-nav__section">
+        <a href="#">Nav section</a>
+      </li>
+    </ul>
+    <div class="cui-search-container">
+      <input class="cui-search" type="text" placeholder="search" />
+      <div class="cui-search__dropdown">
+        <ul>
+          <li class="cui-search__filter">
+            <span class="cui-search__filter-title" >Search filter</span>
+            <ul class="cui-search__search-filter-items">
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+              <li class="cui-search__search-filter-item" ><a href="#">Filter link</a></li>
+            </ul>
+          </li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+          <li class="cui-search__filter" ><span class="cui-search__filter-title" >Search filter<span></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+Styleguide Blocks.Global Navigation
+*/
+.cui-top-nav__container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 80px; }
+
+.cui-top-nav {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: none;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  @media screen and (min-width: 992px) {
+    .cui-top-nav {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; } }
+
+.cui-top-nav__nav-list {
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0; }
+
+.cui-top-nav__section {
+  padding: 0 0.625em; }
+  .cui-top-nav__section a {
+    color: #828483;
+    position: relative;
+    text-decoration: none; }
+
+.cui-top-nav__section.cui-top-nav__section--active > a {
+  color: #6a98a0;
+  border: 2px solid #6a98a0;
+  border-radius: 30px;
+  padding: .3em .7em;
+  transition: background-color .3s;
+  z-index: 1; }
+  .cui-top-nav__section.cui-top-nav__section--active > a:hover {
+    color: white;
+    background-color: #6a98a0; }
+
+.cui-search {
+  border: 2px solid #eee;
+  border-radius: 4px;
+  height: 2em;
+  padding-left: 5px;
+  margin-right: 1em; }
+
+.cui-search__dropdown {
+  min-width: 12.5em;
+  position: absolute; }
+  .cui-search__dropdown a {
+    color: inherit;
+    text-decoration: none; }
+  .cui-search__dropdown .cui-search__search-filter-items {
+    max-height: 0; }
+  .cui-search__dropdown ul {
+    background-color: #f9f9f9;
+    max-height: 0;
+    list-style-type: none;
+    overflow: hidden;
+    padding-left: 0;
+    margin: 0;
+    transition: max-height .2s ease-out; }
+  .cui-search__dropdown .cui-search__filter-title {
+    background-color: #eee;
+    color: #828483;
+    font-weight: 600;
+    margin: 0.625em 0 0;
+    padding: 0.625em 0.3125em; }
+  .cui-search__dropdown .cui-search__filter.expanded .cui-search__search-filter-items {
+    max-height: 62.5em;
+    transition: max-height .2s ease-in; }
+  .cui-search__dropdown .cui-search__search-filter-item {
+    margin: 0.625em 0 0 0.625em; }
+
+.cui-top-nav__sub-nav-dropdown {
+  min-width: 12.5em;
+  position: absolute; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-nav-items {
+    max-height: 0; }
+  .cui-top-nav__sub-nav-dropdown ul {
+    background-color: #f9f9f9;
+    max-height: 0;
+    list-style-type: none;
+    overflow: hidden;
+    padding-left: 0;
+    margin: 0;
+    transition: max-height .2s ease-out; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title {
+    background-color: #eee;
+    color: #828483;
+    font-weight: 600;
+    margin: 0.625em 0 0;
+    padding: 0.625em 0.3125em; }
+    .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-title.expanded + .cui-top-nav__sub-nav-items {
+      max-height: 62.5em;
+      transition: max-height .2s ease-in; }
+  .cui-top-nav__sub-nav-dropdown .cui-top-nav__sub-nav-item {
+    margin: 0.625em 0 0 0.625em; }
+
+.cui-search:focus + .cui-search__dropdown > ul,
+.cui-search-container:hover .cui-search__dropdown > ul,
+.cui-top-nav__section:hover .cui-top-nav__sub-nav-dropdown > ul {
+  max-height: 62.5em;
+  transition: max-height .2s ease-in; }
+
+/*
+Expandable with Table Layout
+
+Markup:
+<div class="cui-expandable__container">
+  <div class="cui-expandable__tr">
+    <span class="cui-expandable__td">Invitation ID</span>
+    <span class="cui-expandable__td">Email</span>
+    <span class="cui-expandable__td"></span>
+  </div>
+  <div class="cui-expandable expanded">
+    <div class="cui-expandable__title">
+      <div class="cui-expandable__tr">
+        <span class="cui-expandable__td">11545385</span>
+        <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+        <span class="cui-expandable__td"><span class="cui-expandable__link">view</span></span>
+      </div>
+    </div>
+    <ul class="cui-expandable__body">
+      <li class="cui-expandable__review-item">Revealed item</li>
+      <li class="cui-expandable__review-item">Revealed item</li>
+      <li class="cui-expandable__review-item">Revealed item</li>
+      <li class="cui-expandable__review-item">Revealed item</li>
+    </ul>
+  </div>
+  <div class="cui-expandable">
+    <div class="cui-expandable__title">
+      <div class="cui-expandable__tr">
+        <span class="cui-expandable__td">11545385</span>
+        <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+        <span class="cui-expandable__td"><span class="cui-link">view</span></span>
+      </div>
+    </div>
+    <ul class="cui-expandable__body">
+      <li class="cui-expandable__review-item">Hidden item</li>
+      <li class="cui-expandable__review-item">Hidden item</li>
+      <li class="cui-expandable__review-item">Hidden item</li>
+      <li class="cui-expandable__review-item">Hidden item</li>
+    </ul>
+  </div>
+  <div class="cui-expandable">
+    <div class="cui-expandable__title">
+      <div class="cui-expandable__tr">
+        <span class="cui-expandable__td">11545385</span>
+        <span class="cui-expandable__td">william.murray@thirdwavellc.com</span>
+        <span class="cui-expandable__td"><span class="cui-link">view</span></span>
+      </div>
+    </div>
+    <ul class="cui-expandable__body">
+      <li class="cui-expandable__review-item">Another hidden item</li>
+      <li class="cui-expandable__review-item">Another hidden item</li>
+      <li class="cui-expandable__review-item">Another hidden item</li>
+      <li class="cui-expandable__review-item">Another hidden item</li>
+    </ul>
+  </div>
+</div>
+
+
+Styleguide Blocks.Expandable With Table Layout
+*/
+.cui-expandable__container {
+  font-size: 0.75em;
+  overflow-x: scroll; }
+  @media screen and (min-width: 500px) {
+    .cui-expandable__container {
+      font-size: 1em; } }
+
+.cui-expandable__tr {
+  width: 100%;
+  display: block; }
+  .cui-expandable__tr::after {
+    clear: both;
+    content: "";
+    display: table; }
+
+.cui-expandable__td {
+  float: left;
+  display: block;
+  margin-right: 2.3576515979%;
+  width: 23.2317613015%; }
+  .cui-expandable__td:last-child {
+    margin-right: 0; }
+  .cui-expandable__td:nth-of-type(2) {
+    float: left;
+    display: block;
+    margin-right: 2.3576515979%;
+    width: 48.821174201%; }
+    .cui-expandable__td:nth-of-type(2):last-child {
+      margin-right: 0; }
+  .cui-expandable__td:nth-of-type(3) {
+    text-align: center; }
+
+/*
+Pagination
+
+Markup:
+<nav class="cui-pagination">
+  <span class="cui-pagination__total">Showing 1-300 of 1500 items</span>
+  <a class="cui-pagination__display-amount" href="#">Show 50</a> 
+  <ul class="cui-pagination__links">
+    <li class="cui-pagination__link">
+      <a href="#" aria-label="Previous">
+        <span class="cui-pagination__previous cui-pagination__previous--disabled" aria-hidden="true">&lsaquo;Prev</span>
+      </a>
+    </li>
+    <li class="cui-pagination__link cui-pagination__link--current">
+      <a href="">1</a>
+    </li>
+    <li class="cui-pagination__link">
+      <a href="">2</a>
+    </li>
+    <li class="cui-pagination__link">
+      <a href="">3</a>
+    </li>
+    <li class="cui-pagination__link">
+      <a href="#" aria-label="Next">
+        <span class="cui-pagination__next" aria-hidden="true">Next&rsaquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+Styleguide Blocks.Pagination
+*/
+.cui-pagination {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100px;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  max-width: 550px;
+  text-align: center; }
+  @media screen and (min-width: 500px) {
+    .cui-pagination {
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      height: auto; } }
+
+.cui-pagination__total {
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
+
+.cui-pagination__links {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding-left: 20px;
+  text-align: center; }
+  @media screen and (min-width: 500px) {
+    .cui-pagination__links {
+      border-left: 1px solid black;
+      margin-left: -1px; } }
+
+.cui-pagination__link {
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  list-style-type: none;
+  padding: 0 10px; }
+  @media screen and (min-width: 500px) {
+    .cui-pagination__link {
+      padding: 0; } }
+  .cui-pagination__link a {
+    text-decoration: none; }
+  .cui-pagination__link .cui-pagination__link--current {
+    color: #929292;
+    cursor: text; }
+
+.cui-pagination__previous--disabled {
+  color: #929292;
+  cursor: default; }
+
+.cui-pagination__display-amount {
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-decoration: none; }
+  @media screen and (min-width: 500px) {
+    .cui-pagination__display-amount {
+      border-left: 1px solid black;
+      margin-left: -1px; } }
+
+/*
+Loading
+
+Markup:
+<div class="cui-loading__container">
+  <div class="cui-loading"></div>
+</div>
+
+Styleguide Blocks.Loading
+*/
+.cui-loading__container {
+  background: white;
+  bottom: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: all 200ms ease-in-out;
+  z-index: 10; }
+  .cui-loading__container--center {
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+.cui-loading, .cui-loading--medium, .cui-loading--medium-ctr, .cui-loading--button {
+  -webkit-animation: spin 1s infinite linear;
+          animation: spin 1s infinite linear;
+  background-color: #fff;
+  border: 0.625em solid #85a6ad;
+  border-radius: 2.5em;
+  border-top-color: #cde6f0;
+  height: 5em;
+  width: 5em; }
+
+.cui-loading--medium, .cui-loading--medium-ctr {
+  border-width: 0.3125em;
+  height: 3.75em;
+  width: 3.75em; }
+
+.cui-loading--center {
+  left: calc(50% - (5em / 2 + 0.625em));
+  position: absolute;
+  top: calc(50% - (5em / 2 + 0.625em));
+  z-index: 10; }
+
+.cui-loading--medium-ctr {
+  left: calc(50% - (3.75em / 2 + 0.3125em));
+  position: absolute;
+  top: calc(50% - (3.75em / 2 + 0.3125em)); }
+
+.cui-loading--button {
+  background: transparent;
+  border-width: 0.2em;
+  height: 21px;
+  left: calc(10.6666666667em / 2 - 10px);
+  position: absolute;
+  top: 8px;
+  width: 21px; }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+/*
+Step Indicator
+
+Markup:
+<div class="indicator-container">
+  <span class="step-indicator active">Example Step 1</span>
+  <span class="step-indicator">Example Step 2</span>
+  <span class="step-indicator">Example Step 3</span>
+  <span class="step-indicator">Example Step 4</span>
+</div>
+
+Styleguide Blocks.Step-Indicator
+*/
+.step-indicator {
+  color: #bbb;
+  display: inline-block;
+  margin-bottom: -2px;
+  padding: 10px 0;
+  position: relative;
+  text-align: center;
+  text-transform: capitalize;
+  white-space: nowrap; }
+  @media screen and (min-width: 701px) {
+    .step-indicator .icon-container {
+      margin-top: 0.625em; } }
+  .step-indicator .icon {
+    background: #fff;
+    border-radius: 50%;
+    border: 0.125em solid #ccc;
+    height: 3.125em;
+    position: relative;
+    margin: 0 auto;
+    width: 3.125em;
+    z-index: 1; }
+  .step-indicator.active {
+    color: #333; }
+    @media screen and (min-width: 701px) {
+      .step-indicator.active {
+        border-bottom: 6px solid #85a6ad; } }
+    .step-indicator.active .icon {
+      border: 0.125em solid #6a98a0; }
+    .step-indicator.active .cui-icon-rotate,
+    .step-indicator.active .icon-svg {
+      fill: #6a98a0; }
+  .step-indicator.visited {
+    color: #666; }
+    .step-indicator.visited .icon {
+      border: 0.125em solid #666; }
+    .step-indicator.visited .cui-icon-rotate,
+    .step-indicator.visited .icon-svg {
+      fill: #666; }
+
+.indicator-container--icons .step-indicator.active {
+  border-bottom: 0; }
+
+.cui-icon-rotate,
+.icon-svg {
+  fill: #ccc;
+  height: 1.5em;
+  width: 1.5em; }
+  @media screen and (min-width: 700px) {
+    .cui-icon-rotate,
+    .icon-svg {
+      margin: 0.625em auto 0; } }
+
+step,
+.step {
+  display: none; }
+  step.active,
+  .step.active {
+    display: block; }
+
+@media screen and (max-width: 700px) {
+  .cui-wizard[mobile-stack] .desktop-element,
+  .cui-wizard[mobile-stack] .indicator-container {
+    display: none; } }
+
+@media screen and (min-width: 701px) {
+  .cui-wizard[mobile-stack] .mobile-element,
+  .cui-wizard[mobile-stack] .mobile-element {
+    display: none; } }
+
+.cui-steps,
+.steps {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%; }
+
+/*
+Step Indicator With Icons
+
+Markup:
+<div class="indicator-container indicator-container--icons">
+  <div class="steps-bar steps-bar--no-js"><div class="steps-bar-fill"></div></div>
+  <div class="cui-steps">
+    <span class="step-indicator ng-binding ng-scope active">Step 1
+      <div class="icon-container">
+        <div class="icon">
+          <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#skyscraper"></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </span>
+    <span class="step-indicator ng-binding ng-scope">Step 2
+      <div class="icon-container">
+        <div class="icon">
+          <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </span>
+    <span class="step-indicator ng-binding ng-scope">Step 3
+      <div class="icon-container">
+        <div class="icon">
+          <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#division"></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </span>
+    <span class="step-indicator ng-binding ng-scope">Step 4
+      <div class="icon-container">
+        <div class="icon">
+          <div cui-svg-icon="cui:skyscraper" class="ng-isolate-scope">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon-rotate" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+              <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#review"></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+Styleguide Blocks.Step-Indicator-With-Icons
+*/
+.cui-form--mobile-steps .cui-form__title {
+  left: -9999px;
+  position: absolute; }
+  @media screen and (min-width: 700px) {
+    .cui-form--mobile-steps .cui-form__title {
+      left: 0;
+      position: relative; } }
+
+.cui-form--mobile-steps .cui-form__body {
+  padding: 0; }
+  @media screen and (min-width: 700px) {
+    .cui-form--mobile-steps .cui-form__body {
+      padding: 3.125em; } }
+
+.cui-form--mobile-steps .cui-expandable.mobile-element {
+  padding-bottom: 0; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable:first-of-type {
+  border-bottom: 1px solid #929292;
+  border-top: 1px solid #929292; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable {
+  border-bottom: 1px solid #929292; }
+
+.cui-form--mobile-steps .mobile-element.cui-expandable.expanded > .cui-expandable__body {
+  padding-top: 2.5em;
+  padding-bottom: 2.5em; }
+
+.cui-form--mobile-steps .mobile-element > .cui-expandable__title {
+  background-color: #F3F3F3;
+  height: 7.5em;
+  padding-left: 1.25em;
+  padding-top: 0;
+  position: relative; }
+  .cui-form--mobile-steps .mobile-element > .cui-expandable__title::before {
+    background-color: #D0D0D0;
+    content: '';
+    left: 2.5em;
+    height: 100%;
+    position: absolute;
+    width: 1px; }
+  .cui-form--mobile-steps .mobile-element > .cui-expandable__title .step-indicator__title {
+    color: #D0D0D0;
+    font-size: 1.5em;
+    padding-left: 1.0416666667em; }
+
+.cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title {
+  background-color: #fff;
+  border-bottom: 1px solid #929292; }
+  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title::before {
+    background-color: #979797; }
+  .cui-form--mobile-steps .mobile-element.expanded > .cui-expandable__title .step-indicator__title {
+    color: #6a98a0; }
+
+.cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title {
+  background-color: #D9EAEE; }
+  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title::before {
+    background-color: #979797; }
+  .cui-form--mobile-steps .mobile-element.visited > .cui-expandable__title .step-indicator__title {
+    color: #6D6D6D; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title::before {
+  background-color: #979797;
+  content: '';
+  left: 2.5em;
+  height: 100%;
+  position: absolute;
+  width: 1px; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+  bottom: 0;
+  height: 50%; }
+
+.cui-form--mobile-steps .cui-expandable:first-of-type.mobile-element > .cui-expandable__title .step-indicator__title {
+  font-size: 1.5em;
+  padding-left: 1.0416666667em; }
+
+.cui-form--mobile-steps .cui-expandable:last-of-type.mobile-element > .cui-expandable__title:nth-of-type(1)::before {
+  top: 0;
+  height: 50%; }
+
+.cui-form--mobile-steps .mobile-element.visited .icon {
+  border: 2px solid #6D6D6D; }
+
+.cui-form--mobile-steps .mobile-element .icon {
+  background: #fff;
+  border: 2px solid #D0D0D0;
+  border-radius: 50%;
+  height: 2.5em;
+  position: relative;
+  margin: 0 auto;
+  width: 2.5em;
+  z-index: 1; }
+
+.cui-form--mobile-steps .mobile-element .icon-container {
+  -webkit-order: -1;
+      -ms-flex-order: -1;
+          order: -1;
+  text-align: center; }
+
+.cui-form--mobile-steps .mobile-element.expanded .icon {
+  border: 2px solid #6a98a0; }
+
+.cui-form--mobile-steps .mobile-element.visited .cui-icon-rotate,
+.cui-form--mobile-steps .mobile-element.visited .icon-svg {
+  fill: #6D6D6D; }
+
+.cui-form--mobile-steps .mobile-element.expanded .cui-icon-rotate,
+.cui-form--mobile-steps .mobile-element.expanded .icon-svg {
+  fill: #6a98a0; }
+
+.cui-form--mobile-steps .mobile-element .cui-icon-rotate,
+.cui-form--mobile-steps .mobile-element .icon-svg {
+  height: 1.25em;
+  margin: 0.5em auto 0;
+  width: 1.25em; }
+
+.cui-form--mobile-steps .mobile-element .cui-expandable__title {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.cui-form--mobile-steps .mobile-element .cui-expandable__title--alt-layout {
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+@media screen and (min-width: 701px) {
+  .cui-expandable__title--wizard {
+    display: none; } }
+
+/*
+Tabs
+
+Markup:
+<div class="cui-tabs">
+  <ul class="cui-tabs__nav">
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab cui-tabs__tab--active" data-pane="tab1">Active Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab2">Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab3">Tab</a></li>
+    <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab4">Tab</a></li>
+  </ul>
+  <div class="cui-tabs__content">
+    <div id="tab1" class="cui-tabs__tab-pane cui-tabs__tab-pane--active"><p>Tab 1 Content</p></div>
+    <div id="tab2" class="cui-tabs__tab-pane"><p>Tab 2 Content</p></div>
+    <div id="tab3" class="cui-tabs__tab-pane"><p>Tab 3 Content</p></div>
+    <div id="tab4" class="cui-tabs__tab-pane"><p>Tab 4 Content</p></div>
+  </div>
+</div>
+
+Styleguide Blocks.Tabs
+*/
+.cui-tabs {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.cui-tabs__nav {
+  border-bottom: 1px solid #eee;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.cui-tabs__tab-container {
+  border-left: 1px solid #fff;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-right: 3px; }
+
+.cui-tabs__tab-container:first-of-type {
+  border-left: none; }
+  .cui-tabs__tab-container:first-of-type .cui-tabs__tab--active {
+    box-shadow: 1px -2px 2px #eee; }
+
+.cui-tabs__tab-container:last-of-type {
+  padding-right: 0; }
+  .cui-tabs__tab-container:last-of-type .cui-tabs__tab--active {
+    box-shadow: -1px -2px 2px #eee; }
+
+.cui-tabs__tab {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #E8F0F3;
+  color: #6A98A0;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: 0.9375em;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0.625em;
+  text-align: center;
+  text-decoration: none; }
+  .cui-tabs__tab--active {
+    background-color: #fff;
+    box-shadow: 0px -2px 2px 1px #eee;
+    color: #1D6572;
+    margin-bottom: -1px; }
+  @media screen and (min-width: 701px) {
+    .cui-tabs__tab {
+      font-size: 1em; } }
+
+.cui-tabs__tab-pane {
+  display: none; }
+  .cui-tabs__tab-pane--active {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    padding: 3.125em 1.25em; }
+
+/*
+Media Object
+
+Modifiers for Media Object
+
+.cui-media--centered       - Centered Media Object
+
+Markup:
+<div class="cui-media {{modifier_class}}">
+  <div class="cui-media__image-container">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+      <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+    </svg>
+  </div>
+  <div class="cui-media__body">
+    <h3 class="cui-media__title">Media Object title</h3>
+    <p class="cui-media__content">Media Object body</p>
+  </div>
+</div>
+
+Styleguide Blocks.Media-Object
+*/
+.cui-media {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1em 0;
+  /* Centered Media Object */ }
+  .cui-media--border {
+    border-bottom: 1px solid #cde6f0; }
+  .cui-media--centered {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 20%; }
+    .cui-media--centered .cui-media__image-container {
+      margin: 0; }
+      .cui-media--centered .cui-media__image-container svg {
+        margin: 0 auto; }
+      .cui-media--centered .cui-media__image-container a {
+        width: 100%; }
+    .cui-media--centered .cui-media__content {
+      display: inline; }
+
+.cui-media__image-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: .25;
+      -ms-flex: .25;
+          flex: .25;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative; }
+  @media screen and (min-width: 701px) {
+    .cui-media__image-container {
+      -webkit-flex: .1;
+          -ms-flex: .1;
+              flex: .1;
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start; } }
+
+.cui-media__body {
+  -webkit-flex: .75;
+      -ms-flex: .75;
+          flex: .75; }
+  @media screen and (min-width: 701px) {
+    .cui-media__body--full {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1; } }
+
+@media screen and (min-width: 701px) {
+  .cui-media__title,
+  .cui-media__content {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; } }
+
+@media screen and (min-width: 701px) {
+  .cui-status {
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: .2;
+        -ms-flex: .2;
+            flex: .2;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; } }
+
+.cui-media__title {
+  font-family: 'lato-black', sans-serif;
+  font-size: 1.0625em;
+  letter-spacing: 1.6px; }
+
+.cui-media__image {
+  border: 0;
+  border-radius: 50%;
+  height: 3.125em;
+  width: 3.125em;
+  position: relative; }
+
+.cui-media__content {
+  letter-spacing: 1.6px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0;
+  padding: 0.3125em 0; }
+  .cui-media__content--small {
+    font-size: 0.875em;
+    margin: 0;
+    padding: 0; }
+
+.cui-media__link {
+  cursor: pointer;
+  text-decoration: underline; }
+
+.cui-media__status {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: .25;
+      -ms-flex: .25;
+          flex: .25;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding-top: 5px; }
+
+@media screen and (max-width: 700px) {
+  .cui-media--vertical {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    text-align: center; }
+    .cui-media--vertical .cui-media__content {
+      display: inline-block; } }
+
+/*
+Action Bar
+
+.cui-action--alt-bg     - Alternative background styling
+
+Markup:
+<div class="cui-action {{modifier_class}}">
+  <span class="cui-action__title">Action Title</span>
+  <div class="cui-action__actions">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+    </svg>  
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+      <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#plus25"></use>
+    </svg>
+  </div>
+</div>
+
+Styleguide Blocks.Action-Bar
+*/
+.cui-action {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  min-height: 60px;
+  padding: 0 0.8125em; }
+  @media screen and (min-width: 701px) {
+    .cui-action {
+      padding: 1.1875em 3.4375em 0 4.0625em; } }
+  .cui-action--alt .cui-action__title {
+    color: #343534; }
+  .cui-action--alt .cui-action__icon,
+  .cui-action--alt .cui-action__icon--lg {
+    cursor: pointer;
+    fill: #343534;
+    height: 1.25em;
+    min-width: 26px;
+    width: auto;
+    transition: fill .15s; }
+    .cui-action--alt .cui-action__icon use,
+    .cui-action--alt .cui-action__icon--lg use {
+      color: #343534;
+      transition: color .15s; }
+  .cui-action--alt .cui-action__icon-counter {
+    color: #343534;
+    font-family: lato-bold;
+    margin-left: -8px;
+    top: -5px;
+    transition: color .15s; }
+  .cui-action--alt .cui-action__icon--active,
+  .cui-action--alt .cui-action__icon-counter--active {
+    color: #6a98a0;
+    fill: #6a98a0;
+    transition: color .15s, fill .15s; }
+    .cui-action--alt .cui-action__icon--active use,
+    .cui-action--alt .cui-action__icon-counter--active use {
+      color: #6a98a0;
+      transition: color .15s; }
+  .cui-action__title {
+    color: #6a98a0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5; }
+    @media screen and (min-width: 701px) {
+      .cui-action__title {
+        -webkit-flex: .75;
+            -ms-flex: .75;
+                flex: .75; } }
+  .cui-action__actions {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+    @media screen and (min-width: 701px) {
+      .cui-action__actions {
+        -webkit-flex: .25;
+            -ms-flex: .25;
+                flex: .25; } }
+  .cui-action__action-container {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-left: 0.9375em; }
+    .cui-action__action-container .cui-action__icon {
+      margin: 0 auto; }
+  .cui-action__action-label {
+    color: #6a98a0;
+    font-size: 11px;
+    text-align: center; }
+  .cui-action__icon, .cui-action__icon--lg {
+    cursor: pointer;
+    fill: #6a98a0;
+    min-width: 26px;
+    width: auto; }
+    .cui-action__icon use, .cui-action__icon--lg use {
+      color: #6a98a0; }
+  .cui-action__icon {
+    height: 1.25em; }
+  .cui-action__icon--lg {
+    height: 2.5em;
+    width: 2.0625em; }
+  .cui-action__icon--new, .cui-action__icon--close {
+    fill: #fff;
+    height: 2.8125em;
+    margin-left: 1.875em;
+    margin-top: -2px;
+    width: auto; }
+  .cui-action__icon--new use {
+    color: #1d6572; }
+  .cui-action__icon-counter {
+    color: #6a98a0;
+    font-family: lato-bold;
+    margin-left: -8px;
+    top: 2px; }
+  .cui-action .cui-input-button {
+    height: 2.5em; }
+  .cui-action .cui-input-button__input {
+    -webkit-flex: .82;
+        -ms-flex: .82;
+            flex: .82; }
+  .cui-action .cui-input-button__button {
+    -webkit-flex: .18;
+        -ms-flex: .18;
+            flex: .18; }
+  .cui-action__popover {
+    border-radius: 0.1875em;
+    box-shadow: 0 1px 0.3125em 0 #1d6572;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    min-height: 12.5em;
+    padding-right: 1.875em;
+    width: 13.5em; }
+    .cui-action__popover::before {
+      left: 75%; }
+  .cui-action__popover-title {
+    color: #343534; }
+  .cui-action__popover-section {
+    font-size: 0.875em;
+    padding: 0.625em 0; }
+  .cui-action__popover-button {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 0.6875em;
+    height: 2.9090909091em;
+    letter-spacing: 1.6px; }
+
+/*
+Field Value
+
+Markup:
+<div class="cui-field-val">
+  <span class="cui-field-val__field">Field: </span>
+  <span class="cui-field-val__val">value</span>
+</div>
+
+Styleguide Blocks.Field-Value
+*/
+.cui-field-val {
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  letter-spacing: 1.8px;
+  line-height: 1.4;
+  margin-bottom: 0.3125em; }
+  .cui-field-val--stack {
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+  .cui-field-val__field {
+    color: #343534;
+    margin-right: 0.3125em;
+    margin-bottom: 0.3125em; }
+  .cui-field-val__val {
+    font-size: 1.125em;
+    margin-bottom: 0.3125em; }
+
+/*
+Modal example to be added via iframe
+*/
+.cui-modal {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 100; }
+  .cui-modal--hide {
+    display: none; }
+  .cui-modal__pane {
+    border-radius: 6px;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background: #fff;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    min-height: 19.25em;
+    padding: 1.875em 5em 2.125em;
+    text-align: center;
+    width: 80%; }
+    @media screen and (min-width: 701px) {
+      .cui-modal__pane {
+        width: 38.292682926829%; } }
+  .cui-modal__icon {
+    color: #1d6572;
+    height: 80px;
+    width: 80px; }
+    .cui-modal__icon svg {
+      fill: #1d6572;
+      height: 5em;
+      width: 5em; }
+  .cui-modal__primary-message {
+    color: #343534;
+    font-size: 1.875em;
+    margin-top: 0.8333333333em; }
+  .cui-modal__secondary-message {
+    color: #343534;
+    margin-top: 0.75em;
+    max-width: 9.375em; }
+
+.cui-footer {
+  padding-bottom: 1.25em;
+  padding-top: 1.25em; }
+
+.cui-nav__content-wrapper {
+  min-height: 750px; }
+
+.cui-wrapper {
+  background: #fff; }
+
+.cui-footer {
+  padding-bottom: 30px; }
+  .cui-footer__translate {
+    float: right;
+    display: inline-block; }
+  .cui-footer__link {
+    float: left;
+    display: inline-block;
+    padding-right: 40px; }
+
+.cui-tile__title, .cui-form--mobile-steps .cui-form__title {
+  border-radius: 0; }
+
+.cui-card, .cui-popover-container--relative {
+  position: relative; }
+
+.cui-popover_link {
+  text-align: center; }
+
+.cui-popover_link a {
+  color: #FFFFFF; }
+
+.welcome-wrapper {
+  padding: 30px;
+  max-width: 1100px;
+  margin: 0 auto; }
+
+.welcome-title {
+  padding: 20px; }
+
+.welcome-title h1 {
+  color: #828483;
+  font-size: 2em;
+  text-align: center; }
+
+.cui-popover__new-division {
+  font-size: 14px;
+  height: 230px; }
+
+@media screen and (max-width: 700px) {
+  .cui-styeguide__popover-container .cui-popover__new-division {
+    width: 275px; } }
+
+inline-edit .angucomplete-dropdown {
+  border: 1px solid #ececec;
+  margin-top: 7px; }
+
+.application-review {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-bottom: 20px;
+  clear: both; }
+  .application-review__label {
+    font-weight: bold;
+    font-size: 0.9em; }
+  .application-review__name {
+    width: 35%;
+    padding: 5px 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .application-review__tos-link {
+    width: 35%;
+    padding: 5px 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  .application-review__tos-agreement {
+    width: 30%;
+    text-align: right;
+    padding: 5px 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .application-review__list {
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+
+.cui-tile__body, .cui-form--mobile-steps .cui-form__body {
+  overflow: hidden; }
+
+.misc-body {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 60%;
+  padding: 12px;
+  overflow: auto; }
+
+.misc-body p {
+  color: #85a6ad; }
+
+.misc-body a {
+  color: #85a6ad; }
+
+.misc-body h1 {
+  color: #85a6ad;
+  font-size: 2em; }
+
+.misc-body img {
+  margin: 20px; }
+
+.cui-card__button {
+  float: right; }
+
+.cui-link--medium-light {
+  color: #85a6ad; }
+
+.cui-link--no-decoration {
+  text-decoration: none; }
+
+.code-info {
+  background: white;
+  padding: 20px;
+  color: #555;
+  border: 1px solid #eee;
+  border-left: 5px solid #85a6ad;
+  border-radius: 3px;
+  box-sizing: border-box; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+.cui-applications__row, .cui-applications__review .cui-applications__review-apps, .cui-applications__new-request .cui-applications__categories, .cui-users__field, .cui-users__profile {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.cui-users__profile-media, .cui-users__profile-info, .cui-users__address-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.cui-tos-container {
+  float: right;
+  padding-bottom: 30px; }
+
+.cui-wizard__controls--clear {
+  clear: both; }
+
+.cui-previous-link {
+  padding-right: 30px; }
+
+.cui-popover-container--relative .cui-styeguide__popover-container {
+  position: absolute;
+  left: 300px; }
+  @media screen and (max-width: 700px) {
+    .cui-popover-container--relative .cui-styeguide__popover-container {
+      width: 270px;
+      left: -20px;
+      top: 20px; } }
+
+.cui-applications__main-container {
+  padding: 0.9375em 0.8125em;
+  position: relative;
+  min-height: 400px; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__main-container {
+      padding: 0.9375em 3.4375em 0.9375em 4.0625em; } }
+  @media screen and (max-width: 700px) {
+    .cui-applications__main-container--full {
+      padding: 0.9375em 0; } }
+
+@media screen and (min-width: 701px) {
+  .cui-tabs {
+    display: none; } }
+
+.cui-applications__left,
+.cui-applications__right {
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5; }
+
+.cui-applications__right {
+  margin-left: 3.125em; }
+
+.cui-applications__desktop-tabs {
+  display: none; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__desktop-tabs {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; } }
+
+.cui-applications .cui-media__image {
+  position: relative; }
+
+.cui-applications .cui-media__title {
+  cursor: pointer; }
+
+.cui-applications__row, .cui-applications__review .cui-applications__review-apps, .cui-applications__new-request .cui-applications__categories, .cui-users__field, .cui-users__profile {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.cui-applications__new-request .cui-applications__row, .cui-applications__new-request .cui-applications__review .cui-applications__review-apps, .cui-applications__review .cui-applications__new-request .cui-applications__review-apps {
+  margin-top: 1em;
+  margin-bottom: 3em; }
+
+.cui-applications__new-request .cui-applications__center-text {
+  text-align: center; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__new-request .cui-applications__center-text {
+      -webkit-flex: .1;
+          -ms-flex: .1;
+              flex: .1; } }
+
+.cui-applications__new-request .cui-input-button {
+  margin-bottom: 1.5625em; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__new-request .cui-input-button {
+      margin: 0; } }
+
+.cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
+.cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button {
+  margin-top: 1.5625em; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
+    .cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button {
+      margin: 0; } }
+
+.cui-applications__new-request .cui-applications__search-options {
+  padding-bottom: 1.875em; }
+  @media screen and (min-width: 701px) {
+    .cui-applications__new-request .cui-applications__search-options {
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__new-request .cui-button, .cui-applications__new-request .cui-wizard__next, .cui-applications__new-request
+  .cui-form__next, .cui-applications__new-request .cui-card__button, .cui-applications__new-request .cui-action__popover-button,
+  .cui-applications__new-request .cui-input-button {
+    -webkit-flex: .45;
+        -ms-flex: .45;
+            flex: .45; } }
+
+.cui-applications__new-request .cui-applications__categories {
+  border-bottom: 1px solid #ECEAEA;
+  padding: 1.25em 0; }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__search .cui-action--alt .cui-action__title {
+    -webkit-flex: .25;
+        -ms-flex: .25;
+            flex: .25; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__search .cui-action--alt .cui-input-button {
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5; } }
+
+.cui-applications__search .cui-applications__expandable-info {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: .9;
+      -ms-flex: .9;
+          flex: .9; }
+  .cui-applications__search .cui-applications__expandable-info .cui-expandable__title-left {
+    -webkit-flex: .35;
+        -ms-flex: .35;
+            flex: .35; }
+  .cui-applications__search .cui-applications__expandable-info .cui-expandable__title-middle {
+    -webkit-flex: .35;
+        -ms-flex: .35;
+            flex: .35; }
+
+.cui-applications__search .cui-expandable__title-end {
+  -webkit-flex: .1;
+      -ms-flex: .1;
+          flex: .1; }
+
+.cui-applications__search-button {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__review .cui-action--alt .cui-action__title {
+    -webkit-flex: .25;
+        -ms-flex: .25;
+            flex: .25; } }
+
+@media screen and (min-width: 701px) {
+  .cui-applications__review .cui-action--alt .cui-input-button {
+    -webkit-flex: .5;
+        -ms-flex: .5;
+            flex: .5; } }
+
+.cui-applications__review .cui-applications__review-apps {
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-top: 1.5em; }
+  .cui-applications__review .cui-applications__review-apps div:nth-child(odd) {
+    margin-right: 3.6%; }
+
+.cui-applications__review .cui-applications__review-text-input {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.cui-applications__review .cui-applications__submit-options {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.cui-applications__review .cui-applications__submit-options {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin: 2.5em 0; }
+  .cui-applications__review .cui-applications__submit-options .cui-link, .cui-applications__review .cui-applications__submit-options .cui-expandable__review-button, .cui-applications__review .cui-applications__submit-options .cui-search__dropdown a, .cui-search__dropdown .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-expandable__link, .cui-applications__review .cui-applications__submit-options .cui-pagination__link a, .cui-pagination__link .cui-applications__review .cui-applications__submit-options a, .cui-applications__review .cui-applications__submit-options .cui-pagination__display-amount, .cui-applications__review .cui-applications__submit-options .cui-media__link {
+    margin-right: 2.6875em; }
+
+.cui-popover__sort-popover {
+  -webkit-transform: translate(-8.5em);
+      -ms-transform: translate(-8.5em);
+          transform: translate(-8.5em);
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-popover__sort-popover {
+    width: 275px;
+    -webkit-transform: translate(-8.5em);
+        -ms-transform: translate(-8.5em);
+            transform: translate(-8.5em); } }
+
+.cui-popover__categories-popover {
+  -webkit-transform: translate(-8em);
+      -ms-transform: translate(-8em);
+          transform: translate(-8em);
+  font-size: 14px; }
+
+@media screen and (max-width: 700px) {
+  .cui-popover__categories-popover {
+    width: 275px;
+    -webkit-transform: translate(-8em);
+        -ms-transform: translate(-8em);
+            transform: translate(-8em); } }
+
+.cui-users__main-container {
+  padding: 0 0.9375em 0.8125em;
+  position: relative;
+  min-height: 400px; }
+  @media screen and (min-width: 701px) {
+    .cui-users__main-container {
+      padding: 0.9375em 3.4375em 0 4.0625em; } }
+
+.cui-users__profile-media {
+  max-width: 50%; }
+  @media screen and (max-width: 700px) {
+    .cui-users__profile-media {
+      border-bottom: 1px solid #E8F0F3;
+      max-width: none; } }
+
+.cui-users__field {
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline; }
+
+@media screen and (max-width: 700px) {
+  .cui-users__profile {
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-top: 1.5625em; } }
+
+.cui-users__profile-info {
+  -webkit-flex: .5;
+      -ms-flex: .5;
+          flex: .5;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+
+@media screen and (min-width: 701px) {
+  .cui-users__profile-info:first-of-type {
+    margin-right: 15.5%; } }
+
+.cui-users__address-container {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+  .cui-users__address-container.show-address {
+    background-color: #d4e2e6;
+    padding: 1em 1em 1.875em; }
+    @media screen and (max-width: 700px) {
+      .cui-users__address-container.show-address {
+        margin: 0 -15px; } }
+    .cui-users__address-container.show-address .cui-users__field {
+      margin-bottom: 1.5625em; }
+
+.cui-users__contact-info {
+  margin: 2.1875em 0 5.5em; }
+
+.cui-users__address-submit {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.cui-users__info-block {
+  margin-bottom: 2.1875em; }
+
+.cui-users__inline-edit {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.cui-field-val--stack {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.cui-users__item {
+  margin-bottom: 0.625em; }
+
+.cui-users__address-info {
+  margin-bottom: 0.3125em; }
+  .cui-users__address-info:first-of-type {
+    margin-top: 0.3125em; }
+
+.cui-media__image-container {
+  margin-right: 15px; }
+
+.cui-organization {
+  position: relative; }
+
+.cui-organization__main-container {
+  min-height: 400px;
+  padding: 0.9375em 0.8125em;
+  position: relative; }
+  @media screen and (min-width: 701px) {
+    .cui-organization__main-container {
+      padding: 0.9375em 3.4375em 0 4.0625em; } }
+
+.cui-organization__info-block {
+  margin-bottom: 1.3125em; }
+  .cui-organization__info-block .cui-organization__admin-block-wrapper {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap; }
+    .cui-organization__info-block .cui-organization__admin-block-wrapper .cui-organization__admin-block {
+      max-width: 275px;
+      margin-bottom: 1.3125em;
+      margin-right: 3.1875em; }
+
+.cui-organization__page-title {
+  margin-bottom: 1.3125em; }
+
+.cui-loading__container--organization-list {
+  position: relative;
+  background: none; }
+  .cui-loading__container--organization-list .cui-loading--center {
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em; }
+
+.cui-select-wrapper {
+  width: 80px; }

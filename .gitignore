@@ -2,10 +2,9 @@ node_modules
 bower_components
 coverage
 target
-assets/angular-modules/templateCache.js
-assets/angular-modules/processedHtml/
-assets/concatJS/
-assets/css/
+assets/app/templateCache.js
+assets/app/processedHtml/
+assets/concat/
 build
 build-sdk
 .DS_Store
