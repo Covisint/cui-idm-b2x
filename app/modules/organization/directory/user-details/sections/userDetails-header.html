@@ -1,0 +1,47 @@
+<!-- Page Header -->
+<div class="cui-action">
+  <span class="cui-action__title">
+    <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+    <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+    <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
+    <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+  </span>
+  
+  <!-- Invitation -->
+  <div class="cui-action__actions">
+    <div class="cui-action__action-container" id="invitation-button" ng-click="userDetails.invitationClicked=!userDetails.invitationClicked" off-click="orgDirectory.invitationClicked=false">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+      </svg>
+      <!-- Invitation Popover -->
+      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.invitationClicked">
+        <p>{{'invite-user' | translate}}</p>
+        <p>{{'invite-division' | translate}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Name Header -->
+<div class="cui-media--centered">
+  <div class="cui-media__image-container">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
+      <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
+    </svg>
+  </div>
+  <div class="cui-media__body">
+    <!-- Name -->
+    <h3 class="cui-media__title">{{'cui-name' | translate}}: NAME TODO</h3>
+    <!-- Registered Date -->
+    <p class="cui-media__content">REGISTERED TODO</p>
+    <!-- Status -->
+    <p class="cui-media__content">STATUS TODO</p>
+    <p class="cui-media__content">
+      <span class="cui-action__title">
+        <button class="cui-button" style="margin:5px">Suspend</button>
+        <button class="cui-button" style="margin:5px">Password Reset</button>
+        <button class="cui-button" style="margin:5px">New Grants</button>
+      </span>
+    </p>
+  </div>
+</div>
