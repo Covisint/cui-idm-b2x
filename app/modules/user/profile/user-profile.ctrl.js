@@ -1,8 +1,8 @@
 angular.module('user')
 .controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserProfile',
-function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
+function($scope,$timeout,API,$cuiI18n,Timezones,UserProfile) {
     'use strict';
-    var userProfile = this;
+    const userProfile = this;
 
     userProfile.loading = true;
     userProfile.saving = true;
@@ -10,14 +10,18 @@ function($scope,$timeout,API,$cuiI18n,Timezones,UserService){
     userProfile.success = false;
     userProfile.timezoneById = Timezones.timezoneById;
     userProfile.toggleOffFunctions = {};
-    UserService.injectUI( userProfile, $scope );
+    UserProfile.injectUI(userProfile, $scope);
 
-   // ON LOAD START ---------------------------------------------------------------------------------
+    // ON LOAD START ---------------------------------------------------------------------------------
 
-    UserService.getProfile( {personId: API.getUser(), useCuid:true}).then(function(res){
-        angular.merge( userProfile,res );
+    UserProfile.getProfile({personId: API.getUser(), useCuid:true})
+    .then(function(res) {
+        angular.merge(userProfile, res);
         userProfile.loading = false;
-    },function(err){
+    }, function(err) {
         userProfile.loading = false;
     });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
 }]);

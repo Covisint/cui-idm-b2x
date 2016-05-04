@@ -102,5 +102,13 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination Controls -->
+    <div class="cui-paginate__container">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="orgDirectory.paginationSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgDirectory.paginationSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.paginationHandler" ng-model="orgDirectory.paginationCurrentPage"></paginate>
+    </div>
+
   </div>
 </div>
