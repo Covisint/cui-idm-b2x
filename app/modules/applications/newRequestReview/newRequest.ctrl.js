@@ -17,24 +17,6 @@ function(API,$scope,$state,AppRequests) {
         console.log('Error\n', err);
     };
 
-    var getListOfCategories = function(services) {
-        // WORKAROUND CASE # 7
-        var categoryList = [];
-
-        services.forEach(function(service) {
-            if (service.category) {
-                var serviceCategoryInCategoryList = _.some(categoryList, function(category) {
-                    return angular.equals(category, service.category);
-                });
-
-                if (!serviceCategoryInCategoryList) {
-                    categoryList.push(service.category);
-                }
-            }
-        });
-        return categoryList;
-    };
-
     Object.keys(appsBeingRequested).forEach(function(appId) {
         // This sets the checkboxes back to marked when the user clicks back
         newAppRequest.numberOfRequests++;
@@ -45,40 +27,13 @@ function(API,$scope,$state,AppRequests) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getRequestablePersonPackages({personId: API.getUser(), useCuid:true, pageSize:200})
-    .then(function(res) {
-        var i = 0;
-        var packages = res;
-
-        if(res.length===0){
-            newAppRequest.loadingDone = true;
-            $scope.$digest();
-        }
-
-        packages.forEach(function(pkg) {
-            API.cui.getPackageServices({'packageId':pkg.id})
-            .then(function(res) {
-                i++;
-                res.forEach(function(service) {
-                    services.push(service);
-                });
-                if (i === packages.length) {
-                    newAppRequest.categories = getListOfCategories(services);
-                    newAppRequest.loadingDone = true;
-                    $scope.$digest();
-                }
-            })
-            .fail(function() {
-                i++;
-                if (i === packages.length) {
-                    newAppRequest.categories = getListOfCategories(services);
-                    newAppRequest.loadingDone = true;
-                    $scope.$digest();
-                }
-            });
-        });
+    API.cui.getCategories()
+    .then((res)=>{
+        console.log(res);
+        newAppRequest.categories = res;
+        newAppRequest.loadingDone = true;
+        $scope.$digest();
     })
-   .fail(handleError);
 
     // ON LOAD END ------------------------------------------------------------------------------------
 

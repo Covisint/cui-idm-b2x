@@ -4,7 +4,8 @@ angular.module('common')
     let authInfo = {};
 
     const myCUI = cui.api({
-        dataCalls:CustomAPI.calls
+        dataCalls:CustomAPI.calls,
+        apiUrls: CustomAPI.urls
     });
 
     angular.forEach(CustomAPI.getCallWrappers(myCUI),(func,key) => {

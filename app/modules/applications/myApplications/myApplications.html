@@ -4,7 +4,7 @@
 
 <div class="cui-action">
   <span class="cui-action__title">
-    <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> | 
+    <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> |
     <a ui-sref="applications.myApplications" class="cui-link--medium-light cui-link--no-decoration">{{'my-applications' | translate}}</a>
   </span>
   <div class="cui-action__actions">
@@ -42,8 +42,7 @@
       </svg>
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked">
+      <div class="cui-popover" target="#categories-button" cui-popover popover-positions="[{position:'bottom',contentOffset:'40%'}]" ng-if="myApplications.categoriesClicked">
         <p ng-click="myApplications.parseAppsByCategory('all')">{{'all' | translate}} ({{myApplications.categoryCount[0]}})</p>
         <div ng-repeat="category in myApplications.categoryList">
           <p ng-click="myApplications.parseAppsByCategory(category)">{{category| cuiI18n}} ({{myApplications.categoryCount[$index+1]}})</p>
@@ -66,16 +65,15 @@
   <div ng-if="myApplications.doneLoading">
     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id">
       <div class="cui-media__image-container">
-        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar></div></a>
       </div>
       <div class="cui-media__body cui-media__body--full">
         <div class="cui-media__title-container">
-          <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--'+application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
-          <h3 class="cui-media__title" ng-bind="application.name | cuiI18n" ng-click="myApplications.goToDetails(application)"></h3>
+          <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.status!=='active' && application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+          <h3 class="cui-media__title" ng-click="myApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
         </div>
-        <!-- <a href="{{application.iconUrl}}">test</a> -->
         <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
+        <span class="cui-status" ng-class=" 'cui-status--'+application.status ">{{ application.status | lowercase }}</span>
       </div>
     </div>
   </div>

@@ -1,46 +1,45 @@
 angular.module('common')
 .factory('CustomAPI',[()=>{
 
-    const UP = (urlParam) => { // UP for url param
-        return `{${urlParam}}`;
-    };
-
-    const QS = (queryStringArray) => { // QS for query string
-        let newArray = queryStringArray.map(x => `${x}={${x}}`);
-        return newArray.join('&');
-    };
+    const urls = [
+        // {name: 'STG', url: 'https://apistgdev.np.covapp.io'}
+    ];
 
     const calls = [
-        {cmd: 'getCategories', accepts: 'application/vnd.com.covisint.platform.category.v1+json', call: '/service/v3/categories/'},
+        {cmd: 'getCategories',                                           accepts: '.platform.category.v1',                          call: '/service/v3/categories'},
 
-        {cmd: 'getPersonRequestableApps', accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
-            call: `/service/v3/applications/persons/${ UP('personId') }/requestable?${ QS(['service.id','service.category','service.name','servicePackage.id','servicePackage.parentPackage.id','sortBy']) }`},
+        {cmd: 'getPersonRequestableApps',                 accepts: '.platform.service.application.v1',        call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},
 
-        {cmd: 'getPersonRequestableCount', accepts: 'text/plain',
-            call: `/service/v3/applications/persons/${ UP('personId') }/requestable/count?${ QS(['service.id','service.category','service.name','servicePackage.id','servicePackage.parentPackage.id','sortBy']) }`},
+        {cmd: 'getPersonRequestableCount',                 accepts: 'text/plain',                                             call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`},
 
-        {cmd: 'getPersonGrantedApps', accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
-            call: `/service/v3/applications/persons/${ UP('personId') }?${ QS(['service.id','service.category','service.name','servicePackage.id','servicePackage.parentPackage.id','grant.status','sortBy']) }`},
+        {cmd: 'getPersonGrantedApps',                           accepts: '.platform.service.application.v1',       call: `/service/v3/applications/persons/${ '{personId}' }`},
 
-        {cmd: 'getPersonGrantedCount', accepts: 'text/plain',
-            call: `/applications/persons/${ UP('personId') }/count?${ QS(['service.id','service.category','service.name','servicePackage.id','servicePackage.parentPackage.id','grant.status']) }`},
+        {cmd: 'getPersonGrantedCount',                          accepts: 'text/plain',                                             call: `/service/v3/applications/persons/${ '{personId}' }/count`},
 
+        {cmd: 'getOrganizationRequestableApps',         accepts: '.platform.service.application.v1',       call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`},
 
-            // EDIT THIS
-        {cmd: 'getOrganizationRequestable', accepts: 'text/plain',
-            call: `/applications/persons/${ UP('personId') }/count?${ QS(['service.id','service.category','service.name','servicePackage.id','servicePackage.parentPackage.id','grant.status']) }`},
+        {cmd: 'getOrganizationRequestableCount',        accepts: 'text/plain',                                            call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
+
+        {cmd: 'getOrganizationGrantedApps',                 accepts: '.platform.service.application.v1',       call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
+
+        {cmd: 'getOrganizationGrantedCount',                accepts: 'text/plain',                                            call: `/service/v3/applications/organizations/${ '{organizationId}' }/count`},
+
+        {cmd: 'getPersonGrantableApps',                        accepts: '.platform.service.application.v1',       call: `/service/v3/applications/persons/${ '{personId}' }/grantable`},
+
+        {cmd:'getPersonGrantableCount',                        accepts: 'text/plain',                                             call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
+
+        {cmd:'getOrganizationGrantableApps',                accepts:'.platform.service.application.v1',       call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
+
+        {cmd:'getOrganizationGrantableCount',              accepts: 'text/plain',                                             call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
     ];
 
     const getCallWrappers = (cuiObject) => {
-        return {
-            getCategories:(opts) => cuiObject.doCall('getCategories',opts),
-            getPersonRequestableApps:(opts)=> cuiObject.doCall('getPersonRequestableApps',opts),
-            getPersonRequestableCount:(opts)=> cuiObject.doCall('getPersonRequestableCount',opts),
-            getPersonGrantedApps:(opts)=> cuiObject.doCall('getPersonGrantedApps',opts),
-            getPersonGrantedCount:(opts)=> cuiObject.doCall('getPersonGrantedCount',opts),
-        };
+        return calls.reduce((wrappers,call) => {
+            wrappers[call.cmd] = (opts) => cuiObject.doCall(call.cmd,opts)
+            return wrappers;
+        }, {});
     };
 
-    return { calls, getCallWrappers };
+    return { urls, calls, getCallWrappers };
 
 }]);
