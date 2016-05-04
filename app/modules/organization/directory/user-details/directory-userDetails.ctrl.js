@@ -8,14 +8,15 @@ function($scope,$stateParams,API,Timezones,UserProfile) {
 
     userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
+    userDetails.appsHistorySwitch = true;
 
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function handleError(err) {
+    var handleError = (err) => {
         userDetails.loading = false;
         $scope.$digest();
-        console.log(err);
+        console.log('Error:', err);
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------

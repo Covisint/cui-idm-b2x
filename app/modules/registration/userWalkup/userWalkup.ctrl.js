@@ -23,17 +23,6 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         $scope.$digest();
     }
 
-    var searchOrganizations = function(newOrgToSearch) {
-        if (newOrgToSearch) {
-            API.cui.getOrganizations({'qs': [['name', newOrgToSearch.name]]})
-            .then(function(res){
-                userWalkup.organizationList = res;
-                $scope.$digest();
-            })
-            .fail(handleError);
-        }
-    };
-
     // collection of helper functions to build necessary calls on this controller
     var build = {
         personRequest:function(user) {
@@ -243,8 +232,6 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
     $scope.$watch('userWalkup.user',function(a) {
         if (a && Object.keys(a).length!==0) localStorageService.set('userWalkup.user',a);
     }, true);
-
-    $scope.$watchCollection('userWalkup.orgSearch', searchOrganizations);
 
     // Populate Applications List based on the current organization
     $scope.$watch('userWalkup.organization', function(newOrgSelected) {
