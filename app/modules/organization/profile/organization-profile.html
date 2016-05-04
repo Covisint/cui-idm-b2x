@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/profile" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/profile" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
 <div class="cui-organization">
@@ -18,9 +18,8 @@
         </svg>
         <!-- Invitation Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgProfile.invitationClicked">
-          <p>{{'user' | translate}}</p>
-          <p>{{'cui-org' | translate}}</p>
-          <p>{{'top-level-orgs' | translate}}</p>
+          <p>{{'invite-user' | translate}}</p>
+          <p>{{'invite-division' | translate}}</p>
         </div>
       </div>
     </div>
@@ -46,7 +45,7 @@
           <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
           <span class="cui-field-val__val">{{admin.name.given}} {{admin.name.surname}}</span><br/>
           <!-- ID -->
-          <span class="cui-field-val__field">{{'id' | translate}}: </span>
+          <span class="cui-field-val__field">{{'username' | translate}}: </span>
           <span class="cui-field-val__val">{{admin.username}}</span><br/>
           <!-- Title -->
           <span class="cui-field-val__field">{{'title' | translate}}: </span>

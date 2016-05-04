@@ -21,19 +21,19 @@
         <!-- First Name -->
         <label for="firstName">{{'cui-first-name' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.firstName.$error">
-          <div ng-messages-include="app/app/common-templates/messages.html"></div>
+          <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="text" name="firstName" class="cui-input" ng-model="userProfile.tempUser.name.given" ng-required="true" focus-if="toggled">
         <!-- Last Name -->
         <label for="lastName">{{'cui-last-name' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.lastName.$error">
-          <div ng-messages-include="app/app/common-templates/messages.html"></div>
+          <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="text" name="lastName" class="cui-input" ng-model="userProfile.tempUser.name.surname" ng-required="true">
         <!-- Email -->
         <label for="email">{{'cui-email' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.email.$error">
-          <div ng-messages-include="app/app/common-templates/messages.html"></div>
+          <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="email" name="email" class="cui-input" ng-model="userProfile.tempUser.email" ng-required="true">
         <!-- Address Edit Controls -->
