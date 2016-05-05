@@ -2,7 +2,7 @@
   <span class="cui-action__title">
     <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
     <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-    <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
+    <a ui-sref="organization.directory({orgId:userDetails.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
     <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
   </span>
   
@@ -24,9 +24,7 @@
 <!-- Name Header -->
 <div class="cui-media--centered">
   <div class="cui-media__image-container">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-media__image">
-      <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#user"></use>
-    </svg>
+    <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
   </div>
   <div class="cui-media__body">
     <!-- Name -->

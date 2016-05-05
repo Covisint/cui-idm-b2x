@@ -3,11 +3,11 @@ angular.module('organization')
 function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     'use strict';
 
-    const userDetails = this;
+    const userDetails = this,
+        userID = $stateParams.userId,
+        organizationID = $stateParams.orgId;
 
-    let userID = $stateParams.userId,
-        organizationID = $stateParams.orgId,
-        apiPromises = [];
+    let apiPromises = [];
 
     userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
@@ -32,7 +32,6 @@ function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     apiPromises.push(
         API.cui.getOrganization({organizationId: organizationID})
         .then(function(res) {
-            console.log(res);
             userDetails.organization = res;
         }, function(error) {
             console.log(error);

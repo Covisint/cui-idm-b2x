@@ -18,12 +18,12 @@ angular.module('organization',[])
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory?id',
+            url: '/directory?orgId',
             templateUrl: templateBase + 'directory/organization-directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
         .state('organization.hierarchy', {
-            url: '/hierarchy?id',
+            url: '/hierarchy?orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
