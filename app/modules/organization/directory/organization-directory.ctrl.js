@@ -4,7 +4,7 @@ function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
     const orgDirectory = this;
-    let organizationId = $stateParams.id;
+    let organizationId = $stateParams.orgId;
 
     orgDirectory.organization = {};
     orgDirectory.loading = true;

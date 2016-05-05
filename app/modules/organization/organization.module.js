@@ -18,12 +18,12 @@ angular.module('organization',[])
             controller: returnCtrlAs('orgProfile')
         })
         .state('organization.directory', {
-            url: '/directory?id',
+            url: '/directory?orgId',
             templateUrl: templateBase + 'directory/organization-directory.html',
             controller: returnCtrlAs('orgDirectory')
         })
         .state('organization.hierarchy', {
-            url: '/hierarchy?id',
+            url: '/hierarchy?orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy')
         })
@@ -37,7 +37,7 @@ angular.module('organization',[])
             templateUrl: templateBase + 'directory/directory.html'
         })
         .state('directory.userDetails', {
-            url: '/user-details?id',
+            url: '/user-details?userId&orgId',
             templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
             controller: returnCtrlAs('userDetails')
         });

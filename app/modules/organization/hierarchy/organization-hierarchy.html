@@ -23,9 +23,8 @@
         </svg>
         <!-- Invitation Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgHierarchy.invitationClicked">
-          <p>{{'user' | translate}}</p>
-          <p>{{'cui-org' | translate}}</p>
-          <p>{{'top-level-orgs' | translate}}</p>
+          <p>{{'invite-user' | translate}}</p>
+          <p>{{'invite-division' | translate}}</p>
         </div>
       </div>
     </div>
@@ -40,6 +39,6 @@
 
   <!-- Profile Content -->
   <div class="cui-organization__main-container">
-    <p>API Blocker: Get Organization Hierarchy</p>
+    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)"></div>
   </div>
 </div>

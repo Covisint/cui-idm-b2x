@@ -1,51 +1,50 @@
 angular.module('organization')
-.controller('userDetailsCtrl', ['$scope','$stateParams','API','Timezones','UserProfile',
-function($scope,$stateParams,API,Timezones,UserProfile) {
+.controller('userDetailsCtrl', ['$scope','$stateParams','API','Timezones','UserProfile','$q',
+function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     'use strict';
 
-    const userDetails = this;
-    let userID = $stateParams.id;
+    const userDetails = this,
+        userID = $stateParams.userId,
+        organizationID = $stateParams.orgId;
+
+    let apiPromises = [];
 
     userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
     userDetails.appsHistorySwitch = true;
+    UserProfile.injectUI(userDetails, $scope);
 
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var handleError = (err) => {
-        userDetails.loading = false;
-        $scope.$digest();
-        console.log('Error:', err);
-    };
-
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-    // var userParams = angular.isDefined( userID )? { personId: userID }:{personId: API.getUser(), useCuid:true};
 
-    API.cui.getPerson({userId:userID})
+    apiPromises.push(
+        UserProfile.getProfile({personId: userID})
+        .then(function(res) {
+            angular.merge(userDetails, res);
+        }, function(error) {
+            console.log(error);
+        })
+    );
+
+    apiPromises.push(
+        API.cui.getOrganization({organizationId: organizationID})
+        .then(function(res) {
+            userDetails.organization = res;
+        }, function(error) {
+            console.log(error);
+        })
+    );
+
+    $q.all(apiPromises)
     .then(function(res) {
-        console.log(res);
-    });
-
-    UserProfile.getProfile({personId: userID})
-    .then(function(res) {
-        angular.merge(userDetails, res);
-
-        // In order to reuse a view which specifies its databinding to userProfile.
-        // $scope.userProfile = {};
-        // $scope.userProfile.saving = true;
-        // $scope.userProfile.fail = false;
-        // $scope.userProfile.success = false;
-        // $scope.userProfile.timezoneById = Timezones.timezoneById;
-        // $scope.userProfile.toggleOffFunctions = {};
-        // UserProfile.injectUI( $scope.userProfile, $scope );
-        // angular.copy( res, $scope.userProfile );
-
         userDetails.loading = false;
-    }, function(err) {
+    })
+    .catch(function(error) {
         userDetails.loading = false;
+        console.log(error);
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------

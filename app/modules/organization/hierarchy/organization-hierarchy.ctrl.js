@@ -1,37 +1,51 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl', ['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+.controller('orgHierarchyCtrl', ['$scope','$stateParams','API','$q',
+function($scope,$stateParams,API,$q) {
     'use strict';
-    var orgHierarchy = this;
+
+    const orgHierarchy = this;
+    const organizationID = $stateParams.orgId;
+
+    let apiPromises = [];
 
     orgHierarchy.loading = true;
 
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var handleError = function(err) {
-        orgHierarchy.loading = false;
-        $scope.$digest();
-        console.log('Error', err);
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    API.cui.getPerson({personId: API.getUser(), useCuid:true})
+    if (organizationID) {
+        // Use organizationID parameter to load the organization hierarchy 
+        apiPromises.push(
+            API.cui.getOrganizationHierarchy({organizationId: organizationID})
+            .then(function(res) {
+                orgHierarchy.organizationHierarchy = [res];
+            }, function(error) {
+                console.log(error);
+            })
+        );
+    }
+    else {
+        // Use logged in user's organization.id to load the organization hierarchy
+        apiPromises.push(
+            API.cui.getPerson({personId: API.getUser(), useCuid:true})
+            .then(function(res) {
+                API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
+            })
+            .then(function(res) {
+                orgHierarchy.organizationHierarchy = [res];
+            }, function(error) {
+                console.log(error);
+            })
+        );
+    }
+
+    $q.all(apiPromises)
     .then(function(res) {
-        return API.cui.getOrganization({ organizationId: res.organization.id });
-    })
-    .then(function(res) {
-        orgHierarchy.organization = res;
-        return API.cui.getOrganizationHierarchy({ id: orgHierarchy.organization.id });
-	})
-    .then(function(res) {
-    	console.log('Organization Hierarchy: ', res);
         orgHierarchy.loading = false;
-        $scope.$digest();
     })
-    .fail(handleError);
+    .catch(function(error) {
+        orgHierarchy.loading = false;
+        console.log(error);
+    });
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
