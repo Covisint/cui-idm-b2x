@@ -1,18 +1,27 @@
 angular.module('applications')
-.controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout','$state','$q',($scope,API,AppRequests,$timeout,$state,$q) => {
+.controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout','$state','$q','localStorageService',function($scope,API,AppRequests,$timeout,$state,$q,localStorage) {
 
-    const applicationReview=this;
+    let applicationReview=this;
+
+    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
+        AppRequests.set(localStorage.get('appsBeingRequested'));
+    }
+
     const appRequests=AppRequests.get(),
         appsBeingRequested=Object.keys(appRequests);
+
+    if(appsBeingRequested.length===0) $state.go('applications.search');
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
     applicationReview.appRequests=[];
 
-    for(var i=0; i < appsBeingRequested.length; i += 2){
-        applicationReview.appRequests.push([appRequests[appsBeingRequested[i]],appRequests[appsBeingRequested[i+1]] || undefined]);
+    for(let i=0; i < appsBeingRequested.length; i += 2){
+        const applicationGroup = [];
+        applicationGroup.push(appRequests[appsBeingRequested[i]]);
+        if(appRequests[appsBeingRequested[i+1]]) applicationGroup.push(appRequests[appsBeingRequested[i+1]]);
+        applicationReview.appRequests.push(applicationGroup);
     }
-    console.log('app requests',applicationReview.appRequests);
 
     applicationReview.numberOfRequests=0;
     appsBeingRequested.forEach(() => {
@@ -22,13 +31,14 @@ angular.module('applications')
     // ON LOAD END ------------------------------------------------------------------------------------
 
     // ON CLICK START ---------------------------------------------------------------------------------
+    let applicationRequestArray;
 
     const requestsValid = () => {
-        let applicationRequestArray=[];
+        applicationRequestArray=[];
         applicationReview.attempting=true;
         applicationReview.appRequests.forEach((appRequestGroup,i) => {
             appRequestGroup.forEach((appRequest,x) => {
-                if(appRequest){
+                if(appRequest.servicePackage.reasonRequired){
                     if(!appRequest.reason || appRequest.reason===''){
                         appRequest.reasonRequired=true;
                         applicationReview.attempting=false;
@@ -40,6 +50,7 @@ angular.module('applications')
                         applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
                     }
                 }
+                else applicationRequestArray[i+x] = appRequest;
             });
         });
         if(applicationReview.error) return false;
@@ -58,20 +69,22 @@ angular.module('applications')
 
         $q.all(requestsPromises)
         .then((res)=>{
-             applicationReview.attempting=false;
-                applicationReview.success=true;
-                $scope.$digest();
-                AppRequests.clear(); // clears app requests if the request goes through
-                $timeout(() => {
-                    $state.go('applications.myApplications');
-                }, 3000);
+            applicationReview.attempting = false;
+            applicationReview.success = true;
+            AppRequests.clear(); // clears app requests if the request goes through
+            localStorage.set('appsBeingRequested',{});
+            $timeout(() => {
+                $state.go('applications.myApplications');
+            }, 3000);
         })
-        .fail(() => {
-            applicationReview.attempting=false;
-            applicationReview.error=true;
-            $scope.$digest();
+        .catch(() => {
+            applicationReview.attempting = false;
+            applicationReview.error = true;
         });
+    };
 
+    applicationReview.updateSearch = (nameSearch) => {
+        applicationReview.search = nameSearch;
     };
 
     // ON CLICK END -----------------------------------------------------------------------------------

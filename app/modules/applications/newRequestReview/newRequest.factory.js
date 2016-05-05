@@ -3,11 +3,11 @@ angular.module('applications')
     var appRequestsObject={},
         appRequests={};
 
-    appRequests.set=function(newAppRequestsObject){
+    appRequests.set=(newAppRequestsObject) => {
         appRequestsObject=newAppRequestsObject;
     };
 
-    appRequests.get=function(){
+    appRequests.get=() => {
         return appRequestsObject;
     };
 
@@ -15,31 +15,20 @@ angular.module('applications')
         appRequestsObject = {};
     };
 
-    appRequests.buildReason=function(app,reason){
-        var tempApp={};
+    appRequests.buildReason=(app,reason) => {
+        let tempApp={};
         angular.copy(app,tempApp);
         tempApp.reason=$filter('translate')('reason-im-requesting') + ' ' +  $filter('cuiI18n')(tempApp.name) + ': ' + reason;
         return tempApp;
     };
 
 
-    // appRequestsObject is an object that looks something like
-    // {
-    //    appId:{
-    //       id:appId,
-    //       reason: reasonForRequestingThisApp,
-    //       packageId: idOfThePackageThatContainsThisApp,
-    //       ...other app properties,
-    //    },
-    //    otherAppId:{ ... },
-    //    ...
-    // }
-    appRequests.getPackageRequests=function(userId,arrayOfAppsBeingRequested){
-        var arrayOfPackagesBeingRequested=[],
+    appRequests.getPackageRequests=(userId,arrayOfAppsBeingRequested) => {
+        let arrayOfPackagesBeingRequested=[],
             arrayOfPackageRequests=[];
-        arrayOfAppsBeingRequested.forEach(function(app,i){
+        arrayOfAppsBeingRequested.forEach((app,i) => {
             if(arrayOfPackagesBeingRequested.indexOf(app.servicePackage.id)>-1){ // if we've parsed an app that belongs to the same pacakge
-                arrayOfPackageRequests.some(function(packageRequest,i){
+                arrayOfPackageRequests.some((packageRequest,i) => {
                     return arrayOfPackageRequests[i].servicePackage.id===app.servicePackage.id? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
                 });
             }
