@@ -1,89 +1,78 @@
 angular.module('applications')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','$filter','AppRequests',
-function(API,$scope,$stateParams,$state,$filter,AppRequests) {
-    'use strict';
-    var applicationSearch = this;
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','localStorageService', function (API,$scope,$stateParams,$state,AppRequests,localStorage) {
+    let applicationSearch = this;
 
-    var userOrg;
-    var detailsFetchStep = 0;
-    var nameSearch = $stateParams.name;
-    var categorySearch = $stateParams.category;
-    var packageList = [];
-    var userPackageList = []; // WORKAROUND CASE #1
-    var listOfAvailabeApps = [];
-    var bundled = [];
-    var related = [];
-
-    applicationSearch.numberOfRequests = 0;
-    applicationSearch.nameSearch = nameSearch; // get name url param to pre-populate the search field
-    applicationSearch.category = categorySearch; // get category url param to pre-populate search field
+    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
+        AppRequests.set(localStorage.get('appsBeingRequested'));
+    }
     applicationSearch.packageRequests = AppRequests.get();
     applicationSearch.appCheckbox = {};
-    applicationSearch.detailsLoadingDone = {};
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    var handleError = function(err) {
-        console.log('Error \n', err);
-    };
-
-    var processNumberOfRequiredApps = function(pkgRequest) {
-        if (pkgRequest) {
-            applicationSearch.numberOfRequests++;
-        }
-        else {
-            applicationSearch.numberOfRequests--;
-        }
+    const processNumberOfRequestedApps = (pkgRequest) => {
+        if (pkgRequest) applicationSearch.numberOfRequests++;
+        else applicationSearch.numberOfRequests--;
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    Object.keys(applicationSearch.packageRequests).forEach(function(appId) { // Gets the list of package requests saved in memory
-        // This sets the checkboxes back to marked when the user clicks back
-        applicationSearch.appCheckbox[appId] = true;  // after being in request review
-        applicationSearch.numberOfRequests++;
-    });
+    const onLoad = (previouslyLoaded) => {
+        if(previouslyLoaded) applicationSearch.doneLoading = false;
+        else { // pre populate fields based on state params on first load
+            applicationSearch.numberOfRequests = 0;
+            Object.keys(applicationSearch.packageRequests).forEach(function(appId) { // Gets the list of package requests saved in memory
+                // This sets the checkboxes back to marked when the user clicks back after being in request review
+                applicationSearch.appCheckbox[appId] = true;
+                applicationSearch.numberOfRequests++;
+            });
+            applicationSearch.nameSearch = $stateParams.name;
+            applicationSearch.category = $stateParams.category;
+            applicationSearch.page = $stateParams.page;
+        }
 
-    let query = [];
-    if(nameSearch) query.push(['service.name',nameSearch]);
-    if(categorySearch) query.push(['service.category',categorySearch]);
+        let query = [];
+        if(applicationSearch.nameSearch) query.push(['service.name',applicationSearch.nameSearch]);
+        if(applicationSearch.category) query.push(['service.category',applicationSearch.category]);
+        if(applicationSearch.page) query.push(['page',applicationSearch.page]);
 
-    let opts = {
-        personId: API.getUser(),
-        useCuid:true,
-        qs: query
-    }
+        let opts = {
+            personId: API.getUser(),
+            useCuid:true,
+            qs: query
+        };
 
-    console.log('person',API.getUser());
-
-    // TODO: PAGINATE
-    API.cui.getPersonRequestableApps(opts)
-    .then((res)=>{
-        console.log(res);
-        applicationSearch.list = res;
-        applicationSearch.doneLoading = true;
-        $scope.$digest();
-    });
+        // TODO: PAGINATE
+        API.cui.getPersonRequestableApps(opts)
+        .then((res)=>{
+            applicationSearch.list = res;
+            applicationSearch.doneLoading = true;
+            $scope.$digest();
+        });
+    };
+    onLoad(false);
 
     // ON LOAD END ------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-    applicationSearch.nameSearchUpdate = function(appName) {
-        $state.go('applications.search', {name: appName});
+    applicationSearch.searchUpdate = function() {
+        let opts = {};
+        if(applicationSearch.nameSearch && applicationSearch.nameSearch!=='') opts.name = applicationSearch.nameSearch;
+        if(applicationSearch.category) opts.category = applicationSearch.category;
+        if(applicationSearch.page) opts.page = applicationSearch.page;
+        $state.transitionTo('applications.search', opts, {notify:false}); // doesn't change state, only updates the url
+        onLoad(true);
     };
 
     applicationSearch.toggleRequest = function(application) {
-        if (!applicationSearch.packageRequests[application.id]) {
-            applicationSearch.packageRequests[application.id] = application;
-        }
-        else {
-            delete applicationSearch.packageRequests[application.id];
-        }
-        processNumberOfRequiredApps(applicationSearch.packageRequests[application.id]);
-        console.log(applicationSearch.packageRequests);
+        if (!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id] = application;
+        else delete applicationSearch.packageRequests[application.id];
+        localStorage.set('appsBeingRequested',applicationSearch.packageRequests);
+        processNumberOfRequestedApps(applicationSearch.packageRequests[application.id]);
+
     };
 
     applicationSearch.saveRequestsAndCheckout = function() {

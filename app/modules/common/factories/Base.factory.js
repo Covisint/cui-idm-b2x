@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','API','Menu', 
+.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','API','Menu',
 function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,Menu) {
 
     return {
@@ -13,17 +13,15 @@ function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,
         timezones: Timezones.all,
         user: User.user,
         userName: User.userName,
-        goBack: function() {
+        goBack: (fallback) => {
             if ($state.previous.name.name !== '') {
                 $state.go($state.previous.name, $state.previous.params);
-            } 
+            }
             else {
-                $state.go('base');
+                $state.go(fallback);
             }
         },
-        generateHiddenPassword: function(password) {
-            return Array(password.length+1).join('•');
-        }
+        generateHiddenPassword: (password) => Array(password.length+1).join('•')
     };
-        
+
 }]);
