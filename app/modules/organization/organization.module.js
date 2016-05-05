@@ -37,7 +37,7 @@ angular.module('organization',[])
             templateUrl: templateBase + 'directory/directory.html'
         })
         .state('directory.userDetails', {
-            url: '/user-details?id',
+            url: '/user-details?userId&orgId',
             templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
             controller: returnCtrlAs('userDetails')
         });
