@@ -18,6 +18,7 @@ function($scope,$stateParams,API) {
 
     var onLoadFinish = function onLoadFinish(organizationResponse) {
         orgProfile.organization = organizationResponse;
+
         API.cui.getPersonsAdmins({organizationId: orgProfile.organization.id})
         .then(function(res) {
             orgProfile.securityAdmins = res;
@@ -35,6 +36,7 @@ function($scope,$stateParams,API) {
         // If no id parameter is passed we load the organization of the logged in user
         API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(person) {
+            console.log(person);
             return API.cui.getOrganization({organizationId: person.organization.id});
         })
         .then(function(res) {

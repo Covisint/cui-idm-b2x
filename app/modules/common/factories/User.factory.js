@@ -2,7 +2,7 @@ angular.module('common')
 .factory('User',['$rootScope',function($rootScope) {
 
     var user = {
-        entitlements: []
+        entitlements: undefined
     };
 
     var userName = {};
