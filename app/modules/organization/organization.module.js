@@ -19,14 +19,14 @@ angular.module('organization',[])
             controller: returnCtrlAs('orgProfile')
         })
         // Directory ------------------------------------------------
-        .state('directory', {
-            url: '/organization/directory',
-            templateUrl: templateBase + 'directory/directory.html'
-        })
         .state('organization.directory', {
             url: '/directory?orgID',
             templateUrl: templateBase + 'directory/organization-directory.html',
             controller: returnCtrlAs('orgDirectory')
+        })
+        .state('directory', {
+            url: '/organization/directory',
+            templateUrl: templateBase + 'directory/directory.html'
         })
         .state('directory.userDetails', {
             url: '/user-details?userID&orgID',

@@ -23,8 +23,8 @@
         </svg>
         <!-- Invitation Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgHierarchy.invitationClicked">
-          <p>{{'invite-user' | translate}}</p>
-          <p>{{'invite-division' | translate}}</p>
+          <p ui-sref="invitation.user({orgID:orgHierarchy.organizationId})">{{'invite-user' | translate}}</p>
+          <p ui-sref="invitation.division({orgID:orgHierarchy.organizationId})">{{'invite-division' | translate}}</p>
         </div>
       </div>
     </div>
