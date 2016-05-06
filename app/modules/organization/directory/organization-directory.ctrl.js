@@ -3,8 +3,8 @@ angular.module('organization')
 function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
-    const orgDirectory = this;
-    let organizationId = $stateParams.orgId;
+    const orgDirectory = this,
+        organizationId = $stateParams.orgID;
 
     orgDirectory.organization = {};
     orgDirectory.loading = true;
@@ -47,22 +47,23 @@ function($scope,$stateParams,API,$filter,Sort) {
     };
 
     const flattenHierarchy = function flattenHierarchy(orgChildrenArray) {
-        let childrenArray = orgChildrenArray;
-        let orgList = [];
+        if (orgChildrenArray) {
+            let childrenArray = orgChildrenArray;
+            let orgList = [];
 
-        childrenArray.forEach(function(childOrg) {
-            if (childOrg.children) {
-                let newchildArray = childOrg.children;
-                delete childOrg.children;
-                orgList.push(childOrg);
-                flattenHierarchy(childrenArray);
-            }
-            else {
-                orgList.push(childOrg);
-            }
-        });
-
-        return orgList;
+            childrenArray.forEach(function(childOrg) {
+                if (childOrg.children) {
+                    let newChildArray = childOrg.children;
+                    delete childOrg['children'];
+                    orgList.push(childOrg);
+                    orgList.push(flattenHierarchy(newChildArray));
+                }
+                else {
+                    orgList.push(childOrg);
+                }
+            });
+            return _.flatten(orgList);
+        }
     };
 
     const onLoadFinish = function onLoadFinish(organizationResponse) {
@@ -70,14 +71,14 @@ function($scope,$stateParams,API,$filter,Sort) {
         .then(function(res) {
             orgDirectory.organization = res;
             orgDirectory.organizationList = flattenHierarchy(res.children);
-            return API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
+            return API.cui.getPersons({'qs': [['organizationId', orgDirectory.organization.id],
                                                 ['pageSize', orgDirectory.paginationSize], ['page',1]]});
         })
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
-            return API.cui.countPersons({'qs': ['organization.id', orgDirectory.organization.id]});
+            return API.cui.countPersons({'qs': ['organizationId', orgDirectory.organization.id]});
         })
         .then(function(res) {
             orgDirectory.orgPersonCount = res;
