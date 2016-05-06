@@ -3,8 +3,10 @@ angular.module('organization')
 function($scope,$stateParams,API,$filter,Sort) {
     'use strict';
 
-    const orgDirectory = this;
-    let organizationId = $stateParams.orgId;
+    const orgDirectory = this,
+        organizationId = $stateParams.orgId;
+
+    let apiPromises = [];
 
     orgDirectory.organization = {};
     orgDirectory.loading = true;
@@ -52,17 +54,17 @@ function($scope,$stateParams,API,$filter,Sort) {
 
         childrenArray.forEach(function(childOrg) {
             if (childOrg.children) {
-                let newchildArray = childOrg.children;
-                delete childOrg.children;
+                let newChildArray = childOrg.children;
+                delete childOrg['children'];
                 orgList.push(childOrg);
-                flattenHierarchy(childrenArray);
+                orgList.push(flattenHierarchy(newChildArray));
             }
             else {
                 orgList.push(childOrg);
             }
         });
 
-        return orgList;
+        return _.flatten(orgList);
     };
 
     const onLoadFinish = function onLoadFinish(organizationResponse) {
