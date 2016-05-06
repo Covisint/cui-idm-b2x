@@ -71,14 +71,14 @@ function($scope,$stateParams,API,$filter,Sort) {
         .then(function(res) {
             orgDirectory.organization = res;
             orgDirectory.organizationList = flattenHierarchy(res.children);
-            return API.cui.getPersons({'qs': [['organizationId', orgDirectory.organization.id],
-                                                ['pageSize', orgDirectory.paginationSize], ['page',1]]});
+            return API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
+                                                ['pageSize', String(orgDirectory.paginationSize)], ['page',String(1)]]});
         })
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
-            return API.cui.countPersons({'qs': ['organizationId', orgDirectory.organization.id]});
+            return API.cui.countPersons({'qs': ['organization.id', String(orgDirectory.organization.id)]});
         })
         .then(function(res) {
             orgDirectory.orgPersonCount = res;
@@ -92,20 +92,20 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if (!organizationId) {
-        // If no id parameter is passed load directory of logged in user's organization.
-        API.cui.getPerson({personId: API.getUser(), useCuid:true})
-        .then(function(person) {
-            return API.cui.getOrganization({organizationId: person.organization.id});
-        })
+    if (organizationId) {
+        // Load organization directory of id parameter
+        API.cui.getOrganization({organizationId: organizationId})
         .then(function(res) {
             onLoadFinish(res);
         })
         .fail(handleError);
     }
     else {
-        // Load organization directory of id parameter
-        API.cui.getOrganization({organizationId: organizationId})
+        // If no id parameter is passed load directory of logged in user's organization.
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
+        .then(function(res) {
+            return API.cui.getOrganization({organizationId: res.organization.id});
+        })
         .then(function(res) {
             onLoadFinish(res);
         })
@@ -119,11 +119,15 @@ function($scope,$stateParams,API,$filter,Sort) {
     orgDirectory.getOrgMembers = function getOrgMembers(organization) {
         orgDirectory.loading = true;
         orgDirectory.organization = organization;
-        API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id]]})
+        API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)]]})
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
+            return API.cui.countPersons({'qs': ['organization.id', String(orgDirectory.organization.id)]});
+        })
+        .then(function(res) {
+            orgDirectory.orgPersonCount = res;
             orgDirectory.loading = false;
             $scope.$digest();
         })
@@ -148,8 +152,8 @@ function($scope,$stateParams,API,$filter,Sort) {
     };
 
     orgDirectory.paginationHandler = function paginationHandler(page) {
-        API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
-                                    ['pageSize', orgDirectory.paginationSize], ['page', page]]})
+        API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
+                                    ['pageSize', String(orgDirectory.paginationSize)], ['page', String(page)]]})
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
@@ -162,10 +166,10 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     // WATCHERS START --------------------------------------------------------------------------------
 
-    $scope.$watch('orgDirectory.paginationSize', function(newValue) {
-        if (newValue) {
-            API.cui.getPersons({'qs': [['organization.id', orgDirectory.organization.id],
-                                ['pageSize', orgDirectory.paginationSize], ['page', 1]]})
+    $scope.$watch('orgDirectory.paginationSize', function(newValue, oldValue) {
+        if (newValue && oldValue && newValue !== oldValue) {
+            API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
+                                ['pageSize', String(orgDirectory.paginationSize)], ['page', 1]]})
             .then(function(res) {
                 orgDirectory.userList = res;
                 orgDirectory.unparsedUserList = res;
