@@ -14,7 +14,9 @@ angular.module('common')
                         // If the person has no addresses set we need to initialize it as an array
                         // to follow the object structure
                         res.addresses = [{}];
-                        res.addresses[0].streets = [[]];
+                    }
+                    if (!res.addresses[0].streets) {
+                        res.addresses[0].streets = [[],[]];
                     }
                     userProfile.user = {};
                     userProfile.tempUser = {};
