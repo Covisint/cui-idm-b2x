@@ -10,8 +10,8 @@
       </div>
       <!-- Address Block -->
       <div ng-if="!toggled">
-        <div class="cui-field-val__val">{{userProfile.user.addresses[0].streets[0]}} </div>
-        <div class="cui-field-val__val" ng-if="userProfile.user.addresses[0].streets[1]">{{userProfile.user.addresses[0].streets[1]}}</div>
+        <div class="cui-field-val__val" ng-if="userProfile.user.addresses[0].streets[0].length>0">{{userProfile.user.addresses[0].streets[0]}} </div>
+        <div class="cui-field-val__val" ng-if="userProfile.user.addresses[0].streets[1].length>0">{{userProfile.user.addresses[0].streets[1]}}</div>
         <div class="cui-field-val__val">{{userProfile.user.addresses[0].city}}</div>
         <div class="cui-field-val__val">{{userProfile.user.addresses[0].state}}<span ng-if="userProfile.user.addresses[0].state && userProfile.user.addresses[0].postal">, </span>{{userProfile.user.addresses[0].postal}}</div>
         <div class="cui-field-val__val">{{base.countries.getCountryByCode(userProfile.user.addresses[0].country).name}}</div>
