@@ -6,10 +6,10 @@
   <!-- Action Header -->
   <div class="cui-action">
     <span class="cui-action__title">
-      <a ui-sref="organization.profile({id:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-      <a ui-sref="organization.hierarchy({id:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-      <a ui-sref="organization.directory({id:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
-      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+      <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory({orgID:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles({orgID:orgProfile.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
     </span>
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgProfile.invitationClicked =! orgProfile.invitationClicked" off-click="orgProfile.invitationClicked=false">
@@ -18,8 +18,8 @@
         </svg>
         <!-- Invitation Popover -->
         <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgProfile.invitationClicked">
-          <p>{{'invite-user' | translate}}</p>
-          <p>{{'invite-division' | translate}}</p>
+          <p ui-sref="invitation.user({orgID:orgProfile.organization.id})">{{'invite-user' | translate}}</p>
+          <p ui-sref="invitation.division({orgID:orgProfile.organization.id})">{{'invite-division' | translate}}</p>
         </div>
       </div>
     </div>

@@ -3,8 +3,9 @@ angular.module('organization')
 function($scope,$stateParams,API) {
     'use strict';
 
-    var orgProfile = this;
-    var organizationId = $stateParams.id;
+    const orgProfile = this,
+        organizationId = $stateParams.orgID,
+        userId = $stateParams.userID;
 
     orgProfile.loading = true;
 
@@ -32,23 +33,33 @@ function($scope,$stateParams,API) {
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if (!organizationId) {
-        // If no id parameter is passed we load the organization of the logged in user
-        API.cui.getPerson({personId: API.getUser(), useCuid:true})
-        .then(function(person) {
-            console.log(person);
-            return API.cui.getOrganization({organizationId: person.organization.id});
+    if (organizationId) {
+        // Load profile based on organization id parameter
+        API.cui.getOrganization({organizationId: organizationId})
+        .then(function(organizationResponse) {
+            onLoadFinish(organizationResponse);
         })
+        .fail(handleError);
+    }
+    else if (userId) {
+        // Load profile based on user id paramter
+        API.cui.getPerson({personId: userId})
         .then(function(res) {
-            onLoadFinish(res);
+            return API.cui.getOrganization({organizationId: res.organization.id});
+        })
+        .then(function(organizationResponse) {
+            onLoadFinish(organizationResponse);
         })
         .fail(handleError);
     }
     else {
-        // Load organization based on id parameter
-        API.cui.getOrganization({ organizationId: organizationId })
+        // Load organization profile of logged in user
+        API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(res) {
-            onLoadFinish(res);
+            return API.cui.getOrganization({organizationId: res.organization.id});
+        })
+        .then(function(organizationResponse) {
+            onLoadFinish(organizationResponse);
         })
         .fail(handleError);
     }

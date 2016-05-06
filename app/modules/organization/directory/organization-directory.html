@@ -6,10 +6,10 @@
   <!-- Page Header -->
   <div class="cui-action">
     <span class="cui-action__title">
-      <a ui-sref="organization.profile({id:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
-      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+      <a ui-sref="organization.profile({orgID:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory({orgID:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles({orgID:orgDirectory.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
     </span>
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
@@ -67,7 +67,10 @@
         <span class="cui-action__action-label">{{'organizations' | translate}}</span>
         <!-- Organizations Popover -->
         <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
-          <div ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
+          <div ng-if="!orgDirectory.organizationList">
+            <p>{{'cui-no-org-divisions' | translate}}!</p>
+          </div>
+          <div ng-if="orgDirectory.organizationList" ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
             <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization)">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
@@ -93,7 +96,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({id:user.id})">
+        <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({userID:user.id,orgID:orgDirectory.organization.id})">
           <th><div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div></th>
           <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
           <th>{{user.username}}</th>
