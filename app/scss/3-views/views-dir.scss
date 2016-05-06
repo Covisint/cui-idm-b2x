@@ -1,0 +1,55 @@
+// Layout helpers
+%flex-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+%flex-row-vert {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cui-tos-container {
+  float: right;
+  padding-bottom: 30px;
+}
+
+.cui-wizard__controls--clear {
+  clear: both;
+}
+
+.cui-previous-link {
+  padding-right: 30px;
+}
+
+.cui-popover-container--relative {
+  @extend .cui-card;
+
+  .cui-styeguide__popover-container {
+    position: absolute;
+    left: 300px;
+
+    @media screen and (max-width: 700px) {
+      width: 270px;
+      left: -20px;  
+      top: 20px
+    }
+  }
+}
+
+.js-main-content {
+  transform: translate3d(0, 0, 0);
+  transition: transform .15s linear;
+}
+
+.js-main-content--search-open {
+  transform: translate3d(0, 60px, 0);
+  transition: transform .15s linear;
+}
+
+// Directory imports
+@import 'applications';
+@import 'users';
+@import 'organization';
+@import 'walkupRegistration';

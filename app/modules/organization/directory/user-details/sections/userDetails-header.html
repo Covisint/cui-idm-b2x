@@ -1,0 +1,56 @@
+<div class="cui-action">
+  <span class="cui-action__title">
+    <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+    <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+    <a ui-sref="organization.directory({orgId:userDetails.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
+    <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+  </span>
+  
+  <!-- Invitation -->
+  <div class="cui-action__actions">
+    <div class="cui-action__action-container" id="invitation-button" ng-click="userDetails.invitationClicked=!userDetails.invitationClicked" off-click="userDetails.invitationClicked=false">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+      </svg>
+      <!-- Invitation Popover -->
+      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.invitationClicked">
+        <p>{{'invite-user' | translate}}</p>
+        <p>{{'invite-division' | translate}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Name Header -->
+<div class="cui-media--centered">
+  <div class="cui-media__image-container">
+    <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+  </div>
+  <div class="cui-media__body">
+    <!-- Name -->
+    <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
+    <!-- userID -->
+    <p class="cui-media__content">userID: {{userDetails.user.id}}</p>
+    <!-- Registered Date -->
+    <p class="cui-media__content">Registered: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
+    <!-- Status: Active -->
+    <p class="cui-media__content" ng-if="userDetails.user.status==='active'">{{userDetails.user.status}}
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+      </svg>
+    </p>
+    <!-- Status: Locked -->
+    <p class="cui-media__content" ng-if="userDetails.user.status==='locked'">{{userDetails.user.status}}
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+      </svg>
+    </p>
+    <p class="cui-media__content">
+      <span class="cui-action__title">
+        <button class="cui-button" style="margin:5px">Suspend</button>
+        <button class="cui-button" style="margin:5px">Password Reset</button>
+        <button class="cui-button" style="margin:5px">New Grants</button>
+      </span>
+    </p>
+  </div>
+</div>

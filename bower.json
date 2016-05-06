@@ -10,7 +10,7 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "lodash": "~3.10.1",
+    "lodash": "~4",
     "angular": "~1.4.7",
     "angular-snap": "~1.8.5",
     "angular-ui-router": "~0.2.15",

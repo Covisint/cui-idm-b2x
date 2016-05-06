@@ -1,0 +1,29 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to create this page can be found <a class="cui-link" href="https://github.com/piotrbogun/cui-idm-b2x/tree/master/app/modules/registration/newTopLevelOrg" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-form--mobile-steps">
+  <div class="cui-form__title">{{'create-account' | translate}}</div>
+  <div class="cui-form__body">
+    <cui-wizard bar mobile-stack class="cui-wizard" step="1" minimum-padding="30">
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+
+      <step step-title="{{'cui-user-profile' | translate}}" icon="cui:user">
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-userProfile.html'"></div>
+      </step>
+
+      <step step-title="{{'cui-org' | translate}}" icon="cui:skyscraper">
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-organization.html'"></div>
+      </step>
+
+      <step step-title="{{'cui-login' | translate}}" icon="cui:login">
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-login.html'"></div>
+      </step>
+
+      <step step-title="{{'cui-review' | translate}}" icon="cui:review">
+        <div ng-include="'app/modules/registration/newTopLevelOrg/newTLO-steps/newTLO-review.html'"></div>
+      </step>
+
+    </cui-wizard>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/directory/user-details" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-organization">
+  <!-- Page Loading -->
+  <div class="cui-loading__container" ng-if="userDetails.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <!-- Page Header -->
+  <div ng-include="'app/modules/organization/directory/user-details/sections/userDetails-header.html'"></div>
+
+  <div class="cui-users__profile">
+    <!-- Left Content -->
+    <div class="cui-users__profile-info">
+      <!-- Header -->
+      <div ng-include="'app/modules/organization/directory/user-details/sections/userDetails-header-left.html'"></div>
+      <!-- Profile -->
+      <div ng-if="userDetails.profileRolesSwitch" ng-include="'app/modules/organization/directory/user-details/sections/userDetails-profile.html'"></div>
+      <!-- Roles --> 
+      <div ng-if="!userDetails.profileRolesSwitch" ng-include="'app/modules/organization/directory/user-details/sections/userDetails-roles.html'"></div>
+    </div>
+    
+    <!-- Right Content -->
+    <div class="cui-users__profile-info">
+      <!-- Header -->
+      <div ng-include="'app/modules/organization/directory/user-details/sections/userDetails-header-right.html'"></div>
+      <!-- Applications -->
+      <div ng-if="userDetails.appsHistorySwitch" ng-include="'app/modules/organization/directory/user-details/sections/userDetails-apps.html'"></div>
+      <!-- History -->
+      <div ng-if="!userDetails.appsHistorySwitch" ng-include="'app/modules/organization/directory/user-details/sections/userDetails-history.html'"></div>
+    </div>
+
+  </div>
+</div>

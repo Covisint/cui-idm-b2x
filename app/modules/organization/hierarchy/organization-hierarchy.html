@@ -1,0 +1,44 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/organization/hierarchy" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/organization.scss" class="cui-link" target="blank">here</a></div>
+<!-- /processHTML -->
+
+<div class="cui-organization">
+  <!-- Page Loading -->
+  <div class="cui-loading__container" ng-if="orgHierarchy.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <!-- Menu Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+    </span>
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container" id="invitation-button" ng-click="orgHierarchy.invitationClicked=!orgHierarchy.invitationClicked" off-click="orgHierarchy.invitationClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+        <!-- Invitation Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgHierarchy.invitationClicked">
+          <p>{{'invite-user' | translate}}</p>
+          <p>{{'invite-division' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Header -->
+  <div class="cui-action">
+    <span class="cui-action__title">{{orgHierarchy.organization.name}}</span>
+    <div class="cui-action__actions">
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="cui-organization__main-container">
+    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)"></div>
+  </div>
+</div>

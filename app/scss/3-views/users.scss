@@ -1,0 +1,105 @@
+.cui-users__main-container {
+  padding: 0 em(15) em(13);
+  position: relative;
+  min-height: 400px;
+
+  @media screen and (min-width: 701px) {
+    padding: em(15) em(55) 0 em(65);
+  }
+
+  .cui-media__image-container {
+    margin-right: 15px;
+  }
+}
+
+.cui-users__profile-media {
+  @extend %flex-row-vert;
+  max-width: 50%;
+
+  @media screen and (max-width: 700px) {
+    border-bottom: 1px solid $secondary-background;
+    max-width: none;
+  }
+}
+
+.cui-users__field {
+  @extend %flex-row;
+  align-items: baseline;
+}
+
+.cui-users__profile {
+  @extend %flex-row;
+
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    margin-top: em(25);
+  }
+}
+
+.cui-users__profile-info {
+  @extend %flex-row-vert;
+  flex: .5;
+  justify-content: flex-start;
+}
+
+.cui-users__profile-info:first-of-type {
+
+  @media screen and (min-width: 701px) {
+    margin-right: 15.5%;
+  }
+}
+
+.cui-users__address-container {
+  @extend %flex-row-vert;
+  flex: 1;
+
+  &.show-address {
+    background-color: $tertiary-background;
+    padding: em(16) em(16) em(30);
+
+    @media screen and (max-width: 700px) {
+      margin: 0 -15px;
+    }
+
+    .cui-users__field {
+      margin-bottom: em(25);
+    }
+  }
+}
+
+.cui-users__contact-info {
+  margin: em(35) 0 em(88);
+}
+
+.cui-users__address-submit {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cui-users__info-block {
+  margin-bottom: em(35);
+}
+
+.cui-users__inline-edit {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cui-field-val--stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.cui-users__item {
+  margin-bottom: em(10);
+}
+
+.cui-users__address-info {
+  margin-bottom: em(5);
+
+  &:first-of-type {
+    margin-top: em(5);
+  }
+}
+

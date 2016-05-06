@@ -1,0 +1,236 @@
+.cui-applications__main-container {
+  padding: em(15) em(13);
+  position: relative;
+  min-height: 400px;
+
+  @media screen and (min-width: 701px) {
+    padding: em(15) em(55) em(15) em(65);
+  }
+
+  &--full {
+    @media screen and (max-width: 700px) {
+      padding: em(15) 0;
+    }
+  }
+}
+
+.cui-tabs {
+  @media screen and (min-width: 701px) {
+    display: none;
+  }
+}
+
+.cui-applications__left,
+.cui-applications__right {
+  flex: .5;
+}
+
+.cui-applications__right {
+  margin-left: em(50);
+}
+
+.cui-applications__desktop-tabs {
+  display: none;
+
+  @media screen and (min-width: 701px) {
+    display: flex;
+  }
+}
+
+.cui-applications {
+
+  .cui-media__image {
+    position: relative;
+  }
+
+  .cui-media__title {
+    cursor: pointer;
+  }
+}
+
+%flex-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cui-applications__row {
+  @extend %flex-row;
+}
+
+// New Request Page
+
+.cui-applications__new-request {
+
+  .cui-applications__row {
+    margin-top: em(16);
+    margin-bottom: em(48);
+  }
+
+  .cui-applications__center-text {
+    text-align: center;
+
+    @media screen and (min-width: 701px) {
+      flex: .1;
+    }
+  }
+
+  .cui-input-button {
+    margin-bottom: em(25);
+    @media screen and (min-width: 701px) {
+      margin: 0;
+    }
+  }
+
+  .cui-button {
+    margin-top: em(25);
+
+    @media screen and (min-width: 701px) {
+      margin: 0;
+    }
+  }
+
+  .cui-applications__search-options {
+    padding-bottom: em(30);
+    
+    @media screen and (min-width: 701px) {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .cui-button,
+  .cui-input-button {
+    @media screen and (min-width: 701px) {
+      flex: .45;
+    }
+  }
+
+  .cui-applications__categories {
+    @extend %flex-row;
+    border-bottom: 1px solid $cui-greyscale--x-light;
+    padding: em(20) 0;
+
+    .cui-applications__category {
+      @extend %h5--bold;
+    }
+
+  }
+
+}
+
+.cui-applications__search {
+
+  .cui-action--alt {
+
+    .cui-action__title {
+      @media screen and (min-width: 701px) {
+        flex: .25;
+      }
+    }
+
+    .cui-input-button {
+      @media screen and (min-width: 701px) {
+        flex: .5;
+      }
+    }
+  }
+
+  .cui-applications__expandable-info {
+    align-items: center;
+    display: flex;
+    flex: .9;
+
+    .cui-expandable__title-left {
+      flex: .35;
+    }
+    .cui-expandable__title-middle {
+      flex: .35;
+    }
+  }
+
+  .cui-expandable__title-end {
+      flex: .1;
+  }
+}
+
+.cui-applications__search-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// Review page
+
+.cui-applications__review {
+
+  .cui-action--alt {
+
+    .cui-action__title {
+      @media screen and (min-width: 701px) {
+        flex: .25;
+      }
+    }
+
+    .cui-input-button {
+      @media screen and (min-width: 701px) {
+        flex: .5;
+      }
+    }
+  }
+
+  .cui-applications__review-apps {
+    @extend .cui-applications__row;
+    flex-wrap: wrap;
+    margin-top: em(24);
+
+    & div:nth-child(odd) {
+      margin-right: 3.6%;
+    }
+  }
+
+  .cui-applications__review-text-input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cui-applications__submit-options {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cui-applications__submit-options {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: em(40) 0;
+
+    .cui-link {
+      margin-right: em(43);
+    }
+  }
+
+}
+
+.cui-popover__sort-popover {
+  transform: translate(-8.5em);
+  font-size: 14px;
+}
+
+@media screen and (max-width: 700px) {
+  .cui-popover__sort-popover {
+    width: 275px;
+    transform: translate(-8.5em);
+  }
+}
+
+.cui-popover__categories-popover {
+  transform: translate(-8.0em);
+  font-size: 14px;
+}
+
+@media screen and (max-width: 700px) {
+  .cui-popover__categories-popover {
+    width: 275px;
+    transform: translate(-8.0em);
+  }
+}

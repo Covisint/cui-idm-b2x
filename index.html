@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>CUI IDM B2X</title>
 
-  <!-- build:css assets/css/main.css -->
-  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- build:css app/css/main.css -->
+  <link rel="stylesheet" href="assets/concat/css/main.css">
   <!-- endbuild -->
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
@@ -14,7 +14,7 @@
   <div class="cui-wrapper v2">
     <snap-drawer>
 
-      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()">
+      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
         <div class="cui-profile__row">
           <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
           <!-- Avatar Mobile -->
@@ -49,7 +49,7 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#four29"></use>
         </svg>
       </span>
-      <span class="snap-menu--option" snap-close ui-sref="applications">
+      <span class="snap-menu--option" snap-close ui-sref="applications.myApplications">
         <span class="snap-menu__option-name">{{'cui-applications' | translate}}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="snap-menu__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 49 49">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
@@ -81,7 +81,8 @@
       </span> -->
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
-       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
+       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}">
+       <!-- ng-if="base.menu.desktop.enabled" -->
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
           <span class="cui-desktop-menu__option-name">{{'welcome' | translate}}</span>
@@ -139,13 +140,19 @@
             <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
               <div class="menu-toggle--button"></div>
             </div>
+
+            <!-- Uncomment below to reveal header -->
             <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
+
+            <!-- Uncomment below to reveal global search icon -->
+            <!-- <div class="cui-header__search-container" ng-model="searchEnabled" ng-click="searchEnabled = !searchEnabled">
+              <cui-icon cui-svg-icon="cui:search" svg-class="cui-header__search-icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+            </div> -->
+
             <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
                 <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
                 <!-- Avatar Desktop -->
-                <div class="cui-media__image-container">
-                  <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
-                </div>
+                <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="user.profile">
                     <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
@@ -166,19 +173,24 @@
               </div>
           </div>
         </header>
-        <div ui-view ng-cloak></div>
-        <div class="cui-tile cui-footer">
-          <div ng-translate-language-select class="cui-footer__translate"></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">Covisint</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'privacy' | translate}} &amp; {{'terms' | translate}} </a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'help' | translate}}</a></div>
-          <div class="cui-footer__link"><a href="" class="cui-link--medium-light cui-link--no-decoration">{{'cui-learn-more-start' | translate}}</a> {{'cui-learn-more-end' | translate}}</div>
+        <!-- Uncomment below to reveal global search -->
+        <!-- <div class="cui-input-button cui-input-button--global-search" ng-class="{'show': searchEnabled}">
+          <input type="text" placeholder="Search for applications in your org" class="cui-input-button__input"/>
+          <button class="cui-input-button__button">{{'go' | translate}}</button>
+        </div> -->
+        <div ui-view class="js-main-content" ng-cloak ng-class="{'js-main-content--search-open': searchEnabled}"></div>
+        <div class="cui-footer">
+          <div class="cui-footer__col"><a href="" class="cui-footer__link">Covisint</a></div>
+          <div class="cui-footer__col"><a href="" class="cui-footer__link">{{'privacy' | translate}} &amp; {{'terms' | translate}} </a></div>
+          <div class="cui-footer__col"><a href="" class="cui-footer__link">{{'help' | translate}}</a></div>
+          <div class="cui-footer__col"><a href="" class="cui-footer__link">{{'cui-learn-more-start' | translate}}</a> {{'cui-learn-more-end' | translate}}</div>
+          <div class="cui-footer__col" ng-translate-language-select class="cui-footer__translate"></div>
         </div>
       </div>
     </snap-content>
   </div>
 
-<!-- build:js assets/js/vendor.js -->
+<!-- build:js app/js/vendor.js -->
 <script src="bower_components/thirdwave-tether/dist/js/tether.js"></script>
 <script src="node_modules/blueimp-md5/js/md5.min.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -199,12 +211,12 @@
 <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
 <script src="bower_components/cui-ng/dist/cui-ng.js"></script>
 <script src="bower_components/cui-i18n/translate.js"></script>
-<script src="bower_components/cui.js/dist/cui.js"></script>
+<script src="bower_components/cui.js/dist/cui.min.js"></script>
 <script src="bower_components/svg4everybody/dist/svg4everybody.min.js"></script>
 <!-- endbuild -->
 
-<!-- build:js assets/js/app.js -->
-<script src="assets/concatJS/app.js"></script>
+<!-- build:js app/js/app.js -->
+<script src="assets/concat/js/app.js"></script>
 <!-- endbuild -->
 
 <script>svg4everybody();</script>
