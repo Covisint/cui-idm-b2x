@@ -13,7 +13,7 @@ angular.module('applications',[])
             templateUrl : templateBase + 'applications.html'
         })
         .state('applications.myApplications', {
-            url: '/',
+            url: '/?name&page&pageSize&category&sort&refine',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications')
         })

@@ -36,6 +36,7 @@ angular.module('common')
     const getCallWrappers = (cuiObject) => {
         return calls.reduce((wrappers,call) => {
             wrappers[call.cmd] = (opts) => {
+                if(!opts) opts = {};
                 if(call.accepts === 'text/plain') opts.accepts = call.accepts;
                 return cuiObject.doCall(call.cmd,opts)
             }
