@@ -4,8 +4,8 @@ function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     'use strict';
 
     const userDetails = this,
-        userID = $stateParams.userId,
-        organizationID = $stateParams.orgId;
+        userId = $stateParams.userID,
+        organizationId = $stateParams.orgID;
 
     let apiPromises = [];
 
@@ -21,7 +21,7 @@ function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     apiPromises.push(
-        UserProfile.getProfile({personId: userID})
+        UserProfile.getProfile({personId: userId})
         .then(function(res) {
             angular.merge(userDetails, res);
         }, function(error) {
@@ -30,7 +30,7 @@ function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     );
 
     apiPromises.push(
-        API.cui.getOrganization({organizationId: organizationID})
+        API.cui.getOrganization({organizationId: organizationId})
         .then(function(res) {
             userDetails.organization = res;
         }, function(error) {

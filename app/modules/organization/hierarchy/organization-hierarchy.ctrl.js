@@ -1,22 +1,24 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl', ['$scope','$stateParams','API','$q',
-function($scope,$stateParams,API,$q) {
+.controller('orgHierarchyCtrl', ['$scope','$stateParams','API','$q','$state',
+function($scope,$stateParams,API,$q,$state) {
     'use strict';
 
-    const orgHierarchy = this;
-    const organizationID = $stateParams.orgId;
+    const orgHierarchy = this,
+        organizationId = $stateParams.orgID;
 
     let apiPromises = [];
 
+    orgHierarchy.organizationId = $stateParams.orgID;
     orgHierarchy.loading = true;
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if (organizationID) {
+    if (organizationId) {
         // Use organizationID parameter to load the organization hierarchy 
         apiPromises.push(
-            API.cui.getOrganizationHierarchy({organizationId: organizationID})
+            API.cui.getOrganizationHierarchy({organizationId: organizationId})
             .then(function(res) {
+                // Put hierarchy response in an array as the hierarchy directive expects an array
                 orgHierarchy.organizationHierarchy = [res];
             }, function(error) {
                 console.log(error);
@@ -28,9 +30,10 @@ function($scope,$stateParams,API,$q) {
         apiPromises.push(
             API.cui.getPerson({personId: API.getUser(), useCuid:true})
             .then(function(res) {
-                API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
+                return API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
             })
             .then(function(res) {
+                // Put hierarchy response in an array as the hierarchy directive expects an array
                 orgHierarchy.organizationHierarchy = [res];
             }, function(error) {
                 console.log(error);
@@ -48,5 +51,14 @@ function($scope,$stateParams,API,$q) {
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    orgHierarchy.goToOrgProfile = function(org) {
+        console.log(org.id);
+        $state.go('organization.profile',{orgID:org.id});
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
