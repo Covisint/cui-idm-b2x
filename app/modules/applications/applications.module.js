@@ -27,7 +27,7 @@ angular.module('applications',[])
         })
         .state('applications.search', {
             url: '/search?name&category&page&pageSize',
-            templateUrl: templateBase + '/search/applicationSearch.html',
+            templateUrl: templateBase + 'search/applicationSearch.html',
             controller: returnCtrlAs('applicationSearch')
         })
         .state('applications.reviewRequest', {
