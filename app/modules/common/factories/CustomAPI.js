@@ -6,6 +6,8 @@ angular.module('common')
     ];
 
     const calls = [
+        {cmd: 'getPackageClaims',                           accepts: '.platform.package.claim.v1',                   call: '/service/v3/claims'},
+
         {cmd: 'getCategories',                           accepts: '.platform.category.v1',                   call: '/service/v3/categories'},
 
         {cmd: 'getPersonRequestableApps',                accepts: '.platform.service.application.v1',        call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},

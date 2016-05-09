@@ -101,6 +101,13 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,$q,$paginati
 
     };
 
+    myApplications.goToDetails = (application) => {
+        const opts = {
+            appId: application.id
+        };
+        $state.go('applications.myApplicationDetails',opts);
+    };
+
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
 

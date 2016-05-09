@@ -1,11 +1,9 @@
 angular.module('organization',[])
-.config(['$stateProvider', function($stateProvider) {
+.config(['$stateProvider', ($stateProvider) =>  {
 
-	const templateBase = 'app/modules/organization/';
+    const templateBase = 'app/modules/organization/';
 
-    const returnCtrlAs = function(name, asPrefix) {
-        return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
-    };
+   const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
     $stateProvider
         .state('organization', {
