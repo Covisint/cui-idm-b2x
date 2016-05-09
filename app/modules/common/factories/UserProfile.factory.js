@@ -140,6 +140,9 @@ angular.module('common')
                 };
 
                 userProfile.pushToggleOff = function(toggleOffObject) {
+                    if (!userProfile.toggleOffFunctions) {
+                        userProfile.toggleOffFunctions = {};
+                    }                
                     userProfile.toggleOffFunctions[toggleOffObject.name] = toggleOffObject.function;
                 };
 
