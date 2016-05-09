@@ -1,9 +1,9 @@
 angular.module('app')
-.config(['$urlRouterProvider', function($urlRouterProvider) {
+.config(['$urlRouterProvider', ($urlRouterProvider)  => {
 
     // Fixes infinite digest loop with ui-router (do NOT change unless absolutely required)
-    $urlRouterProvider.otherwise(function($injector) {
-      var $state = $injector.get('$state');
+    $urlRouterProvider.otherwise(($injector) => {
+      const $state = $injector.get('$state');
       $state.go('welcome');
     });
 

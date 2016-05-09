@@ -1,7 +1,14 @@
 angular.module('applications')
-.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests','localStorageService', function(API,$scope,$state,AppRequests,localStorage) {
+.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests','localStorageService',
+function(API,$scope,$state,AppRequests,localStorage) {
 
     let newAppRequest = this;
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    // HELPER FUNCTIONS END ---------------------------------------------------------------------------
+
+    // ON LOAD START ----------------------------------------------------------------------------------------
 
     if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
         AppRequests.set(localStorage.get('appsBeingRequested'));
@@ -11,17 +18,11 @@ angular.module('applications')
     newAppRequest.appsBeingRequested = [];
     newAppRequest.numberOfRequests = 0;
 
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    Object.keys(appsBeingRequested).forEach(function(appId) {
+    Object.keys(appsBeingRequested).forEach((appId) => {
         // This sets the checkboxes back to marked when the user clicks back
         newAppRequest.numberOfRequests++;
         newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
     });
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-    // ON LOAD START ---------------------------------------------------------------------------------
 
     API.cui.getCategories()
     .then((res)=>{

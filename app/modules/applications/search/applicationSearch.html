@@ -16,8 +16,8 @@
             {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
-            <input class="cui-input-button__input" ng-model="applicationSearch.nameSearch" placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.searchUpdate"/>
-            <button class="cui-input-button__button" ng-click="applicationSearch.searchUpdate()">{{'filter' | translate}}</button>
+            <input class="cui-input-button__input" ng-model="applicationSearch.search.name" placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
+            <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
             <svg ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
@@ -38,13 +38,13 @@
         </div>
     </div>
     <div class="cui-applications__main-container">
-        <div class="cui-loading__container" ng-if="!applicationSearch.doneLoading">
+        <div class="cui-loading__container" ng-if="!applicationSearch.doneReloading">
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
 
         <!-- TODO @SHANE we need designs for no applications matching query -->
 
-        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneLoading" transition-speed="150">
+        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneReloading" transition-speed="150">
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                 <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
                     <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
@@ -88,9 +88,15 @@
                 </div>
             </cui-expandable-body>
         </cui-expandable>
-        <div class="cui-applications__search-button">
-            <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
-        </div>
+    </div>
+    <!-- TODO @SHANE ADD SPACING HERE -->
+    <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
+            <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+            <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
+            <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
+    </div>
+    <div class="cui-applications__search-button">
+        <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
     </div>
 </div>
 

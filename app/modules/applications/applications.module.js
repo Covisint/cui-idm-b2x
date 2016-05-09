@@ -1,11 +1,9 @@
 angular.module('applications',[])
-.config(['$stateProvider', function($stateProvider) {
+.config(['$stateProvider', ($stateProvider) => {
 
-	const templateBase = 'app/modules/applications/';
+    const templateBase = 'app/modules/applications/';
 
-    const returnCtrlAs = function(name, asPrefix) {
-        return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
-    };
+    const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
     $stateProvider
         .state('applications', {
@@ -18,7 +16,7 @@ angular.module('applications',[])
             controller: returnCtrlAs('myApplications')
         })
         .state('applications.myApplicationDetails', {
-            url: '/:packageId/:appId',
+            url: '/details/:appId',
             templateUrl: templateBase + 'myApplications/myApplications-details.html',
             controller: returnCtrlAs('myApplicationDetails')
         })
@@ -28,7 +26,7 @@ angular.module('applications',[])
             controller: returnCtrlAs('newAppRequest')
         })
         .state('applications.search', {
-            url: '/search?name&category&page',
+            url: '/search?name&category&page&pageSize',
             templateUrl: templateBase + '/search/applicationSearch.html',
             controller: returnCtrlAs('applicationSearch')
         })
