@@ -1,8 +1,8 @@
 angular.module('applications')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','localStorageService', function (API,$scope,$stateParams,$state,AppRequests,localStorage) {
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','localStorageService','$q','$pagination', function (API,$scope,$stateParams,$state,AppRequests,localStorage,$q,$pagination) {
     let applicationSearch = this;
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
+    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) { // If there's nothing in app memory and there's something in local storage
         AppRequests.set(localStorage.get('appsBeingRequested'));
     }
     applicationSearch.packageRequests = AppRequests.get();
@@ -20,23 +20,34 @@ angular.module('applications')
     // ON LOAD START ---------------------------------------------------------------------------------
 
     const onLoad = (previouslyLoaded) => {
-        if(previouslyLoaded) applicationSearch.doneLoading = false;
+        if(previouslyLoaded) {
+            applicationSearch.doneReloading = false;
+        }
         else { // pre populate fields based on state params on first load
-            applicationSearch.numberOfRequests = 0;
+            let numberOfRequests = 0;
             Object.keys(applicationSearch.packageRequests).forEach(function(appId) { // Gets the list of package requests saved in memory
                 // This sets the checkboxes back to marked when the user clicks back after being in request review
                 applicationSearch.appCheckbox[appId] = true;
-                applicationSearch.numberOfRequests++;
+                numberOfRequests++;
             });
-            applicationSearch.nameSearch = $stateParams.name;
-            applicationSearch.category = $stateParams.category;
-            applicationSearch.page = $stateParams.page;
+            applicationSearch.numberOfRequests = numberOfRequests;
+
+            applicationSearch.search = {};
+            applicationSearch.search.name = $stateParams.name;
+            applicationSearch.search.category = $stateParams.category;
+            applicationSearch.search.page = parseInt($stateParams.page);
+            applicationSearch.search.pageSize = parseInt($stateParams.pageSize);
         }
 
         let query = [];
-        if(applicationSearch.nameSearch) query.push(['service.name',applicationSearch.nameSearch]);
-        if(applicationSearch.category) query.push(['service.category',applicationSearch.category]);
-        if(applicationSearch.page) query.push(['page',applicationSearch.page]);
+        if(applicationSearch.search.nameSearch) query.push(['service.name',applicationSearch.search.nameSearch]);
+        if(applicationSearch.search.category) query.push(['service.category',applicationSearch.search.category]);
+
+       applicationSearch.search.pageSize = applicationSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+       query.push(['pageSize',String(applicationSearch.search.pageSize)]);
+
+       applicationSearch.search.page = applicationSearch.search.page || 1;
+       query.push(['page',String(applicationSearch.search.page)]);
 
         let opts = {
             personId: API.getUser(),
@@ -44,12 +55,13 @@ angular.module('applications')
             qs: query
         };
 
-        // TODO: PAGINATE
-        API.cui.getPersonRequestableApps(opts)
-        .then((res)=>{
-            applicationSearch.list = res;
-            applicationSearch.doneLoading = true;
-            $scope.$digest();
+        const promises = [API.cui.getPersonRequestableApps(opts),API.cui.getPersonRequestableCount(opts)];
+
+        $q.all(promises)
+        .then((res) => {
+             applicationSearch.list = res[0];
+             applicationSearch.count = res[1];
+             applicationSearch.doneReloading = applicationSearch.doneLoading = true;
         });
     };
     onLoad(false);
@@ -58,12 +70,18 @@ angular.module('applications')
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
-    applicationSearch.searchUpdate = function() {
-        let opts = {};
-        if(applicationSearch.nameSearch && applicationSearch.nameSearch!=='') opts.name = applicationSearch.nameSearch;
-        if(applicationSearch.category) opts.category = applicationSearch.category;
-        if(applicationSearch.page) opts.page = applicationSearch.page;
-        $state.transitionTo('applications.search', opts, {notify:false}); // doesn't change state, only updates the url
+    applicationSearch.pageChange = (newpage) => {
+        applicationSearch.updateSearch('page',newpage);
+    };
+
+    applicationSearch.updateSearch = function(updateType,updateValue) {
+        switch (updateType){
+            case 'name':
+                applicationSearch.search.page = 1;
+                break;
+        };
+
+        $state.transitionTo('applications.search', applicationSearch.search, {notify:false}); // doesn't change state, only updates the url
         onLoad(true);
     };
 
@@ -72,7 +90,6 @@ angular.module('applications')
         else delete applicationSearch.packageRequests[application.id];
         localStorage.set('appsBeingRequested',applicationSearch.packageRequests);
         processNumberOfRequestedApps(applicationSearch.packageRequests[application.id]);
-
     };
 
     applicationSearch.saveRequestsAndCheckout = function() {
