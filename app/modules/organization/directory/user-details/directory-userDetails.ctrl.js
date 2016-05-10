@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('userDetailsCtrl', ['$scope','$stateParams','API','Timezones','UserProfile','$q',
-function($scope,$stateParams,API,Timezones,UserProfile,$q) {
+.controller('userDetailsCtrl', ['API','$stateParams','$q',
+function(API,$stateParams,$q) {
     'use strict';
 
     const userDetails = this,
@@ -12,37 +12,22 @@ function($scope,$stateParams,API,Timezones,UserProfile,$q) {
     userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
     userDetails.appsHistorySwitch = true;
-    UserProfile.injectUI(userDetails, $scope);
-
-
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
     apiPromises.push(
-        UserProfile.getProfile({personId: userId})
-        .then(function(res) {
-            angular.merge(userDetails, res);
-        }, function(error) {
-            console.log(error);
-        })
-    );
-
-    apiPromises.push(
-        API.cui.getOrganization({organizationId: organizationId})
-        .then(function(res) {
-            userDetails.organization = res;
-        }, function(error) {
-            console.log(error);
+        // Get user
+        API.cui.getPerson({personId: userId})
+        .then((res) => {
+            userDetails.user = res;
         })
     );
 
     $q.all(apiPromises)
-    .then(function(res) {
+    .then((res) => {
         userDetails.loading = false;
     })
-    .catch(function(error) {
+    .catch((error) => {
         userDetails.loading = false;
         console.log(error);
     });
