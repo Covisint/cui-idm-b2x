@@ -3,10 +3,6 @@
 <!-- /processHTML -->
 
 <div class="cui-organization">
-  <!-- Page Loading -->
-  <div class="cui-loading__container" ng-if="userDetails.loading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
 
   <!-- Page Header -->
   <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header.html'"></div>
@@ -18,7 +14,7 @@
       <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header-left.html'"></div>
       <!-- Profile -->
       <div ui-view="profile" ng-if="userDetails.profileRolesSwitch"></div> 
-      <!-- Roles --> 
+      <!-- Roles -->
       <div ui-view="roles" ng-if="!userDetails.profileRolesSwitch"></div>
     </div>
     
