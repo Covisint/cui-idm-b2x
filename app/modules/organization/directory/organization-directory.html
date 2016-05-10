@@ -26,7 +26,7 @@
   </div>
 
   <!-- Action Sub-header -->
-  <div class="cui-action">
+  <div class="cui-action" ng-if="!orgDirectory.loading">
     <span class="cui-action__title">{{orgDirectory.organization.name | cuiI18n}}</span>
     <div class="cui-action__actions">
 
@@ -109,8 +109,8 @@
     <!-- Pagination Controls -->
     <div class="cui-paginate__container">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-      <results-per-page class="cui-paginate__select" ng-model="orgDirectory.paginationSize"></results-per-page>
-      <paginate class="cui-paginate" results-per-page="orgDirectory.paginationSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.paginationHandler" ng-model="orgDirectory.paginationCurrentPage"></paginate>
+      <results-per-page class="cui-paginate__select" ng-model="orgDirectory.paginationPageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgDirectory.paginationPageSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.paginationHandler" ng-model="orgDirectory.paginationCurrentPage" attach-rerender-to="orgDirectory.reRenderPagination"></paginate>
     </div>
 
   </div>

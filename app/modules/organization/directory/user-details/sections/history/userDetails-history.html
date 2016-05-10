@@ -1,0 +1,48 @@
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="userDetailsHistory.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div ng-if="!userDetailsHistory.loading">
+	<!-- Status History -->
+	<div>
+		<!-- Status History: Title -->
+		<div>
+			<h3>User Status History</h3>
+		</div>
+		<!-- Status History: List -->
+		<div ng-repeat="status in userDetailsHistory.personStatusHistory">
+			<p ng-if="userDetailsHistory.personStatusHistory.length===0">This user has no status history.</p>
+			<p>{{status}}</p>
+		</div>
+	<div>
+	
+	<!-- Application History -->
+	<div>
+		<!-- Action Header -->
+		<div class="cui-action">
+		<span class="cui-action__title">Application History</span>
+  		<div class="cui-action__actions">
+    		<!-- Sort -->
+    		<div class="cui-action__action-container" ng-click="userDetails.profileRolesSwitch=true" id="profile-button" off-click="">
+      		<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        		<use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+      		</svg>
+      		<span class="cui-action__action-label">Sort</span>
+    		</div>
+
+    		<!-- Refine -->
+    		<div class="cui-action__action-container" ng-click="userDetails.profileRolesSwitch=false" id="roles-button">
+					<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        		<use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+      		</svg>
+      		<span class="cui-action__action-label">Refine</span>
+    		</div>    
+  		</div>
+		</div>
+		<!-- Applicatiom History: List -->
+		<div>
+		</div>
+	</div>
+	
+</div>

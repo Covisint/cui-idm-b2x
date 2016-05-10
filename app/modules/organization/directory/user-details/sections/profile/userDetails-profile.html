@@ -1,0 +1,46 @@
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="userDetailsProfile.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<ng-form name="edit" novalidate ng-if="!userDetailsProfile.loading">
+  <div class="cui-users__edit">
+    <div class="cui-users__main-container">
+      <div class="cui-users__profile">
+        <div class="cui-users__profile-info">
+
+        	<!-- Basic Info -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/basic-info.html'"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/password.html'"></div>
+          </div>
+
+          <!-- Challenge Questions -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/challenge-questions.html'"></div>
+          </div>
+
+          <!-- Address -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/address.html'"></div>
+          </div>
+
+					<!-- Phone/Fax -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/phone-fax.html'"></div>
+          </div>
+
+					<!-- Language/Timezone -->
+          <div class="cui-users__info-block">
+            <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/timezone-language.html'"></div>
+          </div>
+
+				</div>
+      </div>
+    </div>
+  </div>
+</ng-form>

@@ -72,7 +72,7 @@ function($scope,$stateParams,API,$filter,Sort) {
             orgDirectory.organization = res;
             orgDirectory.organizationList = flattenHierarchy(res.children);
             return API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
-                                                ['pageSize', String(orgDirectory.paginationSize)], ['page',String(1)]]});
+                                                ['pageSize', String(orgDirectory.paginationPageSize)], ['page',String(1)]]});
         })
         .then(function(res) {
             orgDirectory.userList = res;
@@ -83,6 +83,9 @@ function($scope,$stateParams,API,$filter,Sort) {
         .then(function(res) {
             orgDirectory.orgPersonCount = res;
             orgDirectory.loading = false;
+            if (orgDirectory.reRenderPagination) {
+                orgDirectory.reRenderPagination();
+            }
             $scope.$digest();
         })
         .fail(handleError);
@@ -153,7 +156,7 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     orgDirectory.paginationHandler = function paginationHandler(page) {
         API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
-                                    ['pageSize', String(orgDirectory.paginationSize)], ['page', String(page)]]})
+                                    ['pageSize', String(orgDirectory.paginationPageSize)], ['page', String(page)]]})
         .then(function(res) {
             orgDirectory.userList = res;
             orgDirectory.unparsedUserList = res;
@@ -166,10 +169,10 @@ function($scope,$stateParams,API,$filter,Sort) {
 
     // WATCHERS START --------------------------------------------------------------------------------
 
-    $scope.$watch('orgDirectory.paginationSize', function(newValue, oldValue) {
+    $scope.$watch('orgDirectory.paginationPageSize', function(newValue, oldValue) {
         if (newValue && oldValue && newValue !== oldValue) {
             API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
-                                ['pageSize', String(orgDirectory.paginationSize)], ['page', 1]]})
+                                ['pageSize', String(orgDirectory.paginationPageSize)], ['page', 1]]})
             .then(function(res) {
                 orgDirectory.userList = res;
                 orgDirectory.unparsedUserList = res;

@@ -1,0 +1,19 @@
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="userDetailsRoles.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div ng-if="!userDetailsRoles.loading">
+	<!-- Assigned Roles -->
+	<div>
+		<!-- Assigned Roles: Title -->
+		<div>
+			<h3>Assigned Roles</h3>
+		</div>
+		<!-- Assigned Roles: List -->
+		<div ng-repeat="role in userDetailsRoles.assignedRoles | orderBy:'name' track by role.roleId">
+			<p ng-if="userDetailsRoles.assignedRoles.length===0">This user has no assigned roles.</p>
+			<span>{{role.name}}</span>
+		</div>
+	<div>
+</div>

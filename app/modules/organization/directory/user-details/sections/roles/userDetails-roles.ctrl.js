@@ -1,35 +1,32 @@
 angular.module('organization')
-.controller('userDetailsCtrl', ['API','$stateParams','$q',
+.controller('userDetailsRolesCtrl',['API','$stateParams','$q',
 function(API,$stateParams,$q) {
-    'use strict';
+	'use strict';
 
-    const userDetails = this,
+	const userDetailsRoles = this,
         userId = $stateParams.userID,
         organizationId = $stateParams.orgID;
 
     let apiPromises = [];
 
-    userDetails.loading = true;
-    userDetails.profileRolesSwitch = true;
-    userDetails.appsHistorySwitch = true;
+    userDetailsRoles.loading = true;
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
     apiPromises.push(
-        // Get user
-        API.cui.getPerson({personId: userId})
-        .then((res) => {
-            userDetails.user = res;
-        })
+	    API.cui.getPersonRoles({personId: userId})
+	    .then((res) => {
+	    	userDetailsRoles.assignedRoles = res;
+	    })
     );
 
     $q.all(apiPromises)
     .then((res) => {
-        userDetails.loading = false;
+    	userDetailsRoles.loading = false;
     })
     .catch((error) => {
-        userDetails.loading = false;
-        console.log(error);
+		userDetailsRoles.loading = false;
+		console.log(error);
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------
