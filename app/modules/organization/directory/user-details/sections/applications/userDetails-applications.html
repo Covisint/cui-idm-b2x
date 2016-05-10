@@ -1,0 +1,30 @@
+<div class="cui-applications__main-container">
+  <div style="position:relative">
+
+  	<!-- User has no applications -->
+  	<div ng-if="userDetailsApps.appList.length===0">
+			<p>User has no applications!</p>  		
+  	</div>
+
+  	<!-- User has applications -->
+  	<div ng-if="userDetailsApps.appList.length!==0">
+	    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in userDetailsApps.appList track by application.id">
+
+	    	<!-- Application Icon -->
+	      <div class="cui-media__image-container">
+	        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar></div></a>
+	      </div>
+		
+				<!-- Application Details -->
+	      <div class="cui-media__body cui-media__body--full">
+	        <div class="cui-media__title-container">
+	          <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+	          <h3 class="cui-media__title" ng-click="userDetailsApps.goToAppDetails(application)">{{application.name | cuiI18n}}</h3>
+	        </div>
+	        <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
+	        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
+	      </div>
+
+	    </div>
+	  </div>
+</div>

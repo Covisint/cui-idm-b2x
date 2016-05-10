@@ -26,12 +26,32 @@ angular.module('organization',[])
         })
         .state('directory', {
             url: '/organization/directory',
-            templateUrl: templateBase + 'directory/directory.html'
+            templateUrl: templateBase + 'directory/directory.html',
         })
         .state('directory.userDetails', {
             url: '/user-details?userID&orgID',
-            templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
-            controller: returnCtrlAs('userDetails')
+            views: {
+                '': {
+                    templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
+                    controller: returnCtrlAs('userDetails')
+                },
+                'profile@directory.userDetails': {
+                    templateUrl: templateBase + '/directory/user-details/sections/profile/userDetails-profile.html',
+                    controller: returnCtrlAs('userDetailsProfile')
+                },
+                'applications@directory.userDetails': {
+                    templateUrl: templateBase + '/directory/user-details/sections/applications/userDetails-applications.html',
+                    controller: returnCtrlAs('userDetailsApps')
+                },
+                'roles@directory.userDetails': {
+                    templateUrl: templateBase + '/directory/user-details/sections/roles/userDetails-roles.html',
+                    controller: returnCtrlAs('userDetailsRoles')
+                },
+                'history@directory.userDetails': {
+                    templateUrl: templateBase + '/directory/user-details/sections/history/userDetails-history.html',
+                    controller: returnCtrlAs('userDetailsHistory')
+                }
+            }
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
