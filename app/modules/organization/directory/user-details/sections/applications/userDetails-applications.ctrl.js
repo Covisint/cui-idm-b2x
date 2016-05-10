@@ -9,6 +9,8 @@ function(API,$stateParams,$q) {
 
     let apiPromises = [];
 
+    userDetailsApps.loading = true;
+
     // ON LOAD START ---------------------------------------------------------------------------------
 
     apiPromises.push(
@@ -45,13 +47,5 @@ function(API,$stateParams,$q) {
     });
 
     // ON LOAD END -----------------------------------------------------------------------------------
-
-    // ON CLICK START --------------------------------------------------------------------------------
-
-    userDetailsApps.goToAppDetails = (application) => {
-        console.log('TODO!');
-    };
-
-    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);

@@ -9,6 +9,8 @@ function($scope,API,$stateParams,Timezones,UserProfile,$q) {
 
 	let apiPromises = [];
 
+    userDetailsProfile.loading = true;
+
     // ON LOAD START ---------------------------------------------------------------------------------
 
     // Inject profile from UserProfile factory

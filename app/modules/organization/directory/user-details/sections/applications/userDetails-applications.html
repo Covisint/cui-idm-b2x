@@ -1,4 +1,9 @@
-<div class="cui-applications__main-container">
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="userDetailsApps.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div class="cui-applications__main-container" ng-if="!userDetailsApps.loading">
   <div style="position:relative">
 
   	<!-- User has no applications -->
@@ -19,7 +24,7 @@
 	      <div class="cui-media__body cui-media__body--full">
 	        <div class="cui-media__title-container">
 	          <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
-	          <h3 class="cui-media__title" ng-click="userDetailsApps.goToAppDetails(application)">{{application.name | cuiI18n}}</h3>
+	          <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
 	        </div>
 	        <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
 	        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>

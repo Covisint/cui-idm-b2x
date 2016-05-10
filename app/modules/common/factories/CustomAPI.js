@@ -33,6 +33,8 @@ angular.module('common')
         {cmd:'getOrganizationGrantableApps',             accepts:'.platform.service.application.v1',         call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
 
         {cmd:'getOrganizationGrantableCount',            accepts: 'text/plain',                              call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
+
+        {cmd: 'getPersonStatusHistory',                 accepts: 'platform.person.status.history.v1',      call: '/person/v3/persons/statusHistory'},
     ];
 
     const getCallWrappers = (cuiObject) => {

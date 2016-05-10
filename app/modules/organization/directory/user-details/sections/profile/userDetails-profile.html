@@ -1,4 +1,9 @@
-<ng-form name="edit" novalidate>
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="userDetailsProfile.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<ng-form name="edit" novalidate ng-if="!userDetailsProfile.loading">
   <div class="cui-users__edit">
     <div class="cui-users__main-container">
       <div class="cui-users__profile">

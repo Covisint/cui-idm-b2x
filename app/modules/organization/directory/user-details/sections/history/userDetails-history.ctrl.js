@@ -9,4 +9,26 @@ function(API,$stateParams,$q) {
 
     let apiPromises = [];
 
+    userDetailsHistory.loading = true;
+
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+	apiPromises.push(
+		API.cui.getPersonStatusHistory({qs: [['userId', String(userId)]]})
+    	.then((res) => {
+    		userDetailsHistory.personStatusHistory = res;
+    	})
+    );
+
+    $q.all(apiPromises)
+    .then((res) => {
+    	userDetailsHistory.loading = false;
+    })
+    .catch((error) => {
+    	userDetailsHistory.loading = false;
+    	console.log(error);
+    });
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
 }]);
