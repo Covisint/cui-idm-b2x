@@ -7,24 +7,22 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
 
-    const templateBase = 'app/modules/';
+    const templateBase = 'app/modules/common/';
 
-    const returnCtrlAs =  function(name, asPrefix) {
-        return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
-    };
+    const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
     $stateProvider
-    .state('empty', {
-        url: '/empty',
-        templateUrl: templateBase + 'common/empty/empty.html',
-        controller: returnCtrlAs('empty')
+    .state('auth', {
+        url: '/auth',
+        controller: returnCtrlAs('auth'),
+        templateUrl: templateBase + 'auth/auth.html'
     });
 
     if (appConfig.languages) {
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
-        const returnRegisterAvailableLanguageKeys = function() {
+        const returnRegisterAvailableLanguageKeys = () => {
             // Reroute unknown language to prefered language
             let object = {'*': languageKeys[0]};
             languageKeys.forEach(function(languageKey) {
@@ -48,7 +46,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
     }
 
     if (appConfig.iconSets) {
-        appConfig.iconSets.forEach(function(iconSet) {
+        appConfig.iconSets.forEach((iconSet) => {
             $cuiIconProvider.iconSet(iconSet.name, iconSet.path, iconSet.defaultViewBox || null);
         });
     }
@@ -62,8 +60,8 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon',
-function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon) {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout',
+function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout) {
 
     // Add locales here
     const languageNameObject = $cuiI18n.getLocaleCodesAndNames();
@@ -72,23 +70,25 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
         LocaleService.setLocales(LanguageKey, languageNameObject[LanguageKey]);
     }
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        // CUI Auth
-        API.handleCovAuthResponse(event, toState, toParams, fromState, fromParams);
-        // Determine if user is able to access the particular route we're navigation to
-        routing(toState, toParams, fromState, fromParams, User.getEntitlements());
-        // Menu handling
-        Menu.handleStateChange(toState.menu);
+    $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        event.preventDefault();
+        API.handleStateChange({ toState,toParams,fromState,fromParams })
+        .then((res) => {
+            // Determine if user is able to access the particular route we're navigation to
+            routing(res.redirect.toState, res.redirect.toParams, res.redirect.fromState, res.redirect.fromParams, res.roleList);
+            // Menu handling
+            Menu.handleStateChange(res.redirect.toState.menu);
+        });
     });
 
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
         $state.previous = {};
         $state.previous.name = fromState;
         $state.previous.params = fromParams;
     });
 
-    angular.forEach($cuiIcon.getIconSets(), function(iconSettings, namespace) {
+    angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {
         $http.get(iconSettings.path, {
             cache: $templateCache
         });
