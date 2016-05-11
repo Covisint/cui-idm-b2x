@@ -10,6 +10,7 @@ function(API,$stateParams,$q) {
     let apiPromises = [];
 
     userDetailsHistory.loading = true;
+    userDetailsHistory.sortClicked = false;
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
