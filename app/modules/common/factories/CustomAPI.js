@@ -34,7 +34,11 @@ angular.module('common')
 
         {cmd:'getOrganizationGrantableCount',            accepts: 'text/plain',                              call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
 
-        {cmd: 'getPersonStatusHistory',                 accepts: 'platform.person.status.history.v1',      call: '/person/v3/persons/statusHistory'},
+        {cmd: 'getPersonStatusHistory',                 accepts: '.platform.person.status.history.v1',       call: '/person/v3/persons/statusHistory' },
+
+        {cmd: 'getPersonPasswordChangeHistory', accepts: '.platform.authn.password.change.history.req.v1', call: `/authentication/v4/passwords/changeHistory` },
+
+        {cmd: 'getPersonPendingServicePackages', accepts: '.platform.package.request.v1', call: `/service/v3/requests` }
     ];
 
     const getCallWrappers = (cuiObject) => {

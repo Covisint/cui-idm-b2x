@@ -77,6 +77,26 @@ angular.module('organization',[])
             url: '/division?orgID',
             templateUrl: templateBase + 'invitation/division/invitation-division.html',
             controller: returnCtrlAs('inviteDivision')
+        })
+        // Applications ---------------------------------------------
+        .state('organization.applications', {
+            url: '/organization/applications',
+            templateUrl: templateBase + 'applications/organization-applications.html'
+        })
+        .state('applications.newGrant', {
+            url: '/newGrant?userID',
+            templateUrl: templateBase + 'applications/newGrant/applications-newGrant.html',
+            controller: returnCtrlAs('newGrant')
+        })
+        .state('applications.pendingRequests', {
+            url: '/pendingRequests?userID',
+            templateUrl: templateBase + 'applications/pendingRequestsReview/applications-pendingRequests.html',
+            controller: returnCtrlAs('pendingRequests')
+        })
+        .state('applications.pendingRequestsReview', {
+            url: '/pendingRequests/review?userID',
+            templateUrl: templateBase + 'applications/pendingRequestsReview/applications-pendingRequestsReview.html',
+            controller: returnCtrlAs('pendingRequestsReview')
         });
 
 }]);
