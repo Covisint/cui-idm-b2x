@@ -1,0 +1,56 @@
+<ng-form name="pendingRequestsApproval">
+  <div class="cui-organization__main-container">
+    <!-- User List Loading -->
+    <div class="cui-loading__container" ng-if="orgDirectory.loading">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <!-- List: Pending App Requests -->
+    <table class="cui-table cui-table--borderless">
+      <thead>
+        <tr>
+          <th>{{'requested-items' | translate}}</th>
+          <th></th>
+          <th>{{'deny' | translate}}</th>
+          <th>{{'approve' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="package in pendingRequests.packages track by package.id">
+          <th>Package Name</th>
+          <th>{{package.creation | date:base.appConfig.dateFormat}}</th>
+          <th>
+            <fieldset class="cui-radio__fieldset">
+              <div class="cui-radio cui-radio--deny">
+                <input class="cui-radio__input cui-radio--deny" type="radio" name="radio{{$index}}" id="radio-choice-4" value="deny" ng-model="$parent.name" required />
+                <label class="cui-radio__label" for="radio-choice-4">
+                  <div class="cui-radio__outer-button">
+                    <div class="cui-radio__inner-button"></div>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+          </th>
+          <th>
+            <fieldset class="cui-radio__fieldset">
+              <div class="cui-radio cui-radio--approve">
+                <input class="cui-radio__input" type="radio" name="radio{{$index}}" id="radio-choice-3" value="approve" ng-model="$parent.name" required />
+                <label class="cui-radio__label" for="radio-choice-3">
+                  <div class="cui-radio__outer-button">
+                    <div class="cui-radio__inner-button"></div>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Form Controls -->
+  <div>
+    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ui-sref="applications.pendingRequestsReview({userID:userDetails.user.id})" style="margin:10px">{{'review-approvals' | translate}}</button>
+  </div>
+
+</ng-form>

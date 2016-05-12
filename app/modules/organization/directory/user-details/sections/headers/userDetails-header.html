@@ -56,7 +56,8 @@
         <span class="cui-action__title">
           <button class="cui-button" style="margin:5px">Suspend</button>
           <button class="cui-button" style="margin:5px">Password Reset</button>
-          <button class="cui-button" style="margin:5px">New Grants</button>
+          <button class="cui-button" style="margin:5px" ui-sref="applications.newGrant({userID:userDetails.user.id})">New Grants</button>
+          <button class="cui-button" style="margin:5px" ui-sref="applications.pendingRequests({userID:userDetails.user.id})">Pending Requests</button>
         </span>
       </p>
     </div>

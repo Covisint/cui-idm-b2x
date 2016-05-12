@@ -1,0 +1,70 @@
+<!-- Action Header -->
+<div>
+  <!-- Action Header 1 -->
+  <div class="cui-action">
+    <!-- User Name and Back Arrow -->
+    <span class="cui-action__title">< {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
+
+    <!-- Invitation -->
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequests.invitationClicked=!pendingRequests.invitationClicked" off-click="pendingRequests.invitationClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+        <!-- Invitation Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequests.invitationClicked">
+          <p ui-sref="invitation.user({orgID:pendingRequests.user.organization.id})">{{'invite-user' | translate}}</p>
+          <p ui-sref="invitation.division({orgID:pendingRequests.user.organization.id})">{{'invite-division' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Header 2 -->
+  <div class="cui-action">
+    <!-- Page Menu -->
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile({orgID:pendingRequests.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy({orgID:pendingRequests.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory({orgID:pendingRequests.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles({orgID:pendingRequests.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+    </span>
+  </div>
+</div>
+
+<!-- Name Header -->
+<div class="cui-media--centered">
+
+  <!-- Page Loading -->
+  <div class="cui-loading__container--user-details" ng-if="pendingRequests.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <div ng-if="!pendingRequests.loading">
+    <!-- Avatar -->
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[pendingRequests.user.name.given, pendingRequests.user.name.given]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    </div>
+    <!-- User Information -->
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}}</h3>
+      <!-- userID -->
+      <p class="cui-media__content">{{'userID' | translate}}: {{pendingRequests.user.id}}</p>
+      <!-- Registered Date -->
+      <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequests.user.creation | date:base.appConfig.dateFormat}}</p>
+      <!-- Status: Active -->
+      <p class="cui-media__content" ng-if="pendingRequests.user.status==='active'">{{pendingRequests.user.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+        </svg>
+      </p>
+      <!-- Status: Locked -->
+      <p class="cui-media__content" ng-if="pendingRequests.user.status==='locked'">{{pendingRequests.user.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+        </svg>
+      </p>
+    </div>
+  </div>
+</div>
