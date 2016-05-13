@@ -1,0 +1,45 @@
+.welcome-wrapper {
+  padding: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  .cui-card {
+    position: relative;
+  }
+
+  .welcome-wrapper {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .welcome-title {
+    padding: 20px;
+  }
+
+  .welcome-title h1 {
+    color: #828483;
+    font-size: 2em;
+    text-align: center;
+  }
+}
+
+.cui-popover--dark {
+
+  a, a:visited { color: #ffffff; }
+
+  .cui-popover_link {
+    text-align: center;
+  }
+
+  &.cui-popover__new-division {
+    font-size: 14px;
+    height: 230px;
+
+    @media screen and (max-width: 700px) {
+      width: 275px;
+    }
+  }
+}
+
+

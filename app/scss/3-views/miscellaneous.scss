@@ -1,0 +1,40 @@
+.cui-tile__body {
+  overflow: hidden;
+}
+
+.misc-body {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 60%;
+  padding: 12px;
+  overflow: auto;
+}
+
+.misc-body p {
+  color: $cui-primary-colors--medium-light;
+}
+
+.misc-body a {
+  color: $cui-primary-colors--medium-light;
+}
+
+.misc-body h1 {
+  color: $cui-primary-colors--medium-light;
+  font-size: 2em;
+}
+
+.misc-body img {
+  margin: 20px;
+}
+
+.cui-card__button {
+  float: right;
+}
+
+.cui-link--medium-light {
+  color: $cui-primary-colors--medium-light;
+}
+
+.cui-link--no-decoration {
+  text-decoration: none;
+}

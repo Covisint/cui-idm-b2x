@@ -33,3 +33,15 @@
   @extend %h5--bold;
   margin-bottom: em(21);
 }
+
+// OrgDirectory userDetails
+
+.cui-loading__container--user-details {
+  background: none;
+
+  .cui-loading--center {
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+}
