@@ -89,7 +89,7 @@ angular.module('organization',[])
             controller: returnCtrlAs('newGrant')
         })
         .state('applications.pendingRequests', {
-            url: '/pendingRequests?userID',
+            url: '/pendingRequests?userID&orgID',
             templateUrl: templateBase + 'applications/pendingRequestsReview/applications-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests')
         })
