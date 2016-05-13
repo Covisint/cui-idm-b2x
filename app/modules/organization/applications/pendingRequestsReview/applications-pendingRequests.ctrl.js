@@ -4,7 +4,8 @@ function(API,$stateParams,$q) {
     'use strict';
 
     const pendingRequests = this,
-    	userId = $stateParams.userID;
+    	userId = $stateParams.userID,
+        orgId = $stateParams.orgID;
 
     let apiPromises = [];
 
@@ -63,7 +64,9 @@ function(API,$stateParams,$q) {
 	        pendingRequests.packages = res;
 	        getPackageServices(pendingRequests.packages);
 	        getPackageClaims(pendingRequests.packages);
-	        getPackageDetails(pendingRequests.packages);
+            // 401 JWT Loop
+	        // getPackageDetails(pendingRequests.packages);
+            console.log(pendingRequests.packages);
 	    })
 	);
 

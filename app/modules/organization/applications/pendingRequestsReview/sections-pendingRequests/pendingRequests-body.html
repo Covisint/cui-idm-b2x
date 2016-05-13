@@ -5,52 +5,71 @@
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
-    <!-- List: Pending App Requests -->
-    <table class="cui-table cui-table--borderless">
-      <thead>
-        <tr>
-          <th>{{'requested-items' | translate}}</th>
-          <th></th>
-          <th>{{'deny' | translate}}</th>
-          <th>{{'approve' | translate}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="package in pendingRequests.packages track by package.id">
-          <th>Package Name</th>
-          <th>{{package.creation | date:base.appConfig.dateFormat}}</th>
-          <th>
-            <fieldset class="cui-radio__fieldset">
-              <div class="cui-radio cui-radio--deny">
-                <input class="cui-radio__input cui-radio--deny" type="radio" name="radio{{$index}}" id="radio-choice-4" value="deny" ng-model="$parent.name" required />
-                <label class="cui-radio__label" for="radio-choice-4">
-                  <div class="cui-radio__outer-button">
-                    <div class="cui-radio__inner-button"></div>
+    <!-- List Content -->
+    <div>
+      <div class="cui-expandable__container">
+        <div class="cui-expandable__tr">
+          <span class="cui-expandable__td">{{'requested-items' | translate}}</span>
+          <span class="cui-expandable__td"></span>
+          <span class="cui-expandable__td">{{'deny' | translate}}</span>
+          <span class="cui-expandable__td">{{'approve' | translate}}</span>
+        </div>
+      </div> 
+      <!-- List: Content -->
+      <div ng-repeat="package in pendingRequests.packages" >
+        <cui-expandable class="cui-expandable" transition-speed="100">
+          <cui-expandable-title class="cui-expandable__title">
+            <div class="cui-flex-table__tr">
+              <p class="cui-flex-table__text">Package Name</p>
+              <p class="cui-flex-table__text">{{package.creation | date:base.appConfig.dateFormat}}</p>
+              <p class="cui-flex-table__text">
+                <fieldset class="cui-radio__fieldset" ng-click="collapse()">
+                  <div class="cui-radio cui-radio--deny">
+                    <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-{{$index+'a'}}" value="denied" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}">
+                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                    </label>
                   </div>
-                </label>
-              </div>
-            </fieldset>
-          </th>
-          <th>
-            <fieldset class="cui-radio__fieldset">
-              <div class="cui-radio cui-radio--approve">
-                <input class="cui-radio__input" type="radio" name="radio{{$index}}" id="radio-choice-3" value="approve" ng-model="$parent.name" required />
-                <label class="cui-radio__label" for="radio-choice-3">
-                  <div class="cui-radio__outer-button">
-                    <div class="cui-radio__inner-button"></div>
+                </fieldset>
+              </p>
+              <p class="cui-flex-table__text">
+                <fieldset class="cui-radio__fieldset" ng-click="expand()">
+                  <div class="cui-radio cui-radio--approve">
+                    <input class="cui-radio__input" type="radio" id="radio-choice-{{$index}}" value="approved" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index}}">
+                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                    </label>
                   </div>
-                </label>
-              </div>
-            </fieldset>
-          </th>
-        </tr>
-      </tbody>
-    </table>
+                </fieldset>
+              </p>
+            </div>
+          </cui-expandable-title>
+          <cui-expandable-body class="cui-expandable__body">
+            <!-- Close Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51" ng-click="collapse()">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+            </svg>
+            <!-- Package Claims -->
+            <p ng-if="package.servicePackage.claim.description">Claims:</p>
+            <p ng-if="!package.servicePackage.claim.description">This package contains no claims.</p>
+            <div ng-repeat="claim in package.servicePackage.claims">
+              <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1" ng-model="claim.accepted"/><label class="cui-checkbox__label" for="option-1">{{claim.description | cuiI18n}}</label></li>
+            </div>
+            <!-- Related Apps -->
+            <p ng-if="package.servicePackage.services.length===0">This package contains no bundled apps.</p>
+            <p ng-if="package.servicePackage.services.length>0">Bundled Apps:</p>
+            <div ng-repeat="service in package.servicePackage.services">
+              <span>{{service.description | cuiI18n}}</span><br/>
+            </div>
+          </cui-expandable-body>
+        </cui-expandable>
+      </div>
+    </div>
   </div>
-
+  
   <!-- Form Controls -->
   <div>
-    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ui-sref="applications.pendingRequestsReview({userID:userDetails.user.id})" style="margin:10px">{{'review-approvals' | translate}}</button>
+    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ui-sref="applications.pendingRequestsReview({userID:userDetails.user.id,orgID:userDetails.user.organization.id})" style="margin:10px">{{'review-approvals' | translate}}</button>
   </div>
 
 </ng-form>
