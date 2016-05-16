@@ -1,6 +1,6 @@
 angular.module('applications')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state',
-function(API,$scope,$stateParams,$state) {
+.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','$q',
+function(API,$scope,$stateParams,$state,$q) {
     let myApplicationDetails = this;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -23,16 +23,22 @@ function(API,$scope,$stateParams,$state) {
         qs
     };
 
-   API.cui.getPersonGrantedApps(opts)
-   .then((res)=>{
+    API.cui.getPersonGrantedApps(opts)
+    .then((res)=>{
         myApplicationDetails.app = res[0];
-        return API.cui.getPackageClaims({qs:['packageId',res[0].servicePackage.id]});
-   })
-   .then((res)=>{
-         myApplicationDetails.claims = res;
-         myApplicationDetails.doneLoading = true;
-         $scope.$digest();
-   });
+        getClaims(res[0]);
+    });
+
+    const getClaims = (app) => {
+        const packageId = app.servicePackage.id;
+
+        API.cui.getPersonPackageClaims({ grantee:API.getUser(), useCuid:true, packageId })
+        .then((res) => {
+            myApplicationDetails.claims = res;
+            myApplicationDetails.doneLoading = true;
+            $scope.$digest();
+        });
+    };
 
     // ON LOAD END -----------------------------------------------------------------------------------
 

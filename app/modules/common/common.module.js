@@ -1,8 +1,8 @@
 angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule'])
 .config(['$translateProvider','$locationProvider','$urlRouterProvider','$injector','localStorageServiceProvider',
-    '$cuiIconProvider','$cuiI18nProvider','$paginationProvider','$stateProvider',
+    '$cuiIconProvider','$cuiI18nProvider','$paginationProvider','$stateProvider','$compileProvider',
 function($translateProvider,$locationProvider,$urlRouterProvider,$injector,localStorageServiceProvider,$cuiIconProvider,
-    $cuiI18nProvider,$paginationProvider,$stateProvider) {
+    $cuiI18nProvider,$paginationProvider,$stateProvider,$compileProvider) {
 
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
@@ -61,6 +61,8 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
         $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
     }
 
+    $compileProvider.debugInfoEnabled(false);
+
 }]);
 
 angular.module('common')
@@ -76,16 +78,18 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-        PubSub.publish('stateChange',{toState:toState,toParams:toParams,fromState:fromState,fromParams:fromParams}); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
         if(!toState.access || !toState.access.loginRequired) {
             Menu.handleStateChange(toState.menu);
+            PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
             return;
         }
         event.preventDefault();
         API.handleStateChange({ toState,toParams,fromState,fromParams })
         .then((res) => {
             // Determine if user is able to access the particular route we're navigation to
-            routing(res.redirect.toState, res.redirect.toParams, res.redirect.fromState, res.redirect.fromParams, res.roleList);
+            const { toState, toParams, fromState, fromParams } = res.redirect;
+            routing(toState, toParams, fromState, fromParams, res.roleList);
+            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
             // Menu handling
             Menu.handleStateChange(res.redirect.toState.menu);
         });

@@ -84,6 +84,7 @@
           <div id="tab2" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':myApplicationDetails.inClaims}">
             <p ng-if="!myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
             <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">
+              <h2>{{claim.name | cuiI18n}}</h2>
               <p ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
             </span>
           </div>
@@ -128,12 +129,13 @@
             </div>
           </div>
 
-          <!-- My Claims -->
+          <!-- My Claims TODO @SHANE style this and the mobile one above-->
           <div class="cui-tile cui-applications__right">
             <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">{{'my-claims' | translate}}</h4>
             <div class="cui-tile__body">
-              <p ng-if="myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
+              <p ng-if="!myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
               <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">
+                <h2>{{claim.name | cuiI18n}}</h2>
                 <p ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
               </span>
             </div>
