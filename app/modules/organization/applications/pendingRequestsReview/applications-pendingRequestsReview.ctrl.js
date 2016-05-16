@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('pendingRequestsReviewCtrl', ['API','$stateParams','ServicePackage','$q',
-function(API,$stateParams,ServicePackage,$q) {
+.controller('pendingRequestsReviewCtrl', ['API','$stateParams','ServicePackage','$q','$timeout','$state',
+function(API,$stateParams,ServicePackage,$q,$timeout,$state) {
     'use strict';
 
     const pendingRequestsReview = this,
@@ -10,6 +10,7 @@ function(API,$stateParams,ServicePackage,$q) {
     let apiPromises = [];
 
     pendingRequestsReview.loading = true;
+    pendingRequestsReview.sucess = false;
     pendingRequestsReview.approvedCount = 0;
     pendingRequestsReview.deniedCount = 0;
 
@@ -56,6 +57,37 @@ function(API,$stateParams,ServicePackage,$q) {
 
     pendingRequestsReview.submit = () => {
     	console.log(pendingRequestsReview.pendingRequests);
+
+    	pendingRequestsReview.pendingRequests.forEach(packageRequest => {
+    		if (packageRequest.approval === 'denied') {
+    			if (packageRequest.rejectReason) {
+    				// API.cui.denyPackageRequests({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
+    				// .fail((error) => {
+    				// 	console.log(error);
+    				// });
+    				return;
+    			}
+    			else {
+    				// API.cui.denyPackageRequests({qs: [['requestId', packageRequest.id]]})
+    				// .fail((error) => {
+    				// 	console.log(error);
+    				// });
+    				return;
+    			}
+    		}
+    		else {
+    			// API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
+    			// .fail((error) => {
+    			// 	console.log(error);
+    			// });
+    			// PUT /packages/grants/claims
+    			return;
+    		}
+    	});
+		// pendingRequestsReview.sucess = true;
+		// $timeout(() => {
+		// 	$state.go('directory.userDetails', {userID: userId, orgID: orgId});
+		// }, 3000);
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
