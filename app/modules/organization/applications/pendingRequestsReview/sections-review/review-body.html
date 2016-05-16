@@ -1,0 +1,27 @@
+
+<div>
+
+	<!-- Body Header -->
+	<div>
+		<h3>Approval Summary</h3>
+	</div>
+
+	<div>
+		<p>Approved Items</p>
+		<p ng-if="pendingRequestsReview.approvedCount===0">No approved items.</p>
+		<div ng-if="pendingRequestsReview.approvedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+			<span ng-if="package.approval==='approved'">{{package.id}}</span><br/>
+		</div>
+	</div>
+
+	<!-- Rejected Items -->
+	<div>
+		<p>Rejected Items</p>
+		<p ng-if="pendingRequestsReview.deniedCount===0">No rejected items.</p>
+		<div ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+			<span ng-if="package.approval==='denied'">{{package.id}}</span><br/>
+			<textarea class="cui-text-area" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
+		</div>
+	</div>
+
+</div>

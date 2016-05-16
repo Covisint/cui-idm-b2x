@@ -1,2 +1,14 @@
-<p>Pending Requests Review</p>
-<button class="cui-button" style="margin:5px" ui-sref="applications.pendingRequests({userID:userDetails.user.id})">Back</button>
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/applications/pendingRequestsReview" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div>
+	<!-- Header -->
+	<div ng-include="'app/modules/organization/applications/pendingRequestsReview/sections-review/review-header.html'"></div>
+	<!-- Requested Applications List -->
+	<div ng-include="'app/modules/organization/applications/pendingRequestsReview/sections-review/review-body.html'"></div>
+</div>
+
+<!-- Review Controls -->
+<span ui-sref="applications.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+<button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>

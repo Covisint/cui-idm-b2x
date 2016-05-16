@@ -1,0 +1,70 @@
+<!-- Action Header -->
+<div>
+  <!-- Action Header 1 -->
+  <div class="cui-action">
+    <!-- User Name and Back Arrow -->
+    <span class="cui-action__title" ui-sref="directory.userDetails({userID:pendingRequestsReview.user.id,orgID:pendingRequestsReview.user.organization.id})">< {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
+
+    <!-- Invitation -->
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequestsReview.invitationClicked=!pendingRequestsReview.invitationClicked" off-click="pendingRequestsReview.invitationClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+        </svg>
+        <!-- Invitation Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
+          <p ui-sref="invitation.user({orgID:pendingRequestsReview.user.organization.id})">{{'invite-user' | translate}}</p>
+          <p ui-sref="invitation.division({orgID:pendingRequestsReview.user.organization.id})">{{'invite-division' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Header 2 -->
+  <div class="cui-action">
+    <!-- Page Menu -->
+    <span class="cui-action__title">
+      <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+      <a ui-sref="organization.hierarchy({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+      <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+      <a ui-sref="organization.roles({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+    </span>
+  </div>
+</div>
+
+<!-- Name Header -->
+<div class="cui-media--centered">
+
+  <!-- Page Loading -->
+  <div class="cui-loading__container--user-details" ng-if="pendingRequestsReview.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <div ng-if="!pendingRequestsReview.loading">
+    <!-- Avatar -->
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[pendingRequestsReview.user.name.given, pendingRequestsReview.user.name.given]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    </div>
+    <!-- User Information -->
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}}</h3>
+      <!-- userID -->
+      <p class="cui-media__content">{{'userID' | translate}}: {{pendingRequestsReview.user.id}}</p>
+      <!-- Registered Date -->
+      <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequestsReview.user.creation | date:base.appConfig.dateFormat}}</p>
+      <!-- Status: Active -->
+      <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='active'">{{pendingRequestsReview.user.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+        </svg>
+      </p>
+      <!-- Status: Locked -->
+      <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='locked'">{{pendingRequestsReview.user.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+        </svg>
+      </p>
+    </div>
+  </div>
+</div>
