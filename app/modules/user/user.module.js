@@ -7,15 +7,21 @@ angular.module('user',[])
         return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
     };
 
+    const loginRequired = {
+        loginRequired:true
+    };
+
     $stateProvider
         .state('user', {
             url: '/user',
-            templateUrl: templateBase + 'user.html'
+            templateUrl: templateBase + 'user.html',
+            access:loginRequired
         })
         .state('user.profile', {
             url: '/profile',
             templateUrl: templateBase + 'profile/user-profile.html',
-            controller: returnCtrlAs('userProfile')
+            controller: returnCtrlAs('userProfile'),
+            access:loginRequired
         });
 
 }]);

@@ -17,10 +17,12 @@
 				<div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$touched">
 					<div ng-messages-include="app/common-templates/messages.html"></div>
 				</div>
-				<input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="userWalkup.passwordRules" ng-model-options="{allowInvalid:true}" ng-change="userWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(userWalkup.userLogin.password)" ng-focus="usersWalkup.passwordPopover=true">
+				<input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="userWalkup.passwordRules" ng-model-options="{allowInvalid:true}" ng-change="userWalkup.userLogin.hiddenPassword=base.generateHiddenPassword(userWalkup.userLogin.password)" ng-focus="usersWalkup.passwordPopover=true" ng-blur="usersWalkup.passwordPopover=false">
 				<!-- Password Rules Popover -->
-				<div ng-if="usersWalkup.passwordPopover" password-popover ng-messages="userLogin.password.$error" ng-messages-multiple class="cui-error__password" cui-popover target="#test-input" popover-positions="[{position:'right'},{position:'bottom'}]">
-					<div ng-messages-include="app/common-templates/password-validation.html"></div>
+				<div cui-popover target="#test-input" popover-positions="[{position:'right'},{position:'bottom'}]" ng-if="usersWalkup.passwordPopover" >
+					<div password-popover ng-messages="userLogin.password.$error" ng-messages-multiple class="cui-error__password">
+						<div ng-messages-include="app/common-templates/password-validation.html"></div>
+					</div>
 				</div>
 			</div>
 		</div>
