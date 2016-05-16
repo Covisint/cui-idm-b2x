@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('pendingRequestsCtrl', ['API','$stateParams','$q',
-function(API,$stateParams,$q) {
+.controller('pendingRequestsCtrl', ['API','$stateParams','$q','ServicePackage','$state',
+function(API,$stateParams,$q,ServicePackage,$state) {
     'use strict';
 
     const pendingRequests = this,
@@ -64,7 +64,6 @@ function(API,$stateParams,$q) {
 	        pendingRequests.packages = res;
 	        getPackageServices(pendingRequests.packages);
 	        getPackageClaims(pendingRequests.packages);
-            // 401 JWT Loop
 	        // getPackageDetails(pendingRequests.packages);
             console.log(pendingRequests.packages);
 	    })
@@ -81,6 +80,12 @@ function(API,$stateParams,$q) {
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
+
+    pendingRequests.reviewApprovals = () => {
+        ServicePackage.set(userId, pendingRequests.packages);
+        $state.go('applications.pendingRequestsReview', {userID: userId, orgID: orgId});
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
