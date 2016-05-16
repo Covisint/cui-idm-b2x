@@ -1,5 +1,4 @@
-angular
-.module('common')
+angular.module('common')
 .controller('authCtrl', [function() {
 
 }]);

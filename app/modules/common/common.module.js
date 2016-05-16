@@ -11,11 +11,16 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
+    const loginRequired = {
+        loginRequired:true
+    };
+
     $stateProvider
     .state('auth', {
         url: '/auth',
         controller: returnCtrlAs('auth'),
-        templateUrl: templateBase + 'auth/auth.html'
+        templateUrl: templateBase + 'auth/auth.html',
+        access:loginRequired
     });
 
     if (appConfig.languages) {
@@ -60,8 +65,8 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout',
-function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout) {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
+function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) {
 
     // Add locales here
     const languageNameObject = $cuiI18n.getLocaleCodesAndNames();
@@ -71,6 +76,11 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        PubSub.publish('stateChange',{toState:toState,toParams:toParams,fromState:fromState,fromParams:fromParams}); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+        if(!toState.access || !toState.access.loginRequired) {
+            Menu.handleStateChange(toState.menu);
+            return;
+        }
         event.preventDefault();
         API.handleStateChange({ toState,toParams,fromState,fromParams })
         .then((res) => {
