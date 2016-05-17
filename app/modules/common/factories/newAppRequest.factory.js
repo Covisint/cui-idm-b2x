@@ -28,9 +28,12 @@ angular.module('common')
             arrayOfPackageRequests=[];
         arrayOfAppsBeingRequested.forEach((app,i) => {
             if(arrayOfPackagesBeingRequested.indexOf(app.servicePackage.id)>-1){ // if we've parsed an app that belongs to the same pacakge
-                arrayOfPackageRequests.some((packageRequest,i) => {
-                    return arrayOfPackageRequests[i].servicePackage.id===app.servicePackage.id? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
-                });
+                if(app.servicePackage.reasonRequired){
+                    arrayOfPackageRequests.some((packageRequest,i) => {
+                        return arrayOfPackageRequests[i].servicePackage.id === app.servicePackage.id? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
+                    });
+                }
+                // if the reason isn't required then we don't need to do anything, we're already requesting this package
             }
             else {
                 arrayOfPackageRequests[i]={
@@ -42,9 +45,9 @@ angular.module('common')
                         id:app.servicePackage.id,
                         type: 'servicePackage'
                     },
-                    reason: app.reason
+                    reason: app.servicePackage.reasonRequired ? app.reason : undefined
                 };
-                arrayOfPackagesBeingRequested[i]=app.servicePackage.id; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
+                arrayOfPackagesBeingRequested[i] = app.servicePackage.id; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
                                                                 // already requesting this package
             }
         });

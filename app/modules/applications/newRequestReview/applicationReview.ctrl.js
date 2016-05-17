@@ -36,24 +36,26 @@ angular.module('applications')
     const requestsValid = () => {
         applicationRequestArray=[];
         applicationReview.attempting=true;
+        let error = false;
         applicationReview.appRequests.forEach((appRequestGroup,i) => {
+
             appRequestGroup.forEach((appRequest,x) => {
                 if(appRequest.servicePackage.reasonRequired){
                     if(!appRequest.reason || appRequest.reason===''){
                         appRequest.reasonRequired=true;
                         applicationReview.attempting=false;
-                        applicationReview.error=true;
+                        error=true;
                     }
                     else {
                         appRequest.reasonRequired=false;
-                        applicationReview.error=false;
                         applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
                     }
                 }
                 else applicationRequestArray[i+x] = appRequest;
             });
         });
-        if(applicationReview.error) return false;
+        applicationReview.error = error;
+        if(error) return false;
         else return true;
     };
 
