@@ -20,7 +20,7 @@
 		<p ng-if="pendingRequestsReview.deniedCount===0">No rejected items.</p>
 		<div ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
 			<span ng-if="package.approval==='denied'">{{package.id}}</span><br/>
-			<textarea class="cui-text-area" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
+			<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 		</div>
 	</div>
 

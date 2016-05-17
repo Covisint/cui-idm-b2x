@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('pendingRequestsReviewCtrl', ['API','$stateParams','ServicePackage','$q',
-function(API,$stateParams,ServicePackage,$q) {
+.controller('pendingRequestsReviewCtrl', ['API','$stateParams','ServicePackage','$q','$timeout','$state',
+function(API,$stateParams,ServicePackage,$q,$timeout,$state) {
     'use strict';
 
     const pendingRequestsReview = this,
@@ -10,6 +10,7 @@ function(API,$stateParams,ServicePackage,$q) {
     let apiPromises = [];
 
     pendingRequestsReview.loading = true;
+    pendingRequestsReview.sucess = false;
     pendingRequestsReview.approvedCount = 0;
     pendingRequestsReview.deniedCount = 0;
 
@@ -26,6 +27,37 @@ function(API,$stateParams,ServicePackage,$q) {
     				break;
     		}    		
     	});
+    };
+
+    let build = {
+    	packageGrantClaimRequest:function(granteeId, servicePackage, claimsArray) {
+    		return {
+    			grantee: granteeId,
+    			servicePackage: this.buildServicePackage(servicePackage),
+    			packageClaims: this.buildPackageClaims(claimsArray)
+    		};
+    	},
+    	buildServicePackage:function(servicePackage) {
+    		return {
+    			id: servicePackage.id,
+    			type: servicePackage.type
+    		};
+    	},
+    	buildPackageClaims:function(claimsArray) {
+    		let strippedClaimsArray = [];
+    		claimsArray.forEach(claim => {
+    			if (claim.accepted) {
+    				let strippedClaim = {
+    					id: claim.id,
+    					claimId: claim.claimId,
+    					name: claim.name,
+    					claimValues: claim.claimValues
+    				};
+    				strippedClaimsArray.push(strippedClaim);
+    			}
+    		});
+    		return strippedClaimsArray;
+    	}
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -56,6 +88,41 @@ function(API,$stateParams,ServicePackage,$q) {
 
     pendingRequestsReview.submit = () => {
     	console.log(pendingRequestsReview.pendingRequests);
+
+    	pendingRequestsReview.pendingRequests.forEach(packageRequest => {
+    		if (packageRequest.approval === 'denied') {
+    			if (packageRequest.rejectReason) {
+    				API.cui.denyPackage({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
+    				.fail((error) => {
+    					console.log(error);
+    				});
+    			}
+    			else {
+    				API.cui.denyPackage({qs: [['requestId', packageRequest.id]]})
+    				.fail((error) => {
+    					console.log(error);
+    				});
+    			}
+    		}
+    		else {
+    			API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
+    			.fail((error) => {
+    				console.log(error);
+    			});
+
+    			let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
+
+    			API.cui.grantClaims({data: grantClaimData})
+    			.fail((error) => {
+    				console.log(error);
+    			});
+    		}
+    	});
+
+		pendingRequestsReview.sucess = true;
+		$timeout(() => {
+			$state.go('directory.userDetails', {userID: userId, orgID: orgId});
+		}, 3000);
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
