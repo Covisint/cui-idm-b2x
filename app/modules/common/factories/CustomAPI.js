@@ -6,43 +6,43 @@ angular.module('common')
     ];
 
     const calls = [
-        {cmd: 'getPackageClaims',                        accepts: '.platform.package.claim.v1',                     call: '/service/v3/claims'},
+        {cmd: 'getPackageClaims',                        accepts: '.platform.package.claim.v1',                          call: '/service/v3/claims'},
 
-        {cmd: 'getPersonPackageClaims',                  accepts: '.platform.package.grant.claim.v1',               call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`},
+        {cmd: 'getPersonPackageClaims',                  accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`},
 
-        {cmd: 'getCategories',                           accepts: '.platform.category.v1',                          call: `/service/v3/categories`},
+        {cmd: 'getCategories',                           accepts: '.platform.category.v1',                               call: `/service/v3/categories`},
 
-        {cmd: 'getPersonRequestableApps',                accepts: '.platform.service.application.v1',               call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},
+        {cmd: 'getPersonRequestableApps',                accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},
 
-        {cmd: 'getPersonRequestableCount',               accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`},
+        {cmd: 'getPersonRequestableCount',               accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`},
 
-        {cmd: 'getPersonGrantedApps',                    accepts: '.platform.service.application.v1',               call: `/service/v3/applications/persons/${ '{personId}' }`},
+        {cmd: 'getPersonGrantedApps',                    accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }`},
 
-        {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{personId}' }/count`},
+        {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/count`},
 
-        {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',               call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`},
+        {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`},
 
-        {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                     call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
+        {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
 
-        {cmd: 'getOrganizationGrantedApps',              accepts: '.platform.service.application.v1',               call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
+        {cmd: 'getOrganizationGrantedApps',              accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
 
-        {cmd: 'getOrganizationGrantedCount',             accepts: 'text/plain',                                     call: `/service/v3/applications/organizations/${ '{organizationId}' }/count`},
+        {cmd: 'getOrganizationGrantedCount',             accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/count`},
 
-        {cmd: 'getPersonGrantableApps',                  accepts: '.platform.service.application.v1',               call: `/service/v3/applications/persons/${ '{personId}' }/grantable`},
+        {cmd: 'getPersonGrantableApps',                  accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/grantable`},
 
-        {cmd:'getPersonGrantableCount',                  accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
+        {cmd:'getPersonGrantableCount',                  accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
 
-        {cmd:'getOrganizationGrantableApps',             accepts:'.platform.service.application.v1',                call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
+        {cmd:'getOrganizationGrantableApps',             accepts:'.platform.service.application.v1',                     call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
 
-        {cmd:'getOrganizationGrantableCount',            accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
+        {cmd:'getOrganizationGrantableCount',            accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
 
-        {cmd: 'getPersonStatusHistory',                  accepts: '.platform.person.status.history.v1',             call: '/person/v3/persons/statusHistory' },
+        {cmd: 'getPersonStatusHistory',                  accepts: '.platform.person.status.history.v1',                  call: '/person/v3/persons/statusHistory' },
 
-        {cmd: 'getPersonPasswordChangeHistory',          accepts: '.platform.authn.password.change.history.req.v1', call: `/authentication/v4/passwords/changeHistory` },
+        {cmd: 'getPersonPasswordChangeHistory',          accepts: '.platform.authn.password.change.history.req.v1',      call: `/authentication/v4/passwords/changeHistory` },
 
-        {cmd: 'getPersonPendingServicePackages',         accepts: '.platform.package.request.v1',                   call: `/service/v3/requests` },
+        {cmd: 'getPersonPendingServicePackages',         accepts: '.platform.package.request.v1',                        call: `/service/v3/requests` },
 
-        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',               call: `/packages/grants/claims`,   type:'POST' }
+        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/packages/grants/claims`,   type:'POST' }
     ];
 
     const getCallWrappers = (cuiObject) => {
