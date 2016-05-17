@@ -20,7 +20,7 @@
       <div ng-if="toggled" ng-init="userProfile.pushToggleOff({'name':'challengeQuestions','function':toggleOff})">
         <div ng-repeat="question in userProfile.tempUserSecurityQuestions">
           <b>{{'cui-challenge-question' | translate}} {{$index+1}}</b>
-          <select class="cui-input cui-input--full cui-select" ng-model="question.question.id" ng-options="question.id as (question.question | cuiI18n) for question in userProfile['allChallengeQuestions' + $index]"></select>
+          <cui-dropdown ng-model="question.question.id" class="cui-dropdown" return-value="object.id" display-value="(object.question | cuiI18n)" options="userProfile['allChallengeQuestions' + $index]"></cui-dropdown>
           {{'cui-answer' | translate}}
           <div class="cui-error" ng-messages="challengeQuestions['answer' + $index].$error">
             <div ng-messages-include="app/common-templates/messages.html"></div>

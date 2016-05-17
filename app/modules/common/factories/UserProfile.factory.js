@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfile', ['$q','API','CuiPasswordPolicies', 
+.factory('UserProfile', ['$q','API','CuiPasswordPolicies',
     function($q,API,CuiPasswordPolicies) {
         'use strict';
 
@@ -16,7 +16,7 @@ angular.module('common')
                         res.addresses = [{}];
                     }
                     if (!res.addresses[0].streets) {
-                        res.addresses[0].streets = [[],[]];
+                        res.addresses[0].streets = [];
                     }
                     userProfile.user = {};
                     userProfile.tempUser = {};
@@ -66,7 +66,7 @@ angular.module('common')
                 userProfile.challengeQuestionsTexts = [];
                 angular.forEach(userProfile.userSecurityQuestions.questions, function(userQuestion) {
                     var question = _.find(userProfile.allSecurityQuestionsDup, function(question) {
-                        return question.id === userQuestion.question.id; 
+                        return question.id === userQuestion.question.id;
                     });
                     this.push(question.question[0].text);
                 }, userProfile.challengeQuestionsTexts);
@@ -74,8 +74,8 @@ angular.module('common')
 
             resetTempUser: function(userProfile) {
                 if (!angular.equals(userProfile.tempUser,userProfile.user)) {
-                    angular.copy(userProfile.user,userProfile.tempUser);  
-                } 
+                    angular.copy(userProfile.user,userProfile.tempUser);
+                }
             },
 
             getPersonPasswordAccount: function(userProfile) {
@@ -101,8 +101,8 @@ angular.module('common')
                 userProfile.resetTempObject = function(master, temp) {
                     // Used to reset the temp object to the original when a user cancels their edit changes
                     if (!angular.equals(master, temp)) {
-                        angular.copy(master, temp);  
-                    } 
+                        angular.copy(master, temp);
+                    }
                 };
 
                 userProfile.resetPasswordFields = function() {
@@ -122,15 +122,15 @@ angular.module('common')
                         if (securityAnswerRepeatedIndex > -1) {
                             if (formObject['answer' + securityAnswerRepeatedIndex]) {
                                 formObject['answer' + securityAnswerRepeatedIndex].$setValidity('securityAnswerRepeated', false);
-                            } 
+                            }
                             if(formObject['answer' + i]) {
-                                formObject['answer' + i].$setValidity('securityAnswerRepeated', false);  
-                            } 
+                                formObject['answer' + i].$setValidity('securityAnswerRepeated', false);
+                            }
                         }
                         else {
                             if (formObject['answer' + i]) {
-                                formObject['answer'+i].$setValidity('securityAnswerRepeated', true);  
-                            } 
+                                formObject['answer'+i].$setValidity('securityAnswerRepeated', true);
+                            }
                         }
                     });
                 };
@@ -142,7 +142,7 @@ angular.module('common')
                 userProfile.pushToggleOff = function(toggleOffObject) {
                     if (!userProfile.toggleOffFunctions) {
                         userProfile.toggleOffFunctions = {};
-                    }                
+                    }
                     userProfile.toggleOffFunctions[toggleOffObject.name] = toggleOffObject.function;
                 };
 
@@ -150,8 +150,8 @@ angular.module('common')
                     if (section) {
                         userProfile[section] = {
                             submitting:true
-                        };  
-                    } 
+                        };
+                    }
                     if (!userProfile.userCountry) {
                         userProfile.tempUser.addresses[0].country = userProfile.user.addresses[0].country;
                     }
@@ -163,18 +163,18 @@ angular.module('common')
                     .then(function() {
                         angular.copy(userProfile.tempUser, userProfile.user);
                         if (section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if (toggleOff) {
-                            toggleOff();  
-                        } 
+                            toggleOff();
+                        }
                         $scope.$digest();
                     })
                     .fail(function(error) {
                         console.log(error);
                         if (section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if (section) {
                             userProfile[section].error = true;
                         }
@@ -190,22 +190,22 @@ angular.module('common')
                     API.cui.updatePersonPassword({personId: API.getUser(), data: self.getPersonPasswordAccount(userProfile)})
                     .then(function(res) {
                         if (section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if (toggleOff) {
-                            toggleOff();  
-                        } 
+                            toggleOff();
+                        }
                         userProfile.resetPasswordFields();
                         $scope.$digest();
                     })
                     .fail(function(err) {
                         console.log(err);
                         if (section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if (section) {
-                            userProfile[section].error = true;  
-                        } 
+                            userProfile[section].error = true;
+                        }
                         $scope.$digest();
                     });
                 };
@@ -219,7 +219,7 @@ angular.module('common')
                     userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
                     self.selectTextsForQuestions(userProfile);
 
-                    API.cui.updateSecurityQuestionAccount({personId: API.getUser(), 
+                    API.cui.updateSecurityQuestionAccount({personId: API.getUser(),
                         data: {
                             version: '1',
                             id: API.getUser(),
@@ -228,8 +228,8 @@ angular.module('common')
                     })
                     .then(function(res) {
                         if (section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if (toggleOff) {
                             toggleOff();
                         }
@@ -238,11 +238,11 @@ angular.module('common')
                     .fail(function(err) {
                         console.log(err);
                         if(section) {
-                            userProfile[section].submitting = false;  
-                        } 
+                            userProfile[section].submitting = false;
+                        }
                         if(section) {
-                            userProfile[section].error = true;  
-                        } 
+                            userProfile[section].error = true;
+                        }
                         $scope.$digest();
                     });
                 }
