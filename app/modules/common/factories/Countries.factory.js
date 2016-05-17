@@ -14,7 +14,7 @@ angular.module('common')
         }
         GetCountries(language)
         .then(function(res){
-            countries.lenght=0;
+            countries.length = 0;
             res.data.forEach(function(country){
                 countries.push(country);
             });

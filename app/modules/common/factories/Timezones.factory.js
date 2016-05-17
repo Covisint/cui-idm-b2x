@@ -14,6 +14,7 @@ angular.module('common')
         }
         GetTimezones(language)
         .then(function(res){
+            timezones.length = 0;
             res.data.forEach(function(timezone){
                 timezones.push(timezone);
             });

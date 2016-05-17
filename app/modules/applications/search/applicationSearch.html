@@ -16,7 +16,7 @@
             {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
-            <input class="cui-input-button__input" ng-model="applicationSearch.search.name" placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
+            <input class="cui-input-button__input" ng-model="applicationSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
             <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
