@@ -41,7 +41,7 @@ angular.module('applications',[])
         })
         .state('applications.reviewRequest', {
             url: '/review',
-            templateUrl: templateBase + 'newRequestReview/review.html',
+            templateUrl: templateBase + 'newRequestReview/applicationReview.html',
             controller: returnCtrlAs('applicationReview'),
             access:loginRequired
         })

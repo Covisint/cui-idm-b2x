@@ -16,7 +16,7 @@ angular.module('common')
                         res.addresses = [{}];
                     }
                     if (!res.addresses[0].streets) {
-                        res.addresses[0].streets = [[],[]];
+                        res.addresses[0].streets = [{},{}];
                     }
                     userProfile.user = {};
                     userProfile.tempUser = {};

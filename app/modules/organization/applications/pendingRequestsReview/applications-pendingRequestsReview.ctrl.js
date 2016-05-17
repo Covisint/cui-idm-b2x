@@ -29,6 +29,37 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state) {
     	});
     };
 
+    let build = {
+    	packageGrantClaimRequest:function(granteeId, servicePackage, claimsArray) {
+    		return {
+    			grantee: granteeId,
+    			servicePackage: this.buildServicePackage(servicePackage),
+    			packageClaims: this.buildPackageClaims(claimsArray)
+    		};
+    	},
+    	buildServicePackage:function(servicePackage) {
+    		return {
+    			id: servicePackage.id,
+    			type: servicePackage.type
+    		};
+    	},
+    	buildPackageClaims:function(claimsArray) {
+    		let strippedClaimsArray = [];
+    		claimsArray.forEach(claim => {
+    			if (claim.accepted) {
+    				let strippedClaim = {
+    					id: claim.id,
+    					claimId: claim.claimId,
+    					name: claim.name,
+    					claimValues: claim.claimValues
+    				};
+    				strippedClaimsArray.push(strippedClaim);
+    			}
+    		});
+    		return strippedClaimsArray;
+    	}
+    };
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -61,33 +92,37 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state) {
     	pendingRequestsReview.pendingRequests.forEach(packageRequest => {
     		if (packageRequest.approval === 'denied') {
     			if (packageRequest.rejectReason) {
-    				// API.cui.denyPackageRequests({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
-    				// .fail((error) => {
-    				// 	console.log(error);
-    				// });
-    				return;
+    				API.cui.denyPackage({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
+    				.fail((error) => {
+    					console.log(error);
+    				});
     			}
     			else {
-    				// API.cui.denyPackageRequests({qs: [['requestId', packageRequest.id]]})
-    				// .fail((error) => {
-    				// 	console.log(error);
-    				// });
-    				return;
+    				API.cui.denyPackage({qs: [['requestId', packageRequest.id]]})
+    				.fail((error) => {
+    					console.log(error);
+    				});
     			}
     		}
     		else {
-    			// API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
-    			// .fail((error) => {
-    			// 	console.log(error);
-    			// });
-    			// PUT /packages/grants/claims
-    			return;
+    			API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
+    			.fail((error) => {
+    				console.log(error);
+    			});
+
+    			let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
+
+    			API.cui.grantClaims({data: grantClaimData})
+    			.fail((error) => {
+    				console.log(error);
+    			});
     		}
     	});
-		// pendingRequestsReview.sucess = true;
-		// $timeout(() => {
-		// 	$state.go('directory.userDetails', {userID: userId, orgID: orgId});
-		// }, 3000);
+
+		pendingRequestsReview.sucess = true;
+		$timeout(() => {
+			$state.go('directory.userDetails', {userID: userId, orgID: orgId});
+		}, 3000);
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

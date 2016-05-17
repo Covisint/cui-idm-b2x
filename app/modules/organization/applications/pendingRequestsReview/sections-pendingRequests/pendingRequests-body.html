@@ -16,7 +16,7 @@
         <cui-expandable class="cui-expandable" transition-speed="100">
           <cui-expandable-title class="cui-expandable__title">
             <div class="cui-flex-table__tr">
-              <p class="cui-flex-table__text">{{'package-name' | translate}}</p>
+              <p class="cui-flex-table__text">{{package.servicePackage.packageDetails.name | cuiI18n}}</p>
               <p class="cui-flex-table__text">{{package.creation | date:base.appConfig.dateFormat}}</p>
               <p class="cui-flex-table__text">
                 <fieldset class="cui-radio__fieldset" ng-click="collapse()">

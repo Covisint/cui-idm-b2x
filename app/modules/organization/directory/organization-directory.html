@@ -71,7 +71,7 @@
             <p>{{'cui-no-org-divisions' | translate}}!</p>
           </div>
           <div ng-if="orgDirectory.organizationList" ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
-            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization)">{{organization.name | cuiI18n}}</p>
+            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
       </div>
