@@ -13,11 +13,11 @@
     </div>
     <div class="cui-action cui-action--alt">
         <div class="cui-action__title" ng-if="!applicationSearch.category" ui-sref="applications.newRequest"><
-            {{'categories' | translate}}</div>
+            {{'cui-back' | translate}}</div>
         <span class="cui-action__title" ng-if="applicationSearch.category" ui-sref="applications.newRequest">< {{applicationSearch.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
             <input class="cui-input-button__input" ng-model="applicationSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
-            <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
+            <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch(applicationSearch.search.name)">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
             <svg ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
@@ -37,63 +37,23 @@
             </div>
         </div>
     </div>
-    <div class="cui-applications__main-container">
-        <div class="cui-loading__container" ng-if="!applicationSearch.doneReloading">
-            <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    <div class="cui-applications__main-container" ng-if="applicationSearch.doneLoading">
+        <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in applicationSearch.appList track by application.id">
+          <div class="cui-media__image-container">
+            <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+          </div>
+          <div class="cui-media__body cui-media__body--full">
+            <div class="cui-media__title-container">
+              <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+              <h3 class="cui-media__title" ng-click="applicationSearch.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
+            </div>
+            <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
+            <span class="cui-checkbox__container">
+                <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" />
+                <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
+            </span>
+          </div>
         </div>
-
-        <!-- TODO @SHANE we need designs for no applications matching query -->
-
-        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneReloading" transition-speed="150">
-            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
-                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
-                    <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
-                </div>
-                <div class="cui-expandable__title-end">
-                    <span class="cui-checkbox__container">
-                        <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" />
-                        <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
-                    </span>
-                </div>
-            </cui-expandable-title>
-            <cui-expandable-body class="cui-expandable__body">
-                <div class="cui-expandable__body-pane">
-                    <span class="cui-expandable__body-close" ng-click="collapse()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-                          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-                        </svg>
-                    </span>
-                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
-                    <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
-                        <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
-                        <div class="cui-expandable__pane-content">
-                            <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
-                                {{bundledApp.name | cuiI18n}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="cui-expandable__pane-col" ng-if="application.relatedApps && application.relatedApps.length > 0">
-                        <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
-                        <div class="cui-expandable__pane-content">
-                            <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
-                                <span class="">{{relatedApp.name | cuiI18n}} </span>  <!-- TODO @SHANE SMALL MIS-ALLIGNMENT HERE -->
-                                <span class="cui-checkbox__container">
-                                    <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]; applicationSearch.toggleRequest(relatedApp)"></label>
-                                </span>
-                            </span>
-
-                        </div>
-                    </div>
-                </div>
-            </cui-expandable-body>
-        </cui-expandable>
-    </div>
-    <!-- TODO @SHANE ADD SPACING HERE -->
-    <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
-            <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-            <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
-            <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
     </div>
     <div class="cui-applications__search-button">
         <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>

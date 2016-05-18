@@ -2,10 +2,9 @@
 <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/org-applications" target="blank">here</a></div>
 <!-- /processHTML -->
 
-<!-- Organization Applications: Action Header -->
 <div class="cui-action">
   <span class="cui-action__title">
-    <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> | 
+    <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> |
     <a ui-sref="applications.myApplications" class="cui-link--medium-light cui-link--no-decoration">{{'my-applications' | translate}}</a>
   </span>
   <div class="cui-action__actions">
@@ -18,8 +17,8 @@
       <!-- Sort Popover -->
       <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
         target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.sortClicked">
-        <p ng-click="orgApplications.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
-        <p ng-click="orgApplications.sort('date'); ">{{'cui-by-date-added' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</p>
       </div>
     </div>
     <!-- Refine -->
@@ -30,25 +29,10 @@
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
       <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.refineClicked">
-        <p ng-click="orgApplications.parseAppsByStatus('all')">{{'all' | translate}} ({{orgApplications.statusCount[0]}})</p>
-        <div ng-repeat="status in orgApplications.categoryList" ng-if="orgApplications.statusCount[$index+1]!==0">
-          <p ng-click="orgApplications.parseAppsByStatus(status)">{{status | translate}} ({{orgApplications.statusCount[$index+1]}})</p>
-        </div>
-      </div>
-    </div>
-    <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="orgApplications.categoriesClicked =! orgApplications.categoriesClicked" id="categories-button" off-click="orgApplications.categoriesClicked=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#categories"></use>
-      </svg>
-      <span class="cui-action__action-label">{{'categories' | translate}}</span>
-      <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.categoriesClicked">
-        <p ng-click="orgApplications.parseAppsByCategory('all')">{{'all' | translate}} ({{orgApplications.categoryCount[0]}})</p>
-        <div ng-repeat="category in orgApplications.categoryList">
-          <p ng-click="orgApplications.parseAppsByCategory(category)">{{category| cuiI18n}} ({{orgApplications.categoryCount[$index+1]}})</p>
-        </div>
+        <p ng-click="orgApplications.updateSearch('status')">{{'all' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','active')">{{'active' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
       </div>
     </div>
     <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
@@ -60,18 +44,17 @@
 <!-- Organization Applications: Content -->
 <div class="cui-applications__main-container">
   <!-- Loading -->
-  <div class="cui-loading__container" ng-if="orgApplications.loading">
+  <div class="cui-loading__container" ng-if="!orgApplications.doneLoading">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
 
-  <div ng-if="!orgApplications.loading">
+  <div ng-if="orgApplications.doneLoading">
     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in orgApplications.appList track by application.id" ng-click="orgApplications.goToDetails(application)">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
       <div class="cui-media__body cui-media__body--full">
         <div class="cui-media__title-container">
-          <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--'+application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
           <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
         </div>
         <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>

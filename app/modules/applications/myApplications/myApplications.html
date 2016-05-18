@@ -35,20 +35,6 @@
         <p ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
       </div>
     </div>
-    <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#categories"></use>
-      </svg>
-      <span class="cui-action__action-label">{{'categories' | translate}}</span>
-      <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false">
-        <p ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</p>
-        <div ng-repeat="category in myApplications.categories">
-          <p ng-click="myApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</p>
-        </div>
-      </div>
-    </div>
     <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
       <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#new"></use>
     </svg>
@@ -59,31 +45,19 @@
   <div class="cui-loading__container" ng-if="!myApplications.doneLoading">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
-  <!-- TODO styling for no results -->
-  <!-- TODO @SHANE I had to add position relative to this div so that the loading container doesn't overflow onto the pagination -->
-  <!-- also, when there's only 1 result at the last page, for example, the pagination will jump up. Can we maybe force it to be at the bottom of the page? -->
   <div ng-if="myApplications.doneLoading" style="position:relative">
-    <div class="cui-loading__container" ng-if="!myApplications.redoneLoading">
-      <div class="cui-loading--center"><div class="cui-loading"></div></div>
-    </div>
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id">
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.appList track by application.id">
       <div class="cui-media__image-container">
-        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+        <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
       </div>
       <div class="cui-media__body cui-media__body--full">
         <div class="cui-media__title-container">
-          <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+          <a class="cui-media__app-launch" class="cui-media__app-launch" ng-class="{'hide--opacity': application.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
           <h3 class="cui-media__title" ng-click="myApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
         </div>
         <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{ application.grant.status | lowercase }}</span>
+        <span class="cui-status" ng-class=" 'cui-status--'+application.status ">{{ application.status | lowercase }}</span>
       </div>
     </div>
-  </div>
-  <!-- TODO @SHANE add space here -->
-  <div class="cui-paginate__container" ng-if="myApplications.doneLoading">
-    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-    <results-per-page class="cui-paginate__select" ng-model="myApplications.search.pageSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="myApplications.search.pageSize" count="myApplications.count" on-page-change="myApplications.pageChange" ng-model="myApplications.search.page" attach-rerender-to=" myApplications.reRenderPaginate"></paginate>
   </div>
 </div>

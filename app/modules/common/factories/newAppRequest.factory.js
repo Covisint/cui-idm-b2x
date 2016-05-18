@@ -27,12 +27,11 @@ angular.module('common')
         let arrayOfPackagesBeingRequested=[],
             arrayOfPackageRequests=[];
         arrayOfAppsBeingRequested.forEach((app,i) => {
-            if(arrayOfPackagesBeingRequested.indexOf(app.servicePackage.id)>-1){ // if we've parsed an app that belongs to the same pacakge
-                if(app.servicePackage.reasonRequired){
-                    arrayOfPackageRequests.some((packageRequest,i) => {
-                        return arrayOfPackageRequests[i].servicePackage.id === app.servicePackage.id? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
-                    });
-                }
+            if(arrayOfPackagesBeingRequested.indexOf(app.parentPackage)>-1){ // if we've parsed an app that belongs to the same pacakge
+
+                arrayOfPackageRequests.some((packageRequest,i) => {
+                    return arrayOfPackageRequests[i].parentPackage === app.parentPackage? (arrayOfPackageRequests[i].reason=arrayOfPackageRequests[i].reason + ('\n\n' + app.reason),true) : false; // if we already build a package request for this pacakge then append the reason of why we need this other app
+                });
                 // if the reason isn't required then we don't need to do anything, we're already requesting this package
             }
             else {
@@ -42,12 +41,12 @@ angular.module('common')
                         type:'person'
                     },
                     servicePackage:{
-                        id:app.servicePackage.id,
+                        id:app.parentPackage,
                         type: 'servicePackage'
                     },
-                    reason: app.servicePackage.reasonRequired ? app.reason : undefined
+                    reason: app.reason
                 };
-                arrayOfPackagesBeingRequested[i] = app.servicePackage.id; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
+                arrayOfPackagesBeingRequested[i] = app.parentPackage; // save the pacakge id that we're requesting in a throwaway array, so it's easier to check if we're
                                                                 // already requesting this package
             }
         });

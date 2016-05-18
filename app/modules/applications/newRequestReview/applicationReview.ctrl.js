@@ -34,22 +34,13 @@ angular.module('applications')
     let applicationRequestArray;
 
     const requestsValid = () => {
-        applicationRequestArray=[];
-        applicationReview.attempting=true;
+        applicationRequestArray = [];
         let error = false;
         applicationReview.appRequests.forEach((appRequestGroup,i) => {
-
             appRequestGroup.forEach((appRequest,x) => {
-                if(appRequest.servicePackage.reasonRequired){
-                    if(!appRequest.reason || appRequest.reason===''){
-                        appRequest.reasonRequired=true;
-                        applicationReview.attempting=false;
-                        error=true;
-                    }
-                    else {
-                        appRequest.reasonRequired=false;
-                        applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
-                    }
+                if(!appRequest.reason || appRequest.reason === '') {
+                    error = true;
+                    appRequest.reasonRequired = true;
                 }
                 else applicationRequestArray[i+x] = appRequest;
             });
@@ -60,13 +51,17 @@ angular.module('applications')
     };
 
     applicationReview.submit = () => {
-        if(!requestsValid()) return;
+        if(!requestsValid()) {
+            return;
+        }
+        applicationReview.attempting=true;
+
         const appRequests=AppRequests.getPackageRequests(API.getUser(),applicationRequestArray);
 
         let requestsPromises=[];
 
         appRequests.forEach((appRequest) => {
-            requestsPromises.push(API.cui.createPackageRequest({data:appRequest}))
+            requestsPromises.push(API.cui.createPackageRequest({data:appRequest}));
         });
 
         $q.all(requestsPromises)
@@ -83,10 +78,6 @@ angular.module('applications')
             applicationReview.attempting = false;
             applicationReview.error = true;
         });
-    };
-
-    applicationReview.updateSearch = (nameSearch) => {
-        applicationReview.search = nameSearch;
     };
 
     // ON CLICK END -----------------------------------------------------------------------------------

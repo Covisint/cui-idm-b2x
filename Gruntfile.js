@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
 
   // Tasks ------------------------------------------------------------
-  grunt.registerTask('default', ['copy:dev','concatModules','babel','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('default', ['concatModules','babel','sass','autoprefixer','browserSync:dev','watch']);
 
   grunt.registerTask('build', ['sass','autoprefixer','processhtml','ngtemplates:build','clean:build','copy:build',
                                 'concatModules','babel','useminPrepare','concat:generated',

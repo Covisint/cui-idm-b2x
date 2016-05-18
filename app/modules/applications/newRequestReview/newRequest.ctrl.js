@@ -24,12 +24,6 @@ function(API,$scope,$state,AppRequests,localStorage) {
         newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
     });
 
-    API.cui.getCategories()
-    .then((res)=>{
-        newAppRequest.categories = res;
-        newAppRequest.loadingDone = true;
-        $scope.$digest();
-    })
 
     // ON LOAD END ------------------------------------------------------------------------------------
 

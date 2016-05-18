@@ -35,10 +35,6 @@ module.exports = function(grunt,config){
           dest: '<%= config.buildSdkDir %>/'
         }
       ]
-    },
-    dev: {
-      src: 'appConfig-example.json',
-      dest: 'appConfig.json'
     }
   };
 };

@@ -37,39 +37,37 @@
         <div class="cui-loading__container" ng-if="applicationReview.attempting">
           <div class="cui-loading cui-loading--center" ></div>
         </div>
-            <div>
-                <h3 class="h4 h4--bold">{{'requested-items' | translate}}:</h3>
-                <div class="cui-applications__review-apps">
-                    <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
-                        <div ng-repeat="application in applicationGroup | filter:applicationReview.search">
-                            <div class="cui-media">
-                              <div class="cui-media__image-container">
-                                <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
-                              </div>
-                              <div class="cui-media__body">
-                                <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
-                                <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
-                              </div>
-                            </div>
-                            <!-- Terms and conditions is not provided by the API, leaving it out for now -->
-                            <div class="cui-applications__review-text-input" ng-if="application.servicePackage.requestReasonRequired">
-                                <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
-                                <span class="cui-error h6" ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
-                                <textarea class="cui-text-area" ng-model="application.reason" ng-class="{'<!-- TODO @SHANE textarea invalid class here -->' : application.reasonRequired}"></textarea>
-                            </div>
+        <div>
+            <h3 class="h4 h4--bold">{{'requested-items' | translate}}:</h3>
+            <div class="cui-applications__review-apps">
+                <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
+                    <div ng-repeat="application in applicationGroup | filter:applicationReview.search">
+                        <div class="cui-media">
+                          <div class="cui-media__image-container">
+                            <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
+                          </div>
+                          <div class="cui-media__body">
+                            <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+                          </div>
+                        </div>
+                        <!-- Terms and conditions is not provided by the API, leaving it out for now -->
+                        <div class="cui-applications__review-text-input">
+                            <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
+                            <span class="cui-error h6" ng-if="application.reasonRequired">{{'you-must-enter-a-reason' | translate}}</span>
+                            <textarea class="cui-text-area" ng-model="application.reason" ng-class="{'<!-- TODO @SHANE textarea invalid class here -->' : application.reasonRequired}"></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="cui-applications__submit-options">
-                    <a class="cui-link" ng-click="base.goBack('applications.search')">{{'cui-cancel' | translate}}</a>
-                    <button class="cui-button" ng-click="applicationReview.submit()">
-                        <span ng-if="!applicationReview.error">{{'submit-request' | translate}}</span>
-                        <span ng-if="applicationReview.error===true">{{'cui-error-try-again' | translate}}</span>
-                    </button>
-                </div>
-                <!-- TODO ng-if="applicationReview.attempting" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
-
             </div>
+            <div class="cui-applications__submit-options">
+                <a class="cui-link" ng-click="base.goBack('applications.search')">{{'cui-cancel' | translate}}</a>
+                <button class="cui-button" ng-click="applicationReview.submit()">
+                    <span ng-if="!applicationReview.error">{{'submit-request' | translate}}</span>
+                    <span ng-if="applicationReview.error===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+            <!-- TODO ng-if="applicationReview.attempting" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
+
         </div>
     </div>
 </div>

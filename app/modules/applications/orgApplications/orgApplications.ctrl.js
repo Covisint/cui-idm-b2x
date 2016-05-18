@@ -6,47 +6,15 @@ function($scope,API,Sort,$stateParams) {
     var orgApplications = this;
     var organizationId = $stateParams.id;
 
-    orgApplications.loading = true;
-    orgApplications.sortFlag = false;
-    orgApplications.categoriesFlag = false;
-    orgApplications.statusFlag = false;
     orgApplications.appList = [];
     orgApplications.unparsedAppList = [];
-    orgApplications.categoryList = [];
-    orgApplications.statusList = ['active', 'suspended', 'pending'];
-    orgApplications.statusCount = [0,0,0,0];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
     var handleError = function handleError(err) {
-        orgApplications.loading = false;
+        orgApplications.doneLoading = true;
         $scope.$digest();
         console.log('Error', err);
-    };
-
-    var getListOfCategories = function(services) {
-        // WORKAROUND CASE # 7
-        var categoryList = [];
-        var categoryCount = [orgApplications.unparsedAppList.length];
-
-        services.forEach(function(service) {
-            if (service.category) {
-                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
-                    if (angular.equals(category, service.category)) {
-                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (!serviceCategoryInCategoryList) {
-                    categoryList.push(service.category);
-                    categoryCount[categoryList.length] = 1;
-                }
-            }
-        });
-        orgApplications.categoryCount = categoryCount;
-        return categoryList;
     };
 
     var getApplicationsFromGrants = function(grants) {
@@ -65,16 +33,12 @@ function($scope,API,Sort,$stateParams) {
                     orgApplications.appList.push(service);
                 });
 
-                if (i === grants.length) {
-                    orgApplications.appList = _.uniq(orgApplications.appList, function(app) {
-                        return app.id;
-                    });
-                    angular.copy(orgApplications.appList, orgApplications.unparsedAppList);
-                    orgApplications.statusCount[0] = orgApplications.appList.length;
-                    orgApplications.categoryList = getListOfCategories(orgApplications.appList);
-                    orgApplications.loading = false;
-                    $scope.$digest();
-                }
+                orgApplications.appList = _.uniq(orgApplications.appList, function(app) {
+                    return app.id;
+                });
+                angular.copy(orgApplications.appList, orgApplications.unparsedAppList);
+                orgApplications.doneLoading = true;
+                $scope.$digest();
             })
             .fail(handleError);
         });
@@ -107,6 +71,29 @@ function($scope,API,Sort,$stateParams) {
     // ON LOAD END --------------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+
+
+    let alphabeticalFlag = false;
+    let dateFlag = false;
+
+    orgApplications.updateSearch = (type,value) => {
+        switch(type){
+            case 'alphabetic':
+                Sort.listSort(orgApplications.appList,'alphabetically',alphabeticalFlag);
+                alphabeticalFlag =! alphabeticalFlag;
+                break;
+            case 'date':
+                Sort.listSort(orgApplications.appList,'date',dateFlag);
+                dateFlag =! dateFlag;
+                break;
+            case 'status':
+                if(!value) angular.copy(orgApplications.unparsedAppList, orgApplications.appList);
+                else {
+                    orgApplications.appList  = orgApplications.unparsedAppList.filter(x => x.status===value);
+                }
+        };
+    }
+
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
 
 }]);
