@@ -7,7 +7,7 @@ angular.module('common')
 
     return {
         set : (newUser) => {
-            user = Object.assign(user,newUser);
+            user = Object.assign({},user,newUser);
         },
 
         get : () => user.cuid || '[cuid]',

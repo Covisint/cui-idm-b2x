@@ -32,23 +32,18 @@ angular.module('common')
     const populateUserInfo = (info,redirectOpts) => {
         authInfo = info;
         const deferred = $q.defer();
-        if(User.get()==='[cuid]'){ // if we don't have user data saved
-            User.set(info);
-            myCUI.getPersonRoles({ personId: authInfo.cuid })
-            .then((res) => {
-                const roleList = res.map(x => x.name);
-                User.setEntitlements(roleList);
-                deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
-            });
+        User.set(info);
+        myCUI.getPersonRoles({ personId: authInfo.cuid })
+        .then((res) => {
+            const roleList = res.map(x => x.name);
+            User.setEntitlements(roleList);
+            deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
+        });
 
-            myCUI.getPerson({ personId: authInfo.cuid })
-            .then((res) => {
-                angular.copy(res, User.user);
-            });
-        }
-        else {
-            deferred.resolve({ roleList:User.getEntitlements(), redirect:redirectOpts });
-        }
+        myCUI.getPerson({ personId: authInfo.cuid })
+        .then((res) => {
+            angular.copy(res, User.user);
+        });
         return deferred.promise;
     }
 
