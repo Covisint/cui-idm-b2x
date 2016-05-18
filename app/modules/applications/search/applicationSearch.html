@@ -30,7 +30,7 @@
               <div class="cui-action__popover-section">
                 <span ng-if="applicationSearch.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
                 <ul ng-if="applicationSearch.numberOfRequests > 0">
-                    <li ng-repeat="(key,value) in applicationSearch.packageRequests">{{value.name | cuiI18n}}</li>
+                    <li ng-repeat="(applicationId,application) in applicationSearch.packageRequests">{{application.name | cuiI18n}}</li>
                 </ul>
               </div>
               <span ng-if="applicationSearch.numberOfRequests > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
