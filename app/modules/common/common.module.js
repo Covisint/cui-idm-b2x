@@ -17,7 +17,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
     $stateProvider
     .state('auth', {
-        url: '/auth',
+        url: '/auth{path:.*}',
         controller: returnCtrlAs('auth'),
         templateUrl: templateBase + 'auth/auth.html',
         access:loginRequired
