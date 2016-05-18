@@ -14,12 +14,12 @@
   <div class="cui-wrapper v2">
     <snap-drawer>
 
-      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
+      <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
         <div class="cui-profile__row">
-          <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
+          <span class="cui-profile__user-name">{{base.user.name.given}} {{base.user.name.surname}}</span>
           <!-- Avatar Mobile -->
           <div class="cui-media__image-container">
-            <div class="cui-media__image" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+            <div class="cui-media__image" cui-avatar cui-avatar-email="base.user.email" cui-avatar-names="[base.user.name.given, base.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
           </div>
           <svg class="cui-profile__chevron" viewBox="0 0 216 146">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
@@ -149,10 +149,10 @@
               <cui-icon cui-svg-icon="cui:search" svg-class="cui-header__search-icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
             </div> -->
 
-            <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.userName.given">
-                <span class="cui-profile__user-name">{{base.userName.given}} {{base.userName.surname}}</span>
+            <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
+                <span class="cui-profile__user-name">{{base.user.name.given}} {{base.user.name.surname}}</span>
                 <!-- Avatar Desktop -->
-                <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[base.userName.given, base.userName.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+                <div class="cui-profile__user-avatar" cui-avatar cui-avatar-email="base.user.email" cui-avatar-names="[base.user.name.given, base.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 <div id="cui-profile__popup" class="cui-profile__user-menu">
                   <div class="cui-profile__menu-item" ui-sref="user.profile">
                     <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
