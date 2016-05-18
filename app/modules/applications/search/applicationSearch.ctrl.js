@@ -40,14 +40,14 @@ angular.module('applications')
         }
 
         let query = [];
-        if(applicationSearch.search.nameSearch) query.push(['service.name',applicationSearch.search.nameSearch]);
+        if(applicationSearch.search.name) query.push(['service.name',applicationSearch.search.name]);
         if(applicationSearch.search.category) query.push(['service.category',applicationSearch.search.category]);
 
-       applicationSearch.search.pageSize = applicationSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
-       query.push(['pageSize',String(applicationSearch.search.pageSize)]);
+        applicationSearch.search.pageSize = applicationSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+        query.push(['pageSize',String(applicationSearch.search.pageSize)]);
 
-       applicationSearch.search.page = applicationSearch.search.page || 1;
-       query.push(['page',String(applicationSearch.search.page)]);
+        applicationSearch.search.page = applicationSearch.search.page || 1;
+        query.push(['page',String(applicationSearch.search.page)]);
 
         let opts = {
             personId: API.getUser(),
