@@ -1,6 +1,6 @@
 angular.module('common')
-.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','API','Menu',
-function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,Menu) {
+.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','API','Menu','Loader',
+function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,Menu,Loader) {
 
     return {
         appConfig: appConfig,
@@ -12,6 +12,7 @@ function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,
         menu: Menu,
         timezones: Timezones.all,
         user: User.user,
+        loader: Loader,
         goBack: (fallback) => {
             if ($state.previous.name.name !== '') {
                 $state.go($state.previous.name, $state.previous.params);
