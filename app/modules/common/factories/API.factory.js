@@ -32,20 +32,18 @@ angular.module('common')
     const populateUserInfo = (info,redirectOpts) => {
         authInfo = info;
         const deferred = $q.defer();
-        if(User.get()==='[cuid]'){ // if we don't have user data saved
-            User.set(info);
-            const promises = [myCUI.getPerson({ personId: authInfo.cuid }) , myCUI.getPersonRoles({ personId: authInfo.cuid })];
-            $q.all(promises)
-            .then((res) => {
-                angular.copy(res[0].name, User.userName);
-                const roleList = res[1].map(x => x.name);
-                User.setEntitlements(roleList);
-                deferred.resolve({ roleList, redirect:redirectOpts });
-            });
-        }
-        else {
-            deferred.resolve({ roleList:User.getEntitlements(), redirect:redirectOpts });
-        }
+        User.set(info);
+        myCUI.getPersonRoles({ personId: authInfo.cuid })
+        .then((res) => {
+            const roleList = res.map(x => x.name);
+            User.setEntitlements(roleList);
+            deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
+        });
+
+        myCUI.getPerson({ personId: authInfo.cuid })
+        .then((res) => {
+            angular.copy(res, User.user);
+        });
         return deferred.promise;
     }
 
@@ -58,15 +56,10 @@ angular.module('common')
             const sessionInfo = myCUI.getCovAuthInfo();
             if(redirectOpts.toState.name!=='auth') {
                 localStorage.set('appRedirect',redirectOpts); // set the redirect to whatever the last state before auth was
-                if(sessionInfo.cuid) {
-                    populateUserInfo(sessionInfo,redirectOpts)
-                    .then((res) => {
-                        deferred.resolve(res);
-                    });
-                }
-                else {
-                    deferred.resolve({ roleList:[], redirect:redirectOpts });
-                }
+                populateUserInfo(sessionInfo,redirectOpts) // if there's no session info stored this will force a 401 on getPerson, which will trigger cui's auth handler
+                .then((res) => {
+                    deferred.resolve(res);
+                });
             }
             else {
                 myCUI.handleCovAuthResponse({selfRedirect:true})
