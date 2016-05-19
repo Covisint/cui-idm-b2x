@@ -62,13 +62,18 @@ angular.module('common')
                 });
             }
             else {
-                myCUI.handleCovAuthResponse({selfRedirect:true})
-                .then((res)=>{
-                    populateUserInfo(res,localStorage.get('appRedirect'))
-                    .then((res) => {
-                        deferred.resolve(res);
+                if(!redirectOpts.toParams.cuid) {
+                    deferred.resolve( { redirect:redirectOpts, roleList: User.getEntitlements() } );
+                }
+                else {
+                    myCUI.handleCovAuthResponse({selfRedirect:true})
+                    .then((res)=>{
+                        populateUserInfo(res,localStorage.get('appRedirect'))
+                        .then((res) => {
+                            deferred.resolve(res);
+                        });
                     });
-                });
+                }
             }
 
             return deferred.promise;
