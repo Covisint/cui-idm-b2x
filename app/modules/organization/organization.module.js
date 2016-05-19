@@ -6,33 +6,33 @@ angular.module('organization',[])
    const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
    const loginRequired = {
-       loginRequired:true
+       loginRequired: true
    };
 
     $stateProvider
         .state('organization', {
             url: '/organization',
             templateUrl: templateBase + 'organization.html',
-            access:loginRequired
+            access: loginRequired
         })
         // Profile --------------------------------------------------
         .state('organization.profile', {
             url: '/profile?userID&orgID',
             templateUrl: templateBase + 'profile/organization-profile.html',
             controller: returnCtrlAs('orgProfile'),
-            access:loginRequired
+            access: loginRequired
         })
         // Directory ------------------------------------------------
         .state('organization.directory', {
             url: '/directory?orgID',
             templateUrl: templateBase + 'directory/organization-directory.html',
             controller: returnCtrlAs('orgDirectory'),
-            access:loginRequired
+            access: loginRequired
         })
         .state('directory', {
             url: '/organization/directory',
             templateUrl: templateBase + 'directory/directory.html',
-            access:loginRequired
+            access: loginRequired
         })
         .state('directory.userDetails', {
             url: '/user-details?userID&orgID',
@@ -58,7 +58,7 @@ angular.module('organization',[])
                     controller: returnCtrlAs('userDetailsHistory')
                 }
             },
-            access:loginRequired
+            access: loginRequired
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
@@ -78,43 +78,55 @@ angular.module('organization',[])
         .state('invitation', {
             url: '/organization/invitation',
             templateUrl: templateBase + 'invitation/organization-invitation.html',
-            access:loginRequired
+            access: loginRequired
         })
         .state('invitation.user', {
             url: '/user?orgID',
             templateUrl: templateBase + 'invitation/user/invitation-user.html',
             controller: returnCtrlAs('inviteUser'),
-            access:loginRequired
+            access: loginRequired
         })
         .state('invitation.division', {
             url: '/division?orgID',
             templateUrl: templateBase + 'invitation/division/invitation-division.html',
             controller: returnCtrlAs('inviteDivision'),
-            access:loginRequired
+            access: loginRequired
         })
-        // Applications ---------------------------------------------
-        .state('organization.applications', {
-            url: '/organization/applications',
-            templateUrl: templateBase + 'applications/organization-applications.html',
-            access:loginRequired
+        // Requests -------------------------------------------------
+        .state('requests', {
+            url: '/organization/requests',
+            templateUrl: templateBase + 'requests/organization-requests.html',
+            access: loginRequired
         })
-        .state('applications.newGrant', {
+        .state('requests.newGrant', {
             url: '/newGrant?userID',
-            templateUrl: templateBase + 'applications/newGrant/applications-newGrant.html',
+            templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
-            access:loginRequired
+            access: loginRequired
         })
-        .state('applications.pendingRequests', {
+        .state('requests.pendingRequests', {
             url: '/pendingRequests?userID&orgID',
-            templateUrl: templateBase + 'applications/pendingRequestsReview/applications-pendingRequests.html',
+            templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests'),
-            access:loginRequired
+            access: loginRequired
         })
-        .state('applications.pendingRequestsReview', {
+        .state('requests.pendingRequestsReview', {
             url: '/pendingRequests/review?userID',
-            templateUrl: templateBase + 'applications/pendingRequestsReview/applications-pendingRequestsReview.html',
+            templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
-            access:loginRequired
+            access: loginRequired
+        })
+        .state('requests.organizationRequest', {
+            url: '/organizationRequest?userID&orgID',
+            templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
+            controller: returnCtrlAs('orgRequest'),
+            access: loginRequired
+        })
+        .state('requests.organizationRequestReview', {
+            url: 'organizationRequestReview?userID&orgID',
+            templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
+            controller: returnCtrlAs('orgRequestReview'),
+            access: loginRequired
         });
 
 }]);

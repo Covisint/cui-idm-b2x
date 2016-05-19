@@ -9,8 +9,11 @@
 	<div>
 		<p>Approved Items</p>
 		<p ng-if="pendingRequestsReview.approvedCount===0">No approved items.</p>
-		<div ng-if="pendingRequestsReview.approvedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+		<div ng-if="pendingRequestsReview.approvedCount" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
 			<span ng-if="package.approval==='approved'">{{package.id}}</span><br/>
+		</div>
+		<div ng-if="pendingRequestsReview.pendingRegistration">
+			<p>test</p>
 		</div>
 	</div>
 
