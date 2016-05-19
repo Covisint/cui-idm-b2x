@@ -46,7 +46,7 @@ angular.module('common')
 
         {cmd: 'denyPackage',                             accepts: 'text/plain',                                     call: `/service/v3/requests/tasks/deny`, type:'POST' },
 
-        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/packages/grants/claims`,   type:'POST' }
+        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/packages/grants/claims`,   type:'PUT' }
     ];
 
     const getCallWrappers = (cuiObject) => {
