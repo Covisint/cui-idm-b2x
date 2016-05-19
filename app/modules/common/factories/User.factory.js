@@ -1,27 +1,24 @@
 angular.module('common')
-.factory('User',['$rootScope',function($rootScope) {
+.factory('User',['$rootScope',($rootScope) => {
 
-    var user = {
+    let user = {
         entitlements: undefined
     };
 
-    var userName = {};
-
     return {
-        set : function(newUser) {
-            user.cuid = newUser.cuid;
-        },
-        get : function() {
-            return user.cuid || '[cuid]';
-        },
-        setEntitlements : function(newEntitlements){
-            user.entitlements=newEntitlements;
-        },
-        getEntitlements : function(){
-            return user.entitlements;
+        set : (newUser) => {
+            user = Object.assign({},user,newUser);
         },
 
-        userName: userName
+        get : () => user.cuid || '[cuid]',
+
+        setEntitlements : (newEntitlements) => {
+            user.entitlements = newEntitlements;
+        },
+
+        getEntitlements : () => user.entitlements,
+
+        user // get all the user info
 
     };
 

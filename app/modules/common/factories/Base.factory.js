@@ -12,7 +12,6 @@ function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,
         menu: Menu,
         timezones: Timezones.all,
         user: User.user,
-        userName: User.userName,
         goBack: (fallback) => {
             if ($state.previous.name.name !== '') {
                 $state.go($state.previous.name, $state.previous.params);

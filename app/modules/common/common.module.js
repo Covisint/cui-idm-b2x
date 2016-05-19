@@ -17,7 +17,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
     $stateProvider
     .state('auth', {
-        url: '/auth',
+        url: '/auth{path:.*}',
         controller: returnCtrlAs('auth'),
         templateUrl: templateBase + 'auth/auth.html',
         access:loginRequired
@@ -83,16 +83,24 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
             PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
             return;
         }
-        event.preventDefault();
-        API.handleStateChange({ toState,toParams,fromState,fromParams })
-        .then((res) => {
-            // Determine if user is able to access the particular route we're navigation to
-            const { toState, toParams, fromState, fromParams } = res.redirect;
-            routing(toState, toParams, fromState, fromParams, res.roleList);
-            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-            // Menu handling
-            Menu.handleStateChange(res.redirect.toState.menu);
-        });
+        else if (User.get()!=='[cuid]'){
+            event.preventDefault();
+            routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
+            Menu.handleStateChange(toState.menu);
+        }
+        else {
+            event.preventDefault();
+            API.handleStateChange({ toState,toParams,fromState,fromParams })
+            .then((res) => {
+                // Determine if user is able to access the particular route we're navigation to
+                const { toState, toParams, fromState, fromParams } = res.redirect;
+                routing(toState, toParams, fromState, fromParams, res.roleList);
+                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                // Menu handling
+                Menu.handleStateChange(res.redirect.toState.menu);
+            });
+        }
     });
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
