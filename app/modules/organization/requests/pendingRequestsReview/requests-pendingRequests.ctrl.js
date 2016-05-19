@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('pendingRequestsCtrl', ['API','$stateParams','$q','ServicePackage','$state','DataStorage',
-function(API,$stateParams,$q,ServicePackage,$state,DataStorage) {
+.controller('pendingRequestsCtrl', ['API','$stateParams','$q','$state','DataStorage',
+function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
     const pendingRequests = this,
