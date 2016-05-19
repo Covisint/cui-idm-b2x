@@ -35,7 +35,10 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state,DataStorage) {
     let build = {
     	packageGrantClaimRequest:function(granteeId, servicePackage, claimsArray) {
     		return {
-    			grantee: granteeId,
+    			grantee: {
+                    id: granteeId,
+                    type: 'person'
+                },
     			servicePackage: this.buildServicePackage(servicePackage),
     			packageClaims: this.buildPackageClaims(claimsArray)
     		};
@@ -68,7 +71,6 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state,DataStorage) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     pendingRequestsReview.pendingRequests = DataStorage.get(userId, 'appRequests');
-    console.log('pendingRequestsReview.pendingRequests', pendingRequestsReview.pendingRequests);
 
     if (pendingRequestsReview.pendingRequests) {
         getApprovalCounts(pendingRequestsReview.pendingRequests);
@@ -93,37 +95,36 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state,DataStorage) {
     // ON CLICK START --------------------------------------------------------------------------------
 
     pendingRequestsReview.submit = () => {
-        if (pendingRequestsReview.pendingRequests) {
-            pendingRequestsReview.pendingRequests.forEach(packageRequest => {
-                if (packageRequest.approval === 'denied') {
-                    if (packageRequest.rejectReason) {
-                        API.cui.denyPackage({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
-                        .fail((error) => {
-                            console.log(error);
-                        });
-                    }
-                    else {
-                        API.cui.denyPackage({qs: [['requestId', packageRequest.id]]})
-                        .fail((error) => {
-                            console.log(error);
-                        });
-                    }
+        pendingRequestsReview.pendingRequests.forEach(packageRequest => {
+            if (packageRequest.approval === 'denied') {
+                if (packageRequest.rejectReason) {
+                    API.cui.denyPackage({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
+                    .fail((error) => {
+                        console.log(error);
+                    });
                 }
                 else {
-                    API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
-                    .fail((error) => {
-                        console.log(error);
-                    });
-
-                    let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
-
-                    API.cui.grantClaims({data: grantClaimData})
+                    API.cui.denyPackage({qs: [['requestId', packageRequest.id]]})
                     .fail((error) => {
                         console.log(error);
                     });
                 }
-            });    
-        }
+            }
+            else {
+                API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
+                .fail((error) => {
+                    console.log(error);
+                });
+
+                let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
+                console.log('grantClaimData', grantClaimData);
+
+                API.cui.grantClaims({data: grantClaimData})
+                .fail((error) => {
+                    console.log(error);
+                });
+            }
+        });
     	
 		pendingRequestsReview.sucess = true;
 		$timeout(() => {

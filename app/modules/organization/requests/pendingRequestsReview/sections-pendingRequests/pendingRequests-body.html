@@ -17,7 +17,7 @@
           <cui-expandable-title class="cui-expandable__title">
             <div class="cui-flex-table__tr">
               <p class="cui-flex-table__text">{{package.servicePackage.packageDetails.name | cuiI18n}}</p>
-              <p class="cui-flex-table__text">{{package.creation | date:base.appConfig.dateFormat}}</p>
+              <p class="cui-flex-table__text">{{'requested' | translate}}: {{package.creation | date:base.appConfig.dateFormat}}</p>
               <p class="cui-flex-table__text">
                 <fieldset class="cui-radio__fieldset" ng-click="collapse()">
                   <div class="cui-radio cui-radio--deny">

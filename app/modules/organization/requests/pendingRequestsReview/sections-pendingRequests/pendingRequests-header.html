@@ -53,8 +53,6 @@
       <h3 class="cui-media__title">{{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}}</h3>
       <!-- userID -->
       <p class="cui-media__content">{{'userID' | translate}}: {{pendingRequests.user.id}}</p>
-      <!-- Email -->
-      <p class="cui-media__content">{{'cui-email' | translate}}: {{pendingRequests.user.email}}</p>
       <!-- Registered Date -->
       <p class="cui-media__content" ng-if="pendingRequests.user.status==='active'">{{'cui-registered' | translate}}: {{pendingRequests.user.creation | date:base.appConfig.dateFormat}}</p>
       <!-- Status: Active -->
