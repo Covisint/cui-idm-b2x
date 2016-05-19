@@ -111,13 +111,12 @@ function(API,$stateParams,ServicePackage,$q,$timeout,$state,DataStorage) {
                 }
             }
             else {
-                API.cui.approvePackageRequest({qs: [['requestId', packageRequest.id]]})
+                API.cui.approvePackage({qs: [['requestId', packageRequest.id]]})
                 .fail((error) => {
                     console.log(error);
                 });
 
                 let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
-                console.log('grantClaimData', grantClaimData);
 
                 API.cui.grantClaims({data: grantClaimData})
                 .fail((error) => {

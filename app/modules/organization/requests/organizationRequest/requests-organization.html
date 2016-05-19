@@ -1,1 +1,152 @@
-<p>Organization Request + Apps Requests</p>
+<div>
+	
+	<!-- Action Header -->
+	<div>
+	  <!-- Action Header 1 -->
+	  <div class="cui-action" ng-if="orgRequest.loading===false">
+	    <!-- User Name and Back Arrow -->
+	    <span class="cui-action__title" ui-sref="directory.userDetails({userID:orgRequest.user.id,orgID:orgRequest.user.organization.id})">< {{orgRequest.org.name}} - {{'pending-request' | translate}}</span>
+
+	    <!-- Invitations -->
+	    <div class="cui-action__actions">
+	      <div class="cui-action__action-container" id="invitation-button" ng-click="orgRequest.invitationClicked=!orgRequest.invitationClicked" off-click="orgRequest.invitationClicked=false">
+	        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+	          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+	        </svg>
+	        <!-- Invitation Popover -->
+	        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgRequest.invitationClicked">
+	          <p ui-sref="invitation.user({orgID:orgRequest.user.organization.id})">{{'invite-user' | translate}}</p>
+	          <p ui-sref="invitation.division({orgID:orgRequest.user.organization.id})">{{'invite-division' | translate}}</p>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Action Header 2 -->
+	  <div class="cui-action">
+	    <!-- Page Menu -->
+	    <span class="cui-action__title">
+	      <a ui-sref="organization.profile({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
+	      <a ui-sref="organization.hierarchy({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
+	      <a ui-sref="organization.directory({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
+	      <a ui-sref="organization.roles({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
+	    </span>
+	  </div>
+	</div>
+
+	<!-- Name Header -->
+	<div class="cui-media--centered">
+
+	  <!-- Page Loading -->
+	  <div class="cui-loading__container--user-details" ng-if="orgRequest.loading">
+	    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+	  </div>
+
+	  <div ng-if="!orgRequest.loading">
+
+	    <!-- Avatar -->
+	    <div class="cui-media__image-container">
+	      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[orgRequest.user.name.given, orgRequest.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+	    </div>
+
+	    <!-- User Information -->
+	    <div class="cui-media__body">
+	      <!-- Name -->
+	      <h3 class="cui-media__title">{{orgRequest.user.name.given}} {{orgRequest.user.name.surname}}</h3>
+	      <!-- userID -->
+	      <p class="cui-media__content">{{'userID' | translate}}: {{orgRequest.user.id}}</p>
+	      <!-- Registered Date -->
+	      <p class="cui-media__content" ng-if="orgRequest.user.status==='active'">{{'cui-registered' | translate}}: {{orgRequest.user.creation | date:base.appConfig.dateFormat}}</p>
+	      <!-- Status: Active -->
+	      <p class="cui-media__content" ng-if="orgRequest.user.status==='active'">{{orgRequest.user.status}}
+	        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+	          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+	        </svg>
+	      </p>
+	      <!-- Status: Locked -->
+	      <p class="cui-media__content" ng-if="orgRequest.user.status==='locked'">{{orgRequest.user.status}}
+	        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+	          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+	        </svg>
+	      </p>
+	    </div>
+
+	  </div>
+	</div>
+
+	 <!-- List of Applications -->
+	<ng-form name="pendingRequestsApproval" ng-if="!orgRequest.loading">
+  <div class="cui-organization__main-container">
+
+    <!-- Requested Services -->
+    <div>
+      <div class="cui-expandable__container">
+        <div class="cui-expandable__tr">
+          <span class="cui-expandable__td">{{'requested-items' | translate}}</span>
+          <span class="cui-expandable__td"></span>
+          <span class="cui-expandable__td">{{'deny' | translate}}</span>
+          <span class="cui-expandable__td">{{'approve' | translate}}</span>
+        </div>
+      </div> 
+      <!-- List: Content -->
+      <div ng-repeat="package in pendingRequests.packages" >
+        <cui-expandable class="cui-expandable" transition-speed="100">
+          <cui-expandable-title class="cui-expandable__title">
+            <div class="cui-flex-table__tr">
+              <p class="cui-flex-table__text">{{package.servicePackage.packageDetails.name | cuiI18n}}</p>
+              <p class="cui-flex-table__text">{{'requested' | translate}}: {{package.creation | date:base.appConfig.dateFormat}}</p>
+              <p class="cui-flex-table__text">
+                <fieldset class="cui-radio__fieldset" ng-click="collapse()">
+                  <div class="cui-radio cui-radio--deny">
+                    <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-{{$index+'a'}}" value="denied" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}">
+                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                    </label>
+                  </div>
+                </fieldset>
+              </p>
+              <p class="cui-flex-table__text">
+                <fieldset class="cui-radio__fieldset" ng-click="expand()">
+                  <div class="cui-radio cui-radio--approve">
+                    <input class="cui-radio__input" type="radio" id="radio-choice-{{$index}}" value="approved" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index}}">
+                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                    </label>
+                  </div>
+                </fieldset>
+              </p>
+            </div>
+          </cui-expandable-title>
+          <cui-expandable-body class="cui-expandable__body">
+            <!-- Close Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51" ng-click="collapse()">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+            </svg>
+            <!-- Package Claims -->
+            <p>{{'claims' | translate}}:</p>
+            <p ng-if="package.servicePackage.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
+            <div ng-if="package.servicePackage.claims.length>0" ng-repeat="claim in package.servicePackage.claims">
+              <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1" ng-model="claim.accepted"/><label class="cui-checkbox__label" for="option-1">{{claim.description | cuiI18n}}</label></li>
+            </div>
+            <!-- Related Apps -->
+            <p ng-if="package.servicePackage.services.length>0">{{'bundled-applications' | translate}}:</p>
+            <p ng-if="package.servicePackage.services.length===0">{{'no-bundled-or-related' | translate}}.</p>
+            <div ng-if="package.servicePackage.services.length>0" ng-repeat="service in package.servicePackage.services">
+              <span>{{service.name | cuiI18n}}</span><br/>
+            </div>
+          </cui-expandable-body>
+        </cui-expandable>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Form Controls -->
+  <div>
+    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+  </div>
+
+</ng-form>
+
+
+
+</div>
