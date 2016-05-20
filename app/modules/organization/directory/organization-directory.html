@@ -96,7 +96,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="user in orgDirectory.userList track by user.id" ui-sref="directory.userDetails({userID:user.id,orgID:orgDirectory.organization.id})">
+        <tr ng-repeat="user in orgDirectory.userList track by user.id" ng-click="orgDirectory.userClick(user)">
           <th><div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div></th>
           <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
           <th>{{user.username}}</th>
