@@ -4,10 +4,16 @@
 
 <!-- Organization Applications: Action Header -->
 <div class="cui-action">
-  <span class="cui-action__title">
-    <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> | 
-    <a ui-sref="applications.myApplications" class="cui-link--medium-light cui-link--no-decoration">{{'my-applications' | translate}}</a>
-  </span>
+  <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="applications.orgApplications" ui-sref-active="active">{{'organization-applications' | translate}}</a>
+      </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
+      </li>
+    </ul>
+  </nav>
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="orgApplications.sortClicked =! orgApplications.sortClicked" id="sort-button" off-click="orgApplications.sortClicked=false">
