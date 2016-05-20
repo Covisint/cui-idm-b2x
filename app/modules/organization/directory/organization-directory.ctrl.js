@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort',
-function($scope,$stateParams,API,$filter,Sort) {
+.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort','$state',
+function($scope,$stateParams,API,$filter,Sort,$state) {
     'use strict';
 
     const orgDirectory = this,
@@ -184,5 +184,26 @@ function($scope,$stateParams,API,$filter,Sort) {
     });
 
     // WATCHERS END ----------------------------------------------------------------------------------
+
+    // ON CLICK START --------------------------------------------------------------------------------
+
+    orgDirectory.userClick = (clickedUser) => {
+        switch (clickedUser.status) {
+            case 'active':
+                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
+                break;
+            case  'pending':
+                $state.go('requests.organizationRequest', {userID: clickedUser.id, orgID: organizationId});
+                break;
+            case 'unactivated':
+                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
+                break;
+            case 'inactive':
+                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
+                break;
+        }
+    };
+
+    // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);

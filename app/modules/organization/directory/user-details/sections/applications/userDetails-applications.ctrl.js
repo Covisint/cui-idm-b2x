@@ -10,6 +10,19 @@ function(API,$stateParams,$q) {
     let apiPromises = [];
 
     userDetailsApps.loading = true;
+    userDetailsApps.appList = [];
+
+    const getPackageServices = (servicePackage) => {
+        return API.cui.getPackageServices({packageId: servicePackage.servicePackage.id})
+        .then((res) => {
+            res.forEach((pendingService) => {
+                pendingService.grant = { 
+                    status: 'pending'
+                };
+                userDetailsApps.appList.push(pendingService);
+            });
+        });
+    };
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -17,7 +30,31 @@ function(API,$stateParams,$q) {
         // Get user's granted applications
         API.cui.getPersonGrantedApps({personId: userId})
         .then((res) => {
-            userDetailsApps.appList = res;
+            res.forEach((grantedApp) => {
+                userDetailsApps.appList.push(grantedApp);
+            });
+        })
+    );
+
+    apiPromises.push(
+        // Get user's pending service packages
+        API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
+        .then((res) => {
+            let pendingServicePromises = [];
+
+            res.forEach((servicePackage) => {
+                // For each packages get its services
+                pendingServicePromises.push(getPackageServices(servicePackage));
+            });
+
+            $q.all(pendingServicePromises)
+            .then(() => {
+                userDetailsApps.loading = false;
+            })
+            .catch((error) => {
+                userDetailsApps.loading = false;
+                console.log(error);
+            });
         })
     );
 
@@ -38,9 +75,6 @@ function(API,$stateParams,$q) {
     );
 
     $q.all(apiPromises)
-    .then((res) => {
-        userDetailsApps.loading = false;
-    })
     .catch((error) => {
         userDetailsApps.loading = false;
         console.log(error);

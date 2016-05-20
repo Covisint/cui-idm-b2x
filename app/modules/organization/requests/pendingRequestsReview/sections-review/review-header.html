@@ -1,8 +1,8 @@
-<!-- Action Header -->
+<!-- Header Breadcrumb -->
 <div>
-  <!-- Action Header 1 -->
+  <!-- Name and Invitation -->
   <div class="cui-action">
-    <!-- User Name and Back Arrow -->
+    <!-- Name -->
     <span class="cui-action__title" ui-sref="directory.userDetails({userID:pendingRequestsReview.user.id,orgID:pendingRequestsReview.user.organization.id})">< {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
 
     <!-- Invitation -->
@@ -20,15 +20,25 @@
     </div>
   </div>
 
-  <!-- Action Header 2 -->
+  <!-- Navigation -->
   <div class="cui-action">
     <!-- Page Menu -->
-    <span class="cui-action__title">
-      <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-      <a ui-sref="organization.hierarchy({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-      <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
-      <a ui-sref="organization.roles({orgID:pendingRequestsReview.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
-    </span>
+    <nav class="cui-breadcrumb">
+      <ul class="cui-breadcrumb__links">
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.hierarchy({orgID:pendingRequestsReview.user.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" class="active">{{'directory' | translate}}</a>
+          </li> 
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.roles({orgID:pendingRequestsReview.user.organization.id})">{{'roles' | translate}}</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 

@@ -28,8 +28,8 @@
 	        </div>
 	        <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
 	        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
+	        <span ng-if="application.grant.status==='pending'" ui-sref="requests.pendingRequests({userID:userDetails.user.id,orgID:userDetails.user.organization.id})">{{'cui-review' | translate}}</span>
 	      </div>
-
 	    </div>
 	  </div>
 </div>
