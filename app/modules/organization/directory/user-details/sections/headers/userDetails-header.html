@@ -1,11 +1,21 @@
 <div class="cui-action">
-  <span class="cui-action__title">
-    <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-    <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-    <a ui-sref="organization.directory({orgId:userDetails.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
-    <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
-  </span>
-  
+  <!-- Navigation -->
+  <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.profile({orgID:userDetails.organizationId})">{{'cui-org-profile' | translate}}</a> 
+        </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.hierarchy({orgID:userDetails.organizationId})"">{{'cui-org-hierarchy' | translate}}</a> 
+        </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.directory({orgID:userDetails.organizationId})" ui-sref-active="active">{{'directory' | translate}}</a>
+        </li> 
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.roles({orgID:userDetails.organizationId})">{{'roles' | translate}}</a>
+      </li>
+    </ul>
+  </nav>
   <!-- Invitation -->
   <div class="cui-action__actions">
     <div class="cui-action__action-container" id="invitation-button" ng-click="userDetails.invitationClicked=!userDetails.invitationClicked" off-click="userDetails.invitationClicked=false">
