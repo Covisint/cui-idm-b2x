@@ -4,7 +4,8 @@ function(API,$stateParams,$q) {
     'use strict';
 
     const orgRequestReview = this;
-    console.log('Org Request Review');
+    
+    orgRequestReview.loading = false;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------

@@ -1,1 +1,44 @@
-<p>Org Request Review</p>
+<div>	
+	<!-- Action Header -->
+	<div>
+	
+	  <!-- User Name and Invitation -->
+	  <div class="cui-action" ng-if="orgRequestReview.loading===false">
+	  	<!-- User Name -->
+	    <span class="cui-action__title" ui-sref="organization.directory({userID:orgRequestReview.user.id,orgID:orgRequestReview.user.organization.id})">< {{orgRequestReview.org.name}} - {{'pending-request' | translate}}</span>
+	    <!-- Invitations -->
+	    <div class="cui-action__actions">
+	      <div class="cui-action__action-container" id="invitation-button" ng-click="orgRequestReview.invitationClicked=!orgRequestReview.invitationClicked" off-click="orgRequestReview.invitationClicked=false">
+	        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+	          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+	        </svg>
+	        <!-- Invitation Popover -->
+	        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgRequestReview.invitationClicked">
+	          <p ui-sref="invitation.user({orgID:orgRequestReview.user.organization.id})">{{'invite-user' | translate}}</p>
+	          <p ui-sref="invitation.division({orgID:orgRequestReview.user.organization.id})">{{'invite-division' | translate}}</p>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Navigation -->
+	  <div class="cui-action">
+			<nav class="cui-breadcrumb">
+      	<ul class="cui-breadcrumb__links">
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.profile({orgID:orgRequestReview.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
+          	</li>
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.hierarchy({orgID:orgRequestReview.user.organization.id})"">{{'cui-org-hierarchy' | translate}}</a> 
+          	</li>
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.directory({orgID:orgRequestReview.user.organization.id})" class="active">{{'directory' | translate}}</a>
+          	</li> 
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.roles({orgID:orgRequestReview.user.organization.id})"">{{'roles' | translate}}</a>
+        	</li>
+      	</ul>
+    	</nav>
+	  </div>
+	</div>
+</div>

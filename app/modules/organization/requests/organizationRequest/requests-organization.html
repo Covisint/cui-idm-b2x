@@ -1,12 +1,11 @@
-<div>
-	
+<div>	
 	<!-- Action Header -->
 	<div>
-	  <!-- Action Header 1 -->
+	
+	  <!-- User Name and Invitation -->
 	  <div class="cui-action" ng-if="orgRequest.loading===false">
-	    <!-- User Name and Back Arrow -->
-	    <span class="cui-action__title" ui-sref="directory.userDetails({userID:orgRequest.user.id,orgID:orgRequest.user.organization.id})">< {{orgRequest.org.name}} - {{'pending-request' | translate}}</span>
-
+	  	<!-- User Name -->
+	    <span class="cui-action__title" ui-sref="organization.directory({userID:orgRequest.user.id,orgID:orgRequest.user.organization.id})">< {{orgRequest.org.name}} - {{'pending-request' | translate}}</span>
 	    <!-- Invitations -->
 	    <div class="cui-action__actions">
 	      <div class="cui-action__action-container" id="invitation-button" ng-click="orgRequest.invitationClicked=!orgRequest.invitationClicked" off-click="orgRequest.invitationClicked=false">
@@ -22,15 +21,24 @@
 	    </div>
 	  </div>
 
-	  <!-- Action Header 2 -->
+	  <!-- Navigation -->
 	  <div class="cui-action">
-	    <!-- Page Menu -->
-	    <span class="cui-action__title">
-	      <a ui-sref="organization.profile({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-	      <a ui-sref="organization.hierarchy({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-	      <a ui-sref="organization.directory({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
-	      <a ui-sref="organization.roles({orgID:orgRequest.user.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
-	    </span>
+			<nav class="cui-breadcrumb">
+      	<ul class="cui-breadcrumb__links">
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.profile({orgID:orgRequest.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
+          	</li>
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.hierarchy({orgID:orgRequest.user.organization.id})"">{{'cui-org-hierarchy' | translate}}</a> 
+          	</li>
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.directory({orgID:orgRequest.user.organization.id})" class="active">{{'directory' | translate}}</a>
+          	</li> 
+        	<li class="cui-breadcrumb__link">
+          	<a ui-sref="organization.roles({orgID:orgRequest.user.organization.id})"">{{'roles' | translate}}</a>
+        	</li>
+      	</ul>
+    	</nav>
 	  </div>
 	</div>
 
@@ -142,7 +150,7 @@
   
   <!-- Form Controls -->
   <div>
-    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="orgRequest.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
   </div>
 
 </ng-form>

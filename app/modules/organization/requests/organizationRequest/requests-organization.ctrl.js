@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('orgRequestCtrl', ['API','$stateParams','$q',
-function(API,$stateParams,$q) {
+.controller('orgRequestCtrl', ['API','$stateParams','$q','$state',
+function(API,$stateParams,$q,$state) {
     'use strict';
 
     const orgRequest = this,
@@ -49,6 +49,11 @@ function(API,$stateParams,$q) {
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
+
+    orgRequest.reviewApprovals = () => {
+        $state.go('requests.organizationRequestReview');
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 }]);
