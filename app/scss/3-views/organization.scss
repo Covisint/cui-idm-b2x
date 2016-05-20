@@ -17,11 +17,9 @@
 
   .cui-organization__admin-block-wrapper {
     display: flex;
-    flex-direction: row;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     
     .cui-organization__admin-block {
-      max-width: 275px;
       margin-bottom: em(21);
       margin-right: em(51);
     }
@@ -44,4 +42,9 @@
     margin-top: 2em;
     margin-bottom: 2em;
   }
+}
+
+.cui-organization__profile--left {
+  width: 50%;
+  margin-right: 5%;
 }
