@@ -19,21 +19,21 @@
               <p class="cui-flex-table__text">{{package.servicePackage.packageDetails.name | cuiI18n}}</p>
               <p class="cui-flex-table__text">{{'requested' | translate}}: {{package.creation | date:base.appConfig.dateFormat}}</p>
               <p class="cui-flex-table__text">
-                <fieldset class="cui-radio__fieldset" ng-click="collapse()">
+                <fieldset class="cui-radio__fieldset">
                   <div class="cui-radio cui-radio--deny">
                     <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-{{$index+'a'}}" value="denied" ng-model="package.approval" required />
                     <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}">
-                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                      <div class="cui-radio__outer-button" ng-click="collapse()"><div class="cui-radio__inner-button"></div></div>
                     </label>
                   </div>
                 </fieldset>
               </p>
               <p class="cui-flex-table__text">
-                <fieldset class="cui-radio__fieldset" ng-click="expand()">
+                <fieldset class="cui-radio__fieldset">
                   <div class="cui-radio cui-radio--approve">
                     <input class="cui-radio__input" type="radio" id="radio-choice-{{$index}}" value="approved" ng-model="package.approval" required />
                     <label class="cui-radio__label" for="radio-choice-{{$index}}">
-                      <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
+                      <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
                     </label>
                   </div>
                 </fieldset>
