@@ -10,12 +10,22 @@
 
   <!-- Menu Header -->
   <div class="cui-action">
-    <span class="cui-action__title">
-      <a ui-sref="organization.profile({orgID:orgHierarchy.organizationId})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-      <a ui-sref="organization.hierarchy({orgID:orgHierarchy.organizationId})" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-      <a ui-sref="organization.directory({orgID:orgHierarchy.organizationId})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> | 
-      <a ui-sref="organization.roles({orgID:orgHierarchy.organizationId})" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
-    </span>
+    <nav class="cui-breadcrumb">
+      <ul class="cui-breadcrumb__links">
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.profile">{{'cui-org-profile' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})" ui-sref-active="active">{{'cui-org-hierarchy' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})">{{'directory' | translate}}</a>
+          </li> 
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.roles({orgID:orgProfile.organization.id})">{{'roles' | translate}}</a>
+        </li>
+      </ul>
+    </nav>
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgHierarchy.invitationClicked=!orgHierarchy.invitationClicked" off-click="orgHierarchy.invitationClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">

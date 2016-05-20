@@ -3,11 +3,21 @@
 <!-- /processHTML -->
 
 <div class="cui-action">
-  <span class="cui-action__title">
+  <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="applications.orgApplications">{{'organization-applications' | translate}}</a>
+      </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="applications.myApplications" ui-sref-active="active">{{'my-applications' | translate}}</a>
+      </li>
+    </ul>
+  </nav>
+<!--   <span class="cui-action__title">
     <a ui-sref="applications.orgApplications" class="cui-link--medium-light cui-link--no-decoration">{{'organization-applications' | translate}}</a> |
     <a ui-sref="applications.myApplications" class="cui-link--medium-light cui-link--no-decoration">{{'my-applications' | translate}}</a>
   </span>
-  <div class="cui-action__actions">
+ -->  <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
