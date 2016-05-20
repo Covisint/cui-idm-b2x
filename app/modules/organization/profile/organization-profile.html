@@ -52,46 +52,63 @@
 
     <!-- Organization Information -->
     <div ng-if="!orgProfile.loading">
-      <h3 class="cui-organization__page-title">{{orgProfile.organization.name}}</h3>
 
-    <!-- Admins -->
-    <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
-      <h4 class="cui-field-val__field" ng-if="orgProfile.securityAdmins">{{'cui-admins' | translate}}</h4>
-      <div class="cui-organization__admin-block-wrapper" ng-if="orgProfile.securityAdmins">
-        <div class="cui-organization__admin-block" ng-repeat="admin in orgProfile.securityAdmins track by admin.id">
-          <!-- Name -->
-          <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
-          <span class="cui-field-val__val">{{admin.name.given}} {{admin.name.surname}}</span><br/>
-          <!-- ID -->
-          <span class="cui-field-val__field">{{'username' | translate}}: </span>
-          <span class="cui-field-val__val">{{admin.username}}</span><br/>
-          <!-- Title -->
-          <span class="cui-field-val__field">{{'title' | translate}}: </span>
-          <span class="cui-field-val__val">{{admin.title}}</span><br/>
-          <!-- Phone -->
-          <span class="cui-field-val__field">{{'cui-phone' | translate}}: </span>
-          <span class="cui-field-val__val">{{admin.phones[0].number}}</span><br/>
-          <!-- Email -->
-          <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
-          <span class="cui-field-val__val">{{admin.email}}</span>
+    <h3 class="cui-organization__page-title">{{orgProfile.organization.name}}</h3>
+
+    <h4 class="cui-field-val__field" ng-if="orgProfile.securityAdmins">{{'cui-admins' | translate}}</h4>
+
+    <div class="cui-organization__row">
+      <!-- Admins -->
+      <div class="cui-field-val cui-organization__info-block">
+        
+        <div class="cui-organization__admin-block-wrapper cui-organization__profile--left" ng-if="orgProfile.securityAdmins">
+          <div class="cui-organization__admin-block" ng-repeat="admin in orgProfile.securityAdmins track by admin.id">
+            <!-- Name -->
+            <div class="cui-field-val">
+              <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
+              <span class="cui-field-val__val">{{admin.name.given}} {{admin.name.surname}}</span>
+            </div>
+            <!-- ID -->
+            <div class="cui-field-val">
+              <span class="cui-field-val__field">{{'username' | translate}}: </span>
+              <span class="cui-field-val__val">{{admin.username}}</span>
+            </div>
+            <!-- Title -->
+            <div class="cui-field-val">
+              <span class="cui-field-val__field">{{'title' | translate}}: </span>
+              <span class="cui-field-val__val">{{admin.title}}</span>
+            </div>
+            <!-- Phone -->
+            <div class="cui-field-val">
+              <span class="cui-field-val__field">{{'cui-phone' | translate}}: </span>
+              <span class="cui-field-val__val">{{admin.phones[0].number}}</span>
+            </div>
+            <!-- Email -->
+            <div class="cui-field-val">
+              <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
+              <span class="cui-field-val__val"><a class="cui-link" href="mailto:{{admin.email}}">{{admin.email}}</a></span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Address -->
-      <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
-      <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
-        <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].streets[0]}}</span>
-        <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].city}}</span>
-        <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].state}}, {{orgProfile.organization.addresses[0].postal}}</span>
-        <span class="cui-field-val__val">{{orgProfile.organization.phones[0].number}}</span>
-      </div>
-
-      <!-- Info -->
-      <div class="cui-organization__info-block">
-        <h4 class="cui-field-val__field">{{'cui-info' | translate}}: </h4>
-        <div>
-          <span>{{'url' | translate}}: </span>
-          <span class="cui-field-val__val"><a ng-href="{{orgProfile.organization.url}}">{{orgProfile.organization.url}}</a></span>
+        <!-- Address -->
+        <div class="cui-organization__generic-wrapper">
+          <div class="cui-field-val cui-field-val--stack cui-organization__info-block">
+          <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
+            <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].streets[0]}}</span>
+            <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].city}}</span>
+            <span class="cui-field-val__val">{{orgProfile.organization.addresses[0].state}}, {{orgProfile.organization.addresses[0].postal}}</span>
+            <span class="cui-field-val__val">{{orgProfile.organization.phones[0].number}}</span>
+          </div>
+          
+          <!-- Info -->
+          <div class="cui-organization__info-block">
+            <h4 class="cui-field-val__field">{{'cui-info' | translate}}: </h4>
+            <div>
+              <span class="cui-field-val__field">{{'url' | translate}}: </span>
+              <span class="cui-field-val__val"><a class="cui-link" ng-href="{{orgProfile.organization.url}}">{{orgProfile.organization.url}}</a></span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

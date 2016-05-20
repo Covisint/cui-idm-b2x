@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('pendingRequestsCtrl', ['API','$stateParams','$q','ServicePackage','$state',
-function(API,$stateParams,$q,ServicePackage,$state) {
+.controller('pendingRequestsCtrl', ['API','$stateParams','$q','$state','DataStorage',
+function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
     const pendingRequests = this,
@@ -85,8 +85,10 @@ function(API,$stateParams,$q,ServicePackage,$state) {
     // ON CLICK START --------------------------------------------------------------------------------
 
     pendingRequests.reviewApprovals = () => {
-        ServicePackage.set(userId, pendingRequests.packages);
-        $state.go('applications.pendingRequestsReview', {userID: userId, orgID: orgId});
+        if (pendingRequests.packages.length > 0) {
+            DataStorage.set(userId, 'appRequests', pendingRequests.packages);
+        }
+        $state.go('requests.pendingRequestsReview', {userID: userId, orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

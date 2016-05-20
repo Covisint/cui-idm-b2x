@@ -5,7 +5,7 @@
     <!-- User Name and Back Arrow -->
     <span class="cui-action__title" ui-sref="directory.userDetails({userID:pendingRequests.user.id,orgID:pendingRequests.user.organization.id})">< {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
 
-    <!-- Invitation -->
+    <!-- Invitations -->
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequests.invitationClicked=!pendingRequests.invitationClicked" off-click="pendingRequests.invitationClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -41,10 +41,12 @@
   </div>
 
   <div ng-if="!pendingRequests.loading">
+
     <!-- Avatar -->
     <div class="cui-media__image-container">
-      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[pendingRequests.user.name.given, pendingRequests.user.name.given]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[pendingRequests.user.name.given, pendingRequests.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
     </div>
+
     <!-- User Information -->
     <div class="cui-media__body">
       <!-- Name -->
@@ -52,7 +54,7 @@
       <!-- userID -->
       <p class="cui-media__content">{{'userID' | translate}}: {{pendingRequests.user.id}}</p>
       <!-- Registered Date -->
-      <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequests.user.creation | date:base.appConfig.dateFormat}}</p>
+      <p class="cui-media__content" ng-if="pendingRequests.user.status==='active'">{{'cui-registered' | translate}}: {{pendingRequests.user.creation | date:base.appConfig.dateFormat}}</p>
       <!-- Status: Active -->
       <p class="cui-media__content" ng-if="pendingRequests.user.status==='active'">{{pendingRequests.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
@@ -66,5 +68,6 @@
         </svg>
       </p>
     </div>
+
   </div>
 </div>

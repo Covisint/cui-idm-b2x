@@ -72,7 +72,7 @@
     <div class="cui-loading__container" ng-if="!myApplications.redoneLoading">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id">
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id" ng-if="application.urls">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>

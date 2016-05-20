@@ -9,17 +9,18 @@
             <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
         </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-        <!-- <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span> -->
+        <span class="cui-modal__secondary-message" ng-if="pendingRequestsReview.approvedCount!==0">{{pendingRequestsReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
+        <span class="cui-modal__secondary-message" ng-if="pendingRequestsReview.deniedCount!==0">{{pendingRequestsReview.deniedCount}} {{'rejection-submitted' | translate}}</span>
     </div>
 </div>
 
 <div>
 	<!-- Header -->
-	<div ng-include="'app/modules/organization/applications/pendingRequestsReview/sections-review/review-header.html'"></div>
+	<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-header.html'"></div>
 	<!-- Requested Applications List -->
-	<div ng-include="'app/modules/organization/applications/pendingRequestsReview/sections-review/review-body.html'"></div>
+	<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-body.html'"></div>
 </div>
 
 <!-- Review Controls -->
-<span ui-sref="applications.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+<span ui-sref="requests.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
 <button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
