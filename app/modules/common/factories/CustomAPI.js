@@ -30,11 +30,11 @@ angular.module('common')
 
         {cmd: 'getPersonGrantableApps',                  accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/grantable`},
 
-        {cmd: 'getPersonGrantableCount',                 accepts: 'text/plain',                                         call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
+        {cmd: 'getPersonGrantableCount',                 accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
 
-        {cmd: 'getOrganizationGrantableApps',            accepts:'.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable`},
+        {cmd: 'getOrganizationGrantableApps',            accepts:'.platform.service.application.v1',                     call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable`},
 
-        {cmd: 'getOrganizationGrantableCount',           accepts: 'text/plain',                                         call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
+        {cmd: 'getOrganizationGrantableCount',           accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
 
         {cmd: 'getPersonStatusHistory',                  accepts: '.platform.person.status.history.v1',                  call: '/person/v3/persons/statusHistory' },
 
@@ -46,9 +46,11 @@ angular.module('common')
 
         {cmd: 'denyPackage',                             accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/deny`,                                                           type:'POST' },
 
-        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/approve`,                                                         type:'POST' },
+        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/approve`,                                                        type:'POST' },
 
-        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/packages/grants/claims`,                                                        type:'PUT' }
+        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/packages/grants/claims`,                                                        type:'PUT' },
+
+        {cmd: 'getPersonOrganizationRequest',            accepts: '.platform.organization.request.v1',                   call: `/organization/v3/requests`,                                                                 type: 'GET' }
     ];
 
     const getCallWrappers = (cuiObject) => {

@@ -190,16 +190,12 @@ function($scope,$stateParams,API,$filter,Sort,$state) {
     orgDirectory.userClick = (clickedUser) => {
         switch (clickedUser.status) {
             case 'active':
+            case 'unactivated':
+            case 'inactive':
                 $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
                 break;
             case  'pending':
                 $state.go('requests.organizationRequest', {userID: clickedUser.id, orgID: organizationId});
-                break;
-            case 'unactivated':
-                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
-                break;
-            case 'inactive':
-                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
                 break;
         }
     };

@@ -71,7 +71,7 @@
         <!-- Refine Popover -->
         <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
           <p ng-click="orgDirectory.parseUsersByStatus('all')">{{'all' | translate}} ({{orgDirectory.statusCount[0]}})</p>
-          <div ng-repeat="status in orgDirectory.statusList" ng-if="myApplications.statusCount[$index+1]!==0">
+          <div ng-repeat="status in orgDirectory.statusList track by $index" ng-if="myApplications.statusCount[$index+1]!==0">
             <p ng-click="orgDirectory.parseUsersByStatus(status)">{{status | translate}} ({{orgDirectory.statusCount[$index+1]}})</p>
           </div>
         </div>
