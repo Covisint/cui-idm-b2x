@@ -20,7 +20,7 @@ angular.module('common')
 
         {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/count`},
 
-        {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`},
+        {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
 
         {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
 
@@ -32,7 +32,7 @@ angular.module('common')
 
         {cmd: 'getPersonGrantableCount',                 accepts: 'text/plain',                                         call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
 
-        {cmd: 'getOrganizationGrantableApps',            accepts:'.platform.service.application.v1',                    call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
+        {cmd: 'getOrganizationGrantableApps',            accepts:'.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable`},
 
         {cmd: 'getOrganizationGrantableCount',           accepts: 'text/plain',                                         call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
 

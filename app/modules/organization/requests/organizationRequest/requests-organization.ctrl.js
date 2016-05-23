@@ -92,7 +92,6 @@ function(API,$stateParams,$q,$state) {
 
     $q.all(apiPromises)
     .catch((error) => {
-        orgRequest.loading = false;
         console.log(error);
     });
 

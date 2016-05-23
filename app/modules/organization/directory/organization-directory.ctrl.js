@@ -119,7 +119,7 @@ function($scope,$stateParams,API,$filter,Sort,$state) {
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    orgDirectory.getOrgMembers = function getOrgMembers(organization) {
+    orgDirectory.getOrgMembers = (organization) => {
         orgDirectory.loading = true;
         orgDirectory.organization = organization;
         API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)]]})

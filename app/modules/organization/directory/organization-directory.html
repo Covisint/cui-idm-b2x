@@ -14,7 +14,7 @@
           <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
           </li>
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
+          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})" class="active">{{'directory' | translate}}</a>
           </li> 
         <li class="cui-breadcrumb__link">
           <a ui-sref="organization.roles({orgID:orgProfile.organization.id})">{{'roles' | translate}}</a>
@@ -92,6 +92,8 @@
             <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
