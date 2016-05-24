@@ -44,13 +44,19 @@ angular.module('common')
 
         {cmd: 'getPackage',                              accepts: '.platform.package.v1',                                call: `/service/v3/packages/${ '{packageId}' }` },
 
-        {cmd: 'denyPackage',                             accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/deny`,                                                           type:'POST' },
+        {cmd: 'denyPackage',                             accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/deny`,                                                           type: 'POST' },
 
-        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/approve`,                                                        type:'POST' },
+        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          call: `/service/v3/requests/tasks/approve`,                                                        type: 'POST' },
 
-        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/packages/grants/claims`,                                                        type:'PUT' },
+        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/packages/grants/claims`,                                                        type: 'PUT' },
 
-        {cmd: 'getPersonOrganizationRequest',            accepts: '.platform.organization.request.v1',                   call: `/organization/v3/requests`,                                                                 type: 'GET' }
+        {cmd: 'getOrganizationRegistrationRequest',      accepts: '.platform.organization.request.v1',                   call: `/organization/v3/requests`,                                                                 type: 'GET' },
+
+        {cmd: 'getPersonRegistrationRequest',            accepts: '.platform.person.request.v1',                         call: `/person/v3/requests`,                                                                       type: 'GET' },
+
+        {cmd: 'approvePersonRegistration',               accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/approve`,                                                         type: 'POST' },
+
+        {cmd: 'denyPersonRegistration',                  accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/deny`,                                                            type: 'POST' }
     ];
 
     const getCallWrappers = (cuiObject) => {
