@@ -237,29 +237,22 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
     $scope.$watch('userWalkup.organization', function(newOrgSelected) {
         if (newOrgSelected) {
             // If the organization selected changes reset all the apps
-            userWalkup.applications.numberOfSelected = 0; // Restart applications count
-            userWalkup.applications.processedSelected = undefined; // Restart applications selected
+            // userWalkup.applications.numberOfSelected = 0; // Restart applications count
+            // userWalkup.applications.processedSelected = undefined; // Restart applications selected
 
-            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id})
-            .then(function(grants) {
-                userWalkup.applications.list = [];
-                if (grants.length === 0) {
-                    userWalkup.applications.list = undefined;
-                    $scope.$digest();
-                }
-                var i = 0;
-                grants.forEach(function(grant) {
-                    API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-                    .then(function(res) {
-                        userWalkup.applications.list.push(res[0]);
-                        i++;
-                        if (i === grants.length) {
-                            $scope.$digest();
-                        }
-                    });
-                });
-                return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
-            })
+            // API.cui.getPackages({qs: [['owningOrganization.id', newOrgSelected.id]]})
+            // .then(function(res) {
+            //     userWalkup.applications.list = [];
+            //     if (res.length === 0) {
+            //         userWalkup.applications.list = undefined;
+            //         $scope.$digest();
+            //     }
+            //     else {
+            //         userWalkup.applications.list = res;
+            //     }
+                
+            // })
+            API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id})
             .then(function(res) {
                 userWalkup.passwordRules = res.rules;
                 $scope.$digest();
