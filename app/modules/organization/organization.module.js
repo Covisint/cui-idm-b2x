@@ -42,19 +42,19 @@ angular.module('organization',[])
                     controller: returnCtrlAs('userDetails')
                 },
                 'profile@directory.userDetails': {
-                    templateUrl: templateBase + '/directory/user-details/sections/profile/userDetails-profile.html',
+                    templateUrl: templateBase + 'directory/user-details/sections/profile/userDetails-profile.html',
                     controller: returnCtrlAs('userDetailsProfile')
                 },
                 'applications@directory.userDetails': {
-                    templateUrl: templateBase + '/directory/user-details/sections/applications/userDetails-applications.html',
+                    templateUrl: templateBase + 'directory/user-details/sections/applications/userDetails-applications.html',
                     controller: returnCtrlAs('userDetailsApps')
                 },
                 'roles@directory.userDetails': {
-                    templateUrl: templateBase + '/directory/user-details/sections/roles/userDetails-roles.html',
+                    templateUrl: templateBase + 'directory/user-details/sections/roles/userDetails-roles.html',
                     controller: returnCtrlAs('userDetailsRoles')
                 },
                 'history@directory.userDetails': {
-                    templateUrl: templateBase + '/directory/user-details/sections/history/userDetails-history.html',
+                    templateUrl: templateBase + 'directory/user-details/sections/history/userDetails-history.html',
                     controller: returnCtrlAs('userDetailsHistory')
                 }
             },
@@ -126,6 +126,18 @@ angular.module('organization',[])
             url: 'organizationRequestReview?userID&orgID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
             controller: returnCtrlAs('orgRequestReview'),
+            access: loginRequired
+        })
+        .state('requests.personRequest', {
+            url: '/personRequest?userID&orgID',
+            templateUrl: templateBase + 'requests/personRequest/requests-person.html',
+            controller: returnCtrlAs('personRequest'),
+            access: loginRequired
+        })
+        .state('requests.personRequestReview', {
+            url: 'personRequestReview?userID&orgID',
+            templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
+            controller: returnCtrlAs('personRequestReview'),
             access: loginRequired
         });
 
