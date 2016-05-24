@@ -240,24 +240,16 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
             userWalkup.applications.numberOfSelected = 0; // Restart applications count
             userWalkup.applications.processedSelected = undefined; // Restart applications selected
 
-            API.cui.getOrganizationPackages({organizationId : newOrgSelected.id})
-            .then(function(grants) {
+            API.cui.getPackages({qs: [['owningOrganization.id', newOrgSelected.id]]})
+            .then(function(res) {
                 userWalkup.applications.list = [];
-                if (grants.length === 0) {
+                if (res.length === 0) {
                     userWalkup.applications.list = undefined;
                     $scope.$digest();
                 }
-                var i = 0;
-                grants.forEach(function(grant) {
-                    API.cui.getPackageServices({'packageId':grant.servicePackage.id})
-                    .then(function(res) {
-                        userWalkup.applications.list.push(res[0]);
-                        i++;
-                        if (i === grants.length) {
-                            $scope.$digest();
-                        }
-                    });
-                });
+                else {
+                    userWalkup.applications.list = res;
+                }
                 return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
             })
             .then(function(res) {
