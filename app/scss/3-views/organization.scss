@@ -56,6 +56,15 @@
   .cui-media--centered {
     margin-top: em(18);
     margin-bottom: em(84);
+
+    @media screen and (max-width: 700px) {
+      margin-bottom: em(25);
+    }
   }
 
+  .cui-organization__submit-row {
+    @extend %flex-row--right-align;
+    margin: em(48) 0 em(40);
+  }
 }
+

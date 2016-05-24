@@ -47,15 +47,14 @@
   </div>
 </div>
 
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="pendingRequests.loading">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
 <!-- Name Header -->
-<div class="cui-media--centered">
 
-  <!-- Page Loading -->
-  <div class="cui-loading__container--user-details" ng-if="pendingRequests.loading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
-  <div ng-if="!pendingRequests.loading">
+  <div class="cui-media--centered" ng-if="!pendingRequests.loading">
 
     <!-- Avatar -->
     <div class="cui-media__image-container">
@@ -71,7 +70,7 @@
       <!-- Registered Date -->
       <p class="cui-media__content" ng-if="pendingRequests.user.status==='active'">{{'cui-registered' | translate}}: {{pendingRequests.user.creation | date:base.appConfig.dateFormat}}</p>
       <!-- Status: Active -->
-      <p class="cui-media__content" ng-class="{'cui-status--active' : pendingRequests.user.status==='active'}" ng-if="pendingRequests.user.status==='active'">{{pendingRequests.user.status}}
+      <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequests.user.status==='active'}" ng-if="pendingRequests.user.status==='active'">{{pendingRequests.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
         </svg>
@@ -85,4 +84,3 @@
     </div>
 
   </div>
-</div>

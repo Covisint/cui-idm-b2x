@@ -28,15 +28,15 @@
             </div>
             <fieldset class="cui-flex-table__fieldset">
               <div class="cui-flex-table__right cui-flex-table__multi">
-                <div class="cui-radio cui-radio--deny" ng-click="collapse()">
+                <div class="cui-radio cui-radio--deny">
                   <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-{{$index+'a'}}" value="denied" ng-model="package.approval" required />
-                  <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}">
+                  <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}" ng-click="collapse()" >
                     <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
                   </label>
                 </div>
-                <div class="cui-radio cui-radio--approve" ng-click="expand()">
+                <div class="cui-radio cui-radio--approve">
                   <input class="cui-radio__input" type="radio" id="radio-choice-{{$index}}" value="approved" ng-model="package.approval" required />
-                  <label class="cui-radio__label" for="radio-choice-{{$index}}">
+                  <label class="cui-radio__label" for="radio-choice-{{$index}}" ng-click="expand()">
                     <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
                   </label>
                 </div>
@@ -44,31 +44,41 @@
             </fieldset>
           </div>
         </cui-expandable-title>
-        <cui-expandable-body class="cui-expandable__body">
+        <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
           <!-- Close Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51" ng-click="collapse()">
-            <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-          </svg>
-          <!-- Package Claims -->
-          <p>{{'claims' | translate}}:</p>
-          <p ng-if="package.servicePackage.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
-          <div ng-if="package.servicePackage.claims.length>0" ng-repeat="claim in package.servicePackage.claims">
-            <li class="cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-1" ng-model="claim.accepted"/><label class="cui-checkbox__label" for="option-1">{{claim.description | cuiI18n}}</label></li>
+          <div class="cui-expandable__body-row">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-expandable__close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51" ng-click="collapse()">
+              <use class="" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+            </svg>
           </div>
-          <!-- Related Apps -->
-          <p ng-if="package.servicePackage.services.length>0">{{'bundled-applications' | translate}}:</p>
-          <p ng-if="package.servicePackage.services.length===0">{{'no-bundled-or-related' | translate}}.</p>
-          <div ng-if="package.servicePackage.services.length>0" ng-repeat="service in package.servicePackage.services">
-            <span>{{service.name | cuiI18n}}</span><br/>
+          <div class="cui-expandable__body-row">
+            <!-- Bundled Apps -->
+            <div class="cui-expandable__body-col">
+              <div class="cui-expandable__body-header" ng-if="package.servicePackage.services.length>0">{{'bundled-applications' | translate}}:</div>
+              <div class="cui-expandable__links-container">
+                <p ng-if="package.servicePackage.services.length===0">{{'no-bundled-or-related' | translate}}.</p>
+                <div ng-if="package.servicePackage.services.length>0" ng-repeat="service in package.servicePackage.services">
+                  <span class="cui-expandable__link">{{service.name | cuiI18n}}</span><br/>
+                </div>
+              </div>
+            </div>
+            <!-- Package Claims -->
+            <div class="cui-expandable__body-col">
+              <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
+              <p ng-if="package.servicePackage.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
+              <div ng-if="package.servicePackage.claims.length>0" ng-repeat="claim in package.servicePackage.claims">
+                <li class="cui-checkbox__container cui-checkbox__container--right"><input class="cui-checkbox" type="checkbox" id="option-1" ng-model="claim.accepted"/><label class="cui-checkbox__label" for="option-1">{{claim.description | cuiI18n}}</label></li>
+              </div>
+            </div>
           </div>
         </cui-expandable-body>
       </cui-expandable>
     </div>
+    <div class="cui-organization__submit-row">
+      <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+    </div>
   </div>
   
   <!-- Form Controls -->
-  <div>
-    <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
-  </div>
 
 </ng-form>
