@@ -52,7 +52,11 @@ angular.module('common')
 
         {cmd: 'getOrganizationRegistrationRequest',      accepts: '.platform.organization.request.v1',                   call: `/organization/v3/requests`,                                                                 type: 'GET' },
 
-        {cmd: 'getPersonRegistrationRequest',            accepts: '.platform.person.request.v1',                         call: `/person/v3/requests`,                                                                       type: 'GET' }
+        {cmd: 'getPersonRegistrationRequest',            accepts: '.platform.person.request.v1',                         call: `/person/v3/requests`,                                                                       type: 'GET' },
+
+        {cmd: 'approvePersonRegistration',               accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/approve`,                                                         type: 'POST' },
+
+        {cmd: 'denyPersonRegistration',                  accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/deny`,                                                            type: 'POST' }
     ];
 
     const getCallWrappers = (cuiObject) => {

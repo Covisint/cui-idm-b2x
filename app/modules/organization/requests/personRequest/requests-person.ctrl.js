@@ -100,11 +100,11 @@ function(API,$stateParams,$q,$state,DataStorage) {
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        // if (personRequest.packages.length > 0) {
-        //     DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
-        // }
+        if (personRequest.packages.length > 0) {
+            DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
+        }
         DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
-        $state.go('requests.organizationRequestReview', {userID: userId});
+        $state.go('requests.personRequestReview', {userID: userId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
