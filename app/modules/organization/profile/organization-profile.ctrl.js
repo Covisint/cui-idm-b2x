@@ -20,7 +20,7 @@ function($scope,$stateParams,API) {
     var onLoadFinish = function onLoadFinish(organizationResponse) {
         orgProfile.organization = organizationResponse;
 
-        API.cui.getPersonsAdmins({organizationId: orgProfile.organization.id})
+        API.cui.getPersonsAdmins({qs: [['organization.id', organizationResponse.id], ['securityadmin', true]]})
         .then(function(res) {
             orgProfile.securityAdmins = res;
             orgProfile.loading = false;

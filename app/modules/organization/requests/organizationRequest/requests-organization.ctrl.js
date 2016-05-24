@@ -51,7 +51,7 @@ function(API,$stateParams,$q,$state) {
     );
 
     apiPromises.push(
-    	API.cui.getPersonRequest({requestId: userId})
+    	API.cui.getPersonOrganizationRequest({qs: [['registrantId', userId]]})
     	.then((res) => {
     		orgRequest.userOrgRequest = res;
             console.log('orgRequest.userOrgRequest',orgRequest.userOrgRequest);
@@ -92,7 +92,6 @@ function(API,$stateParams,$q,$state) {
 
     $q.all(apiPromises)
     .catch((error) => {
-        orgRequest.loading = false;
         console.log(error);
     });
 

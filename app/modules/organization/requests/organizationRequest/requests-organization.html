@@ -1,3 +1,7 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/requests/organizationRequest" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
 <div>	
 	<!-- Action Header -->
 	<div>
@@ -78,10 +82,16 @@
             <!-- Address -->
             <div>
               <p>{{'cui-address' | translate}}:</p>
+              <span class="cui-field-val__val">{{orgRequest.organization.addresses[0].streets[0]}}</span>
+              <span class="cui-field-val__val">{{orgRequest.organization.addresses[0].city}}</span>
+              <span class="cui-field-val__val">{{orgRequest.organization.addresses[0].state}}, {{orgRequest.organization.addresses[0].postal}}</span>
+              <span class="cui-field-val__val">{{orgRequest.organization.phones[0].number}}</span>
             </div>
             <!-- Time zone and Language -->
             <div>
               <p>{{'timezone-and-language' | translate}}:</p>
+              <span class="cui-field-val__val">{{orgRequest.user.timezone}}</span>
+              <span class="cui-field-val__val">{{orgRequest.user.language}}</span>
             </div>
             <!-- Request -->
             <div>
