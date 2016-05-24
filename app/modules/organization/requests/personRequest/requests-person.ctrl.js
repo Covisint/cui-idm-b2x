@@ -1,15 +1,15 @@
 angular.module('organization')
-.controller('orgRequestCtrl', ['API','$stateParams','$q','$state',
-function(API,$stateParams,$q,$state) {
+.controller('personRequestCtrl', ['API','$stateParams','$q','$state','DataStorage',
+function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
-    const orgRequest = this,
+    const personRequest = this,
     		userId = $stateParams.userID,
     		orgId = $stateParams.orgID;
 
     let apiPromises = [];
 
-    orgRequest.loading = true;
+    personRequest.loading = true;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -45,24 +45,24 @@ function(API,$stateParams,$q,$state) {
     apiPromises.push(
     	API.cui.getPerson({personId: userId})
     	.then((res) => {
-    		orgRequest.user = res;
-            console.log('orgRequest.user',orgRequest.user);
+    		personRequest.user = res;
+            console.log('personRequest.user',personRequest.user);
     	})
     );
 
     apiPromises.push(
-    	API.cui.getOrganizationRegistrationRequest({qs: [['registrantId', userId]]})
+    	API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
     	.then((res) => {
-    		orgRequest.userOrgRequest = res;
-            console.log('orgRequest.userOrgRequest',orgRequest.userOrgRequest);
+    		personRequest.userPersonRequest = res[0];
+            console.log('personRequest.userPersonRequest',personRequest.userPersonRequest);
     	})
     );
 
     apiPromises.push(
     	API.cui.getOrganization({organizationId: orgId})
     	.then((res) => {
-    		orgRequest.organization = res;
-            console.log('orgRequest.organization',orgRequest.organization);
+    		personRequest.organization = res;
+            console.log('personRequest.organization',personRequest.organization);
     	})
     );
 
@@ -70,7 +70,7 @@ function(API,$stateParams,$q,$state) {
         // Get user's pending service packages
         API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
         .then((res) => {
-            orgRequest.packages = res;
+            personRequest.packages = res;
             let packagePromises = [];
 
             res.forEach((pendingPackage) => {
@@ -80,12 +80,12 @@ function(API,$stateParams,$q,$state) {
 
             $q.all(packagePromises)
             .then(() => {
-                console.log('orgRequest.packages', orgRequest.packages);
-                orgRequest.loading = false;
+                console.log('personRequest.packages', personRequest.packages);
+                personRequest.loading = false;
             })
             .catch((error) => {
                 console.log(error);
-                orgRequest.loading = false;
+                personRequest.loading = false;
             });
         })
     );
@@ -99,8 +99,12 @@ function(API,$stateParams,$q,$state) {
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    orgRequest.reviewApprovals = () => {
-        $state.go('requests.organizationRequestReview');
+    personRequest.reviewApprovals = () => {
+        // if (personRequest.packages.length > 0) {
+        //     DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
+        // }
+        DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
+        $state.go('requests.organizationRequestReview', {userID: userId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

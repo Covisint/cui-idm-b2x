@@ -195,7 +195,7 @@ function($scope,$stateParams,API,$filter,Sort,$state) {
                 $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
                 break;
             case  'pending':
-                $state.go('requests.organizationRequest', {userID: clickedUser.id, orgID: organizationId});
+                $state.go('requests.personRequest', {userID: clickedUser.id, orgID: organizationId});
                 break;
         }
     };
