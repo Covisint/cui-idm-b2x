@@ -40,7 +40,7 @@ function($scope,$stateParams,API,$state) {
         // Use logged in user's organization.id to load the organization hierarchy
         API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(res) {
-            return API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
+            return API.cui.getOrganizationHierarchy({organizationId: res.user.organization.id});
         })
         .then(function(res) {
             // Put hierarchy response in an array as the hierarchy directive expects an array

@@ -35,6 +35,11 @@ Global layout styles
   justify-content: space-between;
 }
 
+%flex-row--right-align {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .cui-tos-container {
   float: right;
   padding-bottom: 30px;
