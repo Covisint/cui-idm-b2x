@@ -4,14 +4,14 @@ function(API,$stateParams,$q) {
     'use strict';
 
     const userDetails = this,
-        userId = $stateParams.userID,
-        organizationId = $stateParams.orgID;
+        userId = $stateParams.userID;
 
     let apiPromises = [];
 
     userDetails.loading = true;
     userDetails.profileRolesSwitch = true;
     userDetails.appsHistorySwitch = true;
+    userDetails.organizationId = $stateParams.orgID;
 
     // ON LOAD START ---------------------------------------------------------------------------------
 

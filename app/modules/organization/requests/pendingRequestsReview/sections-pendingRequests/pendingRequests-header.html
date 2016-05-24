@@ -30,18 +30,18 @@
 
   <!-- Action Header 2 -->
   <div class="cui-action cui-action--min">
-    <!-- Page Menu -->
+    <!-- Navigation -->
     <nav class="cui-breadcrumb">
       <ul class="cui-breadcrumb__links">
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile" ui-sref-active="active">{{'cui-org-profile' | translate}}</a> 
+          <a ui-sref="organization.profile({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'cui-org-profile' | translate}}</a> 
           </li>
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})" ui-sref-active="active">{{'cui-org-hierarchy' | translate}}</a> 
+          <a ui-sref="organization.hierarchy({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'cui-org-hierarchy' | translate}}</a> 
           </li>
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
-          </li> 
+          <a ui-sref="organization.directory({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
+        </li> 
       </ul>
     </nav>
   </div>

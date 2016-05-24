@@ -69,7 +69,7 @@ angular.module('organization',[])
         })
         // Roles ----------------------------------------------------
         .state('organization.roles', {
-            url: '/roles',
+            url: '/roles?orgID',
             templateUrl: templateBase + 'roles/organization-roles.html',
             controller: returnCtrlAs('orgRoles'),
             access:loginRequired

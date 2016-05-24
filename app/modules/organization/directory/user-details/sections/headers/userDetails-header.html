@@ -1,11 +1,21 @@
 <div class="cui-action">
-  <span class="cui-action__title">
-    <a ui-sref="organization.profile" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-profile' | translate}}</a> | 
-    <a ui-sref="organization.hierarchy" class="cui-link--medium-light cui-link--no-decoration">{{'cui-org-hierarchy' | translate}}</a> | 
-    <a ui-sref="organization.directory({orgId:userDetails.organization.id})" class="cui-link--medium-light cui-link--no-decoration">{{'directory' | translate}}</a> |
-    <a ui-sref="organization.roles" class="cui-link--medium-light cui-link--no-decoration">{{'roles' | translate}}</a>
-  </span>
-  
+  <!-- Navigation -->
+  <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.profile({orgID:userDetails.organizationId})">{{'cui-org-profile' | translate}}</a> 
+        </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.hierarchy({orgID:userDetails.organizationId})"">{{'cui-org-hierarchy' | translate}}</a> 
+        </li>
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.directory({orgID:userDetails.organizationId})" class="active">{{'directory' | translate}}</a>
+        </li> 
+      <li class="cui-breadcrumb__link">
+        <a ui-sref="organization.roles({orgID:userDetails.organizationId})">{{'roles' | translate}}</a>
+      </li>
+    </ul>
+  </nav>
   <!-- Invitation -->
   <div class="cui-action__actions">
     <div class="cui-action__action-container" id="invitation-button" ng-click="userDetails.invitationClicked=!userDetails.invitationClicked" off-click="userDetails.invitationClicked=false">
@@ -57,8 +67,6 @@
           <button class="cui-button" style="margin:5px">Suspend</button>
           <button class="cui-button" style="margin:5px">Password Reset</button>
           <button class="cui-button" style="margin:5px" ui-sref="requests.newGrant({userID:userDetails.user.id})">New Grants</button>
-          <button class="cui-button" style="margin:5px" ui-sref="requests.pendingRequests({userID:userDetails.user.id,orgID:userDetails.user.organization.id})">Pending App Requests</button>
-          <button class="cui-button" style="margin:5px" ui-sref="requests.organizationRequest({userID:userDetails.user.id,orgID:userDetails.user.organization.id})">Org Requests</button>
         </span>
       </p>
     </div>
