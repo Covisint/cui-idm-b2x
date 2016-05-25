@@ -1,0 +1,90 @@
+<!-- Action Header -->
+<div>	
+	<!-- User Name and Invitation -->
+	<div class="cui-action" ng-if="personRequest.loading===false">
+		<!-- User Name -->
+	  <span class="cui-action__title" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})"><{{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
+	  <!-- Invitation Button -->
+	  <div class="cui-action__actions">
+	  	<div class="cui-action__action-container" id="invitation-button" ng-click="personRequest.invitationClicked=!personRequest.invitationClicked" off-click="personRequest.invitationClicked=false">
+	      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+	        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
+	      </svg>
+	      <!-- Invitation Popover -->
+	      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="personRequest.invitationClicked">
+	        <p ui-sref="invitation.user({orgID:personRequest.user.organization.id})">{{'invite-user' | translate}}</p>
+	        <p ui-sref="invitation.division({orgID:personRequest.user.organization.id})">{{'invite-division' | translate}}</p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+  <!-- Navigation -->
+  <div class="cui-action">
+		<nav class="cui-breadcrumb">
+    	<ul class="cui-breadcrumb__links">
+      	<li class="cui-breadcrumb__link">
+        	<a ui-sref="organization.profile({orgID:personRequest.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
+        	</li>
+      	<li class="cui-breadcrumb__link">
+        	<a ui-sref="organization.hierarchy({orgID:personRequest.user.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
+        	</li>
+      	<li class="cui-breadcrumb__link">
+        	<a ui-sref="organization.directory({orgID:personRequest.user.organization.id})" class="active">{{'directory' | translate}}</a>
+        	</li> 
+      	<li class="cui-breadcrumb__link">
+        	<a ui-sref="organization.roles({orgID:personRequest.user.organization.id})">{{'roles' | translate}}</a>
+      	</li>
+    	</ul>
+  	</nav>
+  </div>
+</div>
+
+<!-- Name Header -->
+<div class="cui-media--centered" ng-if="!personRequest.loading">
+  <!-- Avatar -->
+  <div class="cui-media__image-container">
+    <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[personRequest.user.name.given, personRequest.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+  </div>
+
+  <!-- User Information -->
+  <div class="cui-media__body">
+    <!-- Name -->
+    <h3 class="cui-media__title">{{personRequest.user.name.given}} {{personRequest.user.name.surname}}</h3>
+    <!-- userID -->
+    <p class="cui-media__content">{{'userID' | translate}}: {{personRequest.user.id}}</p>
+    <!-- Email -->
+    <p class="cui-media__content">{{'cui-email' | translate}}: {{personRequest.user.email}}</p>
+    <!-- Registered Date -->
+    <p class="cui-media__content">{{'request-date' | translate}}: {{personRequest.user.creation | date:base.appConfig.dateFormat}}</p>
+    <!-- Organization -->
+    <p class="cui-media__content">{{'cui-org' | translate}}: {{personRequest.organization.name}}</p>
+    <!-- Details & Status -->
+    <cui-expandable class="cui-expandable">
+      <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+        <p class="cui-media__content">{{'view-details' | translate}} {{personRequest.user.status}}</p>
+      </cui-expandable-title>
+      <cui-expandable-body class="cui-expandable__body">
+        <!-- Address -->
+        <div>
+          <p>{{'cui-address' | translate}}:</p>
+          <span class="cui-field-val__val">{{personRequest.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{personRequest.organization.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{personRequest.organization.addresses[0].state}}, {{personRequest.organization.addresses[0].postal}}</span>
+          <span class="cui-field-val__val">{{personRequest.organization.phones[0].number}}</span>
+        </div>
+        <!-- Time zone and Language -->
+        <div>
+          <p>{{'timezone-and-language' | translate}}:</p>
+          <span class="cui-field-val__val">{{personRequest.user.timezone}}</span>
+          <span class="cui-field-val__val">{{personRequest.user.language}}</span>
+        </div>
+        <!-- Request -->
+        <div>
+          <p>{{'request' | translate}}</p>
+          <span class="cui-field-val__val">{{personRequest.userPersonRequest.justification}}</span>
+        </div>
+      </cui-expandable-body>
+    </cui-expandable>
+  </div>
+</div>

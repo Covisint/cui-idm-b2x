@@ -46,7 +46,6 @@ function(API,$stateParams,$q,$state,DataStorage) {
     	API.cui.getPerson({personId: userId})
     	.then((res) => {
     		personRequest.user = res;
-            console.log('personRequest.user',personRequest.user);
     	})
     );
 
@@ -54,7 +53,6 @@ function(API,$stateParams,$q,$state,DataStorage) {
     	API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
     	.then((res) => {
     		personRequest.userPersonRequest = res[0];
-            console.log('personRequest.userPersonRequest',personRequest.userPersonRequest);
     	})
     );
 
@@ -62,7 +60,6 @@ function(API,$stateParams,$q,$state,DataStorage) {
     	API.cui.getOrganization({organizationId: orgId})
     	.then((res) => {
     		personRequest.organization = res;
-            console.log('personRequest.organization',personRequest.organization);
     	})
     );
 
@@ -80,7 +77,6 @@ function(API,$stateParams,$q,$state,DataStorage) {
 
             $q.all(packagePromises)
             .then(() => {
-                console.log('personRequest.packages', personRequest.packages);
                 personRequest.loading = false;
             })
             .catch((error) => {
@@ -104,7 +100,7 @@ function(API,$stateParams,$q,$state,DataStorage) {
             DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
         }
         DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
-        $state.go('requests.personRequestReview', {userID: userId});
+        $state.go('requests.personRequestReview', {userID: userId, orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
