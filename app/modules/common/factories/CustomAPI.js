@@ -56,7 +56,9 @@ angular.module('common')
 
         {cmd: 'approvePersonRegistration',               accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/approve`,                                                         type: 'POST' },
 
-        {cmd: 'denyPersonRegistration',                  accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/deny`,                                                            type: 'POST' }
+        {cmd: 'denyPersonRegistration',                  accepts: '.platform.person.request.v1',                         call: `/person/v3/requests/tasks/deny`,                                                            type: 'POST' },
+
+        {cmd: 'getAllOrganizationRequests',              accepts: '.platform.organization.request.v1',                   call: `/organization/v3/requests`,                                                                 type: 'GET' }
     ];
 
     const getCallWrappers = (cuiObject) => {
