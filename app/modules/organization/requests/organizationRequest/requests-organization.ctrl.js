@@ -1,11 +1,11 @@
 angular.module('organization')
-.controller('orgRequestCtrl', ['API','$stateParams','$q','$state',
-function(API,$stateParams,$q,$state) {
+.controller('orgRequestCtrl', ['API','$stateParams','$q','$state','DataStorage',
+function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
     const orgRequest = this,
-    		userId = $stateParams.userID,
-    		orgId = $stateParams.orgID;
+    		orgId = $stateParams.orgID,
+            registrantId = $stateParams.registrantID;
 
     let apiPromises = [];
 
@@ -36,25 +36,16 @@ function(API,$stateParams,$q,$state) {
             pendingPackage.servicePackage.packageDetails = res;
         });
     };
-
-
+    
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
     apiPromises.push(
-    	API.cui.getPerson({personId: userId})
+    	API.cui.getOrganizationRegistrationRequest({qs: [['registrantId', registrantId]]})
     	.then((res) => {
-    		orgRequest.user = res;
-            console.log('orgRequest.user',orgRequest.user);
-    	})
-    );
-
-    apiPromises.push(
-    	API.cui.getOrganizationRegistrationRequest({qs: [['registrantId', userId]]})
-    	.then((res) => {
-    		orgRequest.userOrgRequest = res;
-            console.log('orgRequest.userOrgRequest',orgRequest.userOrgRequest);
+    		orgRequest.organizationRequest = res;
+            console.log('orgRequest.organizationRequest',orgRequest.organizationRequest);
     	})
     );
 
@@ -66,32 +57,12 @@ function(API,$stateParams,$q,$state) {
     	})
     );
 
-    apiPromises.push(
-        // Get user's pending service packages
-        API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
-        .then((res) => {
-            orgRequest.packages = res;
-            let packagePromises = [];
-
-            res.forEach((pendingPackage) => {
-                // For each package get package claims/services/details
-                packagePromises.push(getPackageServices(pendingPackage), getPackageClaims(pendingPackage), getPackageDetails(pendingPackage));
-            });
-
-            $q.all(packagePromises)
-            .then(() => {
-                console.log('orgRequest.packages', orgRequest.packages);
-                orgRequest.loading = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                orgRequest.loading = false;
-            });
-        })
-    );
-
     $q.all(apiPromises)
+    .then(() => {
+        orgRequest.loading = false;
+    })
     .catch((error) => {
+        orgRequest.loading = false;
         console.log(error);
     });
 
@@ -100,7 +71,8 @@ function(API,$stateParams,$q,$state) {
     // ON CLICK START --------------------------------------------------------------------------------
 
     orgRequest.reviewApprovals = () => {
-        $state.go('requests.organizationRequestReview');
+        DataStorage.set(orgId, 'organizationRequest', orgRequest.organizationRequest);
+        $state.go('requests.organizationRequestReview', {orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

@@ -45,7 +45,7 @@
 
   <!-- Action Sub-header -->
   <div class="cui-action" ng-if="!orgDirectory.loading">
-    <span class="cui-action__title">{{orgDirectory.organization.name | cuiI18n}}</span>
+    <span class="cui-action__title" ui-sref="requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
     <div class="cui-action__actions">
 
       <!-- Sort -->
@@ -92,8 +92,6 @@
             <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
