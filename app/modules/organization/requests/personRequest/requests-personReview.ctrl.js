@@ -67,14 +67,14 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
 
     let denyPersonRegistrationRequest = (registrationRequest) => {
     	if (registrationRequest.rejectReason) {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id], ['reason', registrationRequest.rejectReason]]})
-    		.catch((error) => {
+    		return API.cui.denyPersonRegistration({qs: [['requestId', registrationRequest.id], ['reason', registrationRequest.rejectReason]]})
+    		.fail((error) => {
     			console.log(error);
     		});
     	}
     	else {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id]]})
-    		.catch((error) => {
+    		return API.cui.denyPersonRegistration({qs: [['requestId', registrationRequest.id]]})
+    		.fail((error) => {
     			console.log(error);
     		});
     	}
