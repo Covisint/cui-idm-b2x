@@ -1,6 +1,6 @@
 angular.module('organization')
-.controller('personRequestReviewCtrl', ['API','$stateParams','$q','DataStorage',
-function(API,$stateParams,$q,DataStorage) {
+.controller('personRequestReviewCtrl', ['API','$stateParams','$q','DataStorage','$timeout','$state',
+function(API,$stateParams,$q,DataStorage,$timeout,$state) {
     'use strict';
 
     const personRequestReview = this,
@@ -10,10 +10,9 @@ function(API,$stateParams,$q,DataStorage) {
     let apiPromises = [];
     
     personRequestReview.loading = true;
-    personRequestReview.sucess = false;
+    personRequestReview.success = false;
     personRequestReview.approvedCount = 0;
     personRequestReview.deniedCount = 0;
-
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -66,15 +65,15 @@ function(API,$stateParams,$q,DataStorage) {
     	}
     };
 
-    let denyPersonRegistrationRequest = (requestId, reason) => {
-    	if (reason) {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', personRequestReview.userRegistrationRequest], ['reason', 'TODOREASON']]})
+    let denyPersonRegistrationRequest = (registrationRequest) => {
+    	if (registrationRequest.rejectReason) {
+    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id], ['reason', registrationRequest.rejectReason]]})
     		.catch((error) => {
     			console.log(error);
     		});
     	}
     	else {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', personRequestReview.userRegistrationRequest]]})
+    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id]]})
     		.catch((error) => {
     			console.log(error);
     		});
@@ -86,12 +85,10 @@ function(API,$stateParams,$q,DataStorage) {
     // ON LOAD START ---------------------------------------------------------------------------------
 
     personRequestReview.userRegistrationRequest = DataStorage.get(userId, 'userPersonRequest');
-    personRequestReview.userPackagesRequests = DataStorage.get(userId, 'userRequestedPackages');
-    console.log('personRequestReview.userRegistrationRequest',personRequestReview.userRegistrationRequest);
-    console.log('personRequestReview.userPackagesRequests',personRequestReview.userPackagesRequests);
+    personRequestReview.userPackageRequests = DataStorage.get(userId, 'userRequestedPackages');
 
-    if (personRequestReview.userPackagesRequests) {
-    	getApprovalCounts(personRequestReview.userPackagesRequests);
+    if (personRequestReview.userPackageRequests) {
+    	getApprovalCounts(personRequestReview.userPackageRequests);
     }
 
     apiPromises.push(
@@ -99,6 +96,13 @@ function(API,$stateParams,$q,DataStorage) {
     	.then((res) => {
     		personRequestReview.user = res;
     	})
+    );
+
+    apiPromises.push(
+        API.cui.getOrganization({organizationId: orgId})
+        .then((res) => {
+            personRequestReview.organization = res;
+        })
     );
 
     $q.all(apiPromises)
@@ -114,46 +118,75 @@ function(API,$stateParams,$q,DataStorage) {
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequestReview.submit = () => {
-    	let submitPromises = [];
-
-    	// Denied
+        personRequestReview.loading = true;
     	if (personRequestReview.userRegistrationRequest.approval === 'denied') {
+            let submitPromises = [];
+
     		// Deny Registration Request
-    		submitPromises.push(denyPersonRegistrationRequest(personRequestReview.userRegistrationRequest, 'reasonTODO'));
+    		submitPromises.push(denyPersonRegistrationRequest(personRequestReview.userRegistrationRequest));
     		
-    		if (personRequestReview.userPackagesRequests) {
-    			personRequestReview.userPackagesRequests.forEach((packageRequest) => {
+    		if (personRequestReview.userPackageRequests) {
+    			personRequestReview.userPackageRequests.forEach((packageRequest) => {
     				// Deny each package request
-    				API.cui.denyPackage({qs: [['requestId', packageRequest.id], ['justification', packageRequest.rejectReason]]});
+    				submitPromises.push(API.cui.denyPackage({qs: [['requestId', packageRequest.id], ['justification', 'Registration request denied']]}));
     			});	
     		}
+
+            $q.all(submitPromises)
+            .then(() => {
+                personRequestReview.loading = false;
+                personRequestReview.success = true;
+                $timeout(() => {
+                    $state.go('organization.directory', {userID: userId, orgID: orgId});
+                }, 3000);
+            }, (error) => {
+                personRequestReview.loading = false;
+                console.log(error);
+            });
     	}
-    	// Approved
-    	else {
+    	else if (personRequestReview.userRegistrationRequest.approval === 'approved') {
     		// Approve registration request
     		API.cui.approvePersonRegistration({qs: [['request.id', personRequestReview.userRegistrationRequest]]})
     		.then(() => {
+                let submitPromises = [];
+
     			// If user has service package requests
-    			if (personRequestReview.userPackagesRequests) {
-    				personRequestReview.userPackagesRequests.forEach((packageRequest) => {
+    			if (personRequestReview.userPackageRequests) {
+    				personRequestReview.userPackageRequests.forEach((packageRequest) => {
     					// If the package is approved
     					if (packageRequest.approval === 'approved') {
     						// Approve package
-    						API.cui.approvePackage({qs: [['requestId', packageRequest.id]]});
+    						submitPromises.push(API.cui.approvePackage({qs: [['requestId', packageRequest.id]]}));
     						if (packageRequest.servicePackage.claims.length > 0) {
     							// If the package has claims, build the claims requests and grant the claims
     							let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
-    							API.cui.grantClaims({data: grantClaimData});
+    							submitPromises.push(API.cui.grantClaims({data: grantClaimData}));
     						}	
     					}
+                        // Package is denied
+                        else {
+                            // Deny package
+                            submitPromises.push(API.cui.denyPackage({qs: [['requestId', packageRequest.id], ['justification', packageRequest.rejectReason]]}));
+                        }
     				});
     			}
-    		})
+
+                $q.all(submitPromises)
+                .then(() => {
+                    personRequestReview.loading = false;
+                    personRequestReview.success = true;
+                    $timeout(() => {
+                        $state.go('organization.directory', {userID: userId, orgID: orgId});
+                    }, 3000);
+                }, (error) => {
+                    personRequestReview.loading = false;
+                    console.log(error);
+                });
+
+            })
     		.catch((error) => {
     			console.log(error);
     		});
-    		// Accept All Package Requests
-    		return;
     	}
     };
 

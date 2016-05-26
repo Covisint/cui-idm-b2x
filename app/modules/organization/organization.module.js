@@ -116,14 +116,20 @@ angular.module('organization',[])
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
         })
+        .state('requests.organizationRequestList', {
+            url: '/organizationRequests?orgID',
+            templateUrl: templateBase + 'requests/organizationRequest/requests-organizationList.html',
+            controller: returnCtrlAs('orgRequests'),
+            access: loginRequired
+        })
         .state('requests.organizationRequest', {
-            url: '/organizationRequest?userID&orgID',
+            url: '/organizationRequest?orgID&registrantID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
             controller: returnCtrlAs('orgRequest'),
             access: loginRequired
         })
         .state('requests.organizationRequestReview', {
-            url: 'organizationRequestReview?userID&orgID',
+            url: 'organizationRequestReview?orgID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
             controller: returnCtrlAs('orgRequestReview'),
             access: loginRequired

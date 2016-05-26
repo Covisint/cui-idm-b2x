@@ -1,0 +1,32 @@
+<h3>{{'approval-summary' | translate}}</h3>
+
+<div ng-if="personRequestReview.userRegistrationRequest.approval==='approved'">
+	<!-- Approved Items -->
+	<div>
+		<p>{{'approved-items' | translate}}</p>
+		<p>{{personRequestReview.userRegistrationRequest.id}}</p>
+		<div ng-repeat="package in personRequestReview.userPackageRequests track by package.id">
+			<p ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name[0].text}}</p>
+		</div>
+	</div>
+	<!-- Rejected Items -->
+	<div>
+		<p>{{'rejected-items' | translate}}</p>
+		<p ng-if="personRequestReview.deniedCount===0">{{'no-items-denied' | translate}}</p>
+		<div ng-repeat="package in personRequestReview.userPackageRequests track by package.id">
+			<p ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name[0].text}}</p>
+		</div>
+	</div>
+</div>
+
+<!-- If the registration request is denied then everything is denied -->
+<div ng-if="personRequestReview.userRegistrationRequest.approval==='denied'">
+	<p>{{'approved-items' | translate}}</p>
+	<p>{{'no-items-approved' | translate}}</p>
+	<p>{{'rejected-items' | translate}}</p>
+	<p>{{personRequestReview.userRegistrationRequest.id}}</p>
+	<textarea class="cui-text-area" ng-model="personRequestReview.userRegistrationRequest.rejectReason" placeholder="rejection reason (optional)"></textarea>
+	<div ng-repeat="package in personRequestReview.userPackageRequests track by package.id">
+		<p>{{package.servicePackage.packageDetails.name[0].text}}</p>
+	</div>
+</div>
