@@ -2,12 +2,12 @@
 
 	<!-- Body Header -->
 	<div>
-		<h3 class="cui-organization__approval-summary">Approval Summary</h3>
+		<h3 class="cui-organization__approval-summary">{{'approval-summary' | translate}}</h3>
 	</div>
 
-	<h4 class="cui-organization__approved">Approved Items</h4>
+	<h4 class="cui-organization__approved">{{'approved-items' | translate}}</h4>
 	<div class="cui-organization__approved-row">
-		<p ng-if="pendingRequestsReview.approvedCount===0">No approved items.</p>
+		<p ng-if="pendingRequestsReview.approvedCount===0">{{'no-items-approved' | translate}}.</p>
 		<ul>
 			<li ng-if="pendingRequestsReview.approvedCount" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
 				<span ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
@@ -16,9 +16,9 @@
 	</div>
 
 	<!-- Rejected Items -->
-	<h4 class="cui-organization__denied">Rejected Items</h4>
+	<h4 class="cui-organization__denied">{{'rejected-items' | translate}}</h4>
 	<div>
-		<p ng-if="pendingRequestsReview.deniedCount===0">No rejected items.</p>
+		<p ng-if="pendingRequestsReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
 		<div class="cui-organization__rejected-row" ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
 			<span ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
 			<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>

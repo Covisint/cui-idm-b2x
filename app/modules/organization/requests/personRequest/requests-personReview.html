@@ -29,5 +29,7 @@
 <div ng-include="'app/modules/organization/requests/personRequest/sections-review/review-body.html'" ng-if="!personRequestReview.loading"></div>
 
 <!-- Review Controls -->
-<span ui-sref="requests.personRequest({userID:personRequestReview.user.id, orgID:personRequestReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
-<button class="cui-button" ng-click="personRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+<div class="cui-organization__submit-row">
+  <span ui-sref="requests.personRequest({userID:personRequestReview.user.id, orgID:personRequestReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+  <button class="cui-button" ng-click="personRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+</div>

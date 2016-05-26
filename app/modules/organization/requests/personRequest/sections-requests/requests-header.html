@@ -4,7 +4,7 @@
   <!-- User Name and Invitation -->
   <div class="cui-action" ng-if="personRequest.loading===false">
     <!-- User Name -->
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})">< {{personRequest.org.name}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})"><{{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="personRequest.invitationClicked=!personRequest.invitationClicked" off-click="personRequest.invitationClicked=false">
@@ -48,14 +48,7 @@
     </nav>
   </div>
 
-    <!-- Page Loading -->
-  <div class="cui-loading__container--user-details" ng-if="personRequest.loading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
   <!-- Name Header -->
-
-
   <div class="cui-media--centered" ng-if="!personRequest.loading">
 
     <!-- Avatar -->
@@ -79,7 +72,7 @@
   </div>
 
   <!-- Details & Status -->
-  <cui-expandable class="cui-expandable" transition-speed="150">
+  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="!personRequest.loading">
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       <div class="cui-expandable__details-status">
         <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span> 
@@ -104,7 +97,7 @@
         </div>
         <!-- Request -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
-          <div class="cui-field-val__field">{{'request' | translate}}</div>
+          <div class="cui-field-val__field">{{'request' | translate}}:</div>
           <span class="cui-field-val__val">{{personRequest.userPersonRequest.justification}}</span>
         </div>
       </div>
