@@ -1,26 +1,34 @@
-<div>
+<div class="cui-organization__main-container">
 
 	<!-- Body Header -->
 	<div>
-		<h3>Approval Summary</h3>
+		<h3 class="cui-organization__approval-summary">Approval Summary</h3>
 	</div>
 
-	<div>
-		<p>Approved Items</p>
+	<h4 class="cui-organization__approved">Approved Items</h4>
+	<div class="cui-organization__approved-row">
 		<p ng-if="pendingRequestsReview.approvedCount===0">No approved items.</p>
-		<div ng-if="pendingRequestsReview.approvedCount" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
-			<span ng-if="package.approval==='approved'">{{package.id}}</span><br/>
-		</div>
+		<ul>
+			<li ng-if="pendingRequestsReview.approvedCount" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+				<span ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
+			</li>
+		</ul>
 	</div>
 
 	<!-- Rejected Items -->
+	<h4 class="cui-organization__denied">Rejected Items</h4>
 	<div>
-		<p>Rejected Items</p>
 		<p ng-if="pendingRequestsReview.deniedCount===0">No rejected items.</p>
-		<div ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
-			<span ng-if="package.approval==='denied'">{{package.id}}</span><br/>
+		<div class="cui-organization__rejected-row" ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+			<span ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
 			<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 		</div>
+	</div>
+	
+	<!-- Review Controls -->
+	<div class="cui-organization__submit-row">
+		<span ui-sref="requests.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+		<button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
 	</div>
 
 </div>

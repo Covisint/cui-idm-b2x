@@ -64,6 +64,7 @@
 
   .cui-organization__submit-row {
     @extend %flex-row--right-align;
+    align-items: center;
     margin: em(48) 0 em(40);
   }
 }
@@ -143,5 +144,40 @@
     padding: 15px 0;
 }
 
+// Pending Request Review
+
+.cui-organization__request-review-header {
+  .cui-media--centered {
+    margin-top: em(18);
+    margin-bottom: 0;
+
+    @media screen and (max-width: 700px) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.cui-organization__rejected-row {
+  @extend %flex-row-vert;
+  padding: em(5) 0 em(15);
+}
+
+.cui-organization__rejected-row,
+.cui-organization__approved-row {
+  line-height: 1.8;
+}
+
+.cui-organization__approved,
+.cui-organization__denied {
+  @extend %h5;
+  @extend %bold;
+  margin-bottom: 10px;
+}
+
+.cui-organization__approval-summary {
+  @extend %h4;
+  @extend %bold;
+  margin-bottom: 15px;
+}
 
 
