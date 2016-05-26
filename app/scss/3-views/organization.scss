@@ -68,3 +68,80 @@
   }
 }
 
+.cui-media--centered {
+  width: auto;
+
+  .cui-media__body {
+    line-height: 1.8;
+    margin: 0 auto;
+    max-width: 400px;
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      max-width: inherit;
+    }
+  }
+
+  .cui-media__content {
+    font-size: em(14);
+  }
+}
+
+// Person Request
+
+.cui-organization__requests-person-header {
+
+  .cui-media--centered {
+    margin-top: em(18);
+    margin-bottom: 0;
+
+    @media screen and (max-width: 700px) {
+      margin-bottom: 0;
+    }
+  }
+
+  .cui-expandable {
+    border-bottom: 0;
+  }
+
+  .cui-expandable__title {
+    padding: 0 0 em(10);
+  }
+
+  .cui-expandable__details-status {
+    display: flex;
+    font-size: em(14);
+    justify-content: space-between;
+    margin-left: 40%;
+    width: 210px;
+
+    @media screen and (max-width: 700px) {
+      margin: em(28) em(25) 0;
+      width: auto;
+    }
+    
+    .cui-expandable__details,
+    .cui-expandable__status {
+      font-size: 1em;
+      letter-spacing: $letter-spacing-lg;
+    }
+  }
+
+  .cui-expandable__body:before {
+    left: 40%;
+
+    @media screen and (max-width: 700px) {
+      font-size: .75em;
+      left: 60px;
+    }
+  }
+}
+
+.cui-organization__registration-decision {
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin: 15px 0 40px;
+    padding: 15px 0;
+}
+
+
+
