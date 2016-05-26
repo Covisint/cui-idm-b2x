@@ -29,7 +29,8 @@ Global layout styles
   justify-content: space-between;
 }
 
-%flex-row-vert {
+%flex-row-vert,
+%flex-col {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

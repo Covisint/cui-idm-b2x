@@ -1,56 +1,62 @@
-<!-- Header Breadcrumb -->
-<div>
-  <!-- Name and Invitation -->
-  <div class="cui-action">
-    <!-- Name -->
-    <span class="cui-action__title" ui-sref="directory.userDetails({userID:pendingRequestsReview.user.id,orgID:pendingRequestsReview.user.organization.id})">< {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
+<div class="cui-organization__request-review-header">
+  <!-- Header Breadcrumb -->
+  <div>
+    <!-- Name and Invitation -->
+    <div class="cui-action">
+      <!-- Name -->
+      <span class="cui-action__title cui-action__title--dark" ui-sref="directory.userDetails({userID:pendingRequestsReview.user.id,orgID:pendingRequestsReview.user.organization.id})">< {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
 
-    <!-- Invitation -->
-    <div class="cui-action__actions">
-      <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequestsReview.invitationClicked=!pendingRequestsReview.invitationClicked" off-click="pendingRequestsReview.invitationClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
-        </svg>
-        <!-- Invitation Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
-          <p ui-sref="invitation.user({orgID:pendingRequestsReview.user.organization.id})">{{'invite-user' | translate}}</p>
-          <p ui-sref="invitation.division({orgID:pendingRequestsReview.user.organization.id})">{{'invite-division' | translate}}</p>
+      <!-- Invitation -->
+      <div class="cui-action__actions">
+        <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequestsReview.invitationClicked=!pendingRequestsReview.invitationClicked" off-click="pendingRequestsReview.invitationClicked=false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <defs>
+              <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+              <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+              </filter>
+            </defs>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
+          </svg>
+          <!-- Invitation Popover -->
+          <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
+            <p ui-sref="invitation.user({orgID:pendingRequestsReview.user.organization.id})">{{'invite-user' | translate}}</p>
+            <p ui-sref="invitation.division({orgID:pendingRequestsReview.user.organization.id})">{{'invite-division' | translate}}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Navigation -->
-  <div class="cui-action">
-    <!-- Page Menu -->
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:pendingRequestsReview.user.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" class="active">{{'directory' | translate}}</a>
+    <!-- Navigation -->
+    <div class="cui-action cui-action--min">
+      <!-- Navigation -->
+      <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})" ui-sref-active="active">{{'cui-org-profile' | translate}}</a> 
+            </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.hierarchy({orgID:pendingRequestsReview.user.organization.id})" ui-sref-active="active">{{'cui-org-hierarchy' | translate}}</a> 
+            </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
           </li> 
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:pendingRequestsReview.user.organization.id})">{{'roles' | translate}}</a>
-        </li>
-      </ul>
-    </nav>
+        </ul>
+      </nav>
+    </div>
   </div>
-</div>
-
-<!-- Name Header -->
-<div class="cui-media--centered">
 
   <!-- Page Loading -->
   <div class="cui-loading__container--user-details" ng-if="pendingRequestsReview.loading">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
 
-  <div ng-if="!pendingRequestsReview.loading">
+
+  <!-- Name Header -->
+  <div class="cui-media--centered" ng-if="!pendingRequestsReview.loading">
+
     <!-- Avatar -->
     <div class="cui-media__image-container">
       <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[pendingRequestsReview.user.name.given, pendingRequestsReview.user.name.given]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
@@ -60,11 +66,11 @@
       <!-- Name -->
       <h3 class="cui-media__title">{{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}}</h3>
       <!-- userID -->
-      <p class="cui-media__content">{{'userID' | translate}}: {{pendingRequestsReview.user.id}}</p>
+      <p class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{pendingRequestsReview.user.id}}</p>
       <!-- Registered Date -->
       <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequestsReview.user.creation | date:base.appConfig.dateFormat}}</p>
       <!-- Status: Active -->
-      <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='active'">{{pendingRequestsReview.user.status}}
+      <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequestsReview.user.status==='active'}">{{pendingRequestsReview.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
         </svg>
@@ -77,4 +83,5 @@
       </p>
     </div>
   </div>
+
 </div>
