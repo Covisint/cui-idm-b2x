@@ -3,7 +3,7 @@
 	<!-- User Name and Invitation -->
 	<div class="cui-action" ng-if="orgRequest.loading===false">
 		<!-- User Name -->
-	  <span class="cui-action__title" ui-sref="requests.organizationRequestList({orgID: orgRequest.organization.id})""><{{orgRequest.organization.name}} - {{'pending-request' | translate}}</span>
+	  <span class="cui-action__title" ui-sref="requests.organizationRequestList({orgID: orgRequest.organization.id})">{{orgRequest.organization.name}} - {{'pending-request' | translate}}</span>
 	  <!-- Invitation Button -->
 	  <div class="cui-action__actions">
 	  	<div class="cui-action__action-container" id="invitation-button" ng-click="orgRequest.invitationClicked=!orgRequest.invitationClicked" off-click="orgRequest.invitationClicked=false">
