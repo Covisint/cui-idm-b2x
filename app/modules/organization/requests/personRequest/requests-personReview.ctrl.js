@@ -67,14 +67,14 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
 
     let denyPersonRegistrationRequest = (registrationRequest) => {
     	if (registrationRequest.rejectReason) {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id], ['reason', registrationRequest.rejectReason]]})
-    		.catch((error) => {
+    		return API.cui.denyPersonRegistration({qs: [['requestId', registrationRequest.id], ['reason', registrationRequest.rejectReason]]})
+    		.fail((error) => {
     			console.log(error);
     		});
     	}
     	else {
-    		return API.cui.denyPersonRegistration({qs: [['request.id', registrationRequest.id]]})
-    		.catch((error) => {
+    		return API.cui.denyPersonRegistration({qs: [['requestId', registrationRequest.id]]})
+    		.fail((error) => {
     			console.log(error);
     		});
     	}
@@ -146,7 +146,7 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
     	}
     	else if (personRequestReview.userRegistrationRequest.approval === 'approved') {
     		// Approve registration request
-    		API.cui.approvePersonRegistration({qs: [['request.id', personRequestReview.userRegistrationRequest]]})
+    		API.cui.approvePersonRegistration({qs: [['requestId', personRequestReview.userRegistrationRequest.id]]})
     		.then(() => {
                 let submitPromises = [];
 
@@ -170,13 +170,20 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
                         }
     				});
     			}
+                else {
+                    personRequestReview.loading = false;
+                    personRequestReview.success = true;
+                    $timeout(() => {
+                        $state.go('organization.directory', {orgID: orgId});
+                    }, 3000);
+                }
 
                 $q.all(submitPromises)
                 .then(() => {
                     personRequestReview.loading = false;
                     personRequestReview.success = true;
                     $timeout(() => {
-                        $state.go('organization.directory', {userID: userId, orgID: orgId});
+                        $state.go('organization.directory', {orgID: orgId});
                     }, 3000);
                 }, (error) => {
                     personRequestReview.loading = false;
@@ -184,7 +191,7 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
                 });
 
             })
-    		.catch((error) => {
+    		.fail((error) => {
     			console.log(error);
     		});
     	}
