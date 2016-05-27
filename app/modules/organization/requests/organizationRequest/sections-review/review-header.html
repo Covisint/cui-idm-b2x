@@ -1,0 +1,111 @@
+<div class="cui-organization__requests-person-header">
+  <!-- Header Breadcrumb -->
+  <div>
+    <!-- User Name and Invitation -->
+    <div class="cui-action" ng-if="orgRequestReview.loading===false">
+      <!-- Name -->
+      <span class="cui-action__title cui-action__title--dark" ui-sref="requests.organizationRequestList({orgID: orgRequest.organization.id})">< {{orgRequestReview.organization.name}} - {{'pending-request' | translate}}</span>
+
+      <!-- Invitation Button -->
+      <div class="cui-action__actions">
+        <div class="cui-action__action-container" id="invitation-button"  
+          ng-click="orgRequestReview.invitationClicked=!orgRequestReview.invitationClicked" 
+          off-click="orgRequestReview.invitationClicked=false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <defs>
+              <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+              <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+              </filter>
+            </defs>
+            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
+          </svg>
+          <!-- Invitation Popover -->
+          <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" 
+            attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgRequestReview.invitationClicked">
+            <p ui-sref="invitation.user({orgID:orgRequestReview.organization.id})">{{'invite-user' | translate}}</p>
+            <p ui-sref="invitation.division({orgID:orgRequestReview.organization.id})">{{'invite-division' | translate}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="cui-action cui-action--min">
+      <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.profile({orgID:orgRequestReview.organization.id})">{{'cui-org-profile' | translate}}</a> 
+            </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.hierarchy({orgID:orgRequestReview.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
+            </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.directory({orgID:orgRequestReview.organization.id})" class="active">{{'directory' | translate}}</a>
+            </li> 
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="organization.roles({orgID:orgRequestReview.organization.id})">{{'roles' | translate}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Name Header -->
+  <div class="cui-media--centered" ng-if="!orgRequestReview.loading">
+
+    <!-- Avatar -->
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[orgRequestReview.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    </div>
+
+    <!-- User Information -->
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{orgRequestReview.user.name.given}} {{orgRequestReview.user.name.surname}}</h3>
+      <!-- userID -->
+      <p class="cui-media__content cui-media__content--dark"">{{'userID' | translate}}: {{orgRequestReview.user.id}}</p>
+      <!-- Email -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{orgRequestReview.user.email}}" class="cui-link"> {{orgRequestReview.user.email}}</a></div>
+      <!-- Registered Date -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{orgRequestReview.user.creation | date:base.appConfig.dateFormat}}</div>
+      <!-- Organization -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-link">{{orgRequestReview.organization.name}}</a></div>
+    </div>
+  </div>
+
+  <!-- Details & Status -->
+  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="!orgRequestReview.loading">
+    <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+      <div class="cui-expandable__details-status">
+        <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span> 
+        <span class="cui-expandable__status" ng-class="'cui-status--'+orgRequestReview.user.status">{{orgRequestReview.user.status}}</span>
+      </div>
+    </cui-expandable-title>
+    <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
+      <div class="cui-expandable__body-row">
+        <!-- Address -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
+          <span class="cui-field-val__val">{{orgRequestReview.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{orgRequestReview.organization.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{orgRequestReview.organization.addresses[0].state}}, {{orgRequestReview.organization.addresses[0].postal}}</span>
+          <span class="cui-field-val__val">{{orgRequestReview.organization.phones[0].number}}</span>
+        </div>
+        <!-- Timezone and Language -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
+          <span class="cui-field-val__val">{{orgRequestReview.user.timezone}}</span>
+          <span class="cui-field-val__val">{{orgRequestReview.user.language}}</span>
+        </div>
+        <!-- Request -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'request' | translate}}:</div>
+          <span class="cui-field-val__val">{{orgRequestReview.userPersonRequest.justification}}</span>
+        </div>
+      </div>
+    </cui-expandable-body>
+  </cui-expandable>
+</div>

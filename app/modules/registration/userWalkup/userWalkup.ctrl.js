@@ -195,7 +195,7 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
         API.cui.registerPerson({data: user})
         .then(function(res) {
             if (userWalkup.applications.selected) {
-                return API.cui.createPersonRequest(build.personRequest(res.person));
+                return API.cui.createPackageRequest(build.personRequest(res.person));
             }
             else {
                 return;
