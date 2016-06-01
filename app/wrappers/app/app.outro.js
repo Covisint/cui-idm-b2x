@@ -2,10 +2,10 @@
     const calls = [
         {cmd: 'getPackageClaims',                        accepts: '.platform.package.claim.v1',                          call: '/service/v3/claims'},
         {cmd: 'getPersonPackageClaims',                  accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`},
-        {cmd: 'getCategories',                           accepts: '.platform.category.v1',                               call: `/service/v3/categories`},
+        {cmd: 'getCategories',                           accepts: 'application/vnd.com.covisint.platform.category.v1+json',                               call: `/service/v3/categories`},
         {cmd: 'getPersonRequestableApps',                accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},
         {cmd: 'getPersonRequestableCount',               accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`},
-        {cmd: 'getPersonGrantedApps',                    accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }`},
+        {cmd: 'getPersonGrantedApps',                    accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                    call: `/service/v3/applications/persons/${ '{personId}' }`},
         {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/count`},
         {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
         {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
