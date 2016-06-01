@@ -8,7 +8,6 @@ angular.module('common')
     return {
         set : (newUser) => {
             angular.merge(user, newUser);
-            console.log(user);
         },
 
         get : () => user.cuid || '[cuid]',
