@@ -1,88 +1,95 @@
 angular.module('common')
 .factory('API',['$state','User','$rootScope','$window','$location','CustomAPI','$q','localStorageService','Loader','$timeout',
-                ($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout) => {
+($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout) => {
 
-    let authInfo = {};
+    let authInfo = {},
+        myCUI = window.initializedCustomCui;
 
-    const myCUI = cui.api({
-        dataCalls:CustomAPI.calls,
-        apiUrls: CustomAPI.urls
-    });
+    const populateUserInfo = (info, redirectOpts) => {
+        let deferred = $q.defer(),
+            authInfo = info;
 
-    angular.forEach(CustomAPI.getCallWrappers(myCUI),(func,key) => {
-        myCUI[key]=func;
-    });
+        if (User.get() === '[cuid]') {
+            // If we don't have any user data saved
+            if (info.cuid !== null) {
+                // CUID is present but not in the User factory
+                User.set(info);
+            }
 
-    if(appConfig.serviceUrl){
-        myCUI.setServiceUrl(appConfig.serviceUrl);
-    }
-    else myCUI.setServiceUrl('STG');
+            let promises = [
+                myCUI.getPerson({personId: authInfo.cuid}),
+                myCUI.getPersonRoles({personId: authInfo.cuid})
+            ];
 
-
-    myCUI.setAuthHandler(() => {
-        return myCUI.covAuth({
-            originUri: originUri,
-            authRedirect: window.location.href.split('#')[0] + '#/auth'
-        });
-    });
-
-    const originUri = appConfig.originUri;
-    myCUI.covAuthInfo({originUri:originUri});
-
-
-    const populateUserInfo = (info,redirectOpts) => {
-        authInfo = info;
-        const deferred = $q.defer();
-        User.set(info);
-        myCUI.getPersonRoles({ personId: authInfo.cuid })
-        .then((res) => {
-            const roleList = res.map(x => x.name);
-            User.setEntitlements(roleList);
-            deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
-        });
-
-        myCUI.getPerson({ personId: authInfo.cuid })
-        .then((res) => {
-            User.set(res);
-        });
+            $q.all(promises)
+            .then((res) => {
+                let roleList = res[1].map((x) => {
+                    return x.name;
+                });
+                User.setEntitlements(roleList);
+                User.set(res[0]);
+                deferred.resolve({roleList: roleList, redirect: redirectOpts});
+            });
+        }
+        else {
+            deferred.resolve({roleList: User.getEntitlements(), redirect: redirectOpts});
+        }
         return deferred.promise;
-    }
+    };
 
-    return {
+    const stateChangeHandler = (redirectOpts) => {
+        let deferred = $q.defer();
+
+        let sessionInfo = myCUI.getCovAuthInfo();;
+        myCUI.setServiceUrl(appConfig.serviceUrl);
+        myCUI.covAuthInfo({originUri: appConfig.originUri});
+
+        if (!redirectOpts.toState.access) {
+            deferred.resolve({rolesList: [], redirect: redirectOpts});
+        }
+        else if (redirectOpts.toState.name !== 'auth') {
+            // Redirect to the pre-auth state
+            localStorage.set('appRedirect', redirectOpts);
+            deferred.resolve({roleList: [], redirect: redirectOpts});
+        }
+        else {
+            myCUI.handleCovAuthResponse({selfRedirect: true})
+            .then((res) => {
+                return populateUserInfo(res, localStorage.get('appRedirect'));
+            })
+            .then((res) => {
+                deferred.resolve(res);
+            });
+        }
+        return deferred.promise;
+    };
+
+    const jwtAuthHandler = () => {
+        return myCUI.covAuth({
+            originUri: appConfig.originUri,
+            authRedirect: window.location.href.split('#')[0] + '#/auth',
+            appRedirect: $location.path()
+        });
+    };
+
+    myCUI.setServiceUrl(appConfig.serviceUrl);
+    myCUI.setAuthHandler(jwtAuthHandler);
+
+
+    let apiFactory = {
         cui: myCUI,
         getUser: User.get,
         setUser: User.set,
-        handleStateChange: (redirectOpts) => {
-            const deferred = $q.defer();
-            const sessionInfo = myCUI.getCovAuthInfo();
-            if(redirectOpts.toState.name!=='auth') {
-                localStorage.set('appRedirect',redirectOpts); // set the redirect to whatever the last state before auth was
-                Loader.onFor('userDetails','getting-user-info');
-                populateUserInfo(sessionInfo,redirectOpts) // if there's no session info stored this will force a 401 on getPerson, which will trigger cui's auth handler
-                .then((res) => {
-                    deferred.resolve(res);
-                    $timeout(()=> Loader.offFor('userDetails'),50);
-                });
-            }
-            else {
-                if(!redirectOpts.toParams.cuid) {
-                    deferred.resolve( { redirect:redirectOpts, roleList: User.getEntitlements() } );
-                }
-                else {
-                    Loader.onFor('userDetails','getting-user-info');
-                    myCUI.handleCovAuthResponse({selfRedirect:true})
-                    .then((res)=>{
-                        populateUserInfo(res,localStorage.get('appRedirect'))
-                        .then((res) => {
-                            deferred.resolve(res);
-                            $timeout(()=> Loader.offFor('userDetails'),50);
-                        });
-                    });
-                }
-            }
-
-            return deferred.promise;
+        setPersonData: User.setPersonData,
+        getPersonData: User.getPersonData,
+        user: User.user,
+        handleStateChange: stateChangeHandler,
+        setAuthInfo: function(newAuthInfo) {
+            angular.copy(newAuthInfo[0], authInfo);
         },
-        authInfo:authInfo
+        authInfo: authInfo
     };
+
+    return apiFactory;
+
 }]);
