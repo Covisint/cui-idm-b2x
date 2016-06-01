@@ -93,6 +93,7 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
             event.preventDefault();
             API.handleStateChange({ toState,toParams,fromState,fromParams })
             .then((res) => {
+                console.log(res);
                 // Determine if user is able to access the particular route we're navigation to
                 const { toState, toParams, fromState, fromParams } = res.redirect;
                 routing(toState, toParams, fromState, fromParams, res.roleList);

@@ -43,7 +43,7 @@ angular.module('common')
 
         myCUI.getPerson({ personId: authInfo.cuid })
         .then((res) => {
-            angular.copy(res, User.user);
+            User.set(res);
         });
         return deferred.promise;
     }
