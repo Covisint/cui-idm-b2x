@@ -1,14 +1,12 @@
 angular.module('common')
-.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','API','Menu','Loader',
-function($state,Countries,Timezones,Languages,$translate,LocaleService,User,API,Menu,Loader) {
+.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','Menu','Loader',
+function($state,Countries,Timezones,Languages,$translate,LocaleService,User,Menu,Loader) {
 
     return {
         appConfig: appConfig,
-        authInfo: API.authInfo,
         countries: Countries,
         getLanguageCode: Languages.getCurrentLanguageCode,
         languages: Languages.all,
-        logout: API.cui.covLogout,
         menu: Menu,
         timezones: Timezones.all,
         user: User.user,
