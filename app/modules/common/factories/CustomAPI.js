@@ -1,73 +1,50 @@
 angular.module('common')
-.factory('CustomAPI',[()=>{
-
-    const urls = [
-        // {name: 'STG', url: 'https://apistgdev.np.covapp.io'}
-    ];
+.factory('CustomAPI',[() => {
 
     const calls = [
-        {cmd: 'getPackageClaims',                        accepts: '.platform.package.claim.v1',                          call: '/service/v3/claims'},
+        {cmd: 'getPackageClaims',                        accepts: 'application/vnd.com.covisint.platform.package.claim.v1+json',                            call: '/service/v3/claims',                                                                     type: 'GET' },
 
-        {cmd: 'getPersonPackageClaims',                  accepts: '.platform.package.grant.claim.v1',                    call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`},
+        {cmd: 'getPersonPackageClaims',                  accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',                      call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`,                type: 'GET' },
 
-        {cmd: 'getCategories',                           accepts: '.platform.category.v1',                               call: `/service/v3/categories`},
+        {cmd: 'getCategories',                           accepts: 'application/vnd.com.covisint.platform.category.v1+json',                                 call: `/service/v3/categories`,                                                                 type: 'GET' },
 
-        {cmd: 'getPersonRequestableApps',                accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/requestable`},
+        {cmd: 'getPersonRequestableApps',                accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                      call: `/service/v3/applications/persons/${ '{personId}' }/requestable`,                         type: 'GET' },
 
-        {cmd: 'getPersonRequestableCount',               accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`},
+        {cmd: 'getPersonRequestableCount',               accepts: 'text/plain',                                                                             call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`,                   type: 'GET'},
 
-        {cmd: 'getPersonGrantedApps',                    accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }`},
+        {cmd: 'getPersonGrantedApps',                    accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                      call: `/service/v3/applications/persons/${ '{personId}' }`,                                     type: 'GET' },
 
-        {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                          call: `/service/v3/applications/persons/${ '{personId}' }/count`},
+        {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                                                             call: `/service/v3/applications/persons/${ '{personId}' }/count`,                               type: 'GET' },
 
-        {cmd: 'getOrganizationRequestableApps',          accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`},
+        {cmd: 'getOrganizationRequestableApps',          accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                      call: `/service/v3/applications/organizations/${ '{organizationId}' }`,                         type: 'GET' },
 
-        {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`},
+        {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                                                             call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`,       type: 'GET' },
 
-        {cmd: 'getOrganizationGrantedApps',              accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/organizations/${ '{organizationId}' }`},
+        {cmd: 'getOrganizationGrantedApps',              accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                      call: `/service/v3/applications/organizations/${ '{organizationId}' }`,                         type: 'GET' },
 
-        {cmd: 'getOrganizationGrantedCount',             accepts: 'text/plain',                                          call: `/service/v3/applications/organizations/${ '{organizationId}' }/count`},
+        {cmd: 'getOrganizationGrantedCount',             accepts: 'text/plain',                                                                             call: `/service/v3/applications/organizations/${ '{organizationId}' }/count`,                   type: 'GET' },
 
-        {cmd: 'getPersonGrantableApps',                  accepts: '.platform.service.application.v1',                    call: `/service/v3/applications/persons/${ '{personId}' }/grantable`},
+        {cmd: 'getPersonGrantableApps',                  accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                      call: `/service/v3/applications/persons/${ '{personId}' }/grantable`,                           type: 'GET' },
 
-        {cmd: 'getPersonGrantableCount',                  accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`},
+        {cmd: 'getPersonGrantableCount',                 accepts: 'text/plain',                                                                             call: `/service/v3/applications/persons/${ '{personId}' }/grantable/count`,                     type: 'GET' },
 
-        {cmd: 'getOrganizationGrantableApps',             accepts:'.platform.service.application.v1',                call: `/service/v3/applications/oeganizations/${ '{organizationId}' }/grantable`},
+        {cmd: 'getOrganizationGrantableApps',            accepts:'application/vnd.com.covisint.platform.service.application.v1+json',                       call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable`,               type: 'GET' },
 
-        {cmd: 'getOrganizationGrantableCount',            accepts: 'text/plain',                                     call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`},
+        {cmd: 'getOrganizationGrantableCount',           accepts: 'text/plain',                                                                             call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`,               type: 'GET' },
 
-        {cmd: 'getPersonStatusHistory',                  accepts: '.platform.person.status.history.v1',                  call: '/person/v3/persons/statusHistory' },
+        {cmd: 'getPersonStatusHistory',                  accepts: 'application/vnd.com.covisint.platform.person.status.history.v1+json',                    call: '/person/v3/persons/statusHistory',                                                       type: 'GET' },
 
-        {cmd: 'getPersonPasswordChangeHistory',          accepts: '.platform.authn.password.change.history.req.v1',      call: `/authentication/v4/passwords/changeHistory` },
+        {cmd: 'getPersonPasswordChangeHistory',          accepts: 'application/vnd.com.covisint.platform.authn.password.change.history.req.v1+json',        call: `/authentication/v4/passwords/changeHistory`,                                             type: 'GET' },
 
-        {cmd: 'getPersonPendingServicePackages',         accepts: '.platform.package.request.v1',                        call: `/service/v3/requests` },
+        {cmd: 'getPersonPendingServicePackages',         accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                          call: `/service/v3/requests`,                                                                   type: 'GET' },
 
-        {cmd: 'getPackage',                              accepts: '.platform.package.v1',                           call: `/service/v3/packages/${ '{packageId}' }` },
+        {cmd: 'getPackage',                              accepts: 'application/vnd.com.covisint.platform.package.v1+json',                                  call: `/service/v3/packages/${ '{packageId}' }`,                                                type: 'GET' },
 
-        {cmd: 'denyPackage',                             accepts: 'text/plain',                                     call: `/service/v3/requests/tasks/deny`, type:'POST' },
+        {cmd: 'denyPackage',                             accepts: 'text/plain',                                                                             call: `/service/v3/requests/tasks/deny`,                                                        type: 'POST' },
 
-        {cmd: 'grantClaims',                             accepts: '.platform.package.grant.claim.v1',                    call: `/packages/grants/claims`,   type:'POST' }
+        {cmd: 'approvePackage',                          accepts: 'text/plain',                                                                             call: `/service/v3/requests/tasks/approve`,                                                     type: 'POST' },
     ];
 
-    const getCallWrappers = (cuiObject) => {
-        return calls.reduce((wrappers,call) => {
-            wrappers[call.cmd] = (opts) => {
-                if(!opts) opts = {};
-
-                if(call.type) opts.type = call.type;
-                else opts.type = 'GET';
-
-                if(opts.type==='POST' || opts.type==='PUT') {
-                    opts.data = JSON.stringify(opts.data);
-                }
-
-                if(call.accepts === 'text/plain') opts.accepts = call.accepts;
-                return cuiObject.doCall(call.cmd,opts)
-            }
-            return wrappers;
-        }, {});
-    };
-
-    return { urls, calls, getCallWrappers };
+    return calls;
 
 }]);

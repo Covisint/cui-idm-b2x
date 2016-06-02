@@ -78,28 +78,42 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-        if(!toState.access || !toState.access.loginRequired) {
-            Menu.handleStateChange(toState.menu);
-            PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-            return;
-        }
-        else if (User.get()!=='[cuid]'){
-            event.preventDefault();
-            routing(toState, toParams, fromState, fromParams, User.getEntitlements());
-            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
-            Menu.handleStateChange(toState.menu);
+        event.preventDefault();
+        const route = () => {
+            if (!toState.access || !toState.access.loginRequired) {
+                Menu.handleStateChange(toState.menu);
+                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams });
+                return;
+            }
+            else if (User.get() !== '[cuid]') {
+                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
+                Menu.handleStateChange(toState.menu);
+            }
+            else {
+                API.handleStateChange({ toState,toParams,fromState,fromParams })
+                .then((res) => {
+                    // Determine if user is able to access the particular route we're navigation to
+                    const { toState, toParams, fromState, fromParams } = res.redirect;
+                    routing(toState, toParams, fromState, fromParams, res.roleList);
+                    PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                    // Menu handling
+                    Menu.handleStateChange(res.redirect.toState.menu);
+                });
+            }    
+        };
+
+        // Async load API.CUI here
+        if (_.isEmpty(API.cui)) {
+            API.initApi()
+            .then(() => {
+                route();
+            });
         }
         else {
-            event.preventDefault();
-            API.handleStateChange({ toState,toParams,fromState,fromParams })
-            .then((res) => {
-                // Determine if user is able to access the particular route we're navigation to
-                const { toState, toParams, fromState, fromParams } = res.redirect;
-                routing(toState, toParams, fromState, fromParams, res.roleList);
-                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-                // Menu handling
-                Menu.handleStateChange(res.redirect.toState.menu);
-            });
+            route();
         }
     });
 
