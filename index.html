@@ -11,14 +11,14 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
 <body ng-cloak ng-controller="baseCtrl as base">
-  <div ng-if="base.loader.for['userDetails']">
+  <div ng-if="base.loader.for.wholeApp">
     <div style="position:absolute; left:50%; top:50%; display:inline-block; transform:translate(-50%,-50%); text-align:center;">
-      <h1>{{base.loader.for['userDetails'].message | translate}}</h1>
+      <h1>{{base.loader.for.wholeApp.message | translate}}</h1>
       <br/>
       <div class="cui-loading" style="display:inline-block"></div>
     </div>
   </div>
-  <div class="cui-wrapper v2" ng-if="!base.loader.for['userDetails']">
+  <div class="cui-wrapper v2" ng-if="!base.loader.for.wholeApp">
     <snap-drawer>
       <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
         <div class="cui-profile__row">
