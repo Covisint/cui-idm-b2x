@@ -89,7 +89,7 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        if (personRequest.packages.length > 0) {
+        if (personRequest.packages && personRequest.packages.length > 0) {
             DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
         }
         DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
