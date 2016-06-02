@@ -11,13 +11,14 @@ module.exports = function(grunt) {
   };
 
   var tasks = ['watch','sass','browserSync','autoprefixer','clean','copy','filerev','useminPrepare',
-  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel'];
+  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
 
   var opts = {
     config:config
   };
+
   tasks.forEach(function(task) {
-    opts[task] =require('./tasks/' + task + '.js')(grunt, config);
+    opts[task] = require('./tasks/' + task + '.js')(grunt, config);
   });
 
   grunt.initConfig(opts);
@@ -40,10 +41,10 @@ module.exports = function(grunt) {
 
 
   // Tasks ------------------------------------------------------------
-  grunt.registerTask('default', ['copy:dev','concatModules','babel','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('default', ['copy:dev','concatModules','babel','ngAnnotate','sass','autoprefixer','browserSync:dev','watch']);
 
   grunt.registerTask('build', ['sass','autoprefixer','processhtml','ngtemplates:build','clean:build','copy:build',
-                                'concatModules','babel','useminPrepare','concat:generated',
+                                'concatModules','babel','ngAnnotate','useminPrepare','concat:generated',
                                 'cssmin:generated','uglify:generated','filerev:build','usemin','clean:temp']);
 
   grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
