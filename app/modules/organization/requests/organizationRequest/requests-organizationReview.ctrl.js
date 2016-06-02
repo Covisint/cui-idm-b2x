@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgRequestReviewCtrl', ['API','$stateParams','$q','DataStorage','$timeout','$state',
-function(API,$stateParams,$q,DataStorage,$timeout,$state) {
+.controller('orgRequestReviewCtrl',function(API,$stateParams,$q,DataStorage,$timeout,$state) {
     'use strict';
 
     const orgRequestReview = this,
@@ -45,4 +44,4 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

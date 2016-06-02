@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgRequestsCtrl', ['API','$stateParams','$q','$state',
-function(API,$stateParams,$q,$state) {
+.controller('orgRequestsCtrl',function(API,$stateParams,$q,$state) {
     'use strict';
 
     const orgRequests = this,
@@ -50,4 +49,4 @@ function(API,$stateParams,$q,$state) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

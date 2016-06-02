@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('pendingRequestsCtrl', ['API','$stateParams','$q','$state','DataStorage',
-function(API,$stateParams,$q,$state,DataStorage) {
+.controller('pendingRequestsCtrl',function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
     const pendingRequests = this,
@@ -93,4 +92,4 @@ function(API,$stateParams,$q,$state,DataStorage) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

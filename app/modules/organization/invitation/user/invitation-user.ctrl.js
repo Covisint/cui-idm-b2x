@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('inviteUserCtrl', [
-function() {
+.controller('inviteUserCtrl',function() {
     'use strict';
 
     const inviteUser = this;
@@ -13,4 +12,4 @@ function() {
     // ON LOAD START ---------------------------------------------------------------------------------
     // ON LOAD END -----------------------------------------------------------------------------------
 
-}]);
+});
