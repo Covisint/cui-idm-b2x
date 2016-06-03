@@ -7,8 +7,8 @@
     "type": "git",
     "url": "git+https://github.com/thirdwavellc/cui-idm-b2x.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ricardo Marques, Thirdwave, LLC",
+  "license": "LicenseRef-LICENSE",
   "bugs": {
     "url": "https://github.com/thirdwavellc/cui-idm-b2x/issues"
   },
