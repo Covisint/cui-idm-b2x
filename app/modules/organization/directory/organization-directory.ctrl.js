@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl', ['$scope','$stateParams','API','$filter','Sort','$state',
-function($scope,$stateParams,API,$filter,Sort,$state) {
+.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state) {
     'use strict';
 
     const orgDirectory = this,
@@ -202,4 +201,4 @@ function($scope,$stateParams,API,$filter,Sort,$state) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

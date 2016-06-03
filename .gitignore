@@ -3,7 +3,7 @@ bower_components
 coverage
 target
 assets/app/templateCache.js
-assets/app/processedHtml/
+assets/processedHtml/
 assets/concat/
 build
 build-sdk

@@ -6,7 +6,7 @@ module.exports = function(grunt,config){
     },
     scripts:{
       files: ['app/**/*.js'],
-      tasks: ['concatModules','babel'],
+      tasks: ['concatModules','babel','ngAnnotate'],
       options: {
         spawn: false,
       },

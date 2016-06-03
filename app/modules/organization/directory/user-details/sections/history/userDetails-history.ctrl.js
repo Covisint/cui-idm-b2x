@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('userDetailsHistoryCtrl',['API','$stateParams','$q',
-function(API,$stateParams,$q) {
+.controller('userDetailsHistoryCtrl',function(API,$stateParams,$q) {
 	'use strict';
 
 	const userDetailsHistory = this,
@@ -32,4 +31,4 @@ function(API,$stateParams,$q) {
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
-}]);
+});

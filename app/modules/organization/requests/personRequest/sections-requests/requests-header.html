@@ -4,7 +4,7 @@
   <!-- User Name and Invitation -->
   <div class="cui-action" ng-if="personRequest.loading===false">
     <!-- User Name -->
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})"><{{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="personRequest.invitationClicked=!personRequest.invitationClicked" off-click="personRequest.invitationClicked=false">

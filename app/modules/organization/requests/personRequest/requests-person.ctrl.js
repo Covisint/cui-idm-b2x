@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('personRequestCtrl', ['API','$stateParams','$q','$state','DataStorage',
-function(API,$stateParams,$q,$state,DataStorage) {
+.controller('personRequestCtrl',function(API,$stateParams,$q,$state,DataStorage,$scope) {
     'use strict';
 
     const personRequest = this,
@@ -46,25 +45,18 @@ function(API,$stateParams,$q,$state,DataStorage) {
     	API.cui.getPerson({personId: userId})
     	.then((res) => {
     		personRequest.user = res;
-    	})
-    );
+    	}),
 
-    apiPromises.push(
-    	API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
-    	.then((res) => {
-    		personRequest.userPersonRequest = res[0];
-    	})
-    );
+        API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
+        .then((res) => {
+            personRequest.userPersonRequest = res[0];
+        }),
 
-    apiPromises.push(
-    	API.cui.getOrganization({organizationId: orgId})
-    	.then((res) => {
-    		personRequest.organization = res;
-    	})
-    );
+        API.cui.getOrganization({organizationId: orgId})
+        .then((res) => {
+            personRequest.organization = res;
+        }),
 
-    apiPromises.push(
-        // Get user's pending service packages
         API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
         .then((res) => {
             personRequest.packages = res;
@@ -86,14 +78,18 @@ function(API,$stateParams,$q,$state,DataStorage) {
         })
     );
 
-    $q.all(apiPromises);
+    $q.all(apiPromises)
+    .catch((error) => {
+        console.log(error);
+        personRequest.loading = false;
+    });
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        if (personRequest.packages.length > 0) {
+        if (personRequest.packages && personRequest.packages.length > 0) {
             DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
         }
         DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
@@ -102,4 +98,4 @@ function(API,$stateParams,$q,$state,DataStorage) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});
