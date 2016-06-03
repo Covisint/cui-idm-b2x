@@ -25,6 +25,14 @@ angular.module('common')
         return deferred.promise;
     };
 
+    const jwtAuthHandler = () => {
+        return myCUI.covAuth({
+            originUri: appConfig.originUri,
+            authRedirect: window.location.href.split('#')[0] + '#/auth',
+            appRedirect: $location.path()
+        });
+    };
+
     const initApi = () => {
         let deferred = $q.defer();
         Loader.onFor('wholeApp','custom-api-loading');
@@ -48,16 +56,6 @@ angular.module('common')
         return deferred.promise;
     };
 
-    const jwtAuthHandler = () => {
-        return myCUI.covAuth({
-            originUri: appConfig.originUri,
-            authRedirect: window.location.href.split('#')[0] + '#/auth',
-            appRedirect: $location.path()
-        });
-    };
-
-
-
     let apiFactory = {
         cui: myCUI,
         getUser: User.get,
@@ -66,35 +64,25 @@ angular.module('common')
         getPersonData: User.getPersonData,
         user: User.user,
         initApi,
-        handleStateChange: (redirectOpts) => {
+        authenticateUser: (redirectOpts) => {
             const deferred = $q.defer();
             const sessionInfo = myCUI.getCovAuthInfo();
             if(redirectOpts.toState.name!=='auth') {
                 localStorage.set('appRedirect',redirectOpts); // set the redirect to whatever the last state before auth was
-                Loader.onFor('wholeApp','getting-user-info');
-                populateUserInfo(sessionInfo,redirectOpts) // if there's no session info stored this will force a 401 on getPerson, which will trigger cui's auth handler
-                .then((res) => {
-                    deferred.resolve(res);
-                    $timeout(()=> Loader.offFor('wholeApp'),50);
-                });
+                Loader.onFor('wholeApp','redirecting-to-sso'); // don't need to turn this loader off since covAuth takes us to another page
+                jwtAuthHandler(); // force redirect to SSO
             }
             else {
-                if(!redirectOpts.toParams.cuid) {
-                    deferred.resolve( { redirect:redirectOpts, roleList: User.getEntitlements() } );
-                }
-                else {
-                    Loader.onFor('wholeApp','getting-user-info');
-                    myCUI.handleCovAuthResponse({selfRedirect:true})
-                    .then((res)=>{
-                        populateUserInfo(res,localStorage.get('appRedirect'))
-                        .then((res) => {
-                            deferred.resolve(res);
-                            $timeout(()=> Loader.offFor('wholeApp'),50);
-                        });
+                Loader.onFor('wholeApp','getting-user-info');
+                myCUI.handleCovAuthResponse({selfRedirect:true})
+                .then((res)=>{
+                    populateUserInfo(res,localStorage.get('appRedirect'))
+                    .then((res) => {
+                        deferred.resolve(res);
+                        $timeout(()=> Loader.offFor('wholeApp'),50);
                     });
-                }
+                });
             }
-
             return deferred.promise;
         },
         setAuthInfo: function(newAuthInfo) {

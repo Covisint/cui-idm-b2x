@@ -10,16 +10,16 @@
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 </head>
-<body ng-cloak ng-controller="baseCtrl as base">
-  <div ng-if="base.loader.for.wholeApp">
+<body ng-controller="baseCtrl as base">
+  <div ng-if="base.loader.for.wholeApp" ng-cloak>
     <div style="position:absolute; left:50%; top:50%; display:inline-block; transform:translate(-50%,-50%); text-align:center;">
       <h1>{{base.loader.for.wholeApp.message | translate}}</h1>
       <br/>
       <div class="cui-loading" style="display:inline-block"></div>
     </div>
   </div>
-  <div class="cui-wrapper v2" ng-if="!base.loader.for.wholeApp">
-    <snap-drawer>
+  <div class="cui-wrapper v2" ng-if="!base.loader.for.wholeApp" ng-cloak>
+    <snap-drawer ng-if="base.menu.mobile.enabled">
       <div class="cui-profile cui-profile--mobile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
         <div class="cui-profile__row">
           <span class="cui-profile__user-name">{{base.user.name.given}} {{base.user.name.surname}}</span>
@@ -87,7 +87,7 @@
       </span> -->
     </snap-drawer>
     <snap-content snap-opt-disable="'right'">
-       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}">
+       <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled">
        <!-- ng-if="base.menu.desktop.enabled" -->
 
         <span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active">
@@ -137,13 +137,13 @@
         <!-- <span class="desktop-menu--option"  ui-sref="profile.user">My Profile</span> -->
 
       </div>
-      <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed' || !base.menu.desktop.enabled}">
+      <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed', 'cui-nav__content-wrapper--full-width': !base.menu.desktop.enabled}">
         <div class="cui-menu__toggle-button--desktop cui-menu__toggle-button-container active" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
           <div class="cui-menu__toggle-button"></div>
         </div>
         <header class="cui-header">
           <div class="cui-header__top">
-            <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()"  ng-if="base.menu.mobile.enabled" style="margin-right:20px">
+            <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()" ng-if="base.menu.mobile.enabled" style="margin-right:20px">
               <div class="menu-toggle--button"></div>
             </div>
 
@@ -197,6 +197,7 @@
   </div>
 
 <!-- build:js app/js/vendor.js -->
+<script src="node_modules/ajv/dist/ajv.min.js"></script>
 <script src="node_modules/babel-polyfill/dist/polyfill.js"></script>
 <script src="bower_components/tether/dist/js/tether.js"></script>
 <script src="node_modules/blueimp-md5/js/md5.min.js"></script>

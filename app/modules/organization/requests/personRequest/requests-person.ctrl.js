@@ -86,10 +86,7 @@ function(API,$stateParams,$q,$state,DataStorage) {
         })
     );
 
-    $q.all(apiPromises)
-    .catch((error) => {
-        console.log(error);
-    });
+    $q.all(apiPromises);
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
