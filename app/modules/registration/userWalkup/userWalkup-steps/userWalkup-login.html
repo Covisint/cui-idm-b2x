@@ -77,7 +77,7 @@
 </ng-form>
 
 <div class="cui-wizard__controls">
-	<button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&lt;&lt; {{'cui-previous' | translate}}</button>
+	<button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&60#;&60#; {{'cui-previous' | translate}}</button>
 	<button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
 	<button class="cui-wizard__next" ng-if="wizardFinished" ng-click="userLogin.$valid && goToStep(5)" ng-class="!userLogin.$valid? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
 </div>
