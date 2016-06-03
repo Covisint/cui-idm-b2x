@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgProfileCtrl', function($scope, $stateParams, API) {
+.controller('orgProfileCtrl', function(API,$scope,$state,$stateParams) {
     'use strict';
 
     const orgProfile = this,
@@ -11,9 +11,12 @@ angular.module('organization')
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     var handleError = function(err) {
-        orgProfile.loading = false;
-        $scope.$digest();
         console.log('Error', err);
+        orgProfile.loading = false;
+        if (!orgProfile.organization) {
+            $state.go('misc.loadError');
+        }
+        $scope.$digest();
     };
 
     var onLoadFinish = function onLoadFinish(organizationResponse) {
