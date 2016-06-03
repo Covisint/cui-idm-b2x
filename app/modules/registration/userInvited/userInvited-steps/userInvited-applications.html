@@ -2,7 +2,7 @@
 <div ng-if="!usersRegister.applications.list">
   {{'cui-org-no-applications' | translate}}
   <div class="cui-wizard__controls" style="margin-top:20px">
-    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&lt;&lt; {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
     <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="goToStep(4)">{{'cui-back-to-review' | translate}}</button>
   </div>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="cui-wizard__controls" style="margin-top:20px">
-    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()"><< {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&lt;&lt; {{'cui-previous' | translate}}</button>
     <button class="cui-wizard__next" ng-click="usersRegister.applications.process()===0? next() : usersRegister.applications.step=2">{{'cui-next' | translate}}</button>
   </div>
 </div>
@@ -68,7 +68,7 @@
 
   <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && usersRegister.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
   <div class="cui-wizard__controls">
-    <button class="cui-wizard__previous" ng-click="usersRegister.applications.step=usersRegister.applications.step-1"><< {{'cui-all-applications' | translate}}</button>
+    <button class="cui-wizard__previous" ng-click="usersRegister.applications.step=usersRegister.applications.step-1">&lt;&lt; {{'cui-all-applications' | translate}}</button>
     <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="usersRegister.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
     <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="selectApps.$valid && goToStep(4)" ng-class="{'cui-wizard__next--error': !selectApps.$valid}">{{'cui-back-to-review' | translate}}</button>
   </div>
