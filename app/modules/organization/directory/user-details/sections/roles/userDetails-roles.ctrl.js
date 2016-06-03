@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('userDetailsRolesCtrl',['API','$stateParams','$q',
-function(API,$stateParams,$q) {
+.controller('userDetailsRolesCtrl',function(API,$stateParams,$q) {
 	'use strict';
 
 	const userDetailsRoles = this,
@@ -31,4 +30,4 @@ function(API,$stateParams,$q) {
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
-}]);
+});

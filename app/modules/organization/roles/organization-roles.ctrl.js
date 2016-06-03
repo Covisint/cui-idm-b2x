@@ -1,8 +1,8 @@
 angular.module('organization')
-.controller('orgRolesCtrl', ['$scope',
-function($scope) {
+.controller('orgRolesCtrl', function($scope) {
     'use strict';
-    var orgRoles = this;
+
+    const orgRoles = this;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -15,12 +15,9 @@ function($scope) {
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-
-    console.log('Roles Screen!');
-
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

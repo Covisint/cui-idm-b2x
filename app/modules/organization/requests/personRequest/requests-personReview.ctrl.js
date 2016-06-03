@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('personRequestReviewCtrl', ['API','$stateParams','$q','DataStorage','$timeout','$state',
-function(API,$stateParams,$q,DataStorage,$timeout,$state) {
+.controller('personRequestReviewCtrl',function(API,$stateParams,$q,DataStorage,$timeout,$state) {
     'use strict';
 
     const personRequestReview = this,
@@ -199,4 +198,4 @@ function(API,$stateParams,$q,DataStorage,$timeout,$state) {
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

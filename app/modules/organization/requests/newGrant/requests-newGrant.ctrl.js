@@ -1,12 +1,8 @@
 angular.module('organization')
-.controller('newGrantCtrl', ['API','$stateParams',
-function(API,$stateParams) {
+.controller('newGrantCtrl',function(API,$stateParams) {
     'use strict';
 
     const newGrant = this;
-
-    console.log('New Grant Ctrl');
-
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -17,4 +13,4 @@ function(API,$stateParams) {
     // ON CLICK START --------------------------------------------------------------------------------
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

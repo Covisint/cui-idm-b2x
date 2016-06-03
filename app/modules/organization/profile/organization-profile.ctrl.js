@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgProfileCtrl', ['$scope','$stateParams','API',
-function($scope,$stateParams,API) {
+.controller('orgProfileCtrl', function($scope, $stateParams, API) {
     'use strict';
 
     const orgProfile = this,
@@ -66,4 +65,4 @@ function($scope,$stateParams,API) {
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
-}]);
+});
