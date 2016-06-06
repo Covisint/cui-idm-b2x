@@ -53,6 +53,12 @@
 
 .cui-organization--pending-requests {
 
+  .cui-breadcrumb {
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+
   .cui-media--centered {
     margin-top: em(18);
     margin-bottom: em(84);
