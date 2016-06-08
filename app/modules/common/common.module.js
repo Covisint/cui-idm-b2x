@@ -23,7 +23,11 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
         access:loginRequired
     });
 
+
+
     if (appConfig.languages) {
+        if(!appConfig.languageResources) console.error('You need to configure languageResources in your appConfig.json.');
+
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
@@ -37,11 +41,7 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
             return object;
         };
 
-        $translateProvider.useLoader('LocaleLoader', {
-            url: 'bower_components/cui-i18n/dist/cui-i18n/angular-translate/',
-            prefix: 'locale-',
-            suffix: '.json'
-        })
+        $translateProvider.useLoader('LocaleLoader', appConfig.languageResources )
         .registerAvailableLanguageKeys(languageKeys, returnRegisterAvailableLanguageKeys())
         .uniformLanguageTag('java')
         .determinePreferredLanguage()
@@ -70,36 +70,10 @@ angular.module('common')
     'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
 function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) {
 
-    if(window.cuiApiInterceptor) cuiApiInterceptor({
-      apiUri: [ appConfig.serviceUrl ],
-      logCallback: ({ result }) => {
-        if(result.error) {
-          switch(result.errorType) {
-            case 'response inconsistency':
-              console.log(`\n%c------ The call made to ${result.endpoint} returned an unexpected response ------`, 'background:#333; color:orange; padding:0 20px 0;margin:20px;');
-              result.errors.forEach((error) => {
-                if(error.dataPath.indexOf('.')>=0) {
-                    console.log(`The property "${ error.dataPath.replace(/\./g,'') }" ${ error.message }`);
-                }
-                else if(result.response[error.dataPath.replace(/\[|\]|/g,'')]){
-                    console.log(result.response[error.dataPath.replace(/\[|\]|/g,'')],`\n--> ${ error.message }` );
-                }
-              });
-              break;
-            case 'missing schema':
-              console.log(`\n%c------ Missing schema for ${ result.missingSchema } ------\n`,'background:#333;color:orange;padding:0 20px 0;margin:20px;');
-              console.log(result.response);
-              break;
-            case 'http error':
-              console.log(`\n\n%c------ The call made to ${ result.endpoint } returned an error status ------`, 'padding:0 20px 0;margin:20px;background:#333; color:red');
-              console.log(`\n%cResponse status: ${ result.status }\n%cMessage:${ result.errors[0] }\n`, 'padding:0 20px 0;margin:20px;background:#333; color:red','padding:0 20px 0;margin:20px;background:#333; color:red');
-              console.log('\n\n');
-          }
-        }
-        else {
-          console.log(`\n%c------ The call made to ${ result.endpoint } was successful and returned an expected response ------\n`,'background:green; color:white; padding:0 20px 0;margin:20px;');
-        }
-      }
+
+
+    if(window.cuiApiInterceptor) window.cuiApiInterceptor.startGetInterceptor({
+      apiUris: [ appConfig.serviceUrl ]
     });
 
     // Add locales here
