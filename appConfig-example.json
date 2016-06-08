@@ -15,6 +15,11 @@
         "ja":"日本語 (Japanese)",
         "de":"Deutsche (German)"
     },
+    "languageResources": {
+        "url": "bower_components/cui-i18n/dist/cui-i18n/angular-translate/",
+        "prefix": "locale-",
+        "suffix": ".json"
+    },
     "iconSets":[
         {
             "name":"cui",
