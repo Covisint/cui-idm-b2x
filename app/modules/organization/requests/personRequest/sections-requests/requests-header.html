@@ -63,11 +63,11 @@
       <!-- userID -->
       <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.user.id}}</span>
       <!-- Email -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.user.email}}" class="cui-link"> {{personRequest.user.email}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.user.email}}" class="cui-media__link"> {{personRequest.user.email}}</a></div>
       <!-- Registered Date -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{personRequest.user.creation | date:base.appConfig.dateFormat}}</div>
       <!-- Organization -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-link">{{personRequest.organization.name}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-media__link">{{personRequest.organization.name}}</a></div>
     </div>
   </div>
 
