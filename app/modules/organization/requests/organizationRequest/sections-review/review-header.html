@@ -1,4 +1,4 @@
-<div class="cui-organization__requests-person-header">
+media__link<div class="cui-organization__requests-person-header">
   <!-- Header Breadcrumb -->
   <div>
     <!-- User Name and Invitation -->
@@ -68,11 +68,11 @@
       <!-- userID -->
       <p class="cui-media__content cui-media__content--dark"">{{'userID' | translate}}: {{orgRequestReview.user.id}}</p>
       <!-- Email -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{orgRequestReview.user.email}}" class="cui-link"> {{orgRequestReview.user.email}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{orgRequestReview.user.email}}" class="cui-media__link"> {{orgRequestReview.user.email}}</a></div>
       <!-- Registered Date -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{orgRequestReview.user.creation | date:base.appConfig.dateFormat}}</div>
       <!-- Organization -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-link">{{orgRequestReview.organization.name}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-media__link">{{orgRequestReview.organization.name}}</a></div>
     </div>
   </div>
 
