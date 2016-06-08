@@ -1,8 +1,7 @@
 angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule'])
-.config(['$translateProvider','$locationProvider','$urlRouterProvider','$injector','localStorageServiceProvider',
-    '$cuiIconProvider','$cuiI18nProvider','$paginationProvider','$stateProvider','$compileProvider',
-function($translateProvider,$locationProvider,$urlRouterProvider,$injector,localStorageServiceProvider,$cuiIconProvider,
-    $cuiI18nProvider,$paginationProvider,$stateProvider,$compileProvider) {
+.config(($translateProvider,$locationProvider,$urlRouterProvider,$injector,
+    localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,$paginationProvider,
+    $stateProvider,$compileProvider) => {
 
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
@@ -22,8 +21,6 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
         templateUrl: templateBase + 'auth/auth.html',
         access:loginRequired
     });
-
-
 
     if (appConfig.languages) {
         if(!appConfig.languageResources) console.error('You need to configure languageResources in your appConfig.json.');
@@ -63,18 +60,21 @@ function($translateProvider,$locationProvider,$urlRouterProvider,$injector,local
 
     $compileProvider.debugInfoEnabled(false);
 
-}]);
+});
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
     'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
-function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) {
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) => {
 
-
-
-    if(window.cuiApiInterceptor) window.cuiApiInterceptor.startGetInterceptor({
-      apiUris: [ appConfig.serviceUrl ]
-    });
+    if(window.cuiApiInterceptor) {
+        const cuiApiInterceptorConfig = {
+            apiUris: [ appConfig.serviceUrl ],
+            stopIfInvalidPayload: true
+        }
+        window.cuiApiInterceptor.startGetInterceptor(cuiApiInterceptorConfig)
+        window.cuiApiInterceptor.startPrePutInterceptor(cuiApiInterceptorConfig)
+    }
 
     // Add locales here
     const languageNameObject = $cuiI18n.getLocaleCodesAndNames();
