@@ -7,13 +7,13 @@ angular.module('common')
 
     return {
         set : (newUser) => {
-            user = Object.assign({},user,newUser);
+            angular.merge(user, newUser);
         },
 
         get : () => user.cuid || '[cuid]',
 
         setEntitlements : (newEntitlements) => {
-            user.entitlements = newEntitlements;
+            user.entitlements? user.entitlements = user.entitlements.concat(newEntitlements) : user.entitlements = newEntitlements;
         },
 
         getEntitlements : () => user.entitlements,

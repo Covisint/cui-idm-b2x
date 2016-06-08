@@ -1,6 +1,6 @@
 {
-    "originUri":"cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build",
-    "serviceUrl":"STG",
+    "originUri": "cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build",
+    "serviceUrl": "https://apistgdev.np.covapp.io",
     "dateFormat":"shortDate",
     "languages": {
         "en":"English",

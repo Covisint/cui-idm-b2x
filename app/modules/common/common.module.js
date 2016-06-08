@@ -70,6 +70,38 @@ angular.module('common')
     'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
 function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) {
 
+    if(window.cuiApiInterceptor) cuiApiInterceptor({
+      apiUri: [ appConfig.serviceUrl ],
+      logCallback: ({ result }) => {
+        if(result.error) {
+          switch(result.errorType) {
+            case 'response inconsistency':
+              console.log(`\n%c------ The call made to ${result.endpoint} returned an unexpected response ------`, 'background:#333; color:orange; padding:0 20px 0;margin:20px;');
+              result.errors.forEach((error) => {
+                if(error.dataPath.indexOf('.')>=0) {
+                    console.log(`The property "${ error.dataPath.replace(/\./g,'') }" ${ error.message }`);
+                }
+                else if(result.response[error.dataPath.replace(/\[|\]|/g,'')]){
+                    console.log(result.response[error.dataPath.replace(/\[|\]|/g,'')],`\n--> ${ error.message }` );
+                }
+              });
+              break;
+            case 'missing schema':
+              console.log(`\n%c------ Missing schema for ${ result.missingSchema } ------\n`,'background:#333;color:orange;padding:0 20px 0;margin:20px;');
+              console.log(result.response);
+              break;
+            case 'http error':
+              console.log(`\n\n%c------ The call made to ${ result.endpoint } returned an error status ------`, 'padding:0 20px 0;margin:20px;background:#333; color:red');
+              console.log(`\n%cResponse status: ${ result.status }\n%cMessage:${ result.errors[0] }\n`, 'padding:0 20px 0;margin:20px;background:#333; color:red','padding:0 20px 0;margin:20px;background:#333; color:red');
+              console.log('\n\n');
+          }
+        }
+        else {
+          console.log(`\n%c------ The call made to ${ result.endpoint } was successful and returned an expected response ------\n`,'background:green; color:white; padding:0 20px 0;margin:20px;');
+        }
+      }
+    });
+
     // Add locales here
     const languageNameObject = $cuiI18n.getLocaleCodesAndNames();
 
@@ -78,29 +110,40 @@ function(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,rout
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-        if(!toState.access || !toState.access.loginRequired) {
-            Menu.handleStateChange(toState.menu);
-            PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-            return;
-        }
-        else if (User.get()!=='[cuid]'){
-            event.preventDefault();
-            routing(toState, toParams, fromState, fromParams, User.getEntitlements());
-            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
-            Menu.handleStateChange(toState.menu);
-        }
-        else {
-            event.preventDefault();
-            API.handleStateChange({ toState,toParams,fromState,fromParams })
-            .then((res) => {
-                // Determine if user is able to access the particular route we're navigation to
-                const { toState, toParams, fromState, fromParams } = res.redirect;
-                routing(toState, toParams, fromState, fromParams, res.roleList);
-                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-                // Menu handling
-                Menu.handleStateChange(res.redirect.toState.menu);
+        event.preventDefault();
+        const route = ()=> {
+            if(!toState.access || !toState.access.loginRequired) {
+                Menu.handleStateChange(toState.menu);
+                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                return;
+            }
+            else if (User.get()!=='[cuid]'){
+                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
+                Menu.handleStateChange(toState.menu);
+            }
+            else {
+                API.authenticateUser({ toState,toParams,fromState,fromParams })
+                .then((res) => {
+                    const { toState, toParams, fromState, fromParams } = res.redirect;
+                    // Determine if user is able to access the particular route we're navigating to
+                    routing(toState, toParams, fromState, fromParams, res.roleList);
+                    PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                    // Menu handling
+                    Menu.handleStateChange(res.redirect.toState.menu);
+                });
+            }
+        };
+
+        // sync load API.ccui here
+        if(_.isEmpty(API.cui)){
+            API.initApi()
+            .then(()=>{
+                route();
             });
         }
+        else route();
     });
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {

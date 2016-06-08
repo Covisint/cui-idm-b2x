@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl', ['$scope','$stateParams','API','$state',
-function($scope,$stateParams,API,$state) {
+.controller('orgHierarchyCtrl',function($scope,$stateParams,API,$state) {
     'use strict';
 
     const orgHierarchy = this,
@@ -59,4 +58,4 @@ function($scope,$stateParams,API,$state) {
     
     // ON CLICK END ----------------------------------------------------------------------------------
 
-}]);
+});

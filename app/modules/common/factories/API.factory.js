@@ -1,34 +1,11 @@
 angular.module('common')
-.factory('API',['$state','User','$rootScope','$window','$location','CustomAPI','$q','localStorageService','Loader','$timeout',
-                ($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout) => {
+.factory('API',['$state','User','$rootScope','$window','$location','CustomAPI','$q','localStorageService','Loader','$timeout','Base',
+($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout,Base) => {
 
-    let authInfo = {};
+    let authInfo = {},
+        myCUI = {};
 
-    const myCUI = cui.api({
-        dataCalls:CustomAPI.calls,
-        apiUrls: CustomAPI.urls
-    });
-
-    angular.forEach(CustomAPI.getCallWrappers(myCUI),(func,key) => {
-        myCUI[key]=func;
-    });
-
-    if(appConfig.serviceUrl){
-        myCUI.setServiceUrl(appConfig.serviceUrl);
-    }
-    else myCUI.setServiceUrl('STG');
-
-
-    myCUI.setAuthHandler(() => {
-        return myCUI.covAuth({
-            originUri: originUri,
-            authRedirect: window.location.href.split('#')[0] + '#/auth'
-        });
-    });
-
-    const originUri = appConfig.originUri;
-    myCUI.covAuthInfo({originUri:originUri});
-
+    Base.authInfo = authInfo;
 
     const populateUserInfo = (info,redirectOpts) => {
         authInfo = info;
@@ -43,46 +20,77 @@ angular.module('common')
 
         myCUI.getPerson({ personId: authInfo.cuid })
         .then((res) => {
-            angular.copy(res, User.user);
+            User.set(res);
         });
         return deferred.promise;
-    }
+    };
 
-    return {
+    const jwtAuthHandler = () => {
+        return myCUI.covAuth({
+            originUri: appConfig.originUri,
+            authRedirect: window.location.href.split('#')[0] + '#/auth',
+            appRedirect: $location.path()
+        });
+    };
+
+    const initApi = () => {
+        let deferred = $q.defer();
+        Loader.onFor('wholeApp','custom-api-loading');
+        cui.api({
+            retryUnseured: true,
+            envDefs: ['https://cuijs.run.covisintrnd.com/defs/env.json'],
+            dataCallDefs: [
+                'https://cuijs.run.covisintrnd.com/defs/auth.json',
+                'https://cuijs.run.covisintrnd.com/defs/idm.json',
+                CustomAPI
+            ]
+        })
+        .then((cuiObject) => {
+            Base.logout = cuiObject.covLogout;
+            angular.copy(cuiObject, myCUI);
+            myCUI.setServiceUrl(appConfig.serviceUrl);
+            myCUI.setAuthHandler(jwtAuthHandler);
+            $timeout(()=> Loader.offFor('wholeApp'),50);
+            deferred.resolve();
+        });
+        return deferred.promise;
+    };
+
+    let apiFactory = {
         cui: myCUI,
         getUser: User.get,
         setUser: User.set,
-        handleStateChange: (redirectOpts) => {
+        setPersonData: User.setPersonData,
+        getPersonData: User.getPersonData,
+        user: User.user,
+        initApi,
+        authenticateUser: (redirectOpts) => {
             const deferred = $q.defer();
             const sessionInfo = myCUI.getCovAuthInfo();
             if(redirectOpts.toState.name!=='auth') {
                 localStorage.set('appRedirect',redirectOpts); // set the redirect to whatever the last state before auth was
-                Loader.onFor('userDetails','getting-user-info');
-                populateUserInfo(sessionInfo,redirectOpts) // if there's no session info stored this will force a 401 on getPerson, which will trigger cui's auth handler
-                .then((res) => {
-                    deferred.resolve(res);
-                    $timeout(()=> Loader.offFor('userDetails'),50);
-                });
+                Loader.onFor('wholeApp','redirecting-to-sso'); // don't need to turn this loader off since covAuth takes us to another page
+                jwtAuthHandler(); // force redirect to SSO
             }
             else {
-                if(!redirectOpts.toParams.cuid) {
-                    deferred.resolve( { redirect:redirectOpts, roleList: User.getEntitlements() } );
-                }
-                else {
-                    Loader.onFor('userDetails','getting-user-info');
-                    myCUI.handleCovAuthResponse({selfRedirect:true})
-                    .then((res)=>{
-                        populateUserInfo(res,localStorage.get('appRedirect'))
-                        .then((res) => {
-                            deferred.resolve(res);
-                            $timeout(()=> Loader.offFor('userDetails'),50);
-                        });
+                Loader.onFor('wholeApp','getting-user-info');
+                myCUI.handleCovAuthResponse({selfRedirect:true})
+                .then((res)=>{
+                    populateUserInfo(res,localStorage.get('appRedirect'))
+                    .then((res) => {
+                        deferred.resolve(res);
+                        $timeout(()=> Loader.offFor('wholeApp'),50);
                     });
-                }
+                });
             }
-
             return deferred.promise;
         },
-        authInfo:authInfo
+        setAuthInfo: function(newAuthInfo) {
+            angular.copy(newAuthInfo[0], authInfo);
+        },
+        authInfo: authInfo
     };
+
+    return apiFactory;
+
 }]);

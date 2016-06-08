@@ -31,6 +31,10 @@ angular.module('misc',[])
         .state('misc.success', {
             url: '/success',
             templateUrl: templateBase + 'status/status-success.html'
+        })
+        .state('misc.loadError', {
+            url: '/error',
+            templateUrl: templateBase + 'status/status-loadError.html'
         });
 
 }]);

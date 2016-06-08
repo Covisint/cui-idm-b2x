@@ -2,13 +2,34 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/requests/organizationRequest" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
+<!-- Submit Sucessful Pane -->
+<div class="class-toggle cui-modal" ng-if="orgRequestReview.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+  <div class="cui-modal__pane">
+    <div class="cui-modal__icon">
+      <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+    </div>
+    <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="orgRequestReview.userRegistrationRequest.approval==='denied'">{{'registration-request-denied' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="orgRequestReview.userRegistrationRequest.approval==='approved'">{{'registration-reqiest-approved' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="orgRequestReview.approvedCount!==0">{{orgRequestReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="orgRequestReview.approvedCount!==0">{{orgRequestReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="orgRequestReview.deniedCount!==0">{{orgRequestReview.deniedCount}} {{'rejection-submitted' | translate}}</span>
+  </div>
+</div>
+
 <!-- Header -->
-<div ng-include="'app/modules/organization/requests/organizationRequest/sections-review/request-header.html'"></div>
+<div ng-include="'app/modules/organization/requests/organizationRequest/sections-review/review-header.html'"></div>
 
 <!-- Page Loading -->
 <div class="cui-loading__container--user-details" ng-if="orgRequestReview.loading">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
-<!-- Items for approval -->
-<div ng-include="'app/modules/organization/requests/organizationRequest/sections-review/request-body.html'" ng-if="!orgRequestReview.loading"></div>
+<!-- Body -->
+<div ng-include="'app/modules/organization/requests/organizationRequest/sections-review/review-body.html'" ng-if="!orgRequestReview.loading"></div>
+
+<!-- Review Controls -->
+<div class="cui-organization__submit-row">
+  <span ui-sref="requests.organizationRequest({orgID:orgRequestReview.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+  <button class="cui-button" ng-click="orgRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+</div>

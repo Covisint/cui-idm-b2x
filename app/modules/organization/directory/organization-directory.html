@@ -8,16 +8,16 @@
     <nav class="cui-breadcrumb">
       <ul class="cui-breadcrumb__links">
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile">{{'cui-org-profile' | translate}}</a> 
+          <a ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
           </li>
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
+          <a ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
           </li>
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})" class="active">{{'directory' | translate}}</a>
+          <a ui-sref="organization.directory({orgID:orgDirectory.organization.id})" class="active">{{'directory' | translate}}</a>
           </li> 
         <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:orgProfile.organization.id})">{{'roles' | translate}}</a>
+          <a ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
         </li>
       </ul>
     </nav>

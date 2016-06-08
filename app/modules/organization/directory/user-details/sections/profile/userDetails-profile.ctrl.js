@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('userDetailsProfileCtrl',['$scope','API','$stateParams','Timezones','UserProfile','$q',
-function($scope,API,$stateParams,Timezones,UserProfile,$q) {
+.controller('userDetailsProfileCtrl',function($scope,API,$stateParams,Timezones,UserProfile,$q) {
     'use strict';
 
 	const userDetailsProfile = this,
@@ -35,4 +34,4 @@ function($scope,API,$stateParams,Timezones,UserProfile,$q) {
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
-}]);
+});

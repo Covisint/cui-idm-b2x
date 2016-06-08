@@ -4,7 +4,7 @@
   <!-- User Name and Invitation -->
   <div class="cui-action" ng-if="personRequest.loading===false">
     <!-- User Name -->
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})"><{{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
     <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="personRequest.invitationClicked=!personRequest.invitationClicked" off-click="personRequest.invitationClicked=false">
@@ -63,11 +63,11 @@
       <!-- userID -->
       <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.user.id}}</span>
       <!-- Email -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.user.email}}" class="cui-link"> {{personRequest.user.email}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.user.email}}" class="cui-media__link"> {{personRequest.user.email}}</a></div>
       <!-- Registered Date -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{personRequest.user.creation | date:base.appConfig.dateFormat}}</div>
       <!-- Organization -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-link">{{personRequest.organization.name}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-media__link">{{personRequest.organization.name}}</a></div>
     </div>
   </div>
 

@@ -1,8 +1,9 @@
 <ng-form name="pendingRequestsApproval" ng-if="!personRequest.loading">
   <div class="cui-organization__main-container">
+
     <!-- Organization Request -->
     <div class="cui-flex-table__header">
-      <h3 class="cui-flex-table__heading">Registration Decision</h3>
+      <h3 class="cui-flex-table__heading">{{'registration-decision' | translate}}</h3>
     </div>
     <div class="cui-organization__registration-decision">
       <fieldset class="cui-flex-table__fieldset">
@@ -41,6 +42,7 @@
       <!-- List: Content -->
       <div>
         <cui-expandable class="" transition-speed="100" ng-repeat="package in personRequest.packages" class="">
+          <!-- Package To Approve/Deny -->
           <cui-expandable-title class="">
             <div class="cui-flex-table__tr">
               <div class="cui-flex-table__mobile-stack">
@@ -66,6 +68,7 @@
               </fieldset>
             </div>
           </cui-expandable-title>
+          <!-- Approve expanded information -->
           <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
             <!-- Close Icon -->
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-expandable__close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51" ng-click="collapse()">
@@ -95,11 +98,11 @@
         </cui-expandable>
       </div>
     </div>
+
     <!-- Form Controls -->
     <div class="cui-organization__submit-row">
       <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="personRequest.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
     </div>
-  </div>
-  
 
+  </div>
 </ng-form>
