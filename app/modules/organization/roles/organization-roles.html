@@ -5,22 +5,8 @@
 <div class="cui-organization">
   <!-- Page Header -->
   <div class="cui-action">
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile">{{'cui-org-profile' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:orgProfile.organization.id})">{{'cui-org-hierarchy' | translate}}</a>
-        </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgProfile.organization.id})">{{'directory' | translate}}</a>
-          </li> 
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:orgProfile.organization.id})" ui-sref-active="active">{{'roles' | translate}}</a>
-        </li>
-      </ul>
-    </nav>
+    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
   </div>
 
   <!-- Roles Content -->

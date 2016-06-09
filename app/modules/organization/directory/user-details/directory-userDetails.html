@@ -1,11 +1,6 @@
-<!-- processHTML:remove -->
-<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/directory/user-details" target="blank">here</a>.</div>
-<!-- /processHTML -->
-
 <div class="cui-organization">
-
   <!-- Page Header -->
-  <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header.html'"></div>
+  <ng-include src="'app/modules/organization/directory/user-details/sections/headers/userDetails-header.html'"></ng-include>
 
   <div class="cui-users__profile">
     <!-- Left Content -->
@@ -13,11 +8,11 @@
       <!-- Header -->
       <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header-left.html'"></div>
       <!-- Profile -->
-      <div ui-view="profile" ng-if="userDetails.profileRolesSwitch"></div> 
+      <div ui-view="profile" ng-if="userDetails.profileRolesSwitch"></div>
       <!-- Roles -->
       <div ui-view="roles" ng-if="!userDetails.profileRolesSwitch"></div>
     </div>
-    
+
     <!-- Right Content -->
     <div class="cui-users__profile-info">
       <!-- Header -->

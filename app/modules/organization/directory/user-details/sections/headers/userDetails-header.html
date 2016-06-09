@@ -1,34 +1,6 @@
 <div class="cui-action">
-  <!-- Navigation -->
-  <nav class="cui-breadcrumb">
-    <ul class="cui-breadcrumb__links">
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="organization.profile({orgID:userDetails.organizationId})">{{'cui-org-profile' | translate}}</a> 
-        </li>
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="organization.hierarchy({orgID:userDetails.organizationId})"">{{'cui-org-hierarchy' | translate}}</a> 
-        </li>
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="organization.directory({orgID:userDetails.organizationId})" class="active">{{'directory' | translate}}</a>
-        </li> 
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="organization.roles({orgID:userDetails.organizationId})">{{'roles' | translate}}</a>
-      </li>
-    </ul>
-  </nav>
-  <!-- Invitation -->
-  <div class="cui-action__actions">
-    <div class="cui-action__action-container" id="invitation-button" ng-click="userDetails.invitationClicked=!userDetails.invitationClicked" off-click="userDetails.invitationClicked=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#envelope4"></use>
-      </svg>
-      <!-- Invitation Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.invitationClicked">
-        <p>{{'invite-user' | translate}}</p>
-        <p>{{'invite-division' | translate}}</p>
-      </div>
-    </div>
-  </div>
+  <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
 </div>
 
 <!-- Name Header -->

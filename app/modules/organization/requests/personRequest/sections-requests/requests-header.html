@@ -1,51 +1,15 @@
-<div class="cui-organization__requests-person-header">  
-  <!-- Action Header -->
-  
+<div class="cui-organization__requests-person-header">
   <!-- User Name and Invitation -->
   <div class="cui-action" ng-if="personRequest.loading===false">
     <!-- User Name -->
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory({userID:personRequest.user.id,orgID:personRequest.user.organization.id})">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
-    <div class="cui-action__actions">
-      <div class="cui-action__action-container" id="invitation-button" ng-click="personRequest.invitationClicked=!personRequest.invitationClicked" off-click="personRequest.invitationClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-          <defs>
-            <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
-            <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
-              <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
-              <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
-              <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
-            </filter>
-          </defs>
-          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
-        </svg>
-        <!-- Invitation Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="personRequest.invitationClicked">
-          <p ui-sref="invitation.user({orgID:personRequest.user.organization.id})">{{'invite-user' | translate}}</p>
-          <p ui-sref="invitation.division({orgID:personRequest.user.organization.id})">{{'invite-division' | translate}}</p>
-        </div>
-      </div>
-    </div>
+    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
   </div>
 
   <!-- Navigation -->
   <div class="cui-action">
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile({orgID:personRequest.user.organization.id})">{{'cui-org-profile' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:personRequest.user.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:personRequest.user.organization.id})" class="active">{{'directory' | translate}}</a>
-          </li> 
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:personRequest.user.organization.id})">{{'roles' | translate}}</a>
-        </li>
-      </ul>
-    </nav>
+    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
   </div>
 
   <!-- Name Header -->
@@ -75,7 +39,7 @@
   <cui-expandable class="cui-expandable" transition-speed="150" ng-if="!personRequest.loading">
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       <div class="cui-expandable__details-status">
-        <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span> 
+        <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
         <span class="cui-expandable__status" ng-class=" 'cui-status--'+personRequest.user.status">{{personRequest.user.status}}</span>
       </div>
     </cui-expandable-title>

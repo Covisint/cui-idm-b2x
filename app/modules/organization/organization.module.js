@@ -24,36 +24,35 @@ angular.module('organization',[])
         })
         // Directory ------------------------------------------------
         .state('organization.directory', {
+            abstract:true,
+            templateUrl: templateBase + 'directory/organization-directory.html'
+        })
+        .state('organization.directory.userList', {
             url: '/directory?orgID',
-            templateUrl: templateBase + 'directory/organization-directory.html',
+            templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
             access: loginRequired
         })
-        .state('directory', {
-            url: '/organization/directory',
-            templateUrl: templateBase + 'directory/directory.html',
-            access: loginRequired
-        })
-        .state('directory.userDetails', {
+        .state('organization.directory.userDetails', {
             url: '/user-details?userID&orgID',
             views: {
                 '': {
                     templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
                     controller: returnCtrlAs('userDetails')
                 },
-                'profile@directory.userDetails': {
+                'profile@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/profile/userDetails-profile.html',
                     controller: returnCtrlAs('userDetailsProfile')
                 },
-                'applications@directory.userDetails': {
+                'applications@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/applications/userDetails-applications.html',
                     controller: returnCtrlAs('userDetailsApps')
                 },
-                'roles@directory.userDetails': {
+                'roles@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/roles/userDetails-roles.html',
                     controller: returnCtrlAs('userDetailsRoles')
                 },
-                'history@directory.userDetails': {
+                'history@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/history/userDetails-history.html',
                     controller: returnCtrlAs('userDetailsHistory')
                 }
@@ -93,55 +92,55 @@ angular.module('organization',[])
             access: loginRequired
         })
         // Requests -------------------------------------------------
-        .state('requests', {
-            url: '/organization/requests',
+        .state('organization.requests', {
+            url: '/requests',
             templateUrl: templateBase + 'requests/organization-requests.html',
             access: loginRequired
         })
-        .state('requests.newGrant', {
-            url: '/newGrant?userID',
+        .state('organization.requests.newGrant', {
+            url: '/new-grant?userID',
             templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
             access: loginRequired
         })
-        .state('requests.pendingRequests', {
-            url: '/pendingRequests?userID&orgID',
+        .state('organization.requests.pendingRequests', {
+            url: '/pending-requests?userID&orgID',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests'),
             access: loginRequired
         })
-        .state('requests.pendingRequestsReview', {
-            url: '/pendingRequests/review?userID',
+        .state('organization.requests.pendingRequestsReview', {
+            url: '/pending-requests/review?userID',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
         })
-        .state('requests.organizationRequestList', {
-            url: '/organizationRequests?orgID',
+        .state('organization.requests.organizationRequestList', {
+            url: '/organization-requests?orgID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationList.html',
             controller: returnCtrlAs('orgRequests'),
             access: loginRequired
         })
-        .state('requests.organizationRequest', {
-            url: '/organizationRequest?orgID&registrantID',
+        .state('organization.requests.organizationRequest', {
+            url: '/organization-request?orgID&registrantID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
             controller: returnCtrlAs('orgRequest'),
             access: loginRequired
         })
-        .state('requests.organizationRequestReview', {
-            url: 'organizationRequestReview?orgID',
+        .state('organization.requests.organizationRequestReview', {
+            url: '/organization-request-review?orgID',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
             controller: returnCtrlAs('orgRequestReview'),
             access: loginRequired
         })
-        .state('requests.personRequest', {
-            url: '/personRequest?userID&orgID',
+        .state('organization.requests.personRequest', {
+            url: '/person-request?userID&orgID',
             templateUrl: templateBase + 'requests/personRequest/requests-person.html',
             controller: returnCtrlAs('personRequest'),
             access: loginRequired
         })
-        .state('requests.personRequestReview', {
-            url: 'personRequestReview?userID&orgID',
+        .state('organization.requests.personRequestReview', {
+            url: '/person-request-review?userID&orgID',
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
             access: loginRequired

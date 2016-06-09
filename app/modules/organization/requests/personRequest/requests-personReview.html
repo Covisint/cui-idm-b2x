@@ -30,6 +30,6 @@
 
 <!-- Review Controls -->
 <div class="cui-organization__submit-row">
-  <span ui-sref="requests.personRequest({userID:personRequestReview.user.id, orgID:personRequestReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+  <span ui-sref="organization.requests.personRequest({userID:personRequestReview.user.id, orgID:personRequestReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
   <button class="cui-button" ng-click="personRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
 </div>

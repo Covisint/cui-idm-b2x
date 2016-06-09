@@ -3,47 +3,16 @@
   <!-- Action Header 1 -->
   <div class="cui-action">
     <!-- User Name and Back Arrow -->
-    <span class="cui-action__title cui-action__title--dark" ui-sref="directory.userDetails({userID:pendingRequests.user.id,orgID:pendingRequests.user.organization.id})">&#60; {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
 
     <!-- Invitations -->
-    <div class="cui-action__actions">
-      <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequests.invitationClicked=!pendingRequests.invitationClicked" off-click="pendingRequests.invitationClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-          <defs>
-            <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
-            <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
-              <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
-              <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
-              <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
-            </filter>
-          </defs>
-          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
-        </svg>
-        <!-- Invitation Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequests.invitationClicked">
-          <p ui-sref="invitation.user({orgID:pendingRequests.user.organization.id})">{{'invite-user' | translate}}</p>
-          <p ui-sref="invitation.division({orgID:pendingRequests.user.organization.id})">{{'invite-division' | translate}}</p>
-        </div>
-      </div>
-    </div>
+    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
   </div>
 
   <!-- Action Header 2 -->
   <div class="cui-action cui-action--min">
     <!-- Navigation -->
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'cui-org-profile' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'cui-org-hierarchy' | translate}}</a> 
-          </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:pendingRequests.user.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
-        </li> 
-      </ul>
-    </nav>
+    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
   </div>
 </div>
 
