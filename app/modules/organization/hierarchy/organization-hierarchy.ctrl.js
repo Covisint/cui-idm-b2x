@@ -26,7 +26,7 @@ angular.module('organization')
     // ON LOAD START ---------------------------------------------------------------------------------
 
     if (organizationId) {
-        // Use organizationID parameter to load the organization hierarchy 
+        // Use organizationID parameter to load the organization hierarchy
         API.cui.getOrganizationHierarchy({organizationId: organizationId})
         .then(function(res) {
             // Put hierarchy response in an array as the hierarchy directive expects an array
@@ -39,7 +39,7 @@ angular.module('organization')
         // Use logged in user's organization.id to load the organization hierarchy
         API.cui.getPerson({personId: API.getUser(), useCuid:true})
         .then(function(res) {
-            return API.cui.getOrganizationHierarchy({organizationId: res.user.organization.id});
+            return API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
         })
         .then(function(res) {
             // Put hierarchy response in an array as the hierarchy directive expects an array
@@ -55,7 +55,7 @@ angular.module('organization')
     orgHierarchy.goToOrgProfile = function(org) {
         $state.go('organization.profile',{orgID:org.id});
     };
-    
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
 });

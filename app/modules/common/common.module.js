@@ -55,7 +55,10 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
     // Pagination Results Per Page Options
     if (appConfig.paginationOptions) {
-        $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
+        $paginationProvider.setPaginationOptions(appConfig.paginationOptions)
+    }
+    else {
+        throw new Error(`You don't have paginationOptions set in your appConfig.json`)
     }
 
     $compileProvider.debugInfoEnabled(false);
@@ -72,8 +75,20 @@ angular.module('common')
             apiUris: [ appConfig.serviceUrl ],
             stopIfInvalidPayload: true
         }
-        window.cuiApiInterceptor.startGetInterceptor(cuiApiInterceptorConfig)
-        window.cuiApiInterceptor.startPrePutInterceptor(cuiApiInterceptorConfig)
+
+        if(appConfig.debugServiceUrl) {
+            cuiApiInterceptorConfig.apiUris.push(appConfig.debugServiceUrl)
+        }
+
+        const interceptors = [
+            'Get',
+            'PrePut',
+            'PrePost',
+            'PostPut',
+            'PostPost'
+        ]
+
+        interceptors.forEach(interceptor => window.cuiApiInterceptor[`start${ interceptor }Interceptor`](cuiApiInterceptorConfig))
     }
 
     // Add locales here
@@ -85,9 +100,9 @@ angular.module('common')
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
         event.preventDefault();
-        const route = ()=> {
+        const route = () => {
             if (appConfig.debugServiceUrl) {
-                /** 
+                /**
                     appConfig.debugServiceUrl can be pointed at a localhost server to act as a mock API.
                     Ex: 'debugServiceUrl': 'http://localhost:8001'
                     You can get the unofficial mock api server here: https://github.com/thirdwavellc/cui-api-mock
@@ -96,8 +111,9 @@ angular.module('common')
                 .then((res) => {
                     API.setUser(res);
                 });
-                Menu.handleStateChange(toState.menu);
                 routing(toState, toParams, fromState, fromParams, []);
+                PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work
+                Menu.handleStateChange(toState.menu );
             }
             else {
                 if (!toState.access || !toState.access.loginRequired) {
@@ -121,11 +137,11 @@ angular.module('common')
                         // Menu handling
                         Menu.handleStateChange(res.redirect.toState.menu);
                     });
-                }    
+                }
             }
         };
 
-        // sync load API.ccui here
+        // async load API.cui
         if(_.isEmpty(API.cui)){
             API.initApi()
             .then(()=>{
@@ -133,24 +149,6 @@ angular.module('common')
             });
         }
         else route();
-    });
-
-    $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-        event.preventDefault();
-        const route = ()=> {
-            
-        };
-
-        // sync load API.ccui here
-        if (_.isEmpty(API.cui)) {
-            API.initApi()
-            .then(() => {
-                route();
-            });
-        }
-        else {
-            route();
-        }
     });
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {

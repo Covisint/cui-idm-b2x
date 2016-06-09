@@ -93,7 +93,7 @@ angular.module('organization')
             DataStorage.set(userId, 'userRequestedPackages', personRequest.packages);
         }
         DataStorage.set(userId, 'userPersonRequest', personRequest.userPersonRequest);
-        $state.go('requests.personRequestReview', {userID: userId, orgID: orgId});
+        $state.go('organization.requests.personRequestReview', {userID: userId, orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

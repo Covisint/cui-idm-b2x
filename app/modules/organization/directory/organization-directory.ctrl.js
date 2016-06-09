@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state) {
+.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q) {
     'use strict';
 
     const orgDirectory = this,
@@ -45,7 +45,7 @@ angular.module('organization')
         return statusList;
     };
 
-    const flattenHierarchy = function flattenHierarchy(orgChildrenArray) {
+    const flattenHierarchy = (orgChildrenArray) => {
         if (orgChildrenArray) {
             let childrenArray = orgChildrenArray;
             let orgList = [];
@@ -65,30 +65,43 @@ angular.module('organization')
         }
     };
 
-    const onLoadFinish = function onLoadFinish(organizationResponse) {
+    const getPeopleAndCount = () => {
+        const getPersonOptions = {
+            'qs': [
+                ['organization.id', String(orgDirectory.organization.id)],
+                ['pageSize', String(orgDirectory.paginationPageSize)],
+                ['page',String(1)]
+            ]
+        }
+
+        const countPersonOptions = {
+            'qs': ['organization.id', String(orgDirectory.organization.id)]
+        }
+
+        $q.all([API.cui.getPersons(getPersonOptions), API.cui.countPersons(countPersonOptions)])
+        .then(res => {
+
+            orgDirectory.unparsedUserList = orgDirectory.userList = angular.copy(res[0])
+            orgDirectory.statusList = getStatusList(orgDirectory.userList)
+
+            orgDirectory.orgPersonCount = res[1]
+            orgDirectory.loading = false
+
+            orgDirectory.reRenderPagination && orgDirectory.reRenderPagination()
+
+        })
+    }
+
+    const onLoadFinish = (organizationResponse) => {
         API.cui.getOrganizationHierarchy({organizationId: organizationResponse.id})
-        .then(function(res) {
-            orgDirectory.organization = res;
-            orgDirectory.organizationList = flattenHierarchy(res.children);
-            return API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
-                                                ['pageSize', String(orgDirectory.paginationPageSize)], ['page',String(1)]]});
+        .then(res => {
+            orgDirectory.organization = res
+            orgDirectory.organizationList = flattenHierarchy(res.children)
+
+            getPeopleAndCount()
         })
-        .then(function(res) {
-            orgDirectory.userList = res;
-            orgDirectory.unparsedUserList = res;
-            orgDirectory.statusList = getStatusList(orgDirectory.userList);
-            return API.cui.countPersons({'qs': ['organization.id', String(orgDirectory.organization.id)]});
-        })
-        .then(function(res) {
-            orgDirectory.orgPersonCount = res;
-            orgDirectory.loading = false;
-            if (orgDirectory.reRenderPagination) {
-                orgDirectory.reRenderPagination();
-            }
-            $scope.$digest();
-        })
-        .fail(handleError);
-    };
+        .fail(handleError)
+    }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
@@ -191,10 +204,10 @@ angular.module('organization')
             case 'active':
             case 'unactivated':
             case 'inactive':
-                $state.go('directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
+                $state.go('organization.directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
                 break;
-            case  'pending':
-                $state.go('requests.personRequest', {userID: clickedUser.id, orgID: organizationId});
+            case 'pending':
+                $state.go('organization.requests.personRequest', {userID: clickedUser.id, orgID: organizationId});
                 break;
         }
     };
