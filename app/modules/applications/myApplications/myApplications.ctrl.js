@@ -51,7 +51,7 @@ function(localStorageService,$scope,$stateParams,API,$state,$filter,$q,$paginati
         if(myApplications.search.sort) query.push(['sortBy',myApplications.search.sort]); //  "+service.name", "-service.name", "+service.creation", "-service.creation", "+grant.instant", "-grant.instant"
         if(myApplications.search.refine) query.push(['grant.status',myApplications.search.refine]); // active or suspendend for granted, pending from a dif. endpoint
 
-        let opts = {
+        const opts = {
             personId: API.getUser(),
             useCuid:true,
             qs: query

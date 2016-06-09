@@ -55,7 +55,10 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
     // Pagination Results Per Page Options
     if (appConfig.paginationOptions) {
-        $paginationProvider.setPaginationOptions(appConfig.paginationOptions);
+        $paginationProvider.setPaginationOptions(appConfig.paginationOptions)
+    }
+    else {
+        throw new Error(`You don't have paginationOptions set in your appConfig.json`)
     }
 
     $compileProvider.debugInfoEnabled(false);
@@ -72,8 +75,16 @@ angular.module('common')
             apiUris: [ appConfig.serviceUrl ],
             stopIfInvalidPayload: true
         }
-        window.cuiApiInterceptor.startGetInterceptor(cuiApiInterceptorConfig)
-        window.cuiApiInterceptor.startPrePutInterceptor(cuiApiInterceptorConfig)
+
+        const interceptors = [
+            'Get',
+            'PrePut',
+            'PrePost',
+            'PostPut',
+            'PostPost'
+        ];
+
+        interceptors.forEach(interceptor => window.cuiApiInterceptor[`start${ interceptor }Interceptor`](cuiApiInterceptorConfig))
     }
 
     // Add locales here
