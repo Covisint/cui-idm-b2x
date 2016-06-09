@@ -97,27 +97,42 @@ angular.module('common')
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
         event.preventDefault();
         const route = ()=> {
-            if(!toState.access || !toState.access.loginRequired) {
+            if (appConfig.debugServiceUrl) {
+                /** 
+                    appConfig.debugServiceUrl can be pointed at a localhost server to act as a mock API.
+                    Ex: 'debugServiceUrl': 'http://localhost:8001'
+                    You can get the unofficial mock api server here: https://github.com/thirdwavellc/cui-api-mock
+                **/
+                API.cui.getPerson({personId: 'personId'})
+                .then((res) => {
+                    API.setUser(res);
+                });
                 Menu.handleStateChange(toState.menu);
-                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
-                PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-                return;
-            }
-            else if (User.get()!=='[cuid]'){
-                routing(toState, toParams, fromState, fromParams, User.getEntitlements());
-                PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
-                Menu.handleStateChange(toState.menu);
+                routing(toState, toParams, fromState, fromParams, []);
             }
             else {
-                API.authenticateUser({ toState,toParams,fromState,fromParams })
-                .then((res) => {
-                    const { toState, toParams, fromState, fromParams } = res.redirect;
-                    // Determine if user is able to access the particular route we're navigating to
-                    routing(toState, toParams, fromState, fromParams, res.roleList);
-                    PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
-                    // Menu handling
-                    Menu.handleStateChange(res.redirect.toState.menu);
-                });
+                if (!toState.access || !toState.access.loginRequired) {
+                    Menu.handleStateChange(toState.menu);
+                    routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                    PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                    return;
+                }
+                else if (User.get() !== '[cuid]') {
+                    routing(toState, toParams, fromState, fromParams, User.getEntitlements());
+                    PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams });
+                    Menu.handleStateChange(toState.menu);
+                }
+                else {
+                    API.authenticateUser({ toState,toParams,fromState,fromParams })
+                    .then((res) => {
+                        const { toState, toParams, fromState, fromParams } = res.redirect;
+                        // Determine if user is able to access the particular route we're navigating to
+                        routing(toState, toParams, fromState, fromParams, res.roleList);
+                        PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); // this is required to make the ui-sref-active-nested directive work with a multi-module approach
+                        // Menu handling
+                        Menu.handleStateChange(res.redirect.toState.menu);
+                    });
+                }    
             }
         };
 
@@ -129,6 +144,24 @@ angular.module('common')
             });
         }
         else route();
+    });
+
+    $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        event.preventDefault();
+        const route = ()=> {
+            
+        };
+
+        // sync load API.ccui here
+        if (_.isEmpty(API.cui)) {
+            API.initApi()
+            .then(() => {
+                route();
+            });
+        }
+        else {
+            route();
+        }
     });
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
