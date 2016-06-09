@@ -92,6 +92,10 @@ angular.module('common')
                     Ex: 'debugServiceUrl': 'http://localhost:8001'
                     You can get the unofficial mock api server here: https://github.com/thirdwavellc/cui-api-mock
                 **/
+                API.cui.getPerson({personId: 'personId'})
+                .then((res) => {
+                    API.setUser(res);
+                });
                 Menu.handleStateChange(toState.menu);
                 routing(toState, toParams, fromState, fromParams, []);
             }
