@@ -48,7 +48,7 @@ angular.module('common')
         .then((cuiObject) => {
             Base.logout = cuiObject.covLogout;
             angular.copy(cuiObject, myCUI);
-            myCUI.setServiceUrl(appConfig.serviceUrl);
+            appConfig.debugServiceUrl ? myCUI.setServiceUrl(appConfig.debugServiceUrl) : myCUI.setServiceUrl(appConfig.serviceUrl);
             myCUI.setAuthHandler(jwtAuthHandler);
             $timeout(()=> Loader.offFor('wholeApp'),50);
             deferred.resolve();
