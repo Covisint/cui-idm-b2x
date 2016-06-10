@@ -51,6 +51,19 @@ angular.module('common')
 
     dataStorage.getUserStorage = (userId) => storage[userId]
 
+    dataStorage.getDataThatMatches = (userId, type, comparison) => {
+        if(!storage[userId] || !storage[userId][type]) return
+        else if(!_.isArray(storage[userId][type])){
+            throw new Error('Tried using DataStorage.getDataThatMatches on a type that isn\'t an array. Use .getType(userId,type) instead.')
+            return
+        }
+        else {
+            const index = _.findIndex(storage[userId][type], comparison)
+            if(index >= 0) return storage[userId][type][index]
+            else return null
+        }
+    }
+
     dataStorage.deleteDataThatMatches = (userId, type, comparison) => {
         if(!storage[userId] || !storage[userId][type]) return
         else if(!_.isArray(storage[userId][type])){
