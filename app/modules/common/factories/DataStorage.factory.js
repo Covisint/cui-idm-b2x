@@ -1,58 +1,49 @@
 angular.module('common')
-.factory('DataStorage',[() => {
-    'use strict';
+.factory('DataStorage',() => {
+    let storage = {},
+        dataStorage = {};
 
-    let storedObject = {},
-        storedData = [];
+    const initStorageIfUndefined = (userId) => {
+        if(!storage[userId]) storage[userId] = {}
+    }
 
-    storedObject.set = (userId, type, data) => {
-        let existingData =  _.find(storedData, {'id': userId, 'type': type}),
-            objectToStore = {
-                id: userId,
-                type: type,
-                data: data
-            };
+    dataStorage.setType = (userId, type, data) => {
+        initStorageIfUndefined(userId)
+        storage[userId].type = data
+    }
 
-        if (existingData) {
-            angular.copy(objectToStore, existingData);
-        }
-        else {
-            storedData.push(objectToStore);    
-        }
-    };
+    dataStorage.appendToType = (userId, type, data) => {
+        initStorageIfUndefined(userId)
+        if(!storage[userId][type]) storage[userId][type] = [data]
+        else if(!_.isArray(storage[userId][type])) throw new Error('Tried appending to an existing data type that is not an array in dataStorage.')
+        else storage[userId][type].push(data)
+    }
 
-    storedObject.get = (userId, type) => {
-        let userObject = _.find(storedData, {'id': userId, 'type': type});
-        if (userObject) {
-            return userObject.data;
-        }
-    };
+    dataStorage.getType = (userId, type) => {
+        if(!storage[userId]) return undefined
+        return storage[userId][type]
+    }
 
-    storedObject.clear = () => {
-        storedData = [];
-    };
+    dataStorage.deleteType = (userId, type) => {
+        if(!storage[userId] || !storage[userId][type]) return
+        delete storage[userId][type]
+    }
 
-    storedObject.getUserStorage = (userId) => {
-        let userStorage = [];
+    dataStorage.deleteUserStorage = (userId) => {
+        if(storage[userId]) delete storage[userId]
+    }
 
-        storedData.forEach((object) => {
-            if (object.id === userId) {
-                userStorage.push(object);
-            }
-            return userStorage;
-        });
-    };
+    dataStorage.clear = () => {
+        storage = {}
+    }
 
-    storedObject.checkUserStorage = (userId) => {
-        let userHasData = false;
-        storedData.forEach((object) => {
-            if (object.id === userId) {
-                userHasData = true;
-            }
-        });
-        return userHasData;
-    };
+    dataStorage.getUserStorage = (userId) => storage[userId]
 
-    return storedObject;
+    dataStorage.deleteDataThatMatches = (userId, type, comparison) => {
+        if(!storage[userId] || !storage[userId][type]) return
+        else if(!_.isArray(storage[userId][type])) throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(userId,type) instead.')
+        else storage[userId][type].filter(x => !_.matches(x,comparison))
+    }
 
-}]);
+    return dataStorage
+})
