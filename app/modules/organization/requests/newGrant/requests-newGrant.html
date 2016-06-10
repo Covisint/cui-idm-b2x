@@ -1,1 +1,68 @@
-<p>New Grant Page</p>
+<div class="cui-action" ng-hide="base.loader.for['newGrant.user']">
+  <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
+</div>
+
+<div class="cui-applications__new-request">
+    <div class="cui-action cui-action--alt">
+        <h3 class="cui-action__title">{{'select-applications' | translate}}</h3>
+        <div class="cui-action__actions">
+            <svg ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newGrant.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
+            </svg>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
+            <!-- popover -->
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
+            offset="-20px 50px" ng-if="newGrant.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+              <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+              <div class="cui-action__popover-section">
+                <span ng-if="newGrant.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+                <ul ng-if="newGrant.numberOfRequests > 0">
+                    <li ng-repeat="application in newGrant.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                    <li ng-repeat="package in newGrant.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
+                </ul>
+              </div>
+              <span ng-if="newGrant.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="cui-action">
+      <fieldset>
+        <span class="cui-radio cui-radio--basic-rtl">
+          <input class="cui-radio__input" type="radio" name="radio-choice-1" id="radio-choice-1" ng-model="newGrant.searchType" ng-value="'application'">
+          <label class="cui-radio__label" for="radio-choice-1"><span></span>{{'search-by-app-name' | translate}}</label>
+        </span>
+        <span class="cui-radio cui-radio--basic-rtl">
+          <input class="cui-radio__input" type="radio" name="radio-choice-2" id="radio-choice-2" ng-model="newGrant.searchType" ng-value="'package'">
+          <label class="cui-radio__label" for="radio-choice-2"><span></span>{{'search-by-package-name' | translate}}</label>
+        </span>
+      </fieldset>
+    </div>
+    <div class="cui-applications__main-container">
+        <div>
+            <div class="cui-applications__search-options">
+                <div class="cui-input-button">
+                    <input type="text" class="cui-input-button__input" ng-model="newGrant.search" placeholder="{{'search' | translate}}" on-enter="newGrant.searchCallback" focus-if/>
+                    <button class="cui-input-button__button" ng-click="newGrant.searchCallback(newGrant.search)">{{'go' | translate}}</button>
+                </div>
+                <div class="cui-applications__center-text">{{'or' | translate}}</div>
+                <button class="cui-button cui-button--full-width" ui-sref="organization.requests.newGrant.search">{{'browse-applications' | translate}}</button>
+            </div>
+            <div style="position:relative">
+                <div ng-if="base.loader.for['newGrant.categories']"> <!-- TODO @SHANE this loading block is overlapping the search options for a split second when I first load -->
+                    <div class="cui-loading__container">
+                        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+                    </div>
+                </div>
+                <div ng-repeat="category in newGrant.categories" ng-if="!base.loader.for['newGrant.categories']">
+                    <div class="cui-applications__categories"
+                      ui-sref="organization.requests.newGrant.search({category:'{{ category.name | cuiI18n }}', type:newGrant.searchType})">
+                        <h4 class="cui-applications__category" >{{ category.name | cuiI18n }}</h4>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+                          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -103,6 +103,12 @@ angular.module('organization',[])
             controller: returnCtrlAs('newGrant'),
             access: loginRequired
         })
+        .state('organization.requests.newGrant.search', {
+            url: '/search?type&category&name&userID&page&pageSize&sortBy',
+            templateUrl: templateBase + 'requests/newGrant/search/search.html',
+            controller: returnCtrlAs('newGrantSearch'),
+            access: loginRequired
+        })
         .state('organization.requests.pendingRequests', {
             url: '/pending-requests?userID&orgID',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
