@@ -1,6 +1,6 @@
 <div class="cui-applications__search">
     <div class="cui-action">
-        <div class="cui-action__title">{{'new-request' | translate}}</div>
+        <div class="cui-action__title">&#60; {{newGrantSearch.user.name.given}} {{newGrantSearch.user.name.surname}} - {{'new-grant' | translate}}</div>
         <div class="cui-action__actions">
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
@@ -42,7 +42,7 @@
 
         <!-- TODO @SHANE we need designs for no applications matching query -->
 
-        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id"
+        <cui-expandable class="cui-expandable" ng-repeat="application in newGrantSearch.applicationList track by application.id"
           ng-if="!base.loader.for['newGrantSearch.apps']" transition-speed="150">
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                 <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
@@ -50,8 +50,8 @@
                 </div>
                 <div class="cui-expandable__title-end">
                     <span class="cui-checkbox__container">
-                        <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" />
-                        <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
+                        <input class="cui-checkbox" type="checkbox" ng-model="newGrantSearch.applicationCheckbox[application.id]" />
+                        <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:application })"></label>
                     </span>
                 </div>
             </cui-expandable-title>
@@ -77,8 +77,8 @@
                             <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
                                 <span class="">{{relatedApp.name | cuiI18n}} </span>  <!-- TODO @SHANE SMALL MIS-ALLIGNMENT HERE -->
                                 <span class="cui-checkbox__container">
-                                    <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]; applicationSearch.toggleRequest(relatedApp)"></label>
+                                    <input class="cui-checkbox" type="checkbox" ng-model="newGrantSearch.applicationCheckbox[relatedApp.id]" />
+                                    <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:relatedApp })"></label>
                                 </span>
                             </span>
 
@@ -89,10 +89,10 @@
         </cui-expandable>
     </div>
     <!-- TODO @SHANE ADD SPACING HERE -->
-    <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
+    <div class="cui-paginate__container" ng-if="!base.loader.for['newGrantSearch.apps']">
             <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-            <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
-            <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
+            <results-per-page class="cui-paginate__select" ng-model="newGrantSearch.search.pageSize"></results-per-page>
+            <paginate class="cui-paginate" results-per-page="newGrantSearch.search.pageSize" count="newGrantSearch.count" on-page-change="newGrantSearch.updateSearch" ng-model="newGrantSearch.search.page" attach-rerender-to="newGrantSearch.reRenderPaginate"></paginate>
     </div>
     <div class="cui-applications__search-button">
         <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>

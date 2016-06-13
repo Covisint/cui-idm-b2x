@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('newGrantCtrl', function(API, $stateParams, $scope, $state, Loader, DataStorage) {
+.controller('newGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage) {
 
     const newGrant = this
 
@@ -8,7 +8,7 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    newGrant.searchType = 'application'
+    newGrant.searchType = 'applications'
 
     /****
         grants in DataStorage are under the type 'newGrant' and look like
@@ -44,7 +44,7 @@ angular.module('organization')
     Loader.onFor('newGrant.categories')
     API.cui.getCategories()
     .then(res => {
-        newGrant.categories = Object.assign({}, res)
+        newGrant.categories = res.slice()
         Loader.offFor('newGrant.categories')
         $scope.$digest()
     })
@@ -53,8 +53,18 @@ angular.module('organization')
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    newGrant.searchCallback = (name) => {
-        $state.go('organization.requests.newGrant.search',{ type:newGrant.searchType, name })
+    newGrant.searchCallback = (opts) => {
+        if (!opts) $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID})
+        else if (typeof opts ==='string') $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, name: opts})
+        else {
+            const optsParser = {
+                category: (unparsedCategory) => {
+                    const category = $filter('cuiI18n')(unparsedCategory)
+                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, category})
+                }
+            }
+            optsParser[opts.type](opts.value)
+        }
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('newGrantSearchCtrl', function($scope, $stateParams, API) {
+.controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, $q) {
     const newGrantSearch = this
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -20,7 +20,7 @@ angular.module('organization')
     ****/
 
     const newGrantsInStorage = DataStorage.getDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
-    if(newGrantsInStorage) {
+    if (newGrantsInStorage) {
         newGrantSearch.appsBeingRequested = newGrantsInStorage.applications
         newGrantSearch.packagesBeingRequested = newGrantsInStorage.packages
     }
@@ -31,44 +31,71 @@ angular.module('organization')
     newGrantSearch.numberOfRequests = newGrantSearch.appsBeingRequested.length + newGrantSearch.packagesBeingRequested.length
 
     Loader.onFor('newGrantSearch.user')
-    API.cui.getPerson({ personId:$stateParams.userID })
+    API.cui.getPerson({ personId: $stateParams.userID })
     .then(res => {
         newGrantSearch.user = Object.assign({}, res)
         Loader.offFor('newGrantSearch.user')
         $scope.$digest()
     })
 
-    const searchUpdate = () => {
+    const searchUpdate = (previouslyLoaded) => {
         Loader.onFor('newGrantSearch.apps')
+        if (!previouslyLoaded) newGrantSearch.search = Object.assign({}, $stateParams)
 
-        newGrantSearch.search = Object.assign({}, $stateParams)
-        let query = {
-            personId: newGrantSearch.search.userID,
+        const type = newGrantSearch.search.type || 'applications'
+
+        const queryParams = {
+            'service.name': newGrantSearch.search.name,
             category: newGrantSearch.search.category,
-            page: newGrantSearch.search.page,
-            pageSize: newGrant.search.pageSize,
-            sortyBy: newGrant.search.sortyBy
+            page: newGrantSearch.search.page || 1,
+            pageSize: newGrantSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0],
+            sortBy: newGrantSearch.search.sortBy
         }
 
-        if($stateParams.type==='application'){
-            API.cui.getPersonGrantableApps({ personId:$stateParams.userID })
+        const queryArray = APIHelpers.getQs(queryParams)
+
+        const queryOptions = {
+            personId: $stateParams.userID,
+            qs: queryArray
+        }
+
+        if (type === 'applications') {
+            $q.all([10, API.cui.getPersonGrantableApps(queryOptions)]) // TODO: REPLACE WITH REAL COUNT
             .then(res => {
-                newGrantSearch.applicationList = Object.assign({}, res)
+                newGrantSearch.applicationList = res[1].slice()
+                newGrantSearch.count = res[0]
+                if(newGrantSearch.reRenderPaginate) newGrantSearch.reRenderPaginate()
                 Loader.offFor('newGrantSearch.apps')
-                $scope.$digest()
             })
         }
     }
     searchUpdate()
 
-
-
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
+    newGrantSearch.applicationCheckbox = {}
 
+    newGrantSearch.packageCheckbox = {}
+
+    newGrantSearch.requests = {
+        application : {},
+        package: {}
+    }
+
+    newGrantSearch.toggleRequest = ({ type, payload }) => {
+        const storedRequests = newGrantSearch.requests[type]
+        storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
+        if(storedRequests[payload.id]) newGrantSearch[type + 'Checkbox'][payload.id] = true
+        else if(newGrantSearch[type + 'Checkbox'][payload.id]) delete newGrantSearch[type + 'Checkbox'][payload.id]
+    }
+
+    newGrantSearch.updateSearch = () => {
+        const stateParams = Object.assign({}, newGrantSearch.search)
+        $state.transitionTo('organization.requests.newGrantSearch', stateParams, {notify:false})
+        searchUpdate(true)
+    }
 
     // ON CLICK END ----------------------------------------------------------------------------------
-
 })
