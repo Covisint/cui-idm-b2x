@@ -1,17 +1,14 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q) {
+.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q,User) {
     'use strict';
 
-    const orgDirectory = this,
-        organizationId = $stateParams.orgID;
+    const orgDirectory = this;
 
-    orgDirectory.organization = {};
     orgDirectory.loading = true;
     orgDirectory.sortFlag = false;
     orgDirectory.userList = [];
     orgDirectory.unparsedUserList = [];
     orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
-    orgDirectory.statusCount = [0,0,0,0,0,0,0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -70,62 +67,34 @@ angular.module('organization')
             'qs': [
                 ['organization.id', String(orgDirectory.organization.id)],
                 ['pageSize', String(orgDirectory.paginationPageSize)],
-                ['page',String(1)]
+                ['page', String(1)]
             ]
-        }
+        };
 
         const countPersonOptions = {
             'qs': ['organization.id', String(orgDirectory.organization.id)]
-        }
+        };
 
         $q.all([API.cui.getPersons(getPersonOptions), API.cui.countPersons(countPersonOptions)])
-        .then(res => {
-
-            orgDirectory.unparsedUserList = orgDirectory.userList = angular.copy(res[0])
-            orgDirectory.statusList = getStatusList(orgDirectory.userList)
-
-            orgDirectory.orgPersonCount = res[1]
-            orgDirectory.loading = false
-
-            orgDirectory.reRenderPagination && orgDirectory.reRenderPagination()
-
-        })
-    }
-
-    const onLoadFinish = (organizationResponse) => {
-        API.cui.getOrganizationHierarchy({organizationId: organizationResponse.id})
-        .then(res => {
-            orgDirectory.organization = res
-            orgDirectory.organizationList = flattenHierarchy(res.children)
-
-            getPeopleAndCount()
-        })
-        .fail(handleError)
-    }
+        .then((res) => {
+            orgDirectory.unparsedUserList = orgDirectory.userList = angular.copy(res[0]);
+            orgDirectory.statusList = getStatusList(orgDirectory.userList);
+            orgDirectory.orgPersonCount = res[1];
+            orgDirectory.loading = false;
+            orgDirectory.reRenderPagination && orgDirectory.reRenderPagination();
+        });
+    };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    if (organizationId) {
-        // Load organization directory of id parameter
-        API.cui.getOrganization({organizationId: organizationId})
-        .then(function(res) {
-            onLoadFinish(res);
-        })
-        .fail(handleError);
-    }
-    else {
-        // If no id parameter is passed load directory of logged in user's organization.
-        API.cui.getPerson({personId: API.getUser(), useCuid:true})
-        .then(function(res) {
-            return API.cui.getOrganization({organizationId: res.organization.id});
-        })
-        .then(function(res) {
-            onLoadFinish(res);
-        })
-        .fail(handleError);
-    }
+    API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    .then((res) => {
+        orgDirectory.organization = res;
+        orgDirectory.organizationList = flattenHierarchy(res.children);
+        getPeopleAndCount();
+    });
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -177,6 +146,19 @@ angular.module('organization')
         .fail(handleError);
     };
 
+    orgDirectory.userClick = (clickedUser) => {
+        switch (clickedUser.status) {
+            case 'active':
+            case 'unactivated':
+            case 'inactive':
+                $state.go('organization.directory.userDetails', {userID: clickedUser.id, orgID: clickedUser.organization.id});
+                break;
+            case 'pending':
+                $state.go('organization.requests.personRequest', {userID: clickedUser.id, orgID: clickedUser.organization.id});
+                break;
+        }
+    };
+
     // ON CLICK END ----------------------------------------------------------------------------------
 
     // WATCHERS START --------------------------------------------------------------------------------
@@ -196,22 +178,5 @@ angular.module('organization')
     });
 
     // WATCHERS END ----------------------------------------------------------------------------------
-
-    // ON CLICK START --------------------------------------------------------------------------------
-
-    orgDirectory.userClick = (clickedUser) => {
-        switch (clickedUser.status) {
-            case 'active':
-            case 'unactivated':
-            case 'inactive':
-                $state.go('organization.directory.userDetails', {userID: clickedUser.id, orgID: organizationId});
-                break;
-            case 'pending':
-                $state.go('organization.requests.personRequest', {userID: clickedUser.id, orgID: organizationId});
-                break;
-        }
-    };
-
-    // ON CLICK END ----------------------------------------------------------------------------------
 
 });
