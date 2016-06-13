@@ -70,7 +70,7 @@ angular.module('common')
             throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(userId,type) instead.')
             return
         }
-        else storage[userId][type].filter(x => !_.matches(x,comparison))
+        else storage[userId][type] = storage[userId][type].filter(x => !_.matches(x,comparison))
         saveToLocaStorage()
     }
 
