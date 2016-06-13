@@ -1,8 +1,18 @@
 angular.module('organization')
-.controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, $q) {
+.controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q) {
     const newGrantSearch = this
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    const updateStorage = () => {
+        DataStorage.deleteDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
+        DataStorage.appendToType(API.getUser(), 'newGrant', {
+            userId: $stateParams.userID,
+            applications: newGrantSearch.requests.application,
+            packages: newGrantSearch.requests.package
+        })
+    }
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -13,22 +23,13 @@ angular.module('organization')
         [
             {
                 userId:<user for which the grant is being made>,
-                applications:<array of applications being granted>,
-                packages:<array of packages being granted>
+                applications:<object of applications being granted>,
+                packages:<object of packages being granted>
             }
         ]
     ****/
 
-    const newGrantsInStorage = DataStorage.getDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
-    if (newGrantsInStorage) {
-        newGrantSearch.appsBeingRequested = newGrantsInStorage.applications
-        newGrantSearch.packagesBeingRequested = newGrantsInStorage.packages
-    }
-    else {
-        newGrantSearch.packagesBeingRequested = newGrantSearch.appsBeingRequested = []
-    }
-
-    newGrantSearch.numberOfRequests = newGrantSearch.appsBeingRequested.length + newGrantSearch.packagesBeingRequested.length
+    NewGrant.pullFromStorage(newGrantSearch)
 
     Loader.onFor('newGrantSearch.user')
     API.cui.getPerson({ personId: $stateParams.userID })
@@ -60,7 +61,7 @@ angular.module('organization')
         }
 
         if (type === 'applications') {
-            $q.all([10, API.cui.getPersonGrantableApps(queryOptions)]) // TODO: REPLACE WITH REAL COUNT
+            $q.all([API.cui.getPersonGrantableCount(queryOptions), API.cui.getPersonGrantableApps(queryOptions)]) // TODO: REPLACE WITH REAL COUNT
             .then(res => {
                 newGrantSearch.applicationList = res[1].slice()
                 newGrantSearch.count = res[0]
@@ -69,32 +70,31 @@ angular.module('organization')
             })
         }
     }
+
     searchUpdate()
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    newGrantSearch.applicationCheckbox = {}
-
-    newGrantSearch.packageCheckbox = {}
-
-    newGrantSearch.requests = {
-        application : {},
-        package: {}
-    }
-
     newGrantSearch.toggleRequest = ({ type, payload }) => {
         const storedRequests = newGrantSearch.requests[type]
         storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
         if(storedRequests[payload.id]) newGrantSearch[type + 'Checkbox'][payload.id] = true
         else if(newGrantSearch[type + 'Checkbox'][payload.id]) delete newGrantSearch[type + 'Checkbox'][payload.id]
+        newGrantSearch.numberOfRequests = Object.keys(newGrantSearch.applicationCheckbox).length + Object.keys(newGrantSearch.packageCheckbox).length
+
+        updateStorage()
     }
 
     newGrantSearch.updateSearch = () => {
         const stateParams = Object.assign({}, newGrantSearch.search)
         $state.transitionTo('organization.requests.newGrantSearch', stateParams, {notify:false})
         searchUpdate(true)
+    }
+
+    newGrantSearch.goToClaimSelection = () => {
+        $state.go('organization.requests.newGrantClaims', { userID: $stateParams.userID })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------
