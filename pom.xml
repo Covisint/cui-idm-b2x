@@ -10,7 +10,7 @@
 
   <groupId>com.covisint.cui</groupId>
   <artifactId>cui-idm-b2x</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>
@@ -70,7 +70,7 @@
   <scm>
     <url>https://github.com/thirdwavellc/cui-idm-b2x</url>
     <connection>scm:git:git@github.com:thirdwavellc/cui-idm-b2x.git</connection>
-    <tag>v0.1.0</tag>
+    <tag>HEAD</tag>
   </scm>
   <organization>
     <name>Covisint</name>
