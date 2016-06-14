@@ -1,7 +1,7 @@
 angular.module('common')
-.factory('DataStorage',(localStorageService, API) => {
-    let storage = localStorageService.get('dataStorage') || {},
-        dataStorage = {};
+.factory('DataStorage', (localStorageService, API) => {
+    let storage = localStorageService.get('dataStorage') || {}
+    let dataStorage = {}
 
     const initStorageIfUndefined = () => {
         if(!storage[API.getUser()]) storage[API.getUser()] = {}
@@ -60,8 +60,7 @@ angular.module('common')
         else if(!_.isArray(storage[API.getUser()][type])){
             throw new Error('Tried appending to an existing data type that is not an array in dataStorage.')
             return
-        }
-        else storage[API.getUser()][type].push(data)
+        } else storage[API.getUser()][type].push(data)
         saveToLocaStorage()
     }
 
@@ -71,15 +70,14 @@ angular.module('common')
         else if(!_.isArray(storage[API.getUser()][type])){
             throw new Error('Tried using DataStorage.getDataThatMatches on a type that isn\'t an array. Use .getType(type) instead.')
             return
-        }
-        else {
-            return storage[API.getUser()][type].filter(x => _.matches(x,comparison))
+        } else {
+            return storage[API.getUser()][type].filter(x => _.matches(x, comparison))
         }
     }
 
     // replaces all data that matches against a certain comparison and appends
     // new data to that type's array
-    DataStorage.replaceDataThatMatches = (type, comparison, newData) => {
+    dataStorage.replaceDataThatMatches = (type, comparison, newData) => {
         dataStorage.deleteDataThatMatches(type, comparison)
         dataStorage.appendToType(type, newData)
     }
@@ -89,8 +87,7 @@ angular.module('common')
         else if(!_.isArray(storage[API.getUser()][type])){
             throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(type) instead.')
             return
-        }
-        else storage[API.getUser()][type] = storage[API.getUser()][type].filter(x => !_.matches(x,comparison))
+        } else storage[API.getUser()][type] = storage[API.getUser()][type].filter(x => !_.matches(x, comparison))
         saveToLocaStorage()
     }
 
