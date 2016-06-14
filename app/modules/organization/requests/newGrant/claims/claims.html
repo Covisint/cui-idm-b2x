@@ -1,0 +1,62 @@
+<div class="cui-applications__search">
+  <div class="cui-action">
+    <div class="cui-action__title"
+      ng-hide="base.loader.for['newGrantClaims.user']"
+      ng-click="base.goBack('organization.directory.userList')">
+      &#60; {{newGrantClaims.user.name.given}} {{newGrantClaims.user.name.surname}} - {{'new-grant' | translate}}
+    </div>
+    <div class="cui-action__actions">
+      <svg xmlns="http://www.w3.org/2000/svg"
+        class="cui-action__icon cui-action__icon--close"
+        ui-sref="organization.directory.userDetails({userID: newGrantClaims.user.id})"
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 48 53">
+        <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+      </svg>
+    </div>
+  </div>
+
+  <div>
+    <div ng-repeat="(applicationId, application) in newGrantClaims.appsBeingRequested" ng-init="index=$index">
+
+      <!-- Avatar -->
+      <div class="cui-media__image"
+        cui-avatar-color-class-prefix="cui-avatar__color"
+        cui-avatar-color-count="5"
+        cui-avatar-names="application.name"
+        cui-avatar-cuii18n-filter cui-avatar="application.iconUrl">
+      </div>
+
+      <!-- Name -->
+      {{application.name | cuiI18n}}
+
+      <!-- Administrator radio -->
+      {{'administrator-?' | translate}}
+      <input type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" />No
+      <input type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" />Yes
+
+      <!-- Claims -->
+      <div ng-if="base.loader.for['newGrantClaims.claims' + index]">
+        <!-- Loader for claims here -->
+      </div>
+      <div ng-if="!base.loader.for['newGrantClaims.claims' + index]"
+        ng-repeat="claim in newGrantClaims['claims' + index]">
+        {{claim.name | cuiI18n}}
+        <div ng-repeat="claimValue in claim.claimValues">
+          {{claimValue.name | cuiI18n}}
+          <input type="checkbox" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" />
+        </div>
+      </div>
+
+
+    </div>
+
+    <!--
+      base.loader.for['newGrantClaims.submit'] is true when the request has been sent out and we're waiting for a response
+      and then
+      newGrantClaims.success if successful or
+      newGrantClaims.error if there was an error
+    -->
+    <button class="cui-button" ng-click="newGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
+  </div>
+</div>
