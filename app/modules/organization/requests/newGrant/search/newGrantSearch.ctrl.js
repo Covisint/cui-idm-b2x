@@ -39,7 +39,7 @@ angular.module('organization')
         $scope.$digest()
     })
 
-    const searchUpdate = (previouslyLoaded) => {
+    const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newGrantSearch.apps')
         if (!previouslyLoaded) newGrantSearch.search = Object.assign({}, $stateParams)
 
@@ -71,7 +71,9 @@ angular.module('organization')
         }
     }
 
-    searchUpdate()
+    searchUpdate({
+        previouslyLoaded: false
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -90,7 +92,9 @@ angular.module('organization')
     newGrantSearch.updateSearch = () => {
         const stateParams = Object.assign({}, newGrantSearch.search)
         $state.transitionTo('organization.requests.newGrantSearch', stateParams, {notify:false})
-        searchUpdate(true)
+        searchUpdate({
+            previouslyLoaded: true
+        })
     }
 
     newGrantSearch.goToClaimSelection = () => {

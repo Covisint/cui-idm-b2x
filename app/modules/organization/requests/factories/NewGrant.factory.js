@@ -31,8 +31,8 @@ angular.module('organization')
         }
     }
 
-    newGrant.buildGrantRequests = (userId, packageRequestObject) => {
-        let grantRequests = []
+    newGrant.claimGrants = (userId, packageRequestObject) => {
+        let claimGrants = []
 
         const buildPackageClaims = (claimsObject) => {
             if (Object.keys(claimsObject).length === 0) return undefined // if there's no claims in this claim object
@@ -53,19 +53,46 @@ angular.module('organization')
         }
 
         Object.keys(packageRequestObject).forEach(pkgId => {
-            grantRequests.push({
-                grantee: {
-                    id: userId,
-                    type: 'person'
-                },
-                servicePackage: {
-                    id: pkgId
-                },
-                packageClaims: buildPackageClaims(packageRequestObject[pkgId].claims)
+            claimGrants.push({
+                data: {
+                    grantee: {
+                        id: userId,
+                        type: 'person'
+                    },
+                    servicePackage: {
+                        id: pkgId,
+                        type: 'servicePackage'
+                    },
+                    packageClaims: buildPackageClaims(packageRequestObject[pkgId].claims)
+                }
             })
         })
 
-       return grantRequests
+       return claimGrants
+    }
+
+    newGrant.packageGrants = (userId, packageRequestObject) => {
+        let packageGrants = []
+
+        Object.keys(packageRequestObject).forEach(pkgId => {
+            packageGrants.push({
+                personId: userId,
+                packageId: pkgId,
+                data: {
+                    status: 'active',
+                    grantee: {
+                        id: userId,
+                        type: 'person'
+                    },
+                    servicePackage: {
+                        id: pkgId,
+                        type: 'servicePackage'
+                    }
+                }
+            })
+        })
+
+        return packageGrants
     }
 
     return newGrant
