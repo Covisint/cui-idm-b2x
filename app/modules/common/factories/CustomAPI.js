@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('CustomAPI',[()=>{
+.factory('CustomAPI',()=>{
 
     const calls = [
         {cmd: 'getPackageClaims',                        accepts: 'application/vnd.com.covisint.platform.package.claim.v1+json',                         call: '/service/v3/claims',																	type: 'GET' },
@@ -54,9 +54,11 @@ angular.module('common')
 
         {cmd: 'denyPersonRegistration',                  accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/deny`,                                                     type: 'POST' },
 
-        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                          type: 'GET' }
-    ];
+        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                          type: 'GET' },
 
-    return calls;
+        {cmd: 'grantPersonPackage',                      accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',          call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,          type: 'PUT' },
+    ]
 
-}]);
+    return calls
+
+})
