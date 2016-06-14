@@ -1,13 +1,47 @@
 <div class="cui-organization">
   <!-- Page Header -->
   <div class="cui-action">
-    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+    <nav class="cui-breadcrumb">
+      <ul class="cui-breadcrumb__links">
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
+          </li>
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.directory({orgID:orgDirectory.organization.id})" class="active">{{'directory' | translate}}</a>
+          </li> 
+        <li class="cui-breadcrumb__link">
+          <a ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="cui-action__actions">
+      <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+          <defs>
+            <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+            <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+              <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+              <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+              <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+            </filter>
+          </defs>
+          <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
+        </svg>
+        <!-- Invitation Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
+          <p>{{'invite-user' | translate}}</p>
+          <p>{{'invite-division' | translate}}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Action Sub-header -->
   <div class="cui-action" ng-if="!orgDirectory.loading">
-    <span class="cui-action__title" ui-sref="organization.requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
+    <span class="cui-action__title" ui-sref="requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
     <div class="cui-action__actions">
 
       <!-- Sort -->
@@ -65,26 +99,28 @@
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
-    <table class="cui-table cui-table--borderless">
-      <thead>
-        <tr>
-          <th>{{'cui-name' | translate}}</th>
-          <th></th>
-          <th>{{'userID' | translate}}</th>
-          <th>{{'cui-registered' | translate}}</th>
-          <th>{{'status' | translate}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="user in orgDirectory.userList track by user.id" ng-click="orgDirectory.userClick(user)">
-          <th><div class="cui-media__image" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div></th>
-          <th><span>{{user.name.given}} {{user.name.surname}}</span></th>
-          <th>{{user.username}}</th>
-          <th>{{user.creation | date:base.appConfig.dateFormat}}</th>
-          <th>{{user.status | translate}}</th>
-        </tr>
-      </tbody>
-    </table>
+    <div class="cui-flex-table">
+      <div class="cui-flex-table__th cui-flex-table__th--c">
+        <div class="cui-flex-table__avatar-col">{{'cui-name' | translate | lowercase}}</div>
+        <div class="cui-flex-table__mobile-stack">
+          <div class="cui-flex-table__left">{{'cui-name' | translate | lowercase}}</div>
+          <div class="cui-flex-table__middle">{{'userID' | translate | lowercase}}</div>
+          <div class="cui-flex-table__middle">{{'cui-registered' | translate | lowercase}}</div>
+          <div class="cui-flex-table__right">{{'status' | translate | lowercase}}</div>
+        </div>
+      </div>
+      <div class="cui-flex-table__tr cui-flex-table__tr--c" ng-repeat="user in orgDirectory.userList track by user.id" ng-click="orgDirectory.userClick(user)">
+        <div class="cui-flex-table__avatar-col">
+          <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+        </div>
+        <div class="cui-flex-table__mobile-stack">
+          <div class="cui-flex-table__left"><h2 class="cui-flex-table__title">{{user.name.given}} {{user.name.surname}}</h2></div>
+          <div class="cui-flex-table__middle">{{user.username}}</div>
+          <div class="cui-flex-table__middle">{{user.creation | date:base.appConfig.dateFormat}}</div>
+          <div class="cui-flex-table__right">{{user.status | translate}}</div>
+        </div>
+      </div>
+    </div>
 
     <!-- Pagination Controls -->
     <div class="cui-paginate__container">
