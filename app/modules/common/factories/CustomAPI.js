@@ -54,7 +54,9 @@ angular.module('common')
 
         {cmd: 'denyPersonRegistration',                  accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/deny`,                                                    type: 'POST' },
 
-        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                         type: 'GET' }
+        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                         type: 'GET' },
+
+        {cmd: 'getOrgPendingServicePackages',            accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                       call: `/service/v3/requests`,                                                              type: 'GET' },
     ];
 
     return calls;
