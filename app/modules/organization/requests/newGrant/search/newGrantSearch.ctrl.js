@@ -5,8 +5,7 @@ angular.module('organization')
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const updateStorage = () => {
-        DataStorage.deleteDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
-        DataStorage.appendToType(API.getUser(), 'newGrant', {
+        DataStorage.replaceDataThatMatches('newGrant', { userId: $stateParams.userID }, {
             userId: $stateParams.userID,
             applications: newGrantSearch.requests.application,
             packages: newGrantSearch.requests.package

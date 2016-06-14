@@ -27,7 +27,7 @@ angular.module('organization')
                         pendingRequestsReview.deniedCount++;
                         break;
                 }
-            }); 
+            });
         }
     };
 
@@ -69,12 +69,12 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    pendingRequestsReview.pendingRequests = DataStorage.get(userId, 'appRequests');
+    pendingRequestsReview.pendingRequests = DataStorage.getDataThatMatches('appRequests', { userId });
 
     if (pendingRequestsReview.pendingRequests) {
         getApprovalCounts(pendingRequestsReview.pendingRequests);
     }
-    
+
     apiPromises.push(
     	API.cui.getPerson({personId: userId})
     	.then((res) => {
@@ -123,7 +123,7 @@ angular.module('organization')
                 });
             }
         });
-    	
+
 		pendingRequestsReview.sucess = true;
 		$timeout(() => {
 			$state.go('directory.userDetails', {userID: userId, orgID: orgId});

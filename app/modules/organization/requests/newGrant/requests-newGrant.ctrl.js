@@ -22,7 +22,7 @@ angular.module('organization')
         ]
     ****/
 
-    const newGrantsInStorage = DataStorage.getDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
+    const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
     if(newGrantsInStorage) {
         newGrant.appsBeingRequested = newGrantsInStorage.applications
         newGrant.packagesBeingRequested = newGrantsInStorage.packages
