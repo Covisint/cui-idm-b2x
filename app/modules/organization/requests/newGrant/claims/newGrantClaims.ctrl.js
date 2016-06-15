@@ -1,6 +1,8 @@
 angular.module('organization')
-.controller('newGrantClaimsCtrl', function($stateParams, $state, API, NewGrant, Loader, $scope, APIHelpers){
+.controller('newGrantClaimsCtrl', function($stateParams, $state, API, NewGrant, Loader, $scope, APIHelpers, $q){
     let newGrantClaims = this
+
+    const loaderType = 'newGrantClaims.'
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -22,7 +24,7 @@ angular.module('organization')
             }
         }
 
-        Loader.onFor('newGrantClaims.claims' + i)
+        Loader.onFor(loaderType + 'claims' + i)
         const opts = {
             qs: APIHelpers.getQs({
                 packageId: newGrantClaims.appsBeingRequested[appId].servicePackage.id
@@ -30,25 +32,25 @@ angular.module('organization')
         }
         API.cui.getPackageClaims(opts)
         .then(res => {
-            newGrantClaims['claims'+i] = Object.assign({},res)
+            newGrantClaims['claims' + i] = Object.assign({}, res)
             res.forEach(claim => {
                 newGrantClaims.packageRequests[app.servicePackage.id].claims[claim.id] = {}
             })
-            Loader.offFor('newGrantClaims.claims' + i)
+            Loader.offFor(loaderType + 'claims' + i)
             $scope.$digest()
         })
-        .fail(err => {
-            newGrantClaims['claims'+i] = []
-            Loader.offFor('newGrantClaims.claims' + i)
+        .fail(err => { // claims endpoint throws an error when the package has no claims
+            newGrantClaims['claims' + i] = []
+            Loader.offFor(loaderType + 'claims' + i)
             $scope.$digest()
         })
     })
 
-    Loader.onFor('newGrantClaims.user')
+    Loader.onFor(loaderType + 'user')
     API.cui.getPerson({ personId: $stateParams.userID })
     .then(res => {
         newGrantClaims.user = Object.assign({}, res)
-        Loader.offFor('newGrantClaims.user')
+        Loader.offFor(loaderType + 'user')
         $scope.$digest()
     })
 
@@ -57,8 +59,23 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     newGrantClaims.submit = () => {
-        // TODO CALL REAL API HERE
-        console.log(NewGrant.buildGrantRequests($stateParams.userID, newGrantClaims.packageRequests))
+        Loader.onFor(loaderType + 'submit')
+
+        // Grant Packages
+        $q.all(NewGrant.packageGrants($stateParams.userID, newGrantClaims.packageRequests).map(opts => API.cui.grantPersonPackage(opts)))
+        .then(res => {
+            // grant claims
+            return $q.all(NewGrant.claimGrants($stateParams.userID, newGrantClaims.packageRequests).map(opts => API.cui.grantClaims(opts)))
+        })
+        .then(res => {
+            Loader.offFor(loaderType + 'submit')
+            newGrantClaims.success = true
+        })
+        .catch(err => {
+            Loader.onFor(loaderType + 'submit')
+            newGrantClaims.error = true
+        })
+
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

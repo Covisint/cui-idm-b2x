@@ -51,6 +51,12 @@
 
     </div>
 
+    <!--
+      base.loader.for['newGrantClaims.submit'] is true when the request has been sent out and we're waiting for a response
+      and then
+      newGrantClaims.success if successful or
+      newGrantClaims.error if there was an error
+    -->
     <button class="cui-button" ng-click="newGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
   </div>
 </div>

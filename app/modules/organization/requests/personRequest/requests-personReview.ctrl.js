@@ -7,7 +7,7 @@ angular.module('organization')
     	orgId = $stateParams.orgID;
 
     let apiPromises = [];
-    
+
     personRequestReview.loading = true;
     personRequestReview.success = false;
     personRequestReview.approvedCount = 0;
@@ -26,7 +26,7 @@ angular.module('organization')
                         personRequestReview.deniedCount++;
                         break;
                 }
-            }); 
+            });
         }
     };
 
@@ -83,8 +83,8 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    personRequestReview.userRegistrationRequest = DataStorage.get(userId, 'userPersonRequest');
-    personRequestReview.userPackageRequests = DataStorage.get(userId, 'userRequestedPackages');
+    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId }).request;
+    personRequestReview.userPackageRequests = DataStorage.get('userRequestedPackages', { userId }).requests;
 
     if (personRequestReview.userPackageRequests) {
     	getApprovalCounts(personRequestReview.userPackageRequests);
@@ -123,12 +123,12 @@ angular.module('organization')
 
     		// Deny Registration Request
     		submitPromises.push(denyPersonRegistrationRequest(personRequestReview.userRegistrationRequest));
-    		
+
     		if (personRequestReview.userPackageRequests) {
     			personRequestReview.userPackageRequests.forEach((packageRequest) => {
     				// Deny each package request
     				submitPromises.push(API.cui.denyPackage({qs: [['requestId', packageRequest.id], ['justification', 'Registration request denied']]}));
-    			});	
+    			});
     		}
 
             $q.all(submitPromises)
@@ -160,7 +160,7 @@ angular.module('organization')
     							// If the package has claims, build the claims requests and grant the claims
     							let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
     							submitPromises.push(API.cui.grantClaims({data: grantClaimData}));
-    						}	
+    						}
     					}
                         // Package is denied
                         else {

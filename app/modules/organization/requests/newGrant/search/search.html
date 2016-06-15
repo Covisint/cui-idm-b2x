@@ -1,6 +1,10 @@
 <div class="cui-applications__search">
     <div class="cui-action">
-        <div class="cui-action__title" ng-hide="base.loader.for['newGrantSearch.user']" ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrantSearch.user.name.given}} {{newGrantSearch.user.name.surname}} - {{'new-grant' | translate}}</div>
+        <div class="cui-action__title" ng-click="organization.directory.userDetails({userID: newGrantSearch.user.id})">
+          <span ng-if="!base.loader.for['newGrantSearch.user']">
+            &#60; {{newGrantSearch.user.name.given}} {{newGrantSearch.user.name.surname}} - {{'new-grant' | translate}}
+          </span>
+        </div>
         <div class="cui-action__actions">
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="organization.directory.userDetails({userID: newGrantSearch.user.id})" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>

@@ -5,8 +5,7 @@ angular.module('organization')
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const updateStorage = () => {
-        DataStorage.deleteDataThatMatches(API.getUser(), 'newGrant', { userId: $stateParams.userID })
-        DataStorage.appendToType(API.getUser(), 'newGrant', {
+        DataStorage.replaceDataThatMatches('newGrant', { userId: $stateParams.userID }, {
             userId: $stateParams.userID,
             applications: newGrantSearch.requests.application,
             packages: newGrantSearch.requests.package
@@ -39,7 +38,7 @@ angular.module('organization')
         $scope.$digest()
     })
 
-    const searchUpdate = (previouslyLoaded) => {
+    const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newGrantSearch.apps')
         if (!previouslyLoaded) newGrantSearch.search = Object.assign({}, $stateParams)
 
@@ -71,7 +70,9 @@ angular.module('organization')
         }
     }
 
-    searchUpdate()
+    searchUpdate({
+        previouslyLoaded: false
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -90,7 +91,9 @@ angular.module('organization')
     newGrantSearch.updateSearch = () => {
         const stateParams = Object.assign({}, newGrantSearch.search)
         $state.transitionTo('organization.requests.newGrantSearch', stateParams, {notify:false})
-        searchUpdate(true)
+        searchUpdate({
+            previouslyLoaded: true
+        })
     }
 
     newGrantSearch.goToClaimSelection = () => {
