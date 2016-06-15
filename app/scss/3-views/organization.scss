@@ -79,17 +79,6 @@
     align-items: center;
     margin: em(48) 0 em(40);
   }
-
-  .cui-applications__center-text{
-    &::before,
-    &::after{
-      content: "\2014";
-      display: inline-block;
-      height: 100%;
-      margin: 0 5px;
-      width: 10px;
-    }
-  }
 }
 
 .cui-media--centered {
