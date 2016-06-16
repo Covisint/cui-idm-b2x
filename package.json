@@ -14,9 +14,6 @@
   },
   "homepage": "https://github.com/thirdwavellc/cui-idm-b2x#readme",
   "dependencies": {
-    "//": [
-      "ACTUAL APP DEPENDENCIES"
-    ],
     "babel-preset-es2015": "^6.6.0",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^1.0.3",
