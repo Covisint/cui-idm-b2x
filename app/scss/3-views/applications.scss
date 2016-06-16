@@ -46,6 +46,17 @@
   .cui-media__title {
     cursor: pointer;
   }
+
+    &__center-text{
+      &::before,
+      &::after{
+        content: "\2014";
+        display: inline-block;
+        height: 100%;
+        margin: 0 5px;
+        width: 10px;
+      }
+  }
 }
 
 %flex-row {
@@ -70,7 +81,7 @@
     text-align: center;
 
     @media screen and (min-width: 701px) {
-      flex: .1;
+      flex: .2;
     }
   }
 
@@ -96,6 +107,14 @@
       align-items: center;
       display: flex;
       justify-content: center;
+    }
+
+    .cui-link{
+      color: rgb(52,53,52);
+      display: block;
+      flex: .45;
+      font-weight: bold;
+      width: 100%;
     }
   }
 
