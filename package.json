@@ -35,8 +35,18 @@
     "load-grunt-tasks": "^3.3.0"
   },
   "dependencies": {
-    "@covisint/cui-api-interceptor": "^1.0.2",
+    "@covisint/cui-api-interceptor": "*",
+    "@covisint/cui-i18n": "*",
+    "@covisint/cui-icons": "*",
+    "@covisint/cui-ng": "*",
+    "@covisint/cui-styleguide": "*",
+    "@covisint/cui.js": "*",
+    "angular-local-storage": "^0.2.7",
+    "angular-messages": "^1.5.6",
+    "angular-snap": "^1.8.5",
     "babel-polyfill": "^6.9.0",
-    "blueimp-md5": "^2.3.0"
+    "blueimp-md5": "^2.3.0",
+    "snapjs": "^1.2.1",
+    "svg4everybody": "^2.0.3"
   }
 }

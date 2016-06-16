@@ -32,6 +32,50 @@
   margin-bottom: em(21);
 }
 
+// Org Directory
+
+.cui-organization-dir { 
+
+  .cui-status--active, 
+  .cui-status--pending, 
+  .cui-status--suspended, 
+  .cui-status--locked, 
+  .cui-status--inactive, 
+  .cui-status--unactivated {
+    @media screen and (max-width: 700px) {
+      font-size: em(11);
+      letter-spacing: 1.5px;
+    }
+  }
+
+  .cui-breadcrumb {
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+
+  .cui-action {
+
+    &__action-label {
+      @media screen and (max-width: 700px) {
+        display: none;
+      }
+    }
+
+    &__icon {
+      @media screen and (max-width: 700px) {
+        height: em(24);
+      }
+    }
+
+    &__icon--invite {
+      @media screen and (max-width: 700px) {
+        height: em(40);
+      }
+    }
+  }
+}
+
 // OrgDirectory userDetails
 
 .cui-loading__container--user-details {
@@ -214,4 +258,8 @@
   margin-bottom: 15px;
 }
 
-
+@media screen and (max-width: 375px){
+  .cui-action{
+    display: none;
+  }
+}
