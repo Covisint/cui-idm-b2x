@@ -24,8 +24,8 @@
       <span class="cui-action__action-label">{{'sort' | translate}}</span>
       <!-- Sort Popover -->
       <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgApplications.sortClicked">
-        <p ng-click="orgApplications.sortFilter('name')">{{'cui-alphabetically' | translate}}</p>
-        <p ng-click="orgApplications.sortFilter('creation')">{{'cui-by-date-added' | translate}}</p>  
+        <p ng-click="orgApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</p>  
       </div>
     </div>
 
@@ -37,10 +37,10 @@
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
       <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgApplications.refineClicked">
-        <p>{{'all' | translate}}</p>
-        <div ng-repeat="status in orgApplications.statusList" ng-if="orgApplications.statusCount[$index+1]!==0">
-          <p>{{status | translate}}</p>
-        </div>
+        <p ng-click="orgApplications.updateSearch('status')">{{'all' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','active')">{{'active' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
+        <p ng-click="orgApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
       </div>
     </div>
 
@@ -52,9 +52,9 @@
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
       <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgApplications.categoriesClicked">
-        <p ng-click="orgApplications.sortFilter('category', 'all')">{{'all' | translate}}</p>
-        <div ng-repeat="category in orgApplications.categoryList">
-          <p ng-click="orgApplications.sortFilter('category', category)">{{category| cuiI18n}}</p>
+        <p ng-click="orgApplications.updateSearch('category')">{{'all' | translate}}</p>
+        <div ng-repeat="category in orgApplications.categories">
+          <p ng-click="orgApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</p>
         </div>
       </div>
     </div>
@@ -74,7 +74,11 @@
   </div>
 
   <div ng-if="!orgApplications.loading">
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in orgApplications.appList track by application.id" ng-click="orgApplications.goToDetails(application)">
+    <!-- 
+        NOTE: 'track by application.id' was removed since the mock server returns duplicate services in some places
+              track by should be re-added when the real API is fixed.
+     -->
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in orgApplications.appList" ng-click="orgApplications.goToDetails(application)">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
@@ -84,16 +88,15 @@
           <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
         </div>
         <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
+        <span class="cui-status" ng-class="'cui-status--'+application.grant.status" ng-bind="application.grant.status | lowercase"></span>
       </div>
     </div>
 
     <!-- Pagination Controls -->
-    <div class="cui-paginate__container">
+    <div class="cui-paginate__container" ng-if="!orgApplications.loading">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-      <results-per-page class="cui-paginate__select" ng-model="orgApplications.paginationPageSize"></results-per-page>
-      <paginate class="cui-paginate" results-per-page="orgApplications.paginationPageSize" count="orgApplications.grantedCount" on-page-change="orgApplications.paginationHandler" ng-model="orgApplications.paginationCurrentPage" attach-rerender-to="orgApplications.reRenderPagination"></paginate>
+      <results-per-page class="cui-paginate__select" ng-model="orgApplications.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgApplications.search.pageSize" count="orgApplications.count" on-page-change="orgApplications.pageChange" ng-model="orgApplications.search.page" attach-rerender-to="orgApplications.reRenderPaginate"></paginate>
     </div>
-
   </div>
 </div>
