@@ -1,6 +1,8 @@
-<div class="cui-organization cui-organization-dir">
+<main class="cui-organization cui-organization-dir">
+  <h2 class="cui-sr-only">Organization Directory</h2>
   <!-- Page Header -->
-  <div class="cui-action">
+  <section class="cui-action">
+    <h3 class="cui-sr-only">Organization Navigation and Invitation Links</h3>
     <nav class="cui-breadcrumb">
       <ul class="cui-breadcrumb__links">
         <li class="cui-breadcrumb__link">
@@ -55,10 +57,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Action Sub-header -->
-  <div class="cui-action" ng-if="!orgDirectory.loading">
+  <section class="cui-action" ng-if="!orgDirectory.loading">
+    <h3 class="cui-sr-only">Organization Directory Filters</h3>
     <span class="cui-action__title cui-desktop-only " ui-sref="requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
     <span class="cui-action__title cui-mobile-only" >{{orgDirectory.orgPersonCount}} People </span>
     <div class="cui-action__actions">
@@ -109,10 +112,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Profile Content -->
-  <div class="cui-organization__main-container">
+  <section class="cui-organization__main-container">
+    <h3 class="cui-sr-only">Organization Directory List</h3>
     <!-- User List Loading -->
     <div class="cui-loading__container" ng-if="orgDirectory.loading">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
@@ -134,7 +138,7 @@
             <div class="cui-profile__user-avatar" aria-hidden="true" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
           </div>
           <div class="cui-flex-table__mobile-stack">
-            <div class="cui-flex-table__left"><h2 class="cui-flex-table__title">{{user.name.given}} {{user.name.surname}}</h2></div>
+            <div class="cui-flex-table__left"><span class="cui-flex-table__title">{{user.name.given}} {{user.name.surname}}</span></div>
             <div class="cui-flex-table__middle"><span class="cui-mobile-only ">{{'userID' | translate | lowercase}}: &nbsp;</span>{{user.username}}</div>
             <div class="cui-flex-table__middle"><span class="cui-mobile-only">{{'cui-registered' | translate | lowercase}}: &nbsp;</span>{{user.creation | date:base.appConfig.dateFormat}}</div>
             <div class="cui-flex-table__right" >
@@ -153,5 +157,5 @@
       <paginate class="cui-paginate" results-per-page="orgDirectory.paginationPageSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.paginationHandler" ng-model="orgDirectory.paginationCurrentPage" attach-rerender-to="orgDirectory.reRenderPagination"></paginate>
     </div>
 
-  </div>
-</div>
+  </section>
+</main>

@@ -74,6 +74,12 @@
       }
     }
   }
+
+  .cui-flex-table__mobile-stack {
+    @media screen and (max-width: 700px) {
+      line-height: 1.4
+    }
+  }
 }
 
 // OrgDirectory userDetails
