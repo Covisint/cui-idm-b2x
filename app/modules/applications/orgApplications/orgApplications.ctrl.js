@@ -1,175 +1,141 @@
 angular.module('applications')
-.controller('orgApplicationsCtrl', function(API,Sort,User,$scope,$stateParams,$pagination,$q) {
-    'use strict';
+.controller('orgApplicationsCtrl', function(API,Sort,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
 
     const orgApplications = this;
     const organizationId = User.user.organization.id;
 
-    let apiPromises = [];
-    let sortFlag = '+';
-
     orgApplications.loading = true;
-    orgApplications.categoryList = [];
+    orgApplications.search = {};
+    orgApplications.search.page = orgApplications.search.page || 1;
     orgApplications.paginationPageSize = orgApplications.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
-    const handleError = function handleError(err) {
-        orgApplications.loading = false;
-        $scope.$digest();
-        console.log('Error', err);
+    const switchBetween = (property, firstValue, secondValue) => { 
+        // helper function to switch a property between two values or set to undefined if values not passed;
+        if(!firstValue) orgApplications.search[property] = undefined;
+        orgApplications.search[property] === firstValue ? orgApplications.search[property] = secondValue : orgApplications.search[property] = firstValue;
     };
 
-    const sortFlagSwitch = () => {
-        switch (sortFlag) {
-            case ('+'):
-                sortFlag = '-';
-                break;
-            case ('-'):
-                sortFlag = '+';
-                break;
-        }
+    const getPackageServices = (ArrayOfPackages) => {
+        let services = [];
+
+        ArrayOfPackages.forEach((package) => {
+            API.cui.getPackageServices({packageId: package.servicePackage.id})
+            .then((res) => {
+                res.forEach((service) => {
+                    services.push(service);
+                });
+            });
+        });
+
+        return services;
     };
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    apiPromises.push(
+    const onLoad = (previouslyLoaded) => {
+        if (previouslyLoaded) {
+            orgApplications.loading = false;
+        }
+        else {
+            orgApplications.search.name = $stateParams.name;
+            orgApplications.search.category = $stateParams.category;
+            orgApplications.search.sortBy = $stateParams.sortBy;
+            orgApplications.search.refine = $stateParams.refine;
+            orgApplications.search.page = parseInt($stateParams.page);
+            orgApplications.search.pageSize = parseInt($stateParams.pageSize);
 
-        API.cui.getOrganizationGrantedApps({organizationId: organizationId, 
-            qs:[['pageSize', String(orgApplications.paginationPageSize)], ['page', '1']]})
-        .then((res) => {
-            orgApplications.appList = res;
-        }),
-
-        API.cui.getOrganizationGrantedCount({organizationId: organizationId})
-        .then((res) => {
-            orgApplications.grantedCount = res;
-        }),
-
-        API.cui.getOrgPendingServicePackages({qs:[['requestor.id', organizationId], ['requestor.type', 'organization']]})
-        .then((res) => {
-            orgApplications.requestableApps = res;
-
-            res.forEach((servicePackage) => {
-                return API.cui.getPackageServices({packageId: servicePackage.servicePackage.id})
-                .then((res) => {
-                    res.forEach((pendingService) => {
-                        pendingService.grant = { 
-                            status: 'pending'
-                        };
-                        orgApplications.appList.push(pendingService);
-                    });
-                });
+            API.cui.getCategories()
+            .then((res) => {
+                orgApplications.categories = res;
+                $scope.$digest();
             });
-        }),
+        }
 
-        API.cui.getCategories()
+        let queryParams = [['page', String(orgApplications.search.page)], ['pageSize', String(orgApplications.search.pageSize)]];
+        const promises = [];
+        const opts = {
+            organizationId: organizationId,
+            qs: queryParams
+        };
+
+        if (orgApplications.search.name) queryParams.push(['service.name', orgApplications.search.name]);
+        if (orgApplications.search.category) queryParams.push(['service.category', orgApplications.search.category]);
+        // sortBy: +/-service.name, +/-service.creation, +/-grant.instant
+        if (orgApplications.search.sortBy) queryParams.push(['sortBy', orgApplications.search.sort]);
+
+        switch (orgApplications.search.refine) {
+            case 'active':
+            case 'suspended':
+                queryParams.push(['grant.status', orgApplications.search.refine]);
+                promises.push(API.cui.getOrganizationGrantedApps(opts), API.cui.getPersonGrantedCount(opts));
+                break;
+            case 'pending':
+                promises.push(
+                    API.cui.getOrgPendingServicePackages({qs: [['requestor.id', organizationId], ['requestor.type', 'organization']]})
+                    .then((res) => {
+                        return getPackageServices(res);
+                    }),
+                    API.cui.getOrganizationRequestableCount({organizationId: organizationId})
+                );
+                break;
+            case undefined:
+                promises.push(API.cui.getOrganizationGrantedApps(opts), API.cui.getPersonGrantedCount(opts));
+                break;
+        }
+
+        $q.all(promises)
         .then((res) => {
-            res.forEach((category) => {
-                orgApplications.categoryList.push(category.name);
-            });
-        })
-    );
+            orgApplications.appList = res[0];
+            orgApplications.count = res[1];
+            orgApplications.loading = false;
+            if (orgApplications.reRenderPaginate) orgApplications.reRenderPaginate();
+        });
+    };
 
-    $q.all(apiPromises)
-    .then(() => {
-        orgApplications.loading = false;
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    onLoad(false);
 
     // ON LOAD END --------------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 
-    orgApplications.sortFilter = (sortType, sortValue) => {
-        let sortPromises = [], englishSortValue = '';
-        orgApplications.loading = true;
-        
-        if (sortValue && sortValue !== 'all') {
-            sortValue.forEach((languageValue) => {
-                if (languageValue.lang === 'en') {
-                    englishSortValue = languageValue.text;
-                }
-            });
-        }
-
-        if (sortType === 'category') {
-            if (sortValue === 'all') {
-                sortPromises.push(
-                    API.cui.getOrganizationGrantedApps({organizationId: organizationId,
-                        qs:[['pageSize', orgApplications.paginationPageSize], ['page', orgApplications.paginationCurrentPage]]})
-                    .then((res) => {
-                        orgApplications.appList = res;
-                    })
-                );
-            }
-            else {
-                sortPromises.push(
-                    API.cui.getOrganizationGrantedApps({organizationId: organizationId,
-                        qs:[['service.' + sortType, englishSortValue], ['pageSize', orgApplications.paginationPageSize], ['page', orgApplications.paginationCurrentPage]]})
-                    .then((res) => {
-                        orgApplications.appList = res;
-                    }) 
-                );    
-            }
-            
-        }
-        else {
-            sortPromises.push(
-                API.cui.getOrganizationGrantedApps({organizationId: organizationId,
-                    qs:[['sortBy', sortFlag + 'service.' + sortType], ['pageSize', orgApplications.paginationPageSize], ['page', orgApplications.paginationCurrentPage]]})
-                .then((res) => {
-                    orgApplications.appList = res;
-                    sortFlagSwitch();
-                })
-            );
-        }
-
-        $q.all(sortPromises)
-        .then((res) => {
-            orgApplications.loading = false;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    orgApplications.pageChange = (newpage) => {
+        orgApplications.updateSearch('page', newpage);
     };
 
-    orgApplications.paginationHandler = (page) => {
-        orgApplications.loading = true;
-        API.cui.getOrganizationGrantedApps({organizationId: organizationId, 
-                qs:[['pageSize', orgApplications.paginationPageSize], ['page', page]]})
-        .then((res) => {
-            orgApplications.appList = res;
-            orgApplications.loading = false;
-            $scope.$digest();
-        })
-        .fail(handleError);
+    orgApplications.updateSearch = (updateType, updateValue) => {
+        switch (updateType){
+            case 'alphabetic':
+                switchBetween('sortBy', '+service.name', '-service.name');
+                break;
+            case 'date':
+                switchBetween('sortBy', '+grant.instant', '-grant.instant');
+                break;
+            case 'status':
+                orgApplications.search.page = 1;
+                orgApplications.search.refine = updateValue;
+                break;
+            case 'category':
+                orgApplications.search.page = 1;
+                orgApplications.search.category = $filter('cuiI18n')(updateValue);
+                break;
+        }
+
+        // Updates URL, doesn't change state
+        $state.transitionTo('applications.orgApplications', orgApplications.search, {notify: false});
+        onLoad(true);
+    };
+
+    orgApplications.goToDetails = (application) => {
+        const opts = {
+            appId: application.id
+        };
+        $state.go('applications.orgApplicationDetails', opts);
     };
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
-
-    // WATCHERS START -----------------------------------------------------------------------------------------
-
-    $scope.$watch('orgApplications.paginationPageSize', function(newValue, oldValue) {
-        if (newValue && oldValue && newValue !== oldValue) {
-            orgApplications.loading = true;
-
-            API.cui.getOrganizationGrantedApps({organizationId: organizationId, 
-                qs:[['pageSize', orgApplications.paginationPageSize], ['page', 1]]})
-            .then((res) => {
-                orgApplications.appList = res;
-                orgApplications.paginationCurrentPage = 1;
-                orgApplications.loading = false;
-                $scope.$digest();
-            })
-            .fail(handleError);
-        }
-    });
-
-    // WATCHED END --------------------------------------------------------------------------------------------
 
 });
