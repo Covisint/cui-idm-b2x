@@ -7,12 +7,12 @@ module.exports = function(grunt,config){
           dest: '<%= config.buildDir %>/index.html'
         }, {
           src: [
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
-            'bower_components/angular-i18n/*.js',
-            'bower_components/cui-icons/iconList',
-            'bower_components/cui-icons/dist/**/*.svg',
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/*.json',
+            'node_modules/angular-i18n/*.js',
+            'node_modules/@covisint/cui-icons/iconList',
+            'node_modules/@covisint/cui-icons/dist/**/*.svg',
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
           ],
           dest: '<%= config.buildDir %>/'
         }
@@ -25,12 +25,12 @@ module.exports = function(grunt,config){
           dest: '<%= config.buildSdkDir %>/index.html'
         }, {
           src: [
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/*.json',
-            'bower_components/angular-i18n/*.js',
-            'bower_components/cui-icons/iconList',
-            'bower_components/cui-icons/dist/**/*.svg',
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
-            'bower_components/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/*.json',
+            'node_modules/angular-i18n/*.js',
+            'node_modules/@covisint/cui-icons/iconList',
+            'node_modules/@covisint/cui-icons/dist/**/*.svg',
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
+            'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json'
           ],
           dest: '<%= config.buildSdkDir %>/'
         }

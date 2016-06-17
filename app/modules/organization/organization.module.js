@@ -103,10 +103,16 @@ angular.module('organization',[])
             controller: returnCtrlAs('newGrant'),
             access: loginRequired
         })
-        .state('organization.requests.newGrant.search', {
+        .state('organization.requests.newGrantSearch', {
             url: '/search?type&category&name&userID&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newGrant/search/search.html',
             controller: returnCtrlAs('newGrantSearch'),
+            access: loginRequired
+        })
+        .state('organization.requests.newGrantClaims', {
+            url: '/claims?userID',
+            templateUrl: templateBase + 'requests/newGrant/claims/claims.html',
+            controller: returnCtrlAs('newGrantClaims'),
             access: loginRequired
         })
         .state('organization.requests.pendingRequests', {

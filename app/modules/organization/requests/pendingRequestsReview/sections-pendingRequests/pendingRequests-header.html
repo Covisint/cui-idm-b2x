@@ -41,13 +41,13 @@
       <!-- Status: Active -->
       <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequests.user.status==='active'}" ng-if="pendingRequests.user.status==='active'">{{pendingRequests.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
         </svg>
       </p>
       <!-- Status: Locked -->
       <p class="cui-media__content" ng-if="pendingRequests.user.status==='locked'">{{pendingRequests.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
         </svg>
       </p>
     </div>
