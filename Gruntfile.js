@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     scss: './app/scss'
   };
 
-  var tasks = ['watch','sass','browserSync','autoprefixer','clean','copy','filerev','useminPrepare',
+  var tasks = ['watch','sass','browserSync','postcss','clean','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
 
   var opts = {
@@ -41,13 +41,13 @@ module.exports = function(grunt) {
 
 
   // Tasks ------------------------------------------------------------
-  grunt.registerTask('default', ['copy:dev','concatModules','babel','ngAnnotate','sass','autoprefixer','browserSync:dev','watch']);
+  grunt.registerTask('default', ['copy:dev','concatModules','babel','ngAnnotate','sass','postcss','browserSync:dev','watch']);
 
-  grunt.registerTask('build', ['sass','autoprefixer','processhtml','ngtemplates:build','clean:build','copy:build',
+  grunt.registerTask('build', ['sass','postcss','processhtml','ngtemplates:build','clean:build','copy:build',
                                 'concatModules','babel','ngAnnotate','useminPrepare','concat:generated',
                                 'cssmin:generated','uglify:generated','filerev:build','usemin','clean:temp']);
 
-  grunt.registerTask('buildsdk', ['sass','autoprefixer','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
+  grunt.registerTask('buildsdk', ['sass','postcss','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
                                   'concatModules','babel','useminPreparesdk','concat:generated','cssmin:generated',
                                   'uglify:generated','filerev:buildsdk','useminsdk','clean:temp']);
 
