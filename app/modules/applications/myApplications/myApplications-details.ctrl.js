@@ -5,8 +5,8 @@ angular.module('applications')
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const handleError = (err) => {
-        console.log('Error \n', err);
-    };
+        console.log('Error \n', err)
+    }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
@@ -42,16 +42,19 @@ angular.module('applications')
             Loader.offFor(loaderName + 'app')
             $scope.$digest()
         })
-    };
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
 
     myApplicationDetails.goToDetails = (application) => {
-        $state.go('applications.myApplicationDetails', {'packageId':application.packageId, 'appId':application.id});
-    };
+        $state.go('applications.myApplicationDetails', {
+            'packageId':application.packageId,
+            'appId':application.id
+        })
+    }
 
     // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
 
-});
+})
