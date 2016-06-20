@@ -7,7 +7,7 @@
         </div>
         <div class="cui-action__actions">
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="organization.directory.userDetails({userID: newGrantSearch.user.id})" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close"></use>
+              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
             </svg>
         </div>
     </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="cui-action__actions">
             <svg ng-click="newGrantSearch.requestPopover=!newGrantSearch.requestPopover" off-click="newGrantSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': newGrantSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
-              <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#folder"></use>
+              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrantSearch.numberOfRequests != 0}">{{newGrantSearch.numberOfRequests}}</sup>
 
@@ -63,7 +63,7 @@
                 <div class="cui-expandable__body-pane">
                     <span class="cui-expandable__body-close" ng-click="collapse()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-                          <use class="cui-icon__ref" xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
                         </svg>
                     </span>
                     <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
