@@ -62,14 +62,14 @@
 </div>
 
 <div class="cui-applications__main-container">
-  <div class="cui-loading__container" ng-if="!myApplications.doneLoading">
+  <div class="cui-loading__container" ng-if="base.loader.for['myApplications.apps']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
   <!-- TODO styling for no results -->
   <!-- TODO @SHANE I had to add position relative to this div so that the loading container doesn't overflow onto the pagination -->
   <!-- also, when there's only 1 result at the last page, for example, the pagination will jump up. Can we maybe force it to be at the bottom of the page? -->
-  <div ng-if="myApplications.doneLoading" style="position:relative">
-    <div class="cui-loading__container" ng-if="!myApplications.redoneLoading">
+  <div ng-if="!base.loader.for['myApplications.apps']" style="position:relative">
+    <div class="cui-loading__container" ng-if="base.loader.for['myApplications.reloadingApps']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id" ng-if="application.urls">
@@ -87,7 +87,7 @@
     </div>
   </div>
   <!-- TODO @SHANE add space here -->
-  <div class="cui-paginate__container" ng-if="myApplications.doneLoading">
+  <div class="cui-paginate__container" ng-if="!base.loader.for['myApplications.apps']">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="myApplications.search.pageSize"></results-per-page>
     <paginate class="cui-paginate" results-per-page="myApplications.search.pageSize" count="myApplications.count" on-page-change="myApplications.pageChange" ng-model="myApplications.search.page" attach-rerender-to=" myApplications.reRenderPaginate"></paginate>
