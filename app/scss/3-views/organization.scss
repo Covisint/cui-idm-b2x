@@ -103,6 +103,22 @@
 
 .cui-organization--pending-requests {
 
+  .cui-action{
+    fieldset{
+      padding: 0;
+    }
+
+    .cui-radio{
+      margin-right: 3em;
+    }
+
+    .cui-radio__label{
+      &::after{
+        margin-top: -2px;
+      }
+    }
+  }
+
   .cui-action:nth-of-type(2) {
     @media screen and (max-width: 700px) {
       display: none;
