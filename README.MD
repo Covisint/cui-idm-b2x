@@ -19,4 +19,5 @@ Before starting any changes, follow this procedure to avoid merge conflicts:
 2. Pull from upstream / origin master
 3. Checkout the branch you want to make changes to : `git checkout applications.myApplications` or `git checkout -b branch-name` if the branch doesn't exist
 4. Pull from that branch `git pull origin applications.myApplications`
-5. Make your changes, commit and push to that branch
+5. Merge master into that branch `git merge master` (this is why it's important to only keep global changes on master)
+6. Make your changes, commit and push to that branch
