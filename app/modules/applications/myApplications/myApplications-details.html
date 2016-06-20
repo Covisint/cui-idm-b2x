@@ -17,11 +17,11 @@
   <!-- Main Container -->
   <div class="cui-applications__main-container cui-applications__main-container--full">
     <!-- Loading -->
-    <div class="cui-loading__container" ng-if="!myApplicationDetails.doneLoading">
+    <div class="cui-loading__container" ng-if="base.loader.for['myApplicationsDetails.app']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
-    <div ng-if="myApplicationDetails.doneLoading">
+    <div ng-if="!base.loader.for['myApplicationsDetails.app']">
       <!-- Application Summary -->
       <div class="cui-media cui-media--vertical">
         <!-- Application Image -->
