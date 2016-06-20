@@ -44,7 +44,7 @@
     "@covisint/cui-api-interceptor": "1.0.4",
     "@covisint/cui-i18n": "1.0.4",
     "@covisint/cui-icons": "1.1.1",
-    "@covisint/cui-ng": "1.9.9",
+    "@covisint/cui-ng": "1.9.10",
     "@covisint/cui-styleguide": "2.2.0"
   }
 }
