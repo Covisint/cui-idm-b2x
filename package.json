@@ -45,9 +45,9 @@
     "svg4everybody": "^2.0.3",
     "@covisint/cui.js": "^2.1.5",
     "@covisint/cui-api-interceptor": "^1.0.4",
-    "@covisint/cui-i18n": "^1.0.3",
+    "@covisint/cui-i18n": "^1.0.4",
     "@covisint/cui-icons": "^1.1.1",
-    "@covisint/cui-ng": "^1.9.8",
+    "@covisint/cui-ng": "^1.9.9",
     "@covisint/cui-styleguide": "^2.1.1"
   }
 }
