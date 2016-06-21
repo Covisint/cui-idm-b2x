@@ -45,7 +45,7 @@
                     <button class="cui-input-button__button" ng-click="newGrant.searchCallback(newGrant.search)">{{'go' | translate}}</button>
                 </div>
                 <div class="cui-applications__center-text">{{'or' | translate}}</div>
-                <button class="cui-button cui-button--full-width" ng-click="newGrant.searchCallback()">{{'browse-applications' | translate}}</button>
+                <a class="cui-link" ui-sref="applications.search">{{'browse-applications' | translate}}</a>
             </div>
             <div style="position:relative">
                 <div ng-if="base.loader.for['newGrant.categories']"> <!-- TODO @SHANE this loading block is overlapping the search options for a split second when I first load -->
