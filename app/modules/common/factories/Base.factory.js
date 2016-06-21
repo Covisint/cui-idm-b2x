@@ -19,6 +19,6 @@ angular.module('common')
             }
         },
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
-    };
+    }
 
-}]);
+})
