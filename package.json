@@ -46,6 +46,6 @@
     "@covisint/cui-i18n": "^1.0.3",
     "@covisint/cui-icons": "^1.1.1",
     "@covisint/cui-ng": "^1.9.8",
-    "@covisint/cui-styleguide": "^2.1.1"
+    "@covisint/cui-styleguide": "^2.2.0"
   }
 }
