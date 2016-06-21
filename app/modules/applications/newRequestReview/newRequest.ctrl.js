@@ -1,8 +1,7 @@
 angular.module('applications')
-.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests','localStorageService',
-function(API,$scope,$state,AppRequests,localStorage) {
+.controller('newAppRequestCtrl', function (API, $scope, $state, DataStorage, Loader, APIError) {
 
-    let newAppRequest = this;
+    let newAppRequest = this
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -10,25 +9,24 @@ function(API,$scope,$state,AppRequests,localStorage) {
 
     // ON LOAD START ----------------------------------------------------------------------------------------
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
-        AppRequests.set(localStorage.get('appsBeingRequested'));
-    }
-    const appsBeingRequested = AppRequests.get();
+    const loaderName = 'newAppRequest.'
 
-    newAppRequest.appsBeingRequested = [];
-    newAppRequest.numberOfRequests = 0;
+    newAppRequest.appsBeingRequested = DataStorage.getType('appRequests') || []
 
-    Object.keys(appsBeingRequested).forEach((appId) => {
-        // This sets the checkboxes back to marked when the user clicks back
-        newAppRequest.numberOfRequests++;
-        newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
-    });
+    newAppRequest.numberOfRequests = newAppRequest.appsBeingRequested.length
 
+    Loader.onFor(loaderName + 'categories')
     API.cui.getCategories()
-    .then((res)=>{
-        newAppRequest.categories = res;
-        newAppRequest.loadingDone = true;
-        $scope.$digest();
+    .then(res => {
+        newAppRequest.categories = Object.assign({}, res)
+        APIError.offFor(loaderName + 'categories')
+    })
+    .fail(err => {
+        APIError.onFor(loaderName + 'categories')
+    })
+    .done(() => {
+        Loader.offFor(loaderName + 'categories')
+        $scope.$digest()
     })
 
     // ON LOAD END ------------------------------------------------------------------------------------
@@ -36,9 +34,9 @@ function(API,$scope,$state,AppRequests,localStorage) {
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
 
     newAppRequest.searchCallback = function(searchWord) {
-        $state.go('applications.search', {name: searchWord});
-    };
+        $state.go('applications.search', {name: searchWord})
+    }
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 
-}]);
+})
