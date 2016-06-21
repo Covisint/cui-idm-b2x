@@ -1,0 +1,57 @@
+<main>
+  <h3>{{'review-user-pending-approval' | translate}}</h3>
+
+  <!-- Action Buttons -->
+  <section class="cui-action" ng-if="!personRequests.loading">
+    <h3 class="cui-sr-only">Organization Directory Filters</h3>
+    <span class="cui-action__title cui-mobile-only" >{{orgDirectory.orgPersonCount}} People </span>
+    <div class="cui-action__actions">
+
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="personRequests.sortClicked=!personRequests.sortClicked" id="sort-button" off-click="personRequests.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+        target-attachment="bottom middle" offset="-10px 0" ng-if="personRequests.sortClicked">
+          <p ng-click="personRequests.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
+          <p ng-click="personRequests.sort('date')">{{'cui-by-date-added' | translate}}</p>
+        </div>
+      </div>
+
+      <!-- @Thirdwave Developer: Organizations button is commented out right now as there is no way to query for person requests of a specific organization.  -->
+
+      <!-- Organizations -->
+      <!-- <div class="cui-action__action-container" ng-click="personRequests.organizationsClicked=!personRequests.organizationsClicked" id="organizations-button" off-click="personRequests.organizationsClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span> -->
+        <!-- Organizations Popover -->
+        <!-- <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="personRequests.organizationsClicked">
+          <div ng-if="!personRequests.organizationList">
+            <p>{{'cui-no-org-divisions' | translate}}!</p>
+          </div>
+          <div ng-if="personRequests.organizationList" ng-repeat="organization in personRequests.organizationList | orderBy:'name' track by organization.id">
+            <p ng-if="organization.id!==personRequests.organization.id" ng-click="personRequests.getOrgMembers(organization);personRequests.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- User Request List -->
+  <section>
+    <div>
+      <div ng-repeat="user in personRequests.userList">
+        <p>{{user.name.given}} {{user.name.surname}}</p>
+        <!-- NOTE: User's pending approval don't have job titles. For now I am showing their e-mail. Not sure what the design team would want. -->
+        <p>{{user.person.email}}</p>
+        <p>{{user.creation | date:base.appConfig.dateFormat}}</p>
+        <p>{{user.organization.name}}</p><br/>
+      </div>
+    </div>
+  </section>
+</main> 
