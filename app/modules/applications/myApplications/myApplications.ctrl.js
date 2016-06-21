@@ -5,7 +5,8 @@ angular.module('applications')
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
-    const switchBetween = (property, firstValue, secondValue) => { // helper function to switch a property between two values or set to undefined if values not passed
+    const switchBetween = (property, firstValue, secondValue) => {
+        // helper function to switch a property between two values or set to undefined if values not passed
         if (!firstValue) {
             myApplications.search[property] = undefined
             return
@@ -30,7 +31,7 @@ angular.module('applications')
             myApplications.search = Object.assign({}, $stateParams)
 
             API.cui.getCategories()
-            .then((res) => {
+            .then(res => {
                 myApplications.categories = Object.assign({}, res)
             })
             .done(() => {
@@ -49,13 +50,17 @@ angular.module('applications')
         const promises = [API.cui.getPersonGrantedApps(opts), API.cui.getPersonGrantedCount(opts)]
 
         $q.all(promises)
-        .then((res)=>{
+        .then(res => {
             myApplications.list = Object.assign(res[0])
             myApplications.count = res[1]
+            myApplications.reRenderPaginate && myApplications.reRenderPaginate() // re-render pagination if available
+        })
+        .catch(err => {
+
+        })
+        .finally(() => {
             if (previouslyLoaded) Loader.offFor(loaderName + 'reloadingApps')
             else Loader.offFor(loaderName + 'apps')
-
-            myApplications.reRenderPaginate && myApplications.reRenderPaginate() // re-render pagination if available
         })
     }
 
