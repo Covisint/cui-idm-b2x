@@ -20,8 +20,8 @@ angular.module('applications')
     const getPackageServices = (ArrayOfPackages) => {
         let services = [];
 
-        ArrayOfPackages.forEach((package) => {
-            API.cui.getPackageServices({packageId: package.servicePackage.id})
+        ArrayOfPackages.forEach((servicePackage) => {
+            API.cui.getPackageServices({packageId: servicePackage.servicePackage.id})
             .then((res) => {
                 res.forEach((service) => {
                     services.push(service);
