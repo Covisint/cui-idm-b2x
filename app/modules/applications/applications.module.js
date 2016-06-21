@@ -50,6 +50,12 @@ angular.module('applications',[])
             templateUrl: templateBase + 'orgApplications/orgApplications.html',
             controller: returnCtrlAs('orgApplications'),
             access:loginRequired
+        })
+        .state('applications.orgApplicationDetails', {
+            url: '/organization/details/:appId',
+            templateUrl: templateBase + 'orgApplications/orgApplications-details.html',
+            controller: returnCtrlAs('orgApplicationDetails'),
+            access: loginRequired
         });
 
 }]);
