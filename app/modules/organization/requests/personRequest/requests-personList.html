@@ -46,12 +46,18 @@
     </div>
 
     <div ng-if="!base.loader.for['personRequests.requests']">
-      <div ng-repeat="user in personRequests.userList" ng-click="personRequests.loadRequest(user.registrant.id, user.organization.id)">
+      <div class="person-request--header">
+        <div>{{'view-request-for' | translate}}</div>
+        <div>{{'job-title' | translate}}/{{'cui-email' | translate}}</div>
+        <div>{{'requested' | translate}}</div>
+        <div>{{'cui-org' | translate}}</div>
+      </div>
+      <div class="person-request--line" ng-repeat="user in personRequests.userList" ng-click="personRequests.loadRequest(user.registrant.id, user.organization.id)">
         <p>{{user.name.given}} {{user.name.surname}}</p>
         <!-- Note: Users that are pending approval don't have job titles. For now I am showing their e-mail. Not sure what the design team wants. -->
         <p>{{user.person.email}}</p>
         <p>{{user.creation | date:base.appConfig.dateFormat}}</p>
-        <p>{{user.organization.name}}</p><br/>
+        <p>{{user.organization.name}}</p>
       </div>
     </div>
   </section>

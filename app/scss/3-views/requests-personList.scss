@@ -1,0 +1,41 @@
+.person-request{
+	&--header{
+		display:flex;
+		border-bottom:1px solid rgb(222, 233, 238);
+		font-size:15px;
+		font-weight:bold;
+		padding-bottom:10px;
+		margin:0 auto;
+		width:calc(100% - 100px);
+		div:nth-child(1){
+			width:34%;
+		}
+		div:nth-child(3){
+			width:14%;
+		}
+		div{
+			width:25%;
+			color:rgb(155,155,155);
+		}
+	}
+	&--line{
+		display:flex;
+		border-bottom:1px solid rgb(222, 233, 238);
+		margin:0 auto;
+		width:calc(100% - 100px);
+		p:nth-child(1){
+			width:34%;
+			
+			font-weight:600;
+			
+		}
+		p:nth-child(3){
+			width:14%;
+		}
+		p{
+			font-size:16px;
+			width:25%;
+			color:rgb(52,53,52);
+		}
+	}
+}
