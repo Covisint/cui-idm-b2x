@@ -92,7 +92,7 @@ angular.module('common')
             throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(type) instead.')
             return
         } else {
-            storage[API.getUser()][type].filter(x => {
+            storage[API.getUser()][type] = storage[API.getUser()][type].filter(x => {
                 return !_.isMatch(x, comparison)
             })
         }
