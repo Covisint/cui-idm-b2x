@@ -53,7 +53,7 @@ angular.module('organization')
         });
 
         promises.push(
-            API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+            API.cui.getOrganizationHierarchy({organizationId: organizationId})
             .then((res) => {
                 personRequests.organizationList = flattenHierarchy(res.children);
             })
