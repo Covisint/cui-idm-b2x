@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q,User) {
+.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q,User,$pagination) {
     'use strict';
 
     const orgDirectory = this;
@@ -9,6 +9,8 @@ angular.module('organization')
     orgDirectory.userList = [];
     orgDirectory.unparsedUserList = [];
     orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed'];
+    orgDirectory.statusCount = [0,0,0,0,0,0,0];
+    orgDirectory.paginationPageSize = orgDirectory.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -62,6 +64,22 @@ angular.module('organization')
         }
     };
 
+    const getUserListAppCount = (userArray) => {
+        let userList = userArray;
+
+        userList.forEach((user) => {
+            API.cui.getPersonGrantedCount({personId: user.id})
+            .then((res) => {
+                user.appCount = res;
+            })
+            .fail((error) => {
+                user.appCount = 0;
+            });
+        });
+
+        return userList;
+    };
+
     const getPeopleAndCount = () => {
         const getPersonOptions = {
             'qs': [
@@ -77,9 +95,10 @@ angular.module('organization')
 
         $q.all([API.cui.getPersons(getPersonOptions), API.cui.countPersons(countPersonOptions)])
         .then((res) => {
-            orgDirectory.unparsedUserList = orgDirectory.userList = angular.copy(res[0]);
+            orgDirectory.unparsedUserList = angular.copy(res[0]);
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             orgDirectory.orgPersonCount = res[1];
+            orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(orgDirectory.unparsedUserList);
             orgDirectory.loading = false;
             orgDirectory.reRenderPagination && orgDirectory.reRenderPagination();
         });
@@ -105,8 +124,7 @@ angular.module('organization')
         orgDirectory.organization = organization;
         API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)]]})
         .then(function(res) {
-            orgDirectory.userList = res;
-            orgDirectory.unparsedUserList = res;
+            orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(res);
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
             return API.cui.countPersons({'qs': ['organization.id', String(orgDirectory.organization.id)]});
         })
@@ -139,8 +157,7 @@ angular.module('organization')
         API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
                                     ['pageSize', String(orgDirectory.paginationPageSize)], ['page', String(page)]]})
         .then(function(res) {
-            orgDirectory.userList = res;
-            orgDirectory.unparsedUserList = res;
+            orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(res);
             orgDirectory.statusList = getStatusList(orgDirectory.userList);
         })
         .fail(handleError);
@@ -168,8 +185,7 @@ angular.module('organization')
             API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
                                 ['pageSize', String(orgDirectory.paginationPageSize)], ['page', 1]]})
             .then(function(res) {
-                orgDirectory.userList = res;
-                orgDirectory.unparsedUserList = res;
+                orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(res);
                 orgDirectory.paginationCurrentPage = 1;
                 orgDirectory.statusList = getStatusList(orgDirectory.userList);
             })

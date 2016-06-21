@@ -11,7 +11,21 @@
 
   <groupId>com.covisint.cui</groupId>
   <artifactId>cui-idm-b2x</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>CUI IDM B2X</name>
+  <description>A collection of reference implementations for the IDM product on the Covisint Platform.</description>
+
+  <organization>
+    <name>Covisint</name>
+  </organization>
+
+  <scm>
+    <url>https://github.com/thirdwavellc/cui-idm-b2x</url>
+    <connection>scm:git:git@github.com:thirdwavellc/cui-idm-b2x.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+  
   <build>
     <plugins>
       <plugin>
@@ -67,15 +81,4 @@
 
     </plugins>
   </build>
-
-  <scm>
-    <url>https://github.com/thirdwavellc/cui-idm-b2x</url>
-    <connection>scm:git:git@github.com:thirdwavellc/cui-idm-b2x.git</connection>
-    <tag>HEAD</tag>
-  </scm>
-  <organization>
-    <name>Covisint</name>
-  </organization>
-  <name>CUI IDM B2X</name>
-  <description>A collection of reference implementations for the IDM product on the Covisint Platform.</description>
 </project>
