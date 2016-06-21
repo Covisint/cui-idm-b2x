@@ -45,7 +45,8 @@ angular.module('common')
     }
 
     this.offFor = (property) => {
-        if (!this.details[property].count || this.details[property].count===1) delete this.details[property]
+        if (!this.details[property]) return
+        else if (!this.details[property].count || this.details[property].count===1) delete this.details[property]
         else this.details[property].count--
     }
 
