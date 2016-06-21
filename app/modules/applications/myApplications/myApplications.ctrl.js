@@ -33,6 +33,10 @@ angular.module('applications')
             API.cui.getCategories()
             .then(res => {
                 myApplications.categories = Object.assign({}, res)
+                APIError.offFor(loaderName + 'categories')
+            })
+            .fail(err => {
+                APIError.onFor(loaderName + 'categories')
             })
             .done(() => {
                 $scope.$digest()
@@ -54,9 +58,10 @@ angular.module('applications')
             myApplications.list = Object.assign(res[0])
             myApplications.count = res[1]
             myApplications.reRenderPaginate && myApplications.reRenderPaginate() // re-render pagination if available
+            APIError.offFor(loaderName + 'apps')
         })
         .catch(err => {
-
+            APIError.onFor(loaderName + 'apps')
         })
         .finally(() => {
             if (previouslyLoaded) Loader.offFor(loaderName + 'reloadingApps')

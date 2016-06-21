@@ -2,6 +2,17 @@
 <div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.ctrl.js" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
+<!--
+info scope vars
+
+base.loader.for['myApplications.apps'] true on first load, while apps are loading, undefined otherwise
+base.loader.for['myApplications.reloadingApps'] true while reloading apps, after a sorting or refinement is passed, undefined otherwise
+base.apiError.for['myApplications.apps'] true only if there was an error getting apps
+base.apiError.for['myApplications.categories'] true only if there was an error getting categories
+
+-->
+
+
 <div class="cui-action">
   <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
@@ -51,7 +62,7 @@
       <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false">
         <p ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</p>
         <div ng-repeat="category in myApplications.categories">
-          <p ng-click="myApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</p>
+          <p ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</p>
         </div>
       </div>
     </div>
