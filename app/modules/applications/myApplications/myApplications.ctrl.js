@@ -40,9 +40,6 @@ angular.module('applications')
             .fail(err => {
                 APIError.onFor(loaderName + 'categories')
             })
-            .fail(err => {
-                APIError.onFor(loaderName + 'categories')
-            })
             .done(() => {
                 Loader.offFor(loaderName + 'categories')
                 $scope.$digest()
