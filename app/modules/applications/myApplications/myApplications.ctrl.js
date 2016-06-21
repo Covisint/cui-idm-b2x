@@ -6,8 +6,13 @@ angular.module('applications')
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
     const switchBetween = (property, firstValue, secondValue) => { // helper function to switch a property between two values or set to undefined if values not passed
-        if(!firstValue) myApplications.search[property] = undefined
-        myApplications.search[property] === firstValue ? myApplications.search[property] = secondValue : myApplications.search[property] = firstValue
+        if (!firstValue) {
+            myApplications.search[property] = undefined
+            return
+        }
+        myApplications.search[property] = myApplications.search[property] === firstValue
+            ? secondValue
+            : firstValue
     }
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
