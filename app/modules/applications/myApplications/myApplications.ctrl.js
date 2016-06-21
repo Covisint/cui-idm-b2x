@@ -35,6 +35,10 @@ angular.module('applications')
             .then(res => {
                 APIError.offFor(loaderName + 'categories')
                 myApplications.categories = Object.assign({}, res)
+                APIError.offFor(loaderName + 'categories')
+            })
+            .fail(err => {
+                APIError.onFor(loaderName + 'categories')
             })
             .fail(err => {
                 APIError.onFor(loaderName + 'categories')
