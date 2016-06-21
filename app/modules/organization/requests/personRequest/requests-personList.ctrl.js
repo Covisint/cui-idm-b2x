@@ -1,10 +1,10 @@
 angular.module('organization')
-.controller('personRequestsCtrl',function(API,Sort,User,$scope,$q) {
+.controller('personRequestsCtrl',function(API,APIError,Loader,Sort,User,$q,$scope,$state) {
 
     const personRequests = this;
     const organizationId = User.user.organization.id;
+    const loaderName = 'personRequests.';
 
-    personRequests.loading = true;
     personRequests.sortFlag = false;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -33,9 +33,12 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
+    Loader.onFor(loaderName + 'requests');
+
     API.cui.getPersonRegistrationRequest()
     .then((res) => {
         personRequests.userList = res;
+        personRequests.requestCount = res.length;
         let promises = [];
 
         personRequests.userList.forEach((person) => {
@@ -48,6 +51,7 @@ angular.module('organization')
                 })
                 .then((res) => {
                     person.organization = res;
+
                 })
             );
         });
@@ -60,8 +64,11 @@ angular.module('organization')
         );
 
         $q.all(promises)
-        .then(() => {
-            personRequests.loading = false;
+        .catch((error) => {
+            APIError.onFor(loaderName + 'requests');
+        })
+        .finally(() => {
+            Loader.offFor(loaderName + 'requests');
         });
     });
 
@@ -69,9 +76,13 @@ angular.module('organization')
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    personRequests.sort = function sort(sortType) {
+    personRequests.sort = (sortType) => {
         Sort.listSort(personRequests.userList, sortType, personRequests.sortFlag);
         personRequests.sortFlag =! personRequests.sortFlag;
+    };
+
+    personRequests.loadRequest = (registrantId, orgId) => {
+        $state.go('organization.requests.personRequest', {userID: registrantId, orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------
