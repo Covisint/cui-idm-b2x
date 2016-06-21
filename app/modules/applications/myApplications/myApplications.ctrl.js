@@ -1,5 +1,5 @@
 angular.module('applications')
-.controller('myApplicationsCtrl', function(localStorageService, $scope, $stateParams, API, $state, $filter, $q, $pagination, Loader, APIHelpers) {
+.controller('myApplicationsCtrl', function(localStorageService, $scope, $stateParams, API, $state, $filter, $q, $pagination, Loader, APIHelpers, APIError) {
 
     let myApplications = this
 
@@ -30,15 +30,17 @@ angular.module('applications')
             Loader.onFor(loaderName + 'apps')
             myApplications.search = Object.assign({}, $stateParams)
 
+            Loader.onFor(loaderName + 'categories')
             API.cui.getCategories()
             .then(res => {
-                myApplications.categories = Object.assign({}, res)
                 APIError.offFor(loaderName + 'categories')
+                myApplications.categories = Object.assign({}, res)
             })
             .fail(err => {
                 APIError.onFor(loaderName + 'categories')
             })
             .done(() => {
+                Loader.offFor(loaderName + 'categories')
                 $scope.$digest()
             })
         }

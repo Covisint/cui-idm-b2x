@@ -1,19 +1,14 @@
 angular.module('applications')
-.controller('myApplicationDetailsCtrl', function(API, $scope, $stateParams, $state, $q, APIHelpers, Loader) {
+.controller('myApplicationDetailsCtrl', function(API, $scope, $stateParams, $state, $q, APIHelpers, Loader, APIError) {
     let myApplicationDetails = this
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    const handleError = (err) => {
-        console.log('Error \n', err)
-    }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    const loaderName = 'myApplicationsDetails.'
-    Loader.onFor(loaderName + 'app')
+    const loaderName = 'myApplicationDetails.'
 
     const qs = {
         'service.id': $stateParams.appId
@@ -25,21 +20,35 @@ angular.module('applications')
         qs: APIHelpers.getQs(qs)
     }
 
+    Loader.onFor(loaderName + 'app')
     API.cui.getPersonGrantedApps(opts)
-    .then((res) => {
+    .then(res => {
+        APIError.offFor(loaderName + 'app')
         myApplicationDetails.app = Object.assign({}, res[0])
         getClaims(myApplicationDetails.app)
     })
+    .fail(err => {
+        APIError.onFor(loaderName + 'app')
+    })
+    .done(() => {
+        Loader.offFor(loaderName + 'app')
+        $scope.$digest()
+    })
 
     const getClaims = (app) => {
-        const packageId = app.servicePackage.id;
+        const packageId = app.servicePackage.id
 
+        Loader.onFor(loaderName + 'claims')
         API.cui.getPersonPackageClaims({ grantee:API.getUser(), useCuid:true, packageId })
-        .then((res) => {
+        .then(res => {
+            APIError.offFor(loaderName + 'claims')
             myApplicationDetails.claims = Object.assign({}, res)
         })
+        .fail(err => {
+            APIError.onFor(loaderName + 'claims')
+        })
         .done(() => {
-            Loader.offFor(loaderName + 'app')
+            Loader.offFor(loaderName + 'claims')
             $scope.$digest()
         })
     }
