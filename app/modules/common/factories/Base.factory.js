@@ -1,7 +1,5 @@
 angular.module('common')
-.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','Menu','Loader',
-function($state,Countries,Timezones,Languages,$translate,LocaleService,User,Menu,Loader) {
-
+.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError) => {
     return {
         appConfig: appConfig,
         countries: Countries,
@@ -11,6 +9,7 @@ function($state,Countries,Timezones,Languages,$translate,LocaleService,User,Menu
         timezones: Timezones.all,
         user: User.user,
         loader: Loader,
+        apiError: APIError,
         goBack: (fallback) => {
             if ($state.previous.name.name !== '') {
                 $state.go($state.previous.name, $state.previous.params);
