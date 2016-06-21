@@ -13,7 +13,8 @@ module.exports = function(grunt,config){
             'node_modules/@covisint/cui-icons/dist/**/*.svg',
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json',
-            'node_modules/lato-font/fonts/**'
+            'node_modules/lato-font/fonts/**',
+            'appConfig.json'
           ],
           dest: '<%= config.buildDir %>/'
         }
