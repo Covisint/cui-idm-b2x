@@ -2,7 +2,7 @@ angular.module('applications')
 .controller('applicationSearchCtrl',function (API, $scope, $stateParams, $state, DataStorage, $q, $pagination, APIHelpers, APIError, Loader) {
     let applicationSearch = this
 
-    const appsBeingRequested = DataStorage.getType('appRequests') || []
+    const appsBeingRequested = applicationSearch.appRequests = DataStorage.getType('appRequests') || []
 
     applicationSearch.appCheckbox = {}
 
@@ -90,7 +90,7 @@ angular.module('applications')
             applicationSearch.numberOfRequests++
             applicationSearch.appCheckbox[application.id] = true
         }
-        console.log(DataStorage.getType('appRequests'))
+        applicationSearch.appRequests = DataStorage.getType('appRequests')
     }
 
     applicationSearch.checkout = () => {
