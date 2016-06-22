@@ -22,17 +22,34 @@
 		display:flex;
 		border-bottom:1px solid rgb(222, 233, 238);
 		margin:0 auto;
+		padding:11px 0;
 		width:calc(100% - 100px);
-		p:nth-child(1){
+		cursor:pointer;
+		align-items:center;
+		justify-content:center;
+		&__item:nth-child(1){
 			width:34%;
-			
+			margin-left:-40px;
 			font-weight:600;
+			line-height:100%;
+			display:flex;
+			justify-content:flex-start;
+			align-items:center;
+			span{
+				display:inline-block;
+				&:first-child{
+					margin-right:20px;
+				}
+			}
 			
 		}
-		p:nth-child(3){
+		&__item:nth-child(2){
+			word-break: break-all;
+		}
+		&__item:nth-child(3){
 			width:14%;
 		}
-		p{
+		&__item{
 			font-size:16px;
 			width:25%;
 			color:rgb(52,53,52);
