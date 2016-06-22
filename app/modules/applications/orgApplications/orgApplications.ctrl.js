@@ -1,112 +1,141 @@
 angular.module('applications')
-.controller('orgApplicationsCtrl', ['$scope','API','Sort','$stateParams',
-function($scope,API,Sort,$stateParams) {
-    'use strict';
+.controller('orgApplicationsCtrl', function(API,Sort,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
 
-    var orgApplications = this;
-    var organizationId = $stateParams.id;
+    const orgApplications = this;
+    const organizationId = User.user.organization.id;
 
     orgApplications.loading = true;
-    orgApplications.sortFlag = false;
-    orgApplications.categoriesFlag = false;
-    orgApplications.statusFlag = false;
-    orgApplications.appList = [];
-    orgApplications.unparsedAppList = [];
-    orgApplications.categoryList = [];
-    orgApplications.statusList = ['active', 'suspended', 'pending'];
-    orgApplications.statusCount = [0,0,0,0];
+    orgApplications.search = {};
+    orgApplications.search.page = orgApplications.search.page || 1;
+    orgApplications.paginationPageSize = orgApplications.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
-    var handleError = function handleError(err) {
-        orgApplications.loading = false;
-        $scope.$digest();
-        console.log('Error', err);
+    const switchBetween = (property, firstValue, secondValue) => { 
+        // helper function to switch a property between two values or set to undefined if values not passed;
+        if(!firstValue) orgApplications.search[property] = undefined;
+        orgApplications.search[property] === firstValue ? orgApplications.search[property] = secondValue : orgApplications.search[property] = firstValue;
     };
 
-    var getListOfCategories = function(services) {
-        // WORKAROUND CASE # 7
-        var categoryList = [];
-        var categoryCount = [orgApplications.unparsedAppList.length];
+    const getPackageServices = (ArrayOfPackages) => {
+        let services = [];
 
-        services.forEach(function(service) {
-            if (service.category) {
-                var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
-                    if (angular.equals(category, service.category)) {
-                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
-                        return true;
-                    }
-                    return false;
+        ArrayOfPackages.forEach((servicePackage) => {
+            API.cui.getPackageServices({packageId: servicePackage.servicePackage.id})
+            .then((res) => {
+                res.forEach((service) => {
+                    services.push(service);
                 });
-
-                if (!serviceCategoryInCategoryList) {
-                    categoryList.push(service.category);
-                    categoryCount[categoryList.length] = 1;
-                }
-            }
+            });
         });
-        orgApplications.categoryCount = categoryCount;
-        return categoryList;
-    };
 
-    var getApplicationsFromGrants = function(grants) {
-        // WORKAROUND CASE #1
-        // Get services from each grant
-        var i = 0;
-        grants.forEach(function(grant) {
-            API.cui.getPackageServices({ 'packageId': grant.servicePackage.id })
-            .then(function(res) {
-                i++;
-                res.forEach(function(service) {
-                    // Set some of the grant attributes to its associated service
-                    service.status = grant.status;
-                    service.dateCreated = grant.creation;
-                    service.parentPackage = grant.servicePackage.id;
-                    orgApplications.appList.push(service);
-                });
-
-                if (i === grants.length) {
-                    orgApplications.appList = _.uniq(orgApplications.appList, function(app) {
-                        return app.id;
-                    });
-                    angular.copy(orgApplications.appList, orgApplications.unparsedAppList);
-                    orgApplications.statusCount[0] = orgApplications.appList.length;
-                    orgApplications.categoryList = getListOfCategories(orgApplications.appList);
-                    orgApplications.loading = false;
-                    $scope.$digest();
-                }
-            })
-            .fail(handleError);
-        });
+        return services;
     };
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    if (organizationId) {
-        // Load organization applications of id parameter
-        API.cui.getOrganizationPackages({ organizationId: organizationId })
-        .then(function(res) {
-            getApplicationsFromGrants(res);
-        })
-        .fail(handleError);
-    }
-    else {
-        // Load logged in user's organization applications
-        API.cui.getPerson({ personId: API.getUser(), useCuid:true })
-        .then(function(res) {
-            return API.cui.getOrganizationPackages({ organizationId: res.organization.id });
-        })
-        .then(function(res) {
-            getApplicationsFromGrants(res);
-        })
-        .fail(handleError);
-    }
+    const onLoad = (previouslyLoaded) => {
+        if (previouslyLoaded) {
+            orgApplications.loading = false;
+        }
+        else {
+            orgApplications.search.name = $stateParams.name;
+            orgApplications.search.category = $stateParams.category;
+            orgApplications.search.sortBy = $stateParams.sortBy;
+            orgApplications.search.refine = $stateParams.refine;
+            orgApplications.search.page = parseInt($stateParams.page);
+            orgApplications.search.pageSize = parseInt($stateParams.pageSize);
+
+            API.cui.getCategories()
+            .then((res) => {
+                orgApplications.categories = res;
+                $scope.$digest();
+            });
+        }
+
+        let queryParams = [['page', String(orgApplications.search.page)], ['pageSize', String(orgApplications.search.pageSize)]];
+        const promises = [];
+        const opts = {
+            organizationId: organizationId,
+            qs: queryParams
+        };
+
+        if (orgApplications.search.name) queryParams.push(['service.name', orgApplications.search.name]);
+        if (orgApplications.search.category) queryParams.push(['service.category', orgApplications.search.category]);
+        // sortBy: +/-service.name, +/-service.creation, +/-grant.instant
+        if (orgApplications.search.sortBy) queryParams.push(['sortBy', orgApplications.search.sort]);
+
+        switch (orgApplications.search.refine) {
+            case 'active':
+            case 'suspended':
+                queryParams.push(['grant.status', orgApplications.search.refine]);
+                promises.push(API.cui.getOrganizationGrantedApps(opts), API.cui.getPersonGrantedCount(opts));
+                break;
+            case 'pending':
+                promises.push(
+                    API.cui.getOrgPendingServicePackages({qs: [['requestor.id', organizationId], ['requestor.type', 'organization']]})
+                    .then((res) => {
+                        return getPackageServices(res);
+                    }),
+                    API.cui.getOrganizationRequestableCount({organizationId: organizationId})
+                );
+                break;
+            case undefined:
+                promises.push(API.cui.getOrganizationGrantedApps(opts), API.cui.getPersonGrantedCount(opts));
+                break;
+        }
+
+        $q.all(promises)
+        .then((res) => {
+            orgApplications.appList = res[0];
+            orgApplications.count = res[1];
+            orgApplications.loading = false;
+            if (orgApplications.reRenderPaginate) orgApplications.reRenderPaginate();
+        });
+    };
+
+    onLoad(false);
 
     // ON LOAD END --------------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+
+    orgApplications.pageChange = (newpage) => {
+        orgApplications.updateSearch('page', newpage);
+    };
+
+    orgApplications.updateSearch = (updateType, updateValue) => {
+        switch (updateType){
+            case 'alphabetic':
+                switchBetween('sortBy', '+service.name', '-service.name');
+                break;
+            case 'date':
+                switchBetween('sortBy', '+grant.instant', '-grant.instant');
+                break;
+            case 'status':
+                orgApplications.search.page = 1;
+                orgApplications.search.refine = updateValue;
+                break;
+            case 'category':
+                orgApplications.search.page = 1;
+                orgApplications.search.category = $filter('cuiI18n')(updateValue);
+                break;
+        }
+
+        // Updates URL, doesn't change state
+        $state.transitionTo('applications.orgApplications', orgApplications.search, {notify: false});
+        onLoad(true);
+    };
+
+    orgApplications.goToDetails = (application) => {
+        const opts = {
+            appId: application.id
+        };
+        $state.go('applications.orgApplicationDetails', opts);
+    };
+
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
 
-}]);
+});

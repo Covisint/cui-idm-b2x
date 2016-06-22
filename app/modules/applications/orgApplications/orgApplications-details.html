@@ -1,0 +1,23 @@
+<p>Organization Application Details</p>
+
+<!-- Header Data -->
+<h3>Header Data</h3>
+<p>Name: {{orgApplicationDetails.application.name | cuiI18n}}</p>
+<p>Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
+
+<!-- Bundled/Related Data -->
+<h3>Bundled Apps</h3>
+<p ng-repeat="application in orgApplicationDetails.application.bundledApps track by application.id">{{application.name | cuiI18n}}</p>
+
+<h3>Related Apps</h3>
+<p ng-repeat="application in orgApplicationDetails.application.relatedApps track by application.id">{{application.name | cuiI18n}}</p>
+
+<!-- User List -->
+<h3>User List</h3>
+<div ng-repeat="grant in orgApplicationDetails.grantList track by grant.grantee.id">
+	<p>{{grant.person.name.given}} {{grant.person.name.surname}}</p>
+	<p>{{grant.grantee.id}}</p>
+	<p>{{grant.organization.name}}</p>
+	<p>{{grant.person.status}}</p>
+	</br>
+</div>

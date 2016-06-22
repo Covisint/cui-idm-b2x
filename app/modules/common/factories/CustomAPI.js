@@ -16,7 +16,7 @@ angular.module('common')
 
         {cmd: 'getPersonGrantedCount',                   accepts: 'text/plain',                                          							     call: `/service/v3/applications/persons/${ '{personId}' }/count`, 							type: 'GET' },
 
-        {cmd: 'getOrganizationRequestableApps',          accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                   call: `/service/v3/applications/organizations/${ '{organizationId}' }`, 					type: 'GET' },
+        {cmd: 'getOrganizationRequestableApps',          accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',                   call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable`, 	    type: 'GET' },
 
         {cmd: 'getOrganizationRequestableCount',         accepts: 'text/plain',                                          							     call: `/service/v3/applications/organizations/${ '{organizationId}' }/requestable/count`, 	type: 'GET' },
 
@@ -40,23 +40,27 @@ angular.module('common')
 
         {cmd: 'getPackage',                              accepts: 'application/vnd.com.covisint.platform.package.v1+json',                               call: `/service/v3/packages/${ '{packageId}' }`, 											type: 'GET' },
 
-        {cmd: 'denyPackage',                             accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/deny`,                                                    type: 'POST' },
+        {cmd: 'denyPackage',                             accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/deny`,                                                   type: 'POST' },
 
-        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/approve`,                                                 type: 'POST' },
+        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/approve`,                                                type: 'POST' },
 
-        {cmd: 'grantClaims',                             accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',                   call: `/service/v3/packages/grants/claims`,                                                 type: 'PUT' },
+        {cmd: 'grantClaims',                             accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',                   call: `/service/v3/packages/grants/claims`,                                                type: 'PUT' },
 
-        {cmd: 'getOrganizationRegistrationRequest',      accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                          type: 'GET' },
+        {cmd: 'getOrganizationRegistrationRequest',      accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                         type: 'GET' },
 
-        {cmd: 'getPersonRegistrationRequest',            accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests`,                                                                type: 'GET' },
+        {cmd: 'getPersonRegistrationRequest',            accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests`,                                                               type: 'GET' },
 
-        {cmd: 'approvePersonRegistration',               accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/approve`,                                                  type: 'POST' },
+        {cmd: 'approvePersonRegistration',               accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/approve`,                                                 type: 'POST' },
 
-        {cmd: 'denyPersonRegistration',                  accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/deny`,                                                     type: 'POST' },
+        {cmd: 'denyPersonRegistration',                  accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',                        call: `/person/v3/requests/tasks/deny`,                                                    type: 'POST' },
 
-        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                          type: 'GET' },
+        {cmd: 'getAllOrganizationRequests',              accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                         type: 'GET' },
 
-        {cmd: 'grantPersonPackage',                      accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,     type: 'PUT' },
+        {cmd: 'getOrgPendingServicePackages',            accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                       call: `/service/v3/requests`,                                                              type: 'GET' },
+
+        {cmd: 'grantPersonPackage',                      accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,    type: 'PUT' },
+
+        {cmd: 'getGrants',                               accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/grants`,                                                                type: 'GET' }
     ];
 
     return calls;

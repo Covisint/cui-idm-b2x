@@ -73,10 +73,9 @@
         </svg>
         <span class="cui-action__action-label">{{'sort' | translate}}</span>
         <!-- Sort Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.sortClicked">
           <p ng-click="orgDirectory.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
-          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>
+          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>  
         </div>
       </div>
 
@@ -87,7 +86,7 @@
         </svg>
         <span class="cui-action__action-label">{{'refine' | translate}}</span>
         <!-- Refine Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.refineClicked">
           <p ng-click="orgDirectory.parseUsersByStatus('all')">{{'all' | translate}} ({{orgDirectory.statusCount[0]}})</p>
           <div ng-repeat="status in orgDirectory.statusList track by $index" ng-if="myApplications.statusCount[$index+1]!==0">
             <p ng-click="orgDirectory.parseUsersByStatus(status)">{{status | translate}} ({{orgDirectory.statusCount[$index+1]}})</p>
@@ -102,7 +101,7 @@
         </svg>
         <span class="cui-action__action-label">{{'organizations' | translate}}</span>
         <!-- Organizations Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.organizationsClicked">
           <div ng-if="!orgDirectory.organizationList">
             <p>{{'cui-no-org-divisions' | translate}}!</p>
           </div>
