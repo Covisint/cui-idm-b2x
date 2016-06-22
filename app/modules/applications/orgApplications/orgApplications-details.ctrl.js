@@ -9,17 +9,17 @@ angular.module('applications')
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
     const checkIfRequestable = (organizationId, relatedAppsArray) => {
-    	let appArray = relatedAppsArray,
-    		requestableApps;
-
-    	API.cui.getOrganizationRequestableApps({organizationId: organizationId})
-    	.then((res) => {
-    		appArray.forEach((app) => {
-    			if (res.indexOf(app.id, 'id') !== -1) {
-    				app.requestable = 'true';
-    			}
-    		});
-    	});
+    	if (relatedAppsArray) {
+	    	API.cui.getOrganizationRequestableApps({organizationId: organizationId})
+	    	.then((res) => {
+	    		relatedAppsArray.forEach((app) => {
+	    			let requestable = _.find(res, (id) => { return app.id = id });
+	    			if (requestable) {
+	    				app.requestable = true;
+	    			}
+	    		});
+	    	});
+    	}
     };
 
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
@@ -63,12 +63,9 @@ angular.module('applications')
 		.then(() => {
 			checkIfRequestable(organizationId, orgApplicationDetails.application.relatedApps);
 			Loader.offFor(loaderName + 'loadingPageData');
-			console.log('orgApplicationDetails.application', orgApplicationDetails.application);
-			console.log('orgApplicationDetails.grantList', orgApplicationDetails.grantList);
 		})
 		.catch((error) => {
 			APIError.onFor(loaderName + 'grantDetails: ', error);
-			console.log('error');
 		});
 
     })
