@@ -46,12 +46,19 @@
     </div>
 
     <div ng-if="!base.loader.for['personRequests.requests']">
-      <div ng-repeat="user in personRequests.userList" ng-click="personRequests.loadRequest(user.registrant.id, user.organization.id)">
-        <p>{{user.name.given}} {{user.name.surname}}</p>
+      <div class="person-request--header">
+        <div>{{'view-request-for' | translate}}</div>
+        <div>{{'job-title' | translate}}/{{'cui-email' | translate}}</div>
+        <div>{{'requested' | translate}}</div>
+        <div>{{'cui-org' | translate}}</div>
+      </div>
+      <div class="person-request--line" ng-repeat="user in personRequests.userList" ng-click="personRequests.loadRequest(user.registrant.id, user.organization.id)">
+        
+        <div class="person-request--line__item"><span class="cui-media__image" cui-avatar cui-avatar-email="userProfile.user.email" cui-avatar-names="[userProfile.user.name.given, userProfile.user.name.surname]" cui-avatar-names="[userProfile.user.name.given, userProfile.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></span> <span>{{user.name.given}} {{user.name.surname}}</span></div>
         <!-- Note: Users that are pending approval don't have job titles. For now I am showing their e-mail. Not sure what the design team wants. -->
-        <p>{{user.person.email}}</p>
-        <p>{{user.creation | date:base.appConfig.dateFormat}}</p>
-        <p>{{user.organization.name}}</p><br/>
+        <div class="person-request--line__item">{{user.person.email}}</div>
+        <div class="person-request--line__item">{{user.creation | date:base.appConfig.dateFormat}}</div>
+        <div class="person-request--line__item">{{user.organization.name}}</div>
       </div>
     </div>
   </section>
