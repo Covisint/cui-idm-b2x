@@ -32,7 +32,9 @@ angular.module('organization')
         newGrant.packagesBeingRequested = {}
     }
 
-    newGrant.numberOfRequests = Object.keys(newGrant.appsBeingRequested).length + Object.keys(newGrant.packagesBeingRequested).length
+    if (newGrant.appsBeingRequested && newGrant.packagesBeingRequested) {
+        newGrant.numberOfRequests = Object.keys(newGrant.appsBeingRequested).length + Object.keys(newGrant.packagesBeingRequested).length
+    }
 
     Loader.onFor('newGrant.user')
     API.cui.getPerson({ personId:$stateParams.userID })
