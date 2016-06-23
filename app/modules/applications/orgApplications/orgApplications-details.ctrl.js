@@ -1,10 +1,12 @@
 angular.module('applications')
-.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,User,$q,$stateParams) {
+.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$stateParams) {
 
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
     const serviceId = $stateParams.appId;
     const loaderName = 'orgApplicationDetails.';
+
+    orgApplicationDetails.sortFlag = true;
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -55,13 +57,19 @@ angular.module('applications')
     			})
     			.then((res) => {
     				grant.organization = res;
+                    return API.cui.getPersonPackageClaims({grantee: grant.person.organization.id, packageId: grant.servicePackage.id});
     			})
+                .then((res) => {
+                    grant.claims = res.packageClaims;
+                })
     		);
     	});
 
     	$q.all(promises)
 		.then(() => {
 			checkIfRequestable(organizationId, orgApplicationDetails.application.relatedApps);
+            console.log('orgApplicationDetails.application', orgApplicationDetails.application);
+            console.log('orgApplicationDetails.grantList', orgApplicationDetails.grantList);
 			Loader.offFor(loaderName + 'loadingPageData');
 		})
 		.catch((error) => {
