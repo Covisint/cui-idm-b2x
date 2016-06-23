@@ -1,5 +1,5 @@
 angular.module('applications')
-.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$stateParams) {
+.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$state,$stateParams) {
 
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
@@ -82,6 +82,11 @@ angular.module('applications')
     // ON LOAD END --------------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+
+    orgApplicationDetails.newGrants = () => {
+        $state.go('applications.orgApplications.newGrant', {appId: serviceId});
+    };
+
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
 
 });
