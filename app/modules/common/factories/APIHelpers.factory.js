@@ -34,7 +34,7 @@ angular.module('common')
         for (let i=0; i < numberOfApps; i++) {
             if (arrayOfApps[i].servicePackage.requestReasonRequired && !arrayOfApps[i]._reason) {
                 arrayOfApps[i]._error = true
-                !error && error = true // if error is false set it to true
+                ;!error && error = true // if error is false set it to true
             }
         }
         if (error) return undefined
