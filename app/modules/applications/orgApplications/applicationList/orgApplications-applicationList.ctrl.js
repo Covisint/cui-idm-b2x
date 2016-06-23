@@ -133,7 +133,7 @@ angular.module('applications')
         const opts = {
             appId: application.id
         };
-        $state.go('applications.orgApplicationDetails', opts);
+        $state.go('applications.orgApplications.applicationDetails', opts);
     };
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
