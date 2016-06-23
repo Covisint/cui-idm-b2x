@@ -68,8 +68,6 @@ angular.module('applications')
     	$q.all(promises)
 		.then(() => {
 			checkIfRequestable(organizationId, orgApplicationDetails.application.relatedApps);
-            console.log('orgApplicationDetails.application', orgApplicationDetails.application);
-            console.log('orgApplicationDetails.grantList', orgApplicationDetails.grantList);
 			Loader.offFor(loaderName + 'loadingPageData');
 		})
 		.catch((error) => {
