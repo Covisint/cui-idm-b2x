@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('CustomAPI',()=>{
+.factory('CustomAPI',(CustomAPIExtension) => {
 
     const calls = [
         {cmd: 'getPackageClaims',                        accepts: 'application/vnd.com.covisint.platform.package.claim.v1+json',                         call: '/service/v3/claims',																type: 'GET' },
@@ -63,6 +63,6 @@ angular.module('common')
         {cmd: 'getGrants',                               accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/grants`,                                                                type: 'GET' }
     ];
 
-    return calls;
+    return calls.concat(CustomAPIExtension);
 
 });
