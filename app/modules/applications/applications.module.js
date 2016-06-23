@@ -10,52 +10,65 @@ angular.module('applications',[])
     };
 
     $stateProvider
-        .state('applications', {
-            url: '/applications',
-            templateUrl : templateBase + 'applications.html',
-            access:loginRequired
-        })
-        .state('applications.myApplications', {
-            url: '/?name&page&pageSize&category&sort&refine',
-            templateUrl: templateBase + 'myApplications/myApplications.html',
-            controller: returnCtrlAs('myApplications'),
-            access:loginRequired
-        })
-        .state('applications.myApplicationDetails', {
-            url: '/details/:appId',
-            templateUrl: templateBase + 'myApplications/myApplications-details.html',
-            controller: returnCtrlAs('myApplicationDetails'),
-            access:loginRequired
-        })
-        .state('applications.newRequest', {
-            url: '/request',
-            templateUrl: templateBase + 'newRequestReview/newRequest.html',
-            controller: returnCtrlAs('newAppRequest'),
-            access:loginRequired
-        })
-        .state('applications.search', {
-            url: '/search?name&category&page&pageSize',
-            templateUrl: templateBase + 'search/applicationSearch.html',
-            controller: returnCtrlAs('applicationSearch'),
-            access:loginRequired
-        })
-        .state('applications.reviewRequest', {
-            url: '/review',
-            templateUrl: templateBase + 'newRequestReview/applicationReview.html',
-            controller: returnCtrlAs('applicationReview'),
-            access:loginRequired
-        })
-        .state('applications.orgApplications', {
-            url: '/organization?id',
-            templateUrl: templateBase + 'orgApplications/orgApplications.html',
-            controller: returnCtrlAs('orgApplications'),
-            access:loginRequired
-        })
-        .state('applications.orgApplicationDetails', {
-            url: '/organization/details/:appId',
-            templateUrl: templateBase + 'orgApplications/orgApplications-details.html',
-            controller: returnCtrlAs('orgApplicationDetails'),
-            access: loginRequired
-        });
+    .state('applications', {
+        url: '/applications',
+        templateUrl : templateBase + 'applications.html',
+        access:loginRequired
+    })
+    .state('applications.myApplications', {
+        url: '/?name&page&pageSize&category&sort&refine',
+        templateUrl: templateBase + 'myApplications/myApplications.html',
+        controller: returnCtrlAs('myApplications'),
+        access:loginRequired
+    })
+    .state('applications.myApplicationDetails', {
+        url: '/details/:appId',
+        templateUrl: templateBase + 'myApplications/myApplications-details.html',
+        controller: returnCtrlAs('myApplicationDetails'),
+        access:loginRequired
+    })
+    .state('applications.newRequest', {
+        url: '/request',
+        templateUrl: templateBase + 'newRequestReview/newRequest.html',
+        controller: returnCtrlAs('newAppRequest'),
+        access:loginRequired
+    })
+    .state('applications.search', {
+        url: '/search?name&category&page&pageSize',
+        templateUrl: templateBase + 'search/applicationSearch.html',
+        controller: returnCtrlAs('applicationSearch'),
+        access:loginRequired
+    })
+    .state('applications.reviewRequest', {
+        url: '/review',
+        templateUrl: templateBase + 'newRequestReview/applicationReview.html',
+        controller: returnCtrlAs('applicationReview'),
+        access:loginRequired
+    })
+    // ----------  Organization Applications  ----------
+    .state('applications.orgApplications', {
+        url: '/organization',
+        template: '<div ui-view></div>',
+        abstract: true,
+        access: loginRequired
+    })
+    .state('applications.orgApplications.applicationList', {
+        url: '',
+        templateUrl: templateBase + 'orgApplications/applicationList/orgApplications-applicationList.html',
+        controller: returnCtrlAs('orgApplications'),
+        access: loginRequired
+    })
+    .state('applications.orgApplications.applicationDetails', {
+        url: '/application/:appId/details',
+        templateUrl: templateBase + 'orgApplications/applicationDetails/orgApplications-applicationDetails.html',
+        controller: returnCtrlAs('orgApplicationDetails'),
+        access: loginRequired
+    })
+    .state('applications.orgApplications.newGrant', {
+        url: '/application/:appId/new-grant',
+        templateUrl: templateBase + 'orgApplications/newGrant/orgApplications-newGrant.html',
+        controller: returnCtrlAs('orgAppNewGrant'),
+        access: loginRequired            
+    });
 
 }]);
