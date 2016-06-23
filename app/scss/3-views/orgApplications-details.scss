@@ -1,0 +1,38 @@
+.org-Application{
+	&--top{
+		width:25%;
+		margin:0 auto;
+		p, p.cui-media__content{
+			text-align:center;
+			display:block !important;
+			color:rgb(52,53,52);
+			font-size:12px;
+			margin:0;
+			padding:0 0 7px 0;
+			&:first-child{
+				font-size: 16px;
+
+			}
+			&:last-child{
+				color:rgb(65,118,131);
+				font-size:15px;
+			}
+			svg{
+				width:20px;
+				use{
+					fill:rgb(65,118,131);
+				}
+			}
+		}
+
+	}
+	&--bundled-related{
+		display:flex;
+		width:calc(100% - 200px);
+		margin:0 auto;
+		justify-content:space-around;
+		&__bundled, &__related{
+			width:45%;
+		}
+	}
+}

@@ -2,18 +2,38 @@
 
 <!-- Header Data -->
 <h3>Header Data</h3>
-<p>Name: {{orgApplicationDetails.application.name | cuiI18n}}</p>
-<p>Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
-
+<div class="org-Application--top">
+	<p>{{orgApplicationDetails.application.name | cuiI18n}}</p>
+	<p>Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
+	<!-- <p>active <svg class="logo-holder" viewBox="0 0 216 146">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3" class="svg"></use>
+    </svg></p> -->
+    <!-- Status: Active -->
+      <p class="cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+        </svg>
+      </p>
+      <!-- Status: Locked -->
+      <p class="cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='locked'">{{orgApplicationDetails.application.grant.status}}
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+        </svg>
+      </p>
+</div>
 <!-- Bundled/Related Data -->
-<h3>Bundled Apps</h3>
-<p ng-repeat="application in orgApplicationDetails.application.bundledApps track by application.id">{{application.name | cuiI18n}}</p>
-
-<h3>Related Apps</h3>
-<p ng-repeat="application in orgApplicationDetails.application.relatedApps track by application.id">{{application.name | cuiI18n}}</p>
-
+<div class="org-Application--bundled-related">
+	<div class="org-Application--bundled-related__bundled">
+		<h3>Bundled Apps</h3>
+		<p ng-repeat="application in orgApplicationDetails.application.bundledApps track by application.id">{{application.name | cuiI18n}}</p>
+	</div>
+	<div class="org-Application--bundled-related__related">
+		<h3>Related Apps</h3>
+		<p ng-repeat="application in orgApplicationDetails.application.relatedApps track by application.id">{{application.name | cuiI18n}}</p>
+	</div>
+</div>
 <!-- User List -->
-<h3>User List</h3>
+<h3>User List </h3>
 <div ng-repeat="grant in orgApplicationDetails.grantList track by grant.grantee.id">
 	<p>{{grant.person.name.given}} {{grant.person.name.surname}}</p>
 	<p>{{grant.grantee.id}}</p>
