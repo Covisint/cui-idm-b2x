@@ -6,6 +6,7 @@ angular.module('applications')
     const loaderName = 'orgAppNewGrant.';
 
     orgAppNewGrant.sortFlag = false;
+    orgAppNewGrant.userList = [];
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
@@ -28,26 +29,52 @@ angular.module('applications')
     	});
     };
 
+    const flattenHierarchy = (orgChildrenArray) => {
+        if (orgChildrenArray) {
+            let childrenArray = orgChildrenArray;
+            let orgList = [];
+
+            childrenArray.forEach(function(childOrg) {
+                if (childOrg.children) {
+                    let newChildArray = childOrg.children;
+                    delete childOrg['children'];
+                    orgList.push(childOrg);
+                    orgList.push(flattenHierarchy(newChildArray));
+                }
+                else {
+                    orgList.push(childOrg);
+                }
+            });
+            return _.flatten(orgList);
+        }
+    };
+
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    Loader.onFor(loaderName + 'initialLoad');
+    Loader.onFor(loaderName + 'data');
 
     // Get the logged in user's organization's grant for this service
     API.cui.getOrganizationGrantedApps({organizationId: User.user.organization.id, qs: [['service.id', serviceId]]})
     .then((res) => {
     	orgAppNewGrant.service = res;
-    	// Get users who are granted the package
-    	return getOrganizationUsersByPackage(res.servicePackage.id);
+    	// Get the logged in user's organization hierarchy
+    	return API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
     })
     .then((res) => {
-    	orgAppNewGrant.userList = res;
+    	orgAppNewGrant.currentOrganizationId = res.id;
+        orgAppNewGrant.organizationList = flattenHierarchy(res.children);
+    	// Get users who are granted the package
+    	return getOrganizationUsersByPackage(orgAppNewGrant.service.servicePackage.id);
+	})
+	.then((res) => {
     	orgAppNewGrant.unparsedUserList = res;
+
     	let promises = [];
 
     	// For each grant get the person's user and organization information
-    	orgAppNewGrant.userList.forEach((grant) => {
+    	orgAppNewGrant.unparsedUserList.forEach((grant) => {
     		promises.push(
     			API.cui.getPerson({personId: grant.grantee.id})
     			.then((res) => {
@@ -62,12 +89,11 @@ angular.module('applications')
 
     	$q.all(promises)
 		.then((res) => {
-			console.log('orgAppNewGrant.userList', orgAppNewGrant.userList);
-			console.log('orgAppNewGrant.service', orgAppNewGrant.service);
-			Loader.offFor(loaderName + 'initialLoad');
+			angular.copy(orgAppNewGrant.unparsedUserList, orgAppNewGrant.userList);
+			Loader.offFor(loaderName + 'data');
 		})
 		.catch((error) => {
-			APIError.onFor(loaderName + 'initialLoad');
+			APIError.onFor(loaderName + 'data');
 		});
 	})
 	.fail((error) => {
@@ -78,7 +104,7 @@ angular.module('applications')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
-    orgAppNewGrant.sort = function sort(sortValue) {
+    orgAppNewGrant.sort = (sortValue) => { 
         Sort.listSort(orgAppNewGrant.userList, sortValue, orgAppNewGrant.sortFlag);
         orgAppNewGrant.sortFlag =! orgAppNewGrant.sortFlag;
     };
@@ -93,6 +119,49 @@ angular.module('applications')
             });
             orgAppNewGrant.userList = filteredUsers;
         }
+    };
+
+    orgAppNewGrant.switchDivision = (organization) => {
+    	let organizationName;
+
+    	Loader.onFor(loaderName + 'data');
+
+    	orgAppNewGrant.currentOrganizationId = organization.id
+
+    	API.cui.getOrganization({organizationId: orgAppNewGrant.currentOrganizationId})
+    	.then((res) => {
+    		organizationName = res.name;
+    		return getOrganizationUsersByPackage(orgAppNewGrant.service.servicePackage.id, orgAppNewGrant.currentOrganizationId);
+    	})
+    	.then((res) => {
+    		orgAppNewGrant.unparsedUserList = res;
+
+    		let promises = [];
+
+    		orgAppNewGrant.unparsedUserList.forEach((grant) => {
+    			promises.push(
+    				API.cui.getPerson({personId: grant.grantee.id})
+    				.then((res) => {
+    					grant.person = res;
+    					grant.organization = {
+    						name: organizationName
+    					};
+    				})
+    			);
+    		})
+
+    		$q.all(promises)
+    		.then((res) => {
+    			angular.copy(orgAppNewGrant.unparsedUserList, orgAppNewGrant.userList);
+    			Loader.offFor(loaderName + 'data');
+    		})
+    		.catch((error) => {
+				APIError.onFor(loaderName + 'data');
+			});
+    	})
+    	.fail((error) => {
+			throw new Error('Error getting application data');
+		});
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
