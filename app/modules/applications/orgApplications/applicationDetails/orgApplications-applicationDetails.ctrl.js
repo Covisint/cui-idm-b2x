@@ -1,5 +1,10 @@
 angular.module('applications')
-.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$state,$stateParams) {
+.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
+
+    // TODO:
+    // Unparsed Array for Refine
+    // Add Division List
+    // Get data for changed division
 
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
@@ -8,7 +13,7 @@ angular.module('applications')
 
     orgApplicationDetails.sortFlag = true;
 
-    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
+    /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
     const checkIfRequestable = (organizationId, relatedAppsArray) => {
     	if (relatedAppsArray) {
@@ -20,13 +25,16 @@ angular.module('applications')
 	    				app.requestable = true;
 	    			}
 	    		});
-	    	});
+	    	})
+            .then(() => {
+                $scope.$digest();
+            });
     	}
     };
 
-    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
+    /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
-    // ON LOAD START ------------------------------------------------------------------------------------------
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     Loader.onFor(loaderName + 'loadingPageData');
 
@@ -41,7 +49,6 @@ angular.module('applications')
     	return API.cui.getGrants({qs: [
     		['grantedPackageId', orgApplicationDetails.application.servicePackage.id],
     		['granteeType', 'person'],
-    		['organization.id', organizationId]
     	]});
     })
     .then((res) => {
@@ -63,6 +70,7 @@ angular.module('applications')
                     grant.claims = res.packageClaims;
                 })
     		);
+
     	});
 
     	$q.all(promises)
@@ -79,14 +87,31 @@ angular.module('applications')
     	APIError.onFor(loaderName + 'grants: ', error);
     });
 
-    // ON LOAD END --------------------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-    // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+    /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
+
+    orgApplicationDetails.sort = (sortValue) => { 
+        Sort.listSort(orgApplicationDetails.userList, sortValue, orgApplicationDetails.sortFlag);
+        orgApplicationDetails.sortFlag =! orgApplicationDetails.sortFlag;
+    };
+
+    orgApplicationDetails.parseUsersByStatus = function parseUsersByStatus(status) {
+        if (status === 'all') {
+            orgApplicationDetails.userList = orgApplicationDetails.unparsedUserList;
+        }
+        else {
+            let filteredUsers = _.filter(orgApplicationDetails.unparsedUserList, function(user) {
+                return user.status === status;
+            });
+            orgApplicationDetails.userList = filteredUsers;
+        }
+    };
 
     orgApplicationDetails.newGrants = () => {
         $state.go('applications.orgApplications.newGrant', {appId: serviceId});
     };
 
-    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
+    /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
 });
