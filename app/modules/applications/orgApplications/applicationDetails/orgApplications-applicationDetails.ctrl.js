@@ -1,11 +1,6 @@
 angular.module('applications')
 .controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
 
-    // TODO:
-    // Unparsed Array for Refine
-    // Add Division List
-    // Get data for changed division
-
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
     const serviceId = $stateParams.appId;
@@ -32,13 +27,70 @@ angular.module('applications')
     	}
     };
 
+    const flattenHierarchy = (orgChildrenArray) => {
+        if (orgChildrenArray) {
+            let childrenArray = orgChildrenArray;
+            let orgList = [];
+
+            childrenArray.forEach(function(childOrg) {
+                if (childOrg.children) {
+                    let newChildArray = childOrg.children;
+                    delete childOrg['children'];
+                    orgList.push(childOrg);
+                    orgList.push(flattenHierarchy(newChildArray));
+                }
+                else {
+                    orgList.push(childOrg);
+                }
+            });
+            return _.flatten(orgList);
+        }
+    };
+
+    const getGrantArrayData = (grantArray) => {
+        let promises = [];
+
+        Loader.onFor(loaderName + 'loadingPageData');
+
+        grantArray.forEach((grant) => {
+            promises.push(
+                API.cui.getPerson({personId: grant.grantee.id})
+                .then((res) => {
+                    grant.person = res;
+                    return API.cui.getOrganization({organizationId: grant.person.organization.id});
+                })
+                .then((res) => {
+                    grant.organization = res;
+                    return API.cui.getPersonPackageClaims({grantee: grant.person.organization.id, packageId: grant.servicePackage.id});
+                })
+                .then((res) => {
+                    grant.claims = res.packageClaims;
+                })
+            );
+        });
+
+        $q.all(promises)
+        .then((res) => {
+            orgApplicationDetails.grantList = grantArray;
+            Loader.offFor(loaderName + 'loadingPageData');
+        })
+        .catch((error) => {
+            Loader.offFor(loaderName + 'loadingPageData');
+            APIError.onFor(loaderName + 'grants: ', error);
+        });
+    }
+
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     Loader.onFor(loaderName + 'loadingPageData');
 
-    API.cui.getOrganizationGrantedApps({organizationId: organizationId, qs: [['service.id', serviceId]]})
+    API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    .then((res) => {
+        orgApplicationDetails.organizationList = flattenHierarchy(res.children);
+        return API.cui.getOrganizationGrantedApps({organizationId: organizationId, qs: [['service.id', serviceId]]});
+    })
     .then((res) => {
     	orgApplicationDetails.application = res;
     	return API.cui.getOrganizationRequestableApps({organizationId: organizationId, qs: [['service.id', serviceId]]});
@@ -48,43 +100,18 @@ angular.module('applications')
     	orgApplicationDetails.application.relatedApps = res.relatedApps;
     	return API.cui.getGrants({qs: [
     		['grantedPackageId', orgApplicationDetails.application.servicePackage.id],
-    		['granteeType', 'person'],
+    		['granteeType', 'person']
     	]});
     })
     .then((res) => {
-    	orgApplicationDetails.grantList = res;
-    	let promises = [];
-    	res.forEach((grant) => {
-
-    		promises.push(
-    			API.cui.getPerson({personId: grant.grantee.id})
-    			.then((res) => {
-    				grant.person = res;
-    				return API.cui.getOrganization({organizationId: grant.person.organization.id});
-    			})
-    			.then((res) => {
-    				grant.organization = res;
-                    return API.cui.getPersonPackageClaims({grantee: grant.person.organization.id, packageId: grant.servicePackage.id});
-    			})
-                .then((res) => {
-                    grant.claims = res.packageClaims;
-                })
-    		);
-
-    	});
-
-    	$q.all(promises)
-		.then(() => {
-			checkIfRequestable(organizationId, orgApplicationDetails.application.relatedApps);
-			Loader.offFor(loaderName + 'loadingPageData');
-		})
-		.catch((error) => {
-			APIError.onFor(loaderName + 'grantDetails: ', error);
-		});
-
+        orgApplicationDetails.unparsedGrantList = res;
+        getGrantArrayData(orgApplicationDetails.unparsedGrantList);
+        checkIfRequestable(organizationId, orgApplicationDetails.application.relatedApps);
+        Loader.offFor(loaderName + 'loadingPageData');
     })
     .fail((error) => {
     	APIError.onFor(loaderName + 'grants: ', error);
+        Loader.offFor(loaderName + 'loadingPageData');
     });
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
@@ -96,20 +123,43 @@ angular.module('applications')
         orgApplicationDetails.sortFlag =! orgApplicationDetails.sortFlag;
     };
 
-    orgApplicationDetails.parseUsersByStatus = function parseUsersByStatus(status) {
+    orgApplicationDetails.parseGrantUsersByStatus = (status) => {
         if (status === 'all') {
-            orgApplicationDetails.userList = orgApplicationDetails.unparsedUserList;
+            orgApplicationDetails.grantList = orgApplicationDetails.unparsedGrantList;
         }
         else {
-            let filteredUsers = _.filter(orgApplicationDetails.unparsedUserList, function(user) {
-                return user.status === status;
+            let filteredGrantUsers = _.filter(orgApplicationDetails.unparsedGrantList, function(grant) {
+                return grant.person.status === status;
             });
-            orgApplicationDetails.userList = filteredUsers;
+            orgApplicationDetails.grantList = filteredGrantUsers;
         }
     };
 
     orgApplicationDetails.newGrants = () => {
         $state.go('applications.orgApplications.newGrant', {appId: serviceId});
+    };
+
+    orgApplicationDetails.switchDivision = (organization) => {
+        Loader.onFor(loaderName + 'loadingPageData');
+
+        API.cui.getGrants({qs: [
+            ['grantedPackageId', orgApplicationDetails.application.servicePackage.id],
+            ['granteeType', 'person'],
+            ['organization.id', organization.id]
+        ]})
+        .then((res) => {
+            orgApplicationDetails.unparsedGrantList = res;
+            getGrantArrayData(orgApplicationDetails.unparsedGrantList);
+            Loader.offFor(loaderName + 'loadingPageData');
+        })
+        .fail((error) => {
+            APIError.onFor(loaderName + 'grants: ', error);
+        });
+    };
+
+    orgApplicationDetails.updateGrantClaims = (grant) => {
+        console.log(grant);
+
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
