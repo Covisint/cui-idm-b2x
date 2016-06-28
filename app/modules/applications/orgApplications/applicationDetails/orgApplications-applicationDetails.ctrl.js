@@ -1,5 +1,5 @@
 angular.module('applications')
-.controller('orgApplicationDetailsCtrl', function(API,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
+.controller('orgApplicationDetailsCtrl', function(API,APIHelpers,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
 
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
@@ -25,26 +25,6 @@ angular.module('applications')
                 $scope.$digest();
             });
     	}
-    };
-
-    const flattenHierarchy = (orgChildrenArray) => {
-        if (orgChildrenArray) {
-            let childrenArray = orgChildrenArray;
-            let orgList = [];
-
-            childrenArray.forEach(function(childOrg) {
-                if (childOrg.children) {
-                    let newChildArray = childOrg.children;
-                    delete childOrg['children'];
-                    orgList.push(childOrg);
-                    orgList.push(flattenHierarchy(newChildArray));
-                }
-                else {
-                    orgList.push(childOrg);
-                }
-            });
-            return _.flatten(orgList);
-        }
     };
 
     const getGrantArrayData = (grantArray) => {
@@ -78,7 +58,7 @@ angular.module('applications')
             Loader.offFor(loaderName + 'loadingPageData');
             APIError.onFor(loaderName + 'grants: ', error);
         });
-    }
+    };
 
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
@@ -88,7 +68,7 @@ angular.module('applications')
 
     API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
     .then((res) => {
-        orgApplicationDetails.organizationList = flattenHierarchy(res.children);
+        orgApplicationDetails.organizationList = APIHelpers.flattenOrgHierarchy(res);
         return API.cui.getOrganizationGrantedApps({organizationId: organizationId, qs: [['service.id', serviceId]]});
     })
     .then((res) => {
@@ -155,11 +135,6 @@ angular.module('applications')
         .fail((error) => {
             APIError.onFor(loaderName + 'grants: ', error);
         });
-    };
-
-    orgApplicationDetails.updateGrantClaims = (grant) => {
-        console.log(grant);
-
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
