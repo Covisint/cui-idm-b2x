@@ -2,7 +2,7 @@ module.exports = function(grunt,config){
   return {
     css:{
       files: config.scss + '/**/*',
-      tasks: ['sass','autoprefixer']
+      tasks: ['sass','postcss']
     },
     scripts:{
       files: ['app/**/*.js'],

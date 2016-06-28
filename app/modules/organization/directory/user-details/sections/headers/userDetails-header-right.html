@@ -1,24 +1,25 @@
-<div class="cui-action">
-  <div class="cui-action__actions">
+<div class="cui-organization__profile-right-header cui-desktop-only">
 
-    <!-- Applications -->
-    <div class="cui-action__action-container" id="applications-button" ng-click="userDetails.appsHistorySwitch=true">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
-      </svg>
-      <span class="cui-action__action-label">APPS</span>
-    </div>
 
-    <!-- History -->
-    <div class="cui-action__action-container" id="applications-button" ng-click="userDetails.appsHistorySwitch=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#warning"></use>
-      </svg>
-      <span class="cui-action__action-label">HISTORY</span>
-    </div>
+  <!-- Applications -->
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=true">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
+    </svg>
+    <span class="cui-action__action-label">APPS</span>
+  </div>
 
+  <!-- History -->
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=false">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#warning"></use>
+    </svg>
+    <span class="cui-action__action-label">HISTORY</span>
+  </div>
+  
+  <div class="cui-organization__profile-header-items--right">
     <!-- Sort -->
-    <div class="cui-action__action-container" id="sort-button" ng-click="userDetails.sortClicked=!userDetails.sortClicked" off-click="userDetails.sortClicked=false" ng-if="userDetails.appsHistorySwitch">
+    <div class="cui-organization__profile-header-item" id="sort-button" ng-click="userDetails.sortClicked=!userDetails.sortClicked" off-click="userDetails.sortClicked=false" ng-if="userDetails.appsHistorySwitch">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
       </svg>
@@ -29,9 +30,9 @@
       <p ng-click="">{{'cui-alphabetically' | translate}}</p>
       <p ng-click="">{{'cui-by-date-added' | translate}}</p>
     </div>
-
+    
     <!-- Categories -->
-    <div class="cui-action__action-container" id="categories-button" ng-click="userDetails.categoriesClicked=!userDetails.categoriesClicked" off-click="userDetails.categoriesClicked=false" ng-if="userDetails.appsHistorySwitch">
+    <div class="cui-organization__profile-header-item " id="categories-button" ng-click="userDetails.categoriesClicked=!userDetails.categoriesClicked" off-click="userDetails.categoriesClicked=false" ng-if="userDetails.appsHistorySwitch">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
       </svg>
@@ -41,6 +42,7 @@
     <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.categoriesClicked">
       <p ng-click="">TODO!</p>
     </div>
-
   </div>
+
+
 </div>

@@ -19,7 +19,7 @@
       <!-- Name -->
       <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
       <!-- userID -->
-      <p class="cui-media__content">userID: {{userDetails.user.id}}</p>
+      <p class="cui-media__content cui-media__content--bold">userID: {{userDetails.user.id}}</p>
       <!-- Registered Date -->
       <p class="cui-media__content">Registered: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
       <!-- Status: Active -->
@@ -34,13 +34,12 @@
           <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
         </svg>
       </p>
-      <p class="cui-media__content">
-        <span class="cui-action__title">
-          <button class="cui-button" style="margin:5px">Suspend</button>
-          <button class="cui-button" style="margin:5px">Password Reset</button>
-          <button class="cui-button" style="margin:5px" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">New Grants</button>
-        </span>
-      </p>
     </div>
+    <div class="cui-media__button-container">
+      <button class="cui-button cui-button--inverted">suspend</button>
+      <button class="cui-button cui-button--inverted">password reset</button>
+      <button class="cui-button cui-button--inverted" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">new grants</button>
+    </div>
+
   </div>
 </div>
