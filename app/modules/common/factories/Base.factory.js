@@ -1,6 +1,6 @@
 angular.module('common')
-.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError) => {
-    return {
+.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError, BaseExtensions) => {
+    const baseFactory = {
         appConfig: appConfig,
         countries: Countries,
         getLanguageCode: Languages.getCurrentLanguageCode,
@@ -20,5 +20,7 @@ angular.module('common')
         },
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
     }
+
+    return Object.assign({}, baseFactory, BaseExtensions)
 
 })
