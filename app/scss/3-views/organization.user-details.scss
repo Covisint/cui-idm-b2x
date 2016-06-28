@@ -1,0 +1,136 @@
+.cui-organization__user-details {
+  padding: 0 3.983739837398% 0 4.308943089431%;
+ 
+  .cui-action {
+    margin-bottom: em(20);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .cui-media--centered .cui-media__title {
+    line-height: 1.3;
+    margin: 5px 0;
+  }
+
+  .cui-media__content--bold {
+    @extend %bold;
+    color: rgb(74, 74, 74);
+  }
+
+  .cui-button--inverted {
+    letter-spacing: 1.6px;
+    padding: em(6, 15) em(12, 15) em(12, 15);
+    margin-right: em(14, 15);
+    width: auto;
+
+    @media screen and (max-width: 1024px) {
+      font-size: em(14);
+      letter-spacing: 1.5px;
+    }
+  }
+
+  .cui-media__button-container {
+    margin-top: em(5);
+  }
+
+  .cui-flex-row__vert-stack {
+    display: flex;
+    flex-direction: column;
+    padding-left: em(10);
+  }
+
+  .cui-organization__details-container {
+    display: flex;
+    margin-top: em(20);
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+    }
+  }
+
+  .cui-organization__details-col {
+    flex: 1;
+
+    &:first-of-type {
+      padding-right: 11.219512195122%;
+
+      @media screen and (max-width: 700px) {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .cui-flex-table__tr--b {
+
+    .cui-flex-table__left--stacked {
+      display: flex;
+      width: 30%;
+    }
+
+    .cui-flex-table__middle {
+      padding-left: em(20);
+      width: 30%;
+    }
+
+    .cui-media__content {
+      font-size: em(14);
+    }
+
+    .cui-flex-table__subtitle-info {
+      font-size: em(12);
+    }
+
+    .cui-flex-table__right {
+      align-items: flex-end;
+      font-size: em(14);
+    }
+
+    .cui-flex-table__review {
+      @extend %bold;
+      @extend %cui-link;
+      font-size: em(11, 14);
+      letter-spacing: .6px;
+    }
+  }
+
+  .cui-organization__profile-left-header {
+    margin-bottom: em(12);
+
+    @media screen and (min-width: 700px) {
+      border-bottom: 1px solid #ECEAEA;
+    }
+  }
+
+  .cui-organization__profile-left-header,
+  .cui-organization__profile-right-header {
+    display: flex;
+    height: 70px;
+    padding: em(10) 0;
+
+    @media screen and (max-width: 999px) {
+      justify-content: space-between;
+    }
+  }
+
+  .cui-organization__profile-header-items--right {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+  }
+
+  .cui-organization__profile-header-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: em(35);
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    @media screen and (max-width: 999px) {
+
+    }
+  }
+
+}
