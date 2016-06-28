@@ -1,4 +1,4 @@
-## v1.0.8
+## [v1.0.8] 2016-06-28
 
 ### Changelog
 * 2016-6-24 cui-styleguide v2.2.2 - https://github.com/thirdwavellc/cui-styleguide/releases/tag/v2.2.2
@@ -10,20 +10,20 @@
 * Adds CustomAPIExtensions factory to allow adding to and overriding the CustomAPI factory
 * Adds BaseExtensions factory to adding to and overriding the Base factory
 
-## v1.0.4
+## [v1.0.4]
 
 ### Changelog
 * 2016-6-20 cui-ng v1.9.10 - https://github.com/thirdwavellc/cui-ng/releases/tag/v1.9.10
 
 
-## v1.0.3
+## [v1.0.3]
 
 ### Changeset
 * 2016-6-20 Versions of covisint namespace packages are now locked down
 * 2016-6-20 cui-styleguide v2.2.0 - https://github.com/thirdwavellc/cui-styleguide/releases/tag/v2.2.0
 
 
-## v1.0.2
+## [v1.0.2]
 
 ### Changeset
 
@@ -31,13 +31,13 @@
 * cui-ng v1.9.9 - https://github.com/thirdwavellc/cui-ng/releases/tag/v1.9.9
 
 
-## v1.0.1
+## [v1.0.1]
 
 ### Changeset
 * 2016-06-17 All covisint npm dependencies are now set to a specific version
 
 
-## v1.0.0
+## [v1.0.0]
 
 ### Changeset
 * 2016-06-08 appConfig now requires a `languageResources` property for the cui-i18n library to properly function.
