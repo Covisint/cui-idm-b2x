@@ -137,6 +137,32 @@ angular.module('applications')
         });
     };
 
+    orgApplicationDetails.requestRelatedApp = (service) => {
+        let data = {
+            requestor: {
+                id: organizationId,
+                type: 'organization'  
+            } ,
+            'servicePackage': {
+                id: service.packageId
+            }
+        };
+
+        Loader.onFor(loaderName + 'appRequest');
+
+        API.cui.postRequest({data: data})
+        .then(() => {
+            service.requestable = false;
+            Loader.offFor(loaderName + 'appRequest');
+            $scope.$digest();
+        })
+        .fail((error) => {
+            APIError.onFor(loaderName + 'appRequest')
+            console.log(error);
+            $scope.$digest();
+        });
+    };
+
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
 });

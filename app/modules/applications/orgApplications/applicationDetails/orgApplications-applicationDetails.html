@@ -54,7 +54,7 @@
 		<h3>{{'related-applications' | translate}}</h3>
 		<p ng-repeat="application in orgApplicationDetails.application.relatedApps">
 			<span>{{application.name | cuiI18n}}</span> 
-			<button class="cui-button" ng-if="application.requestable">{{'request' | translate}}</button>
+			<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
 		</p>
 	</div>
 </div>

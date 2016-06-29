@@ -60,7 +60,11 @@ angular.module('common')
 
         {cmd: 'grantPersonPackage',                      accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,    type: 'PUT' },
 
-        {cmd: 'getGrants',                               accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/grants`,                                                                type: 'GET' }
+        {cmd: 'getGrants',                               accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',                         call: `/service/v3/grants`,                                                                type: 'GET' },
+
+        {cmd: 'postRequest',                             accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                       call: `/service/v3/requests`,                                                              type: 'POST' },
+
+        {cmd: 'getRequest',                              accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                       call: `/service/v3/requests`,                                                              type: 'GET' },
     ];
 
     return calls.concat(CustomAPIExtension);
