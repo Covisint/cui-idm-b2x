@@ -18,9 +18,16 @@ angular.module('common')
             deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
         });
 
+        let userInfo;
+
         myCUI.getPerson({ personId: authInfo.cuid })
         .then((res) => {
-            User.set(res);
+            userInfo = res;
+            return myCUI.getOrganization({ organizationId: res.organization.id });
+        })
+        .then((res) => {
+            userInfo.organization = res;
+            User.set(userInfo);
         });
         return deferred.promise;
     };
@@ -48,13 +55,21 @@ angular.module('common')
         .then((cuiObject) => {
             Base.logout = cuiObject.covLogout;
             angular.copy(cuiObject, myCUI);
-            appConfig.debugServiceUrl ? myCUI.setServiceUrl(appConfig.debugServiceUrl) : myCUI.setServiceUrl(appConfig.serviceUrl);
             myCUI.setAuthHandler(jwtAuthHandler);
-            $timeout(()=> Loader.offFor('wholeApp'),50);
-            deferred.resolve();
-        });
-        return deferred.promise;
-    };
+            // overwrite the service url to get the solution instance id
+            appConfig.solutionInstancesUrl && myCUI.setServiceUrl(appConfig.solutionInstancesUrl)
+            return myCUI.covAuthInfo({originUri: appConfig.originUri})
+        })
+        .then(()=>{
+            // reset the service url
+            appConfig.debugServiceUrl
+                ? myCUI.setServiceUrl(appConfig.debugServiceUrl)
+                : myCUI.setServiceUrl(appConfig.serviceUrl)
+            $timeout(()=> Loader.offFor('wholeApp'),50)
+            deferred.resolve()
+        })
+        return deferred.promise
+    }
 
     let apiFactory = {
         cui: myCUI,
@@ -70,6 +85,7 @@ angular.module('common')
             if(redirectOpts.toState.name!=='auth') {
                 localStorage.set('appRedirect',redirectOpts); // set the redirect to whatever the last state before auth was
                 Loader.onFor('wholeApp','redirecting-to-sso'); // don't need to turn this loader off since covAuth takes us to another page
+                appConfig.solutionInstancesUrl && myCUI.setServiceUrl(appConfig.solutionInstancesUrl)
                 jwtAuthHandler(); // force redirect to SSO
             }
             else {

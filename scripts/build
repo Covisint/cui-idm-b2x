@@ -1,8 +1,7 @@
 #!/bin/bash
 
 npm install
-bower install
-bower update
+npm update
 grunt build
 grunt buildsdk
 mvn clean package deploy -U

@@ -18,7 +18,7 @@
                 <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
               </filter>
             </defs>
-            <use xlink:href="bower_components/cui-icons/dist/icons/icons-out.svg#invite"></use>
+            <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#invite"></use>
           </svg>
           <!-- Invitation Popover -->
           <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
@@ -72,13 +72,13 @@
       <!-- Status: Active -->
       <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequestsReview.user.status==='active'}">{{pendingRequestsReview.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
         </svg>
       </p>
       <!-- Status: Locked -->
       <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='locked'">{{pendingRequestsReview.user.status}}
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
         </svg>
       </p>
     </div>
