@@ -159,11 +159,15 @@ angular.module('common')
         else route();
     });
 
+    // $state.stateStack is a stack of states used by base.goBack()
+    $state.stateStack = [];
+
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
-        $state.previous = {};
-        $state.previous.name = fromState;
-        $state.previous.params = fromParams;
+        $state.stateStack.push({
+            name: fromState,
+            params: fromParams
+        });
     });
 
     angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {
