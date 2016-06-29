@@ -107,9 +107,17 @@ angular.module('common')
                     Ex: 'debugServiceUrl': 'http://localhost:8001'
                     You can get the unofficial mock api server here: https://github.com/thirdwavellc/cui-api-mock
                 **/
+
+                let userInfo = {};
+
                 API.cui.getPerson({personId: 'personId'})
                 .then((res) => {
-                    API.setUser(res);
+                    userInfo = res;
+                    return API.cui.getOrganization({ organizationId: res.organization.id });
+                })
+                .then((res) => {
+                    userInfo.organization = res;
+                    API.setUser(userInfo);
                 });
                 routing(toState, toParams, fromState, fromParams, []);
                 PubSub.publish('stateChange',{ toState,toParams,fromState,fromParams }); // this is required to make the ui-sref-active-nested directive work
