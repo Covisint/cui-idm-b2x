@@ -18,9 +18,16 @@ angular.module('common')
             deferred.resolve({ roleList, redirect:redirectOpts }); // we only need the roles to resolve the state, the user's name can come later
         });
 
+        let userInfo;
+
         myCUI.getPerson({ personId: authInfo.cuid })
         .then((res) => {
-            User.set(res);
+            userInfo = res;
+            return myCUI.getOrganization({ organizationId: res.organization.id });
+        })
+        .then((res) => {
+            userInfo.organization = res;
+            User.set(userInfo);
         });
         return deferred.promise;
     };
