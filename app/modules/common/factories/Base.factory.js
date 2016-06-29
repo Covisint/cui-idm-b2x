@@ -10,12 +10,18 @@ angular.module('common')
         user: User.user,
         loader: Loader,
         apiError: APIError,
+
         goBack: (fallback) => {
-            if ($state.previous.name.name !== '') {
-                $state.go($state.previous.name, $state.previous.params);
+            let previousState = $state.stateStack.pop();
+
+            if (previousState.name.name !== '') {
+                $state.go(previousState.name, previousState.params);
+            }
+            else if (fallback) {
+                $state.go(fallback);
             }
             else {
-                $state.go(fallback);
+                return;
             }
         },
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
