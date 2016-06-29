@@ -1,5 +1,5 @@
 angular.module('applications')
-.controller('orgAppNewGrantCtrl', function(API,APIError,Loader,Sort,User,$q,$scope,$stateParams) {
+.controller('orgAppNewGrantCtrl', function(API,APIError,APIHelpers,Loader,Sort,User,$q,$scope,$stateParams) {
 
     const orgAppNewGrant = this;
     const serviceId = $stateParams.appId;
@@ -29,26 +29,6 @@ angular.module('applications')
     	});
     };
 
-    const flattenHierarchy = (orgChildrenArray) => {
-        if (orgChildrenArray) {
-            let childrenArray = orgChildrenArray;
-            let orgList = [];
-
-            childrenArray.forEach(function(childOrg) {
-                if (childOrg.children) {
-                    let newChildArray = childOrg.children;
-                    delete childOrg['children'];
-                    orgList.push(childOrg);
-                    orgList.push(flattenHierarchy(newChildArray));
-                }
-                else {
-                    orgList.push(childOrg);
-                }
-            });
-            return _.flatten(orgList);
-        }
-    };
-
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
@@ -64,7 +44,7 @@ angular.module('applications')
     })
     .then((res) => {
     	orgAppNewGrant.currentOrganizationId = res.id;
-        orgAppNewGrant.organizationList = flattenHierarchy(res.children);
+        orgAppNewGrant.organizationList = APIHelpers.flattenOrgHierarchy(res);
     	// Get users who are granted the package
     	return getOrganizationUsersByPackage(orgAppNewGrant.service.servicePackage.id);
 	})
