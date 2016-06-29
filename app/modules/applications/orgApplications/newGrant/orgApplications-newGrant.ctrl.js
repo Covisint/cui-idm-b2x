@@ -7,6 +7,8 @@ angular.module('applications')
 
     orgAppNewGrant.sortFlag = false;
     orgAppNewGrant.userList = [];
+    orgAppNewGrant.searchType = 'user';
+    orgAppNewGrant.searchQuery = '';
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
@@ -142,6 +144,11 @@ angular.module('applications')
     	.fail((error) => {
 			throw new Error('Error getting application data');
 		});
+    };
+
+    orgAppNewGrant.queryGrants = () => {
+        console.log('orgAppNewGrant.grantSearch', orgAppNewGrant.searchType);
+        console.log('orgAppNewGrant.searchQuery', orgAppNewGrant.searchQuery);
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
