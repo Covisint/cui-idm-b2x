@@ -1,16 +1,56 @@
-<h3 ng-click="base.goBack()">&#60; {{orgAppNewGrant.service.name | cuiI18n}} &#8211; {{'new-grant' | translate}}</h3>
+<!-- Header -->
+<div>
+  <!-- Application Name -->
+  <h3 ng-click="base.goBack('applications.orgApplications.applicationDetails')">&#60; {{orgAppNewGrant.service.name | cuiI18n}} &#8211; {{'new-grant' | translate}}</h3>
 
-<div class="cui-action__actions">
-	<svg ui-sref="base.goBack()" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-  	<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
-  </svg>
+  <!-- Back Button -->
+  <div class="cui-action__actions">
+  	<svg ng-click="base.goBack('applications.orgApplications.applicationDetails')" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+    	<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+    </svg>
+  </div>
 </div>
 
-<p>{{orgAppNewGrant.service.name | cuiI18n}}</p>
-<p>{{'granted' | translate}}: {{orgAppNewGrant.service.grant.instant | date:base.appConfig.dateFormat}}</p>
-<p>{{orgAppNewGrant.service.grant.status}}</p>
+<!-- Application Information -->
+<div>
+  <!-- Avatar -->
+  <div class="cui-media__image-container">
+    <a target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="orgAppNewGrant.service.name" cui-avatar-cuii18n-filter cui-avatar="orgAppNewGrant.service.iconUrl"></div></a>
+  </div>
+  <!-- Application Name -->
+  <p>{{orgAppNewGrant.service.name | cuiI18n}}</p>
+  <!-- Granted Date -->
+  <p>{{'granted' | translate}}: {{orgAppNewGrant.service.grant.instant | date:base.appConfig.dateFormat}}</p>
+  <!-- Status -->
+  <p>{{orgAppNewGrant.service.grant.status}}
+    <!-- Active Icon -->
+    <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet" ng-if="orgAppNewGrant.service.grant.status==='active'"></cui-icon>
+    <!-- Locked Icon -->
+    <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet" ng-if="orgAppNewGrant.service.grant.status==='locked'"></cui-icon>
+  </p>
+</div>
+
+<!-- Search -->
+<div>
+  <h3>{{'assign-new-grant-to' | translate}}:</h3>
+  <!-- User/Division -->
+  <fieldset>
+      <!-- User -->
+      <input class="cui-radio__input" type="radio" name="radio-user" id="radio-user" value="user" ng-model="orgAppNewGrant.searchType">
+      <label class="cui-radio__label" for="radio-user"><span></span>{{'user' | translate}}</label>
+      <!-- Division -->
+      <input class="cui-radio__input" type="radio" name="radio-division" id="radio-division" value="division" ng-model="orgAppNewGrant.searchType">
+      <label class="cui-radio__label" for="radio-division"><span></span>{{'division' | translate}}</label>
+  </fieldset>
+  <!-- Search Input -->
+  <div class="cui-input-button" style="width:50%">
+    <input type="text" class="cui-input-button__input" ng-model="orgAppNewGrant.searchQuery" />
+    <button class="cui-input-button__button" ng-click="orgAppNewGrant.queryGrants()">{{'go' | translate}}</button>
+  </div>
+</div>
 
 
+<!-- Action Icons -->
 <div class="cui-action__actions">
 	<!-- Sort -->
   <div class="cui-action__action-container" ng-click="orgAppNewGrant.sortClicked=!orgAppNewGrant.sortClicked" id="sort-button" off-click="orgAppNewGrant.sortClicked=false">
@@ -55,8 +95,18 @@
 </div>
 
 <div ng-repeat="grant in orgAppNewGrant.userList track by grant.grantee.id">
-	<p>{{grant.person.name.given}} {{grant.person.name.surname}}</p>
-	<p>{{grant.grantee.id}}</p>
-	<p>{{grant.organization.name}}</p>
-	<p>{{grant.status}}</p><br/>
+  <cui-expandable class="cui-expandable">
+    <cui-expandable-title class="cui-expandable__title">
+      <div class="cui-media__image" cui-avatar cui-avatar-email="grant.person.email" cui-avatar-names="[grant.person.name.given, grant.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <span>{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+      <span>{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+      <span>{{grant.grantee.id}}</span>
+      <span>{{grant.organization.name}}</span>
+      <span>{{grant.status}}</span>
+      <span ng-click="toggleExpand()">assign</span>
+    </cui-expandable-title>
+    <cui-expandable-body class="cui-expandable__body">
+      <p>TODO: ADD CLAIMS</p>
+    </cui-expandable-body>
+  </cui-expandable>
 </div>
