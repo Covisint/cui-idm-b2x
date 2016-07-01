@@ -27,10 +27,20 @@
       font-size: em(14);
       letter-spacing: 1.5px;
     }
+
+    @media screen and (max-width: 700px) {
+      margin-right: 0;
+    }
   }
 
   .cui-media__button-container {
+    display: flex;
+    justify-content: center;
     margin-top: em(5);
+
+    @media screen and (max-width: 700px) {
+      justify-content: space-between;
+    }
   }
 
   .cui-flex-row__vert-stack {
@@ -124,13 +134,41 @@
     justify-content: space-around;
     margin-left: em(35);
 
+    @media screen and (max-width: 700px) {
+      margin-left: 0;
+    }
+
     &:first-of-type {
       margin-left: 0;
     }
 
-    @media screen and (max-width: 999px) {
-
+    .cui-action__icon {
+      height: em(25);
+      stroke-width: 2px;
+      
+      & use {
+        color: #9B9B9B;
+      }
     }
+
+    .cui-action__icon--active use {
+      color: #6a98a0;
+    }
+
+    .cui-action__action-label {
+      color: #9B9B9B;
+      letter-spacing: 1px;
+    }
+
+    .cui-action__icon--active + .cui-action__action-label {
+      color: #6a98a0;
+    }
+
   }
+
+  .cui-action__icon--history {
+    fill: transparent;
+  }
+
 
 }

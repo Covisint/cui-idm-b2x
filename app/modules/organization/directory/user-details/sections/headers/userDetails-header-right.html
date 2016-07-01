@@ -3,7 +3,7 @@
 
   <!-- Applications -->
   <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=true">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==true}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 50">
       <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
     </svg>
     <span class="cui-action__action-label">APPS</span>
@@ -11,8 +11,8 @@
 
   <!-- History -->
   <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=false">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#warning"></use>
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==false}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 52">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#history"></use>
     </svg>
     <span class="cui-action__action-label">HISTORY</span>
   </div>
