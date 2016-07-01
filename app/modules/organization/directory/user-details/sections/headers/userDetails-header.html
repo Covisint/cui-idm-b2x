@@ -1,5 +1,6 @@
 <div class="cui-action">
   <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <nav class="cui-breadcrumb--mobile" ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-breadcrumb.html'" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false"></nav>
   <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
 </div>
 
@@ -11,29 +12,19 @@
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
 
-  <div ng-if="!userDetails.loading">
-    <div class="cui-media__image-container">
-      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
-    </div>
-    <div class="cui-media__body">
-      <!-- Name -->
-      <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
-      <!-- userID -->
-      <p class="cui-media__content cui-media__content--bold">userID: {{userDetails.user.id}}</p>
-      <!-- Registered Date -->
-      <p class="cui-media__content">Registered: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
-      <!-- Status: Active -->
-      <p class="cui-media__content" ng-if="userDetails.user.status==='active'">{{userDetails.user.status}}
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
-        </svg>
-      </p>
-      <!-- Status: Locked -->
-      <p class="cui-media__content" ng-if="userDetails.user.status==='locked'">{{userDetails.user.status}}
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
-        </svg>
-      </p>
+  <div class="cui-media__image-container" ng-if="!userDetails.loading">
+    <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+  </div>
+  <div class="cui-media__body" ng-if="!userDetails.loading">
+    <!-- Name -->
+    <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
+    <!-- userID -->
+    <p class="cui-media__content cui-media__content--bold">userID: {{userDetails.user.id}}</p>
+    <!-- Registered Date -->
+    <p class="cui-media__content">Registered: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
+    <!-- Status: Active -->
+    <div class="cui-media__content">
+      <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status}}</span>
     </div>
   </div>
 </div>
