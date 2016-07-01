@@ -1,12 +1,26 @@
 <!-- Header -->
 <div>
 	<!-- Page Title -->
-	<h3>{{'cui-applications' | translate}}</h3>
+	<h3 class="cui-applications__page-title">{{'cui-applications' | translate}}</h3>
 
-	<!-- New Application Request Icon -->
-	<svg ui-sref="applications.OrgAppRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-		<use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
-	</svg>
+	<div class="cui-action">
+
+		<nav class="cui-breadcrumb">
+		    <ul class="cui-breadcrumb__links">
+		      <li class="cui-breadcrumb__link">
+		        <a href="#/applications/organization" ui-sref="applications.orgApplications.applicationList">Organization Applications</a>
+		      </li>
+		      <li class="cui-breadcrumb__link">
+		        <a class="active" href="#/applications/" ui-sref="applications.myApplications" ui-sref-active="active">My Applications</a>
+		      </li>
+		    </ul>
+	  </nav>
+
+		<!-- New Application Request Icon -->
+		<svg ui-sref="applications.OrgAppRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+			<use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
+		</svg>
+	</div>
 </div>
 
 <!-- Application Information -->
@@ -16,7 +30,7 @@
   	<a target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="orgApplicationDetails.application.name" cui-avatar-cuii18n-filter cui-avatar="orgApplicationDetails.application.iconUrl"></div></a>
 	</div>
 	<!-- Name -->
-	<p>{{orgApplicationDetails.application.name | cuiI18n}}</p>
+	<p class="org-Application--name">{{orgApplicationDetails.application.name | cuiI18n}}</p>
 	<!-- Granted -->
 	<p>Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
   <!-- Status: Active -->
@@ -33,7 +47,7 @@
   </p>
   <p>
   	<!-- Suspend Button -->
-  	<a ng-href="" class="cui-button cui-button--inverted">{{'suspend-app' | translate}}</a>  
+  	<button class="cui-button cui-button--inverted" ng-click="">{{'suspend-app' | translate}}</button>
   	<!-- New Grants Button -->
   	<button class="cui-button cui-button--inverted" ng-click="orgApplicationDetails.newGrants()">{{'new-grants' | translate}}</button>
   </p>
@@ -63,7 +77,7 @@
 <div class="org-Application--user-list">
 	<!-- List Header -->
 	<div class="org-Application--user-list__util">
-		<h3>{{'user' | translate}}</h3>
+		<h3>{{'users' | translate}}</h3>
 		<div class="cui-action__actions">
 
 	    <!-- Sort -->
@@ -131,7 +145,7 @@
 			<!-- User Status -->
 			<p class="active">{{grant.person.status}}</p>
 			<!-- Edit -->
-			<p><a href="javascript:void(0)" ng-click="toggleExpand()">edit</a></p>
+			<p><a class="org-Application--edit" href="javascript:void(0)" ng-click="toggleExpand()">edit</a></p>
 		</cui-expandable-title>
 	  <cui-expandable-body class="cui-expandable__body">
 	  	<!-- Close Icon -->
