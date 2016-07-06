@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('personRequestReviewCtrl',function(API,$stateParams,$q,DataStorage,$timeout,$state) {
-    'use strict';
+.controller('personRequestReviewCtrl', function(API,DataStorage,$q,$state,$stateParams,$timeout) {
 
     const personRequestReview = this,
     	userId = $stateParams.userID,
@@ -84,7 +83,7 @@ angular.module('organization')
     // ON LOAD START ---------------------------------------------------------------------------------
 
     personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId }).request;
-    personRequestReview.userPackageRequests = DataStorage.get('userRequestedPackages', { userId }).requests;
+    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId }).requests;
 
     if (personRequestReview.userPackageRequests) {
     	getApprovalCounts(personRequestReview.userPackageRequests);
