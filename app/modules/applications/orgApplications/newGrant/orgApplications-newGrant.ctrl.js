@@ -42,7 +42,7 @@ angular.module('applications')
     .then((res) => {
     	orgAppNewGrant.service = res;
     	// Get the logged in user's organization hierarchy
-    	return API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    	return API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id});
     })
     .then((res) => {
     	orgAppNewGrant.currentOrganizationId = res.id;
@@ -65,7 +65,11 @@ angular.module('applications')
     			})
     			.then((res) => {
     				grant.organization = res;
+                    return API.cui.getPackageClaims({qs: [['packageId', grant.servicePackage.id]]});
     			})
+                .then((res) => {
+                    grant.claims = res;
+                })
     		);
     	});
 
@@ -108,7 +112,7 @@ angular.module('applications')
 
     	Loader.onFor(loaderName + 'data');
 
-    	orgAppNewGrant.currentOrganizationId = organization.id
+    	orgAppNewGrant.currentOrganizationId = organization.id;
 
     	API.cui.getOrganization({organizationId: orgAppNewGrant.currentOrganizationId})
     	.then((res) => {
@@ -130,7 +134,7 @@ angular.module('applications')
     					};
     				})
     			);
-    		})
+    		});
 
     		$q.all(promises)
     		.then((res) => {
