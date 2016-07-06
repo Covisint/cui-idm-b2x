@@ -1,0 +1,180 @@
+.cui-organization__user-details {
+  padding: 0 3.983739837398% 0 4.308943089431%;
+
+  .cui-breadcrumb {
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+ 
+  .cui-action {
+    margin-bottom: em(20);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .cui-media--centered {
+    margin-bottom: 10px;
+
+    .cui-status {
+      @media screen and (max-width: 700px) {
+        font-size: em(15, 14);
+      }
+    }
+  }
+
+  .cui-media--centered .cui-media__title {
+    line-height: 1.3;
+    margin: 5px 0;
+  }
+
+  .cui-media__content--bold {
+    @extend %bold;
+    color: rgb(74, 74, 74);
+  }
+
+  .cui-media__image-container {
+    @media screen and (max-width: 700px) {
+      flex: .25 auto;
+      justify-content: flex-start;
+      margin-right: 37px;
+      min-width: auto;
+      padding: 0;
+    }
+  }
+
+  .cui-button--inverted {
+    letter-spacing: 1.6px;
+    padding: em(6, 15) em(12, 15) em(12, 15);
+    margin-right: em(14, 15);
+    width: auto;
+
+    @media screen and (max-width: 1024px) {
+      font-size: em(14);
+      letter-spacing: 1.5px;
+    }
+
+    @media screen and (max-width: 700px) {
+      margin-right: 0;
+    }
+  }
+
+  .cui-media__button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: em(5);
+
+    @media screen and (max-width: 700px) {
+      justify-content: space-between;
+    }
+  }
+
+  .cui-organization__details-container {
+    display: flex;
+    margin-top: em(20);
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+    }
+  }
+
+  .cui-organization__details-col {
+    flex: 1;
+
+    &:first-of-type {
+      padding-right: 11.219512195122%;
+
+      @media screen and (max-width: 700px) {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .cui-organization__profile-left-header {
+    margin-bottom: em(12);
+
+    @media screen and (min-width: 700px) {
+      border-bottom: 1px solid #ECEAEA;
+    }
+  }
+
+  .cui-organization__profile-left-header,
+  .cui-organization__profile-right-header {
+    display: flex;
+    height: 70px;
+    padding: em(10) 0;
+
+    @media screen and (max-width: 999px) {
+      justify-content: space-between;
+    }
+  }
+
+  .cui-organization__profile-header-items--right {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+  }
+
+  .cui-organization__profile-header-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: em(35);
+
+    @media screen and (max-width: 700px) {
+      margin-left: 0;
+    }
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    .cui-action__icon {
+      height: em(25);
+      stroke-width: 2px;
+      
+      & use {
+        color: #9B9B9B;
+      }
+    }
+
+    .cui-action__icon--active use {
+      color: #6a98a0;
+    }
+
+    .cui-action__action-label {
+      color: #9B9B9B;
+      letter-spacing: 1px;
+    }
+
+    .cui-action__icon--active + .cui-action__action-label {
+      color: #6a98a0;
+    }
+
+  }
+
+  .cui-action__icon--history {
+    fill: transparent;
+  }
+
+  .cui-status--active, 
+  .cui-status--pending, 
+  .cui-status--suspended, 
+  .cui-status--locked, 
+  .cui-status--inactive, 
+  .cui-status--unactivated {
+
+    @media screen and (max-width: 700px) {
+      font-size: 1em;
+    }
+  }
+
+  .cui-flex-table__tr--b {
+
+    @media screen and (max-width: 700px) {
+      &:first-of-type {
+        border-top: 0;
+      }
+    }
+  }
+}

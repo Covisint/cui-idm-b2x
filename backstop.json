@@ -1,0 +1,185 @@
+{
+  "viewports": [
+    {
+      "name": "phone",
+      "width": 320,
+      "height": 480
+    }, {
+      "name": "phone_h",
+      "width": 480,
+      "height": 320
+    }, {
+      "name": "tablet_v",
+      "width": 568,
+      "height": 1024
+    }, {
+      "name": "tablet_h",
+      "width": 1024,
+      "height": 768
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "welcome",
+      "url": "http://localhost:9001/#/welcome",
+      "hideSelectors": ["svg"],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".welcome-wrapper"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "my profile",
+      "url": "http://localhost:9001/#/user/profile",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-users__edit"
+      ],
+      "readyEvent": null,
+      "delay": 5000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "applications",
+      "url": "http://localhost:9001/#/applications/",
+      "hideSelectors": [".cui-media__image"],
+      "removeSelectors": [
+        "svg"
+      ],
+      "selectors": [
+        ".cui-applications"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "applications request",
+      "url": "http://localhost:9001/#/applications/request",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-applications"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "organization profile",
+      "url": "http://localhost:9001/#/organization/profile",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-organization"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "organization hierarchy",
+      "url": "http://localhost:9001/#/organization/hierarchy",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-organization"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "organization directory",
+      "url": "http://localhost:9001/#/organization/directory",
+      "hideSelectors": [
+        ".cui-profile__user-avatar",
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-organization"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "organization user details",
+      "url": "http://localhost:9001/#/organization/user-details",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-organization"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    },
+    {
+      "label": "organization person request",
+      "url": "http://localhost:9001/#/organization/requests/person-request",
+      "hideSelectors": [
+        ".cui-media__image",
+        "svg"
+      ],
+      "removeSelectors": [
+      ],
+      "selectors": [
+        ".cui-organization--pending-requests"
+      ],
+      "readyEvent": null,
+      "delay": 3000,
+      "misMatchThreshold" : 0.1,
+      "onReadyScript": null,
+      "onBeforeScript": null
+    }
+  ],
+  "engine": "phantomjs",
+  "report": ["browser"],
+  "debug": false,
+  "port": 9009
+}

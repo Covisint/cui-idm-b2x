@@ -1,6 +1,6 @@
 angular.module('registration')
-.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams', 'API', '$state','CuiPasswordPolicies',
-function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPolicies){
+.controller('usersRegisterCtrl',['localStorageService','$scope','Person','$stateParams','API','$state','CuiPasswordPolicies','Base',
+function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPolicies,Base){
     'use strict';
     var usersRegister = this;
 
@@ -33,7 +33,7 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
             usersRegister.user.timezone = 'EST5EDT';
             if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; };
             // Get the current selected language
-            usersRegister.user.language = $scope.$parent.base.getLanguageCode();
+            usersRegister.user.language = Base.getLanguageCode();
             return usersRegister.user;
         },
         personPassword: function(user, org) {
