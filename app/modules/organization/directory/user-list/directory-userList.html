@@ -62,7 +62,7 @@
   <!-- Action Sub-header -->
   <section class="cui-action" ng-if="!orgDirectory.loading">
     <h3 class="cui-sr-only">Organization Directory Filters</h3>
-    <span class="cui-action__title cui-desktop-only " ui-sref="requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
+    <span class="cui-action__title cui-desktop-only " ui-sref="organization.requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
     <span class="cui-action__title cui-mobile-only" >{{orgDirectory.orgPersonCount}} People </span>
     <div class="cui-action__actions">
 
