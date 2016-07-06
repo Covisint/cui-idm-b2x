@@ -69,6 +69,12 @@ angular.module('applications',[])
         templateUrl: templateBase + 'orgApplications/newGrant/orgApplications-newGrant.html',
         controller: returnCtrlAs('orgAppNewGrant'),
         access: loginRequired            
+    })
+    .state('applications.orgApplications.newRequest', {
+        url: '/request',
+        templateUrl: templateBase + 'orgApplications/appRequest/newRequest/appRequest-newRequest.html',
+        controller: returnCtrlAs('orgAppRequest'),
+        access: loginRequired
     });
 
 }]);
