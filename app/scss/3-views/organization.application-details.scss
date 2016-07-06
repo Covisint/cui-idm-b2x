@@ -33,11 +33,17 @@
 					fill:rgb(65,118,131);
 				}
 			}
-			.cui-button.cui-button--inverted{
-				font-weight: bold;
-				margin:20px 0;
-			}
 		}
+
+		.cui-button.cui-button--inverted{
+			font-weight: bold;
+			margin:20px 5px;
+		}
+	}
+
+	&--controls{
+		display: flex;	
+		margin-bottom: 2em;
 	}
 
 	&--name{
@@ -152,15 +158,93 @@
 
 		.cui-expandable__body{
 				background:rgb(232,240,243);
-				padding:15px 10px;
+				padding: 1em;
 				margin:0 50px;
 				width:auto;
+
+				.collapse{
+					margin-top: -5px;
+					text-align: right;
+				}
+
+				.cui-actions{
+					color: $cui-primary-colors--dark;
+					display: flex;
+					justify-content: space-between;
+
+					&__admin-select{
+						display: flex;
+
+						span{
+							margin-right: 10px;
+						}
+					}
+
+					&__edit-controls{
+						a{
+							color:rgb(65,118,131);
+							font-weight: bold;
+							padding: 0 5px;
+							text-decoration: none;
+						}
+					}
+				}
+
+				.cui-button{
+					&--update{
+						float: right;
+					}
+				}
 			}
+
+		&__actions{
+			display: none;
+		}
+
+
+
+		//THE ASSIGN BOX
+		.cui-assign{
+			.cui-actions{
+				&--assign{
+					flex-flow: row wrap;
+					justify-content: flex-start; 
+
+					p{
+						flex-basis: 100%;
+					}
+
+					a,
+					button{
+						margin: 0 10px;
+					}
+
+					a{
+						color: #417683;
+						line-height: 40px;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+
+
+
+
 
 	}
 
 	&--edit{
 		font-weight: bold;
 	}
+
+
+	&--claim-title{
+		color: $cui-primary-colors--dark;
+		font-weight: bold;
+	}
+
+
 }
+
 
