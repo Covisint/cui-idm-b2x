@@ -25,26 +25,33 @@
 
 <!-- Application Information -->
 <div class="org-Application--top">
+
+	<div class="cui-media">
 	<!-- Application Avatar -->
 	<div class="cui-media__image-container">
   	<a target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="orgApplicationDetails.application.name" cui-avatar-cuii18n-filter cui-avatar="orgApplicationDetails.application.iconUrl"></div></a>
 	</div>
-	<!-- Name -->
-	<p class="org-Application--name">{{orgApplicationDetails.application.name | cuiI18n}}</p>
-	<!-- Granted -->
-	<p>Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
-  <!-- Status: Active -->
-  <p class="cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status}}
-  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-  		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
-  	</svg>
-	</p>
-  <!-- Status: Locked -->
-  <p class="cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='locked'">{{orgApplicationDetails.application.grant.status}}
-  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-    	<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
-    </svg>
-  </p>
+
+	<div class="org-Application--top__mobile-stack">
+		<!-- Name -->
+		<p class="org-Application--text org-Application--name">{{orgApplicationDetails.application.name | cuiI18n}}</p>
+		<!-- Granted -->
+		<p class="org-Application--text">Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
+	  <!-- Status: Active -->
+	  	<p class="org-application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status}}
+		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+		  		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
+		  	</svg>
+		</p>
+		  <!-- Status: Locked -->
+		  <p class="org-Application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='locked'">{{orgApplicationDetails.application.grant.status}}
+		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+		    	<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
+		    </svg>
+		  </p>
+	  </div>
+	</div>
+
   <div class="org-Application--controls">
   	<!-- Suspend Button -->
   	<button class="cui-button cui-button--inverted" ng-click="">{{'suspend-app' | translate}}</button>
@@ -56,20 +63,24 @@
 <!-- Bundled/Related Apps -->
 <div class="org-Application--bundled-related">
 	<!-- Bundled -->
-	<div class="org-Application--bundled-related__bundled">
-		<h3>{{'bundled-applications' | translate}}</h3>
-		<p ng-repeat="application in orgApplicationDetails.application.bundledApps">
-			<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
-			<span class="active">{{'active' | translate}}</span>
-		</p>
+	<div class="org-Application--bundled-related__bundled cui-tile">
+		<h3 class="cui-tile__title">{{'bundled-applications' | translate}}</h3>
+		<div class="cui-tile__body">
+			<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
+				<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+				<span class="active">{{'active' | translate}}</span>
+			</p>
+		</div>
 	</div>
 	<!-- Related -->
-	<div class="org-Application--bundled-related__related">
-		<h3>{{'related-applications' | translate}}</h3>
-		<p ng-repeat="application in orgApplicationDetails.application.relatedApps">
-			<span>{{application.name | cuiI18n}}</span> 
-			<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
-		</p>
+	<div class="org-Application--bundled-related__related cui-tile">
+		<h3 class="cui-tile__title">{{'related-applications' | translate}}</h3>
+		<div class="cui-tile__body">
+			<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.relatedApps">
+				<span>{{application.name | cuiI18n}}</span> 
+				<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
+			</p>
+		</div>
 	</div>
 </div>
 
@@ -77,7 +88,7 @@
 <div class="org-Application--user-list">
 	<!-- List Header -->
 	<div class="org-Application--user-list__util">
-		<h3>{{'users' | translate}}</h3>
+		<h3 class="org-Application--user-list__title">{{'users' | translate}}</h3>
 		<div class="cui-action__actions">
 
 	    <!-- Sort -->
@@ -121,109 +132,143 @@
 	  </div>
 	</div>
 
-	<!-- User List Header -->
-	<div class="org-Application--user-list__header">
-		<p>{{'cui-name' | translate}}</p>
-		<p>{{'userID' | translate}}</p>
-		<p>{{'cui-org' | translate}}</p>
-		<p>{{'status' | translate}}</p>
-		<p>&nbsp;</p>
-	</div>
 
-	<!-- User List -->
-	<cui-expandable class="cui-expandable " ng-repeat="grant in orgApplicationDetails.grantList track by grant.grantee.id">
-		<cui-expandable-title class="cui-expandable__title org-Application--user-list__line" >
-			<!-- User Avatar -->
-			<div>
-				<div class="cui-media__image" cui-avatar cui-avatar-email="grant.person.email" cui-avatar-names="[grant.person.name.given, grant.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
-				<span>{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+		<!-- User List Header -->
+		<div class="org-Application--user-list__header">
+			<div class="cui-flex-table">
+				<div class="cui-flex-table__tr">
+					<div class="cui-flex-table__left">{{'cui-name' | translate}}</div>
+					<div class="cui-flex-table__middle">{{'userID' | translate}}</div>
+					<div class="cui-flex-table__middle">{{'cui-org' | translate}}</div>
+					<div class="cui-flex-table__middle">{{'status' | translate}}</div>
+					<div class="cui-flex-table__right"></div>
+				</div>
 			</div>
-			<!-- User Id -->
-			<p>{{grant.grantee.id}}</p>
-			<!-- Organization Name -->
-			<p>{{grant.organization.name}}</p>
-			<!-- User Status -->
-			<p class="active">{{grant.person.status}}</p>
-			<!-- Edit -->
-			<p><a class="org-Application--edit" href="javascript:void(0)" ng-click="toggleExpand()">edit</a></p>
-		</cui-expandable-title>
-	  <cui-expandable-body class="cui-expandable__body">
-	  	<!-- Close Icon -->
-	  	<div class="collapse" ng-click="collapse()">
-	  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
-	  	</div>
+		</div>
 
-	  	<div class="cui-actions">
+		<!-- User List -->
+		<cui-expandable class="cui-expandable" ng-repeat="grant in orgApplicationDetails.grantList track by grant.grantee.id">
+			<cui-expandable-title class="cui-expandable__title org-Application--user-list__line cui-flex-table" >
+				<div class="cui-flex-table__tr">
 
-		  	<div class="cui-actions__admin-select">
-		  		
-		  		<span>Administrator</span>
+					<!-- User Avatar -->
+					<div class="cui-flex-table__avatar-col">
+						<div class="cui-flex-table__avatar-container">
+							<div class="cui-media__image" cui-avatar cui-avatar-email="grant.person.email" cui-avatar-names="[grant.person.name.given, grant.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+						</div>
+					</div>
 
-		  		<div class="cui-radio cui-radio--basic-rtl">
-				    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
-				    <label class="cui-radio__label" for="radio-choice-2"><span></span>No</label>
+					<div class="cui-flex-table__mobile-stack">
+						<div class="cui-flex-table__left">
+							<p class="cui-flex-table__text">
+								<span class="cui-flex-table__text--name">{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+							</p>
+						</div>
+
+						<!-- User Id -->
+						<div class="cui-flex-table__middle">
+							<p class="cui-flex-table__text">
+								<span class="cui-flex-table__text--mobile-only">user ID: </span>{{grant.grantee.id}}
+							</p>
+						</div>
+						<!-- Organization Name -->
+						<div class="cui-flex-table__middle">
+							<p class="cui-flex-table__text">
+								<span class="cui-flex-table__text--mobile-only">org: </span>{{grant.organization.name}}
+							</p>
+						</div>
+
+						<div class="cui-flex-table__middle cui-flex-table__middle--status">
+							<p class="cui-flex-table__text active">{{grant.person.status}}</p>
+						</div>
+					</div>
+					<!-- User Status -->
+					<div class="cui-flex-table__right">
+						<!-- Edit -->
+						<p class="cui-flex-table__text">
+							<a class="org-Application--edit" href="javascript:void(0)" ng-click="toggleExpand()">edit</a>
+						</p>
+					</div>
+				</div>
+
+			</cui-expandable-title>
+		  <cui-expandable-body class="cui-expandable__body">
+		  	<!-- Close Icon -->
+		  	<div class="collapse" ng-click="collapse()">
+		  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		  	</div>
+
+		  	<div class="cui-actions">
+
+			  	<div class="cui-actions__admin-select">
+			  		
+			  		<span>Administrator</span>
+
+			  		<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>No</label>
+				  	</div>
+				  	<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
+				  	</div>
+
 			  	</div>
-			  	<div class="cui-radio cui-radio--basic-rtl">
-				    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
-				    <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
+
+			  	<div class="cui-actions__edit-controls">
+			  		<a class="cui-actions__edit-controls--link" href="#">Edit</a>
+			  		<a class="cui-actions__edit-controls--link" href="">Suspend</a>
 			  	</div>
 
 		  	</div>
 
-		  	<div class="cui-actions__edit-controls">
-		  		<a href="#">Edit</a>
-		  		<a href="">Suspend</a>
+		  	<!-- Claim Title ? -->
+				<p class="org-Application--claim-title">{{grant.claims[0].claimValues[0].description | cuiI18n}}</p>
+				<!-- Claim ? -->
+				<p class="org-Application--claim cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-4"/><label class="cui-checkbox__label" for="option-4">{{grant.claims[0].description | cuiI18n}}</label></p>
+				<button class="cui-button cui-button--update">{{'update-grant-settings' | translate}}</button>
+		  </cui-expandable-body>
+		</cui-expandable>
+
+		<cui-expandable-body class="cui-expandable__body cui-assign">
+		  	<!-- Close Icon -->
+		  	<div class="collapse" ng-click="collapse()">
+		  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 		  	</div>
 
-	  	</div>
+		  	<div class="cui-actions">
 
-	  	<!-- Claim Title ? -->
-			<p class="org-Application--claim-title">{{grant.claims[0].claimValues[0].description | cuiI18n}}</p>
-			<!-- Claim ? -->
-			<p class="org-Application--claim cui-checkbox__container"><input class="cui-checkbox" type="checkbox" id="option-4"/><label class="cui-checkbox__label" for="option-4">{{grant.claims[0].description | cuiI18n}}</label></p>
-			<button class="cui-button cui-button--update">{{'update-grant-settings' | translate}}</button>
-	  </cui-expandable-body>
-	</cui-expandable>
+			  	<div class="cui-actions__admin-select">
+			  		
+			  		<span>Administrator</span>
 
-	<cui-expandable-body class="cui-expandable__body cui-assign">
-	  	<!-- Close Icon -->
-	  	<div class="collapse" ng-click="collapse()">
-	  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
-	  	</div>
+			  		<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>No</label>
+				  	</div>
+				  	<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
+				  	</div>
 
-	  	<div class="cui-actions">
-
-		  	<div class="cui-actions__admin-select">
-		  		
-		  		<span>Administrator</span>
-
-		  		<div class="cui-radio cui-radio--basic-rtl">
-				    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
-				    <label class="cui-radio__label" for="radio-choice-2"><span></span>No</label>
-			  	</div>
-			  	<div class="cui-radio cui-radio--basic-rtl">
-				    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
-				    <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
 			  	</div>
 
+			  	<div class="cui-actions__edit-controls">
+			  		<a class="cui-actions__edit-controls--link" href="#">Edit</a>
+			  		<a class="cui-actions__edit-controls--link" href="">Suspend</a>
+			  	</div>
+
 		  	</div>
 
-		  	<div class="cui-actions__edit-controls">
-		  		<a href="#">Edit</a>
-		  		<a href="">Suspend</a>
-		  	</div>
+				<p class="message">
+					Marsha doesn’t currently have the role of application administrator, which must be assigned before a user can be granted administration rights for a given application. This is one time setting.
+				</p>
 
-	  	</div>
+				<div class="cui-actions cui-actions--assign">
+					<p class="cui-actions--assign__text">Would you like to assign this role now?</p>
+					<a class="cui-actions--assign__button cui-actions--assign__link" href="#" class="cancel">Cancel</a>
+					<button class="cui-button cui-actions--assign__button">{{'yes' | translate}}</button>
+				</div>
 
-			<p class="message">
-				Marsha doesn’t currently have the role of application administrator, which must be assigned before a user can be granted administration rights for a given application. This is one time setting.
-			</p>
-
-			<div class="cui-actions cui-actions--assign">
-				<p>Would you like to assign this role now?</p>
-				<a href="#" class="cancel">Cancel</a>
-				<button class="cui-button cui-button--assign">{{'yes' | translate}}</button>
-			</div>
-
-	  </cui-expandable-body>
+		  </cui-expandable-body>
 </div>

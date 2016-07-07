@@ -2,38 +2,35 @@
 	&--top{
 		width:25%;
 		margin:0 auto;
-		p.cui-media__content{
+
+		@media screen and (max-width: 700px){
+			width: 100%;
+		}
+
+		&__mobile-stack{
+			display: flex;
+			flex-flow: column;
+		}
+
+		.cui-media__content{
 			color:rgb(65,118,131);
 			font-size:15px;
 			text-transform: uppercase;
 		}
 
 		.cui-media{
+			text-align: center;
+			flex-flow: column;
+			justify-content: center;
+
+			@media screen and (max-width: 700px){
+				flex-flow: row;
+			}
+
 	        &__image-container{
 	          justify-content: center;
 	        }
       	}
-		p{
-			text-align:center;
-			display:block !important;
-			/* color:rgb(52,53,52); */
-			color: $cui-primary-colors--dark;
-			margin:0;
-			padding:0 0 7px 0;
-			&:first-child{
-				font-size: 16px;
-
-			}
-			&:last-child{
-				
-			}
-			svg{
-				width:20px;
-				use{
-					fill:rgb(65,118,131);
-				}
-			}
-		}
 
 		.cui-button.cui-button--inverted{
 			font-weight: bold;
@@ -41,71 +38,186 @@
 		}
 	}
 
-	&--controls{
-		display: flex;	
-		margin-bottom: 2em;
+	&--text{
+		@media screen and (max-width: 700px){
+			margin: .2em 0;
+			text-align: left;
+		}
 	}
 
 	&--name{
 		font-size: 24px;
 		font-weight: bold;
+		text-align:center;
+		display:block !important;
+		/* color:rgb(52,53,52); */
+		color: $cui-primary-colors--dark;
+		margin:0;
+		padding:0 0 7px 0;
+
+		@media screen and (max-width: 700px){
+			text-align: left;
+		}
+
+		&:first-child{
+			font-size: 16px;
+
+		}
+		&:last-child{
+			
+		}
+		svg{
+			width:20px;
+			use{
+				fill:rgb(65,118,131);
+			}
+		}
 	}
 
+	&--controls{
+		display: flex;	
+		justify-content: center;
+		margin-bottom: 2em;
+	}
 
 	&--bundled-related{
 		display:flex;
 		width:calc(100% - 200px);
 		margin:0 auto;
 		justify-content:space-around;
+
 		&__bundled, &__related{
 			width:45%;
-			border-top:1px solid rgba(135,135,135,0.65 );
-			h3{
-				border:1px solid rgba(135,135,135,0.65);
-				border-bottom:none;
-				border-top:none;
-				font-weight: bold;
-				padding:17px;
-			}
-			p{
-				display:flex;
-				align-items:center;
 
-				color:rgb(65,118,131);
-				padding:17px;
-				margin:0;
-				border:1px solid rgba(134,134,134,0.65);
-				border-bottom:none;
-				font-weight:700;
-				&:last-child{
-					border-bottom:1px solid rgba(134,134,134,0.65);
+			&.cui-tile{
+	
+				.cui-tile__body{
+					padding: 0;
 				}
-				button.cui-button{
-					font-weight: normal;
-					height:auto;
-					width:auto;
-					padding:5px 15px;
-					border-radius: 25px;
-					margin-left: auto;
-				}
-				span+span{
-					margin-left: auto;
-					font-weight:normal;
-					text-transform: lowercase;
+
+				.cui-tile__text{
+					display:flex;
+					align-items:center;
+					color:rgb(65,118,131);
+					padding:17px;
+					margin:0;
+					border-top:1px solid #cde6f0;
+					border-bottom:none;
+					font-weight:700;
+
+					&:first-child{
+						border: none;
+					}
+
+
+					.cui-button{
+						font-weight: normal;
+						height:auto;
+						width:auto;
+						padding:5px 15px;
+						border-radius: 25px;
+						margin-left: auto;
+					}
+
 				}
 			}
+
 		}
 	}
+
 	&--user-list{
-		h3{
+
+		width: 90%;
+		margin:25px auto;
+
+		&__title{
 			margin-bottom:10px;
 			text-transform:uppercase;
+
+			@media screen and (max-width: 700px){
+				display: none;
+			}
 		}
-		width:calc(100% - 200px);
-		margin:25px auto;
+
 		.cui-expandable{
 			border-bottom:1px solid rgb(222,233,238);
-			padding-bottom:5px;
+			padding-bottom:0;
+
+			.cui-flex-table{
+				&__tr{
+					align-items: stretch;
+					justify-content: center;
+					border-top: 0;
+					width: 100%;
+				}
+
+				&__avatar-col{
+					display: flex;
+					align-items: center;
+
+					@media screen and (max-width: 700px){
+						align-items: flex-start;
+					}
+				}
+
+				&__left{
+					flex-basis: 45%;
+				}
+
+				&__left,
+				&__middle{
+					flex-basis:45%;
+				}
+
+				&__middle{
+					padding: 0 .5em;
+
+					@media screen and (max-width: 700px){
+						padding: 0;
+					}
+				}
+
+				&__right{
+					flex-basis: 6%;
+					
+					.cui-flex-table__text{
+						margin-right: 1.875em;
+					}
+				}
+
+				&__text{
+
+					@media screen and (max-width: 700px){
+						margin: .2em 0;
+					}
+
+					&--name{
+						color: $cui-primary-colors--dark;
+						font-weight: bold;
+
+						@media screen and (max-width: 700px){
+							color: $cui-primary-colors--medium-dark;
+						}
+					}
+
+					&--mobile-only{
+						display: none;
+
+						@media screen and (max-width: 700px){
+							display: inline;
+						}
+					}
+				}
+
+				.active{
+					color: rgb(0,108,119);
+				}
+
+				.suspended{
+					 color:rgb(255,68,0);
+				}
+			}
+
 			&.expanded{
 				cui-expandable-title p:nth-child(5) a{
 					opacity:0;
@@ -113,47 +225,30 @@
 			}
 			cui-expandable-title{
 				cursor:default;
+				padding: 0;
 			}
 		}
 		&__header{
 				border-bottom:1px solid rgb(222,233,238);
 				border-top:1px solid rgb(222,233,238);
-		}
-		&__header, &__line{
-			display:flex;
-			align-items:center;
-			/* border-bottom:1px solid rgb(222,233,238); */
-			p, &> div{
-				width:20%;
-				padding:10px 0;
-				margin:0;
-				&:nth-child(1){
-					display:flex;
-					align-items:center;
-					div{
-						margin-right:15px;
+
+				@media screen and (max-width: 700px){
+					display: none;
+				}
+
+				.cui-flex-table{
+					&__left{
+						flex-basis: 57%;
+						padding-left: calc(50px + 1.875em);
+					}
+					&__middle{
+						flex-basis: 52%;
+						width: auto;
+					}
+					&__right{
+						flex-basis: 13%;
 					}
 				}
-				&:nth-child(1),&:nth-child(2),&:nth-child(3){
-					width:28%;
-				}
-				&:nth-child(4),&:nth-child(5){
-					width:9%;
-				}
-				&.active{
-					color: rgb(0,108,119);
-				}
-				&.suspended{
-					 color:rgb(255,68,0);
-				}
-				a{
-					text-decoration:none;
-					color: rgb(0,108,119);
-					weight:600;
-					transition:opacity .05s;
-				}
-			}
-
 		}
 
 		.cui-expandable__body{
@@ -181,7 +276,7 @@
 					}
 
 					&__edit-controls{
-						a{
+						&--link{
 							color:rgb(65,118,131);
 							font-weight: bold;
 							padding: 0 5px;
@@ -210,16 +305,15 @@
 					flex-flow: row wrap;
 					justify-content: flex-start; 
 
-					p{
+					&__text{
 						flex-basis: 100%;
 					}
 
-					a,
-					button{
+					&__button{
 						margin: 0 10px;
 					}
 
-					a{
+					&__link{
 						color: #417683;
 						line-height: 40px;
 						text-decoration: none;
@@ -236,6 +330,10 @@
 
 	&--edit{
 		font-weight: bold;
+		text-decoration:none;
+		color: rgb(0,108,119);
+		weight:600;
+		transition:opacity .05s;
 	}
 
 
