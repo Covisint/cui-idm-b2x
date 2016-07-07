@@ -1,27 +1,29 @@
 angular.module('applications')
-.controller('orgAppRequestCtrl', function(API,Loader,AppRequests,$scope,$state) {
+.controller('orgAppRequestCtrl', function(API,DataStorage,Loader,User,$scope,$state) {
 
     const orgAppRequest = this;
-    const appsBeingRequested = AppRequests.get();
-    const loaderName = 'orgAppRequest.';
+    const orgAppsBeingRequested = DataStorage.getType('orgAppsBeingRequested');
+    const loaderName = 'orgAppRequest.loading';
 
-    orgAppRequest.appsBeingRequested = [];
-    orgAppRequest.numberOfRequests = 0;
+    orgAppRequest.orgAppsBeingRequested = [];
+    orgAppRequest.numberOfOrgRequests = 0;
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    Loader.onFor(loaderName + 'loading');
+    Loader.onFor(loaderName);
 
-    Object.keys(appsBeingRequested).forEach((appId) => {
+    console.log('orgAppsBeingRequested', orgAppsBeingRequested);
+
+    Object.keys(orgAppsBeingRequested).forEach((appId) => {
         // This sets the checkboxes back to marked when the user clicks back
-        orgAppRequest.numberOfRequests++;
-        orgAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
+        orgAppRequest.numberOfOrgRequests++;
+        orgAppRequest.orgAppsBeingRequested.push(orgAppsBeingRequested[appId]);
     });
 
     API.cui.getCategories()
     .then((res)=>{
         orgAppRequest.categories = res;
-        Loader.offFor(loaderName + 'loading');
+        Loader.offFor(loaderName);
         $scope.$digest();
     });
 
@@ -30,7 +32,7 @@ angular.module('applications')
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
     orgAppRequest.searchCallback = function(searchWord) {
-        $state.go('applications.search', {name: searchWord});
+        $state.go('applications.orgApplications.orgAppSearch', {name: searchWord});
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
