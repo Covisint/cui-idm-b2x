@@ -108,7 +108,7 @@
 			&__tab-container{
 				padding: 0;
 			}
-			
+
 			&__tab{
 				background-color: #6a98a0;
 				color: #fff;
@@ -182,6 +182,19 @@
 		.cui-expandable{
 			border-bottom:1px solid rgb(222,233,238);
 			padding-bottom:0;
+
+			&__body{
+				position: relative;
+
+				&::before{
+					color: #fff;
+					content: '▼';
+					font-size: 2em;
+					left: 50px;
+					position: absolute;
+					top: -8px;
+				}
+			}
 
 			.cui-flex-table{
 				&__tr{
@@ -294,7 +307,7 @@
 		.cui-expandable__body{
 				background:rgb(232,240,243);
 				padding: 1em;
-				margin:0 50px;
+				margin:0 50px 10px;
 				width:auto;
 
 				.collapse{
@@ -316,6 +329,8 @@
 					}
 
 					&__edit-controls{
+						margin-left: auto;
+
 						&--link{
 							color:rgb(65,118,131);
 							font-weight: bold;
@@ -338,12 +353,18 @@
 
 
 
-		//THE ASSIGN BOX
-		.cui-assign{
+		//THE CONFIRMATION BOX
+		.cui-edit-user{
 			.cui-actions{
-				&--assign{
+
+				&--confirm{
 					flex-flow: row wrap;
 					justify-content: flex-start; 
+
+					&__checkbox{
+						flex-basis: 100%;
+						margin: 0 0 20px 0;
+					}
 
 					&__text{
 						flex-basis: 100%;

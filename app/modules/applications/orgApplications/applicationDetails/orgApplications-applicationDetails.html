@@ -260,7 +260,8 @@
 		  </cui-expandable-body>
 		</cui-expandable>
 
-		<cui-expandable-body class="cui-expandable__body cui-assign">
+		<!-- ASSIGN EXPANDABLE (ZEPLIN 30a) -->
+		<cui-expandable-body class="cui-expandable__body cui-edit-user">
 		  	<!-- Close Icon -->
 		  	<div class="collapse" ng-click="collapse()">
 		  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
@@ -294,11 +295,68 @@
 					Marsha doesn’t currently have the role of application administrator, which must be assigned before a user can be granted administration rights for a given application. This is one time setting.
 				</p>
 
-				<div class="cui-actions cui-actions--assign">
-					<p class="cui-actions--assign__text">Would you like to assign this role now?</p>
-					<a class="cui-actions--assign__button cui-actions--assign__link" href="#" class="cancel">Cancel</a>
-					<button class="cui-button cui-actions--assign__button">{{'yes' | translate}}</button>
+				<div class="cui-actions cui-actions--confirm">
+					<p class="cui-actions--confirm__text">Would you like to assign this role now?</p>
+					<a class="cui-actions--confirm__button cui-actions--confirm__link" href="#" class="cancel">Cancel</a>
+					<button class="cui-button cui-actions--confirm__button">{{'yes' | translate}}</button>
 				</div>
 
+		  </cui-expandable-body>
+
+		  <!-- SUSPEND EXPANDABLE (ZEPLIN 30b) -->
+		  <cui-expandable-body class="cui-expandable__body cui-edit-user">
+		  	<!-- Close Icon -->
+		  	<div class="collapse" ng-click="collapse()">
+		  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		  	</div>
+
+		  	<div class="cui-actions">
+		  		<div class="cui-actions__edit-controls">
+			  		<a class="cui-actions__edit-controls--link" href="#">Edit</a>
+			  		<a class="cui-actions__edit-controls--link" href="">Suspend</a>
+			  	</div>
+		  	</div>
+
+		  	<p class="message">
+		  		Marsha will be unable to access this application
+		  	</p>
+  
+			<div class="cui-actions cui-actions--confirm">
+				<p class="cui-actions--confirm__text">Are you sure you'd like to suspend now?</p>
+				<div class="cui-actions--confirm__checkbox"><input class="cui-checkbox" type="checkbox" id="option-1"/><label class="cui-checkbox__label" for="option-1">Notify User</label></div>
+				<a class="cui-actions--confirm__button cui-actions--confirm__link" href="#" class="cancel">Cancel</a>
+				<button class="cui-button cui-actions--confirm__button">{{'yes' | translate}}</button>
+			</div>
+		  </cui-expandable-body>
+
+
+			<!-- ADMIN SELECT EXPANDABLE (ZEPLIN 30d)-->
+		  <cui-expandable-body class="cui-expandable__body cui-edit-user">
+		  	<div class="collapse" ng-click="collapse()">
+		  		<cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		  	</div>
+
+		  	<div class="cui-actions">
+
+			  	<div class="cui-actions__admin-select">		  		
+			  		<span>Administrator</span>
+
+			  		<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>No</label>
+				  	</div>
+				  	<div class="cui-radio cui-radio--basic-rtl">
+					    <input class="cui-radio__input" type="radio" name="radio-choice-basic" id="radio-choice-2" value="choice-2">
+					    <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
+				  	</div>
+			  	</div>
+
+			  	<div class="cui-actions__edit-controls">
+			  		<a class="cui-actions__edit-controls--link" href="#">Edit</a>
+			  		<a class="cui-actions__edit-controls--link" href="">unsuspend</a>
+			  		<a class="cui-actions__edit-controls--link" href="">remove</a>
+			  	</div>
+
+			</div>
 		  </cui-expandable-body>
 </div>
