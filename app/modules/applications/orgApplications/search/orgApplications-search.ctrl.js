@@ -59,7 +59,7 @@ angular.module('applications')
             qs: query
         };
 
-        const promises = [API.cui.getPersonRequestableApps(opts),API.cui.getPersonRequestableCount(opts)];
+        const promises = [API.cui.getPersonRequestableApps(opts), API.cui.getPersonRequestableCount(opts)];
 
         $q.all(promises)
         .then((res) => {
