@@ -60,26 +60,56 @@
   </div>
 </div>
 
-<!-- Bundled/Related Apps -->
-<div class="org-Application--bundled-related">
-	<!-- Bundled -->
-	<div class="org-Application--bundled-related__bundled cui-tile">
-		<h3 class="cui-tile__title">{{'bundled-applications' | translate}}</h3>
-		<div class="cui-tile__body">
-			<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
-				<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
-				<span class="active">{{'active' | translate}}</span>
-			</p>
+<!-- Bundled/Related Apps -- DESKTOP -->
+<div class="org-Application--bundled-related desktop">
+
+		<!-- Bundled -->
+		<div class="org-Application--bundled-related__bundled cui-tile">
+			<h3 class="cui-tile__title">{{'bundled-applications' | translate}}</h3>
+			<div class="cui-tile__body">
+				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
+					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+					<span class="active">{{'active' | translate}}</span>
+				</p>
+			</div>
 		</div>
-	</div>
-	<!-- Related -->
-	<div class="org-Application--bundled-related__related cui-tile">
-		<h3 class="cui-tile__title">{{'related-applications' | translate}}</h3>
-		<div class="cui-tile__body">
-			<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.relatedApps">
-				<span>{{application.name | cuiI18n}}</span> 
-				<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
-			</p>
+		<!-- Related -->
+		<div class="org-Application--bundled-related__related cui-tile">
+			<h3 class="cui-tile__title">{{'related-applications' | translate}}</h3>
+			<div class="cui-tile__body">
+				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.relatedApps">
+					<span>{{application.name | cuiI18n}}</span> 
+					<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
+				</p>
+			</div>
+		</div>
+</div>
+
+<!-- Bundled/Related Apps -- MOBILE -->
+<div class="org-Application--bundled-related mobile">
+	<div class="cui-tabs">
+		<ul class="cui-tabs__nav">
+			<li class="cui-tabs__tab-container">
+				<a class="cui-tabs__tab cui-tabs__tab--active" data-pane="tab1">{{'bundled-applications' | translate}}</a>
+			</li>
+			<li class="cui-tabs__tab-container">
+				<a class="cui-tabs__tab" data-pane="tab2">{{'related-applications' | translate}}</a>
+			</li>
+		</ul>
+
+		<div class="cui-tabs__content">
+			<div id="tab1" class="cui-tabs__tab-pane cui-tabs__tab-pane--active">
+				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
+					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+					<span class="active">{{'active' | translate}}</span>
+				</p>
+			</div>
+			<div id="tab2" class="cui-tabs__tab-pane cui-tabs__tab-pane--active">
+				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.relatedApps">
+					<span>{{application.name | cuiI18n}}</span> 
+					<button class="cui-button" ng-if="application.requestable" ng-click="orgApplicationDetails.requestRelatedApp(application)">{{'request' | translate}}</button>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

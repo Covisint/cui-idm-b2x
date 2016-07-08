@@ -86,6 +86,46 @@
 		margin:0 auto;
 		justify-content:space-around;
 
+		@media screen and (max-width: 700px){
+			width: 100%;
+		}
+
+		&.desktop{
+			@media screen and (max-width:700px){
+				display: none;
+			}
+		}
+
+		&.mobile{
+			display: none;
+
+			@media screen and (max-width:700px){
+				display: block;
+			}
+		}
+
+		.cui-tabs{
+			&__tab-container{
+				padding: 0;
+			}
+			
+			&__tab{
+				background-color: #6a98a0;
+				color: #fff;
+
+				&--active{
+					background-color: #fff;
+					border: 1px #dee9ee solid;
+					border-width: 1px 0;
+					color: $cui-primary-colors--dark;
+
+					&:first-of-type{
+						box-shadow: none;
+					}
+				}
+			}
+		}
+
 		&__bundled, &__related{
 			width:45%;
 
