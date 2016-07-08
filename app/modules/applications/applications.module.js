@@ -77,6 +77,12 @@ angular.module('applications',[])
         controller: returnCtrlAs('orgAppRequest'),
         access: loginRequired
     })
+    .state('applications.orgApplications.newRequestReview', {
+        url: '/request/review',
+        templateUrl: templateBase + 'orgApplications/appRequest/newRequestReview/appRequest-newRequestReview.html',
+        controller: returnCtrlAs('orgAppRequestReview'),
+        access: loginRequired
+    })
     .state('applications.orgApplications.search', {
         url: '/search?name&category&page&pageSize',
         templateUrl: templateBase + 'orgApplications/search/orgApplications-search.html',
