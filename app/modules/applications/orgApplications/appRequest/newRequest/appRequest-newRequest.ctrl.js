@@ -12,14 +12,10 @@ angular.module('applications')
 
     Loader.onFor(loaderName);
 
-    console.log('orgAppsBeingRequested', orgAppsBeingRequested);
-
-    Object.keys(orgAppsBeingRequested).forEach((appId) => {
-        // This sets the checkboxes back to marked when the user clicks back
-        orgAppRequest.numberOfOrgRequests++;
-        orgAppRequest.orgAppsBeingRequested.push(orgAppsBeingRequested[appId]);
-    });
-
+    if (orgAppsBeingRequested) {
+        orgAppRequest.numberOfOrgRequests = Object.keys(orgAppsBeingRequested).length;
+    }
+    
     API.cui.getCategories()
     .then((res)=>{
         orgAppRequest.categories = res;
