@@ -1,6 +1,6 @@
 {
   "name": "@covisint/cui-idm-b2x",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Collection of reference implementations for the Covisint IDM plaftorm.",
   "main": "index.html",
   "repository": {
