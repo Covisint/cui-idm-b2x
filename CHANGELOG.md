@@ -1,7 +1,12 @@
-## [v1.0.9] 2016-07-01
+## [v1.0.10] 2016-07-12
 
 ### Changelog
 * 2016-7-12 cui.js v2.2.0
+
+
+## [v1.0.9] 2016-07-01
+
+### Changelog
 * 2016-7-1 cui-stylegiude v2.3.0 - https://github.com/thirdwavellc/cui-styleguide/releases/tag/v2.3.0 
 * 2016-7-1 cui-icons v1.3.0 - https://github.com/thirdwavellc/cui-icons/releases/tag/v1.3.0
 * 2016-6-30 cui-ng v1.9.11 - https://github.com/thirdwavellc/cui-ng/releases/tag/v1.9.11
