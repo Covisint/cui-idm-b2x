@@ -1,12 +1,16 @@
 <div class="cui-action" ng-hide="base.loader.for['newGrant.user']">
   <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
+  
+  <div class="cui-action__actions">
+    <ng-include src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
+  </div>
 </div>
 
 <div class="cui-applications__new-request">
     <div class="cui-action cui-action--alt">
         <h3 class="cui-action__title">{{'select-applications' | translate}}</h3>
         <div class="cui-action__actions">
-            <svg ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newGrant.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
             </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
@@ -25,19 +29,17 @@
             </div>
         </div>
     </div>
-    <div class="cui-action">
-      <fieldset>
-        <span class="cui-radio cui-radio--basic-rtl">
-          <input class="cui-radio__input" type="radio" name="radio-choice-1" id="radio-choice-1" ng-model="newGrant.searchType" ng-value="'applications'">
-          <label class="cui-radio__label" for="radio-choice-1"><span></span>{{'search-by-app-name' | translate}}</label>
-        </span>
-        <span class="cui-radio cui-radio--basic-rtl">
-          <input class="cui-radio__input" type="radio" name="radio-choice-2" id="radio-choice-2" ng-model="newGrant.searchType" ng-value="'packages'">
-          <label class="cui-radio__label" for="radio-choice-2"><span></span>{{'search-by-package-name' | translate}}</label>
-        </span>
-      </fieldset>
-    </div>
     <div class="cui-applications__main-container">
+        <fieldset class="cui-organization__radio-container">
+          <span class="cui-radio cui-radio--basic-ltr">
+            <input class="cui-radio__input" type="radio" name="radio-choice-1" id="radio-choice-1" ng-model="newGrant.searchType" ng-value="'applications'">
+            <label class="cui-radio__label" for="radio-choice-1"><span></span>{{'search-by-app-name' | translate}}</label>
+          </span>
+          <span class="cui-radio cui-radio--basic-ltr">
+            <input class="cui-radio__input" type="radio" name="radio-choice-2" id="radio-choice-2" ng-model="newGrant.searchType" ng-value="'packages'">
+            <label class="cui-radio__label" for="radio-choice-2"><span></span>{{'search-by-package-name' | translate}}</label>
+          </span>
+        </fieldset>
         <div>
             <div class="cui-applications__search-options">
                 <div class="cui-input-button">
