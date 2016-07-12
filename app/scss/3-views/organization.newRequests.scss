@@ -10,9 +10,37 @@
     }
   }
 
+  .cui-radio {
+    font-size: em(14);
+  }
+
   .cui-radio:nth-of-type(2) {
     @media screen and (min-width: 700px) {
       margin-left: em(34);
+    }
+  }
+
+  .cui-organization__browse-apps {
+    color: rgb(52,53,52);
+    display: block;
+    flex: .45;
+    font-weight: bold;
+    letter-spacing: .8px;
+    width: 100%;
+
+    @media screen and (max-width: 700px) {
+      align-items: center;
+      background-color: $button-color;
+      border-radius: $button-border-radius;
+      border: 0;
+      color: #fff;
+      display: flex;
+      font-size: $button-font-size;
+      height: $button-height;
+      justify-content: center;
+      margin: em(33) auto 0;
+      position: relative;
+      width: 60%;
     }
   }
 }
