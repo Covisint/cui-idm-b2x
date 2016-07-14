@@ -26,7 +26,7 @@
 	<div class="cui-applications__main-container" style="position:relative">
 
 		<!-- Loading -->
-		<div class="cui-loading__container" ng-if="base.loader.orgAppRequestReview.loading">
+		<div class="cui-loading__container" ng-if="base.loader.for['orgAppRequestReview.loading']">
 			<div class="cui-loading cui-loading--center" ></div>
 		</div>
 
@@ -67,11 +67,11 @@
 			<div class="cui-applications__submit-options">
 				<a class="cui-link" ng-click="base.goBack('applications.orgApplications.search')">{{'cui-cancel' | translate}}</a>
 				<button class="cui-button" ng-click="orgAppRequestReview.submit()">
-					<span ng-if="!orgAppRequestReview.error">{{'submit-request' | translate}}</span>
-					<span ng-if="orgAppRequestReview.error===true">{{'cui-error-try-again' | translate}}</span>
+					<span ng-if="!base.apiError.for['orgAppRequestReview.requestError']">{{'submit-request' | translate}}</span>
+					<span ng-if="base.apiError.for['orgAppRequestReview.requestError']">{{'cui-error-try-again' | translate}}</span>
 				</button>
 			</div>
-			<!-- TODO ng-if="orgAppRequestReview.attempting" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
+			<!-- TODO ng-if="base.loader.for['orgAppRequestReview.attempting']" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
 		</div>
 	</div>
 </div>
