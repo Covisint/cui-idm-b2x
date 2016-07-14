@@ -4,17 +4,18 @@ angular.module('common')
     /*
         Helper factory for creating and sending service package requests.
 
-        Usage: BuildPackageRequests(userId, arrayOfServices)
+        Usage: BuildPackageRequests(requestorId, requestorType, arrayOfServices)
         Return: Array of API service package request promises
         
         Notes:
+            - RequestorType: Whether the requestor is a person or organization (expects 'person' or 'organization')
             - The reason for the request should be under service._reason
             - If no reason is provided and the service package requires a reason, returns undefined and attach
               an _error property (app._error = true) for that service.
             - This factory is not pure (alters the provided array of services)
     */
 
-    return (userId, arrayOfApps) => {
+    return (requestorId, requestorType, arrayOfApps) => {
         const numberOfApps = arrayOfApps.length
 
         if (!_.isArray(arrayOfApps) || numberOfApps === 0) {
@@ -50,8 +51,8 @@ angular.module('common')
                 packagesBeingRequested.push(arrayOfApps[i].servicePackage.id)
                 packageRequests.push({
                     requestor: {
-                        id: userId,
-                        type: 'person'
+                        id: requestorId,
+                        type: requestorType
                     },
                     servicePackage: {
                         id: arrayOfApps[i].servicePackage.id,
@@ -63,5 +64,6 @@ angular.module('common')
         }
         
         return packageRequests.map(data => API.cui.createPackageRequest({ data }))
-    };
-});
+
+    }
+})
