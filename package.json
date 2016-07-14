@@ -45,7 +45,7 @@
     "@covisint/cui-i18n": "1.0.5",
     "@covisint/cui-icons": "1.3.0",
     "@covisint/cui.js": "2.2.0",
-    "@covisint/cui-ng": "1.9.11",
+    "@covisint/cui-ng": "1.9.13",
     "@covisint/cui-styleguide": "2.3.0"
   },
   "devDependencies": {
