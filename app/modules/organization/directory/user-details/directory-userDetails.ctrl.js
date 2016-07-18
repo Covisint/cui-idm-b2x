@@ -11,6 +11,7 @@ angular.module('organization')
     userDetails.profileRolesSwitch = true;
     userDetails.appsHistorySwitch = true;
     userDetails.organizationId = $stateParams.orgID;
+    userDetails.profileSwitch = "profile";
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
