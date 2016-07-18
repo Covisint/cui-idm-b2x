@@ -10,6 +10,7 @@ angular.module('applications',[])
     };
 
     $stateProvider
+    // ---------------- My Applications ----------------
     .state('applications', {
         url: '/applications',
         templateUrl : templateBase + 'applications.html',
@@ -69,6 +70,24 @@ angular.module('applications',[])
         templateUrl: templateBase + 'orgApplications/newGrant/orgApplications-newGrant.html',
         controller: returnCtrlAs('orgAppNewGrant'),
         access: loginRequired            
+    })
+    .state('applications.orgApplications.newRequest', {
+        url: '/request',
+        templateUrl: templateBase + 'orgApplications/appRequest/newRequest/appRequest-newRequest.html',
+        controller: returnCtrlAs('orgAppRequest'),
+        access: loginRequired
+    })
+    .state('applications.orgApplications.newRequestReview', {
+        url: '/request/review',
+        templateUrl: templateBase + 'orgApplications/appRequest/newRequestReview/appRequest-newRequestReview.html',
+        controller: returnCtrlAs('orgAppRequestReview'),
+        access: loginRequired
+    })
+    .state('applications.orgApplications.search', {
+        url: '/search?name&category&page&pageSize',
+        templateUrl: templateBase + 'orgApplications/search/orgApplications-search.html',
+        controller: returnCtrlAs('orgAppSearch'),
+        access: loginRequired
     });
 
 }]);
