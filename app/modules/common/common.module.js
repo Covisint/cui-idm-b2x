@@ -3,6 +3,16 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
     localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,$paginationProvider,
     $stateProvider,$compileProvider) => {
 
+    $urlRouterProvider.rule(($injector, $location) => {
+        const path = $location.path()
+        const hasTrailingSlash = path[path.length-1] === '/'
+
+        if (hasTrailingSlash) {
+            const newPath = path.substr(0, path.length-1)
+            return newPath
+        }
+    })
+
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
 
