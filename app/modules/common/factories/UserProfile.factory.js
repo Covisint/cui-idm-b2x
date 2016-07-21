@@ -159,6 +159,9 @@ angular.module('common')
                         userProfile.tempUser.addresses[0].country = userProfile.userCountry.originalObject.code;
                     }
 
+                    // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
+                    delete userProfile.tempUser['activatedDate']
+
                     API.cui.updatePerson({personId: API.getUser(), useCuid:true, data:userProfile.tempUser})
                     .then(function() {
                         angular.copy(userProfile.tempUser, userProfile.user);
