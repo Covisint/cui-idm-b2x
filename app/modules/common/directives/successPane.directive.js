@@ -4,14 +4,14 @@ angular.module('common')
 	/*****
 		--- Usage ---
 
-        <cui-success-pane show-if="scope.variable" timer="5000" on-close="scope.functionName()">
+        <cui-success-pane show-if="scope.variable" close-after="5000" on-close="scope.functionName()">
       		<p class="cui-modal__secondary-message">This is extra content</p>
       		<p class="cui-modal__secondary-message">{{scope.object.name}}</p>
     	</cui-success-pane>
 
         --- Optional Paramaters ---
 
-            timer       - specify how long before the success pane automatically closes
+            close-after - specify how long before the success pane automatically closes
                         - if timer is not specified, the pane will stay open until clicked
 
             on-close    - specify what scope function to fire when the modal closes
