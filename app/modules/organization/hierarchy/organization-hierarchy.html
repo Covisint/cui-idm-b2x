@@ -3,16 +3,18 @@
 <!-- /processHTML -->
 
 <div class="cui-organization">
+
   <!-- Navigation -->
   <div class="cui-action">
     <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
   </div>
 
-  <!-- Profile Content -->
+  <!-- Page Content -->
   <div class="cui-organization__main-container">
+
     <!-- Page Loading -->
-    <div class="cui-loading__container" ng-if="orgHierarchy.loading">
+    <div class="cui-loading__container" ng-if="base.loader.for['orgHierarchy.loading']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
@@ -20,6 +22,7 @@
     <h3 class="cui-organization__page-title">{{orgHierarchy.organizationHierarchy[0].name | cuiI18n}}</h3>
 
     <!-- Hierarchy Tree -->
-    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="orgHierarchy.goToOrgProfile"></div>
+    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)"></div>
+    
   </div>
 </div>
