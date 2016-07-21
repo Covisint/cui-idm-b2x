@@ -77,8 +77,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) => {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -109,6 +109,8 @@ angular.module('common')
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        APIError.clearAll()
+        Loader.clearAll()
         event.preventDefault();
         const route = () => {
             if (appConfig.debugServiceUrl) {
