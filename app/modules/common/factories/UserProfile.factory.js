@@ -1,7 +1,5 @@
 angular.module('common')
-.factory('UserProfile', ['$q','API','CuiPasswordPolicies',
-    function($q,API,CuiPasswordPolicies) {
-        'use strict';
+.factory('UserProfile', function(API,$q,$timeout) {
 
         var self = {
             getProfile: function(userCredentials) {
@@ -191,26 +189,30 @@ angular.module('common')
                     }
 
                     API.cui.updatePersonPassword({personId: API.getUser(), data: self.getPersonPasswordAccount(userProfile)})
-                    .then(function(res) {
+                    .always(() => {
                         if (section) {
                             userProfile[section].submitting = false;
                         }
+                    })
+                    .done(() => {
                         if (toggleOff) {
                             toggleOff();
                         }
+                        userProfile.passwordUpdateSuccess = true;
+                        $timeout(() => {
+                            userProfile.passwordUpdateSuccess = false;
+                        }, 5000);
                         userProfile.resetPasswordFields();
                         $scope.$digest();
                     })
-                    .fail(function(err) {
-                        console.log(err);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
+                    .fail((err) => {
+                        console.error('Error updating password', err);
                         if (section) {
                             userProfile[section].error = true;
                         }
+                        userProfile.passwordUpdateSuccess = true;
                         $scope.$digest();
-                    });
+                    })
                 };
 
                 userProfile.saveChallengeQuestions = function(section, toggleOff) {
@@ -255,4 +257,4 @@ angular.module('common')
 
     return self;
 
-}]);
+});

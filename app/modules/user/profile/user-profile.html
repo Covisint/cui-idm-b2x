@@ -29,6 +29,7 @@
           </div>
 
           <div class="cui-users__info-block">
+            <p ng-if="userProfile.passwordUpdateSuccess">Password Success</p>
             <!-- Password -->
             <div ng-include="'app/modules/user/profile/sections/password.html'"></div>
           </div>
