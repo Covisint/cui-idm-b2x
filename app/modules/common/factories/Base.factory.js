@@ -1,8 +1,6 @@
 angular.module('common')
-.factory('Base',['$state','Countries','Timezones','Languages','$translate','LocaleService','User','Menu','Loader',
-function($state,Countries,Timezones,Languages,$translate,LocaleService,User,Menu,Loader) {
-
-    return {
+.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError, BaseExtensions) => {
+    const baseFactory = {
         appConfig: appConfig,
         countries: Countries,
         getLanguageCode: Languages.getCurrentLanguageCode,
@@ -11,15 +9,24 @@ function($state,Countries,Timezones,Languages,$translate,LocaleService,User,Menu
         timezones: Timezones.all,
         user: User.user,
         loader: Loader,
+        apiError: APIError,
+
         goBack: (fallback) => {
-            if ($state.previous.name.name !== '') {
-                $state.go($state.previous.name, $state.previous.params);
+            let previousState = $state.stateStack.pop();
+
+            if (previousState.name.name !== '') {
+                $state.go(previousState.name, previousState.params);
+            }
+            else if (fallback) {
+                $state.go(fallback);
             }
             else {
-                $state.go(fallback);
+                return;
             }
         },
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
-    };
+    }
 
-}]);
+    return Object.assign({}, baseFactory, BaseExtensions)
+
+})

@@ -1,0 +1,105 @@
+<div class="cui-applications__search">
+    <div class="cui-action">
+        <div class="cui-action__title" ng-click="organization.directory.userDetails({userID: newGrantSearch.user.id})">
+          <span ng-if="!base.loader.for['newGrantSearch.user']">
+            &#60; {{newGrantSearch.user.name.given}} {{newGrantSearch.user.name.surname}} - {{'new-grant' | translate}}
+          </span>
+        </div>
+        <div class="cui-action__actions">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="organization.directory.userDetails({userID: newGrantSearch.user.id})" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+            </svg>
+        </div>
+    </div>
+    <div class="cui-action cui-action--alt">
+        <div class="cui-action__title" ng-if="!newGrantSearch.search.category"
+          ng-click="base.goBack('organization.directory.userList')">&#60; {{'categories' | translate}}</div>
+        <span class="cui-action__title" ng-if="newGrantSearch.search.category"
+          ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrantSearch.search.category}}</span>
+        <div class="cui-input-button cui-input-button--alt-bg">
+            <input class="cui-input-button__input" ng-model="newGrantSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="newGrantSearch.updateSearch"/>
+            <button class="cui-input-button__button" ng-click="newGrantSearch.updateSearch()">{{'filter' | translate}}</button>
+        </div>
+        <div class="cui-action__actions">
+            <svg ng-click="newGrantSearch.requestPopover=!newGrantSearch.requestPopover" off-click="newGrantSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': newGrantSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
+            </svg>
+            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrantSearch.numberOfRequests != 0}">{{newGrantSearch.numberOfRequests}}</sup>
+
+            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="newGrantSearch.requestPopover">
+              <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+              <div class="cui-action__popover-section">
+                <span ng-if="newGrantSearch.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+                <ul ng-if="newGrantSearch.numberOfRequests > 0">
+                    <li ng-repeat="application in newGrantSearch.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                    <li ng-repeat="package in newGrantSearch.packagesBeingRequested">{{package.name | cuiI18n}}</li>
+                </ul>
+              </div>
+              <span ng-if="newGrantSearch.numberOfRequests > 0" class="cui-action__popover-button" ng-click="newGrantSearch.goToClaimSelection()">{{'submit-request' | translate}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="cui-applications__main-container">
+        <div class="cui-loading__container" ng-if="base.loader.for['newGrantSearch.apps']">
+            <div class="cui-loading--center"><div class="cui-loading"></div></div>
+        </div>
+
+        <!-- TODO @SHANE we need designs for no applications matching query -->
+
+        <cui-expandable class="cui-expandable" ng-repeat="application in newGrantSearch.applicationList track by application.id"
+          ng-if="!base.loader.for['newGrantSearch.apps']" transition-speed="150">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+                    <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
+                </div>
+                <div class="cui-expandable__title-end">
+                    <span class="cui-checkbox__container">
+                        <input class="cui-checkbox" type="checkbox" ng-model="newGrantSearch.applicationCheckbox[application.id]" />
+                        <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:application })"></label>
+                    </span>
+                </div>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body">
+                <div class="cui-expandable__body-pane">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
+                    <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
+                                {{bundledApp.name | cuiI18n}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="cui-expandable__pane-col" ng-if="application.relatedApps && application.relatedApps.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
+                                <span class="">{{relatedApp.name | cuiI18n}} </span>  <!-- TODO @SHANE SMALL MIS-ALLIGNMENT HERE -->
+                                <span class="cui-checkbox__container">
+                                    <input class="cui-checkbox" type="checkbox" ng-model="newGrantSearch.applicationCheckbox[relatedApp.id]" />
+                                    <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:relatedApp })"></label>
+                                </span>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
+    </div>
+    <!-- TODO @SHANE ADD SPACING HERE -->
+    <div class="cui-paginate__container" ng-if="!base.loader.for['newGrantSearch.apps']">
+            <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+            <results-per-page class="cui-paginate__select" ng-model="newGrantSearch.search.pageSize"></results-per-page>
+            <paginate class="cui-paginate" results-per-page="newGrantSearch.search.pageSize" count="newGrantSearch.count" on-page-change="newGrantSearch.updateSearch" ng-model="newGrantSearch.search.page" attach-rerender-to="newGrantSearch.reRenderPaginate"></paginate>
+    </div>
+    <div class="cui-applications__search-button">
+        <button class="cui-button" ng-class="{'cui-button--error' : newGrantSearch.numberOfRequests===0}" ng-click="newGrantSearch.numberOfRequests != 0 && newGrantSearch.goToClaimSelection()">{{'select-claims' | translate}}</button>
+    </div>
+</div>
+
