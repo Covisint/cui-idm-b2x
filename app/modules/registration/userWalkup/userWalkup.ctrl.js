@@ -1,81 +1,39 @@
 angular.module('registration')
-.controller('userWalkupCtrl',['localStorageService','$scope','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies','Base',
-function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPasswordPolicies,Base) {
-    'use strict';
+.controller('userWalkupCtrl', function(API,APIError,Base,localStorageService,$scope,$state) {
 
-    var userWalkup = this;
+    const userWalkup = this
 
-    userWalkup.userLogin = {};
-    userWalkup.applications = {};
-    userWalkup.errorMessage = '';
-    userWalkup.registering = false;
-    userWalkup.userNameExistsError = false;
-    userWalkup.orgLoading = true;
-    userWalkup.applications.numberOfSelected = 0;
-    userWalkup.orgPaginationCurrentPage = 1;
+    userWalkup.applications = {}
+    userWalkup.userLogin = {}
+    userWalkup.applications.numberOfSelected = 0
+    userWalkup.orgPaginationCurrentPage = 1
+    userWalkup.submitError = false
 
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+    /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
-    function handleError(err) {
-        console.log('Error!\n');
-        console.log(err);
-        userWalkup.orgLoading = false;
-        $scope.$digest();
-    }
-
-    // collection of helper functions to build necessary calls on this controller
+    // Helper functions to build out the person and request objects needed for registration
     var build = {
-        personRequest:function(user) {
-            return {
-                data: {
-                    id: user.id,
-                    registrant: {
-                        id: user.id,
-                        type: 'person',
-                        realm: user.realm
-                    },
-                    justification: 'User walkup registration',
-                    servicePackageRequest: this.packageRequests()
-                }
-            };
+        person: function() {
+            userWalkup.user.addresses[0].country = userWalkup.userCountry.title // Get title of selected country object
+            userWalkup.user.organization = { id: userWalkup.organization.id }
+            userWalkup.user.timezone = 'EST5EDT'
+            if (userWalkup.user.phones[0]) userWalkup.user.phones[0].type = 'main'
+            userWalkup.user.language = Base.getLanguageCode() // Get current used language
+            return userWalkup.user
         },
-        packageRequests:function() {
-            var packages = [];
-            angular.forEach(userWalkup.applications.selected,function(servicePackage) {
-                // userWalkup.applications.selected is an array of strings that looks like
-                // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-                packages.push({packageId:servicePackage.split(',')[0]});
-            });
-            return packages;
-        },
-        personPassword:function() {
+        passwordAccount: function() {
             return {
                 version: '1',
                 username: userWalkup.userLogin.username,
                 password: userWalkup.userLogin.password,
                 passwordPolicy: userWalkup.organization.passwordPolicy,
                 authenticationPolicy: userWalkup.organization.authenticationPolicy
-            };
+            }
         },
-        userSecurityQuestionAccount:function() {
+        securityQuestionAccount: function() {
             return {
                 version: '1',
-                questions: this.userSecurityQuestions()
-            };
-        },
-        user:function() {
-            // Get title of selected country object
-            userWalkup.user.addresses[0].country = userWalkup.userCountry.title;
-            userWalkup.user.organization = {id: userWalkup.organization.id};
-            userWalkup.user.timezone = 'EST5EDT';
-            if(userWalkup.user.phones[0]) userWalkup.user.phones[0].type = 'main';
-            // Get current used language
-            userWalkup.user.language = Base.getLanguageCode();
-            return userWalkup.user;
-        },
-        userSecurityQuestions:function() {
-            return [
-                {
+                questions: [{
                     question: {
                         id: userWalkup.userLogin.question1.id,
                         type: 'question',
@@ -92,183 +50,243 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
                     },
                     answer: userWalkup.userLogin.challengeAnswer2,
                     index: 2
-                }
-            ];
+                }]
+            }
+        }, 
+        buildPerson: function() {
+            return {
+                person: this.person(),
+                passwordAccount: this.passwordAccount(),
+                securityQuestionAccount: this.securityQuestionAccount()
+            }
         },
-        submitData:function() {
-            var submitData = {};
-            submitData.person = this.user();
-            submitData.passwordAccount = this.personPassword();
-            submitData.securityQuestionAccount = this.userSecurityQuestionAccount();
-            return submitData;
+        buildRequest: function(personId, personRealm) {
+            let request = {
+                registrant: {
+                    id: personId,
+                    type: 'person',
+                    realm: personRealm
+                },
+                justification: 'User Walkup Registration'
+            }
+
+            if (userWalkup.applications.selected) {
+                request.packages = []
+                angular.forEach(userWalkup.applications.selected,function(servicePackage) {
+                    // userWalkup.applications.selected is an array of strings that looks like
+                    // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+                    request.packages.push({packageId: servicePackage.split(',')[0]})
+                })    
+            }
+            return request
         }
-    };
+    }
 
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+    /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+
+    userWalkup.initializing = true
+    APIError.offFor('userWalkup.initializing')
 
     if (!localStorageService.get('userWalkup.user')) {
-        // If it's not in the localstorage already
-        // We need to initialize these arrays so ng-model treats them as arrays
-        // Rather than objects
-        userWalkup.user = { addresses:[] };
-        userWalkup.user.addresses[0] = { streets:[] };
-        userWalkup.user.phones = [];
+        // If registration is not saved in localstorage we need to initialize 
+        // these arrays so ng-model treats them as arrays rather than objects 
+        userWalkup.user = { addresses: [] }
+        userWalkup.user.addresses[0] = { streets: [] }
+        userWalkup.user.phones = []
     }
-    else userWalkup.user = localStorageService.get('userWalkup.user');
+    else userWalkup.user = localStorageService.get('userWalkup.user')
 
-    // Get all security questions
-    API.cui.getSecurityQuestions()
-    .then(function(res) {
-        res.splice(0,1);
-        // Splits questions to use between both dropdowns
-        var numberOfQuestions = res.length,
-        numberOfQuestionsFloor = Math.floor(numberOfQuestions/2);
-        userWalkup.userLogin.challengeQuestions1 = res.slice(0, numberOfQuestionsFloor);
-        userWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor);
-
-        // Preload question into input
-        userWalkup.userLogin.question1 = userWalkup.userLogin.challengeQuestions1[0];
-        userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0];
-        return API.cui.getOrganizations({'qs': [['pageSize', userWalkup.orgPaginationSize],['page',1]]});
+    // Load in data required for the walkup registration (security questions, organizations list/count)
+    API.cui.initiateNonce()
+    .then(res => {
+        return API.cui.getSecurityQuestionsNonce()
     })
-    .then(function(res){
+    .then(res => {
+        res.splice(0, 1) // Split questions to use between 2 dropdowns
+
+        let numberOfQuestions = res.length
+        let numberOfQuestionsFloor = Math.floor(numberOfQuestions/2)
+
+        userWalkup.userLogin.challengeQuestions1 = res.slice(0, numberOfQuestionsFloor)
+        userWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor)
+
+        // Preload questions into input
+        userWalkup.userLogin.question1 = userWalkup.userLogin.challengeQuestions1[0]
+        userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0]
+
+        return API.cui.getOrganizationsNonce({'qs': [['pageSize', userWalkup.orgPaginationSize], ['page',1]]})
+    })
+    .then(res => {
         // Populate organization list
-        userWalkup.organizationList = res;
-        return API.cui.countOrganizations();
+        userWalkup.organizationList = res
+        userWalkup.organizationCount = res.length
     })
-    .then(function(res) {
-        userWalkup.organizationCount = res;
-        userWalkup.orgLoading = false;
-        $scope.$digest();
+    .always(() => {
+        userWalkup.initializing = false
+        $scope.$digest()
     })
-    .fail(handleError);
+    .fail(() => {
+        APIError.onFor('userWalkup.initializing', 'Error getting required data for registration')
+        $state.go('misc.loadError')
+    })
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-    // ON CLICK START --------------------------------------------------------------------------------
+    /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
-    userWalkup.applications.updateNumberOfSelected = function(checkboxValue) {
+    userWalkup.applications.updateNumberOfSelected = (checkboxValue) => {
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
-        if (checkboxValue !== null) userWalkup.applications.numberOfSelected++;
-        else userWalkup.applications.numberOfSelected--;
-    };
+        if (checkboxValue !== null) userWalkup.applications.numberOfSelected++
+        else userWalkup.applications.numberOfSelected--
+    }
 
-    userWalkup.applications.process = function() {
+    userWalkup.applications.process = () => {
         // Process the selected apps when you click next after selecting the apps you need
         // returns number of apps selected
+        let oldSelected
+
         if (userWalkup.applications.processedSelected) {
-            var oldSelected = userWalkup.applications.processedSelected;
+            oldSelected = userWalkup.applications.processedSelected
         }
-        userWalkup.applications.processedSelected = [];
-        angular.forEach(userWalkup.applications.selected,function(app, i) {
+
+        userWalkup.applications.processedSelected = []
+
+        angular.forEach(userWalkup.applications.selected, function(app, i) {
             if (app !== null) {
                 userWalkup.applications.processedSelected.push({
                     id: app.split(',')[0],
                     name: app.split(',')[1],
-                    // this fixes an issue
-                    // where removing an app from the selected list that the user had accepted the terms for
-                    // would carry over that acceptance to the next app on the list
+                    // this fixes an issue where removing an app from the selected list that the user 
+                    //had accepted the terms for would carry over that acceptance to the next app on the list
                     acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
-                });
+                })
             }
-        });
-        return userWalkup.applications.processedSelected.length;
-    };
-
-    userWalkup.applications.searchApplications=function() {
-        // Search apps by name
-        API.cui.getPackages({'qs': [['name', userWalkup.applications.search],['owningOrganization.id', userWalkup.organization.id]]})
-        .then(function(res) {
-             userWalkup.applications.list = res;
-            $scope.$apply();
         })
-        .fail(handleError);
-    };
+        return userWalkup.applications.processedSelected.length
+    }
 
-    userWalkup.submit = function() {
-        userWalkup.submitting = true;
-        userWalkup.registrationError = false;
-        var user = build.submitData();
+    // Note [7/20/2016]: Commented out searching grants by name as Nonce API does not currently support this
 
-        API.cui.registerPerson({data: user})
-        .then(function(res) {
-            if (userWalkup.applications.selected) {
-                return API.cui.createPackageRequest(build.personRequest(res.person));
+    // userWalkup.applications.searchApplications = () => {
+    //     const actionName = 'userWalkup.getApplications'
+
+    //     Loader.onFor(actionName)
+    //     APIError.offFor(actionName)
+
+    //     API.cui.initiateNonce()
+    //     .then(res => {
+    //         return API.cui.getOrgPackageGrantsNonce({
+    //             organizationId: userWalkup.organization.id, 
+    //             qs: [['service.name', userWalkup.applications.search]]
+    //         })
+    //     })
+    //     .then(res => {
+    //         if (!res.length) userWalkup.applications.list = undefined
+    //         else {
+    //             userWalkup.applications.list = res.map((grant) => {
+    //                 grant = grant.servicePackageResource
+    //                 return grant
+    //             })
+    //         }
+    //     },
+    //         error => APIError.onFor(actionName, error.responseJSON.apiMessage)
+    //     )
+    //     .always(() => {
+    //         Loader.offFor(actionName)
+    //         $scope.$digest()
+    //     })
+    // }
+
+    userWalkup.submit = () => {
+        const user = build.buildPerson()
+        userWalkup.submitting = true
+        userWalkup.submitError = false
+
+        API.cui.initiateNonce()
+        .then(res => {
+            return API.cui.postUserRegistrationNonce({data: user})
+        })
+        .then(res => {
+            return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
+        })
+        .always(() => {
+            userWalkup.submitting = false
+            $scope.$digest()
+        })
+        .done(() => {
+            userWalkup.success = true
+            userWalkup.submitting = false
+            $state.go('misc.success')
+        })
+        .fail(error => {
+            userWalkup.submitError = true
+            console.error('Error submitting registration request', error)
+            if (error.responseJSON.apiMessage) {
+                userWalkup.errorMessage = error.responseJSON.apiMessage
             }
             else {
-                return;
+                userWalkup.errorMessage = 'Error submitting registration request'
             }
         })
-        .then(function(res) {
-            userWalkup.submitting = false;
-            userWalkup.success = true;
-            $state.go('misc.success');
+    }
+
+    // Note [7/20/2016]: Commented out pagination logic as nonce organizations call doesn't support pagination at this time
+
+    // userWalkup.orgPaginationPageHandler = (page) => {
+    //     API.cui.initiateNonce()
+    //     .then(res => {
+    //         return API.cui.getOrganizationsNonce({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', page]]})
+    //     })
+    //     .then(res => {
+    //         userWalkup.organizationList = res
+    //         userWalkup.organizationCount = res.length
+    //     })
+    //     .always(() => {
+    //         $scope.$digest()
+    //     })
+    // }
+
+    userWalkup.selectOrganization = (organization) => {
+        userWalkup.organization = organization
+        userWalkup.applications.numberOfSelected = 0 // Restart applications count
+        userWalkup.applications.processedSelected = undefined // Restart applications selected
+
+        API.cui.initiateNonce()
+        .then(res => {
+            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
         })
-        .fail(function(err) {
-            if (err.responseJSON.apiMessage === 'Username already exists') {
-                userWalkup.registrationError = true;
-                userWalkup.errorMessage = 'cui-error-username-exists';
+        .then(res => {
+            if (!res.length) userWalkup.applications.list = undefined
+            else {
+                userWalkup.applications.list = res.map((grant) => {
+                    grant = grant.servicePackageResource
+                    return grant
+                })
             }
-            userWalkup.success = false;
-            userWalkup.submitting = false;
-            $scope.$digest();
-        });
-    };
-
-    userWalkup.orgPaginationPageHandler = function orgPaginationHandler(page) {
-        API.cui.getOrganizations({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', page]]})
-        .then(function(res) {
-            userWalkup.organizationList = res;
+            return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
         })
-        .fail(handleError);
-    };
+        .then(res => {
+            userWalkup.passwordRules = res.rules  
+        })
+        .always(() => {
+            $scope.$digest()
+        })
+        .fail((error) => {
+            console.error('Error getting organization information', error)
+            APIError.onFor('userWalkup.orgInfo', error)
+        })
+    }
 
-    // ON CLICK END ----------------------------------------------------------------------------------
+    /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
-    // WATCHERS START --------------------------------------------------------------------------------
+    /* -------------------------------------------- WATCHERS START -------------------------------------------- */
 
-    $scope.$watch('userWalkup.user',function(a) {
-        if (a && Object.keys(a).length!==0) localStorageService.set('userWalkup.user',a);
-    }, true);
+    $scope.$watch('userWalkup.user', (a) => {
+        if (a && Object.keys(a).length !== 0) localStorageService.set('userWalkup.user', a)
+    }, true)
 
-    // Populate Applications List based on the current organization
-    $scope.$watch('userWalkup.organization', function(newOrgSelected) {
-        if (newOrgSelected) {
-            // If the organization selected changes reset all the apps
-            userWalkup.applications.numberOfSelected = 0; // Restart applications count
-            userWalkup.applications.processedSelected = undefined; // Restart applications selected
+    /* --------------------------------------------- WATCHERS END --------------------------------------------- */
 
-            API.cui.getOrganizationRequestableApps({organizationId: newOrgSelected.id})
-            .then((res) => {
-                if (res.length === 0) {
-                    userWalkup.applications.list = undefined;    
-                }
-                else {
-                    userWalkup.applications.list = res;    
-                }
-                return API.cui.getPasswordPolicy({policyId: newOrgSelected.passwordPolicy.id});
-            })
-            .then((res) => {
-                userWalkup.passwordRules = res.rules;
-                $scope.$digest();
-            })
-            .fail(handleError);
-        }
-    });
-
-    $scope.$watch('userWalkup.orgPaginationSize', function(newValue) {
-        if (newValue) {
-            API.cui.getOrganizations({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', 1]]})
-            .then(function(res) {
-                userWalkup.organizationList = res;
-                userWalkup.orgPaginationCurrentPage = 1;
-            })
-            .fail(handleError);
-        }
-    });
-
-    // WATCHERS END ----------------------------------------------------------------------------------
-
-}]);
+})
