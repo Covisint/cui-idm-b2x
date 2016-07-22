@@ -29,7 +29,7 @@
           </div>
 
           <div class="cui-users__info-block">
-            <p ng-if="userProfile.passwordUpdateSuccess">Password Success</p>
+            <div ng-if="userProfile.passwordUpdateSuccess" class="cui-users__password-success">Password Reset Success!</div>
             <!-- Password -->
             <div ng-include="'app/modules/user/profile/sections/password.html'"></div>
           </div>
