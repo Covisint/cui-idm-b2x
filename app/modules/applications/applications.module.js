@@ -13,10 +13,11 @@ angular.module('applications',[])
         .state('applications', {
             url: '/applications',
             templateUrl : templateBase + 'applications.html',
-            access:loginRequired
+            access:loginRequired,
+            abstract: true
         })
         .state('applications.myApplications', {
-            url: '/?name&page&pageSize&category&sort&refine',
+            url: '?name&page&pageSize&category&sort&refine',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications'),
             access:loginRequired
