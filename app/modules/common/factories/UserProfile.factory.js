@@ -210,7 +210,6 @@ angular.module('common')
                         if (section) {
                             userProfile[section].error = true;
                         }
-                        userProfile.passwordUpdateSuccess = true;
                         $scope.$digest();
                     })
                 };
