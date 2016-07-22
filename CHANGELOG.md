@@ -1,7 +1,24 @@
-## [v1.0.10] 2016-07-12
+## [v1.0.12] 2016-7-22
 
 ### Changelog
-* 2016-7-12 cui.js v2.2.0
+* 7-22 cui-api-interceptor v1.0.5
+* 7-22 cui-i18n v1.0.8
+* General bug fixes and improvements
+* Updates organization hierarchy screen
+* Adds new template directives and helper factories
+
+
+## [v1.0.11] 2016-07-18
+
+### Changelog
+* 7-18 cui-i18n v1.0.7
+* 7-18 cui-ng v1.9.13
+
+
+## [v1.0.10] 2016-7-12
+
+### Changelog
+* 7-12 cui.js v2.2.0
 
 
 ## [v1.0.9] 2016-07-01
