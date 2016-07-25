@@ -2,17 +2,20 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/hierarchy" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
-<div class="cui-organization">
-  <!-- Navigation -->
-  <div class="cui-action">
-    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
-  </div>
+<div class="cui-organization cui-organization-dir">
 
-  <!-- Profile Content -->
+  <!-- Navigation -->
+  <section class="cui-action">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
+  </section>
+
+  <!-- Page Content -->
   <div class="cui-organization__main-container">
+
     <!-- Page Loading -->
-    <div class="cui-loading__container" ng-if="orgHierarchy.loading">
+    <div class="cui-loading__container" ng-if="base.loader.for['orgHierarchy.loading']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
@@ -20,6 +23,7 @@
     <h3 class="cui-organization__page-title">{{orgHierarchy.organizationHierarchy[0].name | cuiI18n}}</h3>
 
     <!-- Hierarchy Tree -->
-    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="orgHierarchy.goToOrgProfile"></div>
+    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)"></div>
+    
   </div>
 </div>
