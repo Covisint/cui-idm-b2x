@@ -1,61 +1,26 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl',function($scope,$stateParams,API,$state) {
-    'use strict';
+.controller('orgHierarchyCtrl', function(API,APIError,Loader,User,$scope) {
 
-    const orgHierarchy = this,
-        organizationId = $stateParams.orgID;
+    const orgHierarchy = this;
+    const initializing = 'orgHierarchy.loading'
 
-    orgHierarchy.organizationId = $stateParams.orgID;
-    orgHierarchy.loading = true;
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+    Loader.onFor(initializing)
 
-    const handleError = function handleError(err) {
-        orgHierarchy.loading = false;
-        $scope.$digest();
-        console.log('Error', err);
-    };
+    API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    .done(res => {
+        // Put hierarchy response in an array as the hierarchy directive expects an array
+        orgHierarchy.organizationHierarchy = [res];
+    })
+    .fail(err => {
+        APIError.onFor(initializing, err)
+    })
+    .always(() => {
+        Loader.offFor(initializing)
+        $scope.$digest()
+    })
 
-    const onLoadFinish = function onLoadFinish() {
-        orgHierarchy.loading = false;
-        $scope.$digest();
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    if (organizationId) {
-        // Use organizationID parameter to load the organization hierarchy
-        API.cui.getOrganizationHierarchy({organizationId: organizationId})
-        .then(function(res) {
-            // Put hierarchy response in an array as the hierarchy directive expects an array
-            orgHierarchy.organizationHierarchy = [res];
-            onLoadFinish();
-        })
-        .fail(handleError);
-    }
-    else {
-        // Use logged in user's organization.id to load the organization hierarchy
-        API.cui.getPerson({personId: API.getUser(), useCuid:true})
-        .then(function(res) {
-            return API.cui.getOrganizationHierarchy({organizationId: res.organization.id});
-        })
-        .then(function(res) {
-            // Put hierarchy response in an array as the hierarchy directive expects an array
-            orgHierarchy.organizationHierarchy = [res];
-            onLoadFinish();
-        })
-        .fail(handleError);
-    }
-    // ON LOAD END -----------------------------------------------------------------------------------
-
-    // ON CLICK START --------------------------------------------------------------------------------
-
-    orgHierarchy.goToOrgProfile = function(org) {
-        $state.go('organization.profile',{orgID:org.id});
-    };
-
-    // ON CLICK END ----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
 });

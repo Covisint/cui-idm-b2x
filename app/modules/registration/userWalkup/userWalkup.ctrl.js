@@ -1,6 +1,6 @@
 angular.module('registration')
-.controller('userWalkupCtrl',['localStorageService','$scope','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies',
-function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPasswordPolicies) {
+.controller('userWalkupCtrl',['localStorageService','$scope','$stateParams', 'API','LocaleService','$state','CuiPasswordPolicies','Base',
+function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPasswordPolicies,Base) {
     'use strict';
 
     var userWalkup = this;
@@ -70,7 +70,7 @@ function(localStorageService,$scope,$stateParams,API,LocaleService,$state,CuiPas
             userWalkup.user.timezone = 'EST5EDT';
             if(userWalkup.user.phones[0]) userWalkup.user.phones[0].type = 'main';
             // Get current used language
-            userWalkup.user.language = $scope.$parent.base.getLanguageCode();
+            userWalkup.user.language = Base.getLanguageCode();
             return userWalkup.user;
         },
         userSecurityQuestions:function() {
