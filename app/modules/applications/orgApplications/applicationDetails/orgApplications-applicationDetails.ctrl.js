@@ -163,6 +163,17 @@ angular.module('applications')
         });
     };
 
-    /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
+    orgApplicationDetails.mobileTabs = (tab) =>{
+
+        if(tab == 'bundled'){
+            orgApplicationDetails.mobileTabs.bundled   =   true;
+            orgApplicationDetails.mobileTabs.related   =   false;
+        }else if(tab == 'related'){
+            orgApplicationDetails.mobileTabs.bundled   =   false;
+            orgApplicationDetails.mobileTabs.related   =   true;
+        }
+    }
+
+    /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 });
