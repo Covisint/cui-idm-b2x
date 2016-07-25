@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl',function($scope,$stateParams,API,$filter,Sort,$state,$q,User,$pagination) {
+.controller('orgDirectoryCtrl',function(API,CuiMobileNavFactory,Sort,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
     'use strict';
 
     const orgDirectory = this;
@@ -122,6 +122,7 @@ angular.module('organization')
     orgDirectory.getOrgMembers = (organization) => {
         orgDirectory.loading = true;
         orgDirectory.organization = organization;
+        CuiMobileNavFactory.setTitle($filter('cuiI18n')(organization.name))
         API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)]]})
         .then(function(res) {
             orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(res);
