@@ -1,13 +1,20 @@
 angular.module('common')
-.factory('CuiMobileNavFactory', (PubSub, User) => {
+.factory('CuiMobileNavFactory', (PubSub,User,$filter) => {
     return {
         title: User.user.organization.name,
+        defaultTitle: User.user.organization.name,
         getTitle: function() {
             return this.title
         },
         setTitle: function(newTitle) {
             this.title = newTitle
             PubSub.publish('mobileNavTitleChange')
+        },
+        getDefaultTitle: function() {
+            return this.defaultTitle
+        },
+        setDefaultTitle: function(newDefaultTitle) {
+            this.defaultTitle = newDefaultTitle
         }
     }
 })
@@ -18,18 +25,18 @@ angular.module('common')
         links: '='
     },
     link: (scope, elem, attrs) => {
-        attrs.activeTitle ? scope.activeTitle = attrs['activeTitle'] : scope.activeTitle = CuiMobileNavFactory.title
+        attrs.activeTitle ? scope.activeTitle = attrs['activeTitle'] : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
         scope.currentState = $state.current.name
 
         scope.close = () => scope.showIf = false
         scope.toggle = () => scope.showIf =! scope.showIf
 
-        PubSub.subscribe('mobileNavTitleChange', () => {
-            scope.activeTitle = CuiMobileNavFactory.title
+        const pubSubSubscription = PubSub.subscribe('mobileNavTitleChange', () => {
+            scope.activeTitle = CuiMobileNavFactory.getTitle()
         })
 
         scope.$on('$destroy', () => {
-            Pubsub.unsubscribe('mobileNavTitleChange')
+            PubSub.unsubscribe(pubSubSubscription)
         })
     },
     template: `
