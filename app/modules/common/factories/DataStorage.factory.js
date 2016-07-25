@@ -1,76 +1,101 @@
 angular.module('common')
-.factory('DataStorage',(localStorageService) => {
-    let storage = localStorageService.get('dataStorage') || {},
-        dataStorage = {};
+.factory('DataStorage', (localStorageService, API) => {
+    let storage = localStorageService.get('dataStorage') || {}
+    let dataStorage = {}
 
-    const initStorageIfUndefined = (userId) => {
-        if(!storage[userId]) storage[userId] = {}
+    const initStorageIfUndefined = () => {
+        if(!storage[API.getUser()]) storage[API.getUser()] = {}
     }
 
     const saveToLocaStorage = () => {
-        localStorageService.set('dataStorage',storage)
+        localStorageService.set('dataStorage', storage)
     }
 
-    dataStorage.setType = (userId, type, data) => {
-        initStorageIfUndefined(userId)
-        storage[userId].type = data
+    /****************************************
+        FOR OBJECT AND ARRAY TYPE DATA
+    ****************************************/
+
+    // completely overrides a type
+    dataStorage.setType = (type, data) => {
+        initStorageIfUndefined()
+        storage[API.getUser()].type = data
         saveToLocaStorage()
     }
 
-    dataStorage.appendToType = (userId, type, data) => {
-        initStorageIfUndefined(userId)
-        if(!storage[userId][type]) storage[userId][type] = [data]
-        else if(!_.isArray(storage[userId][type])){
-            throw new Error('Tried appending to an existing data type that is not an array in dataStorage.')
-            return
-        }
-        else storage[userId][type].push(data)
+    dataStorage.getType = (type) => {
+        if(!storage[API.getUser()]) return undefined
+        return storage[API.getUser()][type]
+    }
+
+    dataStorage.deleteType = (type) => {
+        if(!storage[API.getUser()] || !storage[API.getUser()][type]) return
+        delete storage[API.getUser()][type]
         saveToLocaStorage()
     }
 
-    dataStorage.getType = (userId, type) => {
-        if(!storage[userId]) return undefined
-        return storage[userId][type]
-    }
-
-    dataStorage.deleteType = (userId, type) => {
-        if(!storage[userId] || !storage[userId][type]) return
-        delete storage[userId][type]
+    // deletes the storage for just the currently logged in user
+    dataStorage.deleteUserStorage = () => {
+        if(storage[API.getUser()]) delete storage[API.getUser()]
         saveToLocaStorage()
     }
 
-    dataStorage.deleteUserStorage = (userId) => {
-        if(storage[userId]) delete storage[userId]
-        saveToLocaStorage()
-    }
-
+    // deletes the storage for every user in local storage
     dataStorage.clear = () => {
         storage = {}
         saveToLocaStorage()
     }
 
-    dataStorage.getUserStorage = (userId) => storage[userId]
+    dataStorage.getUserStorage = () => storage[API.getUser()]
 
-    dataStorage.getDataThatMatches = (userId, type, comparison) => {
-        if(!storage[userId] || !storage[userId][type]) return
-        else if(!_.isArray(storage[userId][type])){
-            throw new Error('Tried using DataStorage.getDataThatMatches on a type that isn\'t an array. Use .getType(userId,type) instead.')
+    /****************************************
+        FOR ARRAY TYPE DATA ONLY
+    ****************************************/
+
+    // appends to a certain type
+    // NOTE: Make sure to use data that you can later distinguish between using dataThatMatches
+    // I recommend using replaceDataThatMatches instead unless you know what you're doing
+    dataStorage.appendToType = (type, data) => {
+        initStorageIfUndefined()
+        if (!storage[API.getUser()][type]) storage[API.getUser()][type] = [data]
+        else if (!_.isArray(storage[API.getUser()][type])) {
+            throw new Error('Tried appending to an existing data type that is not an array in dataStorage.')
             return
-        }
-        else {
-            const index = _.findIndex(storage[userId][type], comparison)
-            if(index >= 0) return storage[userId][type][index]
-            else return null
+        } else storage[API.getUser()][type].push(data)
+        saveToLocaStorage()
+    }
+
+    // returns ALL data that matches against a given comparison or undefined if no results
+    dataStorage.getDataThatMatches = (type, comparison) => {
+        if (!storage[API.getUser()] || !storage[API.getUser()][type]) return undefined
+        else if (!_.isArray(storage[API.getUser()][type])) {
+            throw new Error('Tried using DataStorage.getDataThatMatches on a type that isn\'t an array. Use .getType(type) instead.')
+            return
+        } else {
+            const matches = storage[API.getUser()][type].filter(x => {
+                return _.isMatch(x, comparison)
+            })
+            if (matches.length > 0) return matches
+            else return undefined
         }
     }
 
-    dataStorage.deleteDataThatMatches = (userId, type, comparison) => {
-        if(!storage[userId] || !storage[userId][type]) return
-        else if(!_.isArray(storage[userId][type])){
-            throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(userId,type) instead.')
+    // replaces all data that matches against a certain comparison and appends
+    // new data to that type's array
+    dataStorage.replaceDataThatMatches = (type, comparison, newData) => {
+        dataStorage.deleteDataThatMatches(type, comparison)
+        dataStorage.appendToType(type, newData)
+    }
+
+    dataStorage.deleteDataThatMatches = (type, comparison) => {
+        if (!storage[API.getUser()] || !storage[API.getUser()][type]) return
+        else if (!_.isArray(storage[API.getUser()][type])) {
+            throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(type) instead.')
             return
+        } else {
+            storage[API.getUser()][type] = storage[API.getUser()][type].filter(x => {
+                return !_.isMatch(x, comparison)
+            })
         }
-        else storage[userId][type].filter(x => !_.matches(x,comparison))
         saveToLocaStorage()
     }
 

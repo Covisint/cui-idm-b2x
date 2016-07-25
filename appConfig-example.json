@@ -1,6 +1,8 @@
 {
     "originUri": "cui-sdk.run.covisintrnd.com/cui-idm-b2x-0.0.1-SNAPSHOT/build",
     "serviceUrl": "https://apistgdev.np.covapp.io",
+    "debugServiceUrl": "http://localhost:8001",
+    "solutionInstancesUrl": "STG",
     "dateFormat":"shortDate",
     "languages": {
         "en":"English",
@@ -16,19 +18,19 @@
         "de":"Deutsche (German)"
     },
     "languageResources": {
-        "url": "bower_components/cui-i18n/dist/cui-i18n/angular-translate/",
+        "url": "node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/",
         "prefix": "locale-",
         "suffix": ".json"
     },
     "iconSets":[
         {
             "name":"cui",
-            "path":"bower_components/cui-icons/dist/icons/icons-out.svg",
+            "path":"node_modules/@covisint/cui-icons/dist/icons/icons-out.svg",
             "defaultViewBox":"0 0 48 48"
         },
         {
             "name":"fa",
-            "path":"bower_components/cui-icons/dist/font-awesome/font-awesome-out.svg",
+            "path":"node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg",
             "defaultViewBox":"0 0 216 216"
         }
     ],
