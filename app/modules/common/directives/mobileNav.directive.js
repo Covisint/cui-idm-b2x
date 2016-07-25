@@ -1,12 +1,26 @@
 angular.module('common')
-.directive('cuiMobileNav', ($state) => ({
+.factory('CuiMobileNavFactory', (User) => {
+
+    let titles = {}
+
+    return {
+        title: User.user.organization.name,
+        getTitle: function() {
+            return this.title
+        },
+        setTitle: function(newTitle) {
+            this.title = newTitle
+        }
+    }
+})
+.directive('cuiMobileNav', (CuiMobileNavFactory,$state) => ({
     restrict: 'E',
     scope: {
         showIf: '=',
-    	activeTitle: '=',
     	links: '='
     },
-    link: (scope) => {
+    link: (scope, elem, attrs) => {
+        attrs.activeTitle ? scope.activeTitle = attrs['activeTitle'] : scope.activeTitle = CuiMobileNavFactory.title
     	scope.currentState = $state.current.name
     	scope.close = () => scope.showIf = false
         scope.toggle = () => scope.showIf =! scope.showIf
