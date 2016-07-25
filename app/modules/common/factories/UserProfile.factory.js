@@ -1,7 +1,5 @@
 angular.module('common')
-.factory('UserProfile', ['$q','API','CuiPasswordPolicies',
-    function($q,API,CuiPasswordPolicies) {
-        'use strict';
+.factory('UserProfile', function(API,$q,$timeout) {
 
         var self = {
             getProfile: function(userCredentials) {
@@ -159,6 +157,9 @@ angular.module('common')
                         userProfile.tempUser.addresses[0].country = userProfile.userCountry.originalObject.code;
                     }
 
+                    // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
+                    delete userProfile.tempUser['activatedDate']
+
                     API.cui.updatePerson({personId: API.getUser(), useCuid:true, data:userProfile.tempUser})
                     .then(function() {
                         angular.copy(userProfile.tempUser, userProfile.user);
@@ -188,26 +189,29 @@ angular.module('common')
                     }
 
                     API.cui.updatePersonPassword({personId: API.getUser(), data: self.getPersonPasswordAccount(userProfile)})
-                    .then(function(res) {
+                    .always(() => {
                         if (section) {
                             userProfile[section].submitting = false;
                         }
+                    })
+                    .done(() => {
                         if (toggleOff) {
                             toggleOff();
                         }
+                        userProfile.passwordUpdateSuccess = true;
+                        $timeout(() => {
+                            userProfile.passwordUpdateSuccess = false;
+                        }, 5000);
                         userProfile.resetPasswordFields();
                         $scope.$digest();
                     })
-                    .fail(function(err) {
-                        console.log(err);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
+                    .fail((err) => {
+                        console.error('Error updating password', err);
                         if (section) {
                             userProfile[section].error = true;
                         }
                         $scope.$digest();
-                    });
+                    })
                 };
 
                 userProfile.saveChallengeQuestions = function(section, toggleOff) {
@@ -252,4 +256,4 @@ angular.module('common')
 
     return self;
 
-}]);
+});

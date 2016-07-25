@@ -3,6 +3,16 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
     localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,$paginationProvider,
     $stateProvider,$compileProvider) => {
 
+    $urlRouterProvider.rule(($injector, $location) => {
+        const path = $location.path()
+        const hasTrailingSlash = path[path.length-1] === '/'
+
+        if (hasTrailingSlash) {
+            const newPath = path.substr(0, path.length-1)
+            return newPath
+        }
+    })
+
     localStorageServiceProvider.setPrefix('cui');
     // $locationProvider.html5Mode(true);
 
@@ -67,8 +77,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub) => {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -99,6 +109,8 @@ angular.module('common')
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        APIError.clearAll()
+        Loader.clearAll()
         event.preventDefault();
         const route = () => {
             if (appConfig.debugServiceUrl) {

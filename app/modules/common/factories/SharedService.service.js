@@ -60,6 +60,10 @@ angular.module('common')
         }
     }
 
+    this.clearAll = function() {
+        for (const key in this.details) delete this.details[key]
+    }
+
     this.for = this.details
 
     return this
