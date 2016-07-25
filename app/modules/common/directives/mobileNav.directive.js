@@ -1,8 +1,5 @@
 angular.module('common')
 .factory('CuiMobileNavFactory', (User) => {
-
-    let titles = {}
-
     return {
         title: User.user.organization.name,
         getTitle: function() {
