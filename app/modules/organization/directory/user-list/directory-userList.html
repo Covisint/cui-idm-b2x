@@ -3,41 +3,9 @@
   <!-- Page Header -->
   <section class="cui-action">
     <h3 class="cui-sr-only">Organization Navigation and Invitation Links</h3>
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
-        </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-        </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgDirectory.organization.id})" class="active">{{'directory' | translate}}</a>
-        </li> 
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
-        </li>
-      </ul>
-    </nav>
-    <nav class="cui-breadcrumb--mobile" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
-          <span class="cui-breadcrumb__mobile-link" class="active"><span class="cui-mobile-only">{{orgDirectory.organization.name | cuiI18n}}.</span>{{'directory' | translate}}</span>
-        </li>
-        <div class="cui-popover cui-popover--menu cui-breadcrumb__popover cui-popover--top cui-popover__categories-popover" tether target="#breadcrumb-button" attachment="top left" target-attachment="bottom left" offset="-10px 0" ng-if="orgDirectory.breadcrumbClicked">
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-          </li>
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
-          </li> 
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
-          </li>
-        </div>
-      </ul>
-    </nav>
-    <div class="cui-action__actions">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <!-- <div class="cui-action__actions">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
           <defs>
@@ -49,14 +17,14 @@
             </filter>
           </defs>
           <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#invite"></use>
-        </svg>
+        </svg> -->
         <!-- Invitation Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
+        <!-- <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
           <p>{{'invite-user' | translate}}</p>
           <p>{{'invite-division' | translate}}</p>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 
   <!-- Action Sub-header -->
