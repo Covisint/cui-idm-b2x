@@ -1,7 +1,11 @@
 <div class="cui-action">
-  <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-  <nav class="cui-breadcrumb--mobile" ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-breadcrumb.html'" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false"></nav>
-  <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+  <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  <!-- <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <nav class="cui-breadcrumb--mobile" ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-breadcrumb.html'" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false"></nav> -->
+
+
+  <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
 </div>
 
 <!-- Name Header -->
@@ -29,8 +33,8 @@
   </div>
 </div>
 <div class="cui-media__button-container">
-  <button class="cui-button cui-button--inverted">suspend</button>
-  <button class="cui-button cui-button--inverted">password reset</button>
+  <!-- <button class="cui-button cui-button--inverted">suspend</button>
+  <button class="cui-button cui-button--inverted">password reset</button> -->
   <button class="cui-button cui-button--inverted" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">new grants</button>
 </div>
 
