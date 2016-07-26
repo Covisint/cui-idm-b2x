@@ -82,8 +82,8 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId }).request;
-    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId }).requests;
+    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId })[0].request;
+    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId })[0].requests;
 
     if (personRequestReview.userPackageRequests) {
     	getApprovalCounts(personRequestReview.userPackageRequests);

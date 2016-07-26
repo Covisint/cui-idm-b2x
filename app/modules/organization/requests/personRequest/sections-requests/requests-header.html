@@ -4,12 +4,14 @@
     <!-- User Name -->
     <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
-    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+    <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </div>
 
   <!-- Navigation -->
   <div class="cui-action">
-    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <!-- <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav> -->
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
   </div>
 
   <!-- Name Header -->
