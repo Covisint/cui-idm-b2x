@@ -2,7 +2,7 @@
   <!-- User Name and Invitation -->
   <div class="cui-action" ng-if="personRequest.loading===false">
     <!-- User Name -->
-    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList">&#60; {{personRequest.user.name.given}} {{personRequest.user.name.surname}} - {{'pending-request' | translate}}</span>
     <!-- Invitations -->
     <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </div>

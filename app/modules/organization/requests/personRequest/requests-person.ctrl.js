@@ -90,11 +90,9 @@ angular.module('organization')
 
     personRequest.reviewApprovals = () => {
         if (personRequest.packages && personRequest.packages.length > 0) {
-            console.log('personRequest.packages', personRequest.packages)
             DataStorage.replaceDataThatMatches('userRequestedPackages', { userId }, { userId, requests: personRequest.packages });
         }
         DataStorage.replaceDataThatMatches('userPersonRequest', {userId}, { userId, request: personRequest.userPersonRequest });
-        console.log('personRequest.userPersonRequest',personRequest.userPersonRequest)
         $state.go('organization.requests.personRequestReview', {userID: userId, orgID: orgId});
     };
 
