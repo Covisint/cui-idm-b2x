@@ -8,8 +8,8 @@
 
       <!-- Invitation -->
       <div class="cui-action__actions">
-        <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequestsReview.invitationClicked=!pendingRequestsReview.invitationClicked" off-click="pendingRequestsReview.invitationClicked=false">
-          <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+        <!-- <div class="cui-action__action-container" id="invitation-button" ng-click="pendingRequestsReview.invitationClicked=!pendingRequestsReview.invitationClicked" off-click="pendingRequestsReview.invitationClicked=false"> -->
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
             <defs>
               <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
               <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
@@ -19,20 +19,20 @@
               </filter>
             </defs>
             <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#invite"></use>
-          </svg>
+          </svg> -->
           <!-- Invitation Popover -->
-          <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
+          <!-- <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="pendingRequestsReview.invitationClicked">
             <p ui-sref="invitation.user({orgID:pendingRequestsReview.user.organization.id})">{{'invite-user' | translate}}</p>
             <p ui-sref="invitation.division({orgID:pendingRequestsReview.user.organization.id})">{{'invite-division' | translate}}</p>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </div>
     </div>
 
     <!-- Navigation -->
     <div class="cui-action cui-action--min">
       <!-- Navigation -->
-      <nav class="cui-breadcrumb">
+      <!-- <nav class="cui-breadcrumb">
         <ul class="cui-breadcrumb__links">
           <li class="cui-breadcrumb__link">
             <a ui-sref="organization.profile({orgID:pendingRequestsReview.user.organization.id})" ui-sref-active="active">{{'cui-org-profile' | translate}}</a>
@@ -44,7 +44,9 @@
             <a ui-sref="organization.directory({orgID:pendingRequestsReview.user.organization.id})" ui-sref-active="active">{{'directory' | translate}}</a>
           </li>
         </ul>
-      </nav>
+      </nav> -->
+      <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+      <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
     </div>
   </div>
 

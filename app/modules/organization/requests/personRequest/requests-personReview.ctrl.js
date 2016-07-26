@@ -82,8 +82,8 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId }).request;
-    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId }).requests;
+    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId })[0].request;
+    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId })[0].requests;
 
     if (personRequestReview.userPackageRequests) {
     	getApprovalCounts(personRequestReview.userPackageRequests);
@@ -135,7 +135,7 @@ angular.module('organization')
                 personRequestReview.loading = false;
                 personRequestReview.success = true;
                 $timeout(() => {
-                    $state.go('organization.directory', {userID: userId, orgID: orgId});
+                    $state.go('organization.directory.userDetails', {userID: userId, orgID: orgId});
                 }, 3000);
             }, (error) => {
                 personRequestReview.loading = false;
@@ -172,7 +172,7 @@ angular.module('organization')
                     personRequestReview.loading = false;
                     personRequestReview.success = true;
                     $timeout(() => {
-                        $state.go('organization.directory', {orgID: orgId});
+                        $state.go('organization.directory.userDetails', {orgID: orgId});
                     }, 3000);
                 }
 
@@ -181,7 +181,7 @@ angular.module('organization')
                     personRequestReview.loading = false;
                     personRequestReview.success = true;
                     $timeout(() => {
-                        $state.go('organization.directory', {orgID: orgId});
+                        $state.go('organization.directory.userDetails', {orgID: orgId});
                     }, 3000);
                 }, (error) => {
                     personRequestReview.loading = false;

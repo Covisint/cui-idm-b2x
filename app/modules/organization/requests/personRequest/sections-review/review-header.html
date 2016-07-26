@@ -6,12 +6,14 @@
       <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{personRequestReview.user.name.given}} {{personRequestReview.user.name.surname}} - {{'pending-request' | translate}}</span>
 
       <!-- Invitation Button -->
-      <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+      <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
     </div>
 
     <!-- Navigation -->
     <div class="cui-action cui-action--min">
-      <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+      <!-- <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav> -->
+      <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+      <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
     </div>
   </div>
 
