@@ -30,7 +30,7 @@ angular.module('common')
 
     this.details = {}
 
-    this.onFor = (property, message = undefined) => {
+    this.onFor = function (property, message) {
         if (this.details[property]) {
             this.details[property].count
                 ? this.details[property].count++
@@ -44,13 +44,13 @@ angular.module('common')
         }
     }
 
-    this.offFor = (property) => {
+    this.offFor = function (property) {
         if (!this.details[property]) return
         else if (!this.details[property].count || this.details[property].count===1) delete this.details[property]
         else this.details[property].count--
     }
 
-    this.toggleFor = (property,message = undefined) => {
+    this.toggleFor = function (property,message) {
         if (this.details[property]) delete this.details[property]
         else {
             this.details[property] = {
@@ -58,6 +58,10 @@ angular.module('common')
                 message
             }
         }
+    }
+
+    this.clearAll = function() {
+        for (const key in this.details) delete this.details[key]
     }
 
     this.for = this.details
