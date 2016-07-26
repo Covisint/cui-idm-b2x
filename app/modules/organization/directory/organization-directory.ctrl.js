@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl',function(API,CuiMobileNavFactory,Sort,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
-    'use strict';
+.controller('orgDirectoryCtrl',function(API,APIHelpers,CuiMobileNavFactory,Sort,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
 
     const orgDirectory = this;
 
@@ -44,26 +43,6 @@ angular.module('organization')
         return statusList;
     };
 
-    const flattenHierarchy = (orgChildrenArray) => {
-        if (orgChildrenArray) {
-            let childrenArray = orgChildrenArray;
-            let orgList = [];
-
-            childrenArray.forEach(function(childOrg) {
-                if (childOrg.children) {
-                    let newChildArray = childOrg.children;
-                    delete childOrg['children'];
-                    orgList.push(childOrg);
-                    orgList.push(flattenHierarchy(newChildArray));
-                }
-                else {
-                    orgList.push(childOrg);
-                }
-            });
-            return _.flatten(orgList);
-        }
-    };
-
     const getUserListAppCount = (userArray) => {
         let userList = userArray;
 
@@ -96,7 +75,7 @@ angular.module('organization')
         $q.all([API.cui.getPersons(getPersonOptions), API.cui.countPersons(countPersonOptions)])
         .then((res) => {
             orgDirectory.unparsedUserList = angular.copy(res[0]);
-            orgDirectory.statusList = getStatusList(orgDirectory.userList);
+            orgDirectory.statusList = getStatusList(orgDirectory.unparsedUserList);
             orgDirectory.orgPersonCount = res[1];
             orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(orgDirectory.unparsedUserList);
             orgDirectory.loading = false;
@@ -111,7 +90,7 @@ angular.module('organization')
     API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
     .then((res) => {
         orgDirectory.organization = res;
-        orgDirectory.organizationList = flattenHierarchy(res.children);
+        orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(res)
         getPeopleAndCount();
     });
 
