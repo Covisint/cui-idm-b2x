@@ -49,7 +49,7 @@ angular.module('common')
             envDefs: ['https://cuijs.run.covisintrnd.com/defs/env.json'],
             dataCallDefs: [
                 'https://cuijs.run.covisintrnd.com/defs/auth.json',
-                'https://cuijs.run.covisintrnd.com/defs/idm.json',
+                'app/json/idm-call-defs.json',
                 CustomAPI
             ]
         })
