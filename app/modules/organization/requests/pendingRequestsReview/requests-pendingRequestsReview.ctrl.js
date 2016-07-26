@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('pendingRequestsReviewCtrl',function(API,$stateParams,$q,$timeout,$state,DataStorage) {
-    'use strict';
+.controller('pendingRequestsReviewCtrl',function(API,DataStorage,$q,$state,$stateParams,$timeout) {
 
     const pendingRequestsReview = this,
     	userId = $stateParams.userID,
@@ -69,7 +68,7 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    pendingRequestsReview.pendingRequests = DataStorage.getDataThatMatches('appRequests', { userId });
+    pendingRequestsReview.pendingRequests = DataStorage.getDataThatMatches('appRequests', { userId })[0].requests;
 
     if (pendingRequestsReview.pendingRequests) {
         getApprovalCounts(pendingRequestsReview.pendingRequests);
@@ -126,7 +125,7 @@ angular.module('organization')
 
 		pendingRequestsReview.sucess = true;
 		$timeout(() => {
-			$state.go('directory.userDetails', {userID: userId, orgID: orgId});
+			$state.go('organization.directory.userDetails', {userID: userId, orgID: orgId});
 		}, 3000);
     };
 
