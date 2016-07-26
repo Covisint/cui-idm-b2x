@@ -1,6 +1,6 @@
 angular.module('common')
-.factory('API',['$state','User','$rootScope','$window','$location','CustomAPI','$q','localStorageService','Loader','$timeout','Base',
-($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout,Base) => {
+.factory('API',['$state','User','$rootScope','$window','$location','CustomAPI','$q','localStorageService','Loader','$timeout','Base','LocaleService',
+($state,User,$rootScope,$window,$location,CustomAPI,$q,localStorage,Loader,$timeout,Base,LocaleService) => {
 
     let authInfo = {},
         myCUI = {};
@@ -23,6 +23,7 @@ angular.module('common')
         myCUI.getPerson({ personId: authInfo.cuid })
         .then((res) => {
             userInfo = res;
+            LocaleService.setLocaleByDisplayName(appConfig.languages[res.language])
             return myCUI.getOrganization({ organizationId: res.organization.id });
         })
         .then((res) => {
