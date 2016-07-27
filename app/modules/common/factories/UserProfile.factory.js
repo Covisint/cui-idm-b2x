@@ -161,26 +161,19 @@ angular.module('common')
                     delete userProfile.tempUser['activatedDate']
 
                     API.cui.updatePerson({personId: API.getUser(), useCuid:true, data:userProfile.tempUser})
-                    .then(function() {
+                    .done(() => {
                         angular.copy(userProfile.tempUser, userProfile.user);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
-                        if (toggleOff) {
-                            toggleOff();
-                        }
-                        $scope.$digest();
+                        LocaleService.setLocaleByDisplayName(appConfig.languages[userProfile.user.language])
+                        if (toggleOff) toggleOff()
                     })
-                    .fail(function(error) {
-                        console.log(error);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
-                        if (section) {
-                            userProfile[section].error = true;
-                        }
-                        $scope.$digest();
-                    });
+                    .fail((err) => {
+                        console.error('Failed to update user profile:', err)
+                        if (section) userProfile[section].error = true
+                    })
+                    .always(() => {
+                        if (section) userProfile[section].submitting = false
+                        $scope.$digest()
+                    })
                 };
 
                 userProfile.updatePassword = function(section, toggleOff) {
