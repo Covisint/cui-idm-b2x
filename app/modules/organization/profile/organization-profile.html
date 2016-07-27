@@ -2,11 +2,12 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/profile" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
-<div class="cui-organization">
+<div class="cui-organization cui-organization-dir">
   <!-- Action Header -->
   <div class="cui-action">
-    <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </div>
 
   <!-- Profile Content -->
