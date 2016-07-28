@@ -3,6 +3,17 @@
   <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/my-applications" target="blank">here</a></div>
   <!-- /processHTML -->
 
+  <!--
+  info scope vars
+
+  base.loader.for['myApplicationDetails.app'] true while app is loading, undefined otherwise
+  base.loader.for['myApplicationDetails.claims'] true while loading claims, undefined otherwise
+
+  base.apiError.for['myApplicationDetails.app'] true only if there was an error getting the app
+  base.apiError.for['myApplicationDetails.claims'] true only if there was an error getting the claims
+
+  -->
+
   <!-- Action Buttons -->
   <div class="cui-action">
     <span class="cui-action__title" ng-click="base.goBack('applications.myApplications')">{{'my-applications' | translate}}</span>
@@ -17,11 +28,11 @@
   <!-- Main Container -->
   <div class="cui-applications__main-container cui-applications__main-container--full">
     <!-- Loading -->
-    <div class="cui-loading__container" ng-if="!myApplicationDetails.doneLoading">
+    <div class="cui-loading__container" ng-if="base.loader.for['myApplicationDetails.app']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
-    <div ng-if="myApplicationDetails.doneLoading">
+    <div ng-if="!base.loader.for['myApplicationDetails.app']">
       <!-- Application Summary -->
       <div class="cui-media cui-media--vertical">
         <!-- Application Image -->
