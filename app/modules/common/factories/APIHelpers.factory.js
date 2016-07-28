@@ -88,23 +88,25 @@ angular.module('common')
                     name: orgHierarchy.name
                 });
 
-                orgHierarchy.children.forEach((division) => {
-                    organizationArray.push({
-                        id: division.id,
-                        name: division.name
-                    });
-
-                    if (division.children) {
-                        let flatArray = _.flatten(division.children);
-                        
-                        flatArray.forEach((childDivision) => {
-                            organizationArray.push({
-                                id: childDivision.id,
-                                name: childDivision.name
-                            });
+                if (orgHierarchy.children) {
+                    orgHierarchy.children.forEach((division) => {
+                        organizationArray.push({
+                            id: division.id,
+                            name: division.name
                         });
-                    }
-                });
+
+                        if (division.children) {
+                            let flatArray = _.flatten(division.children);
+                            
+                            flatArray.forEach((childDivision) => {
+                                organizationArray.push({
+                                    id: childDivision.id,
+                                    name: childDivision.name
+                                });
+                            });
+                        }
+                    });
+                }
                 return organizationArray;
             }
             else {

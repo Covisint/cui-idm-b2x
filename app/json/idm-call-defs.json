@@ -527,7 +527,7 @@
   },
   {
     "cmd": "getSecurityQuestions",
-    "cmdType": "unsecured",
+    "cmdType": "secured",
     "call": "/authn/v4/securityQuestions",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.securityquestion.v1+json"

@@ -5,50 +5,46 @@
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==true}" preserveAspectRatio="xMidYMid meet" viewBox="0 -1 48 52">
       <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile"></use>
     </svg>
-    <span class="cui-action__action-label">PROFILE</span>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
   </div>
 
   <!-- Roles -->
-  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch=false" id="roles-button">
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch=false" id="roles-button" ng-if="false">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==false}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
       <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#roles"></use>
     </svg>
-    <span class="cui-action__action-label">ROLES</span>
+    <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
   </div>
 
-  
+  <!-- Profile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='profile'" id="profile-button" off-click="">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='profile'}" preserveAspectRatio="xMidYMid meet" viewBox="0 -1 48 52">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile"></use>
+    </svg>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
+  </div>
 
-    <!-- Profile -->
-    <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='profile'" id="profile-button" off-click="">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='profile'}" preserveAspectRatio="xMidYMid meet" viewBox="0 -1 48 52">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile"></use>
-      </svg>
-      <span class="cui-action__action-label">PROFILE</span>
-    </div>
+  <!-- Roles -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='roles'" id="roles-button" ng-if="false">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='roles'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#roles"></use>
+    </svg>
+    <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
+  </div>
 
-    <!-- Roles -->
-    <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='roles'" id="roles-button">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='roles'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#roles"></use>
-      </svg>
-      <span class="cui-action__action-label">ROLES</span>
-    </div>
+  <!-- Applications -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='apps'">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='apps'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 50">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
+    </svg>
+    <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
+  </div>
 
-    <!-- Applications -->
-    <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='apps'">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='apps'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 50">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
-      </svg>
-      <span class="cui-action__action-label">APPS</span>
-    </div>
-
-    <!-- History -->
-    <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='history'">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='history'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 52">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#history"></use>
-      </svg>
-      <span class="cui-action__action-label">HISTORY</span>
-    </div>
-
-
+  <!-- History -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='history'" ng-if="false">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='history'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 52">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#history"></use>
+    </svg>
+    <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
+  </div>
 </div>
