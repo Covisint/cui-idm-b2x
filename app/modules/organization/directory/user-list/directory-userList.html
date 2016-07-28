@@ -1,11 +1,11 @@
 <main class="cui-organization cui-organization-dir">
-  <h2 class="cui-sr-only">Organization Directory</h2>
+  <h2 class="cui-sr-only">{{'organization-directory' | translate}}</h2>
   <!-- Page Header -->
   <section class="cui-action">
-    <h3 class="cui-sr-only">Organization Navigation and Invitation Links</h3>
+    <h3 class="cui-sr-only">{{'org-nav-invite-links' | translate}}</h3>
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
-    <!-- <div class="cui-action__actions">
+    <div class="cui-action__actions" ng-if="false">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
           <defs>
@@ -17,19 +17,19 @@
             </filter>
           </defs>
           <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#invite"></use>
-        </svg> -->
+        </svg>
         <!-- Invitation Popover -->
-        <!-- <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
+        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#invitation-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.invitationClicked">
           <p>{{'invite-user' | translate}}</p>
           <p>{{'invite-division' | translate}}</p>
         </div>
       </div>
-    </div> -->
+    </div>
   </section>
 
   <!-- Action Sub-header -->
   <section class="cui-action" ng-if="!orgDirectory.loading">
-    <h3 class="cui-sr-only">Organization Directory Filters</h3>
+    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
     <span class="cui-action__title cui-desktop-only">{{orgDirectory.organization.name | cuiI18n}}</span>
     <span class="cui-action__title cui-mobile-only">{{orgDirectory.orgPersonCount}} People</span>
     <div class="cui-action__actions">
@@ -83,7 +83,7 @@
 
   <!-- Profile Content -->
   <section class="cui-organization__main-container">
-    <h3 class="cui-sr-only">Organization Directory List</h3>
+    <h3 class="cui-sr-only">{{'org-dir-list'}}</h3>
     <!-- User List Loading -->
     <div class="cui-loading__container" ng-if="orgDirectory.loading">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
@@ -109,7 +109,7 @@
             <div class="cui-flex-table__middle"><span class="cui-mobile-only ">{{'userID' | translate | lowercase}}: &nbsp;</span>{{user.username}}</div>
             <div class="cui-flex-table__middle"><span class="cui-mobile-only">{{'cui-registered' | translate | lowercase}}: &nbsp;</span>{{user.creation | date:base.appConfig.dateFormat}}</div>
             <div class="cui-flex-table__right" >
-              <span class="cui-mobile-only">apps({{user.appCount}}) &nbsp;</span>
+              <span class="cui-mobile-only">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
               <span ng-class=" 'cui-status--'+user.status ">{{user.status | translate}}</span>
             </div>
           </div>
