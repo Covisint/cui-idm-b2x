@@ -1,29 +1,28 @@
 <div class="cui-organization__profile-right-header cui-desktop-only">
 
-
   <!-- Applications -->
   <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=true">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==true}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 50">
       <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
     </svg>
-    <span class="cui-action__action-label">APPS</span>
+    <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
   </div>
 
   <!-- History -->
-  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=false">
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=false" ng-if="false">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==false}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 52">
       <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#history"></use>
     </svg>
-    <span class="cui-action__action-label">HISTORY</span>
+    <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
   </div>
   
-  <div class="cui-organization__profile-header-items--right">
+  <div class="cui-organization__profile-header-items--right" ng-if="false">
     <!-- Sort -->
     <div class="cui-organization__profile-header-item" id="sort-button" ng-click="userDetails.sortClicked=!userDetails.sortClicked" off-click="userDetails.sortClicked=false" ng-if="userDetails.appsHistorySwitch">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
       </svg>
-      <span class="cui-action__action-label">SORT</span>
+      <span class="cui-action__action-label">{{'sort' | translate}}</span>
     </div>
     <!-- Sort Popover -->
     <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.sortClicked">
@@ -36,13 +35,11 @@
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
       </svg>
-      <span class="cui-action__action-label">CATEGORIES</span>
+      <span class="cui-action__action-label">{{'categories' | translate}}</span>
     </div>
     <!-- Categories Popover -->
     <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetails.categoriesClicked">
       <p ng-click="">TODO!</p>
     </div>
   </div>
-
-
 </div>
