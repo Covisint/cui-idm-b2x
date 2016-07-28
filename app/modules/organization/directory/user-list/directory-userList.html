@@ -1,43 +1,11 @@
 <main class="cui-organization cui-organization-dir">
-  <h2 class="cui-sr-only">Organization Directory</h2>
+  <h2 class="cui-sr-only">{{'organization-directory' | translate}}</h2>
   <!-- Page Header -->
   <section class="cui-action">
-    <h3 class="cui-sr-only">Organization Navigation and Invitation Links</h3>
-    <nav class="cui-breadcrumb">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
-        </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-        </li>
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.directory({orgID:orgDirectory.organization.id})" class="active">{{'directory' | translate}}</a>
-        </li> 
-        <li class="cui-breadcrumb__link">
-          <a ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
-        </li>
-      </ul>
-    </nav>
-    <nav class="cui-breadcrumb--mobile" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false">
-      <ul class="cui-breadcrumb__links">
-        <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
-          <span class="cui-breadcrumb__mobile-link" class="active"><span class="cui-mobile-only">{{orgDirectory.organization.name | cuiI18n}}.</span>{{'directory' | translate}}</span>
-        </li>
-        <div class="cui-popover cui-popover--menu cui-breadcrumb__popover cui-popover--top cui-popover__categories-popover" tether target="#breadcrumb-button" attachment="top left" target-attachment="bottom left" offset="-10px 0" ng-if="orgDirectory.breadcrumbClicked">
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.hierarchy({orgID:orgDirectory.organization.id})">{{'cui-org-hierarchy' | translate}}</a> 
-          </li>
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.profile({orgID:orgDirectory.organization.id})">{{'cui-org-profile' | translate}}</a> 
-          </li> 
-          <li class="cui-breadcrumb__link cui-popover__row">
-            <a class="cui-breadcrumb__mobile-link" ui-sref="organization.roles({orgID:orgDirectory.organization.id})">{{'roles' | translate}}</a>
-          </li>
-        </div>
-      </ul>
-    </nav>
-    <div class="cui-action__actions">
+    <h3 class="cui-sr-only">{{'org-nav-invite-links' | translate}}</h3>
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <div class="cui-action__actions" ng-if="false">
       <div class="cui-action__action-container" id="invitation-button" ng-click="orgDirectory.invitationClicked=!orgDirectory.invitationClicked" off-click="orgDirectory.invitationClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--invite" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
           <defs>
@@ -61,9 +29,9 @@
 
   <!-- Action Sub-header -->
   <section class="cui-action" ng-if="!orgDirectory.loading">
-    <h3 class="cui-sr-only">Organization Directory Filters</h3>
-    <span class="cui-action__title cui-desktop-only " ui-sref="organization.requests.organizationRequestList({orgID: orgDirectory.organization.id})">{{orgDirectory.organization.name | cuiI18n}}</span>
-    <span class="cui-action__title cui-mobile-only" >{{orgDirectory.orgPersonCount}} People </span>
+    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
+    <span class="cui-action__title cui-desktop-only">{{orgDirectory.organization.name | cuiI18n}}</span>
+    <span class="cui-action__title cui-mobile-only">{{orgDirectory.orgPersonCount}} People</span>
     <div class="cui-action__actions">
 
       <!-- Sort -->
@@ -73,10 +41,9 @@
         </svg>
         <span class="cui-action__action-label">{{'sort' | translate}}</span>
         <!-- Sort Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.sortClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.sortClicked">
           <p ng-click="orgDirectory.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
-          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>
+          <p ng-click="orgDirectory.sort('date')">{{'cui-by-date-added' | translate}}</p>  
         </div>
       </div>
 
@@ -87,7 +54,7 @@
         </svg>
         <span class="cui-action__action-label">{{'refine' | translate}}</span>
         <!-- Refine Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.refineClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.refineClicked">
           <p ng-click="orgDirectory.parseUsersByStatus('all')">{{'all' | translate}} ({{orgDirectory.statusCount[0]}})</p>
           <div ng-repeat="status in orgDirectory.statusList track by $index" ng-if="myApplications.statusCount[$index+1]!==0">
             <p ng-click="orgDirectory.parseUsersByStatus(status)">{{status | translate}} ({{orgDirectory.statusCount[$index+1]}})</p>
@@ -102,12 +69,12 @@
         </svg>
         <span class="cui-action__action-label">{{'organizations' | translate}}</span>
         <!-- Organizations Popover -->
-        <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#organizations-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDirectory.organizationsClicked">
+        <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgDirectory.organizationsClicked">
           <div ng-if="!orgDirectory.organizationList">
             <p>{{'cui-no-org-divisions' | translate}}!</p>
           </div>
           <div ng-if="orgDirectory.organizationList" ng-repeat="organization in orgDirectory.organizationList | orderBy:'name' track by organization.id">
-            <p ng-if="organization.id!==orgDirectory.organization.id" ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
+            <p ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
           </div>
         </div>
       </div>
@@ -116,7 +83,7 @@
 
   <!-- Profile Content -->
   <section class="cui-organization__main-container">
-    <h3 class="cui-sr-only">Organization Directory List</h3>
+    <h3 class="cui-sr-only">{{'org-dir-list'}}</h3>
     <!-- User List Loading -->
     <div class="cui-loading__container" ng-if="orgDirectory.loading">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
@@ -142,7 +109,7 @@
             <div class="cui-flex-table__middle"><span class="cui-mobile-only ">{{'userID' | translate | lowercase}}: &nbsp;</span>{{user.username}}</div>
             <div class="cui-flex-table__middle"><span class="cui-mobile-only">{{'cui-registered' | translate | lowercase}}: &nbsp;</span>{{user.creation | date:base.appConfig.dateFormat}}</div>
             <div class="cui-flex-table__right" >
-              <span class="cui-mobile-only">apps({{user.appCount}}) &nbsp;</span>
+              <span class="cui-mobile-only">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
               <span ng-class=" 'cui-status--'+user.status ">{{user.status | translate}}</span>
             </div>
           </div>
