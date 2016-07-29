@@ -1,3 +1,15 @@
+## [v1.0.13] 2016-7-29
+
+## Changelog
+* Fixes angular-animate dependency issue
+* Adds updates to organization hierarchy, profile, directory, and user details screens
+* Updates UserProfile factory
+ * UserProfile.injectUI() not accepts a third optional parameter for 'personId'.
+ * If 'personId' is not specified, the factory will load/handle calls for the logged in user
+ * If 'personId' is specified, it will work for that specified user
+ * Example: UserProfile.injectUI(userProfile, $scope, userId);
+* Adds other general bug fixes and improvements
+
 ## [v1.0.12] 2016-7-22
 
 ### Changelog
