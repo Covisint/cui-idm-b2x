@@ -1,0 +1,19 @@
+.cui-org-claims {
+
+    .cui-radio__fieldset {
+      padding: 0;
+    }
+
+    .cui-checkbox__label {
+      font-weight: normal;
+    }
+
+    .cui-media__image-container {
+      flex: 0 100px;
+    }
+
+    .cui-org-claims__row {
+      display: flex;
+      padding-left: 100px;
+    }
+}
