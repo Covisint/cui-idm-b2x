@@ -1,19 +1,50 @@
 .cui-org-claims {
 
-    .cui-radio__fieldset {
-      padding: 0;
+  .cui-org-claims__claim {
+    border-bottom: 1px solid $secondary-background;
+    padding-bottom: em(15);
+  }
+
+  .cui-radio__fieldset {
+    padding: 0;
+  }
+
+  .cui-radio__label:first-of-type {
+    margin: 0 em(25);
+  }
+
+  .cui-checkbox__label {
+    font-weight: normal;
+  }
+
+  .cui-media__image-container {
+    flex: 0 100px;
+  }
+
+  .cui-org-claims__row {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: em(100);
+
+    @media screen and (max-width: 700px) {
+      padding-left: em(30);
+    }
+  }
+
+  .cui-org-claims__col {
+    flex: 0 50%;
+
+    @media screen and (max-width: 700px) {
+      flex: 1 100%;
     }
 
-    .cui-checkbox__label {
-      font-weight: normal;
+    &:nth-of-type(odd) {
+      padding-right: 5%;
     }
+  }
 
-    .cui-media__image-container {
-      flex: 0 100px;
-    }
-
-    .cui-org-claims__row {
-      display: flex;
-      padding-left: 100px;
-    }
+  .cui-button {
+    display: flex;
+    margin: em(180) 0 0 auto;
+  }
 }

@@ -16,37 +16,61 @@
       </svg>
     </div>
   </div>
-
+  <div class="cui-organization__main-container">
   <div>
-    <div ng-repeat="(applicationId, application) in newGrantClaims.appsBeingRequested.applications" ng-init="index=$index">
+    <div class="cui-org-claims__claim" ng-repeat="(applicationId, application) in newGrantClaims.appsBeingRequested.applications" ng-init="index=$index">
 
-      <!-- Avatar -->
-      <div class="cui-media__image"
-        cui-avatar-color-class-prefix="cui-avatar__color"
-        cui-avatar-color-count="5"
-        cui-avatar-names="application.name"
-        cui-avatar-cuii18n-filter cui-avatar="application.iconUrl">
-      </div>
-
-      <!-- Name -->
-      {{application.name | cuiI18n}}
-
-      <!-- Administrator radio -->
-      {{'administrator-?' | translate}}
-      <input type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" />No
-      <input type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" />Yes
-
-      <!-- Claims -->
-      <div ng-if="base.loader.for['newGrantClaims.claims' + index]">
-        <!-- Loader for claims here -->
-      </div>
-      <div ng-if="!base.loader.for['newGrantClaims.claims' + index]"
-        ng-repeat="claim in newGrantClaims['claims' + index]">
-        {{claim.name | cuiI18n}}
-        <div ng-repeat="claimValue in claim.claimValues">
-          {{claimValue.name | cuiI18n}}
-          <input type="checkbox" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" />
+      <div class="cui-media">
+        <!-- Avatar -->
+        <div class="cui-media__image-container">
+          <div class="cui-media__image"
+            cui-avatar-color-class-prefix="cui-avatar__color"
+            cui-avatar-color-count="5"
+            cui-avatar-names="application.name"
+            cui-avatar-cuii18n-filter cui-avatar="application.iconUrl">
+          </div>
         </div>
+
+        <div class="cui-media__body">
+
+          <!-- Name -->
+          <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+
+          <fieldset class="cui-radio__fieldset">
+            <div class="cui-radio cui-radio--basic-ltr">
+
+          <!-- Administrator radio -->
+              <div class="cui-media__content">{{'administrator-?' | translate}}
+                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" />
+                <label class="cui-radio__label" for="false"><span></span>No</label>
+                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" />
+                <label class="cui-radio__label" for="true"><span></span>Yes</label>
+              </div>
+            </div>
+          </fieldset>
+
+        </div>
+      </div>
+
+      
+      <div class="cui-org-claims__row">
+        
+        <!-- Claims -->
+        <div ng-if="base.loader.for['newGrantClaims.claims' + index]">
+          <!-- Loader for claims here -->
+        </div>
+        <div class="cui-org-claims__col" ng-if="!base.loader.for['newGrantClaims.claims' + index]"
+          ng-repeat="claim in newGrantClaims['claims' + index]">
+          <h3 class="bold">{{claim.name | cuiI18n}}</h3>
+          <ul class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
+            <li class="cui-checkbox__container">
+              <input class="cui-checkbox" type="checkbox" ng-model="newGrantClaims.packageRequests[
+              application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" />
+              <label class="cui-checkbox__label" for="option-4">{{claimValue.name | cuiI18n}}</label>
+            </li>
+          </div>
+        </div>
+
       </div>
 
 
@@ -60,100 +84,7 @@
     -->
     <button class="cui-button" ng-click="newGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
 
-    <!-- begin fake markup -->
-
-    <div class="cui-action" ng-hide="base.loader.for['newGrant.user']">
-          <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&lt; Marsha Applby - New Grant</span>
-        </div>
-
-        <!-- Top Bar -->
-        <div class="cui-action cui-action--alt">
-          <h3 class="cui-action__title">Select Applications</h3>
-          <div class="cui-action__actions">
-            <svg ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newGrant.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
-                <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-            </svg>
-            <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">0</sup>
-          </div>
-        </div>
-
-        <div class="cui-organization__main-container">
-          
-            <form>
-
-            <!-- Row 1 -->
-            <div class="">
-
-                <div class="">
-                  
-                  <div class="cui-media">
-                    <div class="cui-media__image-container">
-                      <img class="cui-media__image" src="http://www.fillmurray.com/50/50">
-                    </div>
-                  <div class="cui-media__body">
-                    <h2 class="cui-media__title">Timing Control</h2>
-                        
-                        <fieldset class="cui-radio__fieldset">
-                          <div class="cui-radio cui-radio--basic-ltr">
-
-                            <div class="cui-media__content">Administrator?
-
-                            <input id="radio-choice-1" class="cui-radio__input" name="radio-choice-basic" value="choice-1" type="radio"/>
-                            <label class="cui-radio__label" for="radio-choice-1"><span></span>No</label>
-
-                            <input id="radio-choice-2" class="cui-radio__input" name="radio-choice-basic" value="choice-2" type="radio"/>
-                            <label class="cui-radio__label" for="radio-choice-2"><span></span>Yes</label>
-                            </div>
-                          </div>
-                        </fieldset>
-
-                  </div>
-
-                  </div>
-
-                </div>
-
-                <div class="cui-org-claims__row">
-
-                    <div class="">
-
-                        <h3 class="bold">Admin Claim Packages</h3>
-                        <ul class="cui-checkbox__group">
-                          <li class="cui-checkbox__container">
-                            <input class="cui-checkbox" id="option-1" type="checkbox">
-                            <label class="cui-checkbox__label" for="option-1">Approval Stage One</label>
-                          </li>
-                          <li class="cui-checkbox__container">
-                            <input class="cui-checkbox" id="option-2" type="checkbox">
-                            <label class="cui-checkbox__label" for="option-2">Approval Stage One</label>
-                          </li>
-                        </ul>
-
-                    </div>
-
-                    <div class="">
-
-                        <h3 class="bold">Editor Claim Packages</h3>
-                        <ul class="cui-checkbox__group">
-                          <li class="cui-checkbox__container">
-                            <input class="cui-checkbox" id="option-3" type="checkbox">
-                            <label class="cui-checkbox__label" for="option-3">Write Rights</label>
-                          </li>
-                          <li class="cui-checkbox__container">
-                            <input class="cui-checkbox" id="option-4" type="checkbox">
-                            <label class="cui-checkbox__label" for="option-4">Write and Publish</label>
-                          </li>
-                        </ul>
-
-                    </div>
-
-
-                  </div>
-                </div>
-
-            </form>
-        <!-- end fake markup -->
-        </div> 
-  </div>
+      </div> 
   </div>
 </div>
+
