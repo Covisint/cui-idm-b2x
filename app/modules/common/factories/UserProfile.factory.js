@@ -20,7 +20,7 @@ angular.module('common')
                     userProfile.tempUser = {};
                     angular.copy(res, userProfile.user);
                     angular.copy(res, userProfile.tempUser);
-                    return API.cui.getSecurityQuestionAccount({ personId: API.getUser(), useCuid:true });
+                    return API.cui.getSecurityQuestionAccount(userCredentials);
                 })
                 .then(function(res) {
                     userProfile.userSecurityQuestions = res;
@@ -87,7 +87,9 @@ angular.module('common')
                 };
             },
 
-            injectUI: function(userProfile, $scope) {
+            injectUI: function(userProfile, $scope, personId) {
+                let userId
+                personId ? userId = personId : userId = API.getUser()
 
                 userProfile.toggleAllOff = function() {
                     angular.forEach(userProfile.toggleOffFunctions, function(toggleOff) {
@@ -160,27 +162,20 @@ angular.module('common')
                     // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
                     delete userProfile.tempUser['activatedDate']
 
-                    API.cui.updatePerson({personId: API.getUser(), useCuid:true, data:userProfile.tempUser})
-                    .then(function() {
+                    API.cui.updatePerson({personId: userId, data:userProfile.tempUser})
+                    .done(() => {
                         angular.copy(userProfile.tempUser, userProfile.user);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
-                        if (toggleOff) {
-                            toggleOff();
-                        }
-                        $scope.$digest();
+                        LocaleService.setLocaleByDisplayName(appConfig.languages[userProfile.user.language])
+                        if (toggleOff) toggleOff()
                     })
-                    .fail(function(error) {
-                        console.log(error);
-                        if (section) {
-                            userProfile[section].submitting = false;
-                        }
-                        if (section) {
-                            userProfile[section].error = true;
-                        }
-                        $scope.$digest();
-                    });
+                    .fail((err) => {
+                        console.error('Failed to update user profile:', err)
+                        if (section) userProfile[section].error = true
+                    })
+                    .always(() => {
+                        if (section) userProfile[section].submitting = false
+                        $scope.$digest()
+                    })
                 };
 
                 userProfile.updatePassword = function(section, toggleOff) {
@@ -188,7 +183,7 @@ angular.module('common')
                         userProfile[section] = { submitting:true };
                     }
 
-                    API.cui.updatePersonPassword({personId: API.getUser(), data: self.getPersonPasswordAccount(userProfile)})
+                    API.cui.updatePersonPassword({personId: userId, data: self.getPersonPasswordAccount(userProfile)})
                     .always(() => {
                         if (section) {
                             userProfile[section].submitting = false;
@@ -223,7 +218,7 @@ angular.module('common')
                     userProfile.userSecurityQuestions.questions = angular.copy(userProfile.tempUserSecurityQuestions);
                     self.selectTextsForQuestions(userProfile);
 
-                    API.cui.updateSecurityQuestionAccount({personId: API.getUser(),
+                    API.cui.updateSecurityQuestionAccount({personId: userId,
                         data: {
                             version: '1',
                             id: API.getUser(),

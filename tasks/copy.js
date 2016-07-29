@@ -16,7 +16,8 @@ module.exports = function(grunt,config){
             'node_modules/lato-font/fonts/lato-normal/**',
             'node_modules/lato-font/fonts/lato-bold/**',
             'node_modules/lato-font/fonts/lato-black/**',
-            'appConfig.json'
+            'appConfig.json',
+            'app/json/*.json'
           ],
           dest: '<%= config.buildDir %>/'
         }
@@ -35,7 +36,11 @@ module.exports = function(grunt,config){
             'node_modules/@covisint/cui-icons/dist/**/*.svg',
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/countries/*.json',
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/timezones/*.json',
-            'node_modules/lato-font/fonts/**'
+            'node_modules/lato-font/fonts/lato-normal/**',
+            'node_modules/lato-font/fonts/lato-bold/**',
+            'node_modules/lato-font/fonts/lato-black/**',
+            'appConfig.json',
+            'app/json/*.json'
           ],
           dest: '<%= config.buildSdkDir %>/'
         }

@@ -35,7 +35,7 @@ angular.module('organization')
             pendingPackage.servicePackage.packageDetails = res;
         });
     };
-    
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     orgRequest.reviewApprovals = () => {
-        DataStorage.set(orgId, 'organizationRequest', orgRequest.organizationRequest);
+        DataStorage.setType('organizationRequest', orgRequest.organizationRequest);
         $state.go('requests.organizationRequestReview', {orgID: orgId});
     };
 

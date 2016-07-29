@@ -1,53 +1,69 @@
 angular.module('applications')
-.controller('myApplicationDetailsCtrl',['API','$scope','$stateParams','$state','$q',
-function(API,$scope,$stateParams,$state,$q) {
-    let myApplicationDetails = this;
+.controller('myApplicationDetailsCtrl', function(API, $scope, $stateParams, $state, $q, APIHelpers, Loader, APIError) {
+    let myApplicationDetails = this
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    var handleError = function(err) {
-        console.log('Error \n', err);
-    };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    const qs =  [
-        ['service.id', $stateParams.appId]
-    ];
+    const loaderName = 'myApplicationDetails.'
 
-    let opts = {
+    const qs = {
+        'service.id': $stateParams.appId
+    }
+
+    const opts = {
         personId: API.getUser(),
         useCuid:true,
-        qs
-    };
+        qs: APIHelpers.getQs(qs)
+    }
 
+    Loader.onFor(loaderName + 'app')
     API.cui.getPersonGrantedApps(opts)
-    .then((res)=>{
-        myApplicationDetails.app = res[0];
-        getClaims(res[0]);
-    });
+    .then(res => {
+        APIError.offFor(loaderName + 'app')
+        myApplicationDetails.app = Object.assign({}, res[0])
+        getClaims(myApplicationDetails.app)
+    })
+    .fail(err => {
+        APIError.onFor(loaderName + 'app')
+    })
+    .done(() => {
+        Loader.offFor(loaderName + 'app')
+        $scope.$digest()
+    })
 
     const getClaims = (app) => {
-        const packageId = app.servicePackage.id;
+        const packageId = app.servicePackage.id
 
+        Loader.onFor(loaderName + 'claims')
         API.cui.getPersonPackageClaims({ grantee:API.getUser(), useCuid:true, packageId })
-        .then((res) => {
-            myApplicationDetails.claims = res;
-            myApplicationDetails.doneLoading = true;
-            $scope.$digest();
-        });
-    };
+        .then(res => {
+            APIError.offFor(loaderName + 'claims')
+            myApplicationDetails.claims = Object.assign({}, res)
+        })
+        .fail(err => {
+            APIError.onFor(loaderName + 'claims')
+        })
+        .done(() => {
+            Loader.offFor(loaderName + 'claims')
+            $scope.$digest()
+        })
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
 
-    myApplicationDetails.goToDetails = function(application) {
-        $state.go('applications.myApplicationDetails', {'packageId':application.packageId, 'appId':application.id});
-    };
+    myApplicationDetails.goToDetails = (application) => {
+        $state.go('applications.myApplicationDetails', {
+            'packageId':application.packageId,
+            'appId':application.id
+        })
+    }
 
     // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
 
-}]);
+})

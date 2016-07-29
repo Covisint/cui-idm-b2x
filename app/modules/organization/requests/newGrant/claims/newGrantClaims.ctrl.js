@@ -1,21 +1,18 @@
 angular.module('organization')
-.controller('newGrantClaimsCtrl', function($stateParams, $state, API, NewGrant, Loader, $scope, APIHelpers, $q){
-    let newGrantClaims = this
-
+.controller('newGrantClaimsCtrl', function(API,APIHelpers,DataStorage,Loader,NewGrant,$stateParams,$q,$scope,$state) {
+    
+    const newGrantClaims = this
     const loaderType = 'newGrantClaims.'
-
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-    // ON LOAD START ---------------------------------------------------------------------------------
 
     newGrantClaims.packageRequests = {}
 
-    NewGrant.pullFromStorage(newGrantClaims)
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+
+    newGrantClaims.appsBeingRequested = DataStorage.getDataThatMatches('newGrant', {userId: $stateParams.userID})[0]
 
     // get the claims for each app being requested
-    Object.keys(newGrantClaims.appsBeingRequested).forEach((appId, i) => {
-        const app = newGrantClaims.appsBeingRequested[appId]
+    Object.keys(newGrantClaims.appsBeingRequested.applications).forEach((appId, i) => {
+        const app = newGrantClaims.appsBeingRequested.applications[appId]
 
         if (!newGrantClaims.packageRequests[app.servicePackage.id]) {
             newGrantClaims.packageRequests[app.servicePackage.id] = {
@@ -25,11 +22,13 @@ angular.module('organization')
         }
 
         Loader.onFor(loaderType + 'claims' + i)
+
         const opts = {
             qs: APIHelpers.getQs({
-                packageId: newGrantClaims.appsBeingRequested[appId].servicePackage.id
+                packageId: newGrantClaims.appsBeingRequested.applications[appId].servicePackage.id
             })
         }
+
         API.cui.getPackageClaims(opts)
         .then(res => {
             newGrantClaims['claims' + i] = Object.assign({}, res)
@@ -39,7 +38,8 @@ angular.module('organization')
             Loader.offFor(loaderType + 'claims' + i)
             $scope.$digest()
         })
-        .fail(err => { // claims endpoint throws an error when the package has no claims
+        .fail(err => { 
+            // claims endpoint throws an error when the package has no claims
             newGrantClaims['claims' + i] = []
             Loader.offFor(loaderType + 'claims' + i)
             $scope.$digest()
@@ -54,9 +54,9 @@ angular.module('organization')
         $scope.$digest()
     })
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-    // ON CLICK START --------------------------------------------------------------------------------
+    /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
     newGrantClaims.submit = () => {
         Loader.onFor(loaderType + 'submit')
@@ -75,8 +75,8 @@ angular.module('organization')
             Loader.onFor(loaderType + 'submit')
             newGrantClaims.error = true
         })
-
     }
 
-    // ON CLICK END ----------------------------------------------------------------------------------
+    /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
+
 })
