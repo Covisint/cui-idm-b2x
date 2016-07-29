@@ -87,7 +87,9 @@ angular.module('common')
                 };
             },
 
-            injectUI: function(userProfile, $scope, userId) {
+            injectUI: function(userProfile, $scope, personId) {
+                let userId
+                personId ? userId = personId : userId = API.getUser()
 
                 userProfile.toggleAllOff = function() {
                     angular.forEach(userProfile.toggleOffFunctions, function(toggleOff) {
