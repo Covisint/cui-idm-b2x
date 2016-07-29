@@ -17,7 +17,7 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    orgRequestReview.organizationRequest = DataStorage.get(orgId, 'organizationRequest');
+    orgRequestReview.organizationRequest = DataStorage.getType('organizationRequest');
 
     apiPromises.push(
     	API.cui.getOrganization({organizationId: orgId})

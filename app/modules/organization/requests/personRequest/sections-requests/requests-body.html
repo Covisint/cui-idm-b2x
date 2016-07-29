@@ -90,7 +90,10 @@
                 <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
                 <p ng-if="package.servicePackage.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
                 <div ng-if="package.servicePackage.claims.length>0" ng-repeat="claim in package.servicePackage.claims">
-                  <li class="cui-checkbox__container cui-checkbox__container--right"><input class="cui-checkbox" type="checkbox" id="option-{{$index}}" ng-model="claim.accepted"/><label class="cui-checkbox__label" for="option-{{$index}}">{{claim.description | cuiI18n}}</label></li>
+                  <li class="cui-checkbox__container cui-checkbox__container--right">
+                    <input class="cui-checkbox" type="checkbox" id="option-{{$index}}-{{$parent.$parent.$index}}" ng-model="claim.accepted"/>
+                    <label class="cui-checkbox__label" for="option-{{$index}}-{{$parent.$parent.$index}}">{{claim.description | cuiI18n}}</label>
+                  </li>
                 </div>
               </div>
             </div>

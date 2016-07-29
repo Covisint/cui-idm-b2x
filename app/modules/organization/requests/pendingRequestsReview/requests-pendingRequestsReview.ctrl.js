@@ -1,6 +1,5 @@
 angular.module('organization')
-.controller('pendingRequestsReviewCtrl',function(API,$stateParams,$q,$timeout,$state,DataStorage) {
-    'use strict';
+.controller('pendingRequestsReviewCtrl',function(API,DataStorage,$q,$state,$stateParams,$timeout) {
 
     const pendingRequestsReview = this,
     	userId = $stateParams.userID,
@@ -27,7 +26,7 @@ angular.module('organization')
                         pendingRequestsReview.deniedCount++;
                         break;
                 }
-            }); 
+            });
         }
     };
 
@@ -69,12 +68,12 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    pendingRequestsReview.pendingRequests = DataStorage.get(userId, 'appRequests');
+    pendingRequestsReview.pendingRequests = DataStorage.getDataThatMatches('appRequests', { userId })[0].requests;
 
     if (pendingRequestsReview.pendingRequests) {
         getApprovalCounts(pendingRequestsReview.pendingRequests);
     }
-    
+
     apiPromises.push(
     	API.cui.getPerson({personId: userId})
     	.then((res) => {
@@ -123,10 +122,10 @@ angular.module('organization')
                 });
             }
         });
-    	
+
 		pendingRequestsReview.sucess = true;
 		$timeout(() => {
-			$state.go('directory.userDetails', {userID: userId, orgID: orgId});
+			$state.go('organization.directory.userDetails', {userID: userId, orgID: orgId});
 		}, 3000);
     };
 
