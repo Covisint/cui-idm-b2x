@@ -7,13 +7,7 @@
       &#60; {{newGrantClaims.user.name.given}} {{newGrantClaims.user.name.surname}} - {{'new-grant' | translate}}
     </div>
     <div class="cui-action__actions">
-      <svg xmlns="http://www.w3.org/2000/svg"
-        class="cui-action__icon cui-action__icon--close"
-        ui-sref="organization.directory.userDetails({userID: newGrantClaims.user.id})"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 48 53">
-        <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
-      </svg>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
     </div>
   </div>
   <div class="cui-organization__main-container">
