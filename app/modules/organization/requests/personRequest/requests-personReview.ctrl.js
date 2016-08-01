@@ -1,13 +1,12 @@
 angular.module('organization')
-.controller('personRequestReviewCtrl',function(API,$stateParams,$q,DataStorage,$timeout,$state) {
-    'use strict';
+.controller('personRequestReviewCtrl', function(API,DataStorage,$q,$state,$stateParams,$timeout) {
 
     const personRequestReview = this,
     	userId = $stateParams.userID,
     	orgId = $stateParams.orgID;
 
     let apiPromises = [];
-    
+
     personRequestReview.loading = true;
     personRequestReview.success = false;
     personRequestReview.approvedCount = 0;
@@ -26,7 +25,7 @@ angular.module('organization')
                         personRequestReview.deniedCount++;
                         break;
                 }
-            }); 
+            });
         }
     };
 
@@ -83,8 +82,8 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    personRequestReview.userRegistrationRequest = DataStorage.get(userId, 'userPersonRequest');
-    personRequestReview.userPackageRequests = DataStorage.get(userId, 'userRequestedPackages');
+    personRequestReview.userRegistrationRequest = DataStorage.getDataThatMatches('userPersonRequest', { userId })[0].request;
+    personRequestReview.userPackageRequests = DataStorage.getDataThatMatches('userRequestedPackages', { userId })[0].requests;
 
     if (personRequestReview.userPackageRequests) {
     	getApprovalCounts(personRequestReview.userPackageRequests);
@@ -123,12 +122,12 @@ angular.module('organization')
 
     		// Deny Registration Request
     		submitPromises.push(denyPersonRegistrationRequest(personRequestReview.userRegistrationRequest));
-    		
+
     		if (personRequestReview.userPackageRequests) {
     			personRequestReview.userPackageRequests.forEach((packageRequest) => {
     				// Deny each package request
     				submitPromises.push(API.cui.denyPackage({qs: [['requestId', packageRequest.id], ['justification', 'Registration request denied']]}));
-    			});	
+    			});
     		}
 
             $q.all(submitPromises)
@@ -136,7 +135,7 @@ angular.module('organization')
                 personRequestReview.loading = false;
                 personRequestReview.success = true;
                 $timeout(() => {
-                    $state.go('organization.directory', {userID: userId, orgID: orgId});
+                    $state.go('organization.directory.userDetails', {userID: userId, orgID: orgId});
                 }, 3000);
             }, (error) => {
                 personRequestReview.loading = false;
@@ -160,7 +159,7 @@ angular.module('organization')
     							// If the package has claims, build the claims requests and grant the claims
     							let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
     							submitPromises.push(API.cui.grantClaims({data: grantClaimData}));
-    						}	
+    						}
     					}
                         // Package is denied
                         else {
@@ -173,7 +172,7 @@ angular.module('organization')
                     personRequestReview.loading = false;
                     personRequestReview.success = true;
                     $timeout(() => {
-                        $state.go('organization.directory', {orgID: orgId});
+                        $state.go('organization.directory.userDetails', {orgID: orgId});
                     }, 3000);
                 }
 
@@ -182,7 +181,7 @@ angular.module('organization')
                     personRequestReview.loading = false;
                     personRequestReview.success = true;
                     $timeout(() => {
-                        $state.go('organization.directory', {orgID: orgId});
+                        $state.go('organization.directory.userDetails', {orgID: orgId});
                     }, 3000);
                 }, (error) => {
                     personRequestReview.loading = false;

@@ -1,7 +1,7 @@
 <div class="cui-action">
-  <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-  <nav class="cui-breadcrumb--mobile" ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-breadcrumb.html'" id="breadcrumb-button" aria-hidden="true" ng-click="orgDirectory.breadcrumbClicked=!orgDirectory.breadcrumbClicked" off-click="orgDirectory.breadcrumbClicked=false"></nav>
-  <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+  <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
 </div>
 
 <!-- Name Header -->
@@ -19,18 +19,18 @@
     <!-- Name -->
     <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
     <!-- userID -->
-    <p class="cui-media__content cui-media__content--bold">userID: {{userDetails.user.id}}</p>
+    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{userDetails.user.id}}</p>
     <!-- Registered Date -->
-    <p class="cui-media__content">Registered: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
+    <p class="cui-media__content">{{'cui-registered' | translate}}: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->
     <div class="cui-media__content">
       <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status}}</span>
     </div>
   </div>
 </div>
-<div class="cui-media__button-container">
-  <button class="cui-button cui-button--inverted">suspend</button>
-  <button class="cui-button cui-button--inverted">password reset</button>
-  <button class="cui-button cui-button--inverted" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">new grants</button>
-</div>
 
+<div class="cui-media__button-container" ng-if="false">
+  <button class="cui-button cui-button--inverted">{{'suspend' | translate}}</button>
+  <button class="cui-button cui-button--inverted">{{'password-reset' | translate}}</button>
+  <button class="cui-button cui-button--inverted" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">{{'new-grants' | translate}}</button>
+</div>

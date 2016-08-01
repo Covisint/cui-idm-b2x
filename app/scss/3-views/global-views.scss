@@ -41,6 +41,12 @@ Global layout styles
   justify-content: flex-end;
 }
 
+.cui-exapandable__app-name {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
 .cui-tos-container {
   float: right;
   padding-bottom: 30px;
@@ -81,4 +87,8 @@ Global layout styles
 .js-main-content--search-open {
   transform: translate3d(0, 60px, 0);
   transition: transform .15s linear;
+}
+
+[ui-view].ng-leave {
+  transition: none
 }
