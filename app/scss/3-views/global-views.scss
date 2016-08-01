@@ -88,3 +88,7 @@ Global layout styles
   transform: translate3d(0, 60px, 0);
   transition: transform .15s linear;
 }
+
+[ui-view].ng-leave {
+  transition: none
+}
