@@ -79,6 +79,12 @@ Global layout styles
     display:inline-block;
 }
 
+.cui-breadcrumb {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}
+
 .js-main-content {
   transform: translate3d(0, 0, 0);
   transition: transform .15s linear;
