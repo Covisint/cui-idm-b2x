@@ -41,9 +41,9 @@
 
           <!-- Administrator radio -->
               <div class="cui-media__content">{{'administrator-?' | translate}}
-                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" />
+                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" id="false" />
                 <label class="cui-radio__label" for="false"><span></span>No</label>
-                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" />
+                <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" id="true" />
                 <label class="cui-radio__label" for="true"><span></span>Yes</label>
               </div>
             </div>
@@ -62,13 +62,15 @@
         <div class="cui-org-claims__col" ng-if="!base.loader.for['newGrantClaims.claims' + index]"
           ng-repeat="claim in newGrantClaims['claims' + index]">
           <h3 class="bold">{{claim.name | cuiI18n}}</h3>
-          <ul class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
-            <li class="cui-checkbox__container">
-              <input class="cui-checkbox" type="checkbox" ng-model="newGrantClaims.packageRequests[
-              application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" />
-              <label class="cui-checkbox__label" for="option-4">{{claimValue.name | cuiI18n}}</label>
-            </li>
-          </div>
+          <ul class="cui-checkbox__group">
+            <div class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
+              <li class="cui-checkbox__container">
+                <input class="cui-checkbox" type="checkbox" ng-model="newGrantClaims.packageRequests[
+                application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" id="{{claimValue.name | cuiI18n}}"/>
+                <label class="cui-checkbox__label" for="{{claimValue.name | cuiI18n}}">{{claimValue.name | cuiI18n}}</label>
+              </li>
+            </div>
+          </ul>
         </div>
 
       </div>
