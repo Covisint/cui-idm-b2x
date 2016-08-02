@@ -221,7 +221,7 @@ angular.module('common')
                     API.cui.updateSecurityQuestionAccount({personId: userId,
                         data: {
                             version: '1',
-                            id: API.getUser(),
+                            id: userId,
                             questions: userProfile.userSecurityQuestions.questions
                         }
                     })
