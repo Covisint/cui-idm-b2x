@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfile', function(API,$q,$timeout) {
+.factory('UserProfile', function(API,LocaleService,$q,$timeout) {
 
         var self = {
             getProfile: function(userCredentials) {
