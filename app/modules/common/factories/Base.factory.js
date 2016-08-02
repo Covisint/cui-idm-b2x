@@ -1,16 +1,15 @@
 angular.module('common')
-.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError, BaseExtensions) => {
-    const baseFactory = {
+.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, API) => {
+    return {
         appConfig: appConfig,
         countries: Countries,
+        menu: Menu,
         getLanguageCode: Languages.getCurrentLanguageCode,
         languages: Languages.all,
-        menu: Menu,
         timezones: Timezones.all,
         user: User.user,
-        loader: Loader,
-        apiError: APIError,
-
+        loader: API.loader,
+        apiError: API.error,
         goBack: (fallback) => {
             let previousState = $state.stateStack.pop();
 
@@ -26,7 +25,4 @@ angular.module('common')
         },
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
     }
-
-    return Object.assign({}, baseFactory, BaseExtensions)
-
 })

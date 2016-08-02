@@ -1,8 +1,6 @@
 angular.module('common')
-.factory('ServicePackage',[() => {
-    'use strict';
-
-    var servicePackage = {};
+.factory('ServicePackage', () => {
+    var servicePackage = {}
 
     servicePackage.set = (userId, newServicePackageArray) => {
         servicePackage.userId = newServicePackageArray;
@@ -25,4 +23,4 @@ angular.module('common')
 
     return servicePackage;
 
-}]);
+})
