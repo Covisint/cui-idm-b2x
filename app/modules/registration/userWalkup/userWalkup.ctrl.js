@@ -116,7 +116,7 @@ angular.module('registration')
         userWalkup.userLogin.question1 = userWalkup.userLogin.challengeQuestions1[0]
         userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0]
 
-        return API.cui.getOrganizationsNonce({'qs': [['pageSize', userWalkup.orgPaginationSize], ['page',1]]})
+        return API.cui.getOrganizationsNonce()
     })
     .then(res => {
         // Populate organization list
