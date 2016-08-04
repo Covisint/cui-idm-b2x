@@ -42,4 +42,9 @@
   }
 }
 
+.cui-card__container {
+  @media screen and (max-width: 600px) {
+    align-items: center;
+  }
+}
 
