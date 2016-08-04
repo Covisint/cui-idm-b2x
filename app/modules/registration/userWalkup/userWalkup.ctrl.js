@@ -223,7 +223,7 @@ angular.module('registration')
         .fail(error => {
             userWalkup.submitError = true
             console.error('Error submitting registration request', error)
-            if (error.responseJSON.apiMessage) {
+            if (error.responseJSON) {
                 userWalkup.errorMessage = error.responseJSON.apiMessage
             }
             else {
