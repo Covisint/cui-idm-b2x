@@ -18,7 +18,7 @@
     </div>
 
     <!-- Page Errors -->
-    <p class="cui-error" ng-if="base.apiError.for['orgProfile.init']">{{'error-generic' | translate}}</p>
+    <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['orgProfile.init']">{{'error-generic' | translate}}</p>
 
     <!-- Organization Information -->
     <div ng-if="!base.loader.for['orgProfile.init'] && orgProfile.organization">
