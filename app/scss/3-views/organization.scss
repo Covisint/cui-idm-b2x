@@ -141,12 +141,14 @@
     }
   }
 
-  .cui-organization__submit-row {
-    @extend %flex-row--right-align;
-    align-items: center;
-    margin: em(48) 0 em(40);
-  }
 }
+
+.cui-organization__submit-row {
+  @extend %flex-row--right-align;
+  align-items: center;
+  margin: em(48) 0 em(40);
+}
+
 
 .cui-media--centered {
   width: auto;
