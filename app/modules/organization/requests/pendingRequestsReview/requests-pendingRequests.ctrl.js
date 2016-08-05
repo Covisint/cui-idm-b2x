@@ -85,9 +85,9 @@ angular.module('organization')
 
     pendingRequests.reviewApprovals = () => {
         if (pendingRequests.packages.length > 0) {
-            DataStorage.set(userId, 'appRequests', pendingRequests.packages);
+            DataStorage.replaceDataThatMatches('appRequests', { userId } , { userId, requests:pendingRequests.packages });
         }
-        $state.go('requests.pendingRequestsReview', {userID: userId, orgID: orgId});
+        $state.go('organization.requests.pendingRequestsReview', {userID: userId, orgID: orgId});
     };
 
     // ON CLICK END ----------------------------------------------------------------------------------

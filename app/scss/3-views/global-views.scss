@@ -41,6 +41,12 @@ Global layout styles
   justify-content: flex-end;
 }
 
+.cui-exapandable__app-name {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
 .cui-tos-container {
   float: right;
   padding-bottom: 30px;
@@ -71,6 +77,12 @@ Global layout styles
 
 .cui-error__password {
     display:inline-block;
+}
+
+.cui-breadcrumb {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 }
 
 .js-main-content {

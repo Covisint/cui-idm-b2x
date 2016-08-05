@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('userDetailsCtrl',function(API,$stateParams,$q) {
+.controller('userDetailsCtrl',function(API,CuiMobileNavFactory,$q,$stateParams) {
     'use strict';
 
     const userDetails = this,
@@ -20,6 +20,7 @@ angular.module('organization')
         API.cui.getPerson({personId: userId})
         .then((res) => {
             userDetails.user = res;
+            CuiMobileNavFactory.setTitle(res.name.given + '.' + res.name.surname)
         })
     );
 

@@ -1,27 +1,21 @@
 angular.module('user')
-.controller('userProfileCtrl',['$scope','$timeout','API','$cuiI18n','Timezones','UserProfile',
-function($scope,$timeout,API,$cuiI18n,Timezones,UserProfile) {
-    'use strict';
-    const userProfile = this;
+.controller('userProfileCtrl', function(API, Loader, User, UserProfileV2, $scope) {
 
-    userProfile.loading = true;
-    userProfile.saving = true;
-    userProfile.fail = false;
-    userProfile.success = false;
-    userProfile.timezoneById = Timezones.timezoneById;
-    userProfile.toggleOffFunctions = {};
-    UserProfile.injectUI(userProfile, $scope);
+    const userProfile = this
+    const scopeName = 'userProfile.'
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    UserProfile.getProfile({personId: API.getUser(), useCuid:true})
-    .then(function(res) {
-        angular.merge(userProfile, res);
-        userProfile.loading = false;
-    }, function(err) {
-        userProfile.loading = false;
-    });
+    UserProfileV2.injectUI(userProfile, $scope, User.user.id)
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    Loader.onFor(scopeName + 'initProfile')
 
-}]);
+    UserProfileV2.initUserProfile(User.user.id, User.user.organization.id)
+    .then(res => {
+        angular.merge(userProfile, res)
+        Loader.offFor(scopeName + 'initProfile')
+    })
+
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
+
+})

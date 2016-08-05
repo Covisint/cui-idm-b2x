@@ -156,6 +156,12 @@ angular.module('organization',[])
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
             access: loginRequired
+        })
+        .state('organization.requests.personRequestList', {
+            url: '/person-requests',
+            templateUrl: templateBase + 'requests/personRequest/requests-personList.html',
+            controller: returnCtrlAs('personRequests'),
+            access: loginRequired
         });
 
 }]);

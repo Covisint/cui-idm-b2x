@@ -13,7 +13,7 @@ angular.module('organization')
     // ON LOAD START ---------------------------------------------------------------------------------
 
     // Inject profile from UserProfile factory
-    UserProfile.injectUI(userDetailsProfile, $scope);
+    UserProfile.injectUI(userDetailsProfile, $scope, userId);
 
     apiPromises.push(
         // Get user profile
