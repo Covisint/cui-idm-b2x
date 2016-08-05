@@ -2,12 +2,29 @@
 <div class="code-info">Markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/search" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss" class="cui-link" target="blank">here</a></div>
 <!-- /processHTML -->
 
-<div class="cui-applications__search">
+<div class="cui-applications__search cui-applications__search-results">
     <div class="cui-action">
         <div class="cui-action__title">{{'new-request' | translate}}</div>
         <div class="cui-action__actions">
-            <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="applications.myApplications" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+
+            <!-- close icon -->
+            
+            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+                <defs>
+                  <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+                  <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                    <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                    <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                    <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+                  </filter>
+                </defs>
+                <g id="close-with-shadow" fill="none" fill-rule="evenodd">
+                    <g id="Oval-73" transform="translate(3 1)">
+                        <use fill="#000" filter="url(#filter-2)" xlink:href="#path-1"/>
+                        <use fill="currentColor" xlink:href="#path-1"/>
+                    </g>
+                    <path d="M26.022 20.672l4.006-4.006c.788-.787.787-2.052.006-2.833l-.195-.195c-.788-.787-2.05-.778-2.834.006L23 17.65l-4.006-4.006c-.787-.788-2.052-.787-2.833-.006l-.194.195c-.788.787-.778 2.05.006 2.833l4.006 4.006-4.006 4.006c-.788.787-.787 2.053-.006 2.833l.195.196c.788.788 2.05.778 2.834-.006L23 23.695l4.006 4.005c.787.788 2.052.787 2.833.006l.194-.195c.788-.786.778-2.048-.006-2.832l-4.006-4.006z" fill="#fff"/>
+                </g>
             </svg>
         </div>
     </div>
@@ -87,15 +104,21 @@
                 </div>
             </cui-expandable-body>
         </cui-expandable>
-    </div>
-    <!-- TODO @SHANE ADD SPACING HERE -->
-    <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
-            <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-            <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
-            <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
-    </div>
-    <div class="cui-applications__search-button">
-        <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+
+        <!-- pagination -->
+
+        <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
+                <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+                <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
+                <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
+        </div>
+
+        <!-- search button -->
+
+        <div class="cui-applications__search-button">
+            <button class="cui-button" ng-class="{'cui-button--error' : applicationSearch.numberOfRequests===0}" ng-click="applicationSearch.numberOfRequests != 0 && applicationSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+        </div>
+
     </div>
 </div>
 
