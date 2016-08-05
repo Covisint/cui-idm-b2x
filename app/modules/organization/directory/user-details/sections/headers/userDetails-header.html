@@ -8,11 +8,11 @@
 <div class="cui-media--centered">
 
   <!-- Page Loading -->
-  <div class="cui-loading__container--user-details" ng-if="userDetails.loading">
+  <div class="cui-loading__container--user-details" ng-if="base.loader.for['userDetails.userInfo']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
 
-  <div class="cui-media__image-container" ng-if="!userDetails.loading">
+  <div class="cui-media__image-container" ng-if="!base.loader.for['userDetails.userInfo']">
     <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
   </div>
   <div class="cui-media__body" ng-if="!userDetails.loading">
