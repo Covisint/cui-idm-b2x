@@ -56,7 +56,7 @@ angular.module('common')
             type: 'POST',
             accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',
             contentType: 'application/vnd.com.covisint.platform.person.request.v1+json',
-            call: '/registration/v1/person/requests'
+            call: '/registration/v1/registrations/persons/requests'
         },
         {
         	cmd: 'getOrgPackageGrantsNonce',
