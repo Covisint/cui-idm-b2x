@@ -141,6 +141,21 @@
 
 .cui-applications__search {
 
+  &.cui-applications__search-results {
+
+    .cui-action--alt {
+      flex-wrap: wrap;
+    }
+
+    .cui-input-button {
+      @media screen and (max-width: 700px) {
+        flex: 0 100%;
+        margin-top: em(25);
+        order: 3;
+      }
+    }
+  }
+
   .cui-action--alt {
 
     .cui-action__title {
