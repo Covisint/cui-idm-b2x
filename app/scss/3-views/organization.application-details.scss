@@ -129,6 +129,10 @@
 		&__bundled, &__related{
 			width:45%;
 
+			@media screen and (max-width: 700px){
+				width: 100%;
+			}
+
 			&.cui-tile{
 	
 				.cui-tile__body{
@@ -185,15 +189,6 @@
 
 			&__body{
 				position: relative;
-
-				&::before{
-					color: #fff;
-					content: '▼';
-					font-size: 2em;
-					left: 50px;
-					position: absolute;
-					top: -8px;
-				}
 			}
 
 			.cui-flex-table{
@@ -305,10 +300,33 @@
 		}
 
 		.cui-expandable__body{
-				background:rgb(232,240,243);
-				padding: 1em;
-				margin:0 50px 10px;
-				width:auto;
+
+
+				.cui-expandable__content{
+					background:rgb(232,240,243);
+					padding: 1em;
+					position: relative;
+					margin:0 50px 10px;
+					width:auto;
+
+					&::before{
+						color: #fff;
+						content: '▼';
+						font-size: 2em;
+						left: 50px;
+						position: absolute;
+						top: -8px;
+					}
+
+					&::after{
+						visibility: hidden;
+				    display: block;
+				    font-size: 0;
+				    content: " ";
+				    clear: both;
+				    height: 0;
+					}
+				}
 
 				.collapse{
 					margin-top: -5px;
