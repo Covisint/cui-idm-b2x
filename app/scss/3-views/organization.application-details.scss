@@ -1,0 +1,409 @@
+.org-Application{
+	&--top{
+		width:25%;
+		margin:0 auto;
+
+		@media screen and (max-width: 700px){
+			width: 100%;
+		}
+
+		&__mobile-stack{
+			display: flex;
+			flex-flow: column;
+		}
+
+		.cui-media__content{
+			color:rgb(65,118,131);
+			font-size:15px;
+			text-transform: uppercase;
+		}
+
+		.cui-media{
+			text-align: center;
+			flex-flow: column;
+			justify-content: center;
+
+			@media screen and (max-width: 700px){
+				flex-flow: row;
+			}
+
+	        &__image-container{
+	          justify-content: center;
+	        }
+      	}
+
+		.cui-button.cui-button--inverted{
+			font-weight: bold;
+			margin:20px 5px;
+		}
+	}
+
+	&--text{
+		@media screen and (max-width: 700px){
+			margin: .2em 0;
+			text-align: left;
+		}
+	}
+
+	&--name{
+		font-size: 24px;
+		font-weight: bold;
+		text-align:center;
+		display:block !important;
+		/* color:rgb(52,53,52); */
+		color: $cui-primary-colors--dark;
+		margin:0;
+		padding:0 0 7px 0;
+
+		@media screen and (max-width: 700px){
+			text-align: left;
+		}
+
+		&:first-child{
+			font-size: 16px;
+
+		}
+		&:last-child{
+			
+		}
+		svg{
+			width:20px;
+			use{
+				fill:rgb(65,118,131);
+			}
+		}
+	}
+
+	&--controls{
+		display: flex;	
+		justify-content: center;
+		margin-bottom: 2em;
+	}
+
+	&--bundled-related{
+		display:flex;
+		width:calc(100% - 200px);
+		margin:0 auto;
+		justify-content:space-around;
+
+		@media screen and (max-width: 700px){
+			width: 100%;
+		}
+
+		&.desktop{
+			@media screen and (max-width:700px){
+				display: none;
+			}
+		}
+
+		&.mobile{
+			display: none;
+
+			@media screen and (max-width:700px){
+				display: block;
+			}
+		}
+
+		.cui-tabs{
+			&__tab-container{
+				padding: 0;
+			}
+
+			&__tab{
+				background-color: #6a98a0;
+				color: #fff;
+
+				&--active{
+					background-color: #fff;
+					border: 1px #dee9ee solid;
+					border-width: 1px 0;
+					color: $cui-primary-colors--dark;
+
+					&:first-of-type{
+						box-shadow: none;
+					}
+				}
+			}
+		}
+
+		&__bundled, &__related{
+			width:45%;
+
+			&.cui-tile{
+	
+				.cui-tile__body{
+					padding: 0;
+				}
+
+				.cui-tile__text{
+					display:flex;
+					align-items:center;
+					color:rgb(65,118,131);
+					padding:17px;
+					margin:0;
+					border-top:1px solid #cde6f0;
+					border-bottom:none;
+					font-weight:700;
+
+					&:first-child{
+						border: none;
+					}
+
+
+					.cui-button{
+						font-weight: normal;
+						height:auto;
+						width:auto;
+						padding:5px 15px;
+						border-radius: 25px;
+						margin-left: auto;
+					}
+
+				}
+			}
+
+		}
+	}
+
+	&--user-list{
+
+		width: 90%;
+		margin:25px auto;
+
+		&__title{
+			margin-bottom:10px;
+			text-transform:uppercase;
+
+			@media screen and (max-width: 700px){
+				display: none;
+			}
+		}
+
+		.cui-expandable{
+			border-bottom:1px solid rgb(222,233,238);
+			padding-bottom:0;
+
+			&__body{
+				position: relative;
+
+				&::before{
+					color: #fff;
+					content: '▼';
+					font-size: 2em;
+					left: 50px;
+					position: absolute;
+					top: -8px;
+				}
+			}
+
+			.cui-flex-table{
+				&__tr{
+					align-items: stretch;
+					justify-content: center;
+					border-top: 0;
+					width: 100%;
+				}
+
+				&__avatar-col{
+					display: flex;
+					align-items: center;
+
+					@media screen and (max-width: 700px){
+						align-items: flex-start;
+					}
+				}
+
+				&__left{
+					flex-basis: 45%;
+				}
+
+				&__left,
+				&__middle{
+					flex-basis:45%;
+				}
+
+				&__middle{
+					padding: 0 .5em;
+
+					@media screen and (max-width: 700px){
+						padding: 0;
+					}
+				}
+
+				&__right{
+					flex-basis: 6%;
+					
+					.cui-flex-table__text{
+						margin-right: 1.875em;
+					}
+				}
+
+				&__text{
+
+					@media screen and (max-width: 700px){
+						margin: .2em 0;
+					}
+
+					&--name{
+						color: $cui-primary-colors--dark;
+						font-weight: bold;
+
+						@media screen and (max-width: 700px){
+							color: $cui-primary-colors--medium-dark;
+						}
+					}
+
+					&--mobile-only{
+						display: none;
+
+						@media screen and (max-width: 700px){
+							display: inline;
+						}
+					}
+				}
+
+				.active{
+					color: rgb(0,108,119);
+				}
+
+				.suspended{
+					 color:rgb(255,68,0);
+				}
+			}
+
+			&.expanded{
+				cui-expandable-title p:nth-child(5) a{
+					opacity:0;
+				}
+			}
+			cui-expandable-title{
+				cursor:default;
+				padding: 0;
+			}
+		}
+		&__header{
+				border-bottom:1px solid rgb(222,233,238);
+				border-top:1px solid rgb(222,233,238);
+
+				@media screen and (max-width: 700px){
+					display: none;
+				}
+
+				.cui-flex-table{
+					&__left{
+						flex-basis: 57%;
+						padding-left: calc(50px + 1.875em);
+					}
+					&__middle{
+						flex-basis: 52%;
+						width: auto;
+					}
+					&__right{
+						flex-basis: 13%;
+					}
+				}
+		}
+
+		.cui-expandable__body{
+				background:rgb(232,240,243);
+				padding: 1em;
+				margin:0 50px 10px;
+				width:auto;
+
+				.collapse{
+					margin-top: -5px;
+					text-align: right;
+				}
+
+				.cui-actions{
+					color: $cui-primary-colors--dark;
+					display: flex;
+					justify-content: space-between;
+
+					&__admin-select{
+						display: flex;
+
+						span{
+							margin-right: 10px;
+						}
+					}
+
+					&__edit-controls{
+						margin-left: auto;
+
+						&--link{
+							color:rgb(65,118,131);
+							font-weight: bold;
+							padding: 0 5px;
+							text-decoration: none;
+						}
+					}
+				}
+
+				.cui-button{
+					&--update{
+						float: right;
+					}
+				}
+			}
+
+		&__actions{
+			display: none;
+		}
+
+
+
+		//THE CONFIRMATION BOX
+		.cui-edit-user{
+			.cui-actions{
+
+				&--confirm{
+					flex-flow: row wrap;
+					justify-content: flex-start; 
+
+					&__checkbox{
+						flex-basis: 100%;
+						margin: 0 0 20px 0;
+					}
+
+					&__text{
+						flex-basis: 100%;
+					}
+
+					&__button{
+						margin: 0 10px;
+					}
+
+					&__link{
+						color: #417683;
+						line-height: 40px;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+
+
+
+
+
+	}
+
+	&--edit{
+		font-weight: bold;
+		text-decoration:none;
+		color: rgb(0,108,119);
+		weight:600;
+		transition:opacity .05s;
+	}
+
+
+	&--claim-title{
+		color: $cui-primary-colors--dark;
+		font-weight: bold;
+	}
+
+
+}
+
+
