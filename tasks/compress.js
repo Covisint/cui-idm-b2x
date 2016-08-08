@@ -13,5 +13,7 @@ module.exports = function(grunt,config){
             }
           ]
         }
+      ]
     }
+  }
 }

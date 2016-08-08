@@ -1,38 +1,30 @@
 angular.module('organization')
-.controller('userDetailsCtrl',function(API,CuiMobileNavFactory,$q,$stateParams) {
-    'use strict';
+.controller('userDetailsCtrl', function(API, Loader, CuiMobileNavFactory, $scope, $stateParams) {
 
-    const userDetails = this,
-        userId = $stateParams.userID;
+    const userDetails = this
+    const scopeName = 'userDetails.'
 
-    let apiPromises = [];
+    userDetails.profileRolesSwitch = true
+    userDetails.appsHistorySwitch = true
+    userDetails.profileSwitch = 'profile'
 
-    userDetails.loading = true;
-    userDetails.profileRolesSwitch = true;
-    userDetails.appsHistorySwitch = true;
-    userDetails.organizationId = $stateParams.orgID;
-    userDetails.profileSwitch = "profile";
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    Loader.onFor(scopeName + 'userInfo')
 
-    apiPromises.push(
-        // Get user
-        API.cui.getPerson({personId: userId})
-        .then((res) => {
-            userDetails.user = res;
-            CuiMobileNavFactory.setTitle(res.name.given + '.' + res.name.surname)
-        })
-    );
-
-    $q.all(apiPromises)
-    .then((res) => {
-        userDetails.loading = false;
+    API.cui.getPerson({ personId: $stateParams.userID })
+    .then(res => {
+        userDetails.user = res
+        CuiMobileNavFactory.setTitle(res.name.given + '.' + res.name.surname)
     })
-    .catch((error) => {
-        userDetails.loading = false;
-        console.log(error);
-    });
+    .fail(error => {
+        console.error('Failed getting user information')
+    })
+    .always(() => {
+        Loader.offFor(scopeName + 'userInfo')
+        $scope.$digest()
+    })
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-});
+})

@@ -15,48 +15,55 @@
     <div class="cui-users__main-container">
 
       <!-- Page Loading -->
-      <div class="cui-loading__container" ng-if="userProfile.loading">
+      <div class="cui-loading__container" ng-if="base.loader.for['userProfile.initProfile']">
         <div class="cui-loading--center"><div class="cui-loading"></div></div>
       </div>
 
-      <div ng-include="'app/modules/user/profile/sections/header.html'"></div>
+      <!-- Error Messages -->
+      <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userProfileFactory.initUser']">{{'cui-userProfile-user-error' | translate}}</p>
+      <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userProfileFactory.initSecurityQuestions']">{{'cui-userProfile-security-error' | translate}}</p>
+      <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userProfileFactory.initPasswordPolicy']">{{'cui-userProfile-password-error' | translate}}</p>
+
+      <!-- Header Block -->
+      <div ng-include="'app/modules/user/profile/sections/header.html'" ng-if="userProfile.user"></div>
 
       <div class="cui-users__profile">
+        <!-- Left Block -->
         <div class="cui-users__profile-info">
           <div class="cui-users__info-block">
             <!-- Basic info  (name and email)-->
-            <div ng-include="'app/modules/user/profile/sections/basic-info.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/basic-info.html'" ng-if="userProfile.user"></div>
           </div>
 
           <div class="cui-users__info-block">
             <div ng-if="userProfile.passwordUpdateSuccess" class="cui-users__password-success">Password Reset Success!</div>
             <!-- Password -->
-            <div ng-include="'app/modules/user/profile/sections/password.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/password.html'" ng-if="userProfile.passwordRules"></div>
           </div>
 
           <div class="cui-users__info-block">
             <!-- Challenge Questions -->
-            <div ng-include="'app/modules/user/profile/sections/challenge-questions.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/challenge-questions.html'" ng-if="userProfile.securityQuestions"></div>
           </div>
 
           <div class="cui-users__info-block">
             <!-- Timezone/Language -->
-            <div ng-include="'app/modules/user/profile/sections/timezone-language.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/timezone-language.html'" ng-if="userProfile.user"></div>
           </div>
         </div>
-
+        
+        <!-- Right Block -->
         <div class="cui-users__profile-info">
           <div class="cui-users__info-block">
             <!-- Address -->
-            <div ng-include="'app/modules/user/profile/sections/address.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/address.html'" ng-if="userProfile.user"></div>
           </div>
 
           <div class="cui-users__info-block">
             <!-- Phones/Fax -->
-            <div ng-include="'app/modules/user/profile/sections/phone-fax.html'"></div>
+            <div ng-include="'app/modules/user/profile/sections/phone-fax.html'" ng-if="userProfile.user"></div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
