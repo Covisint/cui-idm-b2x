@@ -7,10 +7,13 @@ module.exports = function(grunt) {
     concatAppDir: './assets/concat/js/app.js',
     concatCssDir: './assets/concat/css/main.css',
     modules: './app/modules',
-    scss: './app/scss'
+    scss: './app/scss',
+    target: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target') 
   };
 
-  var tasks = ['watch','sass','browserSync','postcss','clean','copy','filerev','useminPrepare',
+  console.log('Target Environment: ' + config.target);
+
+  var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
 
   var opts = {
@@ -54,5 +57,8 @@ module.exports = function(grunt) {
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('demosdk', ['browserSync:demosdk']);
   grunt.registerTask('jslint', ['jshint']);
+
+
+  grunt.registerTask('deploy', ['build','copy:appConfig','compress']);
 
 };
