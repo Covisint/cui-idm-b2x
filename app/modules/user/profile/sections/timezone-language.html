@@ -4,9 +4,10 @@
       <div class="cui-users__field">
         <span class="cui-field-val__field">{{'timezone-and-language' | translate}}</span>
         <span class="cui-link" href="" ng-if="!toggled" ng-click="userProfile.toggleAllOff();toggleOn()">{{'cui-open' | translate}}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
-          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-        </svg>
+        <!-- Close Icon -->
+        <div ng-if="toggled" ng-click="toggleOff()">
+          <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        </div>
       </div>
       <div ng-if="!toggled">
         <span class="cui-field-val__field">{{'cui-timezone' | translate}}:</span>
