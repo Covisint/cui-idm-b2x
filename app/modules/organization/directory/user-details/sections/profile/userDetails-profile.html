@@ -1,44 +1,36 @@
-<!-- Page Loading -->
-<div class="cui-loading__container--user-details" ng-if="userDetailsProfile.loading">
+<!-- User Details Profile -->
+<div class="cui-loading__container--user-details" ng-if="base.loader.for['userDetailsProfile.initProfile']">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
-<ng-form name="edit" novalidate ng-if="!userDetailsProfile.loading">
+<ng-form name="edit" novalidate ng-if="!base.loader.for['userDetailsProfile.initProfile']">
+	<!-- Basic Info -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.user">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/basic-info.html'"></div>
+  </div>
 
+  <!-- Password -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.passwordRules">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/password.html'"></div>
+  </div>
 
-  <div>
+  <!-- Challenge Questions -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.securityQuestions">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/challenge-questions.html'"></div>
+  </div>
 
-  	<!-- Basic Info -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/basic-info.html'"></div>
-    </div>
+  <!-- Address -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.user">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/address.html'"></div>
+  </div>
 
-    <!-- Password -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/password.html'"></div>
-    </div>
+	<!-- Phone/Fax -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.user">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/phone-fax.html'"></div>
+  </div>
 
-    <!-- Challenge Questions -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/challenge-questions.html'"></div>
-    </div>
-
-    <!-- Address -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/address.html'"></div>
-    </div>
-
-		<!-- Phone/Fax -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/phone-fax.html'"></div>
-    </div>
-
-		<!-- Language/Timezone -->
-    <div class="cui-users__info-block">
-      <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/timezone-language.html'"></div>
-    </div>
-
-	</div>
-
-
+	<!-- Language/Timezone -->
+  <div class="cui-users__info-block" ng-if="userDetailsProfile.user">
+    <div ng-include="'app/modules/organization/directory/user-details/sections/profile/sections-profile/timezone-language.html'"></div>
+  </div>
 </ng-form>
