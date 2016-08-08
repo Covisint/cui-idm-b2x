@@ -10,6 +10,10 @@ Global layout styles
   min-height: 750px;
 }
 
+.cui-paginate__container {
+  margin-top: em(83);
+}
+
 .cui-footer {
   padding: 0.9375em 0.8125em;
 
@@ -79,6 +83,12 @@ Global layout styles
     display:inline-block;
 }
 
+.cui-breadcrumb {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}
+
 .js-main-content {
   transform: translate3d(0, 0, 0);
   transition: transform .15s linear;
@@ -87,8 +97,4 @@ Global layout styles
 .js-main-content--search-open {
   transform: translate3d(0, 60px, 0);
   transition: transform .15s linear;
-}
-
-[ui-view].ng-leave {
-  transition: none
 }
