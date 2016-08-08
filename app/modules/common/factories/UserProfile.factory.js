@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfile', function(API,$q,$timeout) {
+.factory('UserProfile', function(API,LocaleService,$q,$timeout) {
 
         var self = {
             getProfile: function(userCredentials) {
@@ -221,7 +221,7 @@ angular.module('common')
                     API.cui.updateSecurityQuestionAccount({personId: userId,
                         data: {
                             version: '1',
-                            id: API.getUser(),
+                            id: userId,
                             questions: userProfile.userSecurityQuestions.questions
                         }
                     })

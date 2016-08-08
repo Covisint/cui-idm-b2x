@@ -1,27 +1,21 @@
 angular.module('user')
-.controller('userProfileCtrl', (API,Timezones,User,UserProfile,$cuiI18n,$scope,$timeout) => {
+.controller('userProfileCtrl', function(API, Loader, User, UserProfileV2, $scope) {
 
-    const userProfile = this;
-    const userId = User.user.id
+    const userProfile = this
+    const scopeName = 'userProfile.'
 
-    userProfile.loading = true;
-    userProfile.saving = true;
-    userProfile.fail = false;
-    userProfile.success = false;
-    userProfile.timezoneById = Timezones.timezoneById;
-    userProfile.toggleOffFunctions = {};
-    UserProfile.injectUI(userProfile, $scope, userId);
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    UserProfileV2.injectUI(userProfile, $scope, User.user.id)
 
-    UserProfile.getProfile({personId: userId})
-    .then(function(res) {
-        angular.merge(userProfile, res);
-        userProfile.loading = false;
-    }, function(err) {
-        userProfile.loading = false;
-    });
+    Loader.onFor(scopeName + 'initProfile')
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    UserProfileV2.initUserProfile(User.user.id, User.user.organization.id)
+    .then(res => {
+        angular.merge(userProfile, res)
+        Loader.offFor(scopeName + 'initProfile')
+    })
 
-});
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
+
+})

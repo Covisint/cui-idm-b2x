@@ -11,7 +11,7 @@ module.exports = function(grunt) {
   };
 
   var tasks = ['watch','sass','browserSync','postcss','clean','copy','filerev','useminPrepare',
-  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
+  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate','compress'];
 
   var opts = {
     config:config
