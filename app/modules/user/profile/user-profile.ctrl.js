@@ -1,5 +1,5 @@
 angular.module('user')
-.controller('userProfileCtrl', function(API, Loader, User, UserProfileV2, $scope) {
+.controller('userProfileCtrl', function(Loader, User, UserProfileV2, $scope) {
 
     const userProfile = this
     const scopeName = 'userProfile.'
