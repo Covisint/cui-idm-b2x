@@ -25,9 +25,12 @@
   		<div class="cui-action__actions">
     		<!-- Sort -->
     		<div class="cui-action__action-container" id="sort-button" ng-click="userDetailsHistory.sortClicked=!userDetailsHistory.sortClicked" off-click="userDetailsHistory.sortClicked=false">
-      		<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <div>
+            <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+          </div>
+      		<!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
-      		</svg>
+      		</svg-->
       		<span class="cui-action__action-label">Sort</span>
       		<!-- Sort Popover -->
       		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetailsHistory.sortClicked">
@@ -37,9 +40,13 @@
     		</div>
     		<!-- Refine -->
     		<div class="cui-action__action-container" id="refine-button" ng-click="userDetailsHistory.refineClicked=!userDetailsHistory.refineClicked" off-click="userDetailsHistory.refineClicked=false">
-					<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+                    
+          <div>
+            <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+          </div>
+					<!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
-      		</svg>
+      		</svg-->
       		<span class="cui-action__action-label">Refine</span>
       		<!-- Refine Popover -->
       		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetailsHistory.refineClicked">
