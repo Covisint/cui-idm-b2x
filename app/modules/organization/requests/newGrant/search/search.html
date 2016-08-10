@@ -19,11 +19,7 @@
           ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrantSearch.search.category}}</span>
         <div class="cui-action__actions">
             <cui-icon ng-click="newGrantSearch.requestPopover=!newGrantSearch.requestPopover" off-click="newGrantSearch.requestPopover=false" id="cui-applications__requested-apps" cui-svg-icon="cui:folder" svg-class="cui-icon--folder" use-class="cui-icon__ref" ng-class="{'cui-action__icon--active': newGrantSearch.numberOfRequests != 0}" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-            <!-- <svg ng-click="newGrantSearch.requestPopover=!newGrantSearch.requestPopover" off-click="newGrantSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': newGrantSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
-              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-            </svg> -->
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrantSearch.numberOfRequests != 0}">{{newGrantSearch.numberOfRequests}}</sup>
-
             <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="newGrantSearch.requestPopover">
               <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
               <div class="cui-action__popover-section">
@@ -63,9 +59,6 @@
                   <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-expandable__close" use-class="cui-icon__ref" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                 </div>
 
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="cui-expandable__close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-                </svg> -->
                 <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
                 <div class="cui-expandable__body-row">
                     <div class="cui-expandable__body-col" ng-if="application.bundledApps && application.bundledApps.length > 0">

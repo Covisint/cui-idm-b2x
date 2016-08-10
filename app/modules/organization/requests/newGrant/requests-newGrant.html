@@ -12,9 +12,6 @@
           <h2 class="cui-action__title">{{'select-applications' | translate}}</h2>
           <div class="cui-action__actions">
               <cui-icon ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-              <!-- <svg ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
-                <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-              </svg> -->
               <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
               <!-- popover -->
               <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
@@ -59,9 +56,6 @@
                     ng-click="newGrant.searchCallback({type:'category', value:category.name})">
                       <h4 class="cui-applications__category" >{{ category.name | cuiI18n }}</h4>
                       <cui-icon cui-svg-icon="cui:chevron18" svg-class="cui-icon cui-icon--light-grey" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-                      <!-- <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-                        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
-                      </svg> -->
                   </section>
               </div>
           </section>
