@@ -4,102 +4,111 @@
 
 <!-- Organization Applications: Action Header -->
 <div class="cui-action">
-  <nav class="cui-breadcrumb">
-    <ul class="cui-breadcrumb__links">
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="applications.orgApplications" ui-sref-active="active">{{'organization-applications' | translate}}</a>
-      </li>
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
-      </li>
-    </ul>
-  </nav>
-  <div class="cui-action__actions">
-    <!-- Sort -->
-    <div class="cui-action__action-container" ng-click="orgApplications.sortClicked =! orgApplications.sortClicked" id="sort-button" off-click="orgApplications.sortClicked=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
-      </svg>
-      <span class="cui-action__action-label">{{'sort' | translate}}</span>
-      <!-- Sort Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.sortClicked">
-        <p ng-click="orgApplications.sort('alphabetically')">{{'cui-alphabetically' | translate}}</p>
-        <p ng-click="orgApplications.sort('date'); ">{{'cui-by-date-added' | translate}}</p>
-      </div>
-    </div>
-    <!-- Refine -->
-    <div class="cui-action__action-container" ng-click="orgApplications.refineClicked =! orgApplications.refineClicked" id="refine-button" off-click="orgApplications.refineClicked=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
-      </svg>
-      <span class="cui-action__action-label">{{'refine' | translate}}</span>
-      <!-- Refine Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.refineClicked">
-        <p ng-click="orgApplications.parseAppsByStatus('all')">{{'all' | translate}} ({{orgApplications.statusCount[0]}})</p>
-        <div ng-repeat="status in orgApplications.categoryList" ng-if="orgApplications.statusCount[$index+1]!==0">
-          <p ng-click="orgApplications.parseAppsByStatus(status)">{{status | translate}} ({{orgApplications.statusCount[$index+1]}})</p>
+    <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+            <li class="cui-breadcrumb__link">
+                <a ui-sref="applications.orgApplications" ui-sref-active="active">{{'organization-applications'| translate}}</a>
+            </li>
+            <li class="cui-breadcrumb__link">
+                <a ui-sref="applications.myApplications">{{'my-applications'| translate}}</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="cui-action__actions">
+        <!-- Sort -->
+        <div class="cui-action__action-container" ng-click="orgApplications.sortClicked = !orgApplications.sortClicked" id="sort-button" off-click="orgApplications.sortClicked=false">
+            <div>
+                <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+            </div>
+            <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+                <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+            </svg-->
+            <span class="cui-action__action-label">{{'sort'| translate}}</span>
+            <!-- Sort Popover -->
+            <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+                 target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.sortClicked">
+                <p ng-click="orgApplications.sort('alphabetically')">{{'cui-alphabetically'| translate}}</p>
+                <p ng-click="orgApplications.sort('date');">{{'cui-by-date-added'| translate}}</p>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="orgApplications.categoriesClicked =! orgApplications.categoriesClicked" id="categories-button" off-click="orgApplications.categoriesClicked=false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
-      </svg>
-      <span class="cui-action__action-label">{{'categories' | translate}}</span>
-      <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.categoriesClicked">
-        <p ng-click="orgApplications.parseAppsByCategory('all')">{{'all' | translate}} ({{orgApplications.categoryCount[0]}})</p>
-        <div ng-repeat="category in orgApplications.categoryList">
-          <p ng-click="orgApplications.parseAppsByCategory(category)">{{category| cuiI18n}} ({{orgApplications.categoryCount[$index+1]}})</p>
+        <!-- Refine -->
+        <div class="cui-action__action-container" ng-click="orgApplications.refineClicked = !orgApplications.refineClicked" id="refine-button" off-click="orgApplications.refineClicked=false">
+            <div>
+                <cui-icon cui-svg-icon="cui:filter10" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+            </div>
+            <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+                <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+            </svg-->
+            <span class="cui-action__action-label">{{'refine'| translate}}</span>
+            <!-- Refine Popover -->
+            <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.refineClicked">
+                <p ng-click="orgApplications.parseAppsByStatus('all')">{{'all'| translate}} ({{orgApplications.statusCount[0]}})</p>
+                <div ng-repeat="status in orgApplications.categoryList" ng-if="orgApplications.statusCount[$index + 1] !== 0">
+                    <p ng-click="orgApplications.parseAppsByStatus(status)">{{status| translate}} ({{orgApplications.statusCount[$index + 1]}})</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- new icon -->
-    <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-      <defs>
+        <!-- Categories -->
+        <div class="cui-action__action-container" ng-click="orgApplications.categoriesClicked = !orgApplications.categoriesClicked" id="categories-button" off-click="orgApplications.categoriesClicked=false">
+            <div>
+                <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+            </div>
+            <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+            <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
+            </svg-->
+            <span class="cui-action__action-label">{{'categories'| translate}}</span>
+            <!-- Categories Popover -->
+            <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle"
+                 target-attachment="bottom middle" offset="-10px 0" ng-if="orgApplications.categoriesClicked">
+                <p ng-click="orgApplications.parseAppsByCategory('all')">{{'all'| translate}} ({{orgApplications.categoryCount[0]}})</p>
+                <div ng-repeat="category in orgApplications.categoryList">
+                    <p ng-click="orgApplications.parseAppsByCategory(category)">{{category| cuiI18n}} ({{orgApplications.categoryCount[$index + 1]}})</p>
+                </div>
+            </div>
+        </div>
+        <!-- new icon -->
+        <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+        <defs>
         <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
         <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
-          <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
-          <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
-          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+            <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
         </filter>
-      </defs>
-      <g id="new-with-shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        </defs>
+        <g id="new-with-shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="New-2" transform="translate(3.000000, 1.000000)">
-            <g id="Oval-73">
-              <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-              <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
-            </g>
-            <path d="M22.1371429,17.5349883 L22.1371429,11.8697421 C22.1371429,10.7562937 21.2419442,9.86229506 20.1376608,9.86229506 L19.8623392,9.86229506 C18.7484919,9.86229506 17.8628571,10.7610597 17.8628571,11.8697421 L17.8628571,17.5349883 L12.197611,17.5349883 C11.0841625,17.5349883 10.1901639,18.4301869 10.1901639,19.5344704 L10.1901639,19.8097919 C10.1901639,20.9236392 11.0889286,21.809274 12.197611,21.809274 L17.8628571,21.809274 L17.8628571,27.4745202 C17.8628571,28.5879686 18.7580558,29.4819672 19.8623392,29.4819672 L20.1376608,29.4819672 C21.2515081,29.4819672 22.1371429,28.5832026 22.1371429,27.4745202 L22.1371429,21.809274 L27.802389,21.809274 C28.9158375,21.809274 29.8098361,20.9140754 29.8098361,19.8097919 L29.8098361,19.5344704 C29.8098361,18.4206231 28.9110714,17.5349883 27.802389,17.5349883 L22.1371429,17.5349883 Z" id="Rectangle-352" fill="#FFFFFF" fill-rule="evenodd"></path>
+        <g id="Oval-73">
+        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+        <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
         </g>
-      </g>
-    </svg>
-  </div>
+        <path d="M22.1371429,17.5349883 L22.1371429,11.8697421 C22.1371429,10.7562937 21.2419442,9.86229506 20.1376608,9.86229506 L19.8623392,9.86229506 C18.7484919,9.86229506 17.8628571,10.7610597 17.8628571,11.8697421 L17.8628571,17.5349883 L12.197611,17.5349883 C11.0841625,17.5349883 10.1901639,18.4301869 10.1901639,19.5344704 L10.1901639,19.8097919 C10.1901639,20.9236392 11.0889286,21.809274 12.197611,21.809274 L17.8628571,21.809274 L17.8628571,27.4745202 C17.8628571,28.5879686 18.7580558,29.4819672 19.8623392,29.4819672 L20.1376608,29.4819672 C21.2515081,29.4819672 22.1371429,28.5832026 22.1371429,27.4745202 L22.1371429,21.809274 L27.802389,21.809274 C28.9158375,21.809274 29.8098361,20.9140754 29.8098361,19.8097919 L29.8098361,19.5344704 C29.8098361,18.4206231 28.9110714,17.5349883 27.802389,17.5349883 L22.1371429,17.5349883 Z" id="Rectangle-352" fill="#FFFFFF" fill-rule="evenodd"></path>
+        </g>
+        </g>
+        </svg>
+    </div>
 </div>
 
 <!-- Organization Applications: Content -->
 <div class="cui-applications__main-container">
-  <!-- Loading -->
-  <div class="cui-loading__container" ng-if="orgApplications.loading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
-  <div ng-if="!orgApplications.loading">
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in orgApplications.appList track by application.id" ng-click="orgApplications.goToDetails(application)">
-      <div class="cui-media__image-container">
-        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
-      </div>
-      <div class="cui-media__body cui-media__body--full">
-        <div class="cui-media__title-container">
-          <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--'+application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
-          <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
-        </div>
-        <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class="'cui-status--'+application.status" ng-bind="application.status | lowercase"></span>
-      </div>
+    <!-- Loading -->
+    <div class="cui-loading__container" ng-if="orgApplications.loading">
+        <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
-  </div>
+
+    <div ng-if="!orgApplications.loading">
+        <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in orgApplications.appList track by application.id" ng-click="orgApplications.goToDetails(application)">
+            <div class="cui-media__image-container">
+                <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+            </div>
+            <div class="cui-media__body cui-media__body--full">
+                <div class="cui-media__title-container">
+                    <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--' + application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+                    <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
+                </div>
+                <span class="cui-media__content" ng-if="application.category"> {{application.category| cuiI18n}}</span>
+                <span class="cui-status" ng-class="'cui-status--' + application.status" ng-bind="application.status | lowercase"></span>
+            </div>
+        </div>
+    </div>
 </div>
