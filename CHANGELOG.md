@@ -1,3 +1,8 @@
+## [v1.0.14] 2016-8-11
+
+## Changelog
+* updates styleguide and icon dependencies
+
 ## [v1.0.13] 2016-7-29
 
 ## Changelog
