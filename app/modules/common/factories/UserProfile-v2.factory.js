@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfileV2', function(API, APIError, LocaleService, Timezones, $q, $timeout) {
+.factory('UserProfileV2', function(API, APIError, LocaleService, Timezones, $filter, $q, $timeout) {
 
     const errorName = 'userProfileFactory.'
 
@@ -30,7 +30,12 @@ angular.module('common')
 
         initSecurityQuestions: function(userId) {
             let defer = $q.defer()
-            let securityQuestions = {}
+            let securityQuestions = {
+                userSecurityQuestions: {},
+                tempUserSecurityQuestions: {},
+                allSecurityQuestions: [],
+                allSecurityQuestionsDup: []
+            }
 
             $q.all([
                 API.cui.getSecurityQuestionAccount({ personId: userId }), 
@@ -38,20 +43,20 @@ angular.module('common')
             ])
             .then(res => {
                 angular.copy(res[0], securityQuestions.userSecurityQuestions)
-                angular.copy(res[0].questions, securityQuestions.tempUserSecurityQuestions)
-                angular.copy(res[1], [securityQuestions.allSecurityQuestions, securityQuestions.allSecurityQuestionsDup])
+                angular.copy(res[0], securityQuestions.tempUserSecurityQuestions)
+                angular.copy(res[1], securityQuestions.allSecurityQuestions) 
+                angular.copy(res[1], securityQuestions.allSecurityQuestionsDup)
+
                 securityQuestions.allSecurityQuestions.splice(0, 1)
 
-                // Splits questions to use between both dropdowns
                 let numberOfQuestions = securityQuestions.allSecurityQuestions.length
-                let numberOfQuestionsFloor = Math.floor(numberOfQuestions/3)
+                let numberOfQuestionsFloor = Math.floor(numberOfQuestions/2)
 
-                //Allocating options to three questions
-                securityQuestions.allChallengeQuestions0 = securityQuestions.allSecurityQuestions.splice(0, numberOfQuestionsFloor)
-                securityQuestions.allChallengeQuestions1 = securityQuestions.allSecurityQuestions.splice(0, numberOfQuestionsFloor)
-                securityQuestions.allChallengeQuestions2 = securityQuestions.allSecurityQuestions.splice(0, numberOfQuestionsFloor)
+                securityQuestions.allChallengeQuestions0 = securityQuestions.allSecurityQuestions.slice(0, numberOfQuestionsFloor)
+                securityQuestions.allChallengeQuestions1 = securityQuestions.allSecurityQuestions.slice(numberOfQuestionsFloor)
 
-                UserProfile.selectTextsForQuestions(securityQuestions)
+                securityQuestions.challengeQuestionsTexts = UserProfile.selectTextsForQuestions(securityQuestions)
+
                 defer.resolve(securityQuestions)
             })
             .catch(err => {
@@ -66,13 +71,15 @@ angular.module('common')
         },
 
         selectTextsForQuestions: function(securityQuestions) {
-            profile.challengeQuestionsTexts = []
-            angular.forEach(profile.userSecurityQuestions.questions, function(userQuestion) {
-                var question = _.find(profile.allSecurityQuestionsDup, function(question) {
+            let challengeQuestionsTexts = []
+
+            angular.forEach(securityQuestions.userSecurityQuestions.questions, (userQuestion) => {
+                let question = _.find(securityQuestions.allSecurityQuestionsDup, (question) => {
                     return question.id === userQuestion.question.id
                 })
-                this.push(question.question[0].text)
-            }, profile.challengeQuestionsTexts)
+                challengeQuestionsTexts.push($filter('cuiI18n')(question.question))
+            })
+            return challengeQuestionsTexts
         },
 
         initPasswordPolicy: function(organizationId) {
@@ -158,7 +165,7 @@ angular.module('common')
             profile.toggleOffFunctions = {}
 
             profile.resetAllData = () => {
-                angular.copy(profile.securityQuestions, profile.tempUserSecurityQuestions)
+                angular.copy(profile.userSecurityQuestions, profile.tempUserSecurityQuestions)
                 angular.copy(profile.user, profile.tempUser)
             }
 
@@ -264,8 +271,7 @@ angular.module('common')
 
             profile.saveChallengeQuestions = (section, toggleOff) => {
                 if (section) profile[section] = { submitting: true }
-                profile.userSecurityQuestions.questions = angular.copy(profile.tempUserSecurityQuestions)
-                UserProfile.selectTextsForQuestions(profile)
+                profile.userSecurityQuestions = angular.copy(profile.tempUserSecurityQuestions)
 
                 API.cui.updateSecurityQuestionAccount({
                     personId: userId,
@@ -275,23 +281,17 @@ angular.module('common')
                         questions: profile.userSecurityQuestions.questions
                     }
                 })
-                .then(function(res) {
-                    if (section) {
-                        profile[section].submitting = false
-                    }
-                    if (toggleOff) {
-                        toggleOff()
-                    }
+                .always(() => {
+                    if (section) profile[section].submitting = false
+                })
+                .done(() => {
+                    if (toggleOff) toggleOff()
+                    profile.challengeQuestionsTexts = UserProfile.selectTextsForQuestions(profile)
                     $scope.$digest()
                 })
-                .fail(function(err) {
-                    console.error(err)
-                    if(section) {
-                        profile[section].submitting = false
-                    }
-                    if(section) {
-                        profile[section].error = true
-                    }
+                .fail(err => {
+                    console.error('Error updating security questions', err)
+                    if (section) profile[section].error = true
                     $scope.$digest()
                 })
             }
