@@ -43,7 +43,7 @@
 
           <div class="cui-users__info-block">
             <!-- Challenge Questions -->
-            <div ng-include="'app/modules/user/profile/sections/challenge-questions.html'" ng-if="userProfile.securityQuestions"></div>
+            <div ng-include="'app/modules/user/profile/sections/challenge-questions.html'" ng-if="userProfile.userSecurityQuestions && userProfile.allSecurityQuestions"></div>
           </div>
 
           <div class="cui-users__info-block">

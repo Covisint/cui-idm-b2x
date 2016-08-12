@@ -19,17 +19,18 @@
 
       <!-- Challenge question edit -->
       <div ng-if="toggled" ng-init="userProfile.pushToggleOff({'name':'challengeQuestions','function':toggleOff})">
-        <div ng-repeat="question in userProfile.tempUserSecurityQuestions">
+        <div ng-repeat="question in userProfile.tempUserSecurityQuestions.questions">
           <b>{{'cui-challenge-question' | translate}} {{$index+1}}</b>
           <cui-dropdown ng-model="question.question.id" class="cui-dropdown" return-value="object.id" display-value="(object.question | cuiI18n)" options="userProfile['allChallengeQuestions' + $index]"></cui-dropdown>
           {{'cui-answer' | translate}}
           <div class="cui-error" ng-messages="challengeQuestions['answer' + $index].$error">
             <div ng-messages-include="app/common-templates/messages.html"></div>
           </div>
-          <input type="text" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userProfile.checkIfRepeatedSecurityAnswer(userProfile.tempUserSecurityQuestions,challengeQuestions)" ng-required="true"/>
+          <input type="text" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userProfile.checkIfRepeatedSecurityAnswer(userProfile.tempUserSecurityQuestions.questions,challengeQuestions)" ng-required="true"/>
           <br/><br/>
         </div>
-        <!-- language/timezone edit Controls -->
+
+        <!-- Edit Controls -->
         <div class="cui-users__address-submit">
           <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
           <button class="cui-button" ng-click="userProfile.saveChallengeQuestions('challengeQuestions',toggleOff);" ng-class="{'cui-button--error':!challengeQuestions.$valid}">
