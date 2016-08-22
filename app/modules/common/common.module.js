@@ -1,7 +1,7 @@
 angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','ui.router','snap','LocalStorageModule'])
 .config(($translateProvider,$locationProvider,$urlRouterProvider,$injector,
     localStorageServiceProvider,$cuiIconProvider,$cuiI18nProvider,$paginationProvider,
-    $stateProvider,$compileProvider) => {
+    $stateProvider,$compileProvider,$cuiResizeHandlerProvider) => {
 
     $urlRouterProvider.rule(($injector, $location) => {
         const path = $location.path()

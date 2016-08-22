@@ -1,7 +1,7 @@
 <div class="cui-organization__profile-right-header cui-desktop-only">
 
   <!-- Applications -->
-  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=true">
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch='apps'">
     <div>
       <cui-icon cui-svg-icon="cui:applications_v2" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==true}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
@@ -9,7 +9,7 @@
   </div>
 
   <!-- History -->
-  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch=false" ng-if="false">
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch='history'" ng-if="false">
     <div>
       <cui-icon cui-svg-icon="cui:history" svg-class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==false}" use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
