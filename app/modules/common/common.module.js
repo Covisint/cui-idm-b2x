@@ -71,6 +71,10 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
         throw new Error(`You don't have paginationOptions set in your appConfig.json`)
     }
 
+    // Cui Resize Handler Breakpoint Option
+    if (appConfig.breakpointOption) $cuiResizeHandlerProvider.setBreakpoint(appConfig.breakpointOption)
+    else throw new Error('You don\'t have breakpointOption set in your appConfig.json')
+
     $compileProvider.debugInfoEnabled(false);
 
 });
