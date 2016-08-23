@@ -1,10 +1,5 @@
 <ng-form name="organizationSelect" novalidate>
-  <!-- Organization List Loading -->
-  <div class="cui-loading__container--organization-list" ng-if="userWalkup.orgLoading">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
-  <cui-expandable class="cui-expandable" ng-repeat="organization in userWalkup.organizationList | orderBy:'name' track by organization.id" ng-if="!userWalkup.orgLoading">
+  <cui-expandable class="cui-expandable" ng-repeat="organization in userWalkup.organizationList | orderBy:'name' track by organization.id">
     <cui-expandable-title class="cui-expandable__title cui-expandable__title--alt-layout" ng-click="toggleExpand()">
       {{organization.name}}
       <span class="chevron">></span>
@@ -16,19 +11,20 @@
       <p>{{organization.phones[0].number}}</p>
 
       <div class="cui-wizard__controls">
-        <button class="cui-wizard__next" ng-click="userWalkup.organization=organization;next()">{{'cui-select-org' | translate}}</button>
+        <button class="cui-wizard__next" ng-click="userWalkup.selectOrganization(organization);next()">{{'cui-select-org' | translate}}</button>
       </div>
     </cui-expandable-body>
   </cui-expandable>
 
   <!-- Pagination Controls -->
-  <div class="cui-paginate__container" ng-if="!userWalkup.orgLoading">
+  <!-- Note [7/20/2016]: nonce organizations endpoint does not currently allow pagination -->
+<!--   <div class="cui-paginate__container" ng-if="!base.loader.for.userWalkup.initializing">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="userWalkup.orgPaginationSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage"></paginate>
-  </div>
+    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage" attach-rerender-to="userWalkup.reRenderPaginate"></paginate>
+  </div> -->
 </ng-form>
 
 <div class="cui-wizard__controls">
-  <button class="cui-wizard__previous" ng-click="previous()" style="margin-right:0">&60#;&60#; {{'cui-previous' | translate}}</button>
+  <button class="cui-wizard__previous" ng-click="previous()" style="margin-right:0">&#60;&#60; {{'cui-previous' | translate}}</button>
 </div>

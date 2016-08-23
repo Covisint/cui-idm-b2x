@@ -1,50 +1,50 @@
 <div class="cui-organization__profile-left-header">
 
-  <!-- Profile -->
-  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch=true" id="profile-button" off-click="">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==true}" preserveAspectRatio="xMidYMid meet" viewBox="0 -1 48 52">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile"></use>
-    </svg>
+  <!-- Profile Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch='profile'" id="profile-button" off-click="">
+    <div>
+      <cui-icon cui-svg-icon="cui:profile" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==true}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
   </div>
 
-  <!-- Roles -->
-  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch=false" id="roles-button" ng-if="false">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==false}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#roles"></use>
-    </svg>
+  <!-- Roles Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch='roles'" id="roles-button" ng-if="false">
+    <div>
+      <cui-icon cui-svg-icon="cui:roles" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==false}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
   </div>
 
-  <!-- Profile -->
-  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='profile'" id="profile-button" off-click="">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='profile'}" preserveAspectRatio="xMidYMid meet" viewBox="0 -1 48 52">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile"></use>
-    </svg>
+  <!-- Profile Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.mobileHandler='profile'" id="profile-button">
+    <div>
+      <cui-icon cui-svg-icon="cui:profile" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='profile'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
   </div>
 
-  <!-- Roles -->
-  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.profileSwitch='roles'" id="roles-button" ng-if="false">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='roles'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#roles"></use>
-    </svg>
+  <!-- Roles Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.mobileHandler='roles'" id="roles-button" ng-if="false">
+    <div>
+      <cui-icon cui-svg-icon="cui:roles" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='roles'}"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
   </div>
 
-  <!-- Applications -->
-  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='apps'">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='apps'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 50">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#applications_v2"></use>
-    </svg>
+  <!-- Applications Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.mobileHandler='apps'">
+    <div>
+      <cui-icon cui-svg-icon="cui:applications_v2" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='apps'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
   </div>
 
-  <!-- History -->
-  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.profileSwitch='history'" ng-if="false">
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='history'}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 52">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#history"></use>
-    </svg>
+  <!-- History Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="userDetails.mobileHandler='history'" ng-if="false">
+    <div>
+      <cui-icon cui-svg-icon="cui:history" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='history'}" svg-class="cui-action__icon cui-action__icon--history" use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
     <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
   </div>
 </div>

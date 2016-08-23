@@ -1,37 +1,21 @@
 angular.module('organization')
-.controller('userDetailsProfileCtrl',function($scope,API,$stateParams,Timezones,UserProfile,$q) {
-    'use strict';
+.controller('userDetailsProfileCtrl', function(Loader, UserProfileV2, $scope, $stateParams) {
 
-	const userDetailsProfile = this,
-        userId = $stateParams.userID,
-        organizationId = $stateParams.orgID;
+	const userDetailsProfile = this
+    const scopeName = 'userDetailsProfile.'
 
-	let apiPromises = [];
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    userDetailsProfile.loading = true;
+    UserProfileV2.injectUI(userDetailsProfile, $scope, $stateParams.userID)
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    Loader.onFor(scopeName + 'initProfile')
 
-    // Inject profile from UserProfile factory
-    UserProfile.injectUI(userDetailsProfile, $scope, userId);
-
-    apiPromises.push(
-        // Get user profile
-        UserProfile.getProfile({personId: userId})
-        .then((res) => {
-            angular.merge(userDetailsProfile, res);
-        })
-    );
-
-    $q.all(apiPromises)
-    .then((res) => {
-        userDetailsProfile.loading = false;
+    UserProfileV2.initUserProfile($stateParams.userID, $stateParams.orgID)
+    .then(res => {
+        angular.merge(userDetailsProfile, res)
+        Loader.offFor(scopeName + 'initProfile')
     })
-    .catch((error) => {
-        userDetailsProfile.loading = false;
-        console.log(error);
-    });
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-});
+})

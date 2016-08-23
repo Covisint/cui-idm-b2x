@@ -5,31 +5,56 @@
   <div class="cui-organization__details-container">
     <!-- Left Content -->
     <div class="cui-organization__details-col">
-      <!-- Header -->
+
+      <!-- Left Header -->
       <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header-left.html'"></div>
-      <!-- Profile -->
-      <div class="cui-desktop-only" ui-view="profile" ng-if="userDetails.profileRolesSwitch==true"></div>
-      <!-- Roles -->
-      <div class="cui-desktop-only" ui-view="roles" ng-if="userDetails.profileRolesSwitch==false"></div>
-      <!-- Profile mobile -->
-      <div class="cui-mobile-only" ui-view="profile" ng-if="userDetails.profileSwitch=='profile'"></div>
-      <!-- Roles mobile -->
-      <div class="cui-mobile-only" ui-view="roles" ng-if="userDetails.profileSwitch=='roles'"></div>
-      <!-- Applications -->
-      <div class="cui-mobile-only" ui-view="applications" ng-if="userDetails.profileSwitch=='apps'"></div>
-      <!-- History -->
-      <div class="cui-mobile-only" ui-view="history" ng-if="userDetails.profileSwitch=='history'"></div>
+
+      <!-- Profile Desktop -->
+      <cui-resize-handler desktop show-if="userDetails.profileDesktop" ng-if="userDetails.profileRolesSwitch==='profile'">
+        <div ui-view="profile"></div>
+      </cui-resize-handler>
+
+      <!-- Profile Mobile -->
+      <cui-resize-handler mobile show-if="userDetails.profileMobile" ng-if="userDetails.mobileHandler==='profile'">
+        <div ui-view="profile"></div>
+      </cui-resize-handler>
+
+      <!-- Roles Desktop -->
+      <cui-resize-handler desktop show-if="userDetails.rolesDesktop" ng-if="userDetails.profileRolesSwitch==='roles'">
+        <div ui-view="roles"></div>
+      </cui-resize-handler>
+
+      <!-- Roles Mobile -->
+      <cui-resize-handler mobile show-if="userDetails.rolesMobile" ng-if="userDetails.mobileHandler==='roles'">
+        <div ui-view="roles"></div>
+      </cui-resize-handler>
+
+      <!-- Applications Mobile -->
+      <cui-resize-handler mobile show-if="userDetails.applicationsMobile" ng-if="userDetails.mobileHandler==='apps'">
+        <div ui-view="applications"></div>
+      </cui-resize-handler>
+
+      <!-- History Mobile -->
+      <cui-resize-handler mobile show-if="userDetails.historyMobile" ng-if="userDetails.mobileHandler==='history'">
+        <div ui-view="history"></div>
+      </cui-resize-handler>
     </div>
 
     <!-- Right Content -->
     <div class="cui-organization__details-col">
-      <!-- Header -->
-      <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header-right.html'"></div>
-      <!-- Applications -->
-      <div class="cui-desktop-only" ui-view="applications" ng-if="userDetails.appsHistorySwitch"></div>
-      <!-- History -->
-      <div class="cui-desktop-only" ui-view="history" ng-if="!userDetails.appsHistorySwitch"></div>
-    </div>
 
+      <!-- Right Header -->
+      <div ng-include="'app/modules/organization/directory/user-details/sections/headers/userDetails-header-right.html'"></div>
+
+      <!-- Applications Desktop -->
+      <cui-resize-handler desktop show-if="userDetails.applicationsDesktop" ng-if="userDetails.appsHistorySwitch==='apps'">
+        <div ui-view="applications"></div>
+      </cui-resize-handler>
+
+      <!-- History Desktop -->
+      <cui-resize-handler desktop show-if="userDetails.historyDesktop" ng-if="userDetails.appsHistorySwitch==='history'">
+        <div ui-view="history"></div>
+      </cui-resize-handler>
+    </div>
   </div>
 </div>

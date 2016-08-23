@@ -4,9 +4,9 @@ angular.module('organization')
     const userDetails = this
     const scopeName = 'userDetails.'
 
-    userDetails.profileRolesSwitch = true
-    userDetails.appsHistorySwitch = true
-    userDetails.profileSwitch = 'profile'
+    userDetails.mobileHandler = 'profile'
+    userDetails.profileRolesSwitch = 'profile'
+    userDetails.appsHistorySwitch = 'apps'
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
