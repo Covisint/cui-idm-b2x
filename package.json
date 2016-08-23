@@ -43,7 +43,7 @@
     "snapjs": "^1.2.1",
     "svg4everybody": "^2.0.3",
     "@covisint/cui-api-interceptor": "1.0.5",
-    "@covisint/cui-i18n": "1.0.10",
+    "@covisint/cui-i18n": "1.0.12",
     "@covisint/cui-icons": "1.4.2",
     "@covisint/cui.js": "2.2.3",
     "@covisint/cui-ng": "1.9.19",
