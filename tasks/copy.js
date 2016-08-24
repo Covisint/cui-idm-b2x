@@ -5,7 +5,14 @@ module.exports = function(grunt,config){
         {
           src: 'index.html',
           dest: '<%= config.buildDir %>/index.html'
-        }, {
+        }, 
+        {
+          expand: true,
+          cwd: 'unsupported/',
+          src: ['**'],
+          dest: '<%= config.buildDir %>/'
+        },
+        {
           src: [
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/*.json',
             'node_modules/angular-i18n/*.js',
@@ -28,7 +35,14 @@ module.exports = function(grunt,config){
         {
           src: 'index.html',
           dest: '<%= config.buildSdkDir %>/index.html'
-        }, {
+        }, 
+        {
+          expand: true,
+          cwd: 'unsupported/',
+          src: ['**'],
+          dest: '<%= config.buildDir %>/'
+        },
+        {
           src: [
             'node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/*.json',
             'node_modules/angular-i18n/*.js',
