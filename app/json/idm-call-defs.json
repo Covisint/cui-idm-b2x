@@ -564,6 +564,7 @@
   },
   {
     "cmd": "getSecurityQuestionAccount",
+    "cmdType": "secured",
     "call": "/authn/v4/persons/{personId}/accounts/securityQuestion",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json"
