@@ -12,6 +12,7 @@ angular.module('common')
 
     const servicePackage = {}
     const errorName = 'ServicePackageFactory.'
+    let servicePackageStorage = {}
 
     /****************************************
                 Helper Functions
@@ -71,22 +72,22 @@ angular.module('common')
 
     // Deprecated
     servicePackage.set = (userId, newServicePackageArray) => {
-        servicePackage.userId = newServicePackageArray
+        servicePackageStorage.userId = newServicePackageArray
     }
 
     // Deprecated
     servicePackage.get = (userId) => {
-        return servicePackage.userId
+        return servicePackageStorage.userId
     }
 
     // Deprecated
     servicePackage.clear = () => {
-        servicePackage = {}
+        servicePackageStorage = {}
     }
 
     // Deprecated
     servicePackage.checkStorage = (userId) => {
-        if (servicePackage.userId) {
+        if (servicePackageStorage.userId) {
             return true
         }
         return false
