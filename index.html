@@ -9,6 +9,7 @@
   <!-- endbuild -->
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+
 </head>
 <body ng-controller="baseCtrl as base">
   <div ng-if="base.loader.for.wholeApp" ng-cloak>
@@ -224,6 +225,7 @@
   </div>
 
 <!-- build:js app/js/vendor.js -->
+<script src="unsupported/modernizr-custom.js"></script>
 <script src="node_modules/babel-polyfill/dist/polyfill.js"></script>
 <script src="node_modules/tether/dist/js/tether.js"></script>
 <script src="node_modules/blueimp-md5/js/md5.min.js"></script>
