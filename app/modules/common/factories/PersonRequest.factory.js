@@ -107,6 +107,28 @@ angular.module('common')
 		return defer.promise
 	}
 
+	// Provided a decision ('approved' or 'denied') and the person request object
+	// Handles the approval/denial of the person request
+	personRequest.handleRequestApproval = (decision, request) => {
+		let data = [['requestId', request.id]]
+
+		if (decision === 'approved') {
+			API.cui.approvePersonRegistration({qs: data})
+		}
+		else if (decision === 'denied') {
+			if (request.rejectReason) {
+				data.push(['reason', request.rejectReason])
+				API.cui.denyPersonRegistration({qs: data})
+			}
+			else {
+				API.cui.denyPersonRegistration({qs: data})
+			}
+		}
+		else {
+			throw new Error('Requires a decision of "approved" or "denied" and the request object.')
+		}
+	}
+
 	return personRequest
 
 })
