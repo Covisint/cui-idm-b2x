@@ -101,8 +101,8 @@ angular.module('common')
         let callsCompleted = 0
 
         getPackageDetails(packageId)
-        .then(packageDetails => {
-            packageDetails.details = packageDetails
+        .then(packageData => {
+            packageDetails.details = packageData
         })
         .finally(() => {
             callsCompleted++
@@ -164,7 +164,8 @@ angular.module('common')
                 packageDetailCalls.push(
                     servicePackage.getPackageDetails(pendingPackage.servicePackage.id)
                     .then(packageDetails => {
-                        pendingPackageData.push(packageDetails)
+                        angular.merge(pendingPackage, packageDetails)
+                        pendingPackageData.push(pendingPackage)
                     })
                 )
             })
@@ -179,6 +180,22 @@ angular.module('common')
         })
 
         return defer.promise
+    }
+
+    // Handles the approval/denial of a package request
+    // The package request must have a property of "approval" with either "approved" or "denied"
+    // If the package is denied and the package request has an optional property of "rejectReason", appends the reason to the payload
+    servicePackage.handlePackageApproval = (packageRequest) => {
+        let data = [['requestId', packageRequest.id]]
+
+        if (packageRequest.approval === 'approved') {
+            API.cui.approvePackage({qs: data})
+        }
+        else if (packageRequest.approval === 'denied') {
+            if (packageRequest.rejectReason) data.push(['justification', packageRequest.rejectReason])
+            API.cui.denyPackage({qs: data})
+        }
+        else throw new Error('Package request object must contain "approval" of either "approved" or "denied"')
     }
 
     return servicePackage

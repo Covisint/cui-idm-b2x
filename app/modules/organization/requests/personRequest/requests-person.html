@@ -1,16 +1,21 @@
 <!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/organization/requests/personRequest" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
 <div class="cui-organization--pending-requests">
-  <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/requests/personRequest" target="blank">here</a>.</div>
-  <!-- /processHTML -->
-  
   <!-- Header -->
-  <div ng-include="'app/modules/organization/requests/personRequest/sections-requests/requests-header.html'"></div>
+  <div ng-include="'app/modules/organization/requests/personRequest/sections-requests/requests-header.html'"
+    ng-if="!base.loader.for['personRequest.init']">
+  </div>
   
   <!-- Page Loading -->
-  <div class="cui-loading__container--user-details" ng-if="personRequest.loading">
+  <div class="cui-loading__container--user-details" ng-if="base.loader.for['personRequest.init']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
   
   <!-- Items for approval -->
-  <div ng-include="'app/modules/organization/requests/personRequest/sections-requests/requests-body.html'" ng-if="!personRequest.loading"></div>
+  <div ng-include="'app/modules/organization/requests/personRequest/sections-requests/requests-body.html'" 
+    ng-if="!base.loader.for['personRequest.init']">
+  </div>
+
 </div>
