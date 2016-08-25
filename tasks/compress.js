@@ -2,7 +2,7 @@ module.exports = function(grunt,config){
     return {
       build: {
         options: {
-          archive: './app-' + config.target + '-' + grunt.template.today('yyyymmddhhmmss') + '.zip'
+            archive: './build-artifacts/'+ config.name + '-'+ config.version + '-' + config.env + '-' + grunt.template.today('yyyymmddhhMMss') + '.zip'
         },
         files: [
           {

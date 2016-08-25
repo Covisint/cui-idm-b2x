@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
+  var pkgJson = require('./package.json');
 
   var config = {
     buildDir : './build',
@@ -8,7 +9,9 @@ module.exports = function(grunt) {
     concatCssDir: './assets/concat/css/main.css',
     modules: './app/modules',
     scss: './app/scss',
-    target: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target') 
+    target: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target'),
+    version: pkgJson.version,
+    name: pkgJson.name
   };
 
   console.log('Target Environment: ' + config.target);
@@ -58,7 +61,6 @@ module.exports = function(grunt) {
   grunt.registerTask('demosdk', ['browserSync:demosdk']);
   grunt.registerTask('jslint', ['jshint']);
 
-
-  grunt.registerTask('deploy', ['build','copy:appConfig','compress']);
+  grunt.registerTask('package', ['build','copy:appConfig','compress']);
 
 };
