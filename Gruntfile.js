@@ -9,12 +9,12 @@ module.exports = function(grunt) {
     concatCssDir: './assets/concat/css/main.css',
     modules: './app/modules',
     scss: './app/scss',
-    target: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target'),
+    env: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target'),
     version: pkgJson.version,
     name: pkgJson.name
   };
 
-  console.log('Target Environment: ' + config.target);
+  console.log('Target Environment: ' + config.env);
 
   var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
