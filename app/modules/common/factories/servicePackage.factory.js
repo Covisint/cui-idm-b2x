@@ -101,8 +101,8 @@ angular.module('common')
         let callsCompleted = 0
 
         getPackageDetails(packageId)
-        .then(packageDetails => {
-            packageDetails.details = packageDetails
+        .then(packageData => {
+            packageDetails.details = packageData
         })
         .finally(() => {
             callsCompleted++
@@ -164,7 +164,8 @@ angular.module('common')
                 packageDetailCalls.push(
                     servicePackage.getPackageDetails(pendingPackage.servicePackage.id)
                     .then(packageDetails => {
-                        pendingPackageData.push(packageDetails)
+                        angular.merge(pendingPackage, packageDetails)
+                        pendingPackageData.push(pendingPackage)
                     })
                 )
             })
