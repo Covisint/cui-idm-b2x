@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/requests/personRequest" target="blank">here</a>.</div>
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/organization/requests/personRequest" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
 <!-- Submit Sucessful Pane -->
@@ -9,27 +9,30 @@
       <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
     </div>
     <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-    <span class="cui-modal__secondary-message" ng-if="personRequestReview.userRegistrationRequest.approval==='denied'">{{'registration-request-denied' | translate}}</span>
-    <span class="cui-modal__secondary-message" ng-if="personRequestReview.userRegistrationRequest.approval==='approved'">{{'registration-reqiest-approved' | translate}}</span>
-    <span class="cui-modal__secondary-message" ng-if="personRequestReview.approvedCount!==0">{{personRequestReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="personRequestReview.request.approval==='denied'">{{'registration-request-denied' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="personRequestReview.request.approval==='approved'">{{'registration-reqiest-approved' | translate}}</span>
     <span class="cui-modal__secondary-message" ng-if="personRequestReview.approvedCount!==0">{{personRequestReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
     <span class="cui-modal__secondary-message" ng-if="personRequestReview.deniedCount!==0">{{personRequestReview.deniedCount}} {{'rejection-submitted' | translate}}</span>
   </div>
 </div>
 
 <!-- Header -->
-<div ng-include="'app/modules/organization/requests/personRequest/sections-review/review-header.html'"></div>
+<div ng-include="'app/modules/organization/requests/personRequest/sections-review/review-header.html'"
+  ng-if="personRequestReview.person">
+</div>
 
 <!-- Page Loading -->
-<div class="cui-loading__container--user-details" ng-if="personRequestReview.loading">
+<div class="cui-loading__container--user-details" ng-if="base.loader.for['personRequestReview.init']">
 	<div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
 <!-- Body -->
-<div ng-include="'app/modules/organization/requests/personRequest/sections-review/review-body.html'" ng-if="!personRequestReview.loading"></div>
+<div ng-include="'app/modules/organization/requests/personRequest/sections-review/review-body.html'" 
+  ng-if="!base.loader.for['personRequestReview.init']">
+</div>
 
 <!-- Review Controls -->
 <div class="cui-organization__submit-row">
-  <span ui-sref="organization.requests.personRequest({userID:personRequestReview.user.id, orgID:personRequestReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+  <span ui-sref="organization.requests.personRequest({userID:personRequestReview.person.id, orgID:personRequestReview.person.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
   <button class="cui-button" ng-click="personRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
 </div>
