@@ -1,95 +1,39 @@
 angular.module('organization')
-.controller('pendingRequestsCtrl',function(API,$stateParams,$q,$state,DataStorage) {
-    'use strict';
+.controller('pendingRequestsCtrl', function(API, DataStorage, Loader, ServicePackage, $q, $state, $stateParams) {
+    'use strict'
 
-    const pendingRequests = this,
-    	userId = $stateParams.userID,
-        orgId = $stateParams.orgID;
-
-    let apiPromises = [];
-
-    pendingRequests.loading = true;
-
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    const getPackageServices = (pendingPackage) => {
-        // Get and append services associated with this package
-        return API.cui.getPackageServices({packageId: pendingPackage.servicePackage.id})
-        .then((res) => {
-            pendingPackage.servicePackage.services = res;
-        });
-    };
-
-    const getPackageClaims = (pendingPackage) => {
-        // Get and append claims associated with this package
-        return API.cui.getPackageClaims({qs: [['packageId', pendingPackage.servicePackage.id]]})
-        .then((res) => {
-            pendingPackage.servicePackage.claims = res;
-        });
-    };
-
-    const getPackageDetails = (pendingPackage) => {
-        // Get and append the package details for this package
-        return API.cui.getPackage({packageId: pendingPackage.servicePackage.id})
-        .then((res) => {
-            pendingPackage.servicePackage.packageDetails = res;
-        });
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+    const pendingRequests = this
+    const userId = $stateParams.userID
+    const orgId = $stateParams.orgID
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    apiPromises.push(
-    	// Get Person details based on userID param
-    	API.cui.getPerson({personId: userId})
-    	.then((res) => {
-    		pendingRequests.user = res;
-    	}, (error) => {
-            console.log(error);
-        })
-    );
+    Loader.onFor('pendingRequests.init')
 
-    apiPromises.push(
-    	// Get user's pending service packages
-	    API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
-	    .then((res) => {
-	        pendingRequests.packages = res;
-            let packagePromises = [];
-
-            pendingRequests.packages.forEach((pendingPackage) => {
-                // For each package get package claims/services/details
-                packagePromises.push(getPackageServices(pendingPackage), getPackageClaims(pendingPackage), getPackageDetails(pendingPackage));
-            });
-
-            $q.all(packagePromises)
-            .then(() => {
-                pendingRequests.loading = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                pendingRequests.loading = false;
-            });
-        })
-	);
-
-    $q.all(apiPromises)
-    .catch((error) => {
-        console.log(error);
-        pendingRequests.loading = false;
-    });
+    $q.all([
+        API.cui.getPerson({personId: userId}),
+        ServicePackage.getAllUserPendingPackageData(userId)
+    ])
+    .then(res => {
+        pendingRequests.user = res[0]
+        pendingRequests.packages = res[1]
+        Loader.offFor('pendingRequests.init')
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
     pendingRequests.reviewApprovals = () => {
-        if (pendingRequests.packages.length > 0) {
-            DataStorage.replaceDataThatMatches('appRequests', { userId } , { userId, requests:pendingRequests.packages });
+        let storageData = {
+            user: pendingRequests.user,
+            packages: pendingRequests.packages   
         }
-        $state.go('organization.requests.pendingRequestsReview', {userID: userId, orgID: orgId});
-    };
+
+        DataStorage.replaceDataThatMatches('appRequests', { userId }, { userId, data: storageData })
+        $state.go('organization.requests.pendingRequestsReview', {userID: userId, orgID: orgId})
+    }
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-});
+})
