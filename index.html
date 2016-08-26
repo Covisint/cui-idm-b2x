@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
 
 </head>
-<body ng-controller="baseCtrl as base">
+<body ng-controller="baseCtrl as base" data-snap-ignore="true">
   <div ng-if="base.loader.for.wholeApp" ng-cloak>
     <div style="position:absolute; left:50%; top:50%; display:inline-block; transform:translate(-50%,-50%); text-align:center;">
       <h1>{{base.loader.for.wholeApp.message | translate}}</h1>
