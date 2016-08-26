@@ -122,7 +122,7 @@ angular.module('organization',[])
             access: loginRequired
         })
         .state('organization.requests.pendingRequestsReview', {
-            url: '/pending-requests/review?userID',
+            url: '/pending-requests/review?userID&orgID',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
