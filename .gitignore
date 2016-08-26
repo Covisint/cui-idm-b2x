@@ -5,8 +5,10 @@ target
 assets/app/templateCache.js
 assets/processedHtml/
 assets/concat/
-build
-build-sdk
+build-artifacts/
+build/
+build-sdk/
+.env/
 .DS_Store
 **/.DS_Store
 .tmp/
@@ -15,3 +17,4 @@ build-sdk
 .idea
 appConfig.json
 npm-debug.log
+

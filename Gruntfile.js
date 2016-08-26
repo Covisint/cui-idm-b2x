@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
+  var pkgJson = require('./package.json');
 
   var config = {
     buildDir : './build',
@@ -7,11 +8,16 @@ module.exports = function(grunt) {
     concatAppDir: './assets/concat/js/app.js',
     concatCssDir: './assets/concat/css/main.css',
     modules: './app/modules',
-    scss: './app/scss'
+    scss: './app/scss',
+    env: (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target'),
+    version: pkgJson.version,
+    name: pkgJson.name
   };
 
-  var tasks = ['watch','sass','browserSync','postcss','clean','copy','filerev','useminPrepare',
-  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate','compress'];
+  console.log('Target Environment: ' + config.env);
+
+  var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
+  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate'];
 
   var opts = {
     config:config
@@ -54,5 +60,7 @@ module.exports = function(grunt) {
   grunt.registerTask('demo', ['browserSync:demo']);
   grunt.registerTask('demosdk', ['browserSync:demosdk']);
   grunt.registerTask('jslint', ['jshint']);
+
+  grunt.registerTask('package', ['build','copy:appConfig','compress']);
 
 };

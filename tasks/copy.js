@@ -59,6 +59,16 @@ module.exports = function(grunt,config){
           dest: '<%= config.buildSdkDir %>/'
         }
       ]
+    },    
+    appConfig: {
+        files: [
+            {
+                src: [
+                    'appConfig-' + config.target + '.json'
+                ],
+                dest: '<%= config.buildDir %>/appConfig.json'
+            }
+      ]
     },
     dev: {
       src: 'appConfig-example.json',
