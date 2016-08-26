@@ -39,11 +39,20 @@ angular.module('common')
         {cmd: 'getPersonPendingServicePackages',         accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',                       call: `/service/v3/requests`, 																type: 'GET' },
 
         {cmd: 'getPackage',                              accepts: 'application/vnd.com.covisint.platform.package.v1+json',                               call: `/service/v3/packages/${ '{packageId}' }`, 											type: 'GET' },
-
-        {cmd: 'denyPackage',                             accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/deny`,                                                    type: 'POST' },
-
-        {cmd: 'approvePackage',                          accepts: 'text/plain',                                          							     call: `/service/v3/requests/tasks/approve`,                                                 type: 'POST' },
-
+        {
+            cmd: 'denyPackage',
+            cmdType: 'secured',
+            accepts: 'text/plain',
+            type: 'POST',
+            call: `/service/v3/requests/tasks/deny`,
+        },
+        {
+            cmd: 'approvePackage',
+            cmdType: 'secured',
+            accepts: 'text/plain',
+            type: 'POST',
+            call: `/service/v3/requests/tasks/approve`
+        },
         {cmd: 'grantClaims',                             accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',                   call: `/service/v3/packages/grants/claims`,                                                 type: 'PUT' },
 
         {cmd: 'getOrganizationRegistrationRequest',      accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',                  call: `/organization/v3/requests`,                                                          type: 'GET' },
