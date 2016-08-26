@@ -606,6 +606,7 @@
   },
   {
     "cmd": "getPasswordPolicies",
+    "cmdType": "secured",
     "call": "/authn/v4/passwords/policies",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.password.policy.v1+json"
@@ -619,14 +620,14 @@
   },
   {
     "cmd": "getPasswordPolicy",
-    "cmdType": "unsecured",
+    "cmdType": "secured",
     "call": "/authn/v4/passwords/policies/{policyId}",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.password.policy.v1+json"
   },
   {
     "cmd": "deletePasswordPolicy",
-    "cmdType": "unsecured",
+    "cmdType": "secured",
     "call": "/authn/v4/passwords/policies/{policyId}",
     "type": "DELETE",
     "accepts": "application/vnd.com.covisint.platform.password.policy.v1+json"
