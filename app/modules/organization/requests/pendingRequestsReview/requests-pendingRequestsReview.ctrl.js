@@ -1,134 +1,65 @@
 angular.module('organization')
-.controller('pendingRequestsReviewCtrl',function(API,DataStorage,$q,$state,$stateParams,$timeout) {
+.controller('pendingRequestsReviewCtrl', function(DataStorage, Loader, ServicePackage, $q, $state, $stateParams, $timeout) {
+    'use strict'
 
-    const pendingRequestsReview = this,
-    	userId = $stateParams.userID,
-    	orgId = $stateParams.orgID;
+    const pendingRequestsReview = this
+    const userId = $stateParams.userID
+    const orgId = $stateParams.orgID
 
-    let apiPromises = [];
-
-    pendingRequestsReview.loading = true;
-    pendingRequestsReview.sucess = false;
-    pendingRequestsReview.approvedCount = 0;
-    pendingRequestsReview.deniedCount = 0;
-
+    pendingRequestsReview.success = false
+    pendingRequestsReview.approvedCount = 0
+    pendingRequestsReview.deniedCount = 0
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    let getApprovalCounts = (requests) => {
-        if (requests) {
-            requests.forEach(request => {
-                switch (request.approval) {
-                    case 'approved':
-                        pendingRequestsReview.approvedCount++;
-                        break;
-                    case 'denied':
-                        pendingRequestsReview.deniedCount++;
-                        break;
-                }
-            });
-        }
-    };
-
-    let build = {
-    	packageGrantClaimRequest:function(granteeId, servicePackage, claimsArray) {
-    		return {
-    			grantee: {
-                    id: granteeId,
-                    type: 'person'
-                },
-    			servicePackage: this.buildServicePackage(servicePackage),
-    			packageClaims: this.buildPackageClaims(claimsArray)
-    		};
-    	},
-    	buildServicePackage:function(servicePackage) {
-    		return {
-    			id: servicePackage.id,
-    			type: servicePackage.type
-    		};
-    	},
-    	buildPackageClaims:function(claimsArray) {
-    		let strippedClaimsArray = [];
-    		claimsArray.forEach(claim => {
-    			if (claim.accepted) {
-    				let strippedClaim = {
-    					id: claim.id,
-    					claimId: claim.claimId,
-    					name: claim.name,
-    					claimValues: claim.claimValues
-    				};
-    				strippedClaimsArray.push(strippedClaim);
-    			}
-    		});
-    		return strippedClaimsArray;
-    	}
-    };
+    const getApprovalCounts = (requests) => {
+        requests.forEach(request => {
+            switch (request.approval) {
+                case 'approved':
+                    pendingRequestsReview.approvedCount++
+                    break
+                case 'denied':
+                    pendingRequestsReview.deniedCount++
+                    break
+            }
+        })
+    }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    pendingRequestsReview.pendingRequests = DataStorage.getDataThatMatches('appRequests', { userId })[0].requests;
+    Loader.onFor('pendingRequestsReview.init')
 
-    if (pendingRequestsReview.pendingRequests) {
-        getApprovalCounts(pendingRequestsReview.pendingRequests);
-    }
+    const requestData = DataStorage.getDataThatMatches('appRequests', { userId })[0].data
 
-    apiPromises.push(
-    	API.cui.getPerson({personId: userId})
-    	.then((res) => {
-    		pendingRequestsReview.user = res;
-    	})
-    );
+    pendingRequestsReview.pendingRequests = requestData.packages
+    pendingRequestsReview.user = requestData.user
 
-    $q.all(apiPromises)
-    .then(() => {
-    	pendingRequestsReview.loading = false;
-    }, (error) => {
-    	console.log(error);
-    });
+    if (pendingRequestsReview.pendingRequests.length > 0) getApprovalCounts(pendingRequestsReview.pendingRequests)
+
+    Loader.offFor('pendingRequestsReview.init')
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
     pendingRequestsReview.submit = () => {
+        let submitCalls = []
+
         pendingRequestsReview.pendingRequests.forEach(packageRequest => {
-            if (packageRequest.approval === 'denied') {
-                if (packageRequest.rejectReason) {
-                    API.cui.denyPackage({qs: [['requestId', packageRequest.id],['justification', packageRequest.rejectReason]]})
-                    .fail((error) => {
-                        console.log(error);
-                    });
-                }
-                else {
-                    API.cui.denyPackage({qs: [['requestId', packageRequest.id]]})
-                    .fail((error) => {
-                        console.log(error);
-                    });
-                }
-            }
-            else {
-                API.cui.approvePackage({qs: [['requestId', packageRequest.id]]})
-                .fail((error) => {
-                    console.log(error);
-                });
+            submitCalls.push(ServicePackage.handlePackageApproval(packageRequest))
+        })
 
-                let grantClaimData = build.packageGrantClaimRequest(packageRequest.requestor.id, packageRequest.servicePackage, packageRequest.servicePackage.claims);
-
-                API.cui.grantClaims({data: grantClaimData})
-                .fail((error) => {
-                    console.log(error);
-                });
-            }
-        });
-
-		pendingRequestsReview.sucess = true;
-		$timeout(() => {
-			$state.go('organization.directory.userDetails', {userID: userId, orgID: orgId});
-		}, 3000);
-    };
+        $q.all(submitCalls)
+        .then(() => {
+            pendingRequestsReview.success = true
+            $timeout(() => {
+                $state.go('organization.directory.userDetails', {userID: userId, orgID: orgId})
+            }, 3000)
+        })
+    }
 
     // ON CLICK END ----------------------------------------------------------------------------------
 
-});
+})

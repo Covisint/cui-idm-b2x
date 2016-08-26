@@ -1,16 +1,14 @@
 <div class="cui-organization__main-container">
-
 	<!-- Body Header -->
-	<div>
-		<h3 class="cui-organization__approval-summary">{{'approval-summary' | translate}}</h3>
-	</div>
+	<h3 class="cui-organization__approval-summary">{{'approval-summary' | translate}}</h3>
 
+	<!-- Approved Items -->
 	<h4 class="cui-organization__approved">{{'approved-items' | translate}}</h4>
 	<div class="cui-organization__approved-row">
 		<p ng-if="pendingRequestsReview.approvedCount===0">{{'no-items-approved' | translate}}.</p>
 		<ul>
-			<li ng-if="pendingRequestsReview.approvedCount" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
-				<span ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
+			<li ng-if="pendingRequestsReview.approvedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
+				<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span><br/>
 			</li>
 		</ul>
 	</div>
@@ -20,7 +18,7 @@
 	<div>
 		<p ng-if="pendingRequestsReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
 		<div class="cui-organization__rejected-row" ng-if="pendingRequestsReview.deniedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
-			<span ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span><br/>
+			<span ng-if="package.approval==='denied'">{{package.details.name | cuiI18n}}</span><br/>
 			<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 		</div>
 	</div>
@@ -30,5 +28,4 @@
 		<span ui-sref="organization.requests.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
 		<button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
 	</div>
-
 </div>
