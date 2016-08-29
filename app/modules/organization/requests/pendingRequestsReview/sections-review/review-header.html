@@ -1,28 +1,18 @@
 <!-- Action Header -->
 <div class="cui-organization__request-review-header">
-  <!-- Action Header 1 -->
   <div class="cui-action">
     <!-- Name -->
-    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')"> &#60; {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
-
-    <!-- Invitation -->
-    <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList">&#60; {{pendingRequestsReview.user.name.given}} {{pendingRequestsReview.user.name.surname}} - {{'pending-request' | translate}}</span>
   </div>
 
-  <!-- Action Header 2 -->
+  <!-- Navigation -->
   <div class="cui-action cui-action--min">
-    <!-- Navigation -->
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
   </div>
 </div>
 
-<!-- Page Loading -->
-<div class="cui-loading__container--user-details" ng-if="pendingRequestsReview.loading">
-  <div class="cui-loading--center"><div class="cui-loading"></div></div>
-</div>
-
-<!-- Name Header -->
+<!-- User Information -->
 <div class="cui-media--centered" ng-if="!pendingRequestsReview.loading">
   <!-- Avatar -->
   <div class="cui-media__image-container">
@@ -38,12 +28,13 @@
     <!-- Registered Date -->
     <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequestsReview.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->
-    <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequestsReview.user.status==='active'}">{{pendingRequestsReview.user.status}}
-      <cui-icon cui-svg-icon="cui:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequestsReview.user.status==='active'}">
+      {{pendingRequestsReview.user.status}}
+      <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
     </p>
     <!-- Status: Locked -->
     <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='locked'">{{pendingRequestsReview.user.status}}
-      <cui-icon cui-svg-icon="cui:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
     </p>
   </div>
 </div>

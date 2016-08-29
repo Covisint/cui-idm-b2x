@@ -25,11 +25,11 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     pendingRequests.reviewApprovals = () => {
-        let storageData = {
+        const storageData = {
             user: pendingRequests.user,
             packages: pendingRequests.packages   
         }
-
+        
         DataStorage.replaceDataThatMatches('appRequests', { userId }, { userId, data: storageData })
         $state.go('organization.requests.pendingRequestsReview', {userID: userId, orgID: orgId})
     }

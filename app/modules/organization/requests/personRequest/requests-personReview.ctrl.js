@@ -44,7 +44,7 @@ angular.module('organization')
         let packageRequestCalls = []
 
         personRequestReview.packages.forEach(packageRequest => {
-            denyCalls.push(ServicePackage.handlePackageApproval(packageRequest))
+            packageRequestCalls.push(ServicePackage.handlePackageApproval(packageRequest))
         })
 
         $q.all(packageRequestCalls)

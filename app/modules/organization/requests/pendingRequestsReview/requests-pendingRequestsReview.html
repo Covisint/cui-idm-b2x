@@ -14,9 +14,12 @@
   </div>
 </div>
 
-<div>
-	<!-- Header -->
-	<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-header.html'"></div>
-	<!-- Requested Applications List -->
-	<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-body.html'"></div>
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="base.loader.for['pendingRequestsReview.init']">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
+
+<!-- Header -->
+<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-header.html'" ng-if="!base.loader.for['pendingRequestsReview.init']"></div>
+<!-- Requested Applications List -->
+<div ng-include="'app/modules/organization/requests/pendingRequestsReview/sections-review/review-body.html'" ng-if="!base.loader.for['pendingRequestsReview.init']"></div>
