@@ -37,9 +37,6 @@ module.exports = function(grunt) {
     buildArtifact: buildArtifact
   };
 
-
-  console.log(config)
-
   var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate','http_upload'];
 
