@@ -75,7 +75,10 @@ angular.module('registration')
                 angular.forEach(userWalkup.applications.selected,function(servicePackage) {
                     // userWalkup.applications.selected is an array of strings that looks like
                     // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-                    request.packages.push({packageId: servicePackage.split(',')[0]})
+                    request.packages.push({
+                        id: servicePackage.split(',')[0],
+                        type: 'servicePackage'
+                    })
                 })    
             }
             return request

@@ -10,6 +10,23 @@ angular.module('organization')
     personRequestReview.approvedCount = 0
     personRequestReview.deniedCount = 0
 
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    const getApprovalCounts = (requests) => {
+        requests.forEach(request => {
+            switch (request.approval) {
+                case 'approved':
+                    personRequestReview.approvedCount++
+                    break
+                case 'denied':
+                    personRequestReview.deniedCount++
+                    break
+            }
+        })
+    }
+
+    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+
     // ON LOAD START ---------------------------------------------------------------------------------
 
     Loader.onFor('personRequestReview.init')
