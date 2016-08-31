@@ -67,7 +67,8 @@
             </div>
 
             <!-- Package Claims -->
-            <div class="cui-expandable__body-col">
+            <!-- Package claims are currently disabled as they currently are not working in this flow -->
+            <div class="cui-expandable__body-col" ng-if="false">
               <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
               <p ng-if="package.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
               <div ng-if="package.claims.length>0" ng-repeat="claim in package.claims">
