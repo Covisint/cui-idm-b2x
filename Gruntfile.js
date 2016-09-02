@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
+  const path = require('path');
+  const YAML = require('yamljs');
 
   // Load the package.json file to have its variables available
   var pkgJson = require('./package.json');
@@ -10,7 +12,24 @@ module.exports = function(grunt) {
   const buildArtifact = projectName + '-' + pkgJson.version + '-' + target + '-' + grunt.template.today('yyyymmddhhMMss') + '.zip'
 
   // load the secrets profile file from your home directory
-  const envPath = process.env['HOME'] + '/.cui/profiles/' + projectName + '/' + target
+  const envPath = path.join('.cui',target)
+
+
+  //if the envPath does not exist, create it
+  if (!grunt.file.exists(envPath)) {
+    
+    var emptyEnv = {
+      clientId,
+      clientSecret,
+      originUri,
+      uiHost
+    };
+
+    grunt.file.write(envPath, YAML.stringify(emptyEnv));
+
+  };
+
+  // now that we know it exists, we can read it, but trap it just in case
   var env = grunt.file.readYAML(envPath);
 
   const clientId = (typeof grunt.option('clientId') === 'undefined') ? env.clientId : grunt.option('clientId');
@@ -36,9 +55,6 @@ module.exports = function(grunt) {
     uiHost: uiHost,
     buildArtifact: buildArtifact
   };
-
-
-  console.log(config)
 
   var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate','http_upload'];
