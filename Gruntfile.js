@@ -16,17 +16,18 @@ module.exports = function(grunt) {
 
 
   //if the envPath does not exist, create it
-  if(!envPath){
+  if (!grunt.file.exists(envPath)) {
+    
     var emptyEnv = {
       clientId,
       clientSecret,
       originUri,
       uiHost
-    }
+    };
 
     grunt.file.write(envPath, YAML.stringify(emptyEnv));
 
-  }
+  };
 
   // now that we know it exists, we can read it, but trap it just in case
   var env = grunt.file.readYAML(envPath);
