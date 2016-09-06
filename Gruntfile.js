@@ -85,9 +85,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('concatModules', 'Task to concat all project modules.', require('./tasks/concatModules.js')(grunt,config));
 
-
   // Tasks ------------------------------------------------------------
-  grunt.registerTask('default', ['copy:dev','concatModules','babel','ngAnnotate','sass','postcss','browserSync:dev','watch']);
+  grunt.registerTask('default', ['concatModules','babel','ngAnnotate','sass','postcss','browserSync:dev','watch']);
 
   grunt.registerTask('build', ['sass','postcss','processhtml','ngtemplates:build','clean:build','copy:build',
                                 'concatModules','babel','ngAnnotate','useminPrepare','concat:generated',
@@ -103,8 +102,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('jslint', ['jshint']);
 
-  grunt.registerTask('package', ['build','copy:appConfig','compress']);
+  grunt.registerTask('package', ['build','compress']);
 
-  grunt.registerTask('deploy', ['build','copy:appConfig','compress','http_upload:build'])
+  grunt.registerTask('deploy', ['build','compress','http_upload:build'])
 
 };
