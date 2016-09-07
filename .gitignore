@@ -8,14 +8,11 @@ assets/concat/
 build-artifacts/
 build/
 build-sdk/
-.env/
 .DS_Store
 **/.DS_Store
 .tmp/
 *.versionsBackup
 *.iml
 .idea
-appConfig.json
+appConfig-*.json
 npm-debug.log
-
-.cui

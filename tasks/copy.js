@@ -24,6 +24,8 @@ module.exports = function(grunt,config){
             'node_modules/lato-font/fonts/lato-bold/**',
             'node_modules/lato-font/fonts/lato-black/**',
             'appConfig.json',
+            'appConfig-env.json',
+            'appConfig-build.json',
             'app/json/*.json'
           ],
           dest: '<%= config.buildDir %>/'
@@ -54,25 +56,13 @@ module.exports = function(grunt,config){
             'node_modules/lato-font/fonts/lato-bold/**',
             'node_modules/lato-font/fonts/lato-black/**',
             'appConfig.json',
+            'appConfig-env.json',
+            'appConfig-build.json',
             'app/json/*.json'
           ],
           dest: '<%= config.buildSdkDir %>/'
         }
       ]
-    },    
-    appConfig: {
-        files: [
-            {
-                src: [
-                    'appConfig-' + config.target + '.json'
-                ],
-                dest: '<%= config.buildDir %>/appConfig.json'
-            }
-      ]
-    },
-    dev: {
-      src: 'appConfig-example.json',
-      dest: 'appConfig.json'
     }
   };
 };

@@ -1,7 +1,12 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.0.16] - 2016-08-23
 
-## [v1.0.8] 2016-06-28
+...
+
+
+
+## [v1.0.8] - 2016-06-28
 
 ### Changed
 * cui-styleguide v2.2.2 - https://github.com/covisint/cui-styleguide/releases/tag/v2.2.2
@@ -48,7 +53,6 @@
 
 ### Changed
 * 2016-06-08 appConfig now requires a `languageResources` property for the cui-i18n library to properly function.
-
 It should look something like this:
 ```json
 "languageResources": {
