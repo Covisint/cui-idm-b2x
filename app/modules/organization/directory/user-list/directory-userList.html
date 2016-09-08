@@ -102,7 +102,7 @@
       <ul>
         <li class="cui-flex-table__tr cui-flex-table__tr--c" ng-repeat="user in orgDirectory.userList track by user.id" ng-click="orgDirectory.userClick(user)">
           <div class="cui-flex-table__avatar-col">
-            <div class="cui-profile__user-avatar" aria-hidden="true" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+            <div class="cui-profile__user-avatar" aria-hidden="true" cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="user.email"></div>
           </div>
           <div class="cui-flex-table__mobile-stack">
             <div class="cui-flex-table__left"><span class="cui-flex-table__title">{{user.name.given}} {{user.name.surname}}</span></div>
