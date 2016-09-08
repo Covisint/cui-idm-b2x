@@ -70,7 +70,7 @@ module.exports = function(grunt) {
       serviceUrl: config.serviceUrl,
       solutionInstancesUrl: config.solutionInstancesUrl
     };
-    grunt.file.write('appConfig-env.json', JSON.stringify(appConfigEnv));
+    grunt.file.write('appConfig-env.json', JSON.stringify(appConfigEnv, null, 4));
 
     // now build the appConfig-build.json
     var appConfigBuild = {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       buildArtifact: config.buildArtifact
     };
 
-    grunt.file.write('appConfig-build.json', JSON.stringify(appConfigBuild));
+    grunt.file.write('appConfig-build.json', JSON.stringify(appConfigBuild, null, 4));
 
   var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
   'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate',
