@@ -13,7 +13,7 @@
   </div>
 
   <div class="cui-media__image-container" ng-if="!base.loader.for['userDetails.userInfo']">
-    <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="userDetails.user.email"></div>
   </div>
   <div class="cui-media__body" ng-if="!userDetails.loading">
     <!-- Name -->

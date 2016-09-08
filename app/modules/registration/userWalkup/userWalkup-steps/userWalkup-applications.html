@@ -12,9 +12,9 @@
 <div ng-if="userWalkup.applications.list && (!userWalkup.applications.step || userWalkup.applications.step===1)" ng-init="userWalkup.applications.step=1">
   <!-- NOTE: Commented out application search as nonce API does not support this at this time [7/20/2016] -->
   <!-- <input class="cui-input--half" placeholder="{{'cui-filter-app-name' | translate}}" style="margin-bottom:20px;" ng-model="userWalkup.applications.search" ng-change="userWalkup.applications.searchApplications()"/> -->
-  <div style="float:right" class="cui-link">
-    {{'cui-selections' | translate }}
+  <div style="direction:rtl;margin-bottom:10px" class="cui-link">
     <div class="cui-badge" ng-bind="userWalkup.applications.numberOfSelected"></div>
+    {{'cui-selections' | translate }}
   </div>
 
   <div ng-repeat="application in userWalkup.applications.list | orderBy:'name' track by application.id" style="margin-bottom:10px">
