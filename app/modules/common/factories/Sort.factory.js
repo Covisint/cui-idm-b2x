@@ -26,14 +26,21 @@ angular.module('common')
                 }
 
                 if ( a < b ) {
-                    if (order) return 1;
-                    else return -1;
+                    if (order) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
                 }
-                else if( a > b ) {
-                    if (order) return -1;
-                    else return 1;
+                else if (a > b) {
+                    if (order) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                } else {
+                    return 0;
                 }
-                else return 0;
             });
         }
     };

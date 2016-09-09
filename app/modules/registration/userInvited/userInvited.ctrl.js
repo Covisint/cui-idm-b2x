@@ -31,7 +31,7 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
                                                 realm: usersRegister.targetOrganization.realm,
                                                 type: 'organization' };
             usersRegister.user.timezone = 'EST5EDT';
-            if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; };
+            if (usersRegister.user.phones[0]) { usersRegister.user.phones[0].type = 'main'; }
             // Get the current selected language
             usersRegister.user.language = Base.getLanguageCode();
             return usersRegister.user;
@@ -159,7 +159,7 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
                 var i = 0;
                 API.cui.getPackageServices({'packageId':packageGrant.servicePackage.id})
                 .then(function(res){
-                    i++;
+                    i += 1;
 
                     res.forEach(function(service) {
                         service.packageId=packageGrant.servicePackage.id;
@@ -188,8 +188,8 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
 
     usersRegister.applications.updateNumberOfSelected = function(a) {
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
-        if (a !== null) { usersRegister.applications.numberOfSelected++; }
-        else { usersRegister.applications.numberOfSelected--; }
+        if (a !== null) { usersRegister.applications.numberOfSelected += 1; }
+        else { usersRegister.applications.numberOfSelected -= 1; }
     };
 
     usersRegister.applications.process = function() {
@@ -258,7 +258,7 @@ function(localStorageService,$scope,Person,$stateParams,API,$state,CuiPasswordPo
                 var i = 0;
                 API.cui.createPackageRequest(build.packageRequest(servicePackage))
                 .then(function(res) {
-                    i++;
+                    i += 1;
                     if (i === res.length) {
                         usersRegister.submitting = false;
                         usersRegister.success = true;

@@ -35,10 +35,14 @@ angular.module('organization')
         let claimGrants = []
 
         const buildPackageClaims = (claimsObject) => {
-            if (Object.keys(claimsObject).length === 0) return undefined // if there's no claims in this claim object
+            if (Object.keys(claimsObject).length === 0) {
+                return undefined;
+            } // if there's no claims in this claim object
             let packageClaims = []
             Object.keys(claimsObject).forEach(claimId => {
-                if (Object.keys(claimsObject[claimId]).length === 0) return // if no claimValues selected for that claimId
+                if (Object.keys(claimsObject[claimId]).length === 0) {
+                    return;
+                } // if no claimValues selected for that claimId
                 const claimValues = Object.keys(claimsObject[claimId]).reduce((claims, claimValueId) => {
                     claims.push({ claimValueId })
                     return claims

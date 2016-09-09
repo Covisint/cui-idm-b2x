@@ -25,7 +25,9 @@ angular.module('common')
     };
 
     var getTimezoneById=function(id){
-        if(!id) return '';
+        if (!id) {
+            return '';
+        }
         return _.find(timezones,function(timezone){
             return timezone.id===id;
         }).name;

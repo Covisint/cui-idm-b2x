@@ -1,6 +1,6 @@
 angular.module('organization')
 .controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q) {
-    const newGrantSearch = this
+    const newGrantSearch = this;
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
@@ -9,8 +9,8 @@ angular.module('organization')
             userId: $stateParams.userID,
             applications: newGrantSearch.requests.application,
             packages: newGrantSearch.requests.package
-        })
-    }
+        });
+    };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
@@ -28,21 +28,23 @@ angular.module('organization')
         ]
     ****/
 
-    NewGrant.pullFromStorage(newGrantSearch)
+    NewGrant.pullFromStorage(newGrantSearch);
 
-    Loader.onFor('newGrantSearch.user')
+    Loader.onFor('newGrantSearch.user');
     API.cui.getPerson({ personId: $stateParams.userID })
     .then(res => {
-        newGrantSearch.user = Object.assign({}, res)
-        Loader.offFor('newGrantSearch.user')
-        $scope.$digest()
-    })
+        newGrantSearch.user = Object.assign({}, res);
+        Loader.offFor('newGrantSearch.user');
+        $scope.$digest();
+    });
 
     const searchUpdate = ({ previouslyLoaded }) => {
-        Loader.onFor('newGrantSearch.apps')
-        if (!previouslyLoaded) newGrantSearch.search = Object.assign({}, $stateParams)
+        Loader.onFor('newGrantSearch.apps');
+        if (!previouslyLoaded) {
+          newGrantSearch.search = Object.assign({}, $stateParams);
+        }
 
-        const type = newGrantSearch.search.type || 'applications'
+        const type = newGrantSearch.search.type || 'applications';
 
         const queryParams = {
             'service.name': newGrantSearch.search.name,
@@ -50,29 +52,32 @@ angular.module('organization')
             page: newGrantSearch.search.page || 1,
             pageSize: newGrantSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0],
             sortBy: newGrantSearch.search.sortBy
-        }
+        };
 
-        const queryArray = APIHelpers.getQs(queryParams)
+        const queryArray = APIHelpers.getQs(queryParams);
 
         const queryOptions = {
             personId: $stateParams.userID,
             qs: queryArray
-        }
+        };
 
         if (type === 'applications') {
-            $q.all([API.cui.getPersonGrantableCount(queryOptions), API.cui.getPersonGrantableApps(queryOptions)]) // TODO: REPLACE WITH REAL COUNT
-            .then(res => {
-                newGrantSearch.applicationList = res[1].slice()
-                newGrantSearch.count = res[0]
-                if(newGrantSearch.reRenderPaginate) newGrantSearch.reRenderPaginate()
-                Loader.offFor('newGrantSearch.apps')
-            })
+          // TODO: REPLACE WITH REAL COUNT
+          $q.all([API.cui.getPersonGrantableCount(queryOptions), API.cui.getPersonGrantableApps(queryOptions)])
+          .then(res => {
+              newGrantSearch.applicationList = res[1].slice();
+              newGrantSearch.count = res[0];
+              if(newGrantSearch.reRenderPaginate) {
+                newGrantSearch.reRenderPaginate();
+              }
+              Loader.offFor('newGrantSearch.apps');
+          });
         }
-    }
+    };
 
     searchUpdate({
         previouslyLoaded: false
-    })
+    });
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -81,8 +86,11 @@ angular.module('organization')
     newGrantSearch.toggleRequest = ({ type, payload }) => {
         const storedRequests = newGrantSearch.requests[type]
         storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
-        if(storedRequests[payload.id]) newGrantSearch[type + 'Checkbox'][payload.id] = true
-        else if(newGrantSearch[type + 'Checkbox'][payload.id]) delete newGrantSearch[type + 'Checkbox'][payload.id]
+        if (storedRequests[payload.id]) {
+            newGrantSearch[type + 'Checkbox'][payload.id] = true;
+        } else if (newGrantSearch[type + 'Checkbox'][payload.id]) {
+            delete newGrantSearch[type + 'Checkbox'][payload.id];
+        }
         newGrantSearch.numberOfRequests = Object.keys(newGrantSearch.applicationCheckbox).length + Object.keys(newGrantSearch.packageCheckbox).length
 
         updateStorage()

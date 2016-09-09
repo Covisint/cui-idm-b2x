@@ -33,7 +33,9 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
     });
 
     if (appConfig.languages) {
-        if(!appConfig.languageResources) console.error('You need to configure languageResources in your appConfig.json.');
+        if (!appConfig.languageResources) {
+            console.error('You need to configure languageResources in your appConfig.json.');
+        }
 
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
@@ -72,8 +74,11 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
     }
 
     // Cui Resize Handler Breakpoint Option
-    if (appConfig.breakpointOption) $cuiResizeHandlerProvider.setBreakpoint(appConfig.breakpointOption)
-    else throw new Error('You don\'t have breakpointOption set in your appConfig.json')
+    if (appConfig.breakpointOption) {
+        $cuiResizeHandlerProvider.setBreakpoint(appConfig.breakpointOption);
+    } else {
+        throw new Error('You don\'t have breakpointOption set in your appConfig.json');
+    }
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -166,13 +171,14 @@ angular.module('common')
         };
 
         // async load API.cui
-        if(_.isEmpty(API.cui)){
+        if (_.isEmpty(API.cui)) {
             API.initApi()
             .then(()=>{
                 route();
             });
+        } else {
+            route();
         }
-        else route();
     });
 
     // $state.stateStack is a stack of states used by base.goBack()

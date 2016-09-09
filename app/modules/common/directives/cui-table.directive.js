@@ -27,7 +27,9 @@ angular.module('common')
     `,
     link: (scope, iElem, iAttrs) => {
         const initScope = () => {
-            if (!scope.cuiTableConfig) scope.cuiTableConfig = {}
+            if (!scope.cuiTableConfig) {
+                scope.cuiTableConfig = {}
+            }
 
             if (scope.cuiTableConfig.paginate) {
                 const requiredOptions = ['recordCount', 'pageSize', 'initialPage', 'onPageChange']

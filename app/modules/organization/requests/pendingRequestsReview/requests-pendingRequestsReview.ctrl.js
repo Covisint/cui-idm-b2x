@@ -16,10 +16,10 @@ angular.module('organization')
         requests.forEach(request => {
             switch (request.approval) {
                 case 'approved':
-                    pendingRequestsReview.approvedCount++
+                    pendingRequestsReview.approvedCount += 1
                     break
                 case 'denied':
-                    pendingRequestsReview.deniedCount++
+                    pendingRequestsReview.deniedCount += 1
                     break
             }
         })
@@ -36,7 +36,9 @@ angular.module('organization')
     pendingRequestsReview.pendingRequests = requestData.packages
     pendingRequestsReview.user = requestData.user
 
-    if (pendingRequestsReview.pendingRequests.length > 0) getApprovalCounts(pendingRequestsReview.pendingRequests)
+    if (pendingRequestsReview.pendingRequests.length > 0) {
+        getApprovalCounts(pendingRequestsReview.pendingRequests);
+    }
 
     Loader.offFor('pendingRequestsReview.init')
 
