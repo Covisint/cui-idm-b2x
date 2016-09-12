@@ -1,0 +1,51 @@
+<div class="cui-header__top">
+  <div class="menu-toggle menu-toggle--mobile" snap-toggle="left" ng-click="base.menu.mobile.toggle()" ng-if="base.menu.mobile.enabled" style="margin-right:20px">
+    <div class="menu-toggle--button"></div>
+  </div>
+
+  <!-- Header Logo -->
+  <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
+
+  <!-- Global Search -->
+  <!-- <div class="cui-header__search-container" ng-model="searchEnabled" ng-click="searchEnabled = !searchEnabled">
+    <cui-icon cui-svg-icon="cui:search" svg-class="cui-header__search-icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+  </div> -->
+
+  <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
+    <!-- Logged In User Name -->
+    <span class="cui-profile__user-name">{{base.user.name.given}} {{base.user.name.surname}}</span>
+
+    <!-- User Avatar -->
+    <div class="cui-profile__user-avatar" cui-avatar cui-avatar-email="base.user.email" cui-avatar-names="[base.user.name.given, base.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+
+    <!-- Dropdown Menu -->
+    <div id="cui-profile__popup" class="cui-profile__user-menu">
+      <div class="cui-profile__menu-item" ui-sref="user.profile">
+        <a href="" class="cui-profile__link">{{'cui-my-profile' | translate}}</a>
+        <div>
+          <cui-icon cui-svg-icon="cui:profile" svg-class="cui-profile__link-icon" use-class="svg" viewbox="-2 -2 52 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        </div>
+        <!--svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#profile" class="svg"></use>
+        </svg-->
+      </div>
+                
+      <div class="cui-profile__menu-item" ng-click="base.logout()">
+        <a href="" class="cui-profile__link">{{'log-out' | translate}}</a>
+        <div>
+          <cui-icon cui-svg-icon="cui:log-out" svg-class="cui-profile__link-icon" use-class="svg" viewbox="-2 -2 52 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        </div>
+        <!--svg class="cui-profile__link-icon" viewBox="-2 -2 52 52">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#log-out" class="svg"></use>
+        </svg-->
+      </div>
+    </div>
+
+    <div>
+      <cui-icon cui-svg-icon="fa:arrow459" svg-class="cui-profile__chevron" use-class="svg" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <!--svg class="cui-profile__chevron" viewBox="0 0 216 146">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#arrow459" class="svg"></use>
+    </svg-->
+  </div>
+</div>
