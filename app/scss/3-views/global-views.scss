@@ -45,6 +45,11 @@ Global layout styles
   justify-content: flex-end;
 }
 
+.cui-padding--h-5,
+%cui-padding--h-5 {
+  padding: 0 em(5);
+}
+
 .cui-exapandable__app-name {
   align-items: center;
   display: flex;
