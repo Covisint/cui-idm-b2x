@@ -16,10 +16,10 @@ angular.module('organization')
         requests.forEach(request => {
             switch (request.approval) {
                 case 'approved':
-                    personRequestReview.approvedCount++
+                    personRequestReview.approvedCount += 1
                     break
                 case 'denied':
-                    personRequestReview.deniedCount++
+                    personRequestReview.deniedCount += 1
                     break
             }
         })

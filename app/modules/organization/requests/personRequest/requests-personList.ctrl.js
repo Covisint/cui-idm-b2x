@@ -17,7 +17,7 @@ angular.module('organization')
             childrenArray.forEach(function(childOrg) {
                 if (childOrg.children) {
                     let newChildArray = childOrg.children;
-                    delete childOrg['children'];
+                    delete childOrg.children;
                     orgList.push(childOrg);
                     orgList.push(flattenHierarchy(newChildArray));
                 }

@@ -10,7 +10,9 @@ angular.module('applications')
     const appRequests=AppRequests.get(),
         appsBeingRequested=Object.keys(appRequests);
 
-    if(appsBeingRequested.length===0) $state.go('applications.search');
+    if (appsBeingRequested.length===0) {
+        $state.go('applications.search');
+    }
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -19,13 +21,15 @@ angular.module('applications')
     for(let i=0; i < appsBeingRequested.length; i += 2){
         const applicationGroup = [];
         applicationGroup.push(appRequests[appsBeingRequested[i]]);
-        if(appRequests[appsBeingRequested[i+1]]) applicationGroup.push(appRequests[appsBeingRequested[i+1]]);
+        if (appRequests[appsBeingRequested[i+1]]) {
+            applicationGroup.push(appRequests[appsBeingRequested[i+1]]);
+        }
         applicationReview.appRequests.push(applicationGroup);
     }
 
     applicationReview.numberOfRequests=0;
     appsBeingRequested.forEach(() => {
-        applicationReview.numberOfRequests++;
+        applicationReview.numberOfRequests += 1;
     });
 
     // ON LOAD END ------------------------------------------------------------------------------------
@@ -40,7 +44,7 @@ angular.module('applications')
         applicationReview.appRequests.forEach((appRequestGroup,i) => {
 
             appRequestGroup.forEach((appRequest,x) => {
-                if(appRequest.servicePackage.reasonRequired){
+                if (appRequest.servicePackage.reasonRequired) {
                     if(!appRequest.reason || appRequest.reason===''){
                         appRequest.reasonRequired=true;
                         applicationReview.attempting=false;
@@ -50,17 +54,23 @@ angular.module('applications')
                         appRequest.reasonRequired=false;
                         applicationRequestArray[i+x] = AppRequests.buildReason(appRequest,appRequest.reason);
                     }
+                } else {
+                    applicationRequestArray[i+x] = appRequest;
                 }
-                else applicationRequestArray[i+x] = appRequest;
             });
         });
         applicationReview.error = error;
-        if(error) return false;
-        else return true;
+        if (error) {
+            return false;
+        } else {
+            return true;
+        }
     };
 
     applicationReview.submit = () => {
-        if(!requestsValid()) return;
+        if (!requestsValid()) {
+            return;
+        }
         const appRequests=AppRequests.getPackageRequests(API.getUser(),applicationRequestArray);
 
         let requestsPromises=[];

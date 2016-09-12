@@ -57,9 +57,11 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     newGrant.searchCallback = (opts) => {
-        if (!opts) $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID})
-        else if (typeof opts ==='string') $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, name: opts})
-        else {
+        if (!opts) {
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID});
+        } else if (typeof opts ==='string') {
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, name: opts});
+        } else {
             const optsParser = {
                 category: (unparsedCategory) => {
                     const category = $filter('cuiI18n')(unparsedCategory)

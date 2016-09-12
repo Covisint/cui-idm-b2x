@@ -160,20 +160,26 @@ angular.module('common')
                     }
 
                     // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
-                    delete userProfile.tempUser['activatedDate']
+                    delete userProfile.tempUser.activatedDate
 
                     API.cui.updatePerson({personId: userId, data:userProfile.tempUser})
                     .done(() => {
                         angular.copy(userProfile.tempUser, userProfile.user);
                         LocaleService.setLocaleByDisplayName(appConfig.languages[userProfile.user.language])
-                        if (toggleOff) toggleOff()
+                        if (toggleOff) {
+                            toggleOff();
+                        }
                     })
                     .fail((err) => {
                         console.error('Failed to update user profile:', err)
-                        if (section) userProfile[section].error = true
+                        if (section) {
+                            userProfile[section].error = true;
+                        }
                     })
                     .always(() => {
-                        if (section) userProfile[section].submitting = false
+                        if (section) {
+                            userProfile[section].submitting = false;
+                        }
                         $scope.$digest()
                     })
                 };

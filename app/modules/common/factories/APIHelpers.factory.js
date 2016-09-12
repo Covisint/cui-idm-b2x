@@ -3,7 +3,7 @@ angular.module('common')
 
     const apiHelpers = {
 
-        getQs (opts) {
+        getQs(opts) {
             /**
                 return a qs array from an object of key value pairs
                 where the key is the search param and the value is the search value (accepts undefined values)
@@ -15,7 +15,7 @@ angular.module('common')
             }, [])
         },
 
-        buildPackageRequests (arrayOfApps) {
+        buildPackageRequests(arrayOfApps) {
             /**
                 returns an array of API package request promises
                 based on an array of apps that we want to request
@@ -34,17 +34,21 @@ angular.module('common')
             }
 
             let error = false
-            for (let i=0; i < numberOfApps; i++) {
+            for (let i=0; i < numberOfApps; i += 1) {
                 if (arrayOfApps[i].servicePackage.requestReasonRequired && !arrayOfApps[i]._reason) {
                     arrayOfApps[i]._error = true
-                    if(!error) error = true
+                    if (!error) {
+                        error = true;
+                    }
                 }
             }
-            if (error) return undefined
+            if (error) {
+                return undefined;
+            }
 
             let packagesBeingRequested = []
             let packageRequests = []
-            for (let i=0; i < numberOfApps; i++) {
+            for (let i=0; i < numberOfApps; i += 1) {
                 if (packagesBeingRequested.indexOf(arrayOfApps[i].servicePackage.id) >= 0) {
                     // if the service package is already being requested, simply append to the reason.
                     // if the app doesn't have a reason and we got to this point then the package
@@ -74,7 +78,7 @@ angular.module('common')
             return packageRequests.map(data => API.cui.createPackageRequest({ data }))
         },
 
-        flattenOrgHierarchy (orgHierarchy) {
+        flattenOrgHierarchy(orgHierarchy) {
             /*
                 Takes the organization hierarchy response and returns a flat object array containing the id's and name's of
                 the top level organization as well as it's divisions.
