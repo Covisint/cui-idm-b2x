@@ -11,14 +11,17 @@
 ## Default Page
 - Default state based on visitor's logged in state
 - Can be configured to meet your needs
+- Browser compatability checking
 
-[Find out more]()
+[Find out more](default-page.md)
 
 
-## Walk-up Registration
-- Wizard based
-- Custom steps
+## Registration Flows
+- Wizard based, customizable steps
 - Country Selection
 - Timezone Selection
+- Client and Server Side Error Handling
+- Organization Selection
+- Application Selection
 
-[Find out more]()
+[Find out more](registration-flows.md)
