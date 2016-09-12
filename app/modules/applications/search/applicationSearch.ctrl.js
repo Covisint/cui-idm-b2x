@@ -11,8 +11,11 @@ angular.module('applications')
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const processNumberOfRequestedApps = (pkgRequest) => {
-        if (pkgRequest) applicationSearch.numberOfRequests++;
-        else applicationSearch.numberOfRequests--;
+        if (pkgRequest) {
+            applicationSearch.numberOfRequests += 1;
+        } else {
+            applicationSearch.numberOfRequests -= 1;
+        }
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -28,20 +31,24 @@ angular.module('applications')
             Object.keys(applicationSearch.packageRequests).forEach(function(appId) { // Gets the list of package requests saved in memory
                 // This sets the checkboxes back to marked when the user clicks back after being in request review
                 applicationSearch.appCheckbox[appId] = true;
-                numberOfRequests++;
+                numberOfRequests += 1;
             });
             applicationSearch.numberOfRequests = numberOfRequests;
 
             applicationSearch.search = {};
             applicationSearch.search.name = $stateParams.name;
             applicationSearch.search.category = $stateParams.category;
-            applicationSearch.search.page = parseInt($stateParams.page);
-            applicationSearch.search.pageSize = parseInt($stateParams.pageSize);
+            applicationSearch.search.page = parseInt($stateParams.page, 10);
+            applicationSearch.search.pageSize = parseInt($stateParams.pageSize, 10);
         }
 
         let query = [];
-        if(applicationSearch.search.name) query.push(['service.name',applicationSearch.search.name]);
-        if(applicationSearch.search.category) query.push(['service.category',applicationSearch.search.category]);
+        if (applicationSearch.search.name) {
+            query.push(['service.name',applicationSearch.search.name]);
+        }
+        if (applicationSearch.search.category) {
+            query.push(['service.category',applicationSearch.search.category]);
+        }
 
         applicationSearch.search.pageSize = applicationSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
         query.push(['pageSize',String(applicationSearch.search.pageSize)]);
@@ -79,15 +86,19 @@ angular.module('applications')
             case 'name':
                 applicationSearch.search.page = 1;
                 break;
-        };
+        }
 
-        $state.transitionTo('applications.search', applicationSearch.search, {notify:false}); // doesn't change state, only updates the url
+        // doesn't change state, only updates the url
+        $state.transitionTo('applications.search', applicationSearch.search, {notify:false});
         onLoad(true);
     };
 
     applicationSearch.toggleRequest = function(application) {
-        if (!applicationSearch.packageRequests[application.id]) applicationSearch.packageRequests[application.id] = application;
-        else delete applicationSearch.packageRequests[application.id];
+        if (!applicationSearch.packageRequests[application.id]) {
+            applicationSearch.packageRequests[application.id] = application;
+        } else {
+            delete applicationSearch.packageRequests[application.id];
+        }
         localStorage.set('appsBeingRequested',applicationSearch.packageRequests);
         processNumberOfRequestedApps(applicationSearch.packageRequests[application.id]);
     };

@@ -12,7 +12,9 @@ angular.module('common')
             API.cui.getPerson({ personId: userId })
             .done(res => {
                 // If the person object has no addresses we need to initialize it
-                if (!res.addresses) res.addresses = [{streets: []}]
+                if (!res.addresses) {
+                    res.addresses = [{streets: []}];
+                }
                 user.user = Object.assign({}, res)
                 user.tempUser = Object.assign({}, res)
                 defer.resolve(user)
@@ -116,8 +118,10 @@ angular.module('common')
                 angular.merge(profile, res)
             })
             .finally(() => {
-                callsCompleted++
-                if (callsCompleted === 3) defer.resolve(profile)
+                callsCompleted += 1
+                if (callsCompleted === 3) {
+                    defer.resolve(profile);
+                }
             })
 
             UserProfile.initSecurityQuestions(userId)
@@ -125,8 +129,10 @@ angular.module('common')
                 angular.merge(profile, res)
             })
             .finally(() => {
-                callsCompleted++
-                if (callsCompleted === 3) defer.resolve(profile)
+                callsCompleted += 1
+                if (callsCompleted === 3) {
+                    defer.resolve(profile);
+                }
             })
 
             UserProfile.initPasswordPolicy(organizationId)
@@ -134,8 +140,10 @@ angular.module('common')
                 angular.merge(profile, res)
             })
             .finally(() => {
-                callsCompleted++
-                if (callsCompleted === 3) defer.resolve(profile)
+                callsCompleted += 1
+                if (callsCompleted === 3) {
+                    defer.resolve(profile);
+                }
             })
             return defer.promise
         },
@@ -177,7 +185,9 @@ angular.module('common')
             }
 
             profile.pushToggleOff = (toggleOffObject) => {
-                if (!profile.toggleOffFunctions) profile.toggleOffFunctions = {}
+                if (!profile.toggleOffFunctions) {
+                    profile.toggleOffFunctions = {}
+                }
                 profile.toggleOffFunctions[toggleOffObject.name] = toggleOffObject.function
             }
 
@@ -211,27 +221,38 @@ angular.module('common')
             }
 
             profile.updatePerson = (section, toggleOff) => {
-                if (section) profile[section] = { submitting: true }
+                if (section) {
+                    profile[section] = { submitting: true }
+                }
 
-                if (!profile.userCountry) profile.tempUser.addresses[0].country = profile.user.addresses[0].country
-                else profile.tempUser.addresses[0].country = profile.userCountry.originalObject.code
+                if (!profile.userCountry) {
+                    profile.tempUser.addresses[0].country = profile.user.addresses[0].country;
+                } else {
+                    profile.tempUser.addresses[0].country = profile.userCountry.originalObject.code;
+                }
 
                 // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
-                delete profile.tempUser['activatedDate']
+                delete profile.tempUser.activatedDate
 
                 API.cui.updatePerson({personId: userId, data:profile.tempUser})
                 .always(() => {
-                    if (section) profile[section].submitting = false
+                    if (section) {
+                        profile[section].submitting = false;
+                    }
                     $scope.$digest()
                 })
                 .done(() => {
                     angular.copy(profile.tempUser, profile.user)
                     LocaleService.setLocaleByDisplayName(appConfig.languages[profile.user.language])
-                    if (toggleOff) toggleOff()
+                    if (toggleOff) {
+                        toggleOff();
+                    }
                 })
                 .fail((err) => {
                     console.error('Failed to update user profile:', err)
-                    if (section) profile[section].error = true
+                    if (section) {
+                        profile[section].error = true;
+                    }
                 })
             }
 
@@ -270,7 +291,9 @@ angular.module('common')
             }
 
             profile.saveChallengeQuestions = (section, toggleOff) => {
-                if (section) profile[section] = { submitting: true }
+                if (section) {
+                    profile[section] = { submitting: true }
+                }
                 profile.userSecurityQuestions = angular.copy(profile.tempUserSecurityQuestions)
 
                 API.cui.updateSecurityQuestionAccount({
@@ -282,16 +305,22 @@ angular.module('common')
                     }
                 })
                 .always(() => {
-                    if (section) profile[section].submitting = false
+                    if (section) {
+                        profile[section].submitting = false;
+                    }
                 })
                 .done(() => {
-                    if (toggleOff) toggleOff()
+                    if (toggleOff) {
+                        toggleOff();
+                    }
                     profile.challengeQuestionsTexts = UserProfile.selectTextsForQuestions(profile)
                     $scope.$digest()
                 })
                 .fail(err => {
                     console.error('Error updating security questions', err)
-                    if (section) profile[section].error = true
+                    if (section) {
+                        profile[section].error = true;
+                    }
                     $scope.$digest()
                 })
             }

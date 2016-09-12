@@ -17,7 +17,9 @@ angular.module('registration')
             userWalkup.user.addresses[0].country = userWalkup.userCountry.title // Get title of selected country object
             userWalkup.user.organization = { id: userWalkup.organization.id }
             userWalkup.user.timezone = 'EST5EDT'
-            if (userWalkup.user.phones[0]) userWalkup.user.phones[0].type = 'main'
+            if (userWalkup.user.phones[0]) {
+                userWalkup.user.phones[0].type = 'main';
+            }
             userWalkup.user.language = Base.getLanguageCode() // Get current used language
             return userWalkup.user
         },
@@ -98,8 +100,9 @@ angular.module('registration')
         userWalkup.user = { addresses: [] }
         userWalkup.user.addresses[0] = { streets: [] }
         userWalkup.user.phones = []
+    } else {
+        userWalkup.user = localStorageService.get('userWalkup.user');
     }
-    else userWalkup.user = localStorageService.get('userWalkup.user')
 
     // Load in data required for the walkup registration (security questions, organizations list/count)
     API.cui.initiateNonce()
@@ -141,8 +144,11 @@ angular.module('registration')
 
     userWalkup.applications.updateNumberOfSelected = (checkboxValue) => {
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
-        if (checkboxValue !== null) userWalkup.applications.numberOfSelected++
-        else userWalkup.applications.numberOfSelected--
+        if (checkboxValue !== null) {
+            userWalkup.applications.numberOfSelected += 1;
+        } else {
+            userWalkup.applications.numberOfSelected -= 1;
+        }
     }
 
     userWalkup.applications.process = () => {
@@ -267,8 +273,9 @@ angular.module('registration')
             return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
         })
         .then(res => {
-            if (!res.length) userWalkup.applications.list = undefined
-            else {
+            if (!res.length) {
+                userWalkup.applications.list = undefined;
+            } else {
                 userWalkup.applications.list = res.map((grant) => {
                     grant = grant.servicePackageResource
                     return grant
@@ -293,7 +300,9 @@ angular.module('registration')
     /* -------------------------------------------- WATCHERS START -------------------------------------------- */
 
     $scope.$watch('userWalkup.user', (a) => {
-        if (a && Object.keys(a).length !== 0) localStorageService.set('userWalkup.user', a)
+        if (a && Object.keys(a).length !== 0) {
+            localStorageService.set('userWalkup.user', a);
+        }
     }, true)
 
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */

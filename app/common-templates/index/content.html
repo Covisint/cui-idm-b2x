@@ -1,0 +1,33 @@
+<snap-drawer ng-if="base.menu.mobile.enabled">
+  <!-- Snap Menu Mobile -->
+  <div ng-include="'app/common-templates/index/snap-menu-mobile.html'"></div>
+</snap-drawer>
+
+<snap-content snap-opt-disable="'right'">
+  <!-- Snap Menu -->
+  <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled" ng-include="'app/common-templates/index/snap-menu.html'"></div>
+
+  <!-- Desktop Menu Toggle Icon -->
+  <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed', 'cui-nav__content-wrapper--full-width': !base.menu.desktop.enabled}">
+    <div class="cui-menu__toggle-button--desktop cui-menu__toggle-button-container active" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
+      <div class="cui-menu__toggle-button"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="cui-header">
+      <div ng-include="'app/common-templates/index/header.html'"></div>
+    </header>
+
+    <!-- Uncomment below to reveal global search -->
+    <!-- <div class="cui-input-button cui-input-button--global-search" ng-class="{'show': searchEnabled}">
+      <input type="text" placeholder="Search for applications in your org" class="cui-input-button__input"/>
+      <button class="cui-input-button__button">{{'go' | translate}}</button>
+    </div> -->
+
+    <!-- Main Content UI-View -->
+    <div ui-view class="js-main-content" ng-cloak ng-class="{'js-main-content--search-open': searchEnabled}"></div>
+
+    <!-- Footer -->
+    <div class="cui-footer" ng-include="'app/common-templates/index/footer.html'"></div>
+  </div>
+</snap-content>

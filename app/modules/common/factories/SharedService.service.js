@@ -33,9 +33,11 @@ angular.module('common')
     this.onFor = function (property, message) {
         if (this.details[property]) {
             this.details[property].count
-                ? this.details[property].count++
+                ? this.details[property].count += 1
                 : this.details[property].count = 2 // count is only defined if there's more than 1
-            if (message) this.details[property].message = message
+            if (message) {
+                this.details[property].message = message;
+            }
         } else {
             this.details[property] = {
                 status: true,
@@ -45,14 +47,19 @@ angular.module('common')
     }
 
     this.offFor = function (property) {
-        if (!this.details[property]) return
-        else if (!this.details[property].count || this.details[property].count===1) delete this.details[property]
-        else this.details[property].count--
+        if (!this.details[property]) {
+            return;
+        } else if (!this.details[property].count || this.details[property].count===1) {
+            delete this.details[property];
+        } else {
+            this.details[property].count -= 1;
+        }
     }
 
     this.toggleFor = function (property,message) {
-        if (this.details[property]) delete this.details[property]
-        else {
+        if (this.details[property]) {
+            delete this.details[property];
+        } else {
             this.details[property] = {
                 status:true,
                 message

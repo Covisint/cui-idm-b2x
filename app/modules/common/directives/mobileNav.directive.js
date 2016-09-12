@@ -25,7 +25,7 @@ angular.module('common')
         links: '='
     },
     link: (scope, elem, attrs) => {
-        attrs.activeTitle ? scope.activeTitle = attrs['activeTitle'] : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
+        attrs.activeTitle ? scope.activeTitle = attrs.activeTitle : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
         scope.currentState = $state.current.name
 
         scope.close = () => scope.showIf = false

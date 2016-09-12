@@ -67,8 +67,11 @@ angular.module('applications')
             APIError.onFor(loaderName + 'apps')
         })
         .finally(() => {
-            if (previouslyLoaded) Loader.offFor(loaderName + 'reloadingApps')
-            else Loader.offFor(loaderName + 'apps')
+            if (previouslyLoaded) {
+                Loader.offFor(loaderName + 'reloadingApps');
+            } else {
+                Loader.offFor(loaderName + 'apps');
+            }
         })
     }
 

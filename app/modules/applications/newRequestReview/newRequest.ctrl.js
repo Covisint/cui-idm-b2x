@@ -20,7 +20,7 @@ function(API,$scope,$state,AppRequests,localStorage) {
 
     Object.keys(appsBeingRequested).forEach((appId) => {
         // This sets the checkboxes back to marked when the user clicks back
-        newAppRequest.numberOfRequests++;
+        newAppRequest.numberOfRequests += 1;
         newAppRequest.appsBeingRequested.push(appsBeingRequested[appId]);
     });
 

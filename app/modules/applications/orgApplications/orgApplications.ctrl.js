@@ -33,7 +33,7 @@ function($scope,API,Sort,$stateParams) {
             if (service.category) {
                 var serviceCategoryInCategoryList = _.some(categoryList, function(category, i) {
                     if (angular.equals(category, service.category)) {
-                        categoryCount[i+1] ? categoryCount[i+1]++ : categoryCount[i+1] = 1;
+                        categoryCount[i+1] ? categoryCount[i+1] += 1 : categoryCount[i+1] = 1;
                         return true;
                     }
                     return false;
@@ -56,7 +56,7 @@ function($scope,API,Sort,$stateParams) {
         grants.forEach(function(grant) {
             API.cui.getPackageServices({ 'packageId': grant.servicePackage.id })
             .then(function(res) {
-                i++;
+                i += 1;
                 res.forEach(function(service) {
                     // Set some of the grant attributes to its associated service
                     service.status = grant.status;
