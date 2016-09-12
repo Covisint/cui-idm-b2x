@@ -1,9 +1,22 @@
 # Changelog for the IDM B2X Accelerator
 
-## [v1.0.16] - 2016-08-23
+## Unreleased
 
-...
+### Changed
+* cui-styleguide v2.5.1 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
+* Logout redirect can now be customized in the appConfig with the 'logoutUrl' key
+* User list and user details screens will now show the user's gravatar if available
+* Configuration files are now prettified
+* Removes left menu from registration screens
+* Added padding to registration links and to terms and conditions
 
+### Fixes
+* Fixes styling of application selection list in the walkup registration
+* Only creates a package request during the walkup registration if packages were actually selected
+* Fixes tiny icons on left mobile menu
+
+### Added
+* Adds disable-animate directive to disable ng-animate on an element
 
 
 ## [v1.0.8] - 2016-06-28

@@ -212,6 +212,12 @@ angular.module('registration')
             return API.cui.postUserRegistrationNonce({data: user})
         })
         .then(res => {
+            if (userWalkup.applications.numberOfSelected !== 0) {
+                return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})    
+            }
+            else {
+                return
+            }
             return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
         })
         .always(() => {
