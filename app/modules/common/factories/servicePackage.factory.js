@@ -105,8 +105,10 @@ angular.module('common')
             packageDetails.details = packageData
         })
         .finally(() => {
-            callsCompleted++
-            if (callsCompleted === 3) defer.resolve(packageDetails)
+            callsCompleted += 1
+            if (callsCompleted === 3) {
+                defer.resolve(packageDetails);
+            }
         })
 
         getPackageServices(packageId)
@@ -114,8 +116,10 @@ angular.module('common')
             packageDetails.services = packageServices
         })
         .finally(() => {
-            callsCompleted++
-            if (callsCompleted === 3) defer.resolve(packageDetails)
+            callsCompleted += 1
+            if (callsCompleted === 3) {
+                defer.resolve(packageDetails);
+            }
         })
 
         getPackageClaims(packageId)
@@ -123,8 +127,10 @@ angular.module('common')
             packageDetails.claims = packageClaims
         })
         .finally(() => {
-            callsCompleted++
-            if (callsCompleted === 3) defer.resolve(packageDetails)  
+            callsCompleted += 1
+            if (callsCompleted === 3) {
+                defer.resolve(packageDetails);
+            }  
         })
 
         return defer.promise
@@ -192,10 +198,13 @@ angular.module('common')
             API.cui.approvePackage({qs: data})
         }
         else if (packageRequest.approval === 'denied') {
-            if (packageRequest.rejectReason) data.push(['justification', packageRequest.rejectReason])
+            if (packageRequest.rejectReason) {
+                data.push(['justification', packageRequest.rejectReason]);
+            }
             API.cui.denyPackage({qs: data})
+        } else {
+            throw new Error('Package request object must contain "approval" of either "approved" or "denied"');
         }
-        else throw new Error('Package request object must contain "approval" of either "approved" or "denied"')
     }
 
     return servicePackage

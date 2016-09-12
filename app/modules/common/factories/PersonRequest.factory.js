@@ -82,8 +82,10 @@ angular.module('common')
 			requestData.request = registrationRequest
 		})
 		.finally(() => {
-			callsCompleted++
-			if (callsCompleted === 3) defer.resolve(requestData)
+			callsCompleted += 1
+			if (callsCompleted === 3) {
+                defer.resolve(requestData);
+            }
 		})
 
 		getPerson(userId)
@@ -91,8 +93,10 @@ angular.module('common')
 			requestData.person = personData
 		})
 		.finally(() => {
-			callsCompleted++
-			if (callsCompleted === 3) defer.resolve(requestData)	
+			callsCompleted += 1
+			if (callsCompleted === 3) {
+                defer.resolve(requestData);
+            }	
 		})
 
 		getOrganization(organizationId)
@@ -100,8 +104,10 @@ angular.module('common')
 			requestData.organization = organizationData
 		})
 		.finally(() => {
-			callsCompleted++
-			if (callsCompleted === 3) defer.resolve(requestData)
+			callsCompleted += 1
+			if (callsCompleted === 3) {
+                defer.resolve(requestData);
+            }
 		})
 		
 		return defer.promise

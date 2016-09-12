@@ -27,7 +27,7 @@ angular.module('organization')
             if (user.status) {
                 let statusInStatusList = _.some(statusList, function(status, i) {
                     if (angular.equals(status, user.status)) {
-                        statusCount[i+1] ? statusCount[i+1]++ : statusCount[i+1] = 1;
+                        statusCount[i+1] ? statusCount[i+1] += 1 : statusCount[i+1] = 1;
                         return true;
                     }
                     return false;

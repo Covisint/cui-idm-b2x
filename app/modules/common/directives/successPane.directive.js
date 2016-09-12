@@ -31,7 +31,9 @@ angular.module('common')
 
         if (scope.closeAfter) {
             $timeout(() => {
-                if (scope.onClose) scope.onClose() && scope.onClose()()
+                if (scope.onClose) {
+                    scope.onClose() && scope.onClose()();
+                }
                 scope.close()
             }, scope.closeAfter)
         }

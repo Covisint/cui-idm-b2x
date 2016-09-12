@@ -25,19 +25,23 @@ angular.module('common')
 
         let error = false
 
-        for (let i = 0; i < numberOfApps; i++) {
+        for (let i = 0; i < numberOfApps; i += 1) {
             if (arrayOfApps[i].servicePackage.requestReasonRequired && !arrayOfApps[i]._reason) {
                 arrayOfApps[i]._error = true
-                if (!error) error = true
+                if (!error) {
+                    error = true;
+                }
             }
         }
 
-        if (error) return undefined
+        if (error) {
+            return undefined;
+        }
 
         let packagesBeingRequested = []
         let packageRequests = []
 
-        for (let i = 0; i < numberOfApps; i++) {
+        for (let i = 0; i < numberOfApps; i += 1) {
             if (packagesBeingRequested.indexOf(arrayOfApps[i].servicePackage.id) >= 0) {
                 // If the service package is already being requested, append service to the request reason
                 // If the request doesn't have a reason here, then it is not required for this service package
