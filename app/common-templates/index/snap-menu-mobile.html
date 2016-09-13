@@ -46,7 +46,7 @@
 </div>
 
 <!-- Welcome -->
-<span class="snap-menu--option" snap-close ui-sref="welcome">
+<span class="snap-menu--option" snap-close ui-sref="welcome" ng-if="!base.user.id">
   <span class="snap-menu__option-name">{{'welcome' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="fa:four29" svg-class="snap-menu__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
