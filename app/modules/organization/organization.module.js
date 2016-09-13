@@ -12,7 +12,7 @@ angular.module('organization',[])
     $stateProvider
         .state('organization', {
             url: '/organization',
-            templateUrl: templateBase + 'organization.html',
+            template: '<div ui-view></div>',
             access: loginRequired
         })
         // Profile --------------------------------------------------
