@@ -9,7 +9,7 @@
 
             <!-- close icon -->
             
-            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
                 <defs>
                   <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
                   <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
@@ -36,7 +36,7 @@
             <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <div ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false">
+            <div id="cui-applications__requested-apps" ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" >
                     <cui-icon id="cui-applications__requested-apps" cui-svg-icon="cui:folder" svg-class="cui-icon--folder" use-class="cui-card__icon" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                 </div>
             <!--svg ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
@@ -78,7 +78,7 @@
             <cui-expandable-body class="cui-expandable__body">
                 <div class="cui-expandable__body-pane">
                     <span class="cui-expandable__body-close" ng-click="collapse()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
                           <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
                         </svg>
                     </span>

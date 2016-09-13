@@ -37,10 +37,14 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </svg-->
       <span class="cui-action__action-label">{{'sort' | translate}}</span>
       <!-- Sort Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
+      <div class="cui-popover cui-popover--menu" tether target="#sort-button" attachment="top middle"
         target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.sortClicked">
-        <p ng-click="myApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</p>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</span>
+        </div>
       </div>
     </div>
     <!-- Refine -->
@@ -51,11 +55,19 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </svg-->
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.refineClicked">
-        <p ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
+      <div class="cui-popover cui-popover--menu" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.refineClicked">
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
+        </div>
       </div>
     </div>
     <!-- Categories -->
@@ -66,10 +78,12 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </svg-->
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false">
-        <p ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</p>
-        <div ng-repeat="category in myApplications.categories">
-          <p ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</p>
+      <div class="cui-popover cui-popover--menu" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false">
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row" ng-repeat="category in myApplications.categories">
+          <span ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
         </div>
       </div>
     </div>
