@@ -7,6 +7,9 @@
   <div ng-include="'app/modules/organization/requests/personRequest/sections-requests/requests-header.html'"
     ng-if="!base.loader.for['personRequest.init']">
   </div>
+
+  <!-- Error Messages -->
+  <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['personRequest.noRequest']">{{'cui-error-person-request' | translate}}</p>
   
   <!-- Page Loading -->
   <div class="cui-loading__container--user-details" ng-if="base.loader.for['personRequest.init']">

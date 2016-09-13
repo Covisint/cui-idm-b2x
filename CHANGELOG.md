@@ -12,9 +12,10 @@
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
 * Fixes side menu lag when closing upon entering the walkup registration.
+* Fixes users being able to go through the person request screens when there is an issue getting the request data. Now displays an error and automatically redirects to the user list after 5 seconds.
 
 ### Added
-* Added sorting carets to the cui-table directive
+* Added sorting carets to the cui-table directive.
 
 ## [v0.2.2] - 2016-09-12
 
