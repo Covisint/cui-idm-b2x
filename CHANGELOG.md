@@ -5,9 +5,13 @@
 ### Changed
 * Index.html has been broken down into smaller, more manageable files inside app/common-templates/index/
 * Side navigation link to the welcome screen is now hidden when a user is logged in
+* Removed commented out legacy svg code from index files
+* Moved relevant ui-views for all modules into the state provider itself
+* Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed. 
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states
+* Fixes side menu lag when closing upon entering the walkup registration
 
 ### Added
 
