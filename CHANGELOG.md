@@ -3,6 +3,17 @@
 ## Unreleased
 
 ### Changed
+* Index.html has been broken down into smaller, more manageable files inside app/common-templates/index/
+* Side navigation link to the welcome screen is now hidden when a user is logged in
+
+### Fixes
+
+### Added
+
+
+## [v0.2.2] - 2016-09-13
+
+### Changed
 * cui-styleguide v2.5.1 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
 * Logout redirect can now be customized in the appConfig with the 'logoutUrl' key
 * User list and user details screens will now show the user's gravatar if available
