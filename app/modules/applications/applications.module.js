@@ -6,14 +6,14 @@ angular.module('applications',[])
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
     const loginRequired = {
-        loginRequired:true
+        loginRequired: true
     };
 
     $stateProvider
         .state('applications', {
             url: '/applications',
-            templateUrl : templateBase + 'applications.html',
-            access:loginRequired,
+            template: '<div ui-view class="cui-applications"></div>',
+            access: loginRequired,
             abstract: true
         })
         .state('applications.myApplications', {
@@ -51,6 +51,6 @@ angular.module('applications',[])
             templateUrl: templateBase + 'orgApplications/orgApplications.html',
             controller: returnCtrlAs('orgApplications'),
             access:loginRequired
-        });
+        })
 
 }]);
