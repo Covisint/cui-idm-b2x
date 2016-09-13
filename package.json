@@ -1,6 +1,6 @@
 {
   "name": "@covisint/cui-idm-b2x",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Covisint IDM B2X Solution Accelerator",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@covisint/cui-api-interceptor": "1.0.5",
-    "@covisint/cui-i18n": "1.0.12",
+    "@covisint/cui-i18n": "1.0.13",
     "@covisint/cui-icons": "1.4.2",
     "@covisint/cui-ng": "1.9.19",
     "@covisint/cui-styleguide": "2.5.1",
