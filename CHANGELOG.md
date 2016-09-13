@@ -7,6 +7,7 @@
 * Side navigation link to the welcome screen is now hidden when a user is logged in
 
 ### Fixes
+* Fixes categories popover in my applications not properly closing when changing states
 
 ### Added
 
