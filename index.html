@@ -9,13 +9,13 @@
   <!-- endbuild -->
 
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
-  
+
 </head>
 <body ng-controller="baseCtrl as base" data-snap-ignore="true">
-  
+
   <!-- Application Loading -->
   <div ng-cloak ng-if="base.loader.for.wholeApp" ng-inlude="'app/common-templates/index/whole-app-loader.html'"></div>
-  
+
   <!-- Content -->
   <div class="cui-wrapper v2" ng-if="!base.loader.for.wholeApp" ng-cloak ng-include="'app/common-templates/index/content.html'"></div>
 
@@ -52,5 +52,7 @@
   <!-- endbuild -->
 
   <script>svg4everybody();</script>
+
+  <!-- This app brought to you by the power of cui-ng -->
 </body>
 </html>
