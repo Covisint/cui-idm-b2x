@@ -27,9 +27,7 @@ angular.module('common')
     `,
     link: (scope, iElem, iAttrs) => {
         const initScope = () => {
-            if (!scope.cuiTableConfig) {
-                scope.cuiTableConfig = {}
-            }
+            if (!scope.cuiTableConfig) scope.cuiTableConfig = {}
 
             if (scope.cuiTableConfig.paginate) {
                 const requiredOptions = ['recordCount', 'pageSize', 'initialPage', 'onPageChange']
@@ -84,10 +82,20 @@ angular.module('common')
     },
     templateUrl: 'app/common-templates/user-list/user-list-header.html',
     link: (scope) => {
+        scope.userListHeader = {}
         scope.userListHeader.nameCallback = scope.sortingCallbacks.name || angular.noop
         scope.userListHeader.usernameCallback = scope.sortingCallbacks.username || angular.noop
         scope.userListHeader.registeredCallback = scope.sortingCallbacks.registered || angular.noop
         scope.userListHeader.statusCallback = scope.sortingCallbacks.status || angular.noop
+
+        scope.userListHeader.invertSortingDirection = (direction) => {
+            switch (direction) {
+                case 'asc':
+                    return 'desc'
+                case 'desc':
+                    return 'asc'
+            }
+        }
     }
 }))
 
@@ -96,4 +104,26 @@ angular.module('common')
     restrict: 'E',
     replace: true,
     templateUrl: 'app/common-templates/user-list/user-list-row.html'
+}))
+
+angular.module('common')
+.directive('sortingCaret', () => ({
+    restrict: 'E',
+    replace: true,
+    scope: {
+        sortingDirection: '=',
+        inverted: '='
+    },
+    template: `
+        <span>
+            <span ng-if="!inverted">
+                <span ng-if="sortingDirection==='desc'"><cui-icon cui-svg-icon="fa:caret5"></cui-icon></span>
+                <span ng-if="sortingDirection==='asc'"><cui-icon cui-svg-icon="fa:caret6"></cui-icon></span>
+            </span>
+            <span ng-if="inverted">
+                <span ng-if="sortingDirection==='asc'"><cui-icon cui-svg-icon="fa:caret5"></cui-icon></span>
+                <span ng-if="sortingDirection==='desc'"><cui-icon cui-svg-icon="fa:caret6"></cui-icon></span>
+            </span>
+        </span>
+    `
 }))
