@@ -1,4 +1,4 @@
-angular.module('user',[])
+angular.module('user', [])
 .config(['$stateProvider', function($stateProvider) {
 
 	const templateBase = 'app/modules/user/';
@@ -14,7 +14,7 @@ angular.module('user',[])
     $stateProvider
         .state('user', {
             url: '/user',
-            templateUrl: templateBase + 'user.html',
+            template: '<div ui-view></div>',
             access:loginRequired
         })
         .state('user.profile', {

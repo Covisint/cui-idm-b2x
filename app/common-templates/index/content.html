@@ -5,7 +5,7 @@
 
 <snap-content snap-opt-disable="'right'">
   <!-- Snap Menu -->
-  <div class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled" ng-include="'app/common-templates/index/snap-menu.html'"></div>
+  <div disable-animate class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled" ng-include="'app/common-templates/index/snap-menu.html'"></div>
 
   <!-- Desktop Menu Toggle Icon -->
   <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed', 'cui-nav__content-wrapper--full-width': !base.menu.desktop.enabled}">

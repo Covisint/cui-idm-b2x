@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('personRequestCtrl', function(DataStorage, Loader, PersonRequest, ServicePackage, $state, $stateParams) {
+.controller('personRequestCtrl', function(APIError, DataStorage, Loader, PersonRequest, ServicePackage, $state, $stateParams, $timeout) {
     'use strict'
 
     const personRequest = this
@@ -12,8 +12,14 @@ angular.module('organization')
 
     PersonRequest.getPersonRegistrationRequestData(userId, organizationId)
     .then(res => {
-        personRequest.request = res
-        Loader.offFor('personRequest.init')
+        if (!res.request) {
+            APIError.onFor('personRequest.noRequest')
+            $timeout(() => $state.go('organization.directory.userList'), 5000)
+        }
+        else {
+            personRequest.request = res    
+            Loader.offFor('personRequest.init')
+        }
     })
 
     ServicePackage.getAllUserPendingPackageData(userId)

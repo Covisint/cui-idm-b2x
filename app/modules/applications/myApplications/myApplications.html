@@ -18,58 +18,65 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 <div class="cui-action">
   <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
-      <!-- <li class="cui-breadcrumb__link">
+      <li class="cui-breadcrumb__link" ng-if="false">
         <a ui-sref="applications.orgApplications">{{'organization-applications' | translate}}</a>
-      </li> -->
+      </li>
       <li class="cui-breadcrumb__link">
         <a ui-sref="applications.myApplications" ui-sref-active="active">{{'my-applications' | translate}}</a>
       </li>
     </ul>
   </nav>
   <div class="cui-action__actions">
+
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
         <div>
             <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
         </div>
-      <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
-      </svg-->
       <span class="cui-action__action-label">{{'sort' | translate}}</span>
       <!-- Sort Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle"
-        target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.sortClicked">
-        <p ng-click="myApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</p>
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="myApplications.sortClicked" style="width:171px">
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</span>
+        </div>
       </div>
     </div>
+
     <!-- Refine -->
     <div class="cui-action__action-container" ng-click="myApplications.refineClicked =! myApplications.refineClicked" id="refine-button" off-click="myApplications.refineClicked=false">
-        <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-      <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
-      </svg-->
+        <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.refineClicked">
-        <p ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
-        <p ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.refineClicked" style="width:214px">
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
+        </div>
       </div>
     </div>
+    
     <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button">
+    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button" off-click="myApplications.categoriesClicked=false">
       <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-      <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
-        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
-      </svg-->
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
-      <div class="cui-popover cui-popover--top cui-popover__refine-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false">
-        <p ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</p>
-        <div ng-repeat="category in myApplications.categories">
-          <p ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</p>
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false" style="width:214px">
+        <div class="cui-popover__row">
+          <span ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row" ng-repeat="category in myApplications.categories">
+          <span ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
         </div>
       </div>
     </div>
