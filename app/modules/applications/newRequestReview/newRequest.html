@@ -31,12 +31,9 @@
     <div class="cui-action cui-action--alt">
         <h3 class="cui-action__title">{{'select-applications'| translate}}</h3>
         <div class="cui-action__actions">
-            <div id="cui-applications__requested-apps" ng-click="newAppRequest.requestPopover = !newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false">
-                <cui-icon cui-svg-icon="cui:folder" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-            </div>
-            <!--svg ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg cui-icon ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-            </svg-->
+            </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
             <!-- popover -->
             <div cui-popover class="cui-action__popover cui-popover--positionless" target="#cui-applications__requested-apps" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="newAppRequest.requestPopover">

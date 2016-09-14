@@ -36,12 +36,9 @@
             <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
-            <div id="cui-applications__requested-apps" ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" >
-                    <cui-icon id="cui-applications__requested-apps" cui-svg-icon="cui:folder" svg-class="cui-icon--folder" use-class="cui-card__icon" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-                </div>
-            <!--svg ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg cui-icon id="cui-applications__requested-apps" ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-            </svg-->
+            </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': applicationSearch.numberOfRequests != 0}">{{applicationSearch.numberOfRequests}}</sup>
 
             <div cui-popover class="cui-action__popover cui-popover--positionless" target="#cui-applications__requested-apps" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="applicationSearch.requestPopover">
