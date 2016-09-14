@@ -9,7 +9,7 @@
 
             <!-- close icon -->
 
-            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+            <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
                 <defs>
                     <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
                     <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
@@ -31,16 +31,12 @@
     <div class="cui-action cui-action--alt">
         <h3 class="cui-action__title">{{'select-applications'| translate}}</h3>
         <div class="cui-action__actions">
-            <div ng-click="newAppRequest.requestPopover = !newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false">
-                <cui-icon cui-svg-icon="cui:folder" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-            </div>
-            <!--svg ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+            <svg cui-icon ng-click="newAppRequest.requestPopover=!newAppRequest.requestPopover" off-click="newAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': newAppRequest.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
-            </svg-->
+            </svg>
             <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newAppRequest.numberOfRequests != 0}">{{newAppRequest.numberOfRequests}}</sup>
             <!-- popover -->
-            <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
-                 offset="-20px 50px" ng-if="newAppRequest.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+            <div cui-popover class="cui-action__popover cui-popover--positionless" target="#cui-applications__requested-apps" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="newAppRequest.requestPopover">
                 <span class="cui-action__popover-title">{{'collected-items-for-request'| translate}}</span>
                 <div class="cui-action__popover-section">
                     <span ng-if="newAppRequest.appsBeingRequested.length === 0">{{'no-selected-apps'| translate}}<br/></span>

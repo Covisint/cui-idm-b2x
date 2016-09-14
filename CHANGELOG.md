@@ -8,14 +8,20 @@
 * Removed commented out legacy svg code from index files.
 * Moved relevant ui-views for all modules into the state provider itself.
 * Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed.
+* Switch to using cui-popover in visible popovers.
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
 * Fixes side menu lag when closing upon entering the walkup registration.
 * Fixes users being able to go through the person request screens when there is an issue getting the request data. Now displays an error and automatically redirects to the user list after 5 seconds.
+* Fixes styles for application details desktop.
+* Fixes close icon sizing issue and color.
+* Fixes popover styling.
+* Fixes active state for folder icon in app request flow.
 
 ### Added
 * Added sorting carets to the cui-table directive.
+* Added padding and border to empty app details and claims.
 
 ## [v0.2.2] - 2016-09-12
 

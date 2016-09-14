@@ -11,20 +11,22 @@
       <section class="cui-action cui-action--alt">
           <h2 class="cui-action__title">{{'select-applications' | translate}}</h2>
           <div class="cui-action__actions">
-              <cui-icon ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false" cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-              <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
-              <!-- popover -->
-              <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
-              offset="-20px 50px" ng-if="newGrant.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
-                <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
-                <div class="cui-action__popover-section">
-                  <span ng-if="newGrant.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
-                  <ul ng-if="newGrant.numberOfRequests > 0">
-                      <li ng-repeat="application in newGrant.appsBeingRequested">{{application.name | cuiI18n}}</li>
-                      <li ng-repeat="package in newGrant.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
-                  </ul>
+              <div id="cui-applications__requested-apps" ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false">
+                <cui-icon  cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+                <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
+                <!-- popover -->
+                <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
+                offset="-20px 50px" ng-if="newGrant.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+                  <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+                  <div class="cui-action__popover-section">
+                    <span ng-if="newGrant.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+                    <ul ng-if="newGrant.numberOfRequests > 0">
+                        <li ng-repeat="application in newGrant.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                        <li ng-repeat="package in newGrant.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
+                    </ul>
+                  </div>
+                  <span ng-if="newGrant.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
                 </div>
-                <span ng-if="newGrant.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
               </div>
           </div>
       </section>
