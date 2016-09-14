@@ -4,7 +4,9 @@
   align-items: center;
   border-bottom: 1px solid #DEE9EE;
   padding: em(15) em(10);
+}
 
+.cui-applications__related-app {
   &:last-of-type { border-bottom: 0; }
 }
 
@@ -13,7 +15,6 @@
   @extend %h5--bold;
   align-items: center;
   border-bottom: 1px solid #DEE9EE;
-  border-top: 1px solid #DEE9EE;
   display: flex;
   font-size: em(18);
   height: 73px;
@@ -32,11 +33,33 @@
 
   .cui-tile__title { 
     @extend %h5--bold;
-    border-bottom: 0;
   }
 
   .cui-tile__body {
     border-top: 0;
     padding: 0;
   }
+}
+
+.cui-applications__claims {
+  @extend %flex-row;
+  align-items: center;
+}
+
+.cui-applications__no-claims,
+.cui-applications__no-details,
+.cui-applications__claim {
+  padding: em(15) em(10);
+}
+
+.cui-applications__claim {
+  border-bottom: 1px solid #DEE9EE;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.cui-applications__claim-name {
+  @extend %h5--bold;
 }

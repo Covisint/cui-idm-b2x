@@ -127,7 +127,7 @@
           <h4 class="cui-tile__title cui-applications__title">{{'application-details' | translate}}</h4>
           <div class="cui-tile__body cui-applications__details">
             <!-- No Details -->
-            <div ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length!==0) && (!myApplicationDetails.app.relatedApps || !myApplicationDetails.app.relatedApps.length===0)">
+            <div class="cui-applications__no-details" ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length!==0) && (!myApplicationDetails.app.relatedApps || !myApplicationDetails.app.relatedApps.length===0)">
               <p>{{'cui-no-application-details' | translate}}</p>
             </div>
             <!-- Bundled Application Details -->
@@ -160,12 +160,12 @@
           <!-- My Claims TODO @SHANE style this and the mobile one above-->
           <div class="cui-tile cui-applications__right">
             <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">{{'my-claims' | translate}}</h4>
-            <div class="cui-tile__body">
-              <p ng-if="!myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
-              <span ng-repeat="claim in myApplicationDetails.claims.packageClaims">
-                <h2>{{claim.name | cuiI18n}}</h2>
-                <p ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
-              </span>
+            <div class="cui-tile__body cui-applications__claims">
+              <p class="cui-applications__no-claims" ng-if="!myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
+              <div class="cui-applications__claim" ng-repeat="claim in myApplicationDetails.claims.packageClaims">
+                <h2 class="cui-applications__claim-name">{{claim.name | cuiI18n}}</h2>
+                <p class="cui-applications__claim-val" ng-repeat="claimValue in claim.claimValues">{{claimValue.name | cuiI18n}}</p>
+              </div>
             </div>
           </div>
 
