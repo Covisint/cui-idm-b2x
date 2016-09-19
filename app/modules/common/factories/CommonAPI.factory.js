@@ -20,7 +20,7 @@ angular.module('common')
 
 		API.cui.getPerson({ personId: userId })
 		.done(personResponse => {
-			defer.resolve(personRespone)
+			defer.resolve(personResponse)
 		})
 		.fail(err => {
 			console.error('Failed getting person information')

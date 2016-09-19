@@ -17,7 +17,7 @@ angular.module('common')
 	****************************************/
 
 	// Returns the registration request associated with the userId
-	personRequest.getPersonRegistrationRequest = (userId) => {
+	personRequestFactory.getPersonRegistrationRequest = (userId) => {
 		const defer = $q.defer()
 
 		API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
