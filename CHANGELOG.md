@@ -3,6 +3,23 @@
 ## Unreleased
 
 ### Changed
+* cui-styleguide v2.5.4 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
+* Switch to using cui-popover in visible popovers.
+* PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
+
+### Fixes
+* Fixes popover styling.
+* Fixes base.goBack() issue where it was possible to enter a loop.
+
+### Added
+* Added padding and border to empty app details and claims.
+* Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
+* Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
+
+
+## [v0.2.3] - 2016-09-13
+
+### Changed
 * Index.html has been broken down into smaller, more manageable files inside `app/common-templates/index/`.
 * Side navigation link to the welcome screen is now hidden when a user is logged in.
 * Removed commented out legacy svg code from index files.
@@ -17,7 +34,6 @@
 * Fixes users being able to go through the person request screens when there is an issue getting the request data. Now displays an error and automatically redirects to the user list after 5 seconds.
 * Fixes styles for application details desktop.
 * Fixes close icon sizing issue and color.
-* Fixes popover styling.
 * Fixes active state for folder icon in app request flow.
 * Reveal hidden chevron in header
 * Goes back to using chevron icon on app request page
@@ -27,7 +43,8 @@
 
 ### Added
 * Added sorting carets to the cui-table directive.
-* Added padding and border to empty app details and claims.
+* Added `cui-table` directive.
+
 
 ## [v0.2.2] - 2016-09-12
 

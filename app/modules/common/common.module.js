@@ -182,15 +182,15 @@ angular.module('common')
     });
 
     // $state.stateStack is a stack of states used by base.goBack()
-    $state.stateStack = [];
+    $state.stateStack = []
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
         $state.stateStack.push({
-            name: fromState,
-            params: fromParams
-        });
-    });
+            name: fromState.name,
+            params: fromParams || {}
+        })
+    })
 
     angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {
         $http.get(iconSettings.path, {

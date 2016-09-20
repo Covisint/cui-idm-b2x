@@ -1,5 +1,6 @@
 angular.module('common')
-.factory('Base', ($state, Countries, Timezones, Languages, $translate, LocaleService, User, Menu, Loader, APIError, BaseExtensions) => {
+.factory('Base', (APIError, BaseExtensions, Countries, Languages, LocaleService, Loader, Menu, Timezones, User, $state, $translate) => {
+
     const baseFactory = {
         appConfig: appConfig,
         countries: Countries,
@@ -11,19 +12,24 @@ angular.module('common')
         loader: Loader,
         apiError: APIError,
 
-        goBack: (fallback) => {
-            let previousState = $state.stateStack.pop();
+        goBack: (stateName) => {
+            const numberOfStates = $state.stateStack.length
+            let i = numberOfStates - 1 // Last state user visited
+            let counter = 0
+            let stateParams
 
-            if (previousState.name.name !== '') {
-                $state.go(previousState.name, previousState.params);
-            }
-            else if (fallback) {
-                $state.go(fallback);
-            }
-            else {
-                return;
-            }
+            do {
+                if ($state.stateStack[i].name === stateName) {
+                    stateParams = $state.stackStack[i].params
+                }
+                i--
+                counter++
+            } while (!stateParams && i >= 0 && counter <= 20) // limit our attempts to 20
+
+            if (!stateParams) $state.go(stateName)
+            else $state.go(stateName, stateParams)
         },
+
         generateHiddenPassword: (password) => Array(password.length+1).join('•')
     }
 
