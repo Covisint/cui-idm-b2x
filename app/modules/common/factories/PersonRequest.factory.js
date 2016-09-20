@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('PersonRequest', (API, APIError, $q) => {
+.factory('PersonRequest', (API, APIError, CommonAPI, $q) => {
 	'use strict'
 
 	/*
@@ -9,53 +9,15 @@ angular.module('common')
 		organization's data.
 	*/
 
-	const personRequest = {}
+	const personRequestFactory = {}
 	const errorName = 'PersonRequestFactory.'
-
-	/****************************************
-				Helper Functions
-	****************************************/
-
-	// Returns person data based on the userId
-	const getPerson = (userId) => {
-		const defer = $q.defer()
-
-		API.cui.getPerson({personId: userId})
-		.done(personResponse => {
-			defer.resolve(personResponse)
-		})
-		.fail(err => {
-			console.error('Failed getting person information')
-			APIError.onFor(errorName + 'getPerson')
-			defer.reject(err)
-		})
-
-		return defer.promise
-	}
-
-	// Returns organization data based on the organizationId
-	const getOrganization = (organizationId) => {
-		const defer = $q.defer()
-
-		API.cui.getOrganization({organizationId: organizationId})
-		.done(orgResponse => {
-			defer.resolve(orgResponse)
-		})
-		.fail(err => {
-			console.error('Failed getting person\'s organization information')
-			APIError.onFor(errorName + 'getOrganization')
-			defer.reject(err)
-		})
-
-		return defer.promise
-	}
 
 	/****************************************
 				Service Functions
 	****************************************/
 
 	// Returns the registration request associated with the userId
-	personRequest.getPersonRegistrationRequest = (userId) => {
+	personRequestFactory.getPersonRegistrationRequest = (userId) => {
 		const defer = $q.defer()
 
 		API.cui.getPersonRegistrationRequest({qs: [['registrant.id', userId]]})
@@ -71,13 +33,17 @@ angular.module('common')
 		return defer.promise
 	}
 
-	// Wrapper call for service.getPersonRegistrationRequest(), getPerson(), and getOrganization()
-	personRequest.getPersonRegistrationRequestData = (userId, organizationId) => {
+	/*
+		Wrapper call for: 	PersonRequest.getPersonRegistrationRequest()
+							CommonAPI.getPerson()
+							CommonAPI.getOrganization()
+	*/
+	personRequestFactory.getPersonRegistrationRequestData = (userId, organizationId) => {
 		const defer = $q.defer()
 		let callsCompleted = 0
 		let requestData = {}
 
-		personRequest.getPersonRegistrationRequest(userId)
+		personRequestFactory.getPersonRegistrationRequest(userId)
 		.then(registrationRequest => {
 			requestData.request = registrationRequest
 		})
@@ -88,7 +54,7 @@ angular.module('common')
             }
 		})
 
-		getPerson(userId)
+		CommonAPI.getPerson(userId)
 		.then(personData => {
 			requestData.person = personData
 		})
@@ -99,7 +65,7 @@ angular.module('common')
             }	
 		})
 
-		getOrganization(organizationId)
+		CommonAPI.getOrganization(organizationId)
 		.then(organizationData => {
 			requestData.organization = organizationData
 		})
@@ -115,7 +81,7 @@ angular.module('common')
 
 	// Provided a decision ('approved' or 'denied') and the person request object
 	// Handles the approval/denial of the person request
-	personRequest.handleRequestApproval = (decision, request) => {
+	personRequestFactory.handleRequestApproval = (decision, request) => {
 		let data = [['requestId', request.id]]
 
 		if (decision === 'approved') {
@@ -135,6 +101,6 @@ angular.module('common')
 		}
 	}
 
-	return personRequest
+	return personRequestFactory
 
 })
