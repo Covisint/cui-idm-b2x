@@ -107,6 +107,7 @@ angular.module('registration')
 
     Registration.walkUpInit()
     .then(res=>{
+
         const questions = res.questions;
         const organizations = res.organizations
 
@@ -127,7 +128,6 @@ angular.module('registration')
         userWalkup.organizationCount = organizations.length
     })
     .catch(() => {
-        APIError.onFor('userWalkup.initializing', 'Error getting required data for registration')
         $state.go('misc.loadError')
     })
     .finally(() => {

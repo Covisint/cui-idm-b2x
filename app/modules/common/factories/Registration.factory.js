@@ -4,15 +4,16 @@
 angular.module('common')
     .factory('Registration',[ 'API','$rootScope','$state','$q','APIError',(API,$rootScope,$state,$q,APIError)=>{
 
+    const self = {}
     const pub = {}
 
-    pub.getOrganizations=()=>{
 
+    self.callRequiresInit = ( method, ...args )=>{
         const deferred = $q.defer()
 
         API.cui.initiateNonce().then(res=>{
 
-            API.cui.getOrganizationsNonce().then(result=>{
+            API.cui[method].apply( API.cui, args ).then(result=>{
                 deferred.resolve(result)
             },error=>{
                 deferred.reject(error)
@@ -23,27 +24,16 @@ angular.module('common')
         })
 
         return deferred.promise
+    }
+
+    pub.getOrganizations=()=>{
+        return self.callRequiresInit( "getOrganizationsNonce" );
     }
 
     pub.getSecurityQuestions=()=>{
 
-        const deferred = $q.defer()
-
-        API.cui.initiateNonce().then(res=>{
-
-            API.cui.getSecurityQuestionsNonce().then(result=>{
-                deferred.resolve(result)
-            },error=>{
-                deferred.reject(error)
-            })
-
-        }, error=>{
-            deferred.reject(error)
-        })
-
-        return deferred.promise
+        return self.callRequiresInit( "getSecurityQuestionsNonce" );
     }
-
 
     pub.walkUpInit =()=>{
 
