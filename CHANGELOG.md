@@ -3,13 +3,27 @@
 ## Unreleased
 
 ### Changed
+* cui-styleguide v2.5.3 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
+* Switch to using cui-popover in visible popovers.
+* PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
+
+### Fixes
+* Fixes popover styling.
+* Fixes base.goBack() issue where it was possible to enter a loop.
+
+### Added
+* Added padding and border to empty app details and claims.
+* Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
+
+
+## [v0.2.3] - 2016-09-13
+
+### Changed
 * Index.html has been broken down into smaller, more manageable files inside `app/common-templates/index/`.
 * Side navigation link to the welcome screen is now hidden when a user is logged in.
 * Removed commented out legacy svg code from index files.
 * Moved relevant ui-views for all modules into the state provider itself.
 * Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed.
-* Switch to using cui-popover in visible popovers.
-* PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
@@ -17,15 +31,12 @@
 * Fixes users being able to go through the person request screens when there is an issue getting the request data. Now displays an error and automatically redirects to the user list after 5 seconds.
 * Fixes styles for application details desktop.
 * Fixes close icon sizing issue and color.
-* Fixes popover styling.
 * Fixes active state for folder icon in app request flow.
-* Fixes base.goBack() issue where it was possible to enter a loop.
 
 ### Added
 * Added sorting carets to the cui-table directive.
-* Added padding and border to empty app details and claims.
-* Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
 * Added `cui-table` directive.
+
 
 ## [v0.2.2] - 2016-09-12
 
