@@ -9,6 +9,7 @@
 * Moved relevant ui-views for all modules into the state provider itself.
 * Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed.
 * Switch to using cui-popover in visible popovers.
+* Clicking on link in left menu now closes menu on desktop
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
@@ -18,6 +19,11 @@
 * Fixes close icon sizing issue and color.
 * Fixes popover styling.
 * Fixes active state for folder icon in app request flow.
+* Reveal hidden chevron in header
+* Goes back to using chevron icon on app request page
+* 'open' text now says 'edit' on My Profile
+* Remove flash of unstyled content when closing/opening fields to edit in My Profile
+* Profile icons on mobile now correct size and padding
 
 ### Added
 * Added sorting carets to the cui-table directive.
