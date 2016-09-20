@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function($scope,$state,API,APIError,Base,localStorageService,Registration) {
+.controller('userWalkupCtrl', function(API,APIError,Base,localStorageService,$scope,$state,Registration) {
 
     const userWalkup = this
 
@@ -104,13 +104,13 @@ angular.module('registration')
         userWalkup.user = localStorageService.get('userWalkup.user');
     }
 
+    // Load in data required for the walkup registration (security questions, organizations list/count)
 
     Registration.walkUpInit()
-    .then(res=>{
+    .then(res => {
 
+        const organizations = res.organizations;
         const questions = res.questions;
-        const organizations = res.organizations
-
         questions.splice(0, 1) // Split questions to use between 2 dropdowns
 
         let numberOfQuestions = questions.length
@@ -127,12 +127,13 @@ angular.module('registration')
         userWalkup.organizationList = organizations
         userWalkup.organizationCount = organizations.length
     })
-    .catch(() => {
-        $state.go('misc.loadError')
-    })
-    .finally(() => {
+    .always(() => {
         userWalkup.initializing = false
         $scope.$digest()
+    })
+    .fail(() => {
+        APIError.onFor('userWalkup.initializing', 'Error getting required data for registration')
+        $state.go('misc.loadError')
     })
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
@@ -211,11 +212,16 @@ angular.module('registration')
         userWalkup.submitError = false
 
         Registration.walkUpSubmit(build)
-        .then(() => {
+        .always(() => {
+            userWalkup.submitting = false
+            $scope.$digest()
+        })
+        .done(() => {
             userWalkup.success = true
+            userWalkup.submitting = false
             $state.go('misc.success')
         })
-        .catch(error => {
+        .fail(error => {
             userWalkup.submitError = true
             console.error('Error submitting registration request', error)
             if (error.responseJSON) {
@@ -224,10 +230,6 @@ angular.module('registration')
             else {
                 userWalkup.errorMessage = 'Error submitting registration request'
             }
-        })
-        .finally(() => {
-            userWalkup.submitting = false
-            $scope.$digest()
         })
     }
 
@@ -252,32 +254,29 @@ angular.module('registration')
         userWalkup.applications.numberOfSelected = 0 // Restart applications count
         userWalkup.applications.processedSelected = undefined // Restart applications selected
 
+        Registration.selectOrganization(organization)
+        .then(res=>{
+            const grants = res.grants;
 
-        Registration.selectOrganization( organization )
-            .then(res=>{
-                console.log( "res", res )
-                const grants = res.grants;
+            if (!grants.length) {
+                userWalkup.applications.list = undefined;
+            } else {
+                userWalkup.applications.list = grants.map((grant) => {
+                    grant = grant.servicePackageResource
+                    return grant
+                })
+            }
 
-                if (!grants.length) {
-                    userWalkup.applications.list = undefined;
-                } else {
-                    userWalkup.applications.list = grants.map((grant) => {
-                        grant = grant.servicePackageResource
-                        return grant
-                    })
-                }
-
-                userWalkup.passwordRules = res.policyRules
-            })
-        .catch((error) => {
+            userWalkup.passwordRules = res.policyRules
+        })
+        .always(() => {
+            $scope.$digest()
+        })
+        .fail((error) => {
             console.error('Error getting organization information', error)
             APIError.onFor('userWalkup.orgInfo', error)
         })
-        .finally(() => {
-            $scope.$digest()
-        })
     }
-
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 

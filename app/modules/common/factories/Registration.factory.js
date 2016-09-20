@@ -9,7 +9,7 @@ angular.module('common')
 
 
     self.callRequiresInit = ( method, ...args )=>{
-        const deferred = $q.defer()
+        const deferred = $.Deferred()
 
         API.cui.initiateNonce()
         .then(res=>{
@@ -27,7 +27,7 @@ angular.module('common')
             deferred.reject(error)
         })
 
-        return deferred.promise
+        return deferred.promise()
     }
 
     pub.getOrganizations=()=>{
@@ -41,22 +41,23 @@ angular.module('common')
 
     pub.walkUpInit =()=>{
 
-        const deferred = $q.defer()
+        const deferred = $.Deferred()
 
-        $q.all([pub.getOrganizations(),pub.getSecurityQuestions()]).then(values=>{
-            deferred.resolve({questions:values[0], organizations:values[1]})
-        },error=>{
-            APIError.onFor('registrationFactory.walkUpInit', 'Error getting required data for registration')
-            deferred.reject(error)
+        API.cui.initiateNonce().then(res=>{
+
+            $.when( pub.getOrganizations(), pub.getSecurityQuestions())
+            .done( ( organizations, questions )=>{
+                deferred.resolve({questions:questions, organizations:organizations})
+            })
         })
 
-        return deferred.promise
+        return deferred.promise()
     }
 
 
     pub.walkUpSubmit=(build)=>{
 
-        const deferred = $q.defer()
+        const deferred = $.Deferred();
         const user = build.buildPerson()
 
         return API.cui.initiateNonce()
@@ -78,13 +79,13 @@ angular.module('common')
                 deferred.reject( error )
             })
 
-        return deferred.promise
+        return deferred.promise()
     }
 
 
     pub.selectOrganization = (organization)=>{
 
-        const deferred = $q.defer()
+        const deferred = $.Deferred()
         const results = {}
 
         API.cui.initiateNonce()
@@ -103,7 +104,7 @@ angular.module('common')
                 deferred.reject(error)
             })
 
-        return deferred.promise
+        return deferred.promise()
     }
 
     return pub
