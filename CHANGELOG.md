@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Changed
+* Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
 * Index.html has been broken down into smaller, more manageable files inside `app/common-templates/index/`.
 * Side navigation link to the welcome screen is now hidden when a user is logged in.
 * Removed commented out legacy svg code from index files.
