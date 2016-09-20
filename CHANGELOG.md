@@ -6,10 +6,16 @@
 * cui-styleguide v2.5.4 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
+* Clicking on link in left menu now closes menu on desktop
 
 ### Fixes
 * Fixes popover styling.
 * Fixes base.goBack() issue where it was possible to enter a loop.
+* Reveal hidden chevron in header
+* Goes back to using chevron icon on app request page
+* 'open' text now says 'edit' on My Profile
+* Remove flash of unstyled content when closing/opening fields to edit in My Profile
+* Profile icons on mobile now correct size and padding
 
 ### Added
 * Added padding and border to empty app details and claims.
