@@ -206,33 +206,16 @@ angular.module('registration')
     // }
 
     userWalkup.submit = () => {
-        const user = build.buildPerson()
+
         userWalkup.submitting = true
         userWalkup.submitError = false
 
-        API.cui.initiateNonce()
-        .then(res => {
-            return API.cui.postUserRegistrationNonce({data: user})
-        })
-        .then(res => {
-            if (userWalkup.applications.numberOfSelected !== 0) {
-                return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})    
-            }
-            else {
-                return
-            }
-            return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
-        })
-        .always(() => {
-            userWalkup.submitting = false
-            $scope.$digest()
-        })
-        .done(() => {
+        Registration.walkUpSubmit(build)
+        .then(() => {
             userWalkup.success = true
-            userWalkup.submitting = false
             $state.go('misc.success')
         })
-        .fail(error => {
+        .catch(error => {
             userWalkup.submitError = true
             console.error('Error submitting registration request', error)
             if (error.responseJSON) {
@@ -241,6 +224,10 @@ angular.module('registration')
             else {
                 userWalkup.errorMessage = 'Error submitting registration request'
             }
+        })
+        .finally(() => {
+            userWalkup.submitting = false
+            $scope.$digest()
         })
     }
 
@@ -265,32 +252,32 @@ angular.module('registration')
         userWalkup.applications.numberOfSelected = 0 // Restart applications count
         userWalkup.applications.processedSelected = undefined // Restart applications selected
 
-        API.cui.initiateNonce()
-        .then(res => {
-            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
-        })
-        .then(res => {
-            if (!res.length) {
-                userWalkup.applications.list = undefined;
-            } else {
-                userWalkup.applications.list = res.map((grant) => {
-                    grant = grant.servicePackageResource
-                    return grant
-                })
-            }
-            return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
-        })
-        .then(res => {
-            userWalkup.passwordRules = res.rules  
-        })
-        .always(() => {
-            $scope.$digest()
-        })
-        .fail((error) => {
+
+        Registration.selectOrganization( organization )
+            .then(res=>{
+                console.log( "res", res )
+                const grants = res.grants;
+
+                if (!grants.length) {
+                    userWalkup.applications.list = undefined;
+                } else {
+                    userWalkup.applications.list = grants.map((grant) => {
+                        grant = grant.servicePackageResource
+                        return grant
+                    })
+                }
+
+                userWalkup.passwordRules = res.policyRules
+            })
+        .catch((error) => {
             console.error('Error getting organization information', error)
             APIError.onFor('userWalkup.orgInfo', error)
         })
+        .finally(() => {
+            $scope.$digest()
+        })
     }
+
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
