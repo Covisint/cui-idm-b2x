@@ -4,17 +4,24 @@
 
 ### Changed
 * cui-ng [1.9.20] - https://github.com/thirdwavellc/cui-ng/blob/master/CHANGELOG.md
-* cui-styleguide v2.5.3 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
+* cui-styleguide v2.5.4 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
+* Clicking on link in left menu now closes menu on desktop
 
 ### Fixes
 * Fixes popover styling.
 * Fixes base.goBack() issue where it was possible to enter a loop.
+* Reveal hidden chevron in header
+* Goes back to using chevron icon on app request page
+* 'open' text now says 'edit' on My Profile
+* Remove flash of unstyled content when closing/opening fields to edit in My Profile
+* Profile icons on mobile now correct size and padding
 
 ### Added
 * Added padding and border to empty app details and claims.
+* Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
 * Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
 
 
@@ -26,6 +33,8 @@
 * Removed commented out legacy svg code from index files.
 * Moved relevant ui-views for all modules into the state provider itself.
 * Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed.
+* Switch to using cui-popover in visible popovers.
+* Clicking on link in left menu now closes menu on desktop
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
@@ -34,6 +43,11 @@
 * Fixes styles for application details desktop.
 * Fixes close icon sizing issue and color.
 * Fixes active state for folder icon in app request flow.
+* Reveal hidden chevron in header
+* Goes back to using chevron icon on app request page
+* 'open' text now says 'edit' on My Profile
+* Remove flash of unstyled content when closing/opening fields to edit in My Profile
+* Profile icons on mobile now correct size and padding
 
 ### Added
 * Added sorting carets to the cui-table directive.
