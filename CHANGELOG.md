@@ -7,6 +7,7 @@
 * cui-styleguide v2.5.3 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
+* API call `getOrganizationPackages()` is now secured.
 
 ### Fixes
 * Fixes popover styling.
