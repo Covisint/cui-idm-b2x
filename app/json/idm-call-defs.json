@@ -372,7 +372,7 @@
   },
   {
     "cmd": "getOrganizationPackages",
-    "cmdType": "unsecured",
+    "cmdType": "secured",
     "call": "/service/v3/organizations/{organizationId}/packages",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.package.grant.v1+json"

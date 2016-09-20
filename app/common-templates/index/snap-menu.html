@@ -1,17 +1,17 @@
 <!-- Welcome -->
-<span class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active" ng-if="!base.user.id">
+<div class="cui-desktop-menu__option" ui-sref="welcome" ui-sref-active="active" ng-if="!base.user.id" ng-click="base.menu.desktop.close()">
   <span class="cui-desktop-menu__option-name">{{'welcome' | translate}}</span>
   <cui-icon cui-svg-icon="fa:four29" svg-class="cui-desktop-menu__icon" viewBox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
-</span>
+</div>
 
 <!-- My Applications -->
-<span class="cui-desktop-menu__option" ui-sref="applications.myApplications" ui-sref-active-nested="active">
+<div class="cui-desktop-menu__option" ui-sref="applications.myApplications" ui-sref-active-nested="active" ng-click="base.menu.desktop.close()">
   <span class="cui-desktop-menu__option-name">{{'cui-applications' | translate}}</span>
   <cui-icon cui-svg-icon="cui:applications_v2" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
-</span>
+</div>
 
 <!-- Organization Profile -->
-<span class="cui-desktop-menu__option" ui-sref="organization.profile" ui-sref-active-nested="active">
+<div class="cui-desktop-menu__option" ui-sref="organization.profile" ui-sref-active-nested="active" ng-click="base.menu.desktop.close()">
   <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
   <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
-</span>
+</div>
