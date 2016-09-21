@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(API,APIError,Base,localStorageService,$scope,$state) {
+.controller('userWalkupCtrl', function(API,APIError,Base,localStorageService,$scope,$state,Registration) {
 
     const userWalkup = this
 
@@ -105,29 +105,27 @@ angular.module('registration')
     }
 
     // Load in data required for the walkup registration (security questions, organizations list/count)
-    API.cui.initiateNonce()
-    .then(res => {
-        return API.cui.getSecurityQuestionsNonce()
-    })
-    .then(res => {
-        res.splice(0, 1) // Split questions to use between 2 dropdowns
 
-        let numberOfQuestions = res.length
+    Registration.walkUpInit()
+    .then(res => {
+
+        const organizations = res.organizations;
+        const questions = res.questions;
+        questions.splice(0, 1) // Split questions to use between 2 dropdowns
+
+        let numberOfQuestions = questions.length
         let numberOfQuestionsFloor = Math.floor(numberOfQuestions/2)
 
-        userWalkup.userLogin.challengeQuestions1 = res.slice(0, numberOfQuestionsFloor)
-        userWalkup.userLogin.challengeQuestions2 = res.slice(numberOfQuestionsFloor)
+        userWalkup.userLogin.challengeQuestions1 = questions.slice(0, numberOfQuestionsFloor)
+        userWalkup.userLogin.challengeQuestions2 = questions.slice(numberOfQuestionsFloor)
 
         // Preload questions into input
         userWalkup.userLogin.question1 = userWalkup.userLogin.challengeQuestions1[0]
         userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0]
 
-        return API.cui.getOrganizationsNonce()
-    })
-    .then(res => {
         // Populate organization list
-        userWalkup.organizationList = res
-        userWalkup.organizationCount = res.length
+        userWalkup.organizationList = organizations
+        userWalkup.organizationCount = organizations.length
     })
     .always(() => {
         userWalkup.initializing = false
@@ -209,23 +207,11 @@ angular.module('registration')
     // }
 
     userWalkup.submit = () => {
-        const user = build.buildPerson()
+
         userWalkup.submitting = true
         userWalkup.submitError = false
 
-        API.cui.initiateNonce()
-        .then(res => {
-            return API.cui.postUserRegistrationNonce({data: user})
-        })
-        .then(res => {
-            if (userWalkup.applications.numberOfSelected !== 0) {
-                return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})    
-            }
-            else {
-                return
-            }
-            return API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
-        })
+        Registration.walkUpSubmit(build)
         .always(() => {
             userWalkup.submitting = false
             $scope.$digest()
@@ -268,23 +254,20 @@ angular.module('registration')
         userWalkup.applications.numberOfSelected = 0 // Restart applications count
         userWalkup.applications.processedSelected = undefined // Restart applications selected
 
-        API.cui.initiateNonce()
-        .then(res => {
-            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
-        })
-        .then(res => {
-            if (!res.length) {
+        Registration.selectOrganization(organization)
+        .then(res=>{
+            const grants = res.grants;
+
+            if (!grants.length) {
                 userWalkup.applications.list = undefined;
             } else {
-                userWalkup.applications.list = res.map((grant) => {
+                userWalkup.applications.list = grants.map((grant) => {
                     grant = grant.servicePackageResource
                     return grant
                 })
             }
-            return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
-        })
-        .then(res => {
-            userWalkup.passwordRules = res.rules  
+
+            userWalkup.passwordRules = res.passwordRules
         })
         .always(() => {
             $scope.$digest()
