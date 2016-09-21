@@ -3,8 +3,8 @@
 ## Unreleased
 
 ### Changed
-* cui-ng [1.9.20] - https://github.com/thirdwavellc/cui-ng/blob/master/CHANGELOG.md
-* cui-styleguide v2.5.4 - https://github.com/thirdwavellc/cui-styleguide/blob/master/CHANGELOG.md
+* cui-ng [1.9.20]
+* cui-styleguide v2.5.4
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
