@@ -9,6 +9,7 @@
 * Moved relevant ui-views for all modules into the state provider itself.
 * Removed various views/controllers throughout the project that have been deprecated to prevent confusion regarding whether code was in a "released" state or not. Any views not reachable through the UI are working in a staging environment but not in production. This code is available ahead of time for developers to begin modifying as needed.
 * Switch to using cui-popover in visible popovers.
+* Walkup registration, some of its service logic went into modules/common/factories/Registration.factory
 
 ### Fixes
 * Fixes categories popover in my applications not properly closing when changing states.
@@ -22,6 +23,7 @@
 ### Added
 * Added sorting carets to the cui-table directive.
 * Added padding and border to empty app details and claims.
+* Added modules/common/factories/Registration.factory to move service logic from controllers related to registration
 
 ## [v0.2.2] - 2016-09-12
 

@@ -8,6 +8,12 @@ angular.module('common')
     const pub = {}
 
 
+    /**
+     * this method makes sure to make the call but before it calls cui.initiateNonce
+     * @param method method name
+     * @param args method arguments
+     * @returns {*} promise
+     */
     self.callRequiresInit = ( method, ...args )=>{
         const deferred = $.Deferred()
 
@@ -39,6 +45,10 @@ angular.module('common')
         return self.callRequiresInit( "getSecurityQuestionsNonce" );
     }
 
+    /**
+     * This method gets security questions and organizations
+     * @returns {*} promise, result has already security questions and organizations
+     */
     pub.walkUpInit =()=>{
 
         const deferred = $.Deferred()
@@ -55,6 +65,12 @@ angular.module('common')
     }
 
 
+    /**
+     * method goes and submits walkup registration
+     * it calls postUserRegistration and postPersonRequest
+     * @param build, an object that generates the user and buildRequest
+     * @returns {*}
+     */
     pub.walkUpSubmit=(build)=>{
 
         const deferred = $.Deferred();
@@ -97,7 +113,7 @@ angular.module('common')
                 return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
             })
             .then(res => {
-                results.policyRules = res.rules
+                results.passwordRules = res.rules
                 deferred.resolve(results)
             })
             .fail( error=>{

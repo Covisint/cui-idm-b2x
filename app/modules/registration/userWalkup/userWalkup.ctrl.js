@@ -267,7 +267,7 @@ angular.module('registration')
                 })
             }
 
-            userWalkup.passwordRules = res.policyRules
+            userWalkup.passwordRules = res.passwordRules
         })
         .always(() => {
             $scope.$digest()
