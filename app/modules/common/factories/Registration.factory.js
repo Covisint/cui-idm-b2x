@@ -1,6 +1,3 @@
-/**
- * Created by musta on 9/19/2016.
- */
 angular.module('common')
     .factory('Registration',[ 'API','$rootScope','$state','$q','APIError',(API,$rootScope,$state,$q,APIError)=>{
 
