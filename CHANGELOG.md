@@ -9,6 +9,7 @@
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
 * Clicking on link in left menu now closes menu on desktop
+* Walkup registration, extracts service logic out of the controller and moves it to the Registration.factory
 
 ### Fixes
 * Fixes popover styling.
@@ -18,6 +19,7 @@
 * 'open' text now says 'edit' on My Profile
 * Remove flash of unstyled content when closing/opening fields to edit in My Profile
 * Profile icons on mobile now correct size and padding
+* Fixed grunt task to support Windows OS
 
 ### Added
 * Added padding and border to empty app details and claims.
