@@ -25,3 +25,8 @@
 - Application Selection
 
 [Find out more](registration-flows.md)
+
+## Animations & Transitions
+- Page Loading
+- Submit processing
+

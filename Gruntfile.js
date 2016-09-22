@@ -13,7 +13,10 @@ module.exports = function(grunt) {
     const buildArtifact = appName + '-' + pkgJson.version + '-' + target + '-' + dtStamp + '.zip';
 
     // load the secrets profile file from your home directory
-    const envPath = path.join(process.env['HOME'],'.cui/profiles',appName,target);
+    // const envPath = path.join(process.env['HOME'],'.cui/profiles',appName,target);
+  var envHome = process.env.HOME || process.env.HOMEPATH ||
+      process.env.USERPROFILE
+  const envPath = path.join(envHome,'.cui/profiles',appName,target)
 
     //if the envPath does not exist, create it
     if (!grunt.file.exists(envPath)) {
