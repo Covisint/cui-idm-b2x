@@ -1,5 +1,5 @@
 angular.module('common')
-    .factory('Registration',[ 'API','$rootScope','$state','$q','APIError',(API,$rootScope,$state,$q,APIError)=>{
+    .factory('Registration',[ 'API',(API)=>{
 
     const self = {}
     const pub = {}
@@ -68,7 +68,7 @@ angular.module('common')
      * @param build, an object that generates the user and buildRequest
      * @returns {*}
      */
-    pub.walkUpSubmit=(build)=>{
+    pub.walkUpSubmit=(build, applications)=>{
 
         const deferred = $.Deferred();
         const user = build.buildPerson()
@@ -78,7 +78,7 @@ angular.module('common')
                 return API.cui.postUserRegistrationNonce({data: user})
             })
             .then(res => {
-                if (userWalkup.applications.numberOfSelected !== 0) {
+                if (applications.numberOfSelected !== 0) {
                     API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
                 }
                 else {

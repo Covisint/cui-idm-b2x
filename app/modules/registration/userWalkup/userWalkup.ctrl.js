@@ -211,7 +211,7 @@ angular.module('registration')
         userWalkup.submitting = true
         userWalkup.submitError = false
 
-        Registration.walkUpSubmit(build)
+        Registration.walkUpSubmit(build, userWalkup.applications)
         .always(() => {
             userWalkup.submitting = false
             $scope.$digest()
