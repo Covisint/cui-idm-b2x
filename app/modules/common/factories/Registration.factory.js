@@ -1,5 +1,5 @@
 angular.module('common')
-    .factory('Registration',[ 'API',(API)=>{
+    .factory('Registration',[ 'API', '$q',( API, $q ) => {
 
     const self = {}
     const pub = {}
@@ -120,5 +120,39 @@ angular.module('common')
         return deferred.promise()
     }
 
+    pub.isUsernameTaken = value => {
+        return {
+            promise:(() => {
+                console.log( "userWalkup.usernametaken/promise",  value )
+                const defered = $q.defer()
+
+                setTimeout( () => {
+
+                    if( value ){
+                        if( value.length%2 == 0 ){
+                            defered.resolve( false )
+                        }
+                        else{
+                            defered.resolve( true )
+                        }
+                    }else{
+                        defered.resolve( true )
+                    }
+                }, 500 )
+
+
+                return defered.promise
+            })(),
+            valid: res => {
+                console.log( "userWalkup.usernametaken/valid",  res, value )
+                return res
+            },
+            catch: error => {
+                // do something with the error here
+                console.error( "userWalkup.usernametaken/catch", "there is an error, :) ")
+            }
+        }
+    }
+
     return pub
-}]);
+}])
