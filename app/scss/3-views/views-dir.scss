@@ -1,9 +1,9 @@
 // Directory imports
 @import 'global-views';
-@import 'applications/applications';
+@import 'applications/applications-dir';
 @import 'users';
 @import 'organization';
-@import 'registration';
+@import 'registration/registration-dir';
 @import 'misc/misc-dir';
 @import 'organization.newRequests';
 @import 'organization.user-details';
