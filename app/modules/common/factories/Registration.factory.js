@@ -17,6 +17,7 @@ angular.module('common')
         API.cui.initiateNonce()
         .then(res=>{
 
+            console.log( "initiateNonce.reply", res )
             API.cui[method].apply( API.cui, args )
             .then(result=>{
                 deferred.resolve(result)
@@ -34,12 +35,12 @@ angular.module('common')
     }
 
     pub.getOrganizations=()=>{
-        return self.makeNonceCall( "getOrganizationsNonce" );
+        return self.makeNonceCall( "getOrganizationsNonce" )
     }
 
     pub.getSecurityQuestions=()=>{
 
-        return self.makeNonceCall( "getSecurityQuestionsNonce" );
+        return self.makeNonceCall( "getSecurityQuestionsNonce" )
     }
 
     /**
@@ -70,7 +71,7 @@ angular.module('common')
      */
     pub.walkUpSubmit=(build, applications)=>{
 
-        const deferred = $.Deferred();
+        const deferred = $.Deferred()
         const user = build.buildPerson()
 
         return API.cui.initiateNonce()
@@ -106,7 +107,7 @@ angular.module('common')
                 return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
             })
             .then(res => {
-                results.grants = res;
+                results.grants = res
                 return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
             })
             .then(res => {
@@ -126,15 +127,15 @@ angular.module('common')
                 console.log( "userWalkup.usernametaken/promise",  value )
                 const defered = $q.defer()
 
-                if( !$.isEmpty(value)){
+                if( value ){
 
                     self.makeNonceCall( "validateUsernameEmailNonce", {qs:[['userName',value]]} ).then( res => {
                         console.log( "validateUsernameEmailNonce.reply", res )
                         defered.resolve( true )
 
                     }).fail( error => {
-                        console.log( "validateUsernameEmailNonce.error", error );
-                    });
+                        console.log( "validateUsernameEmailNonce.error", error )
+                    })
                 }else{
                     defered.resolve( true )
                 }
