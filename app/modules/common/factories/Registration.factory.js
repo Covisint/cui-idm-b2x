@@ -11,7 +11,7 @@ angular.module('common')
      * @param args method arguments
      * @returns {*} promise
      */
-    self.callRequiresInit = ( method, ...args )=>{
+    self.makeNonceCall = ( method, ...args )=>{
         const deferred = $.Deferred()
 
         API.cui.initiateNonce()
@@ -34,12 +34,12 @@ angular.module('common')
     }
 
     pub.getOrganizations=()=>{
-        return self.callRequiresInit( "getOrganizationsNonce" );
+        return self.makeNonceCall( "getOrganizationsNonce" );
     }
 
     pub.getSecurityQuestions=()=>{
 
-        return self.callRequiresInit( "getSecurityQuestionsNonce" );
+        return self.makeNonceCall( "getSecurityQuestionsNonce" );
     }
 
     /**
@@ -126,10 +126,24 @@ angular.module('common')
                 console.log( "userWalkup.usernametaken/promise",  value )
                 const defered = $q.defer()
 
-                setTimeout( () => {
+                if( !$.isEmpty(value)){
+
+                    self.makeNonceCall( "validateUsernameEmailNonce", {qs:[['userName',value]]} ).then( res => {
+                        console.log( "validateUsernameEmailNonce.reply", res )
+                        defered.resolve( true )
+
+                    }).fail( error => {
+                        console.log( "validateUsernameEmailNonce.error", error );
+                    });
+                }else{
+                    defered.resolve( true )
+                }
+
+
+                /*setTimeout( () => {
 
                     if( value ){
-                        if( value.length%2 == 0 ){
+                        if( value.length<=5 ){
                             defered.resolve( false )
                         }
                         else{
@@ -138,8 +152,7 @@ angular.module('common')
                     }else{
                         defered.resolve( true )
                     }
-                }, 500 )
-
+                }, 500 )*/
 
                 return defered.promise
             })(),
