@@ -13,11 +13,11 @@ angular.module('common')
      */
     self.makeNonceCall = ( method, ...args )=>{
         const deferred = $.Deferred()
+        const tag = "registration/self/makeNonceCall"
 
         API.cui.initiateNonce()
         .then(res=>{
 
-            console.log( "initiateNonce.reply", res )
             API.cui[method].apply( API.cui, args )
             .then(result=>{
                 deferred.resolve(result)
@@ -28,11 +28,55 @@ angular.module('common')
 
         })
         .fail((error)=>{
+            console.error( tag, error )
             deferred.reject(error)
         })
 
         return deferred.promise()
     }
+
+    /**
+     * TODO: once the promise gets an error message, we are going to resolve as false. This is temporary.
+     * Makes an api call to know if the registrating user's username or email address
+     * appear already been taken.
+     * @param stringParams a param array having either or both userName and emalAddress.
+     * @returns {{promise, valid: (function(*=)), catch: (function(*))}}
+     */
+    self.isUsernameOrEmailTaken = stringParams => {
+        const tag = "registration/self/isUsernameOrEmailTaken";
+
+        return {
+            promise:(() => {
+                console.log( tag + ".promise",  stringParams )
+                const defered = $q.defer()
+
+                if( stringParams ){
+
+                    self.makeNonceCall( "validateUsernameEmailNonce", {qs:stringParams} ).then( res => {
+                        console.log( tag + ".reply", res )
+                        defered.resolve( true )
+
+                    }).fail( error => {
+                        defered.resolve( false )
+                        console.log( tag + ".error", error )
+                    })
+                }else{
+                    defered.resolve( true )
+                }
+
+                return defered.promise
+            })(),
+            valid: res => {
+                console.log( tag + ".valid",  res, stringParams )
+                return res
+            },
+            catch: error => {
+                // do something with the error here
+                console.error( tag + ".catch", "there is an error, :) ")
+            }
+        }
+    }
+
 
     pub.getOrganizations=()=>{
         return self.makeNonceCall( "getOrganizationsNonce" )
@@ -121,51 +165,12 @@ angular.module('common')
         return deferred.promise()
     }
 
-    pub.isUsernameTaken = value => {
-        return {
-            promise:(() => {
-                console.log( "userWalkup.usernametaken/promise",  value )
-                const defered = $q.defer()
+    pub.isUsernameTaken = name => {
+        return self.isUsernameOrEmailTaken( [['userName',name]] );
+    }
 
-                if( value ){
-
-                    self.makeNonceCall( "validateUsernameEmailNonce", {qs:[['userName',value]]} ).then( res => {
-                        console.log( "validateUsernameEmailNonce.reply", res )
-                        defered.resolve( true )
-
-                    }).fail( error => {
-                        console.log( "validateUsernameEmailNonce.error", error )
-                    })
-                }else{
-                    defered.resolve( true )
-                }
-
-
-                /*setTimeout( () => {
-
-                    if( value ){
-                        if( value.length<=5 ){
-                            defered.resolve( false )
-                        }
-                        else{
-                            defered.resolve( true )
-                        }
-                    }else{
-                        defered.resolve( true )
-                    }
-                }, 500 )*/
-
-                return defered.promise
-            })(),
-            valid: res => {
-                console.log( "userWalkup.usernametaken/valid",  res, value )
-                return res
-            },
-            catch: error => {
-                // do something with the error here
-                console.error( "userWalkup.usernametaken/catch", "there is an error, :) ")
-            }
-        }
+    pub.isEmailTaken = email => {
+        return self.isUsernameOrEmailTaken( [['emailAddress',email]] );
     }
 
     return pub

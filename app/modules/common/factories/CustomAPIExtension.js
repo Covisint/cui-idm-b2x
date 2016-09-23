@@ -72,7 +72,7 @@ angular.module('common')
 			accepts: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
 			contentType: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
 			call: '/registration/v1/registrations/persons/registration/validate'
-		},
+		}
     ];
 
     return calls

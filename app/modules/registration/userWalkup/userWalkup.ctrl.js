@@ -289,8 +289,8 @@ angular.module('registration')
     }, true)
 
     userWalkup.customErrors = {
-
-        usernameTaken: Registration.isUsernameTaken
+        usernameTaken: Registration.isUsernameTaken,
+        emailTaken: Registration.isEmailTaken
     };
 
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */
