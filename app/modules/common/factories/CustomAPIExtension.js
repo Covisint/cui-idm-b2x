@@ -64,7 +64,15 @@ angular.module('common')
         	type: 'GET',
         	accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',
         	call: '/registration/v1/registrations/organizations/{organizationId}/packages'
-        }
+        },
+		{
+			cmd: 'validateUsernameOrEmail',
+			cmdType: 'nonce',
+			type: 'POST',
+			accepts: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
+			contentType: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
+			call: '/registration/v1/registrations/validate'
+		},
     ];
 
     return calls
