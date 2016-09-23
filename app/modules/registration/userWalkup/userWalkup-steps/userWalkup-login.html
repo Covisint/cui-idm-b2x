@@ -8,7 +8,7 @@
 	</div>
 
 	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.username"
-		   custom-error="userWalkup.customErrors" ng-class="{'cui-input--error' : userLogin.userID.$touched && userLogin.userID.$invalid}">
+		   custom-error="userWalkup.customErrors.userName" ng-class="{'cui-input--error' : userLogin.userID.$touched && userLogin.userID.$invalid}">
 	<!-- Second row -->
 	<div class="cui-wizard__field-row">
 		<!-- Password -->
