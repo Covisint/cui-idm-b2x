@@ -1,11 +1,10 @@
 // Directory imports
 @import 'global-views';
-@import 'welcome';
 @import 'applications/applications';
 @import 'users';
 @import 'organization';
 @import 'registration';
-@import 'miscellaneous';
+@import 'misc/misc-dir';
 @import 'requests-personList'; 
 @import 'organization.newRequests';
 @import 'organization.user-details';
