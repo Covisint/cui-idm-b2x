@@ -5,6 +5,7 @@
 ### Changed
 * cui-ng [1.9.20]
 * cui-styleguide v2.5.4
+* cui-i18n v1.0.14
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.

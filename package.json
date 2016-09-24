@@ -19,6 +19,9 @@
       "name": "Shane Ardell"
     },
     {
+      "name": "Juan Mendez"
+    },
+    {
       "name": "Orin Fink",
       "email": "orin.fink@thirdwavellc.com"
     }
@@ -34,7 +37,7 @@
   },
   "dependencies": {
     "@covisint/cui-api-interceptor": "1.0.5",
-    "@covisint/cui-i18n": "1.0.13",
+    "@covisint/cui-i18n": "1.0.14",
     "@covisint/cui-icons": "1.4.2",
     "@covisint/cui-ng": "1.9.20",
     "@covisint/cui-styleguide": "2.5.4",
