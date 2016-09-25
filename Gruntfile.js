@@ -129,8 +129,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('demosdk', ['browserSync:demosdk']);
 
-  grunt.registerTask('jslint', ['jshint']);
-
   grunt.registerTask('package', ['build','compress']);
 
   grunt.registerTask('deploy', ['build','compress','http_upload:build']);
