@@ -57,6 +57,9 @@
 
     "globals": {
         "angular": false,
-        "$": false
+        "$": false,
+        "_": false,
+        "cui": false,
+        "appConfig": false
     }
 }
