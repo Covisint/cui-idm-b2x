@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
     // load the secrets profile file from your home directory
     const envPath = path.join(process.env['HOME'],'.cui/profiles',appName,target);
-
+    var clientId, clientSecret, originUri, uiHost, serviceUrl, solutionInstancesUrl
     //if the envPath does not exist, create it
     if (!grunt.file.exists(envPath)) {
 
@@ -34,14 +34,14 @@ module.exports = function(grunt) {
     }
 
     // now that we know it exists, we can read it, but trap it just in case
-    var env = grunt.file.readYAML(envPath);
+    var env = grunt.file.readYAML(envPath)
 
-    var clientId = (typeof grunt.option('clientId') === 'undefined') ? env.clientId : grunt.option('clientId');
-    var clientSecret = (typeof grunt.option('clientSecret') === 'undefined') ? env.clientSecret : grunt.option('clientSecret');
-    var originUri = (typeof grunt.option('originUri') === 'undefined') ? env.originUri : grunt.option('originUri');
-    var uiHost = (typeof grunt.option('uiHost') === 'undefined') ? env.uiHost : grunt.option('uiHost');
-    var serviceUrl = (typeof grunt.option('serviceUrl') === 'undefined') ? env.serviceUrl : grunt.option('serviceUrl');
-    var solutionInstancesUrl = (typeof grunt.option('solutionInstancesUrl') === 'undefined') ? env.solutionInstancesUrl : grunt.option('solutionInstancesUrl');
+    clientId = (typeof grunt.option('clientId') === 'undefined') ? env.clientId : grunt.option('clientId');
+    clientSecret = (typeof grunt.option('clientSecret') === 'undefined') ? env.clientSecret : grunt.option('clientSecret');
+    originUri = (typeof grunt.option('originUri') === 'undefined') ? env.originUri : grunt.option('originUri');
+    uiHost = (typeof grunt.option('uiHost') === 'undefined') ? env.uiHost : grunt.option('uiHost');
+    serviceUrl = (typeof grunt.option('serviceUrl') === 'undefined') ? env.serviceUrl : grunt.option('serviceUrl');
+    solutionInstancesUrl = (typeof grunt.option('solutionInstancesUrl') === 'undefined') ? env.solutionInstancesUrl : grunt.option('solutionInstancesUrl');
 
     var config = {
       buildDir : './build',
