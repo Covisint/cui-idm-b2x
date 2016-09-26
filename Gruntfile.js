@@ -84,7 +84,7 @@ module.exports = function(grunt) {
     grunt.file.write('appConfig-build.json', JSON.stringify(appConfigBuild, null, 4));
 
   var tasks = ['watch','sass','browserSync','postcss','clean','compress','copy','filerev','useminPrepare',
-  'useminPreparesdk','usemin','useminsdk','uglify','jshint','ngtemplates','processhtml','babel','ngAnnotate',
+  'useminPreparesdk','usemin','useminsdk','uglify','ngtemplates','processhtml','babel','ngAnnotate',
   'http_upload'];
 
   var opts = {
