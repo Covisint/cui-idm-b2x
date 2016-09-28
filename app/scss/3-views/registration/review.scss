@@ -1,0 +1,41 @@
+.application-review {
+  clear: both;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  &__label {
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+
+  &__name {
+    align-items: center;
+    display: flex;
+    padding: 5px 0;
+    width: 35%;
+  }
+
+  &__tos-link {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+    width: 35%;
+  }
+
+  &__tos-agreement {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0;
+    text-align: right;
+    width: 30%;
+  }
+
+  &__list {
+    display: flex;
+    width: 100%;
+  }
+
+}
