@@ -4,7 +4,6 @@ angular.module('common')
     const self = {}
     const pub = {}
 
-
     /**
      * this method makes sure to make the call but before it calls cui.initiateNonce
      * @param method method name
@@ -47,18 +46,15 @@ angular.module('common')
 
         return {
             promise:(() => {
-                console.log( tag + ".promise",  stringParams )
                 const defered = $q.defer()
 
                 if( stringParams ){
 
                     self.makeNonceCall( "validateUsernameEmailNonce", {qs:stringParams} ).then( res => {
-                        console.log( tag + ".reply", res )
                         defered.resolve( true )
-
                     }).fail( error => {
                         defered.resolve( false )
-                        console.log( tag + ".error", error )
+                        console.error( tag + ".error", error )
                     })
                 }else{
                     defered.resolve( true )
@@ -67,7 +63,6 @@ angular.module('common')
                 return defered.promise
             })(),
             valid: res => {
-                console.log( tag + ".valid",  res, stringParams )
                 return res
             },
             catch: error => {
