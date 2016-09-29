@@ -10,6 +10,7 @@ angular.module('applications',[])
     };
 
     $stateProvider
+        // ----- My Applications ------------------------------
         .state('applications', {
             url: '/applications',
             template: '<div ui-view class="cui-applications"></div>',
@@ -45,6 +46,19 @@ angular.module('applications',[])
             templateUrl: templateBase + 'newRequestReview/applicationReview.html',
             controller: returnCtrlAs('applicationReview'),
             access:loginRequired
+        })
+        // ----- Organization Applications --------------------
+        .state('applications.orgApplications', {
+            url: '/organization',
+            template: '<div ui-view></div>',
+            abstract: true,
+            access: loginRequired
+        })
+        .state('applications.orgApplications.applicationList', {
+            url: '',
+            templateUrl: templateBase + 'orgApplications/applicationList/orgApplications-applicationList.html',
+            controller: returnCtrlAs('orgApplications'),
+            access: loginRequired
         })
 
 }]);
