@@ -10,6 +10,7 @@
 * API call `getOrganizationPackages()` is now secured.
 * Clicking on link in left menu now closes menu on desktop
 * Walkup registration, extracts service logic out of the controller and moves it to the Registration.factory
+* Removes deprecated organization applications files.
 
 ### Fixes
 * Fixes popover styling.
