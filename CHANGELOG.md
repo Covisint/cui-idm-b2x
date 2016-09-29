@@ -12,6 +12,8 @@
 * Clicking on link in left menu now closes menu on desktop
 * Walkup registration, extracts service logic out of the controller and moves it to the Registration.factory
 * Removes deprecated organization applications files.
+* My Applications screen now saves all retrieved data into the DataStorage factory upon the first load. On each subsequent load
+  the initial data is populated from DataStorage and updated from new API calls in the background.
 
 ### Fixes
 * Fixes popover styling.
@@ -29,6 +31,7 @@
 * Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
 * Adds features for checking if a username and/or email address already exist in the instance
   during walkup registration.
+* Adds updating loading spinner partial in `app/common-templates/partials/`
 
 
 ## [v0.2.3] - 2016-09-13
