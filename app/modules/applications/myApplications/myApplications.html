@@ -27,7 +27,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
   </nav>
   <div class="cui-action__actions">
     <!-- Updating Loader -->
-    <div class="cui-action__action-container" ng-if="base.loader.for['myApplications.updating']"><div class="cui-loading--circle"></div></div>
+    <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['myApplications.updating']"></div>
 
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
