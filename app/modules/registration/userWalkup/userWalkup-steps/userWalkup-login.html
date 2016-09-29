@@ -6,8 +6,9 @@
 	<div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.userID.$touched">
 		<div ng-messages-include="app/common-templates/messages.html"></div>
 	</div>
-	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.username" ng-class="{'cui-input--error' : userLogin.userID.$touched && userLogin.userID.$invalid}">
 
+	<input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.username"
+		   custom-error="userWalkup.customErrors.userName" ng-class="{'cui-input--error' : userLogin.userID.$touched && userLogin.userID.$invalid}">
 	<!-- Second row -->
 	<div class="cui-wizard__field-row">
 		<!-- Password -->

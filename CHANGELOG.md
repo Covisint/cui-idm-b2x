@@ -5,6 +5,7 @@
 ### Changed
 * cui-ng [1.9.20]
 * cui-styleguide v2.5.4
+* cui-i18n v1.0.14
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
@@ -26,6 +27,8 @@
 * Added padding and border to empty app details and claims.
 * Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
 * Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
+* Adds features for checking if a username and/or email address already exist in the instance
+  during walkup registration.
 
 
 ## [v0.2.3] - 2016-09-13

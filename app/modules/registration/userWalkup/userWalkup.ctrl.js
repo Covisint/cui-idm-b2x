@@ -288,6 +288,15 @@ angular.module('registration')
         }
     }, true)
 
+    userWalkup.customErrors = {
+        userName:{
+            usernameTaken: Registration.isUsernameTaken
+        },
+        email:{
+            emailTaken: Registration.isEmailTaken
+        }
+    };
+
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */
 
 })

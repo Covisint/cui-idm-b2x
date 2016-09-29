@@ -29,7 +29,7 @@
       <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
         <div ng-messages-include="app/common-templates/messages.html"></div>
       </div>
-      <input type="email" name="email" class="cui-input" ng-required="true" ng-model="userWalkup.user.email"/>
+      <input type="email" name="email" class="cui-input" custom-error="userWalkup.customErrors.email" ng-required="true" ng-model="userWalkup.user.email"/>
     </div>
 
     <!-- Re-enter Email -->

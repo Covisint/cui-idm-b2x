@@ -1,9 +1,8 @@
 angular.module('common')
-    .factory('Registration',[ 'API',(API)=>{
+    .factory('Registration',[ 'API', '$q',( API, $q ) => {
 
     const self = {}
     const pub = {}
-
 
     /**
      * this method makes sure to make the call but before it calls cui.initiateNonce
@@ -11,8 +10,9 @@ angular.module('common')
      * @param args method arguments
      * @returns {*} promise
      */
-    self.callRequiresInit = ( method, ...args )=>{
+    self.makeNonceCall = ( method, ...args )=>{
         const deferred = $.Deferred()
+        const tag = "registration/self/makeNonceCall"
 
         API.cui.initiateNonce()
         .then(res=>{
@@ -27,19 +27,59 @@ angular.module('common')
 
         })
         .fail((error)=>{
+            console.error( tag, error )
             deferred.reject(error)
         })
 
         return deferred.promise()
     }
 
+    /**
+     * TODO: once the promise gets an error message, we are going to resolve as false. This is temporary.
+     * Makes an api call to know if the registrating user's username or email address
+     * appear already been taken.
+     * @param stringParams a param array having either or both userName and emalAddress.
+     * @returns {{promise, valid: (function(*=)), catch: (function(*))}}
+     */
+    self.isUsernameOrEmailTaken = stringParams => {
+        const tag = "registration/self/isUsernameOrEmailTaken";
+
+        return {
+            promise:(() => {
+                const defered = $q.defer()
+
+                if( stringParams ){
+
+                    self.makeNonceCall( "validateUsernameEmailNonce", {qs:stringParams} ).then( res => {
+                        defered.resolve( true )
+                    }).fail( error => {
+                        defered.resolve( false )
+                        console.error( tag + ".error", error )
+                    })
+                }else{
+                    defered.resolve( true )
+                }
+
+                return defered.promise
+            })(),
+            valid: res => {
+                return res
+            },
+            catch: error => {
+                // do something with the error here
+                console.error( tag + ".catch", "there is an error, :) ")
+            }
+        }
+    }
+
+
     pub.getOrganizations=()=>{
-        return self.callRequiresInit( "getOrganizationsNonce" );
+        return self.makeNonceCall( "getOrganizationsNonce" )
     }
 
     pub.getSecurityQuestions=()=>{
 
-        return self.callRequiresInit( "getSecurityQuestionsNonce" );
+        return self.makeNonceCall( "getSecurityQuestionsNonce" )
     }
 
     /**
@@ -70,7 +110,7 @@ angular.module('common')
      */
     pub.walkUpSubmit=(build, applications)=>{
 
-        const deferred = $.Deferred();
+        const deferred = $.Deferred()
         const user = build.buildPerson()
 
         return API.cui.initiateNonce()
@@ -106,7 +146,7 @@ angular.module('common')
                 return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
             })
             .then(res => {
-                results.grants = res;
+                results.grants = res
                 return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
             })
             .then(res => {
@@ -120,5 +160,13 @@ angular.module('common')
         return deferred.promise()
     }
 
+    pub.isUsernameTaken = name => {
+        return self.isUsernameOrEmailTaken( [['userName',name]] );
+    }
+
+    pub.isEmailTaken = email => {
+        return self.isUsernameOrEmailTaken( [['emailAddress',email]] );
+    }
+
     return pub
-}]);
+}])
