@@ -46,11 +46,5 @@ angular.module('applications',[])
             controller: returnCtrlAs('applicationReview'),
             access:loginRequired
         })
-        .state('applications.orgApplications', {
-            url: '/organization?id',
-            templateUrl: templateBase + 'orgApplications/orgApplications.html',
-            controller: returnCtrlAs('orgApplications'),
-            access:loginRequired
-        })
 
 }]);
