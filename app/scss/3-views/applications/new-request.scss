@@ -1,0 +1,70 @@
+// New Request Page
+
+.cui-applications__new-request {
+
+  .cui-applications__row {
+    margin-top: em(16);
+    margin-bottom: em(48);
+  }
+
+  .cui-applications__center-text {
+    text-align: center;
+
+    @media screen and (min-width: 701px) {
+      flex: .2;
+    }
+  }
+
+  .cui-input-button {
+    margin-bottom: em(25);
+    @media screen and (min-width: 701px) {
+      margin: 0;
+    }
+  }
+
+  .cui-button {
+    margin-top: em(25);
+
+    @media screen and (min-width: 701px) {
+      margin: 0;
+    }
+  }
+
+  .cui-applications__search-options {
+    padding-bottom: em(30);
+    
+    @media screen and (min-width: 701px) {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cui-link{
+      color: rgb(52,53,52);
+      display: block;
+      flex: .45;
+      font-weight: bold;
+      width: 100%;
+      letter-spacing: .8px;
+    }
+  }
+
+  .cui-button,
+  .cui-input-button {
+    @media screen and (min-width: 701px) {
+      flex: .45;
+    }
+  }
+
+  .cui-applications__categories {
+    @extend %flex-row;
+    border-bottom: 1px solid $cui-greyscale--x-light;
+    padding: em(20) 0;
+
+    .cui-applications__category {
+      @extend %h5--bold;
+    }
+
+  }
+
+}

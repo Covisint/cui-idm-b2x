@@ -1,0 +1,20 @@
+/*
+Layout styles for registration screens
+*/
+
+@import 'review';
+
+.cui-loading__container--organization-list {
+  position: relative;
+  background: none;
+
+  .cui-loading--center {
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+}
+
+.cui-select-wrapper {
+  width: 80px;
+}
