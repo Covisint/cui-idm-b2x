@@ -1,7 +1,11 @@
 angular.module('applications')
-.controller('myApplicationsCtrl', function(localStorageService, $scope, $stateParams, API, $state, $filter, $q, $pagination, Loader, APIHelpers, APIError) {
+.controller('myApplicationsCtrl', function(API,APIError,APIHelpers,DataStorage,Loader,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
 
-    let myApplications = this
+    const myApplications = this
+    const userId = User.user.id
+    const loaderName = 'myApplications.'
+
+    let checkedLocalStorage = false
 
     // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
 
@@ -20,14 +24,32 @@ angular.module('applications')
 
     // ON LOAD START ------------------------------------------------------------------------------------------
 
-    const loaderName = 'myApplications.'
+    const loadStoredData = () => {
+        // Check DataStorage if this page has been loaded before. We initially populate this screen
+        // with data that was previously retrieved from the API while we redo calls to get the up to date data.
+        const storedData = DataStorage.getDataThatMatches('myApplicationsList', { userId })
+
+        if (storedData) {
+            Loader.onFor(loaderName + 'apps')
+            myApplications.list = storedData[0].appListData[0].appList
+            myApplications.count = storedData[0].appListData[0].appCount
+            myApplications.categories = storedData[0].appListData[0].categories
+            Loader.offFor(loaderName + 'apps')
+        }
+        checkedLocalStorage = true
+        onLoad(false)
+    }
 
     const onLoad = (previouslyLoaded) => {
-
         if (previouslyLoaded) {
             Loader.onFor(loaderName + 'reloadingApps')
-        } else { // pre populate fields based on state params on first load
-            Loader.onFor(loaderName + 'apps')
+        }
+        else {
+            checkedLocalStorage ? Loader.onFor(loaderName + 'updating') : Loader.onFor(loaderName + 'apps')
+
+            // pre populate fields based on state params on first load
+            // Loader.onFor(loaderName + 'apps')
+
             myApplications.search = Object.assign({}, $stateParams)
 
             Loader.onFor(loaderName + 'categories')
@@ -54,13 +76,26 @@ angular.module('applications')
             qs: APIHelpers.getQs(myApplications.search)
         }
 
-        const promises = [API.cui.getPersonGrantedApps(opts), API.cui.getPersonGrantedCount(opts)]
+        const promises = [
+            API.cui.getPersonGrantedApps(opts), 
+            API.cui.getPersonGrantedCount(opts)
+        ]
 
         $q.all(promises)
         .then(res => {
             myApplications.list = Object.assign(res[0])
             myApplications.count = res[1]
-            myApplications.reRenderPaginate && myApplications.reRenderPaginate() // re-render pagination if available
+            // re-render pagination if available
+            myApplications.reRenderPaginate && myApplications.reRenderPaginate()
+
+            const storageData = [{
+                'appList': myApplications.list, 
+                'appCount': myApplications.count, 
+                'categories': myApplications.categories
+            }]
+
+            DataStorage.deleteType('myApplicationsList')
+            DataStorage.replaceDataThatMatches('myApplicationsList', userId, { userId, appListData: storageData })
             APIError.offFor(loaderName + 'apps')
         })
         .catch(err => {
@@ -68,14 +103,15 @@ angular.module('applications')
         })
         .finally(() => {
             if (previouslyLoaded) {
-                Loader.offFor(loaderName + 'reloadingApps');
-            } else {
-                Loader.offFor(loaderName + 'apps');
+                Loader.offFor(loaderName + 'reloadingApps')
+            } 
+            else {
+                checkedLocalStorage ? Loader.offFor(loaderName + 'updating') : Loader.offFor(loaderName + 'apps')
             }
         })
     }
 
-    onLoad(false)
+    loadStoredData()
 
     // ON LOAD END --------------------------------------------------------------------------------------------
 
@@ -86,7 +122,7 @@ angular.module('applications')
     }
 
     myApplications.updateSearch = (updateType, updateValue) => {
-        switch (updateType){
+        switch (updateType) {
             case 'alphabetic':
                 switchBetween('sort', '+service.name', '-service.name')
                 break
@@ -103,18 +139,18 @@ angular.module('applications')
                 break
         }
 
-        $state.transitionTo('applications.myApplications', myApplications.search, { notify:false }) // doesn't change state, only updates the url
+        // doesn't change state, only updates the url
+        $state.transitionTo('applications.myApplications', myApplications.search, { notify:false })
         onLoad(true)
-
     }
 
     myApplications.goToDetails = (application) => {
         const opts = {
             appId: application.id
         }
+
         $state.go('applications.myApplicationDetails', opts)
     }
-
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
 

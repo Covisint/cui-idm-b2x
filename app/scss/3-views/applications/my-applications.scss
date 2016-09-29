@@ -66,4 +66,14 @@
 
 .cui-applications__row {
   @extend %flex-row;
-} 
+}
+
+.cui-loading--circle {
+  animation: spin 1s infinite linear;
+  background-color: #fff;
+  border: 0.625em solid #85A6AD;
+  border-radius: 2.5em;
+  border-top-color: #CDE6F0;
+  height: 0em;
+  width: 0em;
+}
