@@ -46,10 +46,6 @@ angular.module('applications')
         }
         else {
             checkedLocalStorage ? Loader.onFor(loaderName + 'updating') : Loader.onFor(loaderName + 'apps')
-
-            // pre populate fields based on state params on first load
-            // Loader.onFor(loaderName + 'apps')
-
             myApplications.search = Object.assign({}, $stateParams)
 
             Loader.onFor(loaderName + 'categories')
