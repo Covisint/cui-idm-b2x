@@ -118,7 +118,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       <div class="cui-media__body cui-media__body--full">
         <div class="cui-media__title-container">
           <!-- Launch Application Icon -->
-          <a class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank" disable-animte><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+          <a class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
           <h3 class="cui-media__title" ng-click="myApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
         </div>
         <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
