@@ -24,6 +24,7 @@
 * Remove flash of unstyled content when closing/opening fields to edit in My Profile
 * Profile icons on mobile now correct size and padding
 * Fixed grunt task to support Windows OS
+* DataStorage.replaceDataThatMatches() now properly replaces matching data.
 
 ### Added
 * Added padding and border to empty app details and claims.

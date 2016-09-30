@@ -1,5 +1,6 @@
 angular.module('common')
-.factory('DataStorage', (localStorageService, API) => {
+.factory('DataStorage', (API, localStorageService) => {
+
     let storage = localStorageService.get('dataStorage') || {}
     let dataStorage = {}
 
@@ -26,14 +27,14 @@ angular.module('common')
 
     dataStorage.getType = (type) => {
         if (!storage[API.getUser()]) {
-            return undefined;
+            return undefined
         }
         return storage[API.getUser()][type]
     }
 
     dataStorage.deleteType = (type) => {
         if (!storage[API.getUser()] || !storage[API.getUser()][type]) {
-            return;
+            return
         }
         delete storage[API.getUser()][type]
         saveToLocaStorage()
@@ -42,7 +43,7 @@ angular.module('common')
     // deletes the storage for just the currently logged in user
     dataStorage.deleteUserStorage = () => {
         if (storage[API.getUser()]) {
-            delete storage[API.getUser()];
+            delete storage[API.getUser()]
         }
         saveToLocaStorage()
     }
@@ -65,12 +66,14 @@ angular.module('common')
     dataStorage.appendToType = (type, data) => {
         initStorageIfUndefined()
         if (!storage[API.getUser()][type]) {
-            storage[API.getUser()][type] = [data];
-        } else if (!_.isArray(storage[API.getUser()][type])) {
+            storage[API.getUser()][type] = [data]
+        } 
+        else if (!_.isArray(storage[API.getUser()][type])) {
             throw new Error('Tried appending to an existing data type that is not an array in dataStorage.')
             return
-        } else {
-            storage[API.getUser()][type].push(data);
+        } 
+        else {
+            storage[API.getUser()][type].push(data)
         }
         saveToLocaStorage()
     }
@@ -78,18 +81,21 @@ angular.module('common')
     // returns ALL data that matches against a given comparison or undefined if no results
     dataStorage.getDataThatMatches = (type, comparison) => {
         if (!storage[API.getUser()] || !storage[API.getUser()][type]) {
-            return undefined;
-        } else if (!_.isArray(storage[API.getUser()][type])) {
+            return undefined
+        } 
+        else if (!_.isArray(storage[API.getUser()][type])) {
             throw new Error('Tried using DataStorage.getDataThatMatches on a type that isn\'t an array. Use .getType(type) instead.')
             return
-        } else {
+        } 
+        else {
             const matches = storage[API.getUser()][type].filter(x => {
                 return _.isMatch(x, comparison)
             })
             if (matches.length > 0) {
-                return matches;
-            } else {
-                return undefined;
+                return matches
+            } 
+            else {
+                return undefined
             }
         }
     }
@@ -97,17 +103,19 @@ angular.module('common')
     // replaces all data that matches against a certain comparison and appends
     // new data to that type's array
     dataStorage.replaceDataThatMatches = (type, comparison, newData) => {
-        dataStorage.deleteDataThatMatches(type, comparison)
+        dataStorage.deleteDataThatMatches(type, newData)
         dataStorage.appendToType(type, newData)
     }
 
     dataStorage.deleteDataThatMatches = (type, comparison) => {
         if (!storage[API.getUser()] || !storage[API.getUser()][type]) {
-            return;
-        } else if (!_.isArray(storage[API.getUser()][type])) {
+            return
+        } 
+        else if (!_.isArray(storage[API.getUser()][type])) {
             throw new Error('Tried using DataStorage.deleteDataThatMatches on a type that isn\'t an array. Use .deleteType(type) instead.')
             return
-        } else {
+        } 
+        else {
             storage[API.getUser()][type] = storage[API.getUser()][type].filter(x => {
                 return !_.isMatch(x, comparison)
             })

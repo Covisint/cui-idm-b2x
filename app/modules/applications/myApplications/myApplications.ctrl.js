@@ -94,7 +94,6 @@ angular.module('applications')
                 'categories': myApplications.categories
             }]
 
-            DataStorage.deleteType('myApplicationsList')
             DataStorage.replaceDataThatMatches('myApplicationsList', userId, { userId, appListData: storageData })
             APIError.offFor(loaderName + 'apps')
         })
