@@ -14,6 +14,7 @@
 * Removes deprecated organization applications files.
 * My Applications screen now saves all retrieved data into the DataStorage factory upon the first load. On each subsequent load the initial data is populated from DataStorage and updated from new API calls in the background.
 * Organization Profile screen now saves relevant data to DataStorage on the first load.
+* Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 
 ### Fixes
 * Fixes popover styling.

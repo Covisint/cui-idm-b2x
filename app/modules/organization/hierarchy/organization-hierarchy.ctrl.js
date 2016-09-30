@@ -1,26 +1,33 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl', function(API,APIError,Loader,User,$scope) {
+.controller('orgHierarchyCtrl', function(API,APIError,DataStorage,Loader,User,$scope) {
 
-    const orgHierarchy = this;
-    const initializing = 'orgHierarchy.loading'
+    const orgHierarchy = this
+    const pageLoader = 'orgHierarchy.loading'
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    Loader.onFor(initializing)
+    const storedData = DataStorage.getType('orgHierarchy')
+
+    if (storedData) {
+        orgHierarchy.organizationHierarchy = storedData
+    }
+
+    if (!storedData) Loader.onFor(pageLoader)
 
     API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
     .done(res => {
         // Put hierarchy response in an array as the hierarchy directive expects an array
-        orgHierarchy.organizationHierarchy = [res];
+        orgHierarchy.organizationHierarchy = [res]
+        DataStorage.setType('orgHierarchy', [res])
     })
     .fail(err => {
-        APIError.onFor(initializing, err)
+        APIError.onFor(pageLoader, err)
     })
     .always(() => {
-        Loader.offFor(initializing)
+        Loader.offFor(pageLoader)
         $scope.$digest()
     })
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
-});
+})
