@@ -21,7 +21,7 @@ angular.module('common')
     // completely overrides a type
     dataStorage.setType = (type, data) => {
         initStorageIfUndefined()
-        storage[API.getUser()].type = data
+        storage[API.getUser()][type] = data
         saveToLocaStorage()
     }
 
