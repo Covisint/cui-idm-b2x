@@ -37,7 +37,8 @@
   },
   "scripts": {
     "start": "grunt",
-    "lint:js": "jshint --reporter=node_modules/jshint-stylish app"
+    "lint:js": "jshint --reporter=node_modules/jshint-stylish app",
+    "lint:style": "stylelint app/**/*.scss",
   },
   "dependencies": {
     "@covisint/cui-api-interceptor": "1.0.5",

@@ -1,0 +1,15 @@
+{
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "at-rule-empty-line-before": ["always", {
+            "ignoreAtRules": ["extend", "include"]
+        }],
+        "no-eol-whitespace": [true, {
+            "ignore": ["empty-lines"]
+        }],
+        "number-leading-zero": "always",
+        "selector-type-no-unknown": [true, {
+            "ignoreTypes": ["/[%]/", "/^snap-/", "/^step/", "/^cui-/"]
+        }]
+    }
+}
