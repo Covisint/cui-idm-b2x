@@ -29,6 +29,7 @@
 * DataStorage.setType() not correctly assigns data under the provided type.
 
 ### Added
+* New npm run command `npm run lint:js` to ensure app code is in conformance for style
 * Added padding and border to empty app details and claims.
 * Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
 * Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
