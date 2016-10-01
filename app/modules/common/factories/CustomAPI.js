@@ -33,7 +33,8 @@ angular.module('common')
             type: 'GET'
         },
         {
-            cmd: 'getPersonGrantedApps',                    
+            cmd: 'getPersonGrantedApps',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
             call: `/service/v3/applications/persons/${ '{personId}' }`,
             type: 'GET'

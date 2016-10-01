@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgProfileCtrl', function(API,APIError,Loader,User,$scope,$state,$timeout) {
+.controller('orgProfileCtrl', function(API,APIError,DataStorage,Loader,User,$scope,$state,$timeout) {
 
     const orgProfile = this
     const eventName = 'orgProfile.init'
@@ -9,12 +9,19 @@ angular.module('organization')
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    if (orgProfile.organization) {
-        Loader.onFor(eventName)
+    const storedData = DataStorage.getType('orgProfile')
+
+    if (storedData) {
+        orgProfile.securityAdmins = storedData
+    }
+
+    if (storedData || orgProfile.organization) {
+        if (!storedData) Loader.onFor(eventName)
 
         API.cui.getPersonsAdmins({qs: [['organization.id', orgProfile.organization.id], ['securityadmin', true]]})
         .done(res => {
             orgProfile.securityAdmins = res
+            DataStorage.setType('orgProfile', res)
         })
         .fail(err => {
             console.error('Error getting organization admin information', err)

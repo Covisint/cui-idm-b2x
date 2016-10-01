@@ -12,8 +12,9 @@
 * Clicking on link in left menu now closes menu on desktop
 * Walkup registration, extracts service logic out of the controller and moves it to the Registration.factory
 * Removes deprecated organization applications files.
-* My Applications screen now saves all retrieved data into the DataStorage factory upon the first load. On each subsequent load
-  the initial data is populated from DataStorage and updated from new API calls in the background.
+* My Applications screen now saves all retrieved data into the DataStorage factory upon the first load. On each subsequent load the initial data is populated from DataStorage and updated from new API calls in the background.
+* Organization Profile screen now saves relevant data to DataStorage on the first load.
+* Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 
 ### Fixes
 * Fixes popover styling.
@@ -25,6 +26,7 @@
 * Profile icons on mobile now correct size and padding
 * Fixed grunt task to support Windows OS
 * DataStorage.replaceDataThatMatches() now properly replaces matching data.
+* DataStorage.setType() not correctly assigns data under the provided type.
 
 ### Added
 * New npm run command `npm run lint:js` to ensure app code is in conformance for style
