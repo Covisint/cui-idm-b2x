@@ -15,6 +15,7 @@
 * My Applications screen now saves all retrieved data into the DataStorage factory upon the first load. On each subsequent load the initial data is populated from DataStorage and updated from new API calls in the background.
 * Organization Profile screen now saves relevant data to DataStorage on the first load.
 * Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
+* Change "open" to "edit" for the various sections on the user details page in admin view.
 
 ### Fixes
 * Fixes popover styling.
@@ -29,7 +30,8 @@
 * DataStorage.setType() not correctly assigns data under the provided type.
 
 ### Added
-* New npm run command `npm run lint:js` to ensure app code is in conformance for style
+* New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
+* New npm run commands `npm run build`, `npm run pkg` and `npm run deploy` for an abstraction of the workflow commands outside grunt.
 * Added padding and border to empty app details and claims.
 * Modifies the editor config to suggest HTML use 2 spaces instead of 4 for indentation.
 * Added new CommonAPI factory for handling repeated API calls in other factories/throughout the project.
