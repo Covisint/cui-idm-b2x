@@ -28,6 +28,7 @@
 * Fixed grunt task to support Windows OS
 * DataStorage.replaceDataThatMatches() now properly replaces matching data.
 * DataStorage.setType() not correctly assigns data under the provided type.
+* Fixes issue where opening up the mobile menu and then expanding into desktop screen size would leave all content pushed to the right.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
