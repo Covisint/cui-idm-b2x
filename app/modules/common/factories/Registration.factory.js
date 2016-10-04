@@ -1,5 +1,5 @@
 angular.module('common')
-    .factory('Registration',[ 'API', '$q',( API, $q ) => {
+.factory('Registration', (API, APIError, $q) => {
 
     const self = {}
     const pub = {}
@@ -82,25 +82,33 @@ angular.module('common')
         return self.makeNonceCall( "getSecurityQuestionsNonce" )
     }
 
-    /**
-     * This method gets security questions and organizations
-     * @returns {*} promise, result has already security questions and organizations
-     */
-    pub.walkUpInit =()=>{
+    // Returns organizations and security questions for the realm.
+    // Both must resolve for the walkup registration to work.
+    pub.initWalkupRegistration = () => {    
+        const defer = $q.defer()
+        const data = {}
+        
+        APIError.offFor('RegistrationFactory.initWalkup')
 
-        const deferred = $.Deferred()
-
-        API.cui.initiateNonce().then(res=>{
-
-            $.when( pub.getOrganizations(), pub.getSecurityQuestions())
-            .done( ( organizations, questions )=>{
-                deferred.resolve({questions:questions, organizations:organizations})
-            })
+        API.cui.initiateNonce()
+        .then(() => {
+            return API.cui.getOrganizationsNonce()
+        })
+        .then(res => {
+            data.organizations = res
+            return API.cui.getSecurityQuestionsNonce()
+        })
+        .then(res => {
+            data.securityQuestions = res
+            defer.resolve(data)
+        })
+        .fail(error => {
+            APIError.onFor('RegistrationFactory.initWalkup')
+            defer.reject(error)
         })
 
-        return deferred.promise()
+        return defer.promise
     }
-
 
     /**
      * method goes and submits walkup registration
@@ -169,4 +177,5 @@ angular.module('common')
     }
 
     return pub
-}])
+
+})

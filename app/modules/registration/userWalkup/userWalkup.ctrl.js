@@ -92,7 +92,6 @@ angular.module('registration')
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     userWalkup.initializing = true
-    APIError.offFor('userWalkup.initializing')
 
     if (!localStorageService.get('userWalkup.user')) {
         // If registration is not saved in localstorage we need to initialize 
@@ -100,21 +99,18 @@ angular.module('registration')
         userWalkup.user = { addresses: [] }
         userWalkup.user.addresses[0] = { streets: [] }
         userWalkup.user.phones = []
-    } else {
+    } 
+    else {
         userWalkup.user = localStorageService.get('userWalkup.user');
     }
 
-    // Load in data required for the walkup registration (security questions, organizations list/count)
-
-    Registration.walkUpInit()
+    Registration.initWalkupRegistration()
     .then(res => {
-
-        const organizations = res.organizations;
-        const questions = res.questions;
-        questions.splice(0, 1) // Split questions to use between 2 dropdowns
-
-        let numberOfQuestions = questions.length
-        let numberOfQuestionsFloor = Math.floor(numberOfQuestions/2)
+        const questions = res.questions
+        
+        // Split questions to use between 2 dropdowns
+        questions.splice(0, 1)
+        const numberOfQuestionsFloor = Math.floor(questions.length / 2)
 
         userWalkup.userLogin.challengeQuestions1 = questions.slice(0, numberOfQuestionsFloor)
         userWalkup.userLogin.challengeQuestions2 = questions.slice(numberOfQuestionsFloor)
@@ -124,15 +120,13 @@ angular.module('registration')
         userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0]
 
         // Populate organization list
-        userWalkup.organizationList = organizations
-        userWalkup.organizationCount = organizations.length
-    })
-    .always(() => {
+        userWalkup.organizationList = res.organizations
+        userWalkup.organizationCount = res.organizations.length
+
         userWalkup.initializing = false
         $scope.$digest()
     })
-    .fail(() => {
-        APIError.onFor('userWalkup.initializing', 'Error getting required data for registration')
+    .catch(error => {
         $state.go('misc.loadError')
     })
 
