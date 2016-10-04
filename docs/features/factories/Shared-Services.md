@@ -2,7 +2,7 @@
 
 Shared Service acts as an instantiable class that can be extended to provide information through the application using the base controller. This allows logic to be abstracted from controllers and to instead be utilized by factories.
 
-## Factories using Shared Service
+## Using Shared Service
 
 Many API calls are abstracted into factories, such as the `UserProfile Factory`, which will return all data needed for a profile screen using a single call (also provides standalone calls for customizability). As the profile screen is composed of different account data (user data, password data, security data), we are able to turn on an `APIError` for each specific call that fails in the factory, allowing us to only show profile screen data that doesn't fail by looking at the APIError object from the template itself.
 
