@@ -107,7 +107,7 @@ angular.module('registration')
     Registration.initWalkupRegistration()
     .then(res => {
         const questions = res.questions
-        
+
         // Split questions to use between 2 dropdowns
         questions.splice(0, 1)
         const numberOfQuestionsFloor = Math.floor(questions.length / 2)
@@ -168,38 +168,6 @@ angular.module('registration')
         return userWalkup.applications.processedSelected.length
     }
 
-    // Note [7/20/2016]: Commented out searching grants by name as Nonce API does not currently support this
-
-    // userWalkup.applications.searchApplications = () => {
-    //     const actionName = 'userWalkup.getApplications'
-
-    //     Loader.onFor(actionName)
-    //     APIError.offFor(actionName)
-
-    //     API.cui.initiateNonce()
-    //     .then(res => {
-    //         return API.cui.getOrgPackageGrantsNonce({
-    //             organizationId: userWalkup.organization.id, 
-    //             qs: [['service.name', userWalkup.applications.search]]
-    //         })
-    //     })
-    //     .then(res => {
-    //         if (!res.length) userWalkup.applications.list = undefined
-    //         else {
-    //             userWalkup.applications.list = res.map((grant) => {
-    //                 grant = grant.servicePackageResource
-    //                 return grant
-    //             })
-    //         }
-    //     },
-    //         error => APIError.onFor(actionName, error.responseJSON.apiMessage)
-    //     )
-    //     .always(() => {
-    //         Loader.offFor(actionName)
-    //         $scope.$digest()
-    //     })
-    // }
-
     userWalkup.submit = () => {
 
         userWalkup.submitting = true
@@ -226,22 +194,6 @@ angular.module('registration')
             }
         })
     }
-
-    // Note [7/20/2016]: Commented out pagination logic as nonce organizations call doesn't support pagination at this time
-
-    // userWalkup.orgPaginationPageHandler = (page) => {
-    //     API.cui.initiateNonce()
-    //     .then(res => {
-    //         return API.cui.getOrganizationsNonce({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', page]]})
-    //     })
-    //     .then(res => {
-    //         userWalkup.organizationList = res
-    //         userWalkup.organizationCount = res.length
-    //     })
-    //     .always(() => {
-    //         $scope.$digest()
-    //     })
-    // }
 
     userWalkup.selectOrganization = (organization) => {
         userWalkup.organization = organization
