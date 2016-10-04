@@ -30,3 +30,6 @@
 - Page Loading
 - Submit processing
 
+## Factories
+* [DataStorage](factories/Data-Storage.md)
+* [SharedServices](factories/Shared-Services.md)
