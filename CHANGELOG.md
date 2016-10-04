@@ -16,6 +16,7 @@
 * Organization Profile screen now saves relevant data to DataStorage on the first load.
 * Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 * Change "open" to "edit" for the various sections on the user details page in admin view.
+* Walkup registration inputs now show errors if they are dirty instead of touched (when the inputs have been used).
 
 ### Fixes
 * Fixes popover styling.
