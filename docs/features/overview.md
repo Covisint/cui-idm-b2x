@@ -26,10 +26,16 @@
 
 [Find out more](registration-flows.md)
 
+
 ## Animations & Transitions
 - Page Loading
 - Submit processing
 
+
 ## Factories
 * [DataStorage](factories/Data-Storage.md)
 * [SharedServices](factories/Shared-Services.md)
+
+
+## Directives
+* [Success Pane](directives/success-pane.md)

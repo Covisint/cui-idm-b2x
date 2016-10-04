@@ -39,6 +39,7 @@
 * Adds features for checking if a username and/or email address already exist in the instance
   during walkup registration.
 * Adds updating loading spinner partial in `app/common-templates/partials/`
+* Added further initial documentation of B2X features in `docs/features/`.
 
 
 ## [v0.2.3] - 2016-09-13
