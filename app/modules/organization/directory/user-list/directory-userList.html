@@ -128,10 +128,10 @@
     </div>
 
     <!-- Pagination Controls -->
-    <div class="cui-paginate__container">
+    <div class="cui-paginate__container" ng-if="!base.loader.for['orgDirectory.userList']">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-      <results-per-page class="cui-paginate__select" ng-model="orgDirectory.paginationPageSize"></results-per-page>
-      <paginate class="cui-paginate" results-per-page="orgDirectory.paginationPageSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.paginationHandler" ng-model="orgDirectory.paginationCurrentPage" attach-rerender-to="orgDirectory.reRenderPagination"></paginate>
+      <results-per-page class="cui-paginate__select" ng-model="orgDirectory.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgDirectory.pageSize" count="orgDirectory.orgPersonCount" on-page-change="orgDirectory.pageChange" ng-model="orgDirectory.page" attach-rerender-to="orgDirectory.reRenderPagination"></paginate>
     </div>
 
   </section>
