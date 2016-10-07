@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "originUri": {
+      "type": "string"
+    },
+    "serviceUrl": {
+      "type": "string"
+    },
+    "dateFormat": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string"
+        },
+        "pt": {
+          "type": "string"
+        },
+        "tr": {
+          "type": "string"
+        },
+        "zh": {
+          "type": "string"
+        },
+        "fr": {
+          "type": "string"
+        },
+        "es": {
+          "type": "string"
+        },
+        "it": {
+          "type": "string"
+        },
+        "ru": {
+          "type": "string"
+        },
+        "th": {
+          "type": "string"
+        },
+        "ja": {
+          "type": "string"
+        },
+        "de": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "en",
+        "pt",
+        "tr",
+        "zh",
+        "fr",
+        "es",
+        "it",
+        "ru",
+        "th",
+        "ja",
+        "de"
+      ]
+    },
+    "languageResources": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "prefix",
+        "suffix"
+      ]
+    },
+    "iconSets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "defaultViewBox": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "defaultViewBox"
+        ]
+      }
+    },
+    "paginationOptions": {
+      "type": "object",
+      "properties": {
+        "intervals": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "hidePaginationUnderMin": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "intervals"
+      ]
+    },
+    "breakpointOption": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "dateFormat",
+    "languages",
+    "languageResources",
+    "paginationOptions",
+    "breakpointOption"
+  ]
+}
