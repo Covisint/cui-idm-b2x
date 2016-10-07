@@ -10,7 +10,7 @@
 <div class="cui-form--mobile-steps" ng-if="!userWalkup.initializing">
   <div class="cui-form__title">{{'create-account' | translate}}</div>
   <div class="cui-form__body">
-    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators>
+    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators dirty-validation>
       <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
 
       <ng-form name="userWalkupRegForm" novalidate>

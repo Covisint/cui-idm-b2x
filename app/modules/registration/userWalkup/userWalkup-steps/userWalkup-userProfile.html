@@ -5,8 +5,8 @@
     <!-- First Name -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="user-name-given">{{'cui-first-name' | translate}}</label>
-      <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$touched">
-        <div ng-messages-include="app/common-templates/messages.html"></div>
+      <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
       <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="userWalkup.user.name.given"/>
     </div>
@@ -14,8 +14,8 @@
     <!-- Last Name -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
-      <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$touched">
-        <div ng-messages-include="app/common-templates/messages.html"></div>
+      <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
       <input type="text" ng-model="userWalkup.user.name.surname" name="lastName" class="cui-input" ng-required="true"/>
     </div>
@@ -26,8 +26,8 @@
     <!-- Email -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-email' | translate}}</label>
-      <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$touched">
-        <div ng-messages-include="app/common-templates/messages.html"></div>
+      <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
       <input type="email" name="email" class="cui-input" custom-error="userWalkup.customErrors.email" ng-required="true" ng-model="userWalkup.user.email"/>
     </div>
@@ -35,7 +35,7 @@
     <!-- Re-enter Email -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-email-re' | translate}}</label>
-      <div class="cui-error" ng-if="user.emailRe.$touched && user.emailRe.$error.match">
+      <div class="cui-error" ng-if="user.emailRe.$dirty && user.emailRe.$error.match">
         <div class="cui-error__message">{{'email-mismatch' | translate}}</div>
       </div>
       <input type="text" ng-model="userWalkup.emailRe" name="emailRe" class="cui-input" ng-required="true" match="userWalkup.user.email"/>
@@ -47,8 +47,8 @@
     <!-- Country -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="country">{{"cui-country" | translate}}</label>
-      <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-        <div ng-messages-include="app/common-templates/messages.html"></div>
+      <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
       <div auto-complete input-name="country" pause="100" selected-object="userWalkup.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="userWalkup.userCountry"></div>
     </div>
@@ -106,7 +106,7 @@
       <a href="" class="cui-link--medium-light cui-link--no-decoration cui-padding--h-5">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
       <a href="" class="cui-link--medium-light cui-link--no-decoration cui-padding--h-5">{{'privacy-policy' | translate}}</a>
     </label>
-    <span class="cui-wizard__step-error" ng-if="user.TOS.$touched && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
+    <span class="cui-wizard__step-error" ng-if="user.TOS.$dirty && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
   </div>
 
   <div class="cui-wizard__controls cui-wizard__controls--clear">

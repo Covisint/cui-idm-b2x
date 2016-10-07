@@ -16,6 +16,7 @@
 * Organization Profile screen now saves relevant data to DataStorage on the first load.
 * Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 * Change "open" to "edit" for the various sections on the user details page in admin view.
+* Walkup registration inputs now show errors if they are dirty instead of touched (when the inputs have been used).
 
 ### Fixes
 * Fixes popover styling.
@@ -39,6 +40,7 @@
 * Adds features for checking if a username and/or email address already exist in the instance
   during walkup registration.
 * Adds updating loading spinner partial in `app/common-templates/partials/`
+* Added further initial documentation of B2X features in `docs/features/`.
 
 
 ## [v0.2.3] - 2016-09-13

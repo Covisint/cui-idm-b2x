@@ -92,7 +92,6 @@ angular.module('registration')
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     userWalkup.initializing = true
-    APIError.offFor('userWalkup.initializing')
 
     if (!localStorageService.get('userWalkup.user')) {
         // If registration is not saved in localstorage we need to initialize 
@@ -100,21 +99,18 @@ angular.module('registration')
         userWalkup.user = { addresses: [] }
         userWalkup.user.addresses[0] = { streets: [] }
         userWalkup.user.phones = []
-    } else {
+    } 
+    else {
         userWalkup.user = localStorageService.get('userWalkup.user');
     }
 
-    // Load in data required for the walkup registration (security questions, organizations list/count)
-
-    Registration.walkUpInit()
+    Registration.initWalkupRegistration()
     .then(res => {
+        const questions = res.questions
 
-        const organizations = res.organizations;
-        const questions = res.questions;
-        questions.splice(0, 1) // Split questions to use between 2 dropdowns
-
-        let numberOfQuestions = questions.length
-        let numberOfQuestionsFloor = Math.floor(numberOfQuestions/2)
+        // Split questions to use between 2 dropdowns
+        questions.splice(0, 1)
+        const numberOfQuestionsFloor = Math.floor(questions.length / 2)
 
         userWalkup.userLogin.challengeQuestions1 = questions.slice(0, numberOfQuestionsFloor)
         userWalkup.userLogin.challengeQuestions2 = questions.slice(numberOfQuestionsFloor)
@@ -124,15 +120,13 @@ angular.module('registration')
         userWalkup.userLogin.question2 = userWalkup.userLogin.challengeQuestions2[0]
 
         // Populate organization list
-        userWalkup.organizationList = organizations
-        userWalkup.organizationCount = organizations.length
-    })
-    .always(() => {
+        userWalkup.organizationList = res.organizations
+        userWalkup.organizationCount = res.organizations.length
+
         userWalkup.initializing = false
         $scope.$digest()
     })
-    .fail(() => {
-        APIError.onFor('userWalkup.initializing', 'Error getting required data for registration')
+    .catch(error => {
         $state.go('misc.loadError')
     })
 
@@ -174,38 +168,6 @@ angular.module('registration')
         return userWalkup.applications.processedSelected.length
     }
 
-    // Note [7/20/2016]: Commented out searching grants by name as Nonce API does not currently support this
-
-    // userWalkup.applications.searchApplications = () => {
-    //     const actionName = 'userWalkup.getApplications'
-
-    //     Loader.onFor(actionName)
-    //     APIError.offFor(actionName)
-
-    //     API.cui.initiateNonce()
-    //     .then(res => {
-    //         return API.cui.getOrgPackageGrantsNonce({
-    //             organizationId: userWalkup.organization.id, 
-    //             qs: [['service.name', userWalkup.applications.search]]
-    //         })
-    //     })
-    //     .then(res => {
-    //         if (!res.length) userWalkup.applications.list = undefined
-    //         else {
-    //             userWalkup.applications.list = res.map((grant) => {
-    //                 grant = grant.servicePackageResource
-    //                 return grant
-    //             })
-    //         }
-    //     },
-    //         error => APIError.onFor(actionName, error.responseJSON.apiMessage)
-    //     )
-    //     .always(() => {
-    //         Loader.offFor(actionName)
-    //         $scope.$digest()
-    //     })
-    // }
-
     userWalkup.submit = () => {
 
         userWalkup.submitting = true
@@ -232,22 +194,6 @@ angular.module('registration')
             }
         })
     }
-
-    // Note [7/20/2016]: Commented out pagination logic as nonce organizations call doesn't support pagination at this time
-
-    // userWalkup.orgPaginationPageHandler = (page) => {
-    //     API.cui.initiateNonce()
-    //     .then(res => {
-    //         return API.cui.getOrganizationsNonce({'qs': [['pageSize', userWalkup.orgPaginationSize],['page', page]]})
-    //     })
-    //     .then(res => {
-    //         userWalkup.organizationList = res
-    //         userWalkup.organizationCount = res.length
-    //     })
-    //     .always(() => {
-    //         $scope.$digest()
-    //     })
-    // }
 
     userWalkup.selectOrganization = (organization) => {
         userWalkup.organization = organization
