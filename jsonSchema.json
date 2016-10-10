@@ -123,12 +123,5 @@
     "breakpointOption": {
       "type": "integer"
     }
-  },
-  "required": [
-    "dateFormat",
-    "languages",
-    "languageResources",
-    "paginationOptions",
-    "breakpointOption"
-  ]
+  }
 }
