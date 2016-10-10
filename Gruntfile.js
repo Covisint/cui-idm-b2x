@@ -132,7 +132,7 @@ module.exports = function(grunt) {
         errors.map(function(err) {
           switch(err.dataPath) {
             case ".paginationOptions":
-              grunt.log.writeln("\x1b[31mpaginationOptions inside your appConfig file should be an object. To find out what properties to pass in the paginationOptions object, please refer to the documentation at https://github.com/thirdwavellc/cui-ng/blob/master/directives/paginate/README.md");
+              grunt.log.writeln("\x1b[31mpaginationOptions inside your appConfig file should be an object. To find out what properties to pass in the paginationOptions object, please refer to the documentation at https://github.com/Covisint/cui-ng/tree/master/directives/paginate");
             break;
           }
         })
