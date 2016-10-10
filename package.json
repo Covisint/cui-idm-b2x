@@ -47,7 +47,7 @@
     "@covisint/cui-api-interceptor": "1.0.5",
     "@covisint/cui-i18n": "1.0.14",
     "@covisint/cui-icons": "1.4.2",
-    "@covisint/cui-ng": "1.9.20",
+    "@covisint/cui-ng": "1.10.0",
     "@covisint/cui-styleguide": "2.6.0",
     "@covisint/cui.js": "2.2.3",
     "angular-animate": "^1.5.7",
