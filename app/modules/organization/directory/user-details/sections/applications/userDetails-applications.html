@@ -1,6 +1,6 @@
 <!-- Page Loading -->
 <div class="cui-loading__container--user-details" ng-if="userDetailsApps.loading">
-  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  <div class="cui-loader cui-loader--content-sm" ng-include="'app/common-templates/partials/loader-content-sm.html'"></div>
 </div>
 
 <div class="" ng-if="!userDetailsApps.loading">
@@ -8,7 +8,7 @@
 
   	<!-- User has no applications -->
   	<div ng-if="userDetailsApps.appList.length===0">
-			<p>User has no applications!</p>  		
+			<p>User has no applications!</p>
   	</div>
 
   	<!-- User has applications -->
@@ -18,7 +18,7 @@
 	      <div class="cui-flex-table__avatar-col">
 	        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar></div></a>
 	      </div>
-		
+
 				<!-- Application Details -->
         <div class="cui-flex-table__left--stacked">
           <h3 class="cui-flex-table__title">{{application.name | cuiI18n}}</h3>
