@@ -18,12 +18,12 @@
   .cui-organization__admin-block-wrapper {
     display: flex;
     flex-flow: column wrap;
-    
+
     .cui-organization__admin-block {
       margin-bottom: em(21);
       margin-right: em(51);
     }
-  } 
+  }
 }
 
 .cui-organization__page-title {
@@ -34,13 +34,13 @@
 
 // Org Directory
 
-.cui-organization-dir { 
+.cui-organization-dir {
 
-  .cui-status--active, 
-  .cui-status--pending, 
-  .cui-status--suspended, 
-  .cui-status--locked, 
-  .cui-status--inactive, 
+  .cui-status--active,
+  .cui-status--pending,
+  .cui-status--suspended,
+  .cui-status--locked,
+  .cui-status--inactive,
   .cui-status--unactivated {
     @media screen and (max-width: 700px) {
       font-size: em(11);
@@ -86,6 +86,10 @@
 
 .cui-loading__container--user-details {
   background: none;
+
+  .cui-loader--content {
+    @extend %cui-no-padding;
+  }
 
   .cui-loading--center {
     position: relative;
@@ -175,6 +179,7 @@
 // Person Request
 
 .cui-organization__requests-person-header {
+  position: relative;
 
   .cui-media--centered {
     margin-top: em(18);
@@ -216,7 +221,7 @@
       margin: em(28, 14) em(13, 14) 0;
       width: auto;
     }
-    
+
     .cui-expandable__details,
     .cui-expandable__status {
       font-size: 1em;
