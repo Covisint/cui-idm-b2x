@@ -1,5 +1,6 @@
 angular.module('common')
 .factory('APIHelpers', (API,$filter) => {
+    'use strict'
 
     const apiHelpers = {
 
@@ -116,6 +117,22 @@ angular.module('common')
             else {
                 throw new Error ('No organization hierarchy object provided');
             }
+        },
+
+        getCollectionValuesAndCount(collection, key) {
+            // Given a collection and a key, will return an object containing all the values
+            // of the given key and a count
+            let data = {}
+
+            collection.forEach(object => {
+                if (object.hasOwnProperty(key)) {
+                    let keyValue = object[key]
+                    if (data.hasOwnProperty(keyValue)) data[keyValue] += 1
+                    else data[keyValue] = 1
+                }
+            })
+            
+            return data
         }
     };
 
