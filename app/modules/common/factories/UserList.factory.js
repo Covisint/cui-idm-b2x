@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserList', (API, APIError, APIHelpers, CommonAPI, $q) => {
+.factory('UserList', (API, APIError, APIHelpers, $q) => {
 
 	const errorName = 'UserListFactory.'
 

@@ -1,25 +1,42 @@
 angular.module('organization')
-.controller('orgDirectoryCtrl', function(API,CommonAPI,CuiMobileNavFactory,DataStorage,Loader,User,UserList,$pagination,$q,Sort,$state,$stateParams) {
+.controller('orgDirectoryCtrl', function(API,APIError,$filter,APIHelpers,CommonAPI,CuiMobileNavFactory,DataStorage,Loader,User,UserList,$pagination,$q,$state,$stateParams) {
 
     const orgDirectory = this
     const scopeName = 'orgDirectory.'
 
     orgDirectory.sortBy = {}
     orgDirectory.page = parseInt($stateParams.page || 1)
-    orgDirectory.pageSize = parseInt($stateParams.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions[0])
-    orgDirectory.sortFlag = true
-
-    // TODO REFACTOR!!!
-    // - test evertyhing
-    // - see what else makes sense to export into factorie(s)
-    // - sorts/refines/etc from API or local??
+    orgDirectory.pageSize = parseInt($stateParams.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions().intervals[0])
+    orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed']
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
+
+    const updateStateParams = ({ page, pageSize } = {}) => {
+        if (page && pageSize) {
+            orgDirectory.sortBy.page = page
+            orgDirectory.sortBy.pageSize = pageSize
+        }
+        $state.transitionTo('organization.directory.userList', orgDirectory.sortBy, { notify: false })
+    }
+
+    const populateUsers = ({ page, pageSize, userList} = {}) => {
+        orgDirectory.userList = _.drop(orgDirectory.unparsedUserList, (page -1) * pageSize).slice(0, pageSize)
+
+        if (orgDirectory.sortBy.hasOwnProperty('sortBy')) {
+            orgDirectory.sortingCallbacks[orgDirectory.sortBy.sortBy]()
+        }
+    }
+
+    const invertSortingDirection = () => {
+        if (orgDirectory.sortBy.sortType === 'asc') orgDirectory.sortBy.sortType = 'desc'
+        else orgDirectory.sortBy.sortType = 'asc'
+    }
+
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    const loadOrgDirectory = (organizationId) => {
+    const initDirectory = (organizationId) => {
         const _organizationId = organizationId || $stateParams.orgId || User.user.organization.id
 
         Loader.onFor(scopeName + 'userList')
@@ -28,41 +45,85 @@ angular.module('organization')
         $q.all([
             CommonAPI.getOrganizationHierarchy(_organizationId),
             UserList.getUsers({qs: [
-                ['organization.id', organizationId],
-                ['page', orgDirectory.page],
-                ['pageSize', orgDirectory.pageSize]
-            ]}),
-            UserList.getUserCount({qs: [['organization.id', _organizationId]]})
+                ['organization.id', _organizationId]
+            ]})
         ])
-        .done((orgHierarchy, users, userCount) => {
+        .then(([orgHierarchy, users]) => {
             orgDirectory.organization = orgHierarchy
+            CuiMobileNavFactory.setTitle($filter('cuiI18n')(orgHierarchy.name))
             orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(orgHierarchy)
             orgDirectory.unparsedUserList = orgDirectory.userList = users
-            orgDirectory.orgPersonCount = userCount
+
+            orgDirectory.cuiTableOptions = {
+                paginate: true,
+                recordCount: orgDirectory.userList.length,
+                pageSize: orgDirectory.pageSize,
+                initialPage: orgDirectory.page,
+                onPageChange: (page, pageSize) => {
+                    updateStateParams({ page, pageSize })
+                    populateUsers({ page, pageSize })
+                }
+            }
+
+            orgDirectory.cuiTableOptions.onPageChange(orgDirectory.page, orgDirectory.pageSize)
         })
         .catch(error => {
             APIError.onFor(scopeName + 'userList')
         })
-        .always(() => {
+        .finally(() => {
             Loader.offFor(scopeName + 'userList')
         })
     }
 
-    loadOrgDirectory()
+    initDirectory()
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
-    orgDirectory.sort = (sortType) => {
-        Sort.listSort(orgDirectory.userList, sortType, orgDirectory.sortFlag)
-        orgDirectory.sortFlag =! orgDirectory.sortFlag
+    orgDirectory.actionCallbacks = {
+        sort (sortType) {
+            if (!orgDirectory.sortBy.hasOwnProperty['sortType']) orgDirectory.sortBy['sortType'] = 'asc'
+            if (orgDirectory.sortBy.sortBy === sortType) invertSortingDirection()
+            orgDirectory.sortingCallbacks[sortType]()
+        }
     }
 
-    orgDirectory.parseUsersByStatus = (status) => {
-        if (status === 'all') orgDirectory.userList = orgDirectory.unparsedUserList
+    orgDirectory.sortingCallbacks = {
+        name () {
+            orgDirectory.sortBy.sortBy = 'name'
+            updateStateParams()
+            orgDirectory.sort(['name.given', 'name.surname'], orgDirectory.sortBy.sortType)
+        },
+        username () {
+            orgDirectory.sortBy.sortBy = 'username'
+            updateStateParams()
+            orgDirectory.sort('username', orgDirectory.sortBy.sortType)
+        },
+        status () {
+            orgDirectory.sortBy.sortBy = 'status'
+            updateStateParams()
+            orgDirectory.sort('status', orgDirectory.sortBy.sortType)
+        }
+    }
+
+    orgDirectory.sort = (sortBy, order) => {
+        orgDirectory.userList = _.orderBy(orgDirectory.userList, sortBy, order)
+    }
+
+    orgDirectory.parse = (status) => {
+        if (status === 'all') {
+            populateUsers({
+                page: orgDirectory.page, 
+                pageSize: orgDirectory.pageSize
+            })
+        }
         else {
-            orgDirectory.userList = _.filter(orgDirectory.unparsedUserList, (user) => {
+            populateUsers(populateUsers({
+                page: orgDirectory.page, 
+                pageSize: orgDirectory.pageSize
+            }))
+            orgDirectory.userList = _.filter(orgDirectory.userList, (user) => {
                 return user.status === status
             })
         }
@@ -80,56 +141,9 @@ angular.module('organization')
 
     orgDirectory.getOrgMembers = (organization) => {
         CuiMobileNavFactory.setTitle($filter('cuiI18n')(organization.name))
-        loadOrgDirectory(organization.id)
-    }
-
-    orgDirectory.pageChange = (newpage) => {
-        userDirectory.page = newPage
-        loadOrgDirectory()
+        initDirectory(organization.id)
     }
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
 })
-
-//     orgDirectory.statusList = ['active', 'locked', 'pending', 'suspended', 'rejected', 'removed']
-
-//     // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-
-//     const getUserListAppCount = (userArray) => {
-//         let userList = userArray
-
-//         userList.forEach((user) => {
-//             API.cui.getPersonGrantedCount({personId: user.id})
-//             .then((res) => {
-//                 user.appCount = res
-//             })
-//             .fail((error) => {
-//                 user.appCount = 0
-//             })
-//         })
-
-//         return userList
-//     }
-
-//     // HELPER FUNCTIONS END --------------------------------------------------------------------------
-
-//     // WATCHERS START --------------------------------------------------------------------------------
-
-//     $scope.$watch('orgDirectory.paginationPageSize', function(newValue, oldValue) {
-//         if (newValue && oldValue && newValue !== oldValue) {
-//             API.cui.getPersons({'qs': [['organization.id', String(orgDirectory.organization.id)],
-//                                 ['pageSize', String(orgDirectory.paginationPageSize)], ['page', 1]]})
-//             .then(function(res) {
-//                 orgDirectory.userList = orgDirectory.unparsedUserList = getUserListAppCount(res)
-//                 orgDirectory.paginationCurrentPage = 1
-//                 orgDirectory.statusList = getStatusList(orgDirectory.userList)
-//             })
-//             .fail(handleError)
-//         }
-//     })
-
-//     // WATCHERS END ----------------------------------------------------------------------------------
-
-// })
