@@ -12,7 +12,7 @@ angular.module('organization')
 
     Loader.onFor(scopeName + 'userInfo')
 
-    API.cui.getPerson({ personId: $stateParams.userID })
+    API.cui.getPerson({ personId: $stateParams.userId })
     .then(res => {
         userDetails.user = res
         CuiMobileNavFactory.setTitle(res.name.given + '.' + res.name.surname)

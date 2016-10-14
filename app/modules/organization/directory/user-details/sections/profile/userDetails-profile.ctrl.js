@@ -6,11 +6,11 @@ angular.module('organization')
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    UserProfileV2.injectUI(userDetailsProfile, $scope, $stateParams.userID)
+    UserProfileV2.injectUI(userDetailsProfile, $scope, $stateParams.userId)
 
     Loader.onFor(scopeName + 'initProfile')
 
-    UserProfileV2.initUserProfile($stateParams.userID, $stateParams.orgID)
+    UserProfileV2.initUserProfile($stateParams.userId, $stateParams.orgId)
     .then(res => {
         angular.merge(userDetailsProfile, res)
         Loader.offFor(scopeName + 'initProfile')

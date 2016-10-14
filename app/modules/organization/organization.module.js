@@ -34,7 +34,7 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.directory.userDetails', {
-            url: '/user-details?userID&orgID',
+            url: '/user-details?userId&orgId',
             views: {
                 '': {
                     templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',
