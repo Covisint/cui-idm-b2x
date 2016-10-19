@@ -21,7 +21,7 @@ angular.module('organization')
                 user.appCount = res
             })
             .fail(error => {
-                user.appCount('...')
+                user.appCount = '...'
             })
         })
     }
