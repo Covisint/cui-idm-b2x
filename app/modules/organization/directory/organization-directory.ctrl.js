@@ -16,7 +16,7 @@ angular.module('organization')
 
     const getUserListAppCount = (userList) => {
         userList.forEach(user => {
-            API.cui.getPersonGrantedCount({personId: user.id})
+            API.cui.getPersonGrantedAppCount({personId: user.id})
             .then(res => {
                 user.appCount = res
             })

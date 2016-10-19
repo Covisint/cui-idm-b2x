@@ -40,7 +40,8 @@ angular.module('common')
             type: 'GET'
         },
         {
-            cmd: 'getPersonGrantedCount',
+            cmd: 'getPersonGrantedAppCount',
+            cmdType: 'secured',
             accepts: 'text/plain',
             call: `/service/v3/applications/persons/${ '{personId}' }/count`,
             type: 'GET'

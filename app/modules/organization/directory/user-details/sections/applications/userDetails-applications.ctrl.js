@@ -67,7 +67,7 @@ angular.module('organization')
 
     apiPromises.push(
         // Get user's granted applications count
-        API.cui.getPersonGrantedCount({personId: userId})
+        API.cui.getPersonGrantedAppCount({personId: userId})
         .then((res) => {
             userDetailsApps.appCount = res;
         })
