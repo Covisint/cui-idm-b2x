@@ -3,8 +3,8 @@ angular.module('organization')
 	'use strict';
 
 	const userDetailsHistory = this,
-        userId = $stateParams.userID,
-        organizationId = $stateParams.orgID;
+        userId = $stateParams.userId,
+        organizationId = $stateParams.orgId;
 
     let apiPromises = [];
 

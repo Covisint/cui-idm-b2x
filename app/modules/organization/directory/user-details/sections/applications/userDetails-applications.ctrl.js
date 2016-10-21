@@ -3,8 +3,8 @@ angular.module('organization')
     'use strict';
 
 	const userDetailsApps = this,
-        userId = $stateParams.userID,
-        organizationId = $stateParams.orgID;
+        userId = $stateParams.userId,
+        organizationId = $stateParams.orgId;
 
     let apiPromises = [];
 
@@ -67,7 +67,7 @@ angular.module('organization')
 
     apiPromises.push(
         // Get user's granted applications count
-        API.cui.getPersonGrantedCount({personId: userId})
+        API.cui.getPersonGrantedAppCount({personId: userId})
         .then((res) => {
             userDetailsApps.appCount = res;
         })

@@ -74,7 +74,7 @@ angular.module('applications')
 
         const promises = [
             API.cui.getPersonGrantedApps(opts), 
-            API.cui.getPersonGrantedCount(opts)
+            API.cui.getPersonGrantedAppCount(opts)
         ]
 
         $q.all(promises)

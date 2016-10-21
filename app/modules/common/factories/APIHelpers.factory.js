@@ -1,5 +1,6 @@
 angular.module('common')
 .factory('APIHelpers', (API,$filter) => {
+    'use strict'
 
     const apiHelpers = {
 
@@ -115,6 +116,50 @@ angular.module('common')
             }
             else {
                 throw new Error ('No organization hierarchy object provided');
+            }
+        },
+
+        getCollectionValuesAndCount(collection, key, returnAsCollection) {
+            // Given a collection and a key, will return an object containing each different value found
+            // for the given key as well as the count of that key. If the optional parameter `returnAsCollection`
+            // is provided, will return data as a collection instead of an object. This was done as in some 
+            // cases (such as ng-repeat) it is easier to work with the data when its in an array.
+
+            // One area this method is handy is when you are getting all the different status values of a user list
+            // and need the count of each status.
+
+            let data = {
+                all: 0
+            }
+
+            collection.forEach(object => {
+                if (object.hasOwnProperty(key)) {
+                    let keyValue = object[key]
+                    if (data.hasOwnProperty(keyValue)) {
+                        data[keyValue] += 1
+                        data.all += 1
+                    }
+                    else {
+                        data[keyValue] = 1
+                        data.all += 1
+                    }
+                }
+            })
+
+            if (!returnAsCollection) return data
+            else {
+                let collectionData = []
+
+                Object.keys(data).forEach(dataKey => {
+                    let asObject = {
+                        value: dataKey,
+                        count: data[dataKey]
+                    }
+
+                    collectionData.push(asObject)
+                })
+
+                return collectionData
             }
         }
     };

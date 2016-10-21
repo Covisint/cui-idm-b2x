@@ -2,21 +2,15 @@ angular.module('common')
 .factory('CommonAPI', (API, APIError, $q) => {
 	'use strict'
 
-	/*
-		This service handles basic API calls that are done throughout the project.
-		API calls that are more specific are handled in their own services, which often requires the use calls found here.
-	*/
+	// This service handles basic API calls that are done throughout the project.
+	// API calls that are more specific are handled in their own services.
 
-	const commonAPIFactory = {}
 	const errorName = 'CommonAPIFactory.'
 
-	/****************************************
-				Service Functions
-	****************************************/
-
-	// Returns person data based on the userId
-	commonAPIFactory.getPerson = (userId) => {
+	const getPerson = (userId) => {
 		const defer = $q.defer()
+
+		APIError.offFor(errorName + 'getPerson')
 
 		API.cui.getPerson({ personId: userId })
 		.done(personResponse => {
@@ -31,9 +25,10 @@ angular.module('common')
 		return defer.promise
 	}
 
-	// Returns organization data based on the organizationId
-	commonAPIFactory.getOrganization = (organizationId) => {
+	const getOrganization = (organizationId) => {
 		const defer = $q.defer()
+
+		APIError.offFor(errorName + 'getOrganization')
 
 		API.cui.getOrganization({ organizationId: organizationId })
 		.done(orgResponse => {
@@ -48,6 +43,28 @@ angular.module('common')
 		return defer.promise
 	}
 
-	return commonAPIFactory
+	const getOrganizationHierarchy = (organizationId) => {
+		const defer = $q.defer()
+
+		APIError.offFor(errorName + 'getOrgHierarchy')
+
+		API.cui.getOrganizationHierarchy({ organizationId: organizationId })
+		.done(orgHierarchy => {
+			defer.resolve(orgHierarchy)
+		})
+		.fail(err => {
+			console.error('Failed getting organization hierarchy')
+			APIError.onFor(errorName + 'getOrgHierarchy')
+			defer.reject(err)
+		})
+
+		return defer.promise
+	}
+
+	return {
+		getPerson: getPerson,
+		getOrganization: getOrganization,
+		getOrganizationHierarchy: getOrganizationHierarchy
+	}
 
 })
