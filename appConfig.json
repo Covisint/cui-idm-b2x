@@ -14,7 +14,7 @@
         "de": "Deutsche (German)"
     },
     "languageResources": {
-        "url": "node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/",
+        "url": "node_modules/@covisint/cui-i18n/dist/{{version}}/cui-i18n/angular-translate/",
         "prefix": "locale-",
         "suffix": ".json"
     },

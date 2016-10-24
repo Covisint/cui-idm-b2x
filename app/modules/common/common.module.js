@@ -37,6 +37,9 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
             console.error('You need to configure languageResources in your appConfig.json.');
         }
 
+        // Set appConfing.languageResources.url to include the current cui-i18n dependency version in the url
+        appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson.dependencies['@covisint/cui-i18n'])
+
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
