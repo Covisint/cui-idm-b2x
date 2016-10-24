@@ -4,7 +4,7 @@ angular.module('common')
     let timezones = []
 
     const GetTimezones = (locale) => {
-        return $http.get(appConfig.languageResources.url + '/timezones/' + locale + '.json')
+        return $http.get(appConfig.languageResources.url + 'timezones/' + locale + '.json')
     }
 
     const setTimezones = (language) => {

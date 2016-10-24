@@ -4,7 +4,7 @@ angular.module('common')
     let countries = []
 
     const GetCountries = (locale) => {
-        return $http.get(appConfig.languageResources.url + '/countries/' + locale + '.json')
+        return $http.get(appConfig.languageResources.url + 'countries/' + locale + '.json')
     }
 
     const setCountries = (language) => {

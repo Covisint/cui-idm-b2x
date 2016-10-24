@@ -37,8 +37,21 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
             console.error('You need to configure languageResources in your appConfig.json.');
         }
 
-        // Set appConfing.languageResources.url to include the current cui-i18n dependency version in the url
-        appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson.dependencies['@covisint/cui-i18n'])
+        /*
+        *   This section (if following the cui-i18n documentation) will dynamically generate the correct
+        *   path to your translation assets based off of the current dependency version you use in this project.
+        *
+        *   If you are loading in a customized cui-i18n library, add to appConfig.languageResources:
+        *          "customDependencyName": "cui-i18n-nameOfYourProject"
+        */
+        if (appConfig.languageResources.hasOwnProperty('customDependencyName')) {
+            const customDependency = appConfig.languageResources.customDependencyName
+            const customDependencyVersion = packageJson.dependencies[customDependency].split('#v')[1]
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, customDependencyVersion)
+        }
+        else {
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson.dependencies['@covisint/cui-i18n'])
+        }
 
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
