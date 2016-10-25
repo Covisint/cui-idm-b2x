@@ -22,7 +22,7 @@
 
 .cui-applications__left,
 .cui-applications__right {
-  flex: .5;
+  flex: 0.5;
 }
 
 .cui-applications__right {
@@ -38,7 +38,6 @@
 }
 
 .cui-applications {
-
   .cui-media__image {
     position: relative;
   }
@@ -47,15 +46,15 @@
     cursor: pointer;
   }
 
-    &__center-text{
-      &::before,
-      &::after{
-        content: "\2014";
-        display: inline-block;
-        height: 100%;
-        margin: 0 5px;
-        width: 10px;
-      }
+  &__center-text {
+    &::before,
+    &::after {
+      content: "\2014";
+      display: inline-block;
+      height: 100%;
+      margin: 0 5px;
+      width: 10px;
+    }
   }
 }
 
@@ -71,9 +70,9 @@
 .cui-loading--circle {
   animation: spin 1s infinite linear;
   background-color: #fff;
-  border: 0.625em solid #85A6AD;
+  border: 0.625em solid #85a6ad;
   border-radius: 2.5em;
-  border-top-color: #CDE6F0;
-  height: 0em;
-  width: 0em;
+  border-top-color: #cde6f0;
+  height: 0;
+  width: 0;
 }

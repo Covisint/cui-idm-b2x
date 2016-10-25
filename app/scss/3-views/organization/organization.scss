@@ -1,0 +1,33 @@
+.cui-organization {
+  position: relative;
+}
+
+.cui-organization__main-container {
+  min-height: 400px;
+  padding: em(15) em(13);
+  position: relative;
+
+  @media screen and (min-width: 701px) {
+    padding: em(15) em(55) 0 em(65);
+  }
+}
+
+.cui-organization__info-block {
+  margin-bottom: em(21);
+
+  .cui-organization__admin-block-wrapper {
+    display: flex;
+    flex-flow: column wrap;
+
+    .cui-organization__admin-block {
+      margin-bottom: em(21);
+      margin-right: em(51);
+    }
+  }
+}
+
+.cui-organization__page-title {
+  @extend %h5;
+  @extend %h5--bold;
+  margin-bottom: em(21);
+}

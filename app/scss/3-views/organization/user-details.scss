@@ -1,3 +1,24 @@
+// Org User Details
+
+.cui-loading__container--user-details {
+  background: none;
+
+  .cui-loader--content {
+    @extend %cui-no-padding;
+  }
+
+  .cui-loading--center {
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+}
+
+.cui-organization__profile--left {
+  width: 50%;
+  margin-right: 5%;
+}
+
 .cui-organization__user-details {
   padding: 0 3.983739837398% 0 4.308943089431%;
 
@@ -6,7 +27,7 @@
       display: none;
     }
   }
- 
+
   .cui-action {
     margin-bottom: em(20);
     padding-left: 0;
@@ -35,7 +56,7 @@
 
   .cui-media__image-container {
     @media screen and (max-width: 700px) {
-      flex: .25 auto;
+      flex: 0.25 auto;
       justify-content: flex-start;
       margin-right: 37px;
       min-width: auto;
@@ -94,7 +115,7 @@
     margin-bottom: em(12);
 
     @media screen and (min-width: 700px) {
-      border-bottom: 1px solid #ECEAEA;
+      border-bottom: 1px solid #eceaea;
     }
   }
 
@@ -132,9 +153,9 @@
     .cui-action__icon {
       height: em(25);
       stroke-width: 2px;
-      
+
       & use {
-        color: #9B9B9B;
+        color: #9b9b9b;
       }
     }
 
@@ -143,34 +164,31 @@
     }
 
     .cui-action__action-label {
-      color: #9B9B9B;
+      color: #9b9b9b;
       letter-spacing: 1px;
     }
 
     .cui-action__icon--active + .cui-action__action-label {
       color: #6a98a0;
     }
-
   }
 
   .cui-action__icon--history {
     fill: transparent;
   }
 
-  .cui-status--active, 
-  .cui-status--pending, 
-  .cui-status--suspended, 
-  .cui-status--locked, 
-  .cui-status--inactive, 
+  .cui-status--active,
+  .cui-status--pending,
+  .cui-status--suspended,
+  .cui-status--locked,
+  .cui-status--inactive,
   .cui-status--unactivated {
-
     @media screen and (max-width: 700px) {
       font-size: 1em;
     }
   }
 
   .cui-flex-table__tr--b {
-
     @media screen and (max-width: 700px) {
       &:first-of-type {
         border-top: 0;
