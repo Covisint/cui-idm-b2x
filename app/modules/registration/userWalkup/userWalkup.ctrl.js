@@ -106,7 +106,7 @@ angular.module('registration')
 
     Registration.initWalkupRegistration()
     .then(res => {
-        const questions = res.questions
+        const questions = res.securityQuestions
 
         // Split questions to use between 2 dropdowns
         questions.splice(0, 1)
@@ -124,7 +124,6 @@ angular.module('registration')
         userWalkup.organizationCount = res.organizations.length
 
         userWalkup.initializing = false
-        $scope.$digest()
     })
     .catch(error => {
         $state.go('misc.loadError')
