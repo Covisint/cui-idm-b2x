@@ -15,9 +15,9 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 -->
 
 <div class="cui-action">
-  <nav class="cui-breadcrumb">
+  <nav class="cui-breadcrumb" ng-if="false">
     <ul class="cui-breadcrumb__links">
-      <li class="cui-breadcrumb__link" ng-if="false">
+      <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications">{{'organization-applications' | translate}}</a>
       </li>
       <li class="cui-breadcrumb__link">
@@ -25,6 +25,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </li>
     </ul>
   </nav>
+  <h3 class="cui-action__title">{{'my-applications' | translate}}</h3>
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
