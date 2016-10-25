@@ -5,7 +5,7 @@
 ### Changed
 * cui-ng 1.10.1
 * cui-styleguide v2.7.0
-* cui-i18n v1.0.14
+* cui-i18n v1.0.16
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
@@ -41,6 +41,10 @@
   during walkup registration.
 * Adds updating loading spinner partial in `app/common-templates/partials/`
 * Added further initial documentation of B2X features in `docs/features/`.
+* The languageResources.url in the appConfig now allows you to put in a dynamic mustache variable for versioned i18n libraries (to be used with cui-i18n version 1.0.16 or above). Referencing the versioned i18n directory will act as a cache-busting mechanism.
+	* `"url": "node_modules/@covisint/cui-i18n/dist/{{version}}/cui-i18n/angular-translate/"`
+	* If you are loading in a customized cui-i18n library, you will need to add `"customDependencyName": "cui-i18n-nameOfYourProject"` to `appConfig.languageResources`.
+	* With this appConfig setup B2X will always reference the current version of your cui-i18n dependency as per the package.json.
 
 
 ## [v0.2.3] - 2016-09-13
