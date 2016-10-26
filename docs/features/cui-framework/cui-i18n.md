@@ -18,6 +18,8 @@ Cui-I18n currently comes with a versioned and non-versioned directory inside of 
 
 B2X has been built to easily allow you to integrate the regular or customized cui-i18n library via the `appConfig.json` file. B2X can also always dynamically reference your most up to date i18n assets to prevent any caching issues when configured to work with the versioned assets.
 
+NOTE: Whether you use versioned or non-versioned i18n assets, you will have to update the `grunt copy task` to properly work based on what assets you will be using. This is done in the `./tasks/copy.js` file. The copy task carries over all relevant files into the `./build` directory that ends up running on the server. To test if this works properly for you run `grunt build` and then `grunt demo`. This will run the application fron the build folder.
+
 #### Basic i18n App Config
 
 This is the simplest configuration that will target the unversioned assets of cui-i18n. 
