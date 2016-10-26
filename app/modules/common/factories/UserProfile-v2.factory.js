@@ -257,35 +257,25 @@ angular.module('common')
             }
 
             profile.updatePassword = function(section, toggleOff) {
-                if (section) {
-                    profile[section] = { submitting: true }
-                }
+                if (section) profile[section] = { submitting: true }
 
                 API.cui.updatePersonPassword({ 
                     personId: userId, 
                     data: UserProfile.buildPersonPasswordAccount(profile.user, profile.userPasswordAccount, profile.organization) 
                 })
                 .always(() => {
-                    if (section) {
-                        profile[section].submitting = false
-                    }
+                    if (section) profile[section].submitting = false
                 })
                 .done(() => {
-                    if (toggleOff) {
-                        toggleOff()
-                    }
+                    if (toggleOff) toggleOff()
                     profile.passwordUpdateSuccess = true
-                    $timeout(() => {
-                        profile.passwordUpdateSuccess = false
-                    }, 5000)
+                    $timeout(() => profile.passwordUpdateSuccess = false, 5000)
                     profile.resetPasswordFields()
                     $scope.$digest()
                 })
-                .fail((err) => {
+                .fail(err => {
                     console.error('Error updating password', err)
-                    if (section) {
-                        profile[section].error = true
-                    }
+                    if (section) profile[section].error = true
                     $scope.$digest()
                 })
             }
@@ -322,6 +312,48 @@ angular.module('common')
                         profile[section].error = true;
                     }
                     $scope.$digest()
+                })
+            }
+
+            profile.validatePassword = (password, formObject, input) => {
+                
+                const validSwitch = (input, isValidBoolean) => {
+                    switch (input) {
+                        case 'newPassword':
+                            profile.validNewPassword = isValidBoolean
+                        case 'newPasswordRe':
+                            profile.validNewPasswordRe = isValidBoolean
+                    }
+                }
+
+                const validateData = {
+                    userId: userId,
+                    organizationId: profile.user.organization.id,
+                    password: password,
+                    operations: ['PASSWORD_SPECIFY']
+                }
+
+                API.cui.validatePassword({data: validateData})
+                .then(res => {
+                    let validPasswordHistory = false
+
+                    res.forEach(rule => {
+                        if (rule.type === 'HISTORY' && rule.isPassed) {
+                            validPasswordHistory = true
+                            return
+                        }
+
+                        if (validPasswordHistory) {
+                            validSwitch(input, true)
+                            formObject[input].$setValidity(input, true)
+                            $scope.$digest()
+                        }
+                        else {
+                            validSwitch(input, false)
+                            formObject[input].$setValidity(input, false)
+                            $scope.$digest()
+                        }
+                    })
                 })
             }
         }
