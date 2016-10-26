@@ -17,6 +17,9 @@
 * Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 * Change "open" to "edit" for the various sections on the user details page in admin view.
 * Walkup registration inputs now show errors if they are dirty instead of touched (when the inputs have been used).
+* Changed files to be bootstrapped (in the `jsWrapper`) asynchronously as the previous method was throwing deprecation warnings.
+* Changed `grunt copy` tasks to work with versioned cui-i18n assets.
+* Changed the `Timezones` and `Countries` factories to now work based off the `languageResources.url` path in the `appConfig.json` to work with regular/versioned/and custom cui-i18n integrations.
 
 ### Fixes
 * Fixes popover styling.
@@ -30,6 +33,7 @@
 * DataStorage.replaceDataThatMatches() now properly replaces matching data.
 * DataStorage.setType() not correctly assigns data under the provided type.
 * Fixes issue where opening up the mobile menu and then expanding into desktop screen size would leave all content pushed to the right.
+* Fixed issue in walkup registration where we were splicing the wrong object after some changes.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
