@@ -96,6 +96,7 @@ angular.module('common')
         },
         {
             cmd: 'getPersonStatusHistory',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.person.status.history.v1+json',
             call: '/person/v3/persons/statusHistory',
             type: 'GET'

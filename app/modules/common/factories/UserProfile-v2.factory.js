@@ -113,10 +113,37 @@ angular.module('common')
             return defer.promise
         },
 
+        initRegisteredDate: function(userId) {
+            const defer = $q.defer()
+
+            API.cui.getPersonStatusHistory({qs : [
+                ['userId', userId], 
+                ['sortBy', '+creation']
+            ]})
+            .then(res => {
+                res.forEach(status => {
+                    if (status.status === 'ACTIVE') {
+                        defer.resolve(status.creation)             
+                    }
+                })
+            })
+            .fail(error => {
+                console.error('initRegisteredDate: There was an issue retrieving the registered date.')
+                APIError.onFor(errorName + 'initRegisteredDate')
+                $timeout(() => {
+                    APIError.offFor(errorName + 'initRegisteredDate')
+                }, 5000)
+                defer.reject(error)
+            })
+
+            return defer.promise
+        },
+
         initUserProfile: function(userId, organizationId) {
             let defer = $q.defer()
             let profile = {}
             let callsCompleted = 0
+            const callsToComplete = 4
 
             UserProfile.initUser(userId)
             .then(res => {
@@ -124,9 +151,7 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
 
             UserProfile.initSecurityQuestions(userId)
@@ -135,9 +160,7 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
 
             UserProfile.initPasswordPolicy(organizationId)
@@ -146,10 +169,18 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
+
+            UserProfile.initRegisteredDate(userId)
+            .then(res => {
+                profile['registeredDate'] = res
+            })
+            .finally(() => {
+                callsCompleted += 1
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
+            })
+
             return defer.promise
         },
 
@@ -321,7 +352,7 @@ angular.module('common')
             }
 
             profile.validatePassword = (password, formObject, input) => {
-                
+
                 const validSwitch = (input, isValidBoolean) => {
                     switch (input) {
                         case 'newPassword':
