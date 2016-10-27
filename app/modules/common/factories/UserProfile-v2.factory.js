@@ -95,6 +95,11 @@ angular.module('common')
             })
             .then(res => {
                 passwordPolicy.passwordRules = res.rules
+                res.rules.forEach(rule => {
+                    if (rule.type === 'history') {
+                        passwordPolicy.numberOfPasswords = rule.numberOfPasswords
+                    }
+                })
                 defer.resolve(passwordPolicy)
             })
             .fail(err => {
@@ -342,18 +347,18 @@ angular.module('common')
                             validPasswordHistory = true
                             return
                         }
-
-                        if (validPasswordHistory) {
-                            validSwitch(input, true)
-                            formObject[input].$setValidity(input, true)
-                            $scope.$digest()
-                        }
-                        else {
-                            validSwitch(input, false)
-                            formObject[input].$setValidity(input, false)
-                            $scope.$digest()
-                        }
                     })
+
+                    if (validPasswordHistory) {
+                        validSwitch(input, true)
+                        formObject[input].$setValidity(input, true)
+                        $scope.$digest()
+                    }
+                    else {
+                        validSwitch(input, false)
+                        formObject[input].$setValidity(input, false)
+                        $scope.$digest()
+                    }
                 })
             }
         }

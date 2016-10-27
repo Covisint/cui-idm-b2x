@@ -49,6 +49,7 @@
 	* `"url": "node_modules/@covisint/cui-i18n/dist/{{version}}/cui-i18n/angular-translate/"`
 	* If you are loading in a customized cui-i18n library, you will need to add `"customDependencyName": "cui-i18n-nameOfYourProject"` to `appConfig.languageResources`.
 	* With this appConfig setup B2X will always reference the current version of your cui-i18n dependency as per the package.json.
+* Added password history validation via the API in the my profile password reset flow.
 
 
 ## [v0.2.3] - 2016-09-13
