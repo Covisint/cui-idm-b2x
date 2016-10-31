@@ -95,6 +95,11 @@ angular.module('common')
             })
             .then(res => {
                 passwordPolicy.passwordRules = res.rules
+                res.rules.forEach(rule => {
+                    if (rule.type === 'history') {
+                        passwordPolicy.numberOfPasswords = rule.numberOfPasswords
+                    }
+                })
                 defer.resolve(passwordPolicy)
             })
             .fail(err => {
@@ -108,10 +113,37 @@ angular.module('common')
             return defer.promise
         },
 
+        initRegisteredDate: function(userId) {
+            const defer = $q.defer()
+
+            API.cui.getPersonStatusHistory({qs : [
+                ['userId', userId], 
+                ['sortBy', '+creation']
+            ]})
+            .then(res => {
+                res.forEach(status => {
+                    if (status.status === 'ACTIVE') {
+                        defer.resolve(status.creation)             
+                    }
+                })
+            })
+            .fail(error => {
+                console.error('initRegisteredDate: There was an issue retrieving the registered date.')
+                APIError.onFor(errorName + 'initRegisteredDate')
+                $timeout(() => {
+                    APIError.offFor(errorName + 'initRegisteredDate')
+                }, 5000)
+                defer.reject(error)
+            })
+
+            return defer.promise
+        },
+
         initUserProfile: function(userId, organizationId) {
             let defer = $q.defer()
             let profile = {}
             let callsCompleted = 0
+            const callsToComplete = 4
 
             UserProfile.initUser(userId)
             .then(res => {
@@ -119,9 +151,7 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
 
             UserProfile.initSecurityQuestions(userId)
@@ -130,9 +160,7 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
 
             UserProfile.initPasswordPolicy(organizationId)
@@ -141,10 +169,18 @@ angular.module('common')
             })
             .finally(() => {
                 callsCompleted += 1
-                if (callsCompleted === 3) {
-                    defer.resolve(profile);
-                }
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
             })
+
+            UserProfile.initRegisteredDate(userId)
+            .then(res => {
+                profile['registeredDate'] = res
+            })
+            .finally(() => {
+                callsCompleted += 1
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
+            })
+
             return defer.promise
         },
 
@@ -257,35 +293,25 @@ angular.module('common')
             }
 
             profile.updatePassword = function(section, toggleOff) {
-                if (section) {
-                    profile[section] = { submitting: true }
-                }
+                if (section) profile[section] = { submitting: true }
 
                 API.cui.updatePersonPassword({ 
                     personId: userId, 
                     data: UserProfile.buildPersonPasswordAccount(profile.user, profile.userPasswordAccount, profile.organization) 
                 })
                 .always(() => {
-                    if (section) {
-                        profile[section].submitting = false
-                    }
+                    if (section) profile[section].submitting = false
                 })
                 .done(() => {
-                    if (toggleOff) {
-                        toggleOff()
-                    }
+                    if (toggleOff) toggleOff()
                     profile.passwordUpdateSuccess = true
-                    $timeout(() => {
-                        profile.passwordUpdateSuccess = false
-                    }, 5000)
+                    $timeout(() => profile.passwordUpdateSuccess = false, 5000)
                     profile.resetPasswordFields()
                     $scope.$digest()
                 })
-                .fail((err) => {
+                .fail(err => {
                     console.error('Error updating password', err)
-                    if (section) {
-                        profile[section].error = true
-                    }
+                    if (section) profile[section].error = true
                     $scope.$digest()
                 })
             }
@@ -322,6 +348,48 @@ angular.module('common')
                         profile[section].error = true;
                     }
                     $scope.$digest()
+                })
+            }
+
+            profile.validatePassword = (password, formObject, input) => {
+
+                const validSwitch = (input, isValidBoolean) => {
+                    switch (input) {
+                        case 'newPassword':
+                            profile.validNewPassword = isValidBoolean
+                        case 'newPasswordRe':
+                            profile.validNewPasswordRe = isValidBoolean
+                    }
+                }
+
+                const validateData = {
+                    userId: userId,
+                    organizationId: profile.user.organization.id,
+                    password: password,
+                    operations: ['PASSWORD_SPECIFY']
+                }
+
+                API.cui.validatePassword({data: validateData})
+                .then(res => {
+                    let validPasswordHistory = false
+
+                    res.forEach(rule => {
+                        if (rule.type === 'HISTORY' && rule.isPassed) {
+                            validPasswordHistory = true
+                            return
+                        }
+                    })
+
+                    if (validPasswordHistory) {
+                        validSwitch(input, true)
+                        formObject[input].$setValidity(input, true)
+                        $scope.$digest()
+                    }
+                    else {
+                        validSwitch(input, false)
+                        formObject[input].$setValidity(input, false)
+                        $scope.$digest()
+                    }
                 })
             }
         }
