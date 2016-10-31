@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Changed
-* cui-ng 1.10.1
+* cui-ng v1.10.4
 * cui-styleguide v2.7.0
 * cui-i18n v1.0.16
 * Switch to using cui-popover in visible popovers.
