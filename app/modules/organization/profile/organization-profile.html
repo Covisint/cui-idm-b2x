@@ -70,10 +70,14 @@
 
             <!-- Info -->
             <div class="cui-organization__info-block">
-              <h4 class="cui-field-val__field" ng-if="false">{{'cui-info' | translate}}: </h4>
+              <h4 class="cui-field-val__field">{{'cui-info' | translate}}:</h4>
               <div>
                 <span class="cui-field-val__field">{{'url' | translate}}: </span>
                 <span class="cui-field-val__val"><a class="cui-link" ng-href="{{orgProfile.organization.url}}">{{orgProfile.organization.url}}</a></span>
+              </div>
+              <div ng-if="orgProfile.passwordPolicy">
+                <span class="cui-field-val__val">{{'cui-password-policy' | translate}}: </span>
+                <span class="cui-field-val__val">{{orgProfile.passwordPolicy.name}}</span>
               </div>
             </div>
           </div>
