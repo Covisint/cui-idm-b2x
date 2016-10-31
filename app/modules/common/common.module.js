@@ -38,19 +38,30 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
         }
 
         /*
-        *   This section (if following the cui-i18n documentation) will dynamically generate the correct
-        *   path to your translation assets based off of the current dependency version you use in this project.
+        *   This section will dynamically generate the correct path to versioned i18n assets 
+        *   based off of current i18n version in use in the project.
         *
-        *   If you are loading in a customized cui-i18n library, add to appConfig.languageResources:
-        *          "customDependencyName": "cui-i18n-nameOfYourProject"
+        *   This requires a proper appConfig.json setup. Please refer to the documentation in
+        *   ./docs/features/cui-framework/cui-i18n.md for information on how to setup the appConfig.
+        *
+        *   Note: Grunt tasks will not automatically work with all of the possible setups of i18n assets.
         */
+
         if (appConfig.languageResources.hasOwnProperty('customDependencyName')) {
+            // Loading in custom i18n project
             const customDependency = appConfig.languageResources.customDependencyName
-            const customDependencyVersion = packageJson.dependencies[customDependency].split('#v')[1]
+            const dependencyType = appConfig.languageResources.dependencyType || 'dependencies'
+            const customDependencyVersion = packageJson[dependencyType][customDependency].split('#v')[1]
             appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, customDependencyVersion)
         }
+        else if (appConfig.languageResources.hasOwnProperty('dependencyOrigin') && appConfig.languageResources.dependencyOrigin === 'cui-idm-b2x') {
+            // Loading in i18n dependency through B2X (generator projects)
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, i18nPackageJson.version)
+        }
         else {
-            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson.dependencies['@covisint/cui-i18n'])
+            // Loading in standalone cui-i18n dependency
+            const dependencyType = appConfig.languageResources.dependencyType || 'dependencies'
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson[dependencyType]['@covisint/cui-i18n'])
         }
 
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
