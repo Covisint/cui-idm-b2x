@@ -80,3 +80,9 @@ Call with query string parameters:
 		scope.adminArray = response
 	})
 ```
+
+### Customization
+
+Call definitions can be manually appended in the `dataCallDefs` array in the API factory. Call definitions can be a `json` file or even a custom factory.
+
+B2X comes with the `CustomAPI.js` factory which loads in our own custom calls.
