@@ -1,6 +1,7 @@
 angular.module('common')
-.controller('baseCtrl', ['Base','$scope', function(Base,$scope) {
+.controller('baseCtrl', ['Base','Theme','$scope', function(Base,Theme,$scope) {
 
 	$scope.base = Base;
+  $scope.base.theme = Theme;
 
 }]);
