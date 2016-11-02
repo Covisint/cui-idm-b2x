@@ -3,12 +3,16 @@
   <div ng-include="'app/common-templates/index/snap-menu-mobile.html'"></div>
 </snap-drawer>
 
-<snap-content snap-opt-disable="'right'">
+<snap-content snap-opt-disable="'right'" ng-class="base.theme.get()">
   <!-- Snap Menu -->
   <div disable-animate class="cui-desktop-menu" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed'}" ng-if="base.menu.desktop.enabled" ng-include="'app/common-templates/index/snap-menu.html'"></div>
 
   <!-- Desktop Menu Toggle Icon -->
-  <div class="cui-nav__content-wrapper" ng-class="{'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed', 'cui-nav__content-wrapper--full-width': !base.menu.desktop.enabled, 'cui-custom-page-background' : base.theme.props.customBackground===true}">
+  <div class="cui-nav__content-wrapper" 
+    ng-class="{
+      'cui-desktop-menu--collapse' : base.menu.desktop.state==='closed', 
+      'cui-nav__content-wrapper--full-width': !base.menu.desktop.enabled
+    }">
     <div class="cui-menu__toggle-button--desktop cui-menu__toggle-button-container active" ng-click="base.menu.desktop.toggle()" ng-class="{'active' : base.menu.desktop.state==='open'}" ng-if="base.menu.desktop.enabled" style="margin-right:20px">
       <div class="cui-menu__toggle-button"></div>
     </div>
