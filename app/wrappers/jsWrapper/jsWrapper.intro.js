@@ -1,10 +1,28 @@
 (function(angular, $) {
 
-	$.get('./appConfig.json', function(configData) {
-		let appConfig = Object.assign({}, appConfig, configData)
+	let appConfig
+	let packageJson
+	let i18nPackageJson
 
-		$.get('./appConfig-env.json', function(envConfigData) {
-			appConfig = Object.assign({}, appConfig, envConfigData)
-
-			$.get('./package.json', function(packageJsonData) {
-				const packageJson = Object.assign({}, packageJson, packageJsonData)
+	$.get('./appConfig.json')
+	.then(function(configData) {
+		appConfig = Object.assign({}, appConfig, configData)
+		return $.get('./appConfig-env.json')
+	})
+	.then(function(envConfigData) {
+		appConfig = Object.assign({}, appConfig, envConfigData)
+		return $.get('./package.json')
+	})
+	.then(function(packageJsonData) {
+		packageJson = Object.assign({}, packageJson, packageJsonData)
+		if (appConfig.languageResources.dependencyOrigin === 'cui-idm-b2x') {
+			return $.get('./node_modules/@covisint/cui-i18n/package.json')
+		}
+		else return undefined
+	})
+	.then(function(i18nPackageJsonData) {
+		if (i18nPackageJsonData !== undefined) {
+			i18nPackageJson = Object.assign({}, i18nPackageJson, i18nPackageJsonData)	
+		}
+	})
+	.always(function() {

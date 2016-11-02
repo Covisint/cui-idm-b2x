@@ -64,7 +64,8 @@ module.exports = function(grunt) {
       serviceUrl: serviceUrl,
       solutionInstancesUrl: solutionInstancesUrl,
       jsonSchema: './jsonSchema.json',
-      appConfig: './appConfig.json'
+      appConfig: './appConfig.json',
+      i18nVersion: pkgJson.dependencies['@covisint/cui-i18n']
     }
 
     // now build the appConfig-env.json

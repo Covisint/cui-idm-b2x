@@ -144,7 +144,7 @@
   },
   {
     "cmd": "validatePassword",
-    "cmdType": "unsecured",
+    "cmdType": "secured",
     "call": "/person/v3/persons/password/validate",
     "type": "POST",
     "accepts": "application/vnd.com.covisint.platform.password.validation.response.v1+json",
