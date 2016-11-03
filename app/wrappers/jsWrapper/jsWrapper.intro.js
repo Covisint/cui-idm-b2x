@@ -4,19 +4,19 @@
 	let packageJson
 	let i18nPackageJson
 
-	$.get('./appConfig.json')
+	$.ajax({ url: './appConfig.json', cache: false })
 	.then(function(configData) {
 		appConfig = Object.assign({}, appConfig, configData)
-		return $.get('./appConfig-env.json')
+		return $.ajax({ url: './appConfig-env.json', cache: false })
 	})
 	.then(function(envConfigData) {
 		appConfig = Object.assign({}, appConfig, envConfigData)
-		return $.get('./package.json')
+		return $.ajax({ url: './package.json', cache: false })
 	})
 	.then(function(packageJsonData) {
 		packageJson = Object.assign({}, packageJson, packageJsonData)
 		if (appConfig.languageResources.dependencyOrigin === 'cui-idm-b2x') {
-			return $.get('./node_modules/@covisint/cui-i18n/package.json')
+			return $.ajax({ url: './node_modules/@covisint/cui-i18n/package.json', cache: false })
 		}
 		else return undefined
 	})
@@ -24,5 +24,3 @@
 		if (i18nPackageJsonData !== undefined) {
 			i18nPackageJson = Object.assign({}, i18nPackageJson, i18nPackageJsonData)	
 		}
-	})
-	.always(function() {
