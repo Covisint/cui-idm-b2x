@@ -113,8 +113,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader) => {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -145,6 +145,7 @@ angular.module('common')
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        Theme.clear() // Clear any active Theme. Change to `Theme.useDefault` if you have a default theme set.
         APIError.clearAll()
         Loader.clearAll()
         event.preventDefault();

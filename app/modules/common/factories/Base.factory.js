@@ -1,16 +1,17 @@
 angular.module('common')
-.factory('Base', (APIError, BaseExtensions, Countries, Languages, LocaleService, Loader, Menu, Timezones, User, $state, $translate) => {
+.factory('Base', (APIError, BaseExtensions, Countries, Languages, LocaleService, Loader, Menu, Theme, Timezones, User, $state, $translate) => {
 
     const baseFactory = {
+        apiError: APIError,
         appConfig: appConfig,
         countries: Countries,
         getLanguageCode: Languages.getCurrentLanguageCode,
         languages: Languages.all,
+        loader: Loader,
         menu: Menu,
+        theme: Theme,
         timezones: Timezones.all,
         user: User.user,
-        loader: Loader,
-        apiError: APIError,
 
         goBack: (stateName) => {
             const numberOfStates = $state.stateStack.length
