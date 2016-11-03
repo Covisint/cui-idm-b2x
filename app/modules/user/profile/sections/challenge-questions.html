@@ -9,6 +9,8 @@
           <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
         </div>
       </div>
+
+      <!-- Challenge Questions -->
       <div ng-if="!toggled">
         <div ng-repeat="question in userProfile.challengeQuestionsTexts">
           <span class="cui-field-val__field">{{$index+1}}:</span>
@@ -17,7 +19,7 @@
         </div>
       </div>
 
-      <!-- Challenge question edit -->
+      <!-- Challenge Questions Edit -->
       <div ng-if="toggled" ng-init="userProfile.pushToggleOff({'name':'challengeQuestions','function':toggleOff})">
         <div ng-repeat="question in userProfile.tempUserSecurityQuestions.questions">
           <b>{{'cui-challenge-question' | translate}} {{$index+1}}</b>
@@ -33,12 +35,17 @@
         <!-- Edit Controls -->
         <div class="cui-users__address-submit">
           <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
-          <button class="cui-button" ng-click="userProfile.saveChallengeQuestions('challengeQuestions',toggleOff);" ng-class="{'cui-button--error':!challengeQuestions.$valid}">
-            <span ng-if="( !userProfile.challengeQuestions || !userProfile.challengeQuestions.submitting ) && !userProfile.challengeQuestions.error">{{'cui-update' | translate}}</span>
-            <div class="cui-loading--medium-ctr" ng-if="userProfile.challengeQuestions.submitting"></div>
-            <span ng-if="userProfile.challengeQuestions.error">{{'cui-error-try-again'| translate}}</span>
-          </button>
+          <cui-button
+            loading-if="userProfile.challengeQuestions.submitting"
+            loading-message="{{'cui-button-loading-text' | translate}}"
+            button-click="userProfile.saveChallengeQuestions('challengeQuestions', toggleOff)"
+          >
+            <button class="cui-button" ng-class="{'cui-button--error':!challengeQuestions.$valid}">
+              <span ng-if="( !userProfile.challengeQuestions || !userProfile.challengeQuestions.submitting ) && !userProfile.challengeQuestions.error">{{'cui-update' | translate}}</span>
+            </button>
+          </cui-button>
         </div>
+
       </div>
     </div>
   </div>

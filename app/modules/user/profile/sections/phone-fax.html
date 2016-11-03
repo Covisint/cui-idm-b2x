@@ -10,6 +10,7 @@
         </div>
       </div>
 
+      <!-- Phone/Fax -->
       <div ng-if="!toggled" ng-repeat="phone in userProfile.user.phones">
         <span class="cui-field-val__field">{{phone.type}}:</span>
         <span class="cui-field-val__val">{{phone.number}}</span>
@@ -25,16 +26,21 @@
           </div>
           <input class="cui-input" type="text" ng-model="phone.number" name="phone{{$index}}" ng-required="true" />
         </div>
-        <!-- Address Edit Controls -->
+
+        <!-- Phone Edit Controls -->
         <div class="cui-users__address-submit">
           <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
-          <button class="cui-button" ng-click="phoneFax.$valid && userProfile.updatePerson('phoneFax',toggleOff);"
-            ng-class="{'cui-button--error':!phoneFax.$valid}">
-            <span ng-if="!userProfile.phoneFax || !userProfile.phoneFax.submitting">{{'cui-update' | translate}}</span>
-            <div class="cui-loading--medium-ctr" ng-if="userProfile.phoneFax.submitting"></div>
-            <span ng-if="userProfile.phoneFax.error">{{'cui-error-try-again'| translate}}</span>
-          </button>
+          <cui-button
+            loading-if="userProfile.phoneFax.submitting"
+            loading-message="{{'cui-button-loading-text' | translate}}"
+            button-click="phoneFax.$valid && userProfile.updatePerson('phoneFax', toggleOff)"
+          >
+            <button class="cui-button" ng-class="{ 'cui-button--error': !phoneFax.$valid }">
+              <span ng-if="!userProfile.phoneFax || !userProfile.phoneFax.submitting">{{'cui-update' | translate}}</span>
+            </button>
+          </cui-button>
         </div>
+
       </div>
     </div>
   </div>
