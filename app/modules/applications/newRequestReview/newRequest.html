@@ -2,6 +2,15 @@
 <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/new-request%26review" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss" class="cui-link" target="blank">here</a></div>
 <!-- /processHTML -->
 
+<!--
+info scope vars
+
+base.loader.for['newAppRequest.categories'] true while categories are loading, undefined otherwise
+
+base.apiError.for['newAppRequest.categories'] true only if there was an error getting apps
+-->
+
+
 <div class="cui-applications__new-request">
     <div class="cui-action">
         <div class="cui-action__title">{{'new-request'| translate}}</div>
@@ -63,12 +72,12 @@
                 <a class="cui-link" ui-sref="applications.search">{{'browse-applications'| translate}}</a>
             </div>
             <div  style="position:relative">
-                <div ng-if="!newAppRequest.loadingDone"> <!-- TODO @SHANE this loading block is overlapping the search options for a split second when I first load -->
+                <div ng-if="base.loader.for['newAppRequest.categories']"> <!-- TODO @SHANE this loading block is overlapping the search options for a split second when I first load -->
                     <div class="cui-loading__container">
                         <div class="cui-loading--center"><div class="cui-loading"></div></div>
                     </div>
                 </div>
-                <div ng-repeat="category in newAppRequest.categories" ng-if="newAppRequest.loadingDone">
+                <div ng-repeat="category in newAppRequest.categories" ng-if="!base.loader.for['newAppRequest.categories']">
                     <div class="cui-applications__categories" ui-sref="applications.search({category:'{{ category.name | cuiI18n }}' })">
                         <h4 class="cui-applications__category" >{{ category.name | cuiI18n }}</h4>
                         <div>
