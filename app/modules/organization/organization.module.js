@@ -98,13 +98,13 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.pendingRequests', {
-            url: '/pending-requests?userID&orgID',
+            url: '/pending-requests?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests'),
             access: loginRequired
         })
         .state('organization.requests.pendingRequestsReview', {
-            url: '/pending-requests/review?userID&orgID',
+            url: '/pending-requests/review?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired

@@ -2,7 +2,7 @@
 <div class="cui-organization__request-review-header">
   <!-- User Name and Back Arrow -->
   <div class="cui-action">
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList">&#60; {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userDetails({userId:pendingRequests.user.id, orgId:pendingRequests.user.organization.id})">&#60; {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
   </div>
 
   <!-- Navigation Breadcrumb -->

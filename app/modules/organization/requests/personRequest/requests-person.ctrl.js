@@ -32,7 +32,7 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        DataStorage.setType('userPersonRequest', { requestData: personRequest })
+        DataStorage.setType('userPersonRequest', { personRequest })
         $state.go('organization.requests.personRequestReview', { userId: userId, orgId: organizationId })
     }
 
