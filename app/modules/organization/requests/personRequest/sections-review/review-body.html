@@ -13,7 +13,7 @@
 				<ul>
 					<li><span>{{'registration-request' | translate}} ({{personRequestReview.request.id}})</span><br/></li>
 					<li ng-if="personRequestReview.approvedCount" ng-repeat="package in personRequestReview.packages track by package.id">
-						<span ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name[0].text}}</span>
+						<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span>
 					</li>
 				</ul>
 			</div>
@@ -22,8 +22,8 @@
 		<div>
 			<h4 class="cui-organization__denied">{{'rejected-items' | translate}}</h4>
 			<p ng-if="personRequestReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
-			<div class="cui-organization__rejected-row" ng-if="personRequestReview.deniedCount>0" ng-repeat="package in personRequestReview.packages track by package.id">
-				<span ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span>
+			<div class="cui-organization__rejected-row" ng-if="personRequestReview.deniedCount" ng-repeat="package in personRequestReview.packages track by package.id">
+				<span ng-if="package.approval==='denied'">{{package.details.name | cuiI18n}}</span>
 				<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 				<textarea class="cui-text-area" ng-model="personRequestReview.request.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
 			<div class="cui-organization__rejected-row" ng-if="personRequestReview.packages.length>0" ng-repeat="package in personRequestReview.packages track by package.id">
-				<span>{{package.servicePackage.packageDetails.name | cuiI18n}}</span>
+				<span>{{package.details.name | cuiI18n}}</span>
 				<textarea class="cui-text-area" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
 		</div>

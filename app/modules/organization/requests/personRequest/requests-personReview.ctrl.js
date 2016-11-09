@@ -3,8 +3,8 @@ angular.module('organization')
     'use strict'
 
     const personRequestReview = this
-    const userId = $stateParams.userID
-    const orgId = $stateParams.orgID
+    const userId = $stateParams.userId
+    const orgId = $stateParams.orgId
 
     personRequestReview.success = false
     personRequestReview.approvedCount = 0
@@ -31,7 +31,7 @@ angular.module('organization')
 
     Loader.onFor('personRequestReview.init')
 
-    const requestData = DataStorage.getDataThatMatches('userPersonRequest', { userId })[0].requestData
+    const requestData = DataStorage.getType('userPersonRequest').requestData
 
     personRequestReview.packages = requestData.packages
     personRequestReview.person = requestData.request.person
@@ -69,7 +69,7 @@ angular.module('organization')
             Loader.offFor('personRequestReview.submitting')
             personRequestReview.success = true
             $timeout(() => {
-                $state.go('organization.directory.userDetails', {userID: userId, orgID: orgId})
+                $state.go('organization.directory.userDetails', {userId: userId, orgId: orgId})
             }, 3000)  
         })
     }
