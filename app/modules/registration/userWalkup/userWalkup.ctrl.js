@@ -200,12 +200,11 @@ angular.module('registration')
         userWalkup.applications.processedSelected = undefined // Restart applications selected
 
         Registration.selectOrganization(organization)
-        .then(res=>{
-            const grants = res.grants;
+        .then(res => {
+            const grants = res.grants
 
-            if (!grants.length) {
-                userWalkup.applications.list = undefined;
-            } else {
+            if (!grants.length) userWalkup.applications.list = undefined
+            else {
                 userWalkup.applications.list = grants.map((grant) => {
                     grant = grant.servicePackageResource
                     return grant
@@ -214,12 +213,12 @@ angular.module('registration')
 
             userWalkup.passwordRules = res.passwordRules
         })
-        .always(() => {
-            $scope.$digest()
-        })
         .fail((error) => {
             console.error('Error getting organization information', error)
             APIError.onFor('userWalkup.orgInfo', error)
+        })
+        .always(() => {
+            $scope.$digest()
         })
     }
 
