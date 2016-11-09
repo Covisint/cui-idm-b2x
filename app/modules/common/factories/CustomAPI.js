@@ -40,7 +40,8 @@ angular.module('common')
             type: 'GET'
         },
         {
-            cmd: 'getPersonGrantedCount',
+            cmd: 'getPersonGrantedAppCount',
+            cmdType: 'secured',
             accepts: 'text/plain',
             call: `/service/v3/applications/persons/${ '{personId}' }/count`,
             type: 'GET'
@@ -95,6 +96,7 @@ angular.module('common')
         },
         {
             cmd: 'getPersonStatusHistory',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.person.status.history.v1+json',
             call: '/person/v3/persons/statusHistory',
             type: 'GET'

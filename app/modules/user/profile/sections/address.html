@@ -9,6 +9,7 @@
           <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
         </div>
       </div>
+
       <!-- Address Block -->
       <div ng-if="!toggled">
         <div class="cui-field-val__val" ng-if="userProfile.user.addresses[0].streets[0].length>0">{{userProfile.user.addresses[0].streets[0]}} </div>
@@ -17,6 +18,7 @@
         <div class="cui-field-val__val">{{userProfile.user.addresses[0].state}}<span ng-if="userProfile.user.addresses[0].state && userProfile.user.addresses[0].postal">, </span>{{userProfile.user.addresses[0].postal}}</div>
         <div class="cui-field-val__val">{{base.countries.getCountryByCode(userProfile.user.addresses[0].country).name}}</div>
       </div>
+
       <!-- Address Edit -->
       <div ng-if='toggled' ng-init="userProfile.pushToggleOff({'name':'address','function':toggleOff})">
         <!-- Street Address -->
@@ -48,15 +50,22 @@
           </div>
           <div auto-complete input-name="country" pause="100" selected-object="userProfile.userCountry" initial-value="base.countries.getCountryByCode(userProfile.tempUser.addresses[0].country)" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
         </div>
+
         <!-- Address Edit Controls -->
         <div class="cui-users__address-submit">
           <a class="cui-link cui-form__cancel" href="" ng-click="userProfile.resetTempObject(userProfile.user, userProfile.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
-          <button class="cui-button" ng-click="userProfile.updatePerson('address',toggleOff);">
-            <span ng-if="!userProfile.address || !userProfile.address.submitting">{{'cui-update' | translate}}</span>
-            <div class="cui-loading--medium-ctr" ng-if="userProfile.address.submitting"></div>
-            <span ng-if="userProfile.address.error">{{'cui-error-try-again'| translate}}</span>
-          </button>
+
+          <cui-button
+            loading-if="userProfile.address.submitting"
+            loading-message="{{'cui-button-loading-text' | translate}}"
+            button-click="userProfile.updatePerson('address', toggleOff)"
+          >
+            <button class="cui-button">
+              <span ng-if="!userProfile.address || !userProfile.address.submitting">{{'cui-update' | translate}}</span>
+            </button>
+          </cui-button>
         </div>
+
       </div>
     </div>
   </div>

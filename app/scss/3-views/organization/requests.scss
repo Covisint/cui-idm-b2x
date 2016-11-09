@@ -1,120 +1,18 @@
-.cui-organization {
-  position: relative;
-}
-
-.cui-organization__main-container {
-  min-height: 400px;
-  padding: em(15) em(13);
-  position: relative;
-
-  @media screen and (min-width: 701px) {
-    padding: em(15) em(55) 0 em(65);
-  }
-}
-
-.cui-organization__info-block {
-  margin-bottom: em(21);
-
-  .cui-organization__admin-block-wrapper {
-    display: flex;
-    flex-flow: column wrap;
-    
-    .cui-organization__admin-block {
-      margin-bottom: em(21);
-      margin-right: em(51);
-    }
-  } 
-}
-
-.cui-organization__page-title {
-  @extend %h5;
-  @extend %h5--bold;
-  margin-bottom: em(21);
-}
-
-// Org Directory
-
-.cui-organization-dir { 
-
-  .cui-status--active, 
-  .cui-status--pending, 
-  .cui-status--suspended, 
-  .cui-status--locked, 
-  .cui-status--inactive, 
-  .cui-status--unactivated {
-    @media screen and (max-width: 700px) {
-      font-size: em(11);
-      letter-spacing: 1.5px;
-    }
-  }
-
-  .cui-breadcrumb {
-    @media screen and (max-width: 700px) {
-      display: none;
-    }
-  }
-
-  .cui-action {
-
-    &__action-label {
-      @media screen and (max-width: 700px) {
-        display: none;
-      }
-    }
-
-    &__icon {
-      @media screen and (max-width: 700px) {
-        height: em(24);
-      }
-    }
-
-    &__icon--invite {
-      @media screen and (max-width: 700px) {
-        height: em(40);
-      }
-    }
-  }
-
-  .cui-flex-table__mobile-stack {
-    @media screen and (max-width: 700px) {
-      line-height: 1.4
-    }
-  }
-}
-
-// OrgDirectory userDetails
-
-.cui-loading__container--user-details {
-  background: none;
-
-  .cui-loading--center {
-    position: relative;
-    margin-top: 2em;
-    margin-bottom: 2em;
-  }
-}
-
-.cui-organization__profile--left {
-  width: 50%;
-  margin-right: 5%;
-}
-
 // Org Pending Requests
 
 .cui-organization--pending-requests,
 .cui-organization__new-request {
-
-  .cui-action{
-    fieldset{
+  .cui-action {
+    fieldset {
       padding: 0;
     }
 
-    .cui-radio{
+    .cui-radio {
       margin-right: 3em;
     }
 
-    .cui-radio__label{
-      &::after{
+    .cui-radio__label {
+      &::after {
         margin-top: -2px;
       }
     }
@@ -140,7 +38,6 @@
       margin-bottom: em(25);
     }
   }
-
 }
 
 .cui-organization__submit-row {
@@ -148,7 +45,6 @@
   align-items: center;
   margin: em(48) 0 em(40);
 }
-
 
 .cui-media--centered {
   width: auto;
@@ -175,6 +71,7 @@
 // Person Request
 
 .cui-organization__requests-person-header {
+  position: relative;
 
   .cui-media--centered {
     margin-top: em(18);
@@ -216,7 +113,7 @@
       margin: em(28, 14) em(13, 14) 0;
       width: auto;
     }
-    
+
     .cui-expandable__details,
     .cui-expandable__status {
       font-size: 1em;
@@ -230,21 +127,21 @@
     }
   }
 
-  .cui-expandable__body:before {
+  .cui-expandable__body::before {
     left: 39.739027283511%;
 
     @media screen and (max-width: 700px) {
-      font-size: .75em;
+      font-size: 0.75em;
       left: 60px;
     }
   }
 }
 
 .cui-organization__registration-decision {
-    border-bottom: 1px solid #eee;
-    border-top: 1px solid #eee;
-    margin: 15px 0 40px;
-    padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  margin: 15px 0 40px;
+  padding: 15px 0;
 }
 
 // Pending Request Review
@@ -283,8 +180,8 @@
   margin-bottom: 15px;
 }
 
-@media screen and (max-width: 375px){
-  .cui-action{
+@media screen and (max-width: 375px) {
+  .cui-action {
     display: none;
   }
 }

@@ -1,43 +1,46 @@
 angular.module('common')
-.factory('Countries',['$http','$rootScope','$translate',function($http,$rootScope,$translate){
+.factory('Countries', function($http, $rootScope, $translate) {
 
-    var countries=[];
+    let countries = []
 
-    var GetCountries=function(locale){
-        return $http.get('node_modules/@covisint/cui-i18n/dist/cui-i18n/angular-translate/countries/' + locale + '.json');
-    };
+    const GetCountries = (locale) => {
+        return $http.get(appConfig.languageResources.url + 'countries/' + locale + '.json')
+    }
 
-    var setCountries=function(language){
-        language = language || 'en';
-        if(language.indexOf('_')>-1){
-            language=language.split('_')[0];
+    const setCountries = (language) => {
+        language = language || 'en'
+
+        if (language.indexOf('_') > -1) {
+            language = language.split('_')[0]
         }
+
         GetCountries(language)
-        .then(function(res){
-            countries.length = 0;
-            res.data.forEach(function(country){
-                countries.push(country);
-            });
+        .then(res => {
+            countries.length = 0
+
+            res.data.forEach(country => {
+                countries.push(country)
+            })
         })
-        .catch(function(err){
-            console.log(err);
-        });
-    };
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
-    $rootScope.$on('languageChange',function(e,args){
-        setCountries(args);
-    });
+    $rootScope.$on('languageChange',function(e, args) {
+        setCountries(args)
+    })
 
-    var getCountryByCode=function(countryCode){
-        return _.find(countries,function(countryObject){
-            return countryObject.code===countryCode;
-        });
-    };
+    const getCountryByCode = (countryCode) => {
+        return _.find(countries, function(countryObject) {
+            return countryObject.code === countryCode
+        })
+    }
 
-    setCountries($translate.proposedLanguage());
+    setCountries($translate.proposedLanguage())
 
     return {
-        list:countries,
-        getCountryByCode:getCountryByCode
-    };
-}]);
+        list: countries,
+        getCountryByCode: getCountryByCode
+    }
+})

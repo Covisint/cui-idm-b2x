@@ -3,9 +3,9 @@
 ## Unreleased
 
 ### Changed
-* cui-ng [1.9.20]
-* cui-styleguide v2.5.4
-* cui-i18n v1.0.14
+* cui-ng v1.10.4
+* cui-styleguide v2.7.0
+* cui-i18n v1.0.16
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
 * API call `getOrganizationPackages()` is now secured.
@@ -16,6 +16,10 @@
 * Organization Profile screen now saves relevant data to DataStorage on the first load.
 * Organization Hierarchy screen now saved relevant data to DataStorage on the first load.
 * Change "open" to "edit" for the various sections on the user details page in admin view.
+* Walkup registration inputs now show errors if they are dirty instead of touched (when the inputs have been used).
+* Changed files to be bootstrapped (in the `jsWrapper`) asynchronously as the previous method was throwing deprecation warnings.
+* Changed `grunt copy` tasks to work with versioned cui-i18n assets.
+* Changed the `Timezones` and `Countries` factories to now work based off the `languageResources.url` path in the `appConfig.json` to work with regular/versioned/and custom cui-i18n integrations.
 
 ### Fixes
 * Fixes popover styling.
@@ -28,6 +32,10 @@
 * Fixed grunt task to support Windows OS
 * DataStorage.replaceDataThatMatches() now properly replaces matching data.
 * DataStorage.setType() not correctly assigns data under the provided type.
+* Fixes issue where opening up the mobile menu and then expanding into desktop screen size would leave all content pushed to the right.
+* Fixed issue in walkup registration where we were splicing the wrong object after some changes.
+* Fixes the registered date on the user profile to use the correct date.
+	* Note: This is a seperate API call and if it fails, the registered date will not be shown on the profile screen.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
@@ -38,6 +46,14 @@
 * Adds features for checking if a username and/or email address already exist in the instance
   during walkup registration.
 * Adds updating loading spinner partial in `app/common-templates/partials/`
+* Added further initial documentation of B2X features in `docs/features/`.
+* The languageResources.url in the appConfig now allows you to put in a dynamic mustache variable for versioned i18n libraries (to be used with cui-i18n version 1.0.16 or above). Referencing the versioned i18n directory will act as a cache-busting mechanism.
+	* `"url": "node_modules/@covisint/cui-i18n/dist/{{version}}/cui-i18n/angular-translate/"`
+	* If you are loading in a customized cui-i18n library, you will need to add `"customDependencyName": "cui-i18n-nameOfYourProject"` to `appConfig.languageResources`.
+	* With this appConfig setup B2X will always reference the current version of your cui-i18n dependency as per the package.json.
+* Added password history validation via the API in the my profile password reset flow.
+* Added `initRegisteredDate()` function to the UserProfilev2 factory. Given a userId, will return the user's registered date.
+	* This is also returned when using `initUserProfile()`.
 
 
 ## [v0.2.3] - 2016-09-13

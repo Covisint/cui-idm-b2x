@@ -37,6 +37,33 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
             console.error('You need to configure languageResources in your appConfig.json.');
         }
 
+        /*
+        *   This section will dynamically generate the correct path to versioned i18n assets 
+        *   based off of current i18n version in use in the project.
+        *
+        *   This requires a proper appConfig.json setup. Please refer to the documentation in
+        *   ./docs/features/cui-framework/cui-i18n.md for information on how to setup the appConfig.
+        *
+        *   Note: Grunt tasks will not automatically work with all of the possible setups of i18n assets.
+        */
+
+        if (appConfig.languageResources.hasOwnProperty('customDependencyName')) {
+            // Loading in custom i18n project
+            const customDependency = appConfig.languageResources.customDependencyName
+            const dependencyType = appConfig.languageResources.dependencyType || 'dependencies'
+            const customDependencyVersion = packageJson[dependencyType][customDependency].split('#v')[1]
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, customDependencyVersion)
+        }
+        else if (appConfig.languageResources.hasOwnProperty('dependencyOrigin') && appConfig.languageResources.dependencyOrigin === 'cui-idm-b2x') {
+            // Loading in i18n dependency through B2X (generator projects)
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, i18nPackageJson.version)
+        }
+        else {
+            // Loading in standalone cui-i18n dependency
+            const dependencyType = appConfig.languageResources.dependencyType || 'dependencies'
+            appConfig.languageResources.url = appConfig.languageResources.url.replace(/\{\{(.*?)\}\}/, packageJson[dependencyType]['@covisint/cui-i18n'])
+        }
+
         $cuiI18nProvider.setLocaleCodesAndNames(appConfig.languages);
         let languageKeys = Object.keys($cuiI18nProvider.getLocaleCodesAndNames());
 
@@ -86,8 +113,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader) => {
+    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -118,6 +145,7 @@ angular.module('common')
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+        Theme.clear() // Clear any active Theme. Change to `Theme.useDefault` if you have a default theme set.
         APIError.clearAll()
         Loader.clearAll()
         event.preventDefault();

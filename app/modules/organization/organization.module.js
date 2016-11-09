@@ -28,13 +28,13 @@ angular.module('organization', [])
             template: '<div ui-view></div>'
         })
         .state('organization.directory.userList', {
-            url: '/directory?orgID',
+            url: '/directory?orgId&page&pageSize&sortBy&refine',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
             access: loginRequired
         })
         .state('organization.directory.userDetails', {
-            url: '/user-details?userID&orgID',
+            url: '/user-details?userId&orgId',
             views: {
                 '': {
                     templateUrl: templateBase + 'directory/user-details/directory-userDetails.html',

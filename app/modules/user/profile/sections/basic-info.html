@@ -19,34 +19,42 @@
 
       <!-- Name/email edit -->
       <div ng-if="toggled" ng-init="userProfile.pushToggleOff({'name':'basicInfo','function':toggleOff})">
+
         <!-- First Name -->
         <label for="firstName">{{'cui-first-name' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.firstName.$error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="text" name="firstName" class="cui-input" ng-model="userProfile.tempUser.name.given" ng-required="true" focus-if="toggled">
+
         <!-- Last Name -->
         <label for="lastName">{{'cui-last-name' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.lastName.$error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="text" name="lastName" class="cui-input" ng-model="userProfile.tempUser.name.surname" ng-required="true">
+
         <!-- Email -->
         <label for="email">{{'cui-email' | translate}}</label>
         <div class="cui-error" ng-messages="basicInfo.email.$error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
         <input type="email" name="email" class="cui-input" ng-model="userProfile.tempUser.email" ng-required="true">
+
         <!-- Address Edit Controls -->
         <div class="cui-users__address-submit">
           <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
-          <button class="cui-button" ng-click="basicInfo.$valid && userProfile.updatePerson('basicInfo',toggleOff);"
-            ng-class="{'cui-button--error':!basicInfo.$valid}">
-            <span ng-if="!userProfile.basicInfo || !userProfile.basicInfo.submitting">{{'cui-update' | translate}}</span>
-            <div class="cui-loading--medium-ctr" ng-if="userProfile.basicInfo.submitting"></div>
-            <span ng-if="userProfile.basicInfo.error">{{'cui-error-try-again'| translate}}</span>
-          </button>
+          <cui-button 
+            loading-if="userProfile.basicInfo.submitting"
+            loading-message="{{'cui-button-loading-text' | translate}}"
+            button-click="basicInfo.$valid && userProfile.updatePerson('basicInfo', toggleOff)"
+          >
+            <button class="cui-button" ng-class="{ 'cui-button--error': !basicInfo.$valid }">
+              <span ng-if="!userProfile.basicInfo || !userProfile.basicInfo.submitting">{{'cui-update' | translate}}</span>
+            </button>
+          </cui-button>
         </div>
+
       </div>
     </div>
   </div>

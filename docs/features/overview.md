@@ -1,5 +1,12 @@
 # Features of the IDM B2X Solution Accelerator
 
+## CUI Framework Integration
+
+IDM B2X comes with all CUI framework components already integrated letting you focus on building out projects and customization as necessary.
+
+- [Cui-i18n](cui-framework/cui-i18n.md)
+- [Cui.js](factories/API.md)
+
 ## Dynamic Menu System
 - Both Desktop & Mobile Versions
 - Show/Hide items based on User\'s Role or Privlege
@@ -26,7 +33,16 @@
 
 [Find out more](registration-flows.md)
 
+
 ## Animations & Transitions
 - Page Loading
 - Submit processing
 
+
+## Factories
+* [DataStorage](factories/Data-Storage.md)
+* [SharedServices](factories/Shared-Services.md)
+
+
+## Directives
+* [Success Pane](directives/success-pane.md)

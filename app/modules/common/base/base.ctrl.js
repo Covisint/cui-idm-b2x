@@ -1,6 +1,6 @@
 angular.module('common')
-.controller('baseCtrl', ['Base','$scope', function(Base,$scope) {
+.controller('baseCtrl', function(Base, $scope) {
 
-	$scope.base = Base;
+    $scope.base = Base
 
-}]);
+})

@@ -62,7 +62,10 @@ module.exports = function(grunt) {
       uiHost: uiHost,
       buildArtifact: buildArtifact,
       serviceUrl: serviceUrl,
-      solutionInstancesUrl: solutionInstancesUrl
+      solutionInstancesUrl: solutionInstancesUrl,
+      jsonSchema: './jsonSchema.json',
+      appConfig: './appConfig.json',
+      i18nVersion: pkgJson.dependencies['@covisint/cui-i18n']
     }
 
     // now build the appConfig-env.json
@@ -113,18 +116,43 @@ module.exports = function(grunt) {
       grunt.task.run('usemin');
     })
 
+    // Workaround to display custom error messages if json lint fails
+    grunt.registerTask('lint-json', function() {
+      // Load schema, data and execute linter
+      const schema = require(config.jsonSchema);
+      const data = require(config.appConfig);
+      const Ajv = require('ajv');
+      const ajv = new Ajv();
+      ajv.addSchema(schema, 'mySchema');
+      const valid = ajv.validate('mySchema', data);
+      if (!valid) {
+        grunt.log.writeln(ajv.errorsText());
+
+        // Switch case to catch errors for custom message
+        const errors = ajv.errors
+        errors.map(function(err) {
+          switch(err.dataPath) {
+            case ".paginationOptions":
+              grunt.log.writeln("\x1b[31mpaginationOptions inside your appConfig file should be an object. To find out what properties to pass in the paginationOptions object, please refer to the documentation at https://github.com/Covisint/cui-ng/tree/master/directives/paginate");
+            break;
+          }
+        })
+        grunt.fail.warn("");
+      }
+    })
+
     grunt.registerTask('concatModules', 'Task to concat all project modules.',
       require('./tasks/concatModules.js')(grunt,config))
 
     // Tasks ------------------------------------------------------------
-    grunt.registerTask('default', ['concatModules','babel','ngAnnotate','sass','postcss','browserSync:dev','watch'])
+    grunt.registerTask('default', ['concatModules','babel','ngAnnotate','sass','postcss','lint-json','browserSync:dev','watch'])
 
     grunt.registerTask('build', ['sass','postcss','processhtml','ngtemplates:build','clean:build','copy:build',
-                                  'concatModules','babel','ngAnnotate','useminPrepare','concat:generated',
+                                  'concatModules','babel','lint-json','ngAnnotate','useminPrepare','concat:generated',
                                   'cssmin:generated','uglify:generated','filerev:build','usemin','clean:temp'])
 
     grunt.registerTask('buildsdk', ['sass','postcss','ngtemplates:buildsdk','clean:buildsdk','copy:buildsdk',
-                                    'concatModules','babel','useminPreparesdk','concat:generated','cssmin:generated',
+                                    'concatModules','babel','lint-json','useminPreparesdk','concat:generated','cssmin:generated',
                                     'uglify:generated','filerev:buildsdk','useminsdk','clean:temp'])
 
     grunt.registerTask('demo', ['browserSync:demo'])

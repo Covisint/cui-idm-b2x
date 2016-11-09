@@ -1,6 +1,6 @@
 <!-- User Details Profile -->
 <div class="cui-loading__container--user-details" ng-if="base.loader.for['userDetailsProfile.initProfile']">
-  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  <div class="cui-loader cui-loader--content-sm" ng-include="'app/common-templates/partials/loader-content-sm.html'"></div>
 </div>
 
 <ng-form name="edit" novalidate ng-if="!base.loader.for['userDetailsProfile.initProfile']">

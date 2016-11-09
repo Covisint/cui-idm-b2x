@@ -4,14 +4,13 @@
   <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
 </div>
 
+<!-- Page Loading -->
+<div class="cui-loading__container" ng-if="base.loader.for['userDetails.userInfo']">
+  <div class="cui-loader cui-loader--content cui-loader--content-vert" ng-include="'app/common-templates/partials/loader-content-vert.html'"></div>
+</div>
+
 <!-- Name Header -->
 <div class="cui-media--centered">
-
-  <!-- Page Loading -->
-  <div class="cui-loading__container--user-details" ng-if="base.loader.for['userDetails.userInfo']">
-    <div class="cui-loading--center"><div class="cui-loading"></div></div>
-  </div>
-
   <div class="cui-media__image-container" ng-if="!base.loader.for['userDetails.userInfo']">
     <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[userDetails.user.name.given, userDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="userDetails.user.email"></div>
   </div>

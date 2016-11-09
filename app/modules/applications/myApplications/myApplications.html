@@ -15,9 +15,9 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 -->
 
 <div class="cui-action">
-  <nav class="cui-breadcrumb">
+  <nav class="cui-breadcrumb" ng-if="false">
     <ul class="cui-breadcrumb__links">
-      <li class="cui-breadcrumb__link" ng-if="false">
+      <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications">{{'organization-applications' | translate}}</a>
       </li>
       <li class="cui-breadcrumb__link">
@@ -25,6 +25,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </li>
     </ul>
   </nav>
+  <h3 class="cui-action__title">{{'my-applications' | translate}}</h3>
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
@@ -61,7 +62,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
         </div>
       </div>
     </div>
-    
+
     <!-- Categories -->
     <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button" off-click="myApplications.categoriesClicked=false">
       <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
@@ -101,6 +102,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 </div>
 
 <div class="cui-applications__main-container">
+  <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['myApplications.apps']"></div>
   <div class="cui-loading__container" ng-if="base.loader.for['myApplications.apps']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
