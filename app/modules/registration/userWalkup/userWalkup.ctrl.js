@@ -151,6 +151,11 @@ angular.module('registration')
             oldSelected = userWalkup.applications.processedSelected
         }
 
+        // Fixes issue where adding and removing selected apps would leave objects with null values
+        angular.forEach(userWalkup.applications.selected, (app, i) => {
+            if (app === null) delete userWalkup.applications.selected[i]
+        })
+
         userWalkup.applications.processedSelected = []
 
         angular.forEach(userWalkup.applications.selected, function(app, i) {
