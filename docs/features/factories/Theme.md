@@ -8,7 +8,7 @@ The Theme factory allows you to set styles on the top level element based on the
 
 Go to the `module.js` file that contains the state you want to set a custom theme for. 
 
-For the following example we are setting a custom theme for the `My Applications` state inside of `app/modules/applications/applications.module.js`. We add an `onEnter` callBack to the desired state and in this case we pass the scss class that contains our theme styles using `Theme.get()`
+For the following example we are setting a custom theme for the `My Applications` state inside of `app/modules/applications/applications.module.js`. We add an `onEnter` callBack to the desired state and in this case we pass the scss class that contains our theme styles using `Theme.set()`
 
 ```
 	.state('applications.myApplications', {
