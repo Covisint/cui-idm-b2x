@@ -22,6 +22,8 @@
 * Changed the `Timezones` and `Countries` factories to now work based off the `languageResources.url` path in the `appConfig.json` to work with regular/versioned/and custom cui-i18n integrations.
 * Changed buttons in the user profile screen to use `cui-button` instead.
 * Changes blueimp-md5 dependency path to accomodate the dist file structure of the new 2.5.0 release.
+* Vars from the styleguide are now split between global and component scope.
+* Colors used in b2x are now updated to match the changes in the styleguide.
 
 ### Fixes
 * Fixes popover styling.
@@ -40,6 +42,7 @@
 	* Note: This is a seperate API call and if it fails, the registered date will not be shown on the profile screen.
 * Fixed issue where you were able to request un-requestable service packages during the walkup registration.
 * Fixed issue where selecting/deselecting packages during walkup registration could cause errors.
+* Chevron icons in the walkup registration now use the same chevron as the rest of the application.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style

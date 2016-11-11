@@ -107,8 +107,8 @@
   <div class='cui-tos-container'>
     <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
     <label ng-click="usersRegister.tos=!usersRegister.tos" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}}
-      <a href="" class="cui-link--medium-light cui-link--no-decoration cui-padding--h-5">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
-      <a href="" class="cui-link--medium-light cui-link--no-decoration cui-padding--h-5">{{'privacy-policy' | translate}}</a>
+      <a href="" class="cui-link cui-padding--h-5">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
+      <a href="" class="cui-link cui-padding--h-5">{{'privacy-policy' | translate}}</a>
     </label>
     <span class="cui-wizard__step-error" ng-if="user.TOS.$dirty && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
   </div>

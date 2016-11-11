@@ -11,15 +11,15 @@
 }
 
 .misc-body p {
-  color: $cui-primary-colors--medium-light;
+  color: $cui-primary-colors--medium;
 }
 
 .misc-body a {
-  color: $cui-primary-colors--medium-light;
+  color: $cui-primary-colors--medium;
 }
 
 .misc-body h1 {
-  color: $cui-primary-colors--medium-light;
+  color: $cui-primary-colors--medium;
   font-size: 2em;
 }
 
@@ -29,12 +29,4 @@
 
 .cui-card__button {
   float: right;
-}
-
-.cui-link--medium-light {
-  color: $cui-primary-colors--medium-light;
-}
-
-.cui-link--no-decoration {
-  text-decoration: none;
 }
