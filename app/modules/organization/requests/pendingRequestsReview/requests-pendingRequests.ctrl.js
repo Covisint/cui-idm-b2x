@@ -3,8 +3,8 @@ angular.module('organization')
     'use strict'
 
     const pendingRequests = this
-    const userId = $stateParams.userID
-    const orgId = $stateParams.orgID
+    const userId = $stateParams.userId
+    const orgId = $stateParams.orgId
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -30,8 +30,8 @@ angular.module('organization')
             packages: pendingRequests.packages   
         }
         
-        DataStorage.replaceDataThatMatches('appRequests', { userId }, { userId, data: storageData })
-        $state.go('organization.requests.pendingRequestsReview', {userID: userId, orgID: orgId})
+        DataStorage.setType('appRequests', storageData)
+        $state.go('organization.requests.pendingRequestsReview', { userId: userId, orgId: orgId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

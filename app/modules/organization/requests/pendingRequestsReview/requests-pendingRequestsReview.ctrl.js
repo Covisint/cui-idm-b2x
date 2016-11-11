@@ -3,8 +3,8 @@ angular.module('organization')
     'use strict'
 
     const pendingRequestsReview = this
-    const userId = $stateParams.userID
-    const orgId = $stateParams.orgID
+    const userId = $stateParams.userId
+    const orgId = $stateParams.orgId
 
     pendingRequestsReview.success = false
     pendingRequestsReview.approvedCount = 0
@@ -31,13 +31,13 @@ angular.module('organization')
 
     Loader.onFor('pendingRequestsReview.init')
 
-    const requestData = DataStorage.getDataThatMatches('appRequests', { userId })[0].data
+    const requestData = DataStorage.getType('appRequests')
 
     pendingRequestsReview.pendingRequests = requestData.packages
     pendingRequestsReview.user = requestData.user
 
     if (pendingRequestsReview.pendingRequests.length > 0) {
-        getApprovalCounts(pendingRequestsReview.pendingRequests);
+        getApprovalCounts(pendingRequestsReview.pendingRequests)
     }
 
     Loader.offFor('pendingRequestsReview.init')
@@ -57,9 +57,13 @@ angular.module('organization')
         .then(() => {
             pendingRequestsReview.success = true
             $timeout(() => {
-                $state.go('organization.directory.userDetails', {userID: userId, orgID: orgId})
+                $state.go('organization.directory.userDetails', { userId: userId, orgId: orgId })
             }, 3000)
         })
+    }
+
+    pendingRequestsReview.goBack = () => {
+        $state.go('organization.requests.pendingRequests', { userId: userId, orgId: orgId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

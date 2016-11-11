@@ -147,14 +147,18 @@ angular.module('common')
     pub.selectOrganization = (organization)=>{
 
         const deferred = $.Deferred()
-        const results = {}
+        const results = {
+            grants: []
+        }
 
         API.cui.initiateNonce()
             .then(res => {
                 return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
             })
             .then(res => {
-                results.grants = res
+                res.forEach(grant => {
+                    if (grant.servicePackageResource.requestable) results.grants.push(grant)
+                })
                 return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
             })
             .then(res => {

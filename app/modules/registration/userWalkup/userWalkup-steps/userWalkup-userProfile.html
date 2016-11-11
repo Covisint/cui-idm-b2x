@@ -30,7 +30,7 @@
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
       <!-- Custom Error: Check If Email Taken -->
-      <div class="cui-error" ng-if="user.email.$error.emailTaken">
+      <div class="cui-error" ng-if="user.email.$error.emailTaken && user.email.$dirty">
         <div class="cui-error__message">{{'cui-error-email-exists' | translate}}</div>
       </div>
       <input type="email" name="email" class="cui-input" custom-error="userWalkup.customErrors.email" ng-required="true" ng-model="userWalkup.user.email"/>

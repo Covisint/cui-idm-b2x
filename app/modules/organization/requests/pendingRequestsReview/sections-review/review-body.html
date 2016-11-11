@@ -25,7 +25,7 @@
 	
 	<!-- Review Controls -->
 	<div class="cui-organization__submit-row">
-		<span ui-sref="organization.requests.pendingRequests({userID:pendingRequestsReview.user.id, orgID:pendingRequestsReview.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+		<span ui-sref="organization.directory.userDetails({userId:pendingRequests.user.id, orgId:pendingRequests.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
 		<button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
 	</div>
 </div>

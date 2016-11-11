@@ -98,13 +98,13 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.pendingRequests', {
-            url: '/pending-requests?userID&orgID',
+            url: '/pending-requests?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests'),
             access: loginRequired
         })
         .state('organization.requests.pendingRequestsReview', {
-            url: '/pending-requests/review?userID&orgID',
+            url: '/pending-requests/review?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
@@ -122,13 +122,13 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.personRequest', {
-            url: '/person-request?userID&orgID',
+            url: '/person-request?userId&orgId',
             templateUrl: templateBase + 'requests/personRequest/requests-person.html',
             controller: returnCtrlAs('personRequest'),
             access: loginRequired
         })
         .state('organization.requests.personRequestReview', {
-            url: '/person-request-review?userID&orgID',
+            url: '/person-request-review?userId&orgId',
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
             access: loginRequired

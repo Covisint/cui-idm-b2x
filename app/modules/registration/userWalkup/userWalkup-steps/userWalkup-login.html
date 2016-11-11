@@ -7,7 +7,7 @@
     <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
   </div>
   <!-- Custom Error: Check If Username Is Taken -->
-  <div class="cui-error" ng-if="userLogin.userID.$error.usernameTaken">
+  <div class="cui-error" ng-if="userLogin.userID.$error.usernameTaken && userLogin.userID.$dirty">
     <div class="cui-error__message">{{'cui-username-taken' | translate}}</div>
   </div>
   <input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.username"

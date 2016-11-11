@@ -20,6 +20,8 @@
 * Changed files to be bootstrapped (in the `jsWrapper`) asynchronously as the previous method was throwing deprecation warnings.
 * Changed `grunt copy` tasks to work with versioned cui-i18n assets.
 * Changed the `Timezones` and `Countries` factories to now work based off the `languageResources.url` path in the `appConfig.json` to work with regular/versioned/and custom cui-i18n integrations.
+* Changed buttons in the user profile screen to use `cui-button` instead.
+* Changes blueimp-md5 dependency path to accomodate the dist file structure of the new 2.5.0 release.
 
 ### Fixes
 * Fixes popover styling.
@@ -36,6 +38,8 @@
 * Fixed issue in walkup registration where we were splicing the wrong object after some changes.
 * Fixes the registered date on the user profile to use the correct date.
 	* Note: This is a seperate API call and if it fails, the registered date will not be shown on the profile screen.
+* Fixed issue where you were able to request un-requestable service packages during the walkup registration.
+* Fixed issue where selecting/deselecting packages during walkup registration could cause errors.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
@@ -47,6 +51,8 @@
   during walkup registration.
 * Adds updating loading spinner partial in `app/common-templates/partials/`
 * Added further initial documentation of B2X features in `docs/features/`.
+	* Added documentation for integrating cui-i18n/custom-cui-i18n dependencies with B2X.
+	* Added documentation for utilizing the new Theme feature.
 * The languageResources.url in the appConfig now allows you to put in a dynamic mustache variable for versioned i18n libraries (to be used with cui-i18n version 1.0.16 or above). Referencing the versioned i18n directory will act as a cache-busting mechanism.
 	* `"url": "node_modules/@covisint/cui-i18n/dist/{{version}}/cui-i18n/angular-translate/"`
 	* If you are loading in a customized cui-i18n library, you will need to add `"customDependencyName": "cui-i18n-nameOfYourProject"` to `appConfig.languageResources`.
@@ -54,6 +60,7 @@
 * Added password history validation via the API in the my profile password reset flow.
 * Added `initRegisteredDate()` function to the UserProfilev2 factory. Given a userId, will return the user's registered date.
 	* This is also returned when using `initUserProfile()`.
+* Adds Theme factory that allows the setting of styles on the top level element based on the current router state.
 
 
 ## [v0.2.3] - 2016-09-13

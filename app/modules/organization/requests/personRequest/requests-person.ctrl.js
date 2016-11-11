@@ -3,8 +3,8 @@ angular.module('organization')
     'use strict'
 
     const personRequest = this
-    const userId = $stateParams.userID
-    const organizationId = $stateParams.orgID
+    const userId = $stateParams.userId
+    const organizationId = $stateParams.orgId
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
@@ -32,8 +32,8 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        DataStorage.replaceDataThatMatches('userPersonRequest', { userId }, { userId, requestData: personRequest })
-        $state.go('organization.requests.personRequestReview', { userID: userId, orgID: organizationId })
+        DataStorage.setType('userPersonRequest', { personRequest })
+        $state.go('organization.requests.personRequestReview', { userId: userId, orgId: organizationId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

@@ -151,6 +151,11 @@ angular.module('registration')
             oldSelected = userWalkup.applications.processedSelected
         }
 
+        // Fixes issue where adding and removing selected apps would leave objects with null values
+        angular.forEach(userWalkup.applications.selected, (app, i) => {
+            if (app === null) delete userWalkup.applications.selected[i]
+        })
+
         userWalkup.applications.processedSelected = []
 
         angular.forEach(userWalkup.applications.selected, function(app, i) {
@@ -200,12 +205,11 @@ angular.module('registration')
         userWalkup.applications.processedSelected = undefined // Restart applications selected
 
         Registration.selectOrganization(organization)
-        .then(res=>{
-            const grants = res.grants;
+        .then(res => {
+            const grants = res.grants
 
-            if (!grants.length) {
-                userWalkup.applications.list = undefined;
-            } else {
+            if (!grants.length) userWalkup.applications.list = undefined
+            else {
                 userWalkup.applications.list = grants.map((grant) => {
                     grant = grant.servicePackageResource
                     return grant
@@ -214,12 +218,12 @@ angular.module('registration')
 
             userWalkup.passwordRules = res.passwordRules
         })
-        .always(() => {
-            $scope.$digest()
-        })
         .fail((error) => {
             console.error('Error getting organization information', error)
             APIError.onFor('userWalkup.orgInfo', error)
+        })
+        .always(() => {
+            $scope.$digest()
         })
     }
 
