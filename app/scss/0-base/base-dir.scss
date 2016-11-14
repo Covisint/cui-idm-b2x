@@ -1,3 +1,8 @@
 @import '../../../node_modules/@covisint/cui-styleguide/source/base';
-@import 'variables';
+
+@import '../../../node_modules/@covisint/cui-styleguide/source/scss/base/_global-vars.scss';
+
+@import '../../../node_modules/@covisint/cui-styleguide/source/scss/base/_component-vars.scss';
+
 @import '../../../node_modules/@covisint/cui-styleguide/source/components';
+

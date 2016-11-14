@@ -46,3 +46,7 @@ IDM B2X comes with all CUI framework components already integrated letting you f
 
 ## Directives
 * [Success Pane](directives/success-pane.md)
+
+
+## Theme Customization
+* [Theme Customization](theme-customization.md)
