@@ -31,7 +31,7 @@ angular.module('organization')
 
     Loader.onFor('personRequestReview.init')
 
-    const requestData = DataStorage.getType('userPersonRequest')
+    const requestData = DataStorage.getType('userPersonRequest').personRequest
 
     personRequestReview.packages = requestData.packages
     personRequestReview.person = requestData.request.person
