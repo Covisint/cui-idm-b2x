@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Breaking
+* Removed deprecated UserProfile factory. UserProfileV2 factory is now the official UserProfile factory.
+
 ### Changed
 * cui-ng v1.10.4
 * cui-styleguide v2.7.0
@@ -24,6 +27,7 @@
 * Changes blueimp-md5 dependency path to accomodate the dist file structure of the new 2.5.0 release.
 * Vars from the styleguide are now split between global and component scope.
 * Colors used in b2x are now updated to match the changes in the styleguide.
+* States using the UserProfileV2 factory now reference the updated UserProfile factory.
 
 ### Fixes
 * Fixes popover styling.
