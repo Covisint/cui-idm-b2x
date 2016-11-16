@@ -92,11 +92,18 @@
   </cui-expandable-body>
 </cui-expandable>
 
+<!-- Submit Controls -->
 <div class="cui-wizard__controls">
   <div class="cui-error" ng-if="userWalkup.submitError"><label>{{userWalkup.errorMessage | translate}}</label></div>
-  <button type="button" class="cui-wizard__next" ng-click="userWalkupRegForm.$valid && userWalkup.submit()" ng-class="(!userWalkupRegForm.$valid)? 'cui-wizard__next--error' : userWalkup.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
-    <div class="cui-loading--medium-ctr" ng-if="userWalkup.submitting"></div>
-    <span ng-if="!userWalkup.submitting && !userWalkup.submitError">{{'cui-submit' | translate}}</span>
-    <span ng-if="!userWalkup.submitting && userWalkup.submitError" name="review.btnError">Error! Try again?</span>
-  </button>
+  <cui-button disable-animate
+    button-click="userWalkupRegForm.$valid && userWalkup.submit()"
+    loading-if="userWalkup.submitting"
+    loading-message="{{'cui-button-loading-text' | translate}}"
+    error-if="userWalkup.submitError"
+    error-message="{{'cui-error-try-again' | translate}}"
+  >
+    <button class="cui-wizard__next" ng-class="(!userWalkupRegForm.$valid)? 'cui-wizard__next--error' : userWalkup.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
+      <span ng-if="!userWalkup.submitting && !userWalkup.submitError">{{'cui-submit' | translate}}</span>
+    </button>
+  </cui-button>
 </div>
