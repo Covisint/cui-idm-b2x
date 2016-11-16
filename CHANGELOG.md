@@ -28,6 +28,7 @@
 * Vars from the styleguide are now split between global and component scope.
 * Colors used in b2x are now updated to match the changes in the styleguide.
 * States using the UserProfileV2 factory now reference the updated UserProfile factory.
+* My applications are now filtered in the controller instead of using ng-if in the markup.
 
 ### Fixes
 * Fixes popover styling.
@@ -68,6 +69,7 @@
 * Added `initRegisteredDate()` function to the UserProfilev2 factory. Given a userId, will return the user's registered date.
 	* This is also returned when using `initUserProfile()`.
 * Adds Theme factory that allows the setting of styles on the top level element based on the current router state.
+* Adds message to my applications when the user has no applications.
 
 
 ## [v0.2.3] - 2016-09-13
