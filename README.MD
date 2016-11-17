@@ -4,52 +4,41 @@
 
 ## Overview
 
-The IDM B2X Accelerator provides a flexible set of features prebuilt and connected to the Covisint IDM platform. It lets your buiness to connect to just about any entity internally and externally. B2X mode gives developer all the tools and modules to so developers can customize it to tailor their exact needs.
+The IDM B2X Accelerator provides a flexible set of features prebuilt and connected to the Covisint IDM platform. It allows your buiness to connect to just about any entity internally and externally. B2X mode gives developers pre-built tools and modules allowing them to customize each project to tailor their client's needs.
 
-By following the guide below, you will be set up with a Reference B2X implementation.  It is called B2X because it is meant to work from a business to just about any other entity. An enterprise can use B2X to allow other internal and external entities to interact it's realm of organizations, applications via APIs.
+By following the guide below, you will be set up with a Reference B2X implementation. It is called B2X because it is meant to work from a business to just about any other entity. An enterprise can use B2X to allow other internal and external entities to interact it's realm of organizations, applications via APIs.
 
 * Prebuilt IDM Features
-  - Registration
+  - Walkup Registration/Approval Workflow
   - User Profile
   - Application Directory
-  - Application Request / Approval Workflow
+  - Application Search/Request/Approval Workflow
+  - Organization Profile
+  - Organization Directory
+  - Organization Hierarchy
+  
 
+### Starting Your Own Project
 
-### Getting Started
+This section assumes you have all the [prerequisites](https://cui-gitbook.run.covisintrnd.com/prerequisites.html) installed.
 
-Start your own local IDM B2X project using Yeoman.  This section assumes you have all the [prerequisites](../prerequisites.md) installed.
+##### Install The CUI Generator
 
-1. Install the yeoman generator
+The *generator-cui-ng* is located on [NPM](https://www.npmjs.com/package/generator-cui-ng) which can be installed by running `sudo npm install -g generator-cui-ng`
 
-  * `sudo npm install -g generator-cui-ng`
+##### Generate Your New CUI Project
 
-2. Create new CUI project directory
+Create a new directory for your CUI project. 
 
-  * Exit CUI-NG Yeoman project: `cd ../../`
-  * Create new project directory: `mkdir cui-ng-new-project`
-  * Change directory into your new project directory: `cd cui-ng-new-project`
+From this new project directory you are able to generate the CUI project by running `yo cui-ng`.
 
-3. Build your starting CUI project
+At the end of the process you will be asked to run the `grunt` command to generate directories for your project's environment variable profile. [Click here for more information about the project environment variables](https://cui-gitbook.run.covisintrnd.com/prerequisites.html).
 
-  * Use Yeoman to build your CUI starter project: `yo cui-ng`
-  * After you're done going through all the steps you should get a readme that explains how to use and customize the application
+  * Note: We use your HOME environment variable to create the directories that house the project environment profile. The HOME environment variable is by default created on Linux and OSX operating systems. For Windows users, you will have to create this environment variable if you don't have it setup already. The HOME environment variable should resemble `C:\Users\username\`
 
-### How to use this project directly
+Once your project's environment variables are properly set up you can run the generated project using the `grunt` command and begin making customization or implementing new features.
 
-Run `npm install`, and then `grunt` to start a local server in which you can see changes in real time.
+### Running B2X Directly
 
-### Contributing
-
-Follow these rules when creating a PR or committing new code:
-
-1. All changes to specific states should be made in the branch named after that child state. Ex: If editing `app/modules/applications/myApplications/myApplications.html` the changes should be made to the `application.myApplications` branch (create it if it doesn't exist)
-2. Only global (PRD and STG) changes should be made directly to #master (rule of thumb, always commit to a branch unless you don't think it fits in any branch)
-
-Before starting any changes, follow this procedure to avoid merge conflicts:
-
-1. From your fork / clone make sure you're on the master branch, `git checkout master`
-2. Pull from upstream / origin master
-3. Checkout the branch you want to make changes to : `git checkout applications.myApplications` or `git checkout -b branch-name` if the branch doesn't exist
-4. Pull from that branch `git pull origin applications.myApplications`
-5. Merge master into that branch `git merge master` (this is why it's important to only keep global changes on master)
-6. Make your changes, commit and push to that branch
+- `npm install`
+- `grunt`
