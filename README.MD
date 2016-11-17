@@ -16,17 +16,17 @@ By following the guide below, you will be set up with a Reference B2X implementa
   - Organization Profile
   - Organization Directory
   - Organization Hierarchy
-  
 
-### Starting Your Own Project
+
+## Starting Your Own Project
 
 This section assumes you have all the [prerequisites](https://cui-gitbook.run.covisintrnd.com/prerequisites.html) installed.
 
-##### Install The CUI Generator
+#### Install The CUI Generator
 
 The *generator-cui-ng* is located on [NPM](https://www.npmjs.com/package/generator-cui-ng) which can be installed by running `sudo npm install -g generator-cui-ng`
 
-##### Generate Your New CUI Project
+#### Generate Your New CUI Project
 
 Create a new directory for your CUI project. 
 
@@ -38,7 +38,7 @@ At the end of the process you will be asked to run the `grunt` command to genera
 
 Once your project's environment variables are properly set up you can run the generated project using the `grunt` command and begin making customization or implementing new features.
 
-### Running B2X Directly
+## Running B2X Directly
 
 - `npm install`
 - `grunt`
