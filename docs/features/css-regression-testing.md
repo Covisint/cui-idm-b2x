@@ -1,0 +1,5 @@
+# CSS Regression Testing with Backstop.js
+
+[Backstop.js](https://github.com/garris/BackstopJS) is a visual regression testing tool that allows us to determine if CSS changes we made in one area of the application are unintentionally effecting another area. In order to utilize BackstopJS, you must first take a "snapshot" of the application. The routes and viewport sizes for snapshots are specified inside the backstop.json file. You can find step-by-step instructions on how to do this [here](https://github.com/garris/BackstopJS#getting-started).
+
+While this testing helps to prevent some unexpected results, we also recommend using Backstop.js inside your styleguide or component library. Sometimes changes in one component can have a cascade effect across an entire page, such as adding 5px of bottom margin to a page's header. This can be very confusing and not immediately apparent in a diff. For a deeper explination of this issue, take a look at [this article](https://sc5.io/posts/visual-regression-testing/).
