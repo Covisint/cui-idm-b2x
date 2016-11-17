@@ -36,7 +36,7 @@ At the end of the process you will be asked to run the `grunt` command to genera
 
   * Note: We use your HOME environment variable to create the directories that house the project environment profile. The HOME environment variable is by default created on Linux and OSX operating systems. For Windows users, you will have to create this environment variable if you don't have it setup already. The HOME environment variable should resemble `C:\Users\username\`
 
-Once your project's environment variables are properly set up you can run the generated project using the `grunt` command and begin making customization or implementing new features.
+Once your project's environment variables are properly set up you can run the project using the `grunt` command and begin making customizations or implementing new features.
 
 ## Running B2X Directly
 
