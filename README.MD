@@ -1,7 +1,5 @@
 # Covisint B2X Accelerator
 
-[Repository](https://github.com/covisint/cui-idm-b2x)
-
 ## Overview
 
 The IDM B2X Accelerator provides a flexible set of features prebuilt and connected to the Covisint IDM platform. It allows your buiness to connect to just about any entity internally and externally. B2X mode gives developers pre-built tools and modules allowing them to customize each project to tailor their client's needs.
