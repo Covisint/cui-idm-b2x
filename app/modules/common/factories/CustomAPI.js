@@ -188,6 +188,14 @@ angular.module('common')
             accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',
             call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,
             type: 'PUT'
+        },
+        {
+            cmd: 'getPersonEntitlements',
+            cmdType: 'secured',
+            contentType: 'application/vnd.com.covisint.platform.person.privilege.v1+json',
+            accepts: 'application/vnd.com.covisint.platform.person.privilege.v1+json',
+            call: `/person/v3/persons/privileges/${ '{personId}'}`,
+            type: 'GET'
         }
     ]
 
