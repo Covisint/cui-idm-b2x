@@ -60,12 +60,14 @@
   },
   {
     "cmd": "getOrganizationHierarchy",
+    "cmdType": "secured",
     "call": "/organization/v3/organizations/{organizationId}/hierarchy",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.reference.hierarchy.v1+json"
   },
   {
     "cmd": "getPersons",
+    "cmdType": "secured",
     "call": "/person/v3/persons",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.v1+json"
@@ -79,6 +81,7 @@
   },
   {
     "cmd": "getPersonsAdmins",
+    "cmdType": "secured",
     "call": "/person/v3/persons",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.v1+json;securityadmin=true"
@@ -91,12 +94,14 @@
   },
   {
     "cmd": "getPersonRolesOnly",
+    "cmdType": "secured",
     "call": "/person/v3/persons/roles/{personId}",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.role.v1+json;onlyroles=true"
   },
   {
     "cmd": "getPersonRoles",
+    "cmdType": "secured",
     "call": "/person/v3/persons/roles/{personId}",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.role.v1+json"
@@ -152,12 +157,14 @@
   },
   {
     "cmd": "getPerson",
+    "cmdType": "secured",
     "call": "/person/v3/persons/{personId}",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.v1+json"
   },
   {
     "cmd": "updatePerson",
+    "cmdType": "secured",
     "call": "/person/v3/persons/{personId}",
     "type": "PUT",
     "accepts": "application/vnd.com.covisint.platform.person.v1+json",

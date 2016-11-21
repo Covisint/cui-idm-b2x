@@ -1,93 +1,12 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(API,APIError,Base,localStorageService,$scope,$state,Registration) {
+.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state) {
 
     const userWalkup = this
 
     userWalkup.applications = {}
     userWalkup.userLogin = {}
     userWalkup.applications.numberOfSelected = 0
-    userWalkup.orgPaginationCurrentPage = 1
     userWalkup.submitError = false
-
-    /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
-
-    // Helper functions to build out the person and request objects needed for registration
-    var build = {
-        person: function() {
-            userWalkup.user.addresses[0].country = userWalkup.userCountry.title // Get title of selected country object
-            userWalkup.user.organization = { id: userWalkup.organization.id }
-            userWalkup.user.timezone = 'EST5EDT'
-            if (userWalkup.user.phones[0]) {
-                userWalkup.user.phones[0].type = 'main';
-            }
-            userWalkup.user.language = Base.getLanguageCode() // Get current used language
-            return userWalkup.user
-        },
-        passwordAccount: function() {
-            return {
-                version: '1',
-                username: userWalkup.userLogin.username,
-                password: userWalkup.userLogin.password,
-                passwordPolicy: userWalkup.organization.passwordPolicy,
-                authenticationPolicy: userWalkup.organization.authenticationPolicy
-            }
-        },
-        securityQuestionAccount: function() {
-            return {
-                version: '1',
-                questions: [{
-                    question: {
-                        id: userWalkup.userLogin.question1.id,
-                        type: 'question',
-                        realm: userWalkup.organization.realm
-                    },
-                    answer: userWalkup.userLogin.challengeAnswer1,
-                    index: 1
-                },
-                {
-                    question: {
-                        id: userWalkup.userLogin.question2.id,
-                        type: 'question',
-                        realm: userWalkup.organization.realm
-                    },
-                    answer: userWalkup.userLogin.challengeAnswer2,
-                    index: 2
-                }]
-            }
-        }, 
-        buildPerson: function() {
-            return {
-                person: this.person(),
-                passwordAccount: this.passwordAccount(),
-                securityQuestionAccount: this.securityQuestionAccount()
-            }
-        },
-        buildRequest: function(personId, personRealm) {
-            let request = {
-                registrant: {
-                    id: personId,
-                    type: 'person',
-                    realm: personRealm
-                },
-                justification: 'User Walkup Registration'
-            }
-
-            if (userWalkup.applications.selected) {
-                request.packages = []
-                angular.forEach(userWalkup.applications.selected,function(servicePackage) {
-                    // userWalkup.applications.selected is an array of strings that looks like
-                    // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
-                    request.packages.push({
-                        id: servicePackage.split(',')[0],
-                        type: 'servicePackage'
-                    })
-                })    
-            }
-            return request
-        }
-    }
-
-    /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
@@ -164,7 +83,7 @@ angular.module('registration')
                     id: app.split(',')[0],
                     name: app.split(',')[1],
                     // this fixes an issue where removing an app from the selected list that the user 
-                    //had accepted the terms for would carry over that acceptance to the next app on the list
+                    // had accepted the terms for would carry over that acceptance to the next app on the list
                     acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
                 })
             }
@@ -173,23 +92,26 @@ angular.module('registration')
     }
 
     userWalkup.submit = () => {
-
         userWalkup.submitting = true
         userWalkup.submitError = false
 
-        Registration.walkUpSubmit(build, userWalkup.applications)
-        .always(() => {
-            userWalkup.submitting = false
-            $scope.$digest()
-        })
-        .done(() => {
+        const registrationData = {
+            profile: userWalkup.user,
+            organization: userWalkup.organization,
+            login: userWalkup.userLogin,
+            applications: userWalkup.applications,
+            userCountry: userWalkup.userCountry
+        }
+
+        Registration.walkupSubmit(registrationData)
+        .then(() => {
             userWalkup.success = true
             userWalkup.submitting = false
             $state.go('misc.success')
         })
-        .fail(error => {
+        .catch(error => {
             userWalkup.submitError = true
-            console.error('Error submitting registration request', error)
+            userWalkup.submitting = false
             if (error.responseJSON) {
                 userWalkup.errorMessage = error.responseJSON.apiMessage
             }

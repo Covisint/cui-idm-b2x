@@ -1,8 +1,91 @@
 angular.module('common')
-.factory('Registration', (API, APIError, $q) => {
+.factory('Registration', (API, APIError, Base, $q) => {
 
     const self = {}
     const pub = {}
+
+    // Helper functions to build out the person and request objects needed for registration
+    const build = {
+        person: function(registrationData) {
+            const personData = Object.assign({}, registrationData.profile)
+
+            personData.addresses[0].country = registrationData.userCountry.title
+            personData.language = Base.getLanguageCode()
+            personData.timezone = 'EST5EDT'
+            personData.organization = { id: registrationData.organization.id }
+
+            if (personData.phones[0]) {
+                personData.phones[0].type = 'main'
+            }
+
+            return personData
+        },
+        passwordAccount: function(registrationData) {
+            return {
+                version: '1',
+                username: registrationData.login.username,
+                password: registrationData.login.password,
+                passwordPolicy: registrationData.organization.passwordPolicy,
+                authenticationPolicy: registrationData.organization.authenticationPolicy
+            }
+        },
+        securityQuestionAccount: function(registrationData) {
+            return {
+                version: '1',
+                questions: [{
+                    question: {
+                        id: registrationData.login.question1.id,
+                        type: 'question',
+                        realm: registrationData.organization.realm
+                    },
+                    answer: registrationData.login.challengeAnswer1,
+                    index: 1
+                },
+                {
+                    question: {
+                        id: registrationData.login.question2.id,
+                        type: 'question',
+                        realm: registrationData.organization.realm
+                    },
+                    answer: registrationData.login.challengeAnswer2,
+                    index: 2
+                }]
+            }
+        }, 
+        walkupSubmit: function(registrationData) {
+            const _registrationData = Object.assign({}, registrationData)
+
+            return {
+                person: this.person(_registrationData),
+                passwordAccount: this.passwordAccount(_registrationData),
+                securityQuestionAccount: this.securityQuestionAccount(_registrationData)
+            }
+        },
+        servicePackageRequest: function(personId, personRealm, packageData) {
+            let request = {
+                registrant: {
+                    id: personId,
+                    type: 'person',
+                    realm: personRealm
+                },
+                justification: 'User Walkup Registration'
+            }
+
+            if (packageData.selected) {
+                request.packages = []
+                angular.forEach(packageData.selected, function(servicePackage) {
+                    // userWalkup.applications.selected is an array of strings that looks like
+                    // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+                    request.packages.push({
+                        id: servicePackage.split(',')[0],
+                        type: 'servicePackage'
+                    })
+                })    
+            }
+
+            return request
+        }
+    }
 
     /**
      * this method makes sure to make the call but before it calls cui.initiateNonce
@@ -72,13 +155,11 @@ angular.module('common')
         }
     }
 
-
     pub.getOrganizations=()=>{
         return self.makeNonceCall( "getOrganizationsNonce" )
     }
 
     pub.getSecurityQuestions=()=>{
-
         return self.makeNonceCall( "getSecurityQuestionsNonce" )
     }
 
@@ -110,64 +191,57 @@ angular.module('common')
         return defer.promise
     }
 
-    /**
-     * method goes and submits walkup registration
-     * it calls postUserRegistration and postPersonRequest
-     * @param build, an object that generates the user and buildRequest
-     * @returns {*}
-     */
-    pub.walkUpSubmit=(build, applications)=>{
+    pub.walkupSubmit = (registrationData) => {
+        const defer = $q.defer()
+        const submitData = build.walkupSubmit(registrationData)
 
-        const deferred = $.Deferred()
-        const user = build.buildPerson()
+        API.cui.initiateNonce()
+        .then(() => {
+            return API.cui.postUserRegistrationNonce({data: submitData})
+        })
+        .then(res => {
+            if (registrationData.applications.numberOfSelected !== 0) {
+                const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications)
+                return API.cui.postPersonRequestNonce({data: packageRequestData})
+            }
+            else {
+                defer.resolve(res)
+            }
+        })
+        .then(res => {
+            defer.resolve(res)
+        })
+        .fail(error => {
+            defer.reject(error)
+        })
 
-        return API.cui.initiateNonce()
-            .then(res => {
-                return API.cui.postUserRegistrationNonce({data: user})
-            })
-            .then(res => {
-                if (applications.numberOfSelected !== 0) {
-                    API.cui.postPersonRequestNonce({data: build.buildRequest(res.person.id, res.person.realm)})
-                }
-                else {
-                    deferred.resolve( res )
-                }
-            })
-            .then(res=>{
-                deferred.resolve( res )
-            })
-            .fail( error=>{
-                deferred.reject( error )
-            })
-
-        return deferred.promise()
+        return defer.promise
     }
 
 
     pub.selectOrganization = (organization)=>{
-
         const deferred = $.Deferred()
         const results = {
             grants: []
         }
 
         API.cui.initiateNonce()
-            .then(res => {
-                return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
+        .then(res => {
+            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
+        })
+        .then(res => {
+            res.forEach(grant => {
+                if (grant.servicePackageResource.requestable) results.grants.push(grant)
             })
-            .then(res => {
-                res.forEach(grant => {
-                    if (grant.servicePackageResource.requestable) results.grants.push(grant)
-                })
-                return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
-            })
-            .then(res => {
-                results.passwordRules = res.rules
-                deferred.resolve(results)
-            })
-            .fail( error=>{
-                deferred.reject(error)
-            })
+            return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
+        })
+        .then(res => {
+            results.passwordRules = res.rules
+            deferred.resolve(results)
+        })
+        .fail( error=>{
+            deferred.reject(error)
+        })
 
         return deferred.promise()
     }

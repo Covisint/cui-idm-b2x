@@ -4,30 +4,34 @@ angular.module('common')
     const calls = [
         {
             cmd: 'getPackageClaims',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.claim.v1+json',
             call: '/service/v3/claims',
             type: 'GET'
         },
         {
             cmd: 'getPersonPackageClaims',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',
             call: `/service/v3/persons/${ '{grantee}' }/packages/${ '{packageId}' }/claims`,
             type: 'GET' 
         },
         {
             cmd: 'getCategories',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.category.v1+json',
             call: `/service/v3/categories`,
             type: 'GET' 
         },
         {
-            cmd: 'getPersonRequestableApps',                
+            cmd: 'getPersonRequestableApps',            
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
             call: `/service/v3/applications/persons/${ '{personId}' }/requestable`,
             type: 'GET'
         },
         {
-            cmd: 'getPersonRequestableCount',               
+            cmd: 'getPersonRequestableCount',
             accepts: 'text/plain',
             call: `/service/v3/applications/persons/${ '{personId}' }/requestable/count`,
             type: 'GET'
@@ -71,7 +75,8 @@ angular.module('common')
             type: 'GET'
         },
         {
-            cmd: 'getPersonGrantableApps',                  
+            cmd: 'getPersonGrantableApps',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
             call: `/service/v3/applications/persons/${ '{personId}' }/grantable`,
             type: 'GET'
@@ -103,18 +108,21 @@ angular.module('common')
         },
         {
             cmd: 'getPersonPasswordChangeHistory',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.authn.password.change.history.req.v1+json',
             call: `/authentication/v4/passwords/changeHistory`,
             type: 'GET'
         },
         {
             cmd: 'getPersonPendingServicePackages',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.request.v1+json',
             call: `/service/v3/requests`,
             type: 'GET'
         },
         {
             cmd: 'getPackage',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.v1+json',
             call: `/service/v3/packages/${ '{packageId}' }`,
             type: 'GET'
@@ -135,30 +143,35 @@ angular.module('common')
         },
         {
             cmd: 'grantClaims',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.grant.claim.v1+json',
             call: `/service/v3/packages/grants/claims`,
             type: 'PUT'
         },
         {
             cmd: 'getOrganizationRegistrationRequest',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',
             call: `/organization/v3/requests`,
             type: 'GET'
         },
         {
             cmd: 'getPersonRegistrationRequest',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',
             call: `/person/v3/requests`,
             type: 'GET'
         },
         {
             cmd: 'approvePersonRegistration',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',
             call: `/person/v3/requests/tasks/approve`,
             type: 'POST'
         },
         {
             cmd: 'denyPersonRegistration',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.person.request.v1+json',
             call: `/person/v3/requests/tasks/deny`,
             type: 'POST'
@@ -171,6 +184,7 @@ angular.module('common')
         },
         {
             cmd: 'grantPersonPackage',
+            cmdType: 'secured',
             accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',
             call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,
             type: 'PUT'
