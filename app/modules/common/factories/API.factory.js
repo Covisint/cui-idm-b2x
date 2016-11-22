@@ -12,13 +12,42 @@ angular.module('common')
         authInfo = info
         User.set(info)
 
+        /*
+            Note for the future developer!
+
+            Currently we are getting the logged in user's roles and setting them as entitlements.
+            In a downstream project that got ahead of B2X, we had to get both roles and entitlements.
+            This has not been updated in B2X yet due to endpoint issues.
+
+            The User factory has been updated to support both roles and entitlements and the custom
+            endpoint to get the user's entitlements has also been written in the CustomAPI factory.
+
+            When the endpoints are working you will need to implement: 
+
+                1. Add the "myCUI.getPersonEntitlements({ personId: authInfo.cuid })" to the $q.all([])
+                2. For the roles response:
+                    - const roleList = res[0].map(x => x.name)
+                    - User.setRoles(roleList)
+                3. For the entitlements response:
+                    - const entitlementList = res[2].map(x => x.privilegeName)
+                    - User.setEntitlements(entitlementList)
+
+                Note: 
+                The res[] index might be different depending on how you set up the $q.all[].
+                You will also have to confirm that the API response has not been changed.
+
+                This is needed to work in conjunction with cui-access to allow users to view parts
+                of the application depending on either their roles or entitlements which has also been
+                implemented in at least one downstream project but not B2X.
+        */
+
         $q.all([
             myCUI.getPersonRoles({ personId: authInfo.cuid }),
             myCUI.getPerson({ personId: authInfo.cuid })
         ])
         .then(res => {
             roleList = res[0].map(x => x.name)
-            User.setRoles(roleList)
+            User.setEntitlements(roleList)
             userInfo = res[1]
             return myCUI.getOrganization({ organizationId: res[1].organization.id })
         })
