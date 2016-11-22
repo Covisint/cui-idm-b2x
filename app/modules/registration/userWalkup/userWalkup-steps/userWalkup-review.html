@@ -5,30 +5,30 @@
   </div>
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
     {{'cui-user-information' | translate}}
-    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
   </cui-expandable-title>
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- First Name -->
-    <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}:<span class="review-item__value">{{userWalkup.user.name.given}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}: <span class="review-item__value">{{userWalkup.user.name.given}}</span></div>
     <!-- Last Name -->
-    <div class="cui-expandable__review-item">{{'cui-last-name' | translate}}:<span class="review-item__value">{{userWalkup.user.name.surname}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-last-name' | translate}}: <span class="review-item__value">{{userWalkup.user.name.surname}}</span></div>
     <!-- Email -->
-    <div class="cui-expandable__review-item">{{'cui-email' | translate}}:<span class="review-item__value">{{userWalkup.user.email}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-email' | translate}}: <span class="review-item__value">{{userWalkup.user.email}}</span></div>
     <!-- Country -->
-    <div class="cui-expandable__review-item">{{'cui-country' | translate}}:<span class="review-item__value">{{userWalkup.userCountry.title || userWalkup.userCountry}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-country' | translate}}: <span class="review-item__value">{{userWalkup.userCountry.title || userWalkup.userCountry}}</span></div>
     <!-- Address 1 -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[0] && userWalkup.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}:<span class="review-item__value">{{userWalkup.user.addresses[0].streets[0]}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[0] && userWalkup.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].streets[0]}}</span></div>
     <!-- Address 2 -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[1] && userWalkup.user.addresses[0].streets[1]!==''">{{'cui-address-2' | translate}}:<span class="review-item__value">{{userWalkup.user.addresses[0].streets[1]}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[1] && userWalkup.user.addresses[0].streets[1]!==''">{{'cui-address-2' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].streets[1]}}</span></div>
     <!-- City -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].city && userWalkup.user.addresses[0].city!==''">{{'cui-city' | translate}}:<span class="review-item__value">{{userWalkup.user.addresses[0].city}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].city && userWalkup.user.addresses[0].city!==''">{{'cui-city' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].city}}</span></div>
     <!-- State -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].state && userWalkup.user.addresses[0].state!==''">{{'cui-state' | translate}}:<span class="review-item__value">{{userWalkup.user.addresses[0].state}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].state && userWalkup.user.addresses[0].state!==''">{{'cui-state' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].state}}</span></div>
     <!-- Postal -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].postal && userWalkup.user.addresses[0].postal!==''">{{'cui-postal' | translate}}:<span class="review-item__value">{{userWalkup.user.addresses[0].postal}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].postal && userWalkup.user.addresses[0].postal!==''">{{'cui-postal' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].postal}}</span></div>
     <!-- Phone Number -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.phones[0].number && userWalkup.user.phones[0].number!==''">{{'cui-telephone' | translate}}:<span class="review-item__value">{{userWalkup.user.phones[0].number}}</span></div>
+    <div class="cui-expandable__review-item" ng-if="userWalkup.user.phones[0].number && userWalkup.user.phones[0].number!==''">{{'cui-telephone' | translate}}: <span class="review-item__value">{{userWalkup.user.phones[0].number}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
@@ -44,7 +44,7 @@
 
     <cui-expandable-body class="cui-expandable__body">
       <!-- Company/Division -->
-      <div class="cui-expandable__review-item">{{'cui-org' | translate}}:<span class="review-item__value">{{userWalkup.organization.name}}</span></div>
+      <div class="cui-expandable__review-item">{{'cui-org' | translate}}: <span class="review-item__value">{{userWalkup.organization.name}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
@@ -60,17 +60,17 @@
 
   <cui-expandable-body class="cui-expandable__body">
     <!-- User ID -->
-     <div class="cui-expandable__review-item">{{'cui-user-id' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.username}}</span></div>
+     <div class="cui-expandable__review-item">{{'cui-user-id' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.username}}</span></div>
     <!-- Password -->
-    <div class="cui-expandable__review-item">{{'cui-password' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-password' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.question1.question | cuiI18n}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.question1.question | cuiI18n}}</span></div>
     <!-- Challenge Answer 1 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.challengeAnswer1}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.challengeAnswer1}}</span></div>
     <!-- Challenge Question 2 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.question2.question | cuiI18n}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.question2.question | cuiI18n}}</span></div>
     <!-- Challenge Answer 2 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}:<span class="review-item__value">{{userWalkup.userLogin.challengeAnswer2}}</span></div>
+    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.challengeAnswer2}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
