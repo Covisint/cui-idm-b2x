@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('API', (Base,CustomAPI,Loader,LocaleService,localStorageService,User,$location,$q,$rootScope,$state,$timeout,$window) => {
+.factory('API', (Base, CustomAPI, Loader, localStorageService, User, $location, $q, $timeout, $window) => {
 
     let authInfo = {}
     let myCUI = {}
@@ -18,7 +18,7 @@ angular.module('common')
         ])
         .then(res => {
             roleList = res[0].map(x => x.name)
-            User.setEntitlements(roleList)
+            User.setRoles(roleList)
             userInfo = res[1]
             return myCUI.getOrganization({ organizationId: res[1].organization.id })
         })
@@ -67,12 +67,12 @@ angular.module('common')
             appConfig.solutionInstancesUrl && myCUI.setServiceUrl(appConfig.solutionInstancesUrl)
             return myCUI.covAuthInfo({originUri: appConfig.originUri})
         })
-        .then(()=>{
+        .then(() => {
             // reset the service url
             appConfig.debugServiceUrl
                 ? myCUI.setServiceUrl(appConfig.debugServiceUrl)
                 : myCUI.setServiceUrl(appConfig.serviceUrl)
-            $timeout(()=> Loader.offFor('wholeApp'),50)
+            $timeout(() => Loader.offFor('wholeApp'), 50)
             deferred.resolve()
         })
         return deferred.promise
@@ -99,9 +99,9 @@ angular.module('common')
             else {
                 Loader.onFor('wholeApp','getting-user-info')
                 myCUI.handleCovAuthResponse({ selfRedirect: true })
-                .then((res)=>{
+                .then(res => {
                     populateUserInfo(res,localStorageService.get('appRedirect'))
-                    .then((res) => {
+                    .then(res => {
                         deferred.resolve(res)
                         $timeout(()=> Loader.offFor('wholeApp'),50)
                     })
