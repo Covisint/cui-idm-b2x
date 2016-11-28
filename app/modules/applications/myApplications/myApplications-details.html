@@ -83,7 +83,7 @@
               </div>
               <!-- Bundled Application Details -->
               <div ng-if="myApplicationDetails.app.bundledApps && myApplicationDetails.app.bundledApps.length!==0">
-                <h4 class="h6">{{'bundled-applications' | translate}}</h4>
+                <h4 class="h6 bold">{{'bundled-applications' | translate}}</h4>
                 <div class="cui-media" ng-repeat="application in myApplicationDetails.app.bundledApps">
                   <div class="cui-media__body">
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
@@ -94,7 +94,7 @@
               </div>
               <!-- Related Application Details -->
               <div ng-if="myApplicationDetails.app.relatedApps && myApplicationDetails.app.relatedApps.length!==0">
-                <h4 class="h6">{{'related-applications' | translate}}</h4>
+                <h4 class="h6 bold">{{'related-applications' | translate}}</h4>
                 <div class="cui-applications__related-apps" ng-repeat="application in myApplicationDetails.app.relatedApps">
                   <div class="cui-applications__related-app-col">
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
@@ -135,7 +135,7 @@
               <h4 class="cui-applications__related-apps-title">{{'bundled-applications' | translate}}</h4>
               <div class="cui-applications__bundled-app" ng-repeat="application in myApplicationDetails.app.bundledApps">
                 <div class="cui-applications__related-app-col">
-                  <a class="cui-link h6--bold" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
+                  <a class="cui-link bold" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
                   <span class="cui-media__content">{{ 'granted' | translate | lowercase}}: {{nyApplicationDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
                 </div>
                 <div class="cui-media__status" ng-class="'cui-status--'+nyApplicationDetails.app.grant.status">{{application.status | uppercase}}</div>  <!-- If the user has a grant on that service -->
@@ -146,8 +146,8 @@
               <h4 class="cui-applications__related-apps-title">{{'related-applications' | translate}}</h4>
                 <div class="cui-applications__related-app" ng-repeat="application in myApplicationDetails.app.relatedApps">
                   <div class="cui-applications__related-app-col">
-                    <a class="cui-link h6--bold" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
-                    <h5 class="h6--bold" ng-if="!application.status">{{application.name | cuiI18n}}</h5>
+                    <a class="cui-link bold" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.status">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
+                    <h5 class="bold" ng-if="!application.status">{{application.name | cuiI18n}}</h5>
                     <span class="cui-media__content" ng-if="application.grantedDate">{{ 'granted' | translate }}: {{application.grantedDate | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                   </div>
                   <div class="cui-button cui-button--small-rounded" ng-if="!application.status">{{'request' | translate}}</div>

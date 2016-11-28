@@ -17,7 +17,7 @@
         <div class="cui-action__actions">
 
             <!-- close icon -->
-            
+
             <svg ui-sref="applications.myApplications" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
                 <defs>
                   <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
@@ -55,7 +55,7 @@
           <div class="cui-loading cui-loading--center" ></div>
         </div>
             <div>
-                <h3 class="h4 h4--bold">{{'requested-items' | translate}}:</h3>
+                <h3 class="h4 bold">{{'requested-items' | translate}}:</h3>
                 <div class="cui-applications__review-apps">
                     <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
                         <div ng-repeat="application in applicationGroup | filter:applicationReview.search">
