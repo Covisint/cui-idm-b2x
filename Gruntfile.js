@@ -12,6 +12,13 @@ module.exports = function(grunt) {
     const target = (typeof grunt.option('target') === 'undefined') ? 'local' : grunt.option('target')
     const buildArtifact = appName + '-' + pkgJson.version + '-' + target + '-' + dtStamp + '.zip'
 
+    // Check if the "HOME" environment variable exists
+    if (!process.env['HOME']) {
+      grunt.log.writeln('This project requires a "HOME" environment variable.')
+      grunt.log.writeln('The "HOME" environment variable should resemble: "C:\\Users\\username\\"')
+      grunt.fail.warn('No "HOME" environment variable set on this machine.', [3])
+    }
+
     // load the secrets profile file from your home directory
     const envPath = path.join(process.env['HOME'],'.cui/profiles',appName,target)
     var clientId, clientSecret, originUri, uiHost, serviceUrl, solutionInstancesUrl
