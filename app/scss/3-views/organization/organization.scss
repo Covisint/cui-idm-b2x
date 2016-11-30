@@ -28,6 +28,6 @@
 
 .cui-organization__page-title {
   @extend %h5;
-  @extend %h5--bold;
+  @extend %bold;
   margin-bottom: em(21);
 }

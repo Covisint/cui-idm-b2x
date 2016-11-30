@@ -14,7 +14,7 @@
 
 .cui-applications__related-apps-title,
 .cui-applications__bundled-apps-title {
-  @extend %h5--bold;
+  @extend %bold;
   align-items: center;
   border-bottom: 1px solid #dee9ee;
   display: flex;
@@ -35,7 +35,7 @@
   }
 
   .cui-tile__title {
-    @extend %h5--bold;
+    @extend %bold;
   }
 
   .cui-tile__body {
@@ -64,5 +64,5 @@
 }
 
 .cui-applications__claim-name {
-  @extend %h5--bold;
+  @extend %bold;
 }
