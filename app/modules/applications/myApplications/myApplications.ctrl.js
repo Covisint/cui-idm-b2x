@@ -27,15 +27,16 @@ angular.module('applications')
     const loadStoredData = () => {
         // Check DataStorage if this page has been loaded before. We initially populate this screen
         // with data that was previously retrieved from the API while we redo calls to get the up to date data.
-        const storedData = DataStorage.getDataThatMatches('myApplicationsList', { userId })
+        const storedData = DataStorage.getType('myApplicationsList')
 
         if (storedData) {
             Loader.onFor(loaderName + 'apps')
-            myApplications.list = storedData[0].appListData[0].appList
-            myApplications.count = storedData[0].appListData[0].appCount
-            myApplications.categories = storedData[0].appListData[0].categories
+            myApplications.list = storedData.appList
+            myApplications.count = storedData.appCount
+            myApplications.categories = storedData.categories
             Loader.offFor(loaderName + 'apps')
         }
+
         checkedLocalStorage = true
         onLoad(false)
     }
@@ -84,13 +85,13 @@ angular.module('applications')
             // re-render pagination if available
             myApplications.reRenderPaginate && myApplications.reRenderPaginate()
 
-            const storageData = [{
-                'appList': myApplications.list, 
-                'appCount': myApplications.count, 
-                'categories': myApplications.categories
-            }]
+            const storageData = {
+                appList: myApplications.list, 
+                appCount: myApplications.count, 
+                categories: myApplications.categories
+            }
 
-            DataStorage.replaceDataThatMatches('myApplicationsList', userId, { userId, appListData: storageData })
+            DataStorage.setType('myApplicationsList', storageData)
             APIError.offFor(loaderName + 'apps')
         })
         .catch(err => {
