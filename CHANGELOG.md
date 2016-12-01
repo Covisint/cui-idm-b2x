@@ -7,7 +7,7 @@
 
 ### Changed
 * cui-ng v1.10.4
-* cui-styleguide v2.7.0
+* cui-styleguide v3.0.2
 * cui-i18n v1.0.17
 * Switch to using cui-popover in visible popovers.
 * PersonRequest factory has stripped out helper API calls to instead use the CommonAPI factory.
@@ -29,6 +29,8 @@
 * Colors used in b2x are now updated to match the changes in the styleguide.
 * States using the UserProfileV2 factory now reference the updated UserProfile factory.
 * My applications are now filtered in the controller instead of using ng-if in the markup.
+* Exported relevant logic from walkup registration controller to the Registration factory.
+* Changes application details properties to accomodate for text placeholder refactoring.
 
 ### Fixes
 * Fixes popover styling.
@@ -48,6 +50,7 @@
 * Fixed issue where you were able to request un-requestable service packages during the walkup registration.
 * Fixed issue where selecting/deselecting packages during walkup registration could cause errors.
 * Chevron icons in the walkup registration now use the same chevron as the rest of the application.
+* Fixes data storage use in my applications screen. The my applications list retrieves the last viewed data from local storage if it exists. Once data from the API comes back, that data is shown instead.
 
 ### Added
 * New npm run commands `npm run lint:js` and `npm run lint:style` to ensure app code is in conformance for style
@@ -70,6 +73,8 @@
 	* This is also returned when using `initUserProfile()`.
 * Adds Theme factory that allows the setting of styles on the top level element based on the current router state.
 * Adds message to my applications when the user has no applications.
+* Adds custom API call to get the entitlements of a user.
+* Adds verbose message/error for missing HOME environment variable when running `grunt`.
 
 
 ## [v0.2.3] - 2016-09-13
