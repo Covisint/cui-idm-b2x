@@ -79,6 +79,10 @@
                 <span class="cui-field-val__val">{{'cui-password-policy' | translate}}: </span>
                 <span class="cui-field-val__val">{{orgProfile.passwordPolicy.name}}</span>
               </div>
+              <div ng-if="orgProfile.authenticationPolicy">
+                <span class="cui-field-val__val">{{'cui-password-policy' | translate}}: </span>
+                <span class="cui-field-val__val">{{orgProfile.authenticationPolicy.name}}</span>
+              </div>
             </div>
           </div>
         </div>
