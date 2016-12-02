@@ -710,5 +710,12 @@
     "type": "PUT",
     "accepts": "application/vnd.com.covisint.platform.attribute.template.v1+json",
     "contentType": "application/vnd.com.covisint.platform.attribute.template.v1+json"
+  },
+  {
+    "cmd": "getAuthenticationPolicy",
+    "cmdType": "secured",
+    "call": "/authn/v4/policies/{policyId}",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.authn.policy.v1+json"
   }
 ]
