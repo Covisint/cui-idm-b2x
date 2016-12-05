@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Changed
+
+### Fixes
+
+### Added
+
+
+## [v1.2.0] - 2016-12-2
+
 ### Breaking
 * Removed deprecated UserProfile factory. UserProfileV2 factory is now the official UserProfile factory.
 
