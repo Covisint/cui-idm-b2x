@@ -16,6 +16,16 @@
         <span class="cui-field-val__field">{{'cui-email' | translate}}:</span>
         <span class="cui-field-val__val">{{userProfile.user.email}} </span>
       </div>
+<!--   Commenting out inline Edit as not needed now   
+        <div>
+        <div class="cui-error" ng-messages="userProfile.emailError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+        <div class="cui-error" ng-messages="basicInfo.email.$error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+        <inline-edit input-class="cui-input" class="cui-users__inline-edit " label="cui-email" model="userProfile.tempUser.email" on-edit="userProfile.email" hide-save-if="userProfile.noSaveEmail" on-save="userProfile.updateExtendedAttr"></inline-edit>
+      </div> -->
 
       <!-- Name/email edit -->
       <div ng-if="toggled" ng-init="userProfile.pushToggleOff({'name':'basicInfo','function':toggleOff})">
