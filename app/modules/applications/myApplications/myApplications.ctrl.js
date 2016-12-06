@@ -127,11 +127,11 @@ angular.module('applications')
                 break
             case 'status':
                 myApplications.search.page = 1
-                myApplications.search.refine = updateValue
+                myApplications.search['grant.status'] = updateValue
                 break
             case 'category':
                 myApplications.search.page = 1
-                myApplications.search.category = $filter('cuiI18n')(updateValue)
+                myApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
                 break
         }
 
