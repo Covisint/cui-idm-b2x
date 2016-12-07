@@ -11,17 +11,33 @@
     padding: em(15) em(55) 0 em(65);
   }
 }
+@media screen and (max-width: 700px) {
+  .cui-organization__info-block {
+    -ms-flex-direction: column;
+        flex-direction: column; } }
 
 .cui-organization__info-block {
   margin-bottom: em(21);
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 
   .cui-organization__admin-block-wrapper {
     display: flex;
+    flex:0.5;
     flex-flow: column wrap;
 
     .cui-organization__admin-block {
       margin-bottom: em(21);
+    }
+    @media screen and (min-width:700px){
+      .cui-organization__admin-block {
       margin-right: em(51);
+    }
+    }
+    .cui-organization__admin-block__right{
+      margin-right: inherit;
     }
   }
 }
