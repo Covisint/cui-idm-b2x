@@ -49,7 +49,7 @@ angular.module('common')
             roleList = res[0].map(x => x.name)
             User.setEntitlements(roleList)
             userInfo = res[1]
-            return myCUI.getOrganization({ organizationId: res[1].organization.id })
+            return myCUI.getOrganizationWithAttributes({ organizationId: res[1].organization.id })
         })
         .then(res => {
             userInfo.organization = res
