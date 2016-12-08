@@ -5,6 +5,14 @@ angular.module('common')
 
     const UserProfile = {
 
+        getTodaysDate:function(){
+            let today=new Date()
+            let dd=today.getDate()
+            let yyyy=today.getFullYear()
+            let mmm=today.toString().substring(4,7);
+            return dd+'-'+mmm+'-'+yyyy
+        },
+
         initUser: function(userId) {
             let defer = $q.defer()
             let user = {}
@@ -115,16 +123,24 @@ angular.module('common')
 
         initRegisteredDate: function(userId) {
             const defer = $q.defer()
+            let lastDate=UserProfile.getTodaysDate();
 
-            API.cui.getPersonStatusHistory({qs : [
+            API.cui.getPersonDetailedStatusHistory({qs : [
                 ['userId', userId], 
-                ['sortBy', '+creation']
+                ['startDate','01-Jan-2016'],
+                ['lastDate',lastDate]
             ]})
             .then(res => {
-                res.forEach(status => {
+                let activeStatusList=[];
+                res.forEach((status, index) => {
                     if (status.status === 'ACTIVE') {
-                        defer.resolve(status.creation)             
+                        activeStatusList.push(status)
                     }
+                    if (res.length-1===index) {
+                        _.orderBy(activeStatusList, ['creation'], ['asc'])
+                        defer.resolve(activeStatusList[0].creation) 
+                    }          
+                    
                 })
             })
             .fail(error => {
