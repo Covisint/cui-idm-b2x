@@ -20,6 +20,55 @@ angular.module('applications')
             : firstValue
     }
 
+    const getCountsOfStatus=(qsValue)=>{
+        myApplications.tempSearch= Object.assign({}, myApplications.search)
+        myApplications.tempSearch['grant.status']=qsValue;
+        let tempOpts = {
+            personId: API.getUser(),
+            useCuid:true,
+            qs: APIHelpers.getQs(myApplications.tempSearch)
+        }
+        API.cui.getPersonGrantedAppCount(tempOpts)
+        .then(res=>{
+            if (qsValue==="active") {
+                myApplications.activeCount=res;
+            }
+            else{
+                myApplications.suspendedCount=res;
+            }
+            $scope.$digest();
+        })
+        .fail(err=>{
+
+        })
+    }
+
+    const getCountsOfcategories=()=>{
+        myApplications.categories.forEach((category,index)=>{
+            myApplications.tempSearch= Object.assign({}, myApplications.search)
+            myApplications.tempSearch['service.category']=$filter('cuiI18n')(category.name)
+            console.log($filter('cuiI18n')(category.name))
+            let tempOpts = {
+                personId: API.getUser(),
+                useCuid:true,
+                qs: APIHelpers.getQs(myApplications.tempSearch)
+            }
+            API.cui.getPersonGrantedAppCount(tempOpts)
+            .then(res=>{
+                category.count=res;
+                if (index===myApplications.categories.length-1) {
+                    $scope.$digest();
+                };
+            })
+            .fail(err=>{
+                console.log(err);
+                if (index===myApplications.categories.length-1) {
+                    $scope.$digest();
+                };
+            })            
+        })
+    }
+
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
@@ -53,7 +102,7 @@ angular.module('applications')
             API.cui.getCategories()
             .then(res => {
                 APIError.offFor(loaderName + 'categories')
-                myApplications.categories = Object.assign({}, res)
+                myApplications.categories = res;
                 APIError.offFor(loaderName + 'categories')
             })
             .fail(err => {
@@ -90,7 +139,7 @@ angular.module('applications')
                 appCount: myApplications.count, 
                 categories: myApplications.categories
             }
-
+            getCountsOfcategories()
             DataStorage.setType('myApplicationsList', storageData)
             APIError.offFor(loaderName + 'apps')
         })
@@ -105,6 +154,12 @@ angular.module('applications')
                 checkedLocalStorage ? Loader.offFor(loaderName + 'updating') : Loader.offFor(loaderName + 'apps')
             }
         })
+        //Lazy loading of counts of applications based on status 
+        //to display in popover
+        getCountsOfStatus("active")
+        getCountsOfStatus("suspended")
+
+
     }
 
     loadStoredData()
@@ -120,10 +175,10 @@ angular.module('applications')
     myApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'alphabetic':
-                switchBetween('sort', '+service.name', '-service.name')
+                switchBetween('sortBy', '+service.name', '-service.name')
                 break
             case 'date':
-                switchBetween('sort', '+grant.instant', '-grant.instant')
+                switchBetween('sortBy', '+grant.instant', '-grant.instant')
                 break
             case 'status':
                 myApplications.search.page = 1

@@ -48,17 +48,17 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.refineClicked" style="width:214px">
-        <div class="cui-popover__row">
+        <div class="cui-popover__row cui-popover--row__flex">
           <span ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</span>
+          <span>({{myApplications.count}})</span>
         </div>
-        <div class="cui-popover__row">
+        <div class="cui-popover__row cui-popover--row__flex">
           <span ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+          <span>({{myApplications.activeCount}})</span>
         </div>
-        <div class="cui-popover__row">
+        <div class="cui-popover__row cui-popover--row__flex">
           <span ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
-        </div>
-        <div class="cui-popover__row">
-          <span ng-click="myApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
+          <span>({{myApplications.suspendedCount}})</span>
         </div>
       </div>
     </div>
@@ -69,11 +69,13 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false" style="width:214px">
-        <div class="cui-popover__row">
+        <div class="cui-popover__row cui-popover--row__flex">
           <span ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</span>
+          <span>({{myApplications.count}})</span>
         </div>
-        <div class="cui-popover__row" ng-repeat="category in myApplications.categories">
+        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in myApplications.categories">
           <span ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
+          <span>({{category.count}})</span>
         </div>
       </div>
     </div>
