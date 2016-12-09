@@ -129,8 +129,9 @@ angular.module('applications')
 
         $q.all(promises)
         .then(res => {
-            myApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
+            // myApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
             myApplications.count = res[1]
+            myApplications.list=res[0];
             // re-render pagination if available
             myApplications.reRenderPaginate && myApplications.reRenderPaginate()
 
