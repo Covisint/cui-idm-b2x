@@ -21,16 +21,20 @@ angular.module('applications')
     }
 
     const getCountsOfStatus=(qsValue)=>{
-        myApplications.tempSearch= Object.assign({}, myApplications.search)
-        myApplications.tempSearch['grant.status']=qsValue;
-        let tempOpts = {
+        let opts = {
             personId: API.getUser(),
-            useCuid:true,
-            qs: APIHelpers.getQs(myApplications.tempSearch)
+            useCuid:true
         }
-        API.cui.getPersonGrantedAppCount(tempOpts)
+        //Assign query strings if any value passed 
+        //otherwise it will get full count
+        if (qsValue) {
+            opts.qs = [['grant.status',qsValue]]
+        }
+        API.cui.getPersonGrantedAppCount(opts)
         .then(res=>{
-            if (qsValue==="active") {
+            if (!qsValue) {
+                myApplications.popupCount=res;
+            }else if (qsValue==="active") {
                 myApplications.activeCount=res;
             }
             else{
@@ -45,15 +49,13 @@ angular.module('applications')
 
     const getCountsOfcategories=()=>{
         myApplications.categories.forEach((category,index)=>{
-            myApplications.tempSearch= Object.assign({}, myApplications.search)
-            myApplications.tempSearch['service.category']=$filter('cuiI18n')(category.name)
             console.log($filter('cuiI18n')(category.name))
-            let tempOpts = {
+            let opts = {
                 personId: API.getUser(),
-                useCuid:true,
-                qs: APIHelpers.getQs(myApplications.tempSearch)
+                useCuid:true
             }
-            API.cui.getPersonGrantedAppCount(tempOpts)
+            opts.qs=[['service.category',$filter('cuiI18n')(category.name)]]
+            API.cui.getPersonGrantedAppCount(opts)
             .then(res=>{
                 category.count=res;
                 if (index===myApplications.categories.length-1) {
@@ -103,6 +105,7 @@ angular.module('applications')
             .then(res => {
                 APIError.offFor(loaderName + 'categories')
                 myApplications.categories = res;
+                getCountsOfcategories()
                 APIError.offFor(loaderName + 'categories')
             })
             .fail(err => {
@@ -140,7 +143,6 @@ angular.module('applications')
                 appCount: myApplications.count, 
                 categories: myApplications.categories
             }
-            getCountsOfcategories()
             DataStorage.setType('myApplicationsList', storageData)
             APIError.offFor(loaderName + 'apps')
         })
@@ -159,6 +161,8 @@ angular.module('applications')
         //to display in popover
         getCountsOfStatus("active")
         getCountsOfStatus("suspended")
+        //To getFull count
+        getCountsOfStatus(undefined)
 
 
     }
