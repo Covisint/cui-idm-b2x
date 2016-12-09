@@ -12,20 +12,29 @@
 
       <!-- Phone/Fax -->
       <div ng-if="!toggled" ng-repeat="phone in userProfile.user.phones">
-        <span class="cui-field-val__field">{{phone.type}}:</span>
+        <span class="cui-field-val__field" ng-if="$index==0">{{"cui-phone-office" | translate}}:</span>
+        <span class="cui-field-val__field" ng-if="$index==1">{{"cui-phone-mobile" | translate}}:</span>
+        <span class="cui-field-val__field" ng-if="$index==2">{{"cui-phone-fax" | translate}}:</span>
         <span class="cui-field-val__val">{{phone.number}}</span>
       </div>
 
       <!-- Phones Edit -->
       <div ng-if="toggled">
         <!-- Phone Fields -->
-        <div ng-repeat="phone in userProfile.tempUser.phones">
-          <label>{{phone.type}}</label>
-          <div ng-messages="phoneFax['phone'+$index].$error" class="cui-error">
-            <div ng-messages-include="app/common-templates/messages.html"></div>
-          </div>
-          <input class="cui-input" type="text" ng-model="phone.number" name="phone{{$index}}" ng-required="true" />
+
+        <label><b>*{{"cui-phone-office" | translate}}</b></label>
+        <div class="cui-error" ng-messages="phoneFax.telephone.$error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
+        <input type="text" ng-model="userProfile.tempUser.phones[0].number" class="cui-input" name="telephone" autocomplete="off" ng-required="true"/>
+
+        <!-- Mobile phone number -->
+        <label>{{"cui-phone-mobile" | translate}}</label>
+        <input type="text" ng-model="userProfile.tempUser.phones[1].number" class="cui-input" name="mobphone" autocomplete="off"/>
+
+        <!-- Fax -->
+        <label for="user-fax">{{'cui-phone-fax'| translate}}</label>
+        <input type="text" name="faxNumber" class="cui-input" ng-model="userProfile.tempUser.phones[2].number" autocomplete="off">
 
         <!-- Phone Edit Controls -->
         <div class="cui-users__address-submit">
