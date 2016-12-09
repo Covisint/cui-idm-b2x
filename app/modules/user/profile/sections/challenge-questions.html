@@ -1,6 +1,10 @@
 <ng-form name="challengeQuestions">
   <div class="cui-users__field">
     <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-checkbox__container">
+          <input type="checkbox" name="option-1" id="option-1" class="cui-checkbox" ng-model="userProfile.maskAnswers" ng-click="userProfile.updateUIMasking();"/>
+          <label for="option-1" class="cui-checkbox__label">{{'cui-mask-answers'|translate}}</label>
+      </div>
       <div class="cui-users__field">
         <span class="cui-field-val__field">{{'challenge-questions' | translate}}</span>
         <span disable-animate class="cui-link" href="" ng-if="!toggled" ng-click="userProfile.toggleAllOff();toggleOn()">{{'cui-edit' | translate}}</span>
@@ -28,7 +32,7 @@
           <div class="cui-error" ng-messages="challengeQuestions['answer' + $index].$error">
             <div ng-messages-include="app/common-templates/messages.html"></div>
           </div>
-          <input type="text" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userProfile.checkIfRepeatedSecurityAnswer(userProfile.tempUserSecurityQuestions.questions,challengeQuestions)" ng-required="true"/>
+          <input type="{{userProfile.inputType}}" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userProfile.checkIfRepeatedSecurityAnswer(userProfile.tempUserSecurityQuestions.questions,challengeQuestions)" ng-required="true"/>
           <br/><br/>
         </div>
 
