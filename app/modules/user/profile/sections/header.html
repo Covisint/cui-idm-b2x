@@ -9,7 +9,7 @@
       <h3 class="cui-media__title">{{userProfile.user.name.given}} {{userProfile.user.name.surname}}</h3>
       <!-- UserID -->
       <p class="cui-media__content--small" ng-if="userProfile.registeredDate">{{'cui-registered' | translate}}: {{userProfile.registeredDate | date:base.appConfig.dateFormat}}</p>
-      <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.id}}</p>
+      <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.username}}</p>
     </div>
   </div>
 </div>
