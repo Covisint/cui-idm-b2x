@@ -22,6 +22,17 @@ angular.module('user')
     /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
+    userProfile.maskAnswers=true;
+    userProfile.inputType = 'password';
+    userProfile.updateUIMasking=function(){
+         if(userProfile.maskAnswers){
+            userProfile.inputType='password';
+        }
+        else{
+            userProfile.inputType='text';
+        }
+    }
+    
     UserProfile.injectUI(userProfile, $scope, User.user.id)
 
     Loader.onFor(scopeName + 'initProfile')
