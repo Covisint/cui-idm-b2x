@@ -17,7 +17,7 @@ angular.module('applications',[])
             abstract: true
         })
         .state('applications.myApplications', {
-            url: '?name&page&pageSize&category&sort&refine',
+            url: '?name&page&pageSize&service.category&sortBy&grant.status',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications'),
             access:loginRequired

@@ -5,6 +5,21 @@ angular.module('common')
 
     const UserProfile = {
 
+        setPhone:function(type,index){
+            var phone={};
+            phone.type=type;
+            phone.number="";
+            return phone;
+        },
+
+        getTodaysDate:function(){
+            let today=new Date()
+            let dd=today.getDate()
+            let yyyy=today.getFullYear()
+            let mmm=today.toString().substring(4,7);
+            return dd+'-'+mmm+'-'+yyyy
+        },
+
         initUser: function(userId) {
             let defer = $q.defer()
             let user = {}
@@ -17,6 +32,46 @@ angular.module('common')
                 }
                 user.user = Object.assign({}, res)
                 user.tempUser = Object.assign({}, res)
+                //When user doesnot have any phones(data issue)
+                    if (!user.tempUser.phones) {
+                        user.tempUser.phones=[];
+                        debugger
+                        user.tempUser.phones[0]=UserProfile.setPhone("main",0);
+                        user.tempUser.phones[1]=UserProfile.setPhone("mobile",1);
+                        user.tempUser.phones[2]=UserProfile.setPhone("fax",2);
+                    }else{
+                        //When user have fax/mobile but not mobile
+                        if (user.tempUser.phones[0] && user.tempUser.phones[0].type!=="main") {
+                            if (user.tempUser.phones[0].type==="fax") {
+                                user.tempUser.phones[2]=angular.copy(user.tempUser.phones[0]);
+                                user.tempUser.phones[0]=UserProfile.setPhone("main",0);
+                                user.tempUser.phones[1]=UserProfile.setPhone("mobile",1);
+                            }else if (user.tempUser.phones[0].type==="mobile" && user.tempUser.phones[1]) {
+                                user.tempUser.phones[2]=angular.copy(user.tempUser.phones[1]);
+                                user.tempUser.phones[1]=angular.copy(user.tempUser.phones[0]);
+                                user.tempUser.phones[0]=UserProfile.setPhone("main",0);
+                            }else
+                            {
+                                user.tempUser.phones[1]=angular.copy(user.tempUser.phones[0]);
+                                user.tempUser.phones[0]=UserProfile.setPhone("main",0);
+                                user.tempUser.phones[2]=UserProfile.setPhone("fax",2);
+                            }
+                        }
+                        else if (user.tempUser.phones[1]) {
+                            if (user.tempUser.phones[1].type==="fax") {
+                                user.tempUser.phones[2]=angular.copy(user.tempUser.phones[1]);
+                                user.tempUser.phones[1]=UserProfile.setPhone("mobile",1);
+                            }else{
+                                if (!user.tempUser.phones[2]) {
+                                    user.tempUser.phones[2]=UserProfile.setPhone("fax",2);
+                                };
+                            }
+                        }else{
+                            user.tempUser.phones[1]=UserProfile.setPhone("mobile",1);
+                            user.tempUser.phones[2]=UserProfile.setPhone("fax",2);
+                        }
+                    }
+                    angular.copy(user.tempUser, user.user);
                 defer.resolve(user)
             })
             .fail(err => {
@@ -115,16 +170,24 @@ angular.module('common')
 
         initRegisteredDate: function(userId) {
             const defer = $q.defer()
+            let lastDate=UserProfile.getTodaysDate();
 
-            API.cui.getPersonStatusHistory({qs : [
+            API.cui.getPersonDetailedStatusHistory({qs : [
                 ['userId', userId], 
-                ['sortBy', '+creation']
+                ['startDate','01-Jan-2016'],
+                ['lastDate',lastDate]
             ]})
             .then(res => {
-                res.forEach(status => {
+                let activeStatusList=[];
+                res.forEach((status, index) => {
                     if (status.status === 'ACTIVE') {
-                        defer.resolve(status.creation)             
+                        activeStatusList.push(status)
                     }
+                    if (res.length-1===index) {
+                        _.orderBy(activeStatusList, ['creation'], ['asc'])
+                        defer.resolve(activeStatusList[0].creation) 
+                    }          
+                    
                 })
             })
             .fail(error => {

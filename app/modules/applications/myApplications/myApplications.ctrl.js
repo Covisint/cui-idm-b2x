@@ -20,6 +20,57 @@ angular.module('applications')
             : firstValue
     }
 
+    const getCountsOfStatus=(qsValue)=>{
+        let opts = {
+            personId: API.getUser(),
+            useCuid:true
+        }
+        //Assign query strings if any value passed 
+        //otherwise it will get full count
+        if (qsValue) {
+            opts.qs = [['grant.status',qsValue]]
+        }
+        API.cui.getPersonGrantedAppCount(opts)
+        .then(res=>{
+            if (!qsValue) {
+                myApplications.popupCount=res;
+            }else if (qsValue==="active") {
+                myApplications.activeCount=res;
+            }
+            else{
+                myApplications.suspendedCount=res;
+            }
+            $scope.$digest();
+        })
+        .fail(err=>{
+
+        })
+    }
+
+    const getCountsOfcategories=()=>{
+        myApplications.categories.forEach((category,index)=>{
+            console.log($filter('cuiI18n')(category.name))
+            let opts = {
+                personId: API.getUser(),
+                useCuid:true
+            }
+            opts.qs=[['service.category',$filter('cuiI18n')(category.name)]]
+            API.cui.getPersonGrantedAppCount(opts)
+            .then(res=>{
+                category.count=res;
+                if (index===myApplications.categories.length-1) {
+                    $scope.$digest();
+                };
+            })
+            .fail(err=>{
+                console.log(err);
+                if (index===myApplications.categories.length-1) {
+                    $scope.$digest();
+                };
+            })            
+        })
+    }
+
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
@@ -53,7 +104,8 @@ angular.module('applications')
             API.cui.getCategories()
             .then(res => {
                 APIError.offFor(loaderName + 'categories')
-                myApplications.categories = Object.assign({}, res)
+                myApplications.categories = res;
+                getCountsOfcategories()
                 APIError.offFor(loaderName + 'categories')
             })
             .fail(err => {
@@ -80,8 +132,9 @@ angular.module('applications')
 
         $q.all(promises)
         .then(res => {
-            myApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
+            // myApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
             myApplications.count = res[1]
+            myApplications.list=res[0];
             // re-render pagination if available
             myApplications.reRenderPaginate && myApplications.reRenderPaginate()
 
@@ -90,7 +143,6 @@ angular.module('applications')
                 appCount: myApplications.count, 
                 categories: myApplications.categories
             }
-
             DataStorage.setType('myApplicationsList', storageData)
             APIError.offFor(loaderName + 'apps')
         })
@@ -105,6 +157,14 @@ angular.module('applications')
                 checkedLocalStorage ? Loader.offFor(loaderName + 'updating') : Loader.offFor(loaderName + 'apps')
             }
         })
+        //Lazy loading of counts of applications based on status 
+        //to display in popover
+        getCountsOfStatus("active")
+        getCountsOfStatus("suspended")
+        //To getFull count
+        getCountsOfStatus(undefined)
+
+
     }
 
     loadStoredData()
@@ -120,18 +180,18 @@ angular.module('applications')
     myApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'alphabetic':
-                switchBetween('sort', '+service.name', '-service.name')
+                switchBetween('sortBy', '+service.name', '-service.name')
                 break
             case 'date':
-                switchBetween('sort', '+grant.instant', '-grant.instant')
+                switchBetween('sortBy', '+grant.instant', '-grant.instant')
                 break
             case 'status':
                 myApplications.search.page = 1
-                myApplications.search.refine = updateValue
+                myApplications.search['grant.status'] = updateValue
                 break
             case 'category':
                 myApplications.search.page = 1
-                myApplications.search.category = $filter('cuiI18n')(updateValue)
+                myApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
                 break
         }
 
