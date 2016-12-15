@@ -9,7 +9,7 @@ angular.module('common')
         person: function(registrationData) {
             const personData = Object.assign({}, registrationData.profile)
 
-            personData.addresses[0].country = registrationData.userCountry.title
+            personData.addresses[0].country = registrationData.userCountry.originalObject.code
             personData.language = Base.getLanguageCode()
             personData.timezone = 'EST5EDT'
             personData.organization = { id: registrationData.organization.id }
