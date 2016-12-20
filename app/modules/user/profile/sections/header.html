@@ -10,6 +10,7 @@
       <!-- UserID -->
       <p class="cui-media__content--small" ng-if="userProfile.registeredDate">{{'cui-registered' | translate}}: {{userProfile.registeredDate | date:base.appConfig.dateFormat}}</p>
       <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userProfile.user.username}}</p>
+      <p class="cui-media__content--small">{{'cui-last-login' | translate}}: {{userProfile.user.lastLoginDate | date:base.appConfig.dateFormat}}</p>
     </div>
   </div>
 </div>
