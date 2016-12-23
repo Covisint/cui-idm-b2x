@@ -30,6 +30,10 @@ angular.module('common')
                 if (!res.addresses) {
                     res.addresses = [{streets: []}];
                 }
+                //If there is no streets in address we need to initialie it
+                else if (!res.addresses[0].streets) {
+                    res.addresses[0].streets=[];
+                };
                 user.user = Object.assign({}, res)
                 user.tempUser = Object.assign({}, res)
                 //When user doesnot have any phones(data issue)
