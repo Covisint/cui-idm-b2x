@@ -39,7 +39,6 @@ angular.module('common')
                 //When user doesnot have any phones(data issue)
                     if (!user.tempUser.phones) {
                         user.tempUser.phones=[];
-                        debugger
                         user.tempUser.phones[0]=UserProfile.setPhone("main",0);
                         user.tempUser.phones[1]=UserProfile.setPhone("mobile",1);
                         user.tempUser.phones[2]=UserProfile.setPhone("fax",2);
@@ -324,6 +323,7 @@ angular.module('common')
             }
 
             profile.updatePerson = (section, toggleOff) => {
+                let tempUserWithoutLastLogin;
                 if (section) {
                     profile[section] = { submitting: true }
                 }
@@ -336,8 +336,13 @@ angular.module('common')
 
                 // [7/20/2016] Note: Can't pass in 'activatedDate' anymore when updating a person
                 delete profile.tempUser.activatedDate
+                // Can't pass lastLoginDate
+                tempUserWithoutLastLogin= Object.assign({}, profile.tempUser)
+                if (tempUserWithoutLastLogin.lastLoginDate) {
+                    delete tempUserWithoutLastLogin.lastLoginDate
+                };
 
-                API.cui.updatePerson({personId: userId, data:profile.tempUser})
+                API.cui.updatePerson({personId: userId, data:tempUserWithoutLastLogin})
                 .always(() => {
                     if (section) {
                         profile[section].submitting = false;
