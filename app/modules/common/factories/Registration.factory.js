@@ -71,7 +71,7 @@ angular.module('common')
                 justification: 'User Walkup Registration'
             }
 
-            if (packageData.selected) {
+            if (packageData && packageData.selected) {
                 request.packages = []
                 angular.forEach(packageData.selected, function(servicePackage) {
                     // userWalkup.applications.selected is an array of strings that looks like
@@ -200,13 +200,8 @@ angular.module('common')
             return API.cui.postUserRegistrationNonce({data: submitData})
         })
         .then(res => {
-            if (registrationData.applications.numberOfSelected !== 0) {
-                const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications)
-                return API.cui.postPersonRequestNonce({data: packageRequestData})
-            }
-            else {
-                defer.resolve(res)
-            }
+            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications)
+            return API.cui.postPersonRequestNonce({data: packageRequestData})
         })
         .then(res => {
             defer.resolve(res)
@@ -244,6 +239,10 @@ angular.module('common')
         })
 
         return deferred.promise()
+    }
+
+    pub.getTaC = (packageId) => {
+        return self.makeNonceCall("getOrgTacOfPackage",{packageId:packageId})
     }
 
     pub.isUsernameTaken = name => {
