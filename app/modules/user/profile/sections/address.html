@@ -23,7 +23,10 @@
       <div ng-if='toggled' ng-init="userProfile.pushToggleOff({'name':'address','function':toggleOff})">
         <!-- Street Address -->
         <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
-        <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="userProfile.tempUser.addresses[0].streets[0]">
+        <div class="cui-error" ng-messages="address.streetAddress.$error">
+            <div ng-messages-include="app/common-templates/messages.html"></div>
+          </div>
+        <input type="text" name="streetAddress" class="cui-input" ng-model="userProfile.tempUser.addresses[0].streets[0]" ng-required="true">
         <!-- Address 2 -->
         <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
         <input type="text" name="{{'cui-address-2' | translate}}" ng-model="userProfile.tempUser.addresses[0].streets[1]" class="cui-input">
@@ -45,10 +48,10 @@
         <!-- Country -->
         <div class="cui-wizard__field-container">
           <label for="country">{{"cui-country" | translate}}</label>
-          <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
-            <div ng-messages-include="app/angular-templates/messages.html"></div>
+          <div class="cui-error ng-active" ng-messages="address.country.$error" ng-if="address.country.$dirty">
+            <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
           </div>
-          <div auto-complete input-name="country" pause="100" selected-object="userProfile.userCountry" initial-value="base.countries.getCountryByCode(userProfile.tempUser.addresses[0].country)" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+          <div auto-complete input-name="country" pause="100" selected-object="userProfile.userCountry" initial-value="base.countries.getCountryByCode(userProfile.tempUser.addresses[0].country)" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="userProfile.userCountry"></div>
         </div>
 
         <!-- Address Edit Controls -->
@@ -58,9 +61,9 @@
           <cui-button
             loading-if="userProfile.address.submitting"
             loading-message="{{'cui-button-loading-text' | translate}}"
-            button-click="userProfile.updatePerson('address', toggleOff)"
+            button-click="address.$valid && userProfile.updatePerson('address', toggleOff)"
           >
-            <button class="cui-button">
+            <button class="cui-button" ng-class="{ 'cui-button--error': !address.$valid }">
               <span ng-if="!userProfile.address || !userProfile.address.submitting">{{'cui-update' | translate}}</span>
             </button>
           </cui-button>
