@@ -10,8 +10,6 @@ angular.module('common')
             const personData = Object.assign({}, registrationData.profile)
 
             personData.addresses[0].country = registrationData.userCountry.originalObject.code
-            personData.language = Base.getLanguageCode()
-            personData.timezone = 'EST5EDT'
             personData.organization = { id: registrationData.organization.id }
 
             if (personData.phones[0]) {

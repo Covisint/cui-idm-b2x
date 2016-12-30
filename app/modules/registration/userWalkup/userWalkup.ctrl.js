@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state) {
+.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window) {
 
     const userWalkup = this
 
@@ -7,9 +7,31 @@ angular.module('registration')
     userWalkup.userLogin = {}
     userWalkup.applications.numberOfSelected = 0
     userWalkup.submitError = false
-
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
+    //for detectig browser time
+    var d = new Date();
+    var tz = d.toTimeString();
+
+    //for detectig browser language
+    var lang = $window.navigator.language || $window.navigator.userLanguage;
+
+    if (lang.indexOf('en-')>=0) { userWalkup.browserPreference='en'; }
+    else if (lang.indexOf('zh')>=0) {userWalkup.browserPreference='zh'; }
+    else if (lang.indexOf('pl')>=0) { userWalkup.browserPreference='pl'; }
+    else if (lang.indexOf('pt')>=0) { userWalkup.browserPreference='pt'; }
+    else if (lang.indexOf('tr')>=0) { userWalkup.browserPreference='tr'; }
+    else if (lang.indexOf('fr')>=0) { userWalkup.browserPreference='fr'; }
+    else if (lang.indexOf('ja')>=0) { userWalkup.browserPreference='ja'; }
+    else if (lang.indexOf('es')>=0) { userWalkup.browserPreference='es'; }
+    else if (lang.indexOf('de')>=0) { userWalkup.browserPreference='de'; }
+    else if (lang.indexOf('ru')>=0) { userWalkup.browserPreference='ru'; }
+    else if (lang.indexOf('it')>=0) { userWalkup.browserPreference='it'; }
+    else { 
+        console.log(lang+ "not supported")
+        userWalkup.browserPreference='en'; 
+    }
+    LocaleService.setLocaleByDisplayName(appConfig.languages[userWalkup.browserPreference])
     userWalkup.initializing = true
 
     if (!localStorageService.get('userWalkup.user')) {
@@ -21,8 +43,9 @@ angular.module('registration')
     } 
     else {
         userWalkup.user = localStorageService.get('userWalkup.user');
+        
     }
-
+    userWalkup.user.language=userWalkup.browserPreference
     Registration.initWalkupRegistration()
     .then(res => {
         const questions = res.securityQuestions
@@ -159,12 +182,27 @@ angular.module('registration')
         }
     }, true)
 
+    userWalkup.checkDuplicateEmail = () => {
+        $q.all([Registration.isEmailTaken(userWalkup.user.email).promise])
+        .then(res => {
+            userWalkup.isEmailTaken=res[0]
+        })
+    }
+    
+    userWalkup.checkDuplicateEmail(userWalkup.user.email)
     userWalkup.customErrors = {
         userName: {
             usernameTaken: Registration.isUsernameTaken
         },
         email: {
-            emailTaken: Registration.isEmailTaken
+            email: function(){
+                var EMAIL_REGEXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i;
+                if (userWalkup.user.email) {
+                    return EMAIL_REGEXP.test(userWalkup.user.email)
+                }else{
+                    return true;
+                }
+            }
         }
     }
 
