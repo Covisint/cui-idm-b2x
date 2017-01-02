@@ -1,42 +1,88 @@
 <!-- User Information -->
 <cui-expandable class="cui-expandable expanded">
-  <div class="cui-expandable__edit-button" ng-click="goToStep(1)">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(1)">
     <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
-  </div>
+  </div> -->
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
     {{'cui-user-information' | translate}}
     <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
   </cui-expandable-title>
 
-  <cui-expandable-body class="cui-expandable__body">
+  <cui-expandable-body disable-animate class="cui-expandable__body">
     <!-- First Name -->
-    <div class="cui-expandable__review-item">{{'cui-first-name' | translate}}: <span class="review-item__value">{{userWalkup.user.name.given}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.firstNameError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-first-name" model="userWalkup.user.name.given" on-edit="userWalkup.inlineEdit.firstName" hide-save-if="userWalkup.inlineEdit.noSaveFirstName"></inline-edit>
+    </div>
     <!-- Last Name -->
-    <div class="cui-expandable__review-item">{{'cui-last-name' | translate}}: <span class="review-item__value">{{userWalkup.user.name.surname}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.lastNameError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-last-name" model="userWalkup.user.name.surname" on-edit="userWalkup.inlineEdit.lastName" hide-save-if="userWalkup.inlineEdit.noSavelastName"></inline-edit>
+    </div>
     <!-- Email -->
-    <div class="cui-expandable__review-item">{{'cui-email' | translate}}: <span class="review-item__value">{{userWalkup.user.email}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.emailError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-email" model="userWalkup.user.email" on-edit="userWalkup.inlineEdit.email" hide-save-if="userWalkup.inlineEdit.noSaveEmail"></inline-edit>
+    </div>
     <!-- Country -->
-    <div class="cui-expandable__review-item">{{'cui-country' | translate}}: <span class="review-item__value">{{userWalkup.userCountry.title || userWalkup.userCountry}}</span></div>
-    <!-- Address 1 -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[0] && userWalkup.user.addresses[0].streets[0]!==''">{{'cui-address-1' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].streets[0]}}</span></div>
-    <!-- Address 2 -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].streets[1] && userWalkup.user.addresses[0].streets[1]!==''">{{'cui-address-2' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].streets[1]}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.countryError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  type="auto-complete" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input cui-expandable__review-input__autocomplete" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-country" model="userWalkup.userCountry" display="userWalkup.userCountry.title" selected-object="userWalkup.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" on-edit="userWalkup.inlineEdit.country" hide-save-if="userWalkup.inlineEdit.noSaveCountry" field-required="userWalkup.userCountry"></inline-edit>
+    </div>
+    <!-- Address1 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.address1Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-1" model="userWalkup.user.addresses[0].streets[0]" on-edit="userWalkup.inlineEdit.address1" hide-save-if="userWalkup.inlineEdit.noSaveAddress1"></inline-edit>
+    </div>
+    <!-- Address2 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-2" model="userWalkup.user.addresses[0].streets[1]"></inline-edit>
+    </div>
     <!-- City -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].city && userWalkup.user.addresses[0].city!==''">{{'cui-city' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].city}}</span></div>
-    <!-- State -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].state && userWalkup.user.addresses[0].state!==''">{{'cui-state' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].state}}</span></div>
-    <!-- Postal -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.addresses[0].postal && userWalkup.user.addresses[0].postal!==''">{{'cui-postal' | translate}}: <span class="review-item__value">{{userWalkup.user.addresses[0].postal}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-city" model="userWalkup.user.addresses[0].city"></inline-edit>
+    </div>
+    <!-- state -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-state" model="userWalkup.user.addresses[0].state"></inline-edit>
+    </div>
+    <!-- postal -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-postal" model="userWalkup.user.addresses[0].postal"></inline-edit>
+    </div>
     <!-- Phone Number -->
-    <div class="cui-expandable__review-item" ng-if="userWalkup.user.phones[0].number && userWalkup.user.phones[0].number!==''">{{'cui-telephone' | translate}}: <span class="review-item__value">{{userWalkup.user.phones[0].number}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.telephoneError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-telephone" model="userWalkup.user.phones[0].number" on-edit="userWalkup.inlineEdit.telephone" hide-save-if="userWalkup.inlineEdit.noSaveTelephone"></inline-edit>
+    </div> 
+    <!-- Language -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-language" model="userWalkup.user.language" options-expression="key as (value) for (key,value) in options"  options="base.languages"></inline-edit>
+    </div>
+    <!-- Timezone -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-timezone" model="userWalkup.user.timezone" options-expression="timeZone.id as timeZone.name  for timeZone in options"  options="base.timezones"></inline-edit>
+    </div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Organization Information -->
 <cui-expandable class="cui-expandable expanded">
-  <div class="cui-expandable__edit-button" ng-click="goToStep(2)">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(2)">
     <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
-  </div>
+  </div> -->
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
       {{'cui-organization-information' | translate}}
       <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -44,41 +90,60 @@
 
     <cui-expandable-body class="cui-expandable__body">
       <!-- Company/Division -->
-      <div class="cui-expandable__review-item">{{'cui-org' | translate}}: <span class="review-item__value">{{userWalkup.organization.name}}</span></div>
+      <div class="cui-expandable__review-item"><span class="cui-expandable__review-item__field">{{'cui-org' | translate}}</span> <span class="review-item__value">{{userWalkup.organization.name}}</span></div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Sign In Information -->
 <cui-expandable class="cui-expandable expanded">
-  <div class="cui-expandable__edit-button" ng-click="goToStep(3)">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(3)">
     <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
-  </div>
+  </div> -->
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
     {{'cui-sign-in-information' | translate}}
     <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
   </cui-expandable-title>
 
-  <cui-expandable-body class="cui-expandable__body">
+  <cui-expandable-body disable-animate class="cui-expandable__body">
     <!-- User ID -->
-     <div class="cui-expandable__review-item">{{'cui-user-id' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.username}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.userIdError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-user-id" model="userWalkup.userLogin.username" on-edit="userWalkup.inlineEdit.userId" hide-save-if="userWalkup.inlineEdit.noSaveUserId"></inline-edit>
+    </div>
     <!-- Password -->
-    <div class="cui-expandable__review-item">{{'cui-password' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
+    <div class="cui-expandable__review-item"><span class="cui-expandable__review-item__field">{{'cui-password' | translate}}</span> <span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.question1.question | cuiI18n}}</span></div>
+        <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-question" model="userWalkup.userLogin.question1" display="userWalkup.userLogin.question1.question | cuiI18n" options-expression="question as (question.question|cuiI18n) for question in options"  options="userWalkup.userLogin.challengeQuestions1"></inline-edit>
+    </div>
     <!-- Challenge Answer 1 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.challengeAnswer1}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.challengeAnswer1Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer1" on-edit="userWalkup.inlineEdit.challengeAnswer1" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer1"></inline-edit>
+    </div>
     <!-- Challenge Question 2 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-question' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.question2.question | cuiI18n}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-question" model="userWalkup.userLogin.question2" display="userWalkup.userLogin.question2.question | cuiI18n" options-expression="question as (question.question|cuiI18n) for question in options"  options="userWalkup.userLogin.challengeQuestions2"></inline-edit>
+    </div>
     <!-- Challenge Answer 2 -->
-    <div class="cui-expandable__review-item">{{'cui-challenge-answer' | translate}}: <span class="review-item__value">{{userWalkup.userLogin.challengeAnswer2}}</span></div>
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="userWalkup.inlineEdit.challengeAnswer2Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer2" on-edit="userWalkup.inlineEdit.challengeAnswer2" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer2"></inline-edit>
+    </div>
   </cui-expandable-body>
 </cui-expandable>
 
 <!-- Application Selection -->
 <cui-expandable class="cui-expandable expanded">
-  <div class="cui-expandable__edit-button" ng-click="goToStep(4)">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(4)">
     <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
-  </div>
+  </div> -->
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
     {{'cui-application-selection' | translate}}
     <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>

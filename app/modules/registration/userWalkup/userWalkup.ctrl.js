@@ -203,8 +203,152 @@ angular.module('registration')
                     return true;
                 }
             }
+        },
+        answersMatch: {
+            answersMatch:function(){
+                if (userWalkup.userLogin && userWalkup.userLogin.challengeAnswer2) {
+                    return userWalkup.userLogin.challengeAnswer2!==userWalkup.userLogin.challengeAnswer1;
+                }else{
+                    return true
+                }
+            }
         }
     }
+
+    //Error handlers for Inline Edits in review page
+    $scope.$watch('userWalkup.userCountry', (country) => {
+        if (country) {
+            userWalkup.inlineEdit.countryError={
+                required:false
+            }
+        }
+    }, true)
+    userWalkup.inlineEdit = {
+        firstName:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.firstNameError={}
+            }
+            else{
+                userWalkup.inlineEdit.firstNameError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveFirstName=value==="" || !value
+        },
+        lastName:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.lastNameError={}
+            }
+            else{
+                userWalkup.inlineEdit.lastNameError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveLastName=value==="" || !value
+        },
+        email:function(value){
+            var EMAIL_REGXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.emailError={}
+            }
+            else{
+                userWalkup.inlineEdit.emailError={
+                    required: value==="" || !value,
+                    email:!EMAIL_REGXP.test(value)
+                }   
+            }
+            userWalkup.inlineEdit.noSaveEmail=value==="" || !value || !EMAIL_REGXP.test(value)
+        },
+        //For autocomplete need to handle differently
+        country:function(value){
+            console.log(value)
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.countryError={
+                    required:true
+                }
+            }else{
+                userWalkup.inlineEdit.countryError={
+                    required:false
+                }
+            }
+            userWalkup.inlineEdit.noSaveCountry=value===undefined 
+        },
+        address1:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.address1Error={}
+            }
+            else{
+                userWalkup.inlineEdit.address1Error={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveAddress1=value==="" || !value
+        },
+        telephone:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.telephoneError={}
+            }
+            else{
+                userWalkup.inlineEdit.telephoneError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveTelephone=value==="" || !value
+        },
+        userId:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.userIdError={}
+            }
+            else{
+                userWalkup.inlineEdit.userIdError={
+                    required: value==="" || !value,
+                } 
+                //usernameTaken: 
+                $q.all([Registration.isUsernameTaken(value).promise])
+                .then(res => {
+                    userWalkup.inlineEdit.userIdError.usernameTaken=!res[0]
+                    userWalkup.inlineEdit.noSaveUserId=value==="" || !value ||userWalkup.inlineEdit.userIdError.usernameTaken
+                }) 
+            }
+             userWalkup.inlineEdit.noSaveUserId=value==="" || !value
+        },
+        challengeAnswer1:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.challengeAnswer1Error={}
+            }
+            else{
+                userWalkup.inlineEdit.challengeAnswer1Error={
+                    required: value==="" || !value,
+                    answersMatch:value===userWalkup.userLogin.challengeAnswer2
+                }   
+            }
+            userWalkup.inlineEdit.noSaveChallengeAnswer1=value==="" || !value||value===userWalkup.userLogin.challengeAnswer2
+        },
+        challengeAnswer2:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.challengeAnswer2Error={}
+            }
+            else{
+                userWalkup.inlineEdit.challengeAnswer2Error={
+                    required: value==="" || !value,
+                    answersMatch:value===userWalkup.userLogin.challengeAnswer1
+                }   
+            }
+            userWalkup.inlineEdit.noSaveChallengeAnswer2=value==="" || !value || value===userWalkup.userLogin.challengeAnswer1
+        }
+    }
+    // .email=function(value){
+    //     let EMAIL_REGXP=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i
+    //     if (!angular.isDefined(value)) {
+    //         userProfile.emailError={};
+    //     }else{
+    //         userProfile.emailError={
+    //             required: value==="" || !value,
+    //             email:!EMAIL_REGXP.test(value)
+    //         }
+    //     }
+    //     userProfile.noSaveEmail= value==="" || !value || !EMAIL_REGXP.test(value)
+    // }
 
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */
 
