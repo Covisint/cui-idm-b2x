@@ -75,8 +75,9 @@
       <label>{{'cui-challenge-answer' | translate}} 2</label>
       <div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+        <div class="cui-error__message" ng-message="answersMatch">{{'security-question-repeated' | translate}}</div>
       </div>
-      <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer2">
+      <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer2" custom-error="userWalkup.customErrors.answersMatch">
     </div>
   </div>
 
