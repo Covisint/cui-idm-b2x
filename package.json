@@ -50,7 +50,7 @@
     "@covisint/cui-ng": "1.10.4",
     "@covisint/cui-styleguide": "3.0.2",
     "@covisint/cui.js": "2.2.3",
-    "angular-animate": "^1.5.7",
+    "angular-animate": "^1.5.9",
     "angular-local-storage": "^0.2.7",
     "angular-messages": "^1.5.6",
     "angular-snap": "^1.8.5",
