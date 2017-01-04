@@ -240,11 +240,16 @@ angular.module('registration')
         }
     }, true)
 
-    userWalkup.checkDuplicateEmail = () => {
-        $q.all([Registration.isEmailTaken(userWalkup.user.email).promise])
-        .then(res => {
-            userWalkup.isEmailTaken=res[0]
-        })
+    userWalkup.checkDuplicateEmail = (value) => {
+        if (value &&value!=="") {
+            $q.all([Registration.isEmailTaken(value).promise])
+            .then(res => {
+                userWalkup.isEmailTaken=res[0]
+            })
+        }
+        else{
+            userWalkup.isEmailTaken=true;
+        }        
     }
     
     userWalkup.checkDuplicateEmail(userWalkup.user.email)
@@ -274,13 +279,6 @@ angular.module('registration')
     }
 
     //Error handlers for Inline Edits in review page
-    $scope.$watch('userWalkup.userCountry', (country) => {
-        if (country) {
-            userWalkup.inlineEdit.countryError={
-                required:false
-            }
-        }
-    }, true)
     userWalkup.inlineEdit = {
         firstName:function(value){
             if (!angular.isDefined(value)) {
@@ -313,7 +311,12 @@ angular.module('registration')
                 userWalkup.inlineEdit.emailError={
                     required: value==="" || !value,
                     email:!EMAIL_REGXP.test(value)
-                }   
+                }
+                //emailTaken:
+                if (!userWalkup.inlineEdit.emailError.required && !userWalkup.inlineEdit.emailError.email) {
+                    userWalkup.checkDuplicateEmail(value)
+                }
+                  
             }
             userWalkup.inlineEdit.noSaveEmail=value==="" || !value || !EMAIL_REGXP.test(value)
         },
@@ -362,11 +365,14 @@ angular.module('registration')
                     required: value==="" || !value,
                 } 
                 //usernameTaken: 
-                $q.all([Registration.isUsernameTaken(value).promise])
-                .then(res => {
-                    userWalkup.inlineEdit.userIdError.usernameTaken=!res[0]
-                    userWalkup.inlineEdit.noSaveUserId=value==="" || !value ||userWalkup.inlineEdit.userIdError.usernameTaken
-                }) 
+                if (!userWalkup.inlineEdit.userIdError.required) {
+                    $q.all([Registration.isUsernameTaken(value).promise])
+                    .then(res => {
+                        userWalkup.inlineEdit.userIdError.usernameTaken=!res[0]
+                        userWalkup.inlineEdit.noSaveUserId=value==="" || !value ||userWalkup.inlineEdit.userIdError.usernameTaken
+                    })
+                }
+                 
             }
              userWalkup.inlineEdit.noSaveUserId=value==="" || !value
         },
@@ -393,20 +399,42 @@ angular.module('registration')
                 }   
             }
             userWalkup.inlineEdit.noSaveChallengeAnswer2=value==="" || !value || value===userWalkup.userLogin.challengeAnswer1
-        }
+        },
+        //on save functions needed to show error when pressed enter
+        updateFirstNameError:function(){
+            userWalkup.inlineEdit.firstName(userWalkup.user.name.given)
+        },
+        updateLastNameError:function(){
+            userWalkup.inlineEdit.lastName(userWalkup.user.name.surname)
+        },
+        updateEmailError: function() {
+            userWalkup.emailRe=userWalkup.user.email;
+            userWalkup.inlineEdit.email(userWalkup.user.email)
+        },
+        updateCountryError: function() {
+            if (userWalkup.userCountry) {
+                userWalkup.inlineEdit.countryError={
+                    required:false
+                }
+            }
+        },
+        updateAddress1Error:function(){
+            userWalkup.inlineEdit.address1(userWalkup.user.addresses[0].streets[0])
+        },
+        updateTelephoneError:function(){
+            userWalkup.inlineEdit.telephone(userWalkup.user.phones[0].number)
+        },
+        updateUserIdError:function(){
+            userWalkup.inlineEdit.userId(userWalkup.userLogin.username)
+        },
+        updateChallengeAnswer1Error:function(){
+            userWalkup.inlineEdit.challengeAnswer1(userWalkup.userLogin.challengeAnswer1)
+        },
+        updateChallengeAnswer2Error:function(){
+            userWalkup.inlineEdit.challengeAnswer2(userWalkup.userLogin.challengeAnswer2)
+        },
+
     }
-    // .email=function(value){
-    //     let EMAIL_REGXP=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i
-    //     if (!angular.isDefined(value)) {
-    //         userProfile.emailError={};
-    //     }else{
-    //         userProfile.emailError={
-    //             required: value==="" || !value,
-    //             email:!EMAIL_REGXP.test(value)
-    //         }
-    //     }
-    //     userProfile.noSaveEmail= value==="" || !value || !EMAIL_REGXP.test(value)
-    // }
 
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */
 

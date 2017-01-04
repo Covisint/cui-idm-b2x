@@ -14,35 +14,36 @@
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.firstNameError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-first-name" model="userWalkup.user.name.given" on-edit="userWalkup.inlineEdit.firstName" hide-save-if="userWalkup.inlineEdit.noSaveFirstName"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-first-name" model="userWalkup.user.name.given" on-edit="userWalkup.inlineEdit.firstName" hide-save-if="userWalkup.inlineEdit.noSaveFirstName" on-save="userWalkup.inlineEdit.updateFirstNameError"></inline-edit>
     </div>
     <!-- Last Name -->
     <div class="cui-expandable__review-item__inline-edit">
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.lastNameError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-last-name" model="userWalkup.user.name.surname" on-edit="userWalkup.inlineEdit.lastName" hide-save-if="userWalkup.inlineEdit.noSavelastName"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-last-name" model="userWalkup.user.name.surname" on-edit="userWalkup.inlineEdit.lastName" hide-save-if="userWalkup.inlineEdit.noSaveLastName" on-save="userWalkup.inlineEdit.updateLastNameError"></inline-edit>
     </div>
     <!-- Email -->
     <div class="cui-expandable__review-item__inline-edit">
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.emailError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
-        </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-email" model="userWalkup.user.email" on-edit="userWalkup.inlineEdit.email" hide-save-if="userWalkup.inlineEdit.noSaveEmail"></inline-edit>
+      </div>
+      <div ng-if="!userWalkup.isEmailTaken" class="cui-warning">{{'cui-error-email-exists' | translate}}</div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-email" model="userWalkup.user.email" on-edit="userWalkup.inlineEdit.email" on-save="userWalkup.inlineEdit.updateEmailError" hide-save-if="userWalkup.inlineEdit.noSaveEmail"></inline-edit>
     </div>
     <!-- Country -->
     <div class="cui-expandable__review-item__inline-edit">
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.countryError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  type="auto-complete" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input cui-expandable__review-input__autocomplete" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-country" model="userWalkup.userCountry" display="userWalkup.userCountry.title" selected-object="userWalkup.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" on-edit="userWalkup.inlineEdit.country" hide-save-if="userWalkup.inlineEdit.noSaveCountry" field-required="userWalkup.userCountry"></inline-edit>
+      <inline-edit  type="auto-complete" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input cui-expandable__review-input__autocomplete" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-country" model="userWalkup.userCountry" display="userWalkup.userCountry.title" selected-object="userWalkup.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" on-edit="userWalkup.inlineEdit.country" on-save="userWalkup.inlineEdit.updateCountryError" hide-save-if="userWalkup.inlineEdit.noSaveCountry" field-required="userWalkup.userCountry"></inline-edit>
     </div>
     <!-- Address1 -->
     <div class="cui-expandable__review-item__inline-edit">
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.address1Error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-1" model="userWalkup.user.addresses[0].streets[0]" on-edit="userWalkup.inlineEdit.address1" hide-save-if="userWalkup.inlineEdit.noSaveAddress1"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-1" model="userWalkup.user.addresses[0].streets[0]" on-edit="userWalkup.inlineEdit.address1" hide-save-if="userWalkup.inlineEdit.noSaveAddress1" on-save="userWalkup.inlineEdit.updateAddress1Error"></inline-edit>
     </div>
     <!-- Address2 -->
     <div class="cui-expandable__review-item__inline-edit">
@@ -65,15 +66,15 @@
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.telephoneError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-telephone" model="userWalkup.user.phones[0].number" on-edit="userWalkup.inlineEdit.telephone" hide-save-if="userWalkup.inlineEdit.noSaveTelephone"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-telephone" model="userWalkup.user.phones[0].number" on-edit="userWalkup.inlineEdit.telephone" hide-save-if="userWalkup.inlineEdit.noSaveTelephone" on-save="userWalkup.inlineEdit.updateTelephoneError"></inline-edit>
     </div> 
     <!-- Language -->
     <div class="cui-expandable__review-item__inline-edit">
-      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-language" model="userWalkup.user.language" options-expression="key as (value) for (key,value) in options"  options="base.languages"></inline-edit>
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-language" model="userWalkup.user.language" display="userWalkup.user.language.name"options-expression="language as language.name  for language in options"  options="userWalkup.languages"></inline-edit>
     </div>
     <!-- Timezone -->
     <div class="cui-expandable__review-item__inline-edit">
-      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-timezone" model="userWalkup.user.timezone" options-expression="timeZone.id as timeZone.name  for timeZone in options"  options="base.timezones"></inline-edit>
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-timezone" model="userWalkup.user.timezone" display="userWalkup.user.timezone.name" options-expression="timeZone as timeZone.name  for timeZone in options"  options="base.timezones"></inline-edit>
     </div>
   </cui-expandable-body>
 </cui-expandable>
@@ -110,10 +111,10 @@
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.userIdError">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-user-id" model="userWalkup.userLogin.username" on-edit="userWalkup.inlineEdit.userId" hide-save-if="userWalkup.inlineEdit.noSaveUserId"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-user-id" model="userWalkup.userLogin.username" on-edit="userWalkup.inlineEdit.userId" hide-save-if="userWalkup.inlineEdit.noSaveUserId" on-save="userWalkup.inlineEdit.updateUserIdError"></inline-edit>
     </div>
     <!-- Password -->
-    <div class="cui-expandable__review-item"><span class="cui-expandable__review-item__field">{{'cui-password' | translate}}</span> <span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
+    <div class="cui-expandable__review-item__inline-wrapper"><span class="cui-expandable__review-item__field">{{'cui-password' | translate}}</span> <span class="review-item__value">{{userWalkup.userLogin.hiddenPassword}}</span></div>
     <!-- Challenge Question 1 -->
         <div class="cui-expandable__review-item__inline-edit">
       <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-question" model="userWalkup.userLogin.question1" display="userWalkup.userLogin.question1.question | cuiI18n" options-expression="question as (question.question|cuiI18n) for question in options"  options="userWalkup.userLogin.challengeQuestions1"></inline-edit>
@@ -123,7 +124,7 @@
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.challengeAnswer1Error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer1" on-edit="userWalkup.inlineEdit.challengeAnswer1" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer1"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer1" on-edit="userWalkup.inlineEdit.challengeAnswer1" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer1" on-save="userWalkup.inlineEdit.updateChallengeAnswer1Error"></inline-edit>
     </div>
     <!-- Challenge Question 2 -->
     <div class="cui-expandable__review-item__inline-edit">
@@ -134,7 +135,7 @@
       <div class="cui-error" ng-messages="userWalkup.inlineEdit.challengeAnswer2Error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer2" on-edit="userWalkup.inlineEdit.challengeAnswer2" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer2"></inline-edit>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="userWalkup.userLogin.challengeAnswer2" on-edit="userWalkup.inlineEdit.challengeAnswer2" hide-save-if="userWalkup.inlineEdit.noSaveChallengeAnswer2" on-save="userWalkup.inlineEdit.updateChallengeAnswer2Error"></inline-edit>
     </div>
   </cui-expandable-body>
 </cui-expandable>

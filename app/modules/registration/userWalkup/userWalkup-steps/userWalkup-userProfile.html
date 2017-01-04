@@ -34,7 +34,7 @@
         <div class="cui-error__message">{{'cui-this-is-not-valid-email' | translate}}</div>
       </div>
       <div ng-if="!userWalkup.isEmailTaken" class="cui-warning">{{'cui-error-email-exists' | translate}}</div>
-      <input type="text" name="email" class="cui-input" custom-error="userWalkup.customErrors.email" ng-required="true" ng-model="userWalkup.user.email" ng-blur="userWalkup.checkDuplicateEmail()"/>
+      <input type="text" name="email" class="cui-input" custom-error="userWalkup.customErrors.email" ng-required="true" ng-model="userWalkup.user.email" ng-blur="userWalkup.checkDuplicateEmail(userWalkup.user.email)"/>
     </div>
 
     <!-- Re-enter Email -->
