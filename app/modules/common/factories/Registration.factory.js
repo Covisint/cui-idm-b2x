@@ -241,8 +241,18 @@ angular.module('common')
         return deferred.promise()
     }
 
-    pub.getTaC = (packageId) => {
-        return self.makeNonceCall("getOrgTacOfPackage",{packageId:packageId})
+    pub.getTac = (packageId) => {
+        const deferred = $q.defer()
+        self.makeNonceCall("getOrgTacOfPackage",{packageId:packageId})
+        .then(res =>{
+            deferred.resolve(res);
+        })
+        .fail(err =>{
+            console.log("Error in fetching TaC for application "+packageId)
+            console.log(err);
+            deferred.reject(err);
+        })
+        return deferred.promise;
     }
 
     pub.isUsernameTaken = name => {

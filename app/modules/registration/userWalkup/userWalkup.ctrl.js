@@ -92,13 +92,58 @@ angular.module('registration')
         } else {
             userWalkup.applications.numberOfSelected -= 1;
         }
+        userWalkup.applications.process()
     }
+
+    userWalkup.applications.updateSelected = (application, checkboxValue, index) => {
+        if (checkboxValue === true) {
+            userWalkup.applications.selected[index]=application.id+','+application.name+','+application.showTac
+            userWalkup.applications.numberOfSelected += 1;
+        } else {
+            delete userWalkup.applications.selected[index]          
+            userWalkup.applications.numberOfSelected -= 1;
+        }
+    }
+
+    userWalkup.getAppicationTaC = () => {
+        angular.forEach(userWalkup.applications.processedSelected, app =>{
+            //need to change later to ===
+            if (app.showTac=='true') {
+                Registration.getTac(app.id)
+                .then(res =>{
+                    app.tac=res;
+                })
+                .catch(err=> {
+                    console.log(err);
+                })
+            };
+        })
+    }
+
+    //Check TAC flag for selected applications
+    userWalkup.checkTacFlag = (selectedApplications) => {
+        let TacCount=0;
+        angular.forEach(selectedApplications,app =>{
+            //need to change later to ===
+            if (app.showTac=='true') {
+                TacCount++;
+            };
+        })
+        return TacCount
+    }
+
+    userWalkup.showTac= (index) => {
+        if (userWalkup.applications.processedSelected[index].tac) {
+            userWalkup.tacContent=userWalkup.applications.processedSelected[index].tac.tacText
+            userWalkup.applications.step=3
+        }
+    } 
 
     userWalkup.applications.process = () => {
         // Process the selected apps when you click next after selecting the apps you need
         // returns number of apps selected
         let oldSelected
-
+        let index=0;
         if (userWalkup.applications.processedSelected) {
             oldSelected = userWalkup.applications.processedSelected
         }
@@ -117,11 +162,14 @@ angular.module('registration')
                     name: app.split(',')[1],
                     // this fixes an issue where removing an app from the selected list that the user 
                     // had accepted the terms for would carry over that acceptance to the next app on the list
-                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                    acceptedTos: ((oldSelected && oldSelected[index]&&oldSelected[index].id==i)? oldSelected[index].acceptedTos : false),
+                    showTac:app.split(',')[2]
                 })
             }
+            index++;
         })
-        return userWalkup.applications.processedSelected.length
+        return userWalkup.checkTacFlag(userWalkup.applications.processedSelected)
+        
     }
 
     userWalkup.submit = () => {
@@ -182,7 +230,6 @@ angular.module('registration')
             $scope.$digest()
         })
     }
-
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
     /* -------------------------------------------- WATCHERS START -------------------------------------------- */
