@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window) {
+.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window,Base) {
 
     const userWalkup = this
 
@@ -7,6 +7,7 @@ angular.module('registration')
     userWalkup.userLogin = {}
     userWalkup.applications.numberOfSelected = 0
     userWalkup.submitError = false
+    userWalkup.languages=[];
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     //for detectig browser time
@@ -45,7 +46,16 @@ angular.module('registration')
         userWalkup.user = localStorageService.get('userWalkup.user');
         
     }
-    userWalkup.user.language=userWalkup.browserPreference
+
+    Object.keys(Base.languages).forEach(function(id,index){
+        userWalkup.languages[index]={
+            id:id
+        }
+    })
+    Object.values(Base.languages).forEach(function(language,index){
+        userWalkup.languages[index].name=language;
+    })
+    userWalkup.user.language=_.find(userWalkup.languages,{id:userWalkup.browserPreference})
     Registration.initWalkupRegistration()
     .then(res => {
         const questions = res.securityQuestions
@@ -123,7 +133,8 @@ angular.module('registration')
             organization: userWalkup.organization,
             login: userWalkup.userLogin,
             applications: userWalkup.applications,
-            userCountry: userWalkup.userCountry
+            userCountry: userWalkup.userCountry,
+            requestReason:userWalkup.reason
         }
 
         Registration.walkupSubmit(registrationData)

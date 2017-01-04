@@ -111,7 +111,7 @@
     <!--Language Preference-->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
         <label>{{'cui-language' | translate}}</label>
-        <cui-dropdown ng-model="userWalkup.user.language" class="cui-dropdown" return-value="key" display-value="value" options="base.languages"></cui-dropdown>
+        <cui-dropdown ng-model="userWalkup.user.language" class="cui-dropdown" return-value="object" display-value="object.name" options="userWalkup.languages"></cui-dropdown>
     </div>
   </div>
     <!-- Seventh row -->
@@ -119,7 +119,7 @@
     <!-- Timezone -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
         <label for="timezone">{{'cui-timezone' | translate}}</label>
-        <cui-dropdown ng-model="userWalkup.user.timezone" class="cui-dropdown" return-value="object.id" display-value="object.name" options="base.timezones"></cui-dropdown>
+        <cui-dropdown ng-model="userWalkup.user.timezone" class="cui-dropdown" return-value="object" display-value="object.name" options="base.timezones"></cui-dropdown>
     </div>
   </div>
 
