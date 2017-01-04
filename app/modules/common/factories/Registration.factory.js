@@ -11,6 +11,8 @@ angular.module('common')
 
             personData.addresses[0].country = registrationData.userCountry.originalObject.code
             personData.organization = { id: registrationData.organization.id }
+            personData.language=registrationData.profile.language.id
+            personData.timezone=registrationData.profile.timezone.id
 
             if (personData.phones[0]) {
                 personData.phones[0].type = 'main'
