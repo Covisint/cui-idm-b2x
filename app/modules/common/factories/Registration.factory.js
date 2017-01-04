@@ -61,14 +61,14 @@ angular.module('common')
                 securityQuestionAccount: this.securityQuestionAccount(_registrationData)
             }
         },
-        servicePackageRequest: function(personId, personRealm, packageData) {
+        servicePackageRequest: function(personId, personRealm, packageData,requestReason) {
             let request = {
                 registrant: {
                     id: personId,
                     type: 'person',
                     realm: personRealm
                 },
-                justification: 'User Walkup Registration'
+                justification: requestReason||'User Walkup Registration'
             }
 
             if (packageData && packageData.selected) {
@@ -200,7 +200,7 @@ angular.module('common')
             return API.cui.postUserRegistrationNonce({data: submitData})
         })
         .then(res => {
-            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications)
+            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications,registrationData.requestReason)
             return API.cui.postPersonRequestNonce({data: packageRequestData})
         })
         .then(res => {
