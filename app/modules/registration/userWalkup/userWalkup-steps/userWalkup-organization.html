@@ -9,7 +9,7 @@
       
     </div>
   </div>
-  <cui-expandable class="cui-expandable" ng-repeat="organization in userWalkup.organizationList |filter:userWalkup.orgFilter| orderBy:'name' track by organization.id">
+  <cui-expandable class="cui-expandable" ng-repeat="organization in userWalkup.organizationList |filter:{status:'active',name:userWalkup.orgFilter.name}| orderBy:'name' track by organization.id">
     <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex cui-expandable__title--alt-layout" ng-click="toggleExpand()">
       {{organization.name}}
       <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
