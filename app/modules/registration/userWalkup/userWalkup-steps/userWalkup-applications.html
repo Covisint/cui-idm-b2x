@@ -22,7 +22,7 @@
     <cui-expandable class="cui-expandable">
   <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
     <div>
-    <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.name | cuiI18n}},{{application.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id]);userWalkup.getAppicationTaC(userWalkup.applications.selected[application.id],application)" style="margin-right:10px"/>
+    <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.name | cuiI18n}},{{application.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id])" style="margin-right:10px"/>
     <span ng-bind="application.name | cuiI18n"></span>
     </div>
     <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
