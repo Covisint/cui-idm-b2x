@@ -1,12 +1,12 @@
 # Changelog for the IDM B2X Accelerator
 
-## Unreleased
+## [v1.2.1] - 2017-1-4
 
 ### Changed
-
-### Fixes
-
-### Added
+* cui-i18n v1.0.21
+* cui-ng v1.10.6
+* Hardcodes ng-animate version to 1.5.9
+* Various changes/fixes/additions by Suchin
 
 
 ## [v1.2.0] - 2016-12-2
