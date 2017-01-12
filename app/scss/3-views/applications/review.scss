@@ -40,6 +40,16 @@
     flex-direction: column;
   }
 
+  .cui-applications__review-checkbox__wrapper{
+    margin-top:1em;
+  }
+
+  .cui-applications__review-checkbox__flex{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .cui-applications__submit-options {
     display: flex;
     justify-content: flex-end;
@@ -55,6 +65,32 @@
       margin-right: em(43);
     }
   }
+  .chevron-left {
+      position: absolute;
+      left: -5px;
+      top:inherit;
+    }
+  @media screen and (min-width: 701px){
+    .chevron-left {
+      position: absolute;
+      left: 2.5em;
+      top:inherit;
+    }
+  }
+}
+
+.cui-media__title-margin__top{
+  margin-top:1.5em;
+}
+
+.cui-media__image-container__flex-start{
+  align-self:flex-start;
+}
+.cui-checkbox_label__flex{
+  padding-right: 2em;
+  padding-top: .6em;
+  word-break: break-word;
+  color:black;
 }
 
 .cui-popover__sort-popover {
