@@ -29,8 +29,8 @@
         </div>
     </div>
     <div class="cui-action cui-action--alt">
-        <div class="cui-action__title" ng-if="!applicationSearch.search.category" ui-sref="applications.newRequest">&#60; {{'categories' | translate}}</div>
-        <span class="cui-action__title" ng-if="applicationSearch.search.category" ui-sref="applications.newRequest">&#60; {{applicationSearch.search.category}}</span>
+        <div class="cui-action__title cui-action__title-link"  ui-sref="applications.newRequest">&#60; {{'categories' | translate}}</div>
+        <span class="cui-action__title" ng-if="applicationSearch.search.category"> {{applicationSearch.search.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
             <input class="cui-input-button__input" ng-model="applicationSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
             <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
@@ -68,7 +68,7 @@
                 <div class="cui-expandable__title-end">
                     <span class="cui-checkbox__container">
                         <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[application.id]" />
-                        <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application)"></label>
+                        <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application);applicationSearch.checkRelatedAndBundledApps(application)"></label>
                     </span>
                 </div>
             </cui-expandable-title>
@@ -92,13 +92,12 @@
                         <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
                         <div class="cui-expandable__pane-content">
                             <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
-                                <span class="">{{relatedApp.name | cuiI18n}} </span>  <!-- TODO @SHANE SMALL MIS-ALLIGNMENT HERE -->
+                                <span class="cui-checkbox_label__flex">{{relatedApp.name | cuiI18n}} </span>  
                                 <span class="cui-checkbox__container">
                                     <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]; applicationSearch.toggleRequest(relatedApp)"></label>
+                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id];applicationSearch.checkRelatedAppsBody(relatedApp)"></label>
                                 </span>
                             </span>
-
                         </div>
                     </div>
                 </div>
