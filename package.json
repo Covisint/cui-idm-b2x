@@ -46,7 +46,7 @@
   "dependencies": {
     "@covisint/cui-api-interceptor": "1.0.5",
     "@covisint/cui-ng": "1.10.6",
-    "@covisint/cui-i18n": "1.0.22",
+    "@covisint/cui-i18n": "1.0.23",
     "@covisint/cui-icons": "1.4.2",
     "@covisint/cui-styleguide": "3.0.2",
     "@covisint/cui.js": "2.2.3",
