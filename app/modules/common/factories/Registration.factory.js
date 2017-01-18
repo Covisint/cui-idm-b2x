@@ -9,10 +9,10 @@ angular.module('common')
         person: function(registrationData) {
             const personData = Object.assign({}, registrationData.profile)
 
-            personData.addresses[0].country = registrationData.userCountry.title
-            personData.language = Base.getLanguageCode()
-            personData.timezone = 'EST5EDT'
+            personData.addresses[0].country = registrationData.userCountry.originalObject.code
             personData.organization = { id: registrationData.organization.id }
+            personData.language=registrationData.profile.language.id
+            personData.timezone=registrationData.profile.timezone.id
 
             if (personData.phones[0]) {
                 personData.phones[0].type = 'main'
@@ -61,17 +61,17 @@ angular.module('common')
                 securityQuestionAccount: this.securityQuestionAccount(_registrationData)
             }
         },
-        servicePackageRequest: function(personId, personRealm, packageData) {
+        servicePackageRequest: function(personId, personRealm, packageData,requestReason) {
             let request = {
                 registrant: {
                     id: personId,
                     type: 'person',
                     realm: personRealm
                 },
-                justification: 'User Walkup Registration'
+                justification: requestReason||'User Walkup Registration'
             }
 
-            if (packageData.selected) {
+            if (packageData && packageData.selected) {
                 request.packages = []
                 angular.forEach(packageData.selected, function(servicePackage) {
                     // userWalkup.applications.selected is an array of strings that looks like
@@ -200,13 +200,8 @@ angular.module('common')
             return API.cui.postUserRegistrationNonce({data: submitData})
         })
         .then(res => {
-            if (registrationData.applications.numberOfSelected !== 0) {
-                const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications)
-                return API.cui.postPersonRequestNonce({data: packageRequestData})
-            }
-            else {
-                defer.resolve(res)
-            }
+            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications,registrationData.requestReason)
+            return API.cui.postPersonRequestNonce({data: packageRequestData})
         })
         .then(res => {
             defer.resolve(res)
@@ -244,6 +239,20 @@ angular.module('common')
         })
 
         return deferred.promise()
+    }
+
+    pub.getTac = (packageId) => {
+        const deferred = $q.defer()
+        self.makeNonceCall("getOrgTacOfPackage",{packageId:packageId})
+        .then(res =>{
+            deferred.resolve(res);
+        })
+        .fail(err =>{
+            console.log("Error in fetching TaC for application "+packageId)
+            console.log(err);
+            deferred.reject(err);
+        })
+        return deferred.promise;
     }
 
     pub.isUsernameTaken = name => {
