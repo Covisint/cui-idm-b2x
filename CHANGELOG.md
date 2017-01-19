@@ -1,5 +1,16 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.2.2] - 2017-1-18
+
+### Changed
+*cui-i18n v1.0.23
+*Provided link to login in success page after registration.
+*Show password policy required charecter display even for one required charecter.
+*Display only active organizations in registration.
+*Terms and condtion for request flow.
+*Auto selection/Deselection of bundled and related apps based on thier relation.
+*CSS changes for application request flows.
+
 ## [v1.2.1] - 2017-1-4
 
 ### Changed
