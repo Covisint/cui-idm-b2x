@@ -32,7 +32,7 @@ angular.module('registration')
         console.log(lang+ "not supported")
         userWalkup.browserPreference='en'; 
     }
-    LocaleService.setLocaleByDisplayName(appConfig.languages[userWalkup.browserPreference])
+    //LocaleService.setLocaleByDisplayName(appConfig.languages[userWalkup.browserPreference])
     userWalkup.initializing = true
 
     if (!localStorageService.get('userWalkup.user')) {
