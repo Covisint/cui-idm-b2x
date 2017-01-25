@@ -1,5 +1,16 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.2.3] - 2017-1-25
+
+###Changed
+*cui-i18n v1.0.24
+*Added My History tab which display's user's history related information
+*Added history tab link to my profile page
+*Replaced getCategories with GetPersonCategories Call in my applications page
+*Storing App details before going to app details page, because getpersonapplications call with query parameter service.id won't give related and bundled apps
+*My app Details page changes (CSS, JS and CSS)
+*Added capitalize filter 
+
 ## [v1.2.2] - 2017-1-18
 
 ### Changed
