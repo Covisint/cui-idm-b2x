@@ -15,3 +15,5 @@ build-sdk/
 .idea
 appConfig-*.json
 npm-debug.log
+cui-idm-b2x.sublime-project
+cui-idm-b2x.sublime-workspace
