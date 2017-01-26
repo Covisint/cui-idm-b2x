@@ -1,6 +1,6 @@
 {
   "name": "@covisint/cui-idm-b2x",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Covisint IDM B2X Solution Accelerator",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
@@ -24,6 +24,14 @@
     {
       "name": "Orin Fink",
       "email": "orin.fink@thirdwavellc.com"
+    },
+    {
+      "name": "Carlito Alo",
+      "email": "carlito.alo@covisint.com"
+    },
+    {
+      "name": "Suchin Byreshappa",
+      "email": "Suchin.Byreshappa@happiestminds.com"
     }
   ],
   "main": "index.html",
