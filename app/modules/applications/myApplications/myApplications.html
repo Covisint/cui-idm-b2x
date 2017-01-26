@@ -25,6 +25,8 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
       </li>
     </ul>
   </nav>
+  <p ng-if="base.user.entitlements.length>0">Admin Test: {{base.user.entitlements.length}}</p>
+  <p ng-if="base.user.entitlements.length<1">User Test: {{base.user.entitlements.length}}</p>
   <h3 class="cui-action__title">{{'my-applications' | translate}}</h3>
   <div class="cui-action__actions">
     <!-- Sort -->
