@@ -759,5 +759,19 @@
     "type": "GET",
     "cmdType": "unsecured",
     "accepts": "application/vnd.com.covisint.platform.package.terms.and.condition.v1+json"
+  },
+  {
+    "cmd": "getPasswordCangeHistory",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}/accounts/password/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.authn.password.change.history.req.v1+json"
+  },
+  {
+    "cmd": "getPersonAppCategories",
+    "cmdType": "secured",
+    "call": "/service/v3/categories/persons/{personId} ",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.category.v1+json"
   }
 ]
