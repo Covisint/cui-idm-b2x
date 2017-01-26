@@ -22,6 +22,12 @@ angular.module('user', [])
             templateUrl: templateBase + 'profile/user-profile.html',
             controller: returnCtrlAs('userProfile'),
             access:loginRequired
+        })
+        .state('user.history',{
+            url: '/history',
+            templateUrl: templateBase + 'history/user-history.html',
+            controller: returnCtrlAs('userHistory'),
+            access:loginRequired
         });
 
 }]);
