@@ -21,7 +21,7 @@ angular.module('common')
 
             do {
                 if ($state.stateStack[i].name === stateName) {
-                    stateParams = $state.stackStack[i].params
+                    stateParams = $state.stateStack[i].params
                 }
                 i--
                 counter++

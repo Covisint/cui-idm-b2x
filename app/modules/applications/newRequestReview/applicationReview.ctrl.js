@@ -24,6 +24,19 @@ angular.module('applications')
         if (appRequests[appsBeingRequested[i+1]]) {
             applicationGroup.push(appRequests[appsBeingRequested[i+1]]);
         }
+        //get Terms And Conditions for requested packages
+        applicationGroup.forEach(app=>{
+            if (app.servicePackage.personTacEnabled) {
+                API.cui.getOrgTacOfPackage({packageId:app.servicePackage.id})
+                .then(res=>{
+                    app.tac=res;
+                })
+                .fail(err=>{
+                    console.log("There was an error fetching Tac")
+                    console.log(err)
+                })
+            }
+        })
         applicationReview.appRequests.push(applicationGroup);
     }
 
@@ -99,6 +112,12 @@ angular.module('applications')
         applicationReview.search = nameSearch;
     };
 
+    applicationReview.showTac= (application)=>{
+        if (application.tac) {
+            applicationReview.tacContent=application.tac.tacText
+            applicationReview.step=2
+        }
+    }
     // ON CLICK END -----------------------------------------------------------------------------------
 
 }]);

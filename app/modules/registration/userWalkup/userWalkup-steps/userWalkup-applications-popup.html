@@ -1,0 +1,18 @@
+      <!-- Sort Popover -->
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#selection-popup" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="userWalkup.selectionPopUp" style="width:171px">
+        <div class="cui-popover__row">
+        	<div class="cui-badge" ng-bind="userWalkup.applications.numberOfSelected"></div>
+          	<span >{{'cui-selected-apps' | translate}}</span>
+        </div>
+        <div class="cui-popover__row">
+        	<!-- dummy div to avoid flex display -->
+        	<div>
+        		<div ng-repeat="application in userWalkup.applications.processedSelected">
+	          		{{application.name}}
+	          	</div>
+        	</div>          
+        </div>
+        <div class="cui-popover__row">
+        	<span class="cui-link">Got it!</span>
+        </div>
+      </div>

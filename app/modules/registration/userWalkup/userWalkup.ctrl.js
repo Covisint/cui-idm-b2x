@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state) {
+.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window,Base) {
 
     const userWalkup = this
 
@@ -7,9 +7,32 @@ angular.module('registration')
     userWalkup.userLogin = {}
     userWalkup.applications.numberOfSelected = 0
     userWalkup.submitError = false
-
+    userWalkup.languages=[];
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
+    //for detectig browser time
+    var d = new Date();
+    var tz = d.toTimeString();
+
+    //for detectig browser language
+    var lang = $window.navigator.language || $window.navigator.userLanguage;
+
+    if (lang.indexOf('en-')>=0) { userWalkup.browserPreference='en'; }
+    else if (lang.indexOf('zh')>=0) {userWalkup.browserPreference='zh'; }
+    else if (lang.indexOf('pl')>=0) { userWalkup.browserPreference='pl'; }
+    else if (lang.indexOf('pt')>=0) { userWalkup.browserPreference='pt'; }
+    else if (lang.indexOf('tr')>=0) { userWalkup.browserPreference='tr'; }
+    else if (lang.indexOf('fr')>=0) { userWalkup.browserPreference='fr'; }
+    else if (lang.indexOf('ja')>=0) { userWalkup.browserPreference='ja'; }
+    else if (lang.indexOf('es')>=0) { userWalkup.browserPreference='es'; }
+    else if (lang.indexOf('de')>=0) { userWalkup.browserPreference='de'; }
+    else if (lang.indexOf('ru')>=0) { userWalkup.browserPreference='ru'; }
+    else if (lang.indexOf('it')>=0) { userWalkup.browserPreference='it'; }
+    else { 
+        console.log(lang+ "not supported")
+        userWalkup.browserPreference='en'; 
+    }
+    //LocaleService.setLocaleByDisplayName(appConfig.languages[userWalkup.browserPreference])
     userWalkup.initializing = true
 
     if (!localStorageService.get('userWalkup.user')) {
@@ -21,8 +44,18 @@ angular.module('registration')
     } 
     else {
         userWalkup.user = localStorageService.get('userWalkup.user');
+        
     }
 
+    Object.keys(Base.languages).forEach(function(id,index){
+        userWalkup.languages[index]={
+            id:id
+        }
+    })
+    Object.values(Base.languages).forEach(function(language,index){
+        userWalkup.languages[index].name=language;
+    })
+    userWalkup.user.language=_.find(userWalkup.languages,{id:userWalkup.browserPreference})
     Registration.initWalkupRegistration()
     .then(res => {
         const questions = res.securityQuestions
@@ -59,13 +92,58 @@ angular.module('registration')
         } else {
             userWalkup.applications.numberOfSelected -= 1;
         }
+        userWalkup.applications.process()
     }
+
+    userWalkup.applications.updateSelected = (application, checkboxValue, index) => {
+        if (checkboxValue === true) {
+            userWalkup.applications.selected[index]=application.id+','+application.name+','+application.showTac
+            userWalkup.applications.numberOfSelected += 1;
+        } else {
+            delete userWalkup.applications.selected[index]          
+            userWalkup.applications.numberOfSelected -= 1;
+        }
+    }
+
+    userWalkup.getAppicationTaC = () => {
+        angular.forEach(userWalkup.applications.processedSelected, app =>{
+            //need to change later to ===
+            if (app.showTac=='true') {
+                Registration.getTac(app.id)
+                .then(res =>{
+                    app.tac=res;
+                })
+                .catch(err=> {
+                    console.log(err);
+                })
+            };
+        })
+    }
+
+    //Check TAC flag for selected applications
+    userWalkup.checkTacFlag = (selectedApplications) => {
+        let TacCount=0;
+        angular.forEach(selectedApplications,app =>{
+            //need to change later to ===
+            if (app.showTac=='true') {
+                TacCount++;
+            };
+        })
+        return TacCount
+    }
+
+    userWalkup.showTac= (index) => {
+        if (userWalkup.applications.processedSelected[index].tac) {
+            userWalkup.tacContent=userWalkup.applications.processedSelected[index].tac.tacText
+            userWalkup.applications.step=3
+        }
+    } 
 
     userWalkup.applications.process = () => {
         // Process the selected apps when you click next after selecting the apps you need
         // returns number of apps selected
         let oldSelected
-
+        let index=0;
         if (userWalkup.applications.processedSelected) {
             oldSelected = userWalkup.applications.processedSelected
         }
@@ -84,11 +162,14 @@ angular.module('registration')
                     name: app.split(',')[1],
                     // this fixes an issue where removing an app from the selected list that the user 
                     // had accepted the terms for would carry over that acceptance to the next app on the list
-                    acceptedTos: ((oldSelected && oldSelected[i])? oldSelected[i].acceptedTos : false)
+                    acceptedTos: ((oldSelected && oldSelected[index]&&oldSelected[index].id==i)? oldSelected[index].acceptedTos : false),
+                    showTac:app.split(',')[2]
                 })
             }
+            index++;
         })
-        return userWalkup.applications.processedSelected.length
+        return userWalkup.checkTacFlag(userWalkup.applications.processedSelected)
+        
     }
 
     userWalkup.submit = () => {
@@ -100,7 +181,8 @@ angular.module('registration')
             organization: userWalkup.organization,
             login: userWalkup.userLogin,
             applications: userWalkup.applications,
-            userCountry: userWalkup.userCountry
+            userCountry: userWalkup.userCountry,
+            requestReason:userWalkup.reason
         }
 
         Registration.walkupSubmit(registrationData)
@@ -148,7 +230,6 @@ angular.module('registration')
             $scope.$digest()
         })
     }
-
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
     /* -------------------------------------------- WATCHERS START -------------------------------------------- */
@@ -159,13 +240,200 @@ angular.module('registration')
         }
     }, true)
 
+    userWalkup.checkDuplicateEmail = (value) => {
+        if (value &&value!=="") {
+            $q.all([Registration.isEmailTaken(value).promise])
+            .then(res => {
+                userWalkup.isEmailTaken=res[0]
+            })
+        }
+        else{
+            userWalkup.isEmailTaken=true;
+        }        
+    }
+    
+    userWalkup.checkDuplicateEmail(userWalkup.user.email)
     userWalkup.customErrors = {
         userName: {
             usernameTaken: Registration.isUsernameTaken
         },
         email: {
-            emailTaken: Registration.isEmailTaken
+            email: function(){
+                var EMAIL_REGEXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i;
+                if (userWalkup.user.email) {
+                    return EMAIL_REGEXP.test(userWalkup.user.email)
+                }else{
+                    return true;
+                }
+            }
+        },
+        answersMatch: {
+            answersMatch:function(){
+                if (userWalkup.userLogin && userWalkup.userLogin.challengeAnswer2) {
+                    return userWalkup.userLogin.challengeAnswer2!==userWalkup.userLogin.challengeAnswer1;
+                }else{
+                    return true
+                }
+            }
         }
+    }
+
+    //Error handlers for Inline Edits in review page
+    userWalkup.inlineEdit = {
+        firstName:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.firstNameError={}
+            }
+            else{
+                userWalkup.inlineEdit.firstNameError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveFirstName=value==="" || !value
+        },
+        lastName:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.lastNameError={}
+            }
+            else{
+                userWalkup.inlineEdit.lastNameError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveLastName=value==="" || !value
+        },
+        email:function(value){
+            var EMAIL_REGXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.emailError={}
+            }
+            else{
+                userWalkup.inlineEdit.emailError={
+                    required: value==="" || !value,
+                    email:!EMAIL_REGXP.test(value)
+                }
+                //emailTaken:
+                if (!userWalkup.inlineEdit.emailError.required && !userWalkup.inlineEdit.emailError.email) {
+                    userWalkup.checkDuplicateEmail(value)
+                }
+                  
+            }
+            userWalkup.inlineEdit.noSaveEmail=value==="" || !value || !EMAIL_REGXP.test(value)
+        },
+        //For autocomplete need to handle differently
+        country:function(value){
+            console.log(value)
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.countryError={
+                    required:true
+                }
+            }else{
+                userWalkup.inlineEdit.countryError={
+                    required:false
+                }
+            }
+            userWalkup.inlineEdit.noSaveCountry=value===undefined 
+        },
+        address1:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.address1Error={}
+            }
+            else{
+                userWalkup.inlineEdit.address1Error={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveAddress1=value==="" || !value
+        },
+        telephone:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.telephoneError={}
+            }
+            else{
+                userWalkup.inlineEdit.telephoneError={
+                    required: value==="" || !value
+                }   
+            }
+            userWalkup.inlineEdit.noSaveTelephone=value==="" || !value
+        },
+        userId:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.userIdError={}
+            }
+            else{
+                userWalkup.inlineEdit.userIdError={
+                    required: value==="" || !value,
+                } 
+                //usernameTaken: 
+                if (!userWalkup.inlineEdit.userIdError.required) {
+                    $q.all([Registration.isUsernameTaken(value).promise])
+                    .then(res => {
+                        userWalkup.inlineEdit.userIdError.usernameTaken=!res[0]
+                        userWalkup.inlineEdit.noSaveUserId=value==="" || !value ||userWalkup.inlineEdit.userIdError.usernameTaken
+                    })
+                }
+                 
+            }
+             userWalkup.inlineEdit.noSaveUserId=value==="" || !value
+        },
+        challengeAnswer1:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.challengeAnswer1Error={}
+            }
+            else{
+                userWalkup.inlineEdit.challengeAnswer1Error={
+                    required: value==="" || !value,
+                    answersMatch:value===userWalkup.userLogin.challengeAnswer2
+                }   
+            }
+            userWalkup.inlineEdit.noSaveChallengeAnswer1=value==="" || !value||value===userWalkup.userLogin.challengeAnswer2
+        },
+        challengeAnswer2:function(value){
+            if (!angular.isDefined(value)) {
+                userWalkup.inlineEdit.challengeAnswer2Error={}
+            }
+            else{
+                userWalkup.inlineEdit.challengeAnswer2Error={
+                    required: value==="" || !value,
+                    answersMatch:value===userWalkup.userLogin.challengeAnswer1
+                }   
+            }
+            userWalkup.inlineEdit.noSaveChallengeAnswer2=value==="" || !value || value===userWalkup.userLogin.challengeAnswer1
+        },
+        //on save functions needed to show error when pressed enter
+        updateFirstNameError:function(){
+            userWalkup.inlineEdit.firstName(userWalkup.user.name.given)
+        },
+        updateLastNameError:function(){
+            userWalkup.inlineEdit.lastName(userWalkup.user.name.surname)
+        },
+        updateEmailError: function() {
+            userWalkup.emailRe=userWalkup.user.email;
+            userWalkup.inlineEdit.email(userWalkup.user.email)
+        },
+        updateCountryError: function() {
+            if (userWalkup.userCountry) {
+                userWalkup.inlineEdit.countryError={
+                    required:false
+                }
+            }
+        },
+        updateAddress1Error:function(){
+            userWalkup.inlineEdit.address1(userWalkup.user.addresses[0].streets[0])
+        },
+        updateTelephoneError:function(){
+            userWalkup.inlineEdit.telephone(userWalkup.user.phones[0].number)
+        },
+        updateUserIdError:function(){
+            userWalkup.inlineEdit.userId(userWalkup.userLogin.username)
+        },
+        updateChallengeAnswer1Error:function(){
+            userWalkup.inlineEdit.challengeAnswer1(userWalkup.userLogin.challengeAnswer1)
+        },
+        updateChallengeAnswer2Error:function(){
+            userWalkup.inlineEdit.challengeAnswer2(userWalkup.userLogin.challengeAnswer2)
+        },
+
     }
 
     /* --------------------------------------------- WATCHERS END --------------------------------------------- */
