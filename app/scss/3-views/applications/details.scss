@@ -45,7 +45,6 @@
 }
 
 .cui-applications__claims {
-  @extend %flex-row;
   align-items: center;
 }
 
@@ -65,4 +64,8 @@
 
 .cui-applications__claim-name {
   @extend %bold;
+  margin-bottom:1em;
+}
+.cui-applications__claim-val{
+  margin:0;
 }

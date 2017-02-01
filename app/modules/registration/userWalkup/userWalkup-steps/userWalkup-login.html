@@ -55,10 +55,11 @@
     <!-- Challenge Answer 1 -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-challenge-answer' | translate}} 1</label>
-      <div class="cui-error" ng-messages="userLogin.answer1.$error" ng-if="userLogin.answer1.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      <div class="cui-error" ng-if="userLogin.answer1.$dirty">
+        <div class="cui-error__message" ng-if="userLogin.answer1.$error.required">{{'cui-this-field-is-required' | translate}}</div>
+        <div ng-if="userWalkup.answer1&&userLogin.answer1.$error.unique" class="cui-error__message" >{{'security-question-repeated' | translate}}</div>
       </div>
-      <input type="text" name="answer1" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer1">
+      <input type="text" name="answer1" class="cui-input" ng-required="true" ng-focus="userWalkup.answer2=false;userWalkup.answer1=true" ng-model="userWalkup.userLogin.challengeAnswer1" unique="userWalkup.userLogin.challengeAnswer2">
     </div>
   </div>
 
@@ -73,10 +74,11 @@
     <!-- Challenge Answer 2 -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-challenge-answer' | translate}} 2</label>
-      <div class="cui-error" ng-messages="userLogin.answer2.$error" ng-if="userLogin.answer2.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      <div class="cui-error" ng-if="userLogin.answer2.$dirty">
+        <div class="cui-error__message" ng-if="userLogin.answer2.$error.required">{{'cui-this-field-is-required' | translate}}</div>
+        <div ng-if="userWalkup.answer2&&userLogin.answer2.$error.unique" class="cui-error__message" >{{'security-question-repeated' | translate}}</div>
       </div>
-      <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer2">
+      <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userWalkup.userLogin.challengeAnswer2" unique="userWalkup.userLogin.challengeAnswer1" ng-focus="userWalkup.answer1=false;userWalkup.answer2=true">
     </div>
   </div>
 

@@ -134,4 +134,30 @@
     margin: 5px 0;
   }
 }
+.cui-star-password{
+    vertical-align: top;
+    font-size: xx-large;
+}
+.cui-breadcrumb{
+  .cui-breadcrumb__link--alt{
+    color:$cui-greyscale--dark;
+    border-right:2px solid $cui-greyscale--dark;
+    a {
+        color: $cui-greyscale--dark;
+
+        &.active {
+          color: $breadcrumb-link-color--active;
+        }
+    }
+  }
+  .cui-breadcrumb__link--current a{
+    color:$breadcrumb-link-color--active;
+  }
+}
+
+@media screen and (min-width:701px){
+  .cui-breadcrumb__link--alt{
+    font-size:em(20);
+  }
+}
 

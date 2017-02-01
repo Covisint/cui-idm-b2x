@@ -101,7 +101,7 @@ angular.module('applications')
             myApplications.search = Object.assign({}, $stateParams)
 
             Loader.onFor(loaderName + 'categories')
-            API.cui.getCategories()
+            API.cui.getPersonAppCategories({personId:API.getUser()})
             .then(res => {
                 APIError.offFor(loaderName + 'categories')
                 myApplications.categories = res;
@@ -204,7 +204,7 @@ angular.module('applications')
         const opts = {
             appId: application.id
         }
-
+        DataStorage.setType('myAppDetail',application)
         $state.go('applications.myApplicationDetails', opts)
     }
 

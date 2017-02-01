@@ -104,10 +104,76 @@ angular.module('applications')
     };
 
     applicationSearch.saveRequestsAndCheckout = function() {
+        //needed to set a flag for related apps to display in review page
+        angular.forEach(applicationSearch.packageRequests,(request)=>{
+            if (request.relatedApps) {
+                request.relatedAppSelectedCount=0
+                request.relatedApps.forEach(relatedApp=>{
+                    if(_.find(applicationSearch.packageRequests,{id:relatedApp.id})){
+                        relatedApp.selected=true
+                        request.relatedAppSelectedCount++
+                    }
+                    else{
+                        relatedApp.selected=false
+                    }
+                })
+            }
+            //Need to delete the other bundled apps if selected to show in review page
+            if (request.bundledApps) {
+                request.bundledApps.forEach(bundledApp => {
+                    if (applicationSearch.packageRequests[bundledApp.id]) {
+                        delete applicationSearch.packageRequests[bundledApp.id]
+                    }                    
+                })
+            }
+        })
         AppRequests.set(applicationSearch.packageRequests);
         $state.go('applications.reviewRequest');
     };
 
+    //select parent if it is a child, deselect child if it is a parent
+    applicationSearch.checkRelatedAppsBody= function(relatedApp){
+        applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))   
+        applicationSearch.checkRelatedAndBundledApps(_.find(applicationSearch.list,{id:relatedApp.id}))
+    };
+
+    //deselect child if it is a parent, select parent if it is a child 
+    applicationSearch.checkRelatedAndBundledApps=function(application){
+        //if unchecked the checkbox
+        if (!applicationSearch.packageRequests[application.id]) {
+            //if it is a parent then then deselect childs
+            if (!application.servicePackage.parent) {
+                application.relatedApps.forEach((relatedApp)=>{
+                    if (applicationSearch.appCheckbox[relatedApp.id]) {
+                        applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]
+                        applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))
+                    }
+                })
+            }
+            applicationSearch.checkBundledApps(application,false)           
+        }else{
+            if (application.servicePackage.parent) {
+                //Need to select the other parent(if it has any) If user clicks on expandabel title
+                applicationSearch.list.forEach(app=> {
+                    //if it is a parent and parent of selected app
+                    if (!app.servicePackage.parent&&app.servicePackage.id===application.servicePackage.parent.id&&!applicationSearch.appCheckbox[app.id]) {
+                       applicationSearch.appCheckbox[app.id]=!applicationSearch.appCheckbox[app.id]
+                       applicationSearch.toggleRequest(app)
+                    }
+                })
+            }
+            applicationSearch.checkBundledApps(application,true)
+        }
+    }
+
+    applicationSearch.checkBundledApps= function(application,check){
+        if (application.bundledApps) {
+            application.bundledApps.forEach(bundledApp=>{
+                applicationSearch.appCheckbox[bundledApp.id]=check
+                applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:bundledApp.id}))
+            })
+        }
+    }
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------
 
 }]);

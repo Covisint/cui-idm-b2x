@@ -18,3 +18,98 @@ Layout styles for registration screens
 .cui-select-wrapper {
   width: 80px;
 }
+
+.cui-warning{
+    color: #ffa100;
+    font-size: 14px;
+    margin-top: 0;
+    padding: 5px 0 5px;
+    position: relative;
+}
+
+.cui-div__with-icon-input{
+    height: 45px;
+    border-radius: 3px;
+    overflow: hidden;
+    padding-top: 5px;
+    cursor: text;
+    white-space: nowrap;
+    padding-left: 40px;
+    border: 1px solid #dee9ee;
+    margin: 30px 0 0px;
+    position: relative;
+}
+.cui-icon__with-input{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.cui-input__with-icon{
+    border: 0;
+    cursor: text;
+    outline: none;
+    width: calc(100% - 5px);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 35px;
+}
+.cui-expandable__review-item-inline{
+    color: #666;
+    font-size: 0.875em;
+    line-height: 0.75;
+}
+.cui-expandable__review-item__inline-wrapper {
+    color: #666;
+    font-size: 0.875em;
+    line-height: 0.75;
+    margin: 0.5em 0;
+}
+.cui-expandable__review-item__field {
+    font-weight: bold;
+}
+.cui-expandable__review-input__autocomplete{
+    margin:4px 0 2px;
+}
+.cui-expandable__review-input__dropdown{
+    display: inline-block;
+    font-size: 1em;
+    height: auto;
+    margin: -6px 0 -6px 0;
+    padding: 0 2px;
+    width: 300px;
+}
+@media screen and (max-width:701px){
+    .cui-expandable__review-input__dropdown{
+    margin:4px 0 0;
+    width:auto;
+    }
+}
+@media screen and (min-width:701px){
+    .cui-expandable__review-item__inline-edit{
+        width:50%;
+    }
+}
+
+@media screen and (max-width:701px){
+    .cui-expandable__review-input{
+        width:auto;
+        margin:inherit;
+    }
+}
+@media screen and (min-width:701px){
+    .chevron-left{
+        position: absolute;
+        left: -5px;
+        top: -3px;
+    }
+}
+.tac_wrapper{
+    padding-right: 5em;
+    margin: 2em 0;
+    height: 300px;
+    overflow-y: auto;
+}
+.cursor__pointer{
+    cursor:pointer;
+}
+
