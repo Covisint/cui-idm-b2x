@@ -1,0 +1,112 @@
+<!-- Header -->
+<div>
+  <!-- Application Name -->
+  <h3 ng-click="base.goBack('applications.orgApplications.applicationDetails')">&#60; {{orgAppNewGrant.service.name | cuiI18n}} &#8211; {{'new-grant' | translate}}</h3>
+
+  <!-- Back Button -->
+  <div class="cui-action__actions">
+  	<svg ng-click="base.goBack('applications.orgApplications.applicationDetails')" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+    	<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+    </svg>
+  </div>
+</div>
+
+<!-- Application Information -->
+<div>
+  <!-- Avatar -->
+  <div class="cui-media__image-container">
+    <a target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="orgAppNewGrant.service.name" cui-avatar-cuii18n-filter cui-avatar="orgAppNewGrant.service.iconUrl"></div></a>
+  </div>
+  <!-- Application Name -->
+  <p>{{orgAppNewGrant.service.name | cuiI18n}}</p>
+  <!-- Granted Date -->
+  <p>{{'granted' | translate}}: {{orgAppNewGrant.service.grant.instant | date:base.appConfig.dateFormat}}</p>
+  <!-- Status -->
+  <p>{{orgAppNewGrant.service.grant.status}}
+    <!-- Active Icon -->
+    <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet" ng-if="orgAppNewGrant.service.grant.status==='active'"></cui-icon>
+    <!-- Locked Icon -->
+    <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet" ng-if="orgAppNewGrant.service.grant.status==='locked'"></cui-icon>
+  </p>
+</div>
+
+<!-- Search -->
+<div>
+  <h3>{{'assign-new-grant-to' | translate}}:</h3>
+  <!-- User/Division -->
+  <fieldset>
+      <!-- User -->
+      <input class="cui-radio__input" type="radio" name="radio-user" id="radio-user" value="user" ng-model="orgAppNewGrant.searchType">
+      <label class="cui-radio__label" for="radio-user"><span></span>{{'user' | translate}}</label>
+      <!-- Division -->
+      <input class="cui-radio__input" type="radio" name="radio-division" id="radio-division" value="division" ng-model="orgAppNewGrant.searchType">
+      <label class="cui-radio__label" for="radio-division"><span></span>{{'division' | translate}}</label>
+  </fieldset>
+  <!-- Search Input -->
+  <div class="cui-input-button" style="width:50%">
+    <input type="text" class="cui-input-button__input" ng-model="orgAppNewGrant.searchQuery" />
+    <button class="cui-input-button__button" ng-click="orgAppNewGrant.queryGrants()">{{'go' | translate}}</button>
+  </div>
+</div>
+
+
+<!-- Action Icons -->
+<div class="cui-action__actions">
+	<!-- Sort -->
+  <div class="cui-action__action-container" ng-click="orgAppNewGrant.sortClicked=!orgAppNewGrant.sortClicked" id="sort-button" off-click="orgAppNewGrant.sortClicked=false">
+  	<!-- Icon -->
+  	<cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+    <span class="cui-action__action-label">{{'sort' | translate}}</span>
+    <!-- Sort Popover -->
+    <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgAppNewGrant.sortClicked">
+      <p ng-click="orgAppNewGrant.sort('person.name.given')">{{'cui-alphabetically' | translate}}</p>
+      <p ng-click="orgAppNewGrant.sort('creation')">{{'cui-by-date-added' | translate}}</p>  
+    </div>
+  </div>
+
+  <!-- Refine -->
+  <div class="cui-action__action-container" ng-click="orgAppNewGrant.refineClicked=!orgAppNewGrant.refineClicked" id="refine-button" off-click="orgAppNewGrant.refineClicked=false">
+  	<!-- Icon -->
+  	<cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+    <span class="cui-action__action-label">{{'refine' | translate}}</span>
+    <!-- Refine Popover -->
+    <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgAppNewGrant.refineClicked">
+      <p ng-click="orgAppNewGrant.parseUsersByStatus('all')">{{'all' | translate}}</p>
+      <p ng-click="orgAppNewGrant.parseUsersByStatus('active')">{{'active' | translate}}</p>
+      <p ng-click="orgAppNewGrant.parseUsersByStatus('suspended')">{{'suspended' | translate}}</p>
+    </div>
+  </div>
+
+  <!-- Organizations -->
+  <div class="cui-action__action-container" ng-click="orgAppNewGrant.organizationsClicked=!orgAppNewGrant.organizationsClicked" id="organizations-button" off-click="orgAppNewGrant.organizationsClicked=false">
+  	<!-- Icon -->
+  	<cui-icon cui-svg-icon="fa:nine10" svg-class="cui-action__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+    <span class="cui-action__action-label">{{'organizations' | translate}}</span>
+    <!-- Organizations Popover -->
+    <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="orgAppNewGrant.organizationsClicked">
+      <div ng-if="!orgAppNewGrant.organizationList">
+        <p>{{'cui-no-org-divisions' | translate}}!</p>
+      </div>
+      <div ng-if="orgAppNewGrant.organizationList" ng-repeat="organization in orgAppNewGrant.organizationList | orderBy:'name' track by organization.id">
+        <p ng-if="organization.id!==orgAppNewGrant.organization.id" ng-click="orgAppNewGrant.switchDivision(organization);orgAppNewGrant.organizationsClicked=false">{{organization.name | cuiI18n}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-repeat="grant in orgAppNewGrant.userList track by grant.grantee.id">
+  <cui-expandable class="cui-expandable">
+    <cui-expandable-title class="cui-expandable__title">
+      <div class="cui-media__image" cui-avatar cui-avatar-email="grant.person.email" cui-avatar-names="[grant.person.name.given, grant.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <span>{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+      <span>{{grant.person.name.given}} {{grant.person.name.surname}}</span>
+      <span>{{grant.grantee.id}}</span>
+      <span>{{grant.organization.name}}</span>
+      <span>{{grant.status}}</span>
+      <span ng-click="toggleExpand()">assign</span>
+    </cui-expandable-title>
+    <cui-expandable-body class="cui-expandable__body">
+      <p ng-repeat="claim in grant.claims track by claim.id">{{claim.name | cuiI18n}}</p>
+    </cui-expandable-body>
+  </cui-expandable>
+</div>

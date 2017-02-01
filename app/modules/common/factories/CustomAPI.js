@@ -196,6 +196,20 @@ angular.module('common')
             accepts: 'application/vnd.com.covisint.platform.person.privilege.v1+json',
             call: `/person/v3/persons/privileges/${ '{personId}'}`,
             type: 'GET'
+        },
+        {   cmd: 'getPersonGrantedCount',
+            cmdType: 'secured',
+            accepts: 'text/plain',
+            call: `/person/v3/persons/count`,
+            type: 'GET' 
+        },
+        {
+            cmd: 'suspendOrgPkg',
+            cmdType: 'secured',
+            accepts: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            contentType: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            call: `/service/v3/grants/tasks/organization/package/suspend`,
+            type: 'POST'
         }
     ]
 
