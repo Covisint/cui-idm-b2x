@@ -15,7 +15,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 -->
 
 <div class="cui-action">
-  <nav class="cui-breadcrumb" ng-if="true">
+  <nav class="cui-breadcrumb" ng-if="true" cui-access="{requiredEntitlements:['Application Admin','Security Administrator'],entitlementType:'atLeastOne'}" user-entitlements="base.user.entitlements">
     <ul class="cui-breadcrumb__links">
       <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications.applicationList">{{'organization-applications' | translate}}</a>
