@@ -4,7 +4,7 @@
             <cui-icon cui-svg-icon="cui:check-with-border" viewBox="-1 -1 48 48" class="cui-modal__icon"></cui-icon>
         </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-        <span class="cui-modal__secondary-message">This application is now suspended from the selected organizations, all users, and all sub organizations.<!-- {{'your-app-request-in-review' | translate}} --></span>
+        <span class="cui-modal__secondary-message">{{'cui-org-app-suspend-success'|translate}}<!-- {{'your-app-request-in-review' | translate}} --></span>
     </div>
 </div>
 <!-- Header -->
@@ -17,10 +17,10 @@
 		<nav class="cui-breadcrumb">
 		    <ul class="cui-breadcrumb__links">
 		      <li class="cui-breadcrumb__link">
-		        <a href="#/applications/organization" ui-sref="applications.orgApplications.applicationList">Organization Applications</a>
+		        <a href="#/applications/organization" ui-sref="applications.orgApplications.applicationList">{{'organization-applications'|translate}}</a>
 		      </li>
 		      <li class="cui-breadcrumb__link">
-		        <a class="active" href="#/applications/" ui-sref="applications.myApplications" ui-sref-active="active">My Applications</a>
+		        <a class="active" href="#/applications/" ui-sref="applications.myApplications" ui-sref-active="active">{{'my-applications'|translate}}</a>
 		      </li>
 		    </ul>
 	  </nav>
@@ -107,10 +107,10 @@
                 </g>
             </svg> -->
             <div class="cui-expandable__body-row">
-            	<p>This action will suspend the action from all users and sub organizations even when in active use.</p>
+            	<p>{{'cui-org-app-suspend-msg1'|translate}}</p>
             </div>
             <div class="cui-expandable__body-row">
-            	<p>Are you sure you wish to suspend <b>{{orgApplicationDetails.application.name | cuiI18n}}</b> from <b>{{orgApplicationDetails.organizationList[0].name | cuiI18n}}</b> ?</p>
+            	<p>{{'cui-org-app-suspend-msg2'|translate}} <b>{{orgApplicationDetails.application.name | cuiI18n}}</b> {{'cui-from'|translate}} <b>{{orgApplicationDetails.organizationList[0].name | cuiI18n}}</b> ?</p>
             </div>
             <div class="cui-expandable__body-row">
 		        <table>
@@ -159,7 +159,7 @@
           <div class="cui-tile__body cui-applications__details">
             <!-- No Details -->
             <div class="cui-applications__no-details" ng-if="(!orgApplicationDetails.application.bundledApps || orgApplicationDetails.application.bundledApps.length==0)">
-              <p>{{'cui-no-application-details' | translate}}</p>
+              <p>{{'no-bundled-or-related' | translate}}</p>
             </div>
             <!-- Bundled Application Details -->            
               <div class="cui-applications__bundled-app" ng-repeat="application in orgApplicationDetails.application.bundledApps">
@@ -178,7 +178,7 @@
           	<div class="cui-tile__body cui-applications__details">
           	<!-- Related Application Details -->
           	 <div class="cui-applications__no-details" ng-if="(!orgApplicationDetails.application.relatedApps || orgApplicationDetails.application.relatedApps.length==0)">
-              <p>{{'cui-no-application-details' | translate}}</p>
+              <p>{{'no-bundled-or-related' | translate}}</p>
             </div>
                 <div class="cui-applications__related-app" ng-repeat="application in orgApplicationDetails.application.relatedApps">
                   <div class="cui-applications__related-app-col">
