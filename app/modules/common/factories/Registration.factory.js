@@ -75,12 +75,13 @@ angular.module('common')
                 request.packages = []
                 angular.forEach(packageData.selected, function(servicePackage) {
                     // userWalkup.applications.selected is an array of strings that looks like
-                    // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+                    // ['<appId>,<packageId>,<appName>']
                     request.packages.push({
-                        id: servicePackage.split(',')[0],
+                        id: servicePackage.split(',')[1],
                         type: 'servicePackage'
                     })
-                })    
+                })
+                request.packages=_.uniqBy(request.packages,'id')    
             }
 
             return request
@@ -222,11 +223,15 @@ angular.module('common')
 
         API.cui.initiateNonce()
         .then(res => {
-            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
+            return API.cui.getOrgAppsCountNonce({organizationId: organization.id})
+        })
+        .then(res => {
+            results.appCount=res
+            return API.cui.getOrgAppsNonce({organizationId: organization.id})
         })
         .then(res => {
             res.forEach(grant => {
-                if (grant.servicePackageResource.requestable) results.grants.push(grant)
+                if (grant.servicePackage.requestable) results.grants.push(grant)
             })
             return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
         })
