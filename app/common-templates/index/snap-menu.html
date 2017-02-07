@@ -15,3 +15,22 @@
   <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
   <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>
+
+<!-- ADMIN TEST -->
+<div class="cui-desktop-menu__option" 
+ ng-show="base.permitted({
+ 	all: {
+ 		roles: {
+ 			any: ['TIB Administrator', 'Choc']
+ 		}, 
+ 		entitlements: {
+ 			any: ['Modify No Fly List', 'Vani']
+ 		} 
+ 	} 
+ })"
+ ui-sref="organization.profile" 
+ ui-sref-active-nested="active" 
+ ng-click="base.menu.desktop.close()">
+  <span class="cui-desktop-menu__option-name">Permitted POC</span>
+  <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+</div>
