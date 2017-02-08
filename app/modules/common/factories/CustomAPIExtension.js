@@ -72,7 +72,28 @@ angular.module('common')
 			accepts: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
 			contentType: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
 			call: '/registration/v1/registrations/persons/registration/validate'
-		}
+		},
+        {
+            cmd: 'securedInitiate',
+            cmdType: 'unsecured',
+            type: 'GET',
+            accepts: 'application/vnd.com.covisint.platform.person.invitation.v1+json',
+            call: '/registration/v1/registrations/securedInvite/initiate/{invitationId}'
+        },
+        {
+            cmd: 'getOrgAppsNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
+            call: '/registration/v1/applications/organizations/{organizationId}'
+        },
+        {
+            cmd: 'getOrgAppsCountNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'text/plain',
+            call: '/registration/v1/applications/organizations/{organizationId}/count'
+        }
     ];
 
     return calls
