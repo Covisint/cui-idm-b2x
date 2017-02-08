@@ -1,0 +1,35 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to create this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/registration/userInvited" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<!-- Loading: Getting required registration data -->
+<div class="cui-loading__container--organization-list" ng-if="userInvited.initializing">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+<p style="color:red" align="center" ng-if="base.apiError.for['RegistrationFactory.inValidInvite']">{{ 'cui-invalid-invitation'| translate}}</p>
+<div class="cui-form--mobile-steps" ng-if="!userInvited.initializing && !base.apiError.for['RegistrationFactory.inValidInvite']">
+  <div class="cui-form__title">{{'create-account' | translate}}</div>
+  <div class="cui-form__body">
+    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators dirty-validation>
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+
+      <ng-form name="userInvitedRegForm" novalidate>
+        <step step-title="{{'cui-user-profile' | translate}}" icon="cui:user">
+          <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-userProfile.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-login' | translate}}" icon="cui:login">
+          <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-login.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-applications' | translate}}" icon="cui:applications">
+          <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-applications.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-review' | translate}}" icon="cui:review">
+          <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-review.html'"></div>
+        </step>
+      </ng-form>
+    </cui-wizard>
+  </div>
+</div>

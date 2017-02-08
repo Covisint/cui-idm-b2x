@@ -1,0 +1,91 @@
+<ng-form name="userLogin" novalidate>
+
+  <!-- First Row -->
+  <!-- User ID -->
+  <label for="userID">{{'username' | translate}}</label>
+  <div class="cui-error" ng-messages="userLogin.userID.$error" ng-if="userLogin.userID.$dirty">
+    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+  </div>
+  <!-- Custom Error: Check If Username Is Taken -->
+  <div class="cui-error" ng-if="userLogin.userID.$error.usernameTaken && userLogin.userID.$dirty">
+    <div class="cui-error__message">{{'cui-username-taken' | translate}}</div>
+  </div>
+  <input type="text" name="userID" class="cui-input" ng-required="true" ng-model="userInvited.userLogin.username"
+    custom-error="userInvited.customErrors.userName" 
+    ng-class="{'cui-input--error' : userLogin.userID.$touched && userLogin.userID.$invalid}">
+
+  <!-- Second row -->
+  <div class="cui-wizard__field-row">
+    <!-- Password -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <div class="cui-input__password-holder">
+        <label>{{'cui-password' | translate}}</label>
+        <div class="cui-error" ng-messages="userLogin.password.$error" ng-if="userLogin.password.$dirty">
+          <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+        </div>
+        <input id="test-input" type="password" name="password" class="cui-input" ng-required="true" ng-model="userInvited.userLogin.password" ng-class="{'cui-input--error': userLogin.password.$touched && userLogin.password.$invalid}" password-validation="userInvited.passwordRules" ng-model-options="{allowInvalid:true}" ng-change="userInvited.userLogin.hiddenPassword=base.generateHiddenPassword(userInvited.userLogin.password)" ng-focus="usersWalkup.passwordPopover=true" ng-blur="usersWalkup.passwordPopover=false">
+        <!-- Password Rules Popover -->
+        <div cui-popover target="#test-input" popover-positions="[{position:'right'},{position:'bottom'}]" ng-if="usersWalkup.passwordPopover">
+          <div password-popover ng-messages="userLogin.password.$error" ng-messages-multiple class="cui-error__password">
+            <div ng-messages-include="app/common-templates/password-validation.html"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Re-enter Password -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-password-re' | translate}}</label>
+      <div class="cui-error" ng-if="userLogin.passwordRe.$dirty && userLogin.passwordRe.$error.match">
+        <div class="cui-error__message">{{'password-mismatch' | translate}}</div>
+      </div>
+      <input type="password" name="passwordRe" class="cui-input" ng-required="true" ng-model="userInvited.userLogin.passwordRe" match="userInvited.userLogin.password">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="cui-wizard__field-row">
+    <!-- Challenge Question 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-challenge-question' | translate}} 1</label>
+      <cui-dropdown ng-model="userInvited.userLogin.question1" class="cui-dropdown" return-value="object" display-value="(object.question | cuiI18n)" options="userInvited.userLogin.challengeQuestions1">
+      </cui-dropdown>
+    </div>
+
+    <!-- Challenge Answer 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-challenge-answer' | translate}} 1</label>
+      <div class="cui-error" ng-if="userLogin.answer1.$dirty">
+        <div class="cui-error__message" ng-if="userLogin.answer1.$error.required">{{'cui-this-field-is-required' | translate}}</div>
+        <div ng-if="userInvited.answer1&&userLogin.answer1.$error.unique" class="cui-error__message" >{{'security-question-repeated' | translate}}</div>
+      </div>
+      <input type="text" name="answer1" class="cui-input" ng-required="true" ng-focus="userInvited.answer2=false;userInvited.answer1=true" ng-model="userInvited.userLogin.challengeAnswer1" unique="userInvited.userLogin.challengeAnswer2">
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="cui-wizard__field-row">
+    <!-- Challenge Question 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-challenge-question' | translate}} 2</label>
+        <cui-dropdown ng-model="userInvited.userLogin.question2" class="cui-dropdown" return-value="object" display-value="(object.question | cuiI18n)" options="userInvited.userLogin.challengeQuestions2"></cui-dropdown>
+    </div>
+
+    <!-- Challenge Answer 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-challenge-answer' | translate}} 2</label>
+      <div class="cui-error" ng-if="userLogin.answer2.$dirty">
+        <div class="cui-error__message" ng-if="userLogin.answer2.$error.required">{{'cui-this-field-is-required' | translate}}</div>
+        <div ng-if="userInvited.answer2&&userLogin.answer2.$error.unique" class="cui-error__message" >{{'security-question-repeated' | translate}}</div>
+      </div>
+      <input type="text" name="answer2" class="cui-input" ng-required="true" ng-model="userInvited.userLogin.challengeAnswer2" unique="userInvited.userLogin.challengeAnswer1" ng-focus="userInvited.answer1=false;userInvited.answer2=true">
+    </div>
+  </div>
+
+</ng-form>
+
+<div class="cui-wizard__controls">
+  <button type="button" class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
+  <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(userLogin)" ng-class="(userLogin.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+  <button type="button" class="cui-wizard__next" ng-if="wizardFinished" ng-click="userLogin.$valid && goToStep(4)" ng-class="!userLogin.$valid? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
+</div>
