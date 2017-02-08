@@ -61,6 +61,16 @@ angular.module('common')
                 securityQuestionAccount: this.securityQuestionAccount(_registrationData)
             }
         },
+        InvitedSubmit: function(registrationData,inviteId) {
+            const _registrationData = Object.assign({}, registrationData)
+
+            return {
+                person: this.person(_registrationData),
+                passwordAccount: this.passwordAccount(_registrationData),
+                securityQuestionAccount: this.securityQuestionAccount(_registrationData),
+                inviteId:inviteId
+            }
+        },
         servicePackageRequest: function(personId, personRealm, packageData,requestReason) {
             let request = {
                 registrant: {
@@ -191,6 +201,34 @@ angular.module('common')
 
         return defer.promise
     }
+    // validates invite and Returns Target organization
+    //Must resolve for the Invited registration to work.
+    pub.initInvitedRegistration= (encodedString) =>{
+                const defer = $q.defer()
+        const data = {}
+        
+        APIError.offFor('RegistrationFactory.initInvited')
+
+        API.cui.securedInitiate({invitationId:encodedString})
+        .then((res) => {
+            data.invitationData=res;
+            return API.cui.getOrganizationNonce({organizationId:res.targetOrganization.id})
+        })
+        .then(res => {
+            data.organization = res
+            return API.cui.getSecurityQuestionsNonce()
+        })
+        .then(res => {
+            data.securityQuestions = res
+            defer.resolve(data)
+        })
+        .fail(error => {
+            APIError.onFor('RegistrationFactory.initInvited')
+            defer.reject(error)
+        })
+
+        return defer.promise
+    }
 
     pub.walkupSubmit = (registrationData) => {
         const defer = $q.defer()
@@ -214,8 +252,33 @@ angular.module('common')
         return defer.promise
     }
 
+    pub.invitedSubmit = (registrationData,encodedString,invitationId) => {
+        const defer = $q.defer()
+        const submitData = build.InvitedSubmit(registrationData,invitationId)
 
-    pub.selectOrganization = (organization)=>{
+        API.cui.securedInitiate({invitationId:encodedString})
+        .then(() => {
+            return API.cui.postUserRegistrationNonce({qs:[['inviteId',invitationId]],data: submitData})
+        })
+        .then(res => {
+            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications,registrationData.requestReason)
+            return API.cui.postPersonRequestNonce({data: packageRequestData})
+        })
+        .then(res => {
+            defer.resolve(res)
+        })
+        .fail(error => {
+            defer.reject(error)
+        })
+
+        return defer.promise
+    }
+
+    pub.getOrgAppsByPage = (page, pageSize, organizationId) => {
+        return API.cui.getOrgAppsNonce({organizationId: organizationId, qs:[['page',page],['pageSize',pageSize]]})
+    }
+
+    pub.selectOrganization = (organization,pageSize)=>{
         const deferred = $.Deferred()
         const results = {
             grants: []
@@ -227,7 +290,7 @@ angular.module('common')
         })
         .then(res => {
             results.appCount=res
-            return API.cui.getOrgAppsNonce({organizationId: organization.id})
+            return pub.getOrgAppsByPage(1,pageSize,organization.id)
         })
         .then(res => {
             res.forEach(grant => {
