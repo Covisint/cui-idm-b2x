@@ -20,6 +20,15 @@ angular.module('registration',[])
             desktop: false,
             mobile: false
         }
+    })
+    .state('registration.invitation', {
+        url: '/invitation?inviteId&pin',
+        templateUrl:templateBase + 'userInvited/userInvited.html',
+        controller: returnCtrlAs('userInvited'),
+        menu: {
+            desktop: false,
+            mobile: false
+        }
     });
 
 }]);
