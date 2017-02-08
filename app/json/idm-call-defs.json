@@ -773,5 +773,23 @@
     "call": "/service/v3/categories/persons/{personId} ",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.category.v1+json"
+  },
+  {
+    "cmd": "getPersonPackagesGrantHistory",
+    "call": "/service/v3/persons/{personId}/packages/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.v1+json"
+  },
+  {
+    "cmd": "getPersonApplicationsGrantHistory",
+    "call": "/service/v3/applications/persons/{personId}/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.grant.history.v1+json"
+  },
+  {
+    "cmd": "getPersonApplicationsRequestHistory",
+    "call": "/service/v3/persons/{personId}/applications/requests/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
   }
 ]
