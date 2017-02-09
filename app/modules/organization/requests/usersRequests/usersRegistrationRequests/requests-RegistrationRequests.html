@@ -1,0 +1,134 @@
+<main class="cui-application cui-applications">
+  <h2 class="cui-sr-only">{{'users-requests' | translate}}</h2>
+
+  <!-- Page Header -->
+  <section class="cui-action">
+    <div class="cui-tabs__main-container">
+      <ul class="cui-tabs__nav">
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.usersRegistrationRequests">
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-new-user' | translate}}</a>
+        </li>
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.usersAppRequests">
+          <a class="cui-tabs__tab">{{'cui-applications' | translate}}</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Action Sub-header -->
+  <section class="cui-action" ng-if="!usersRegistrationRequests.loading">
+    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
+    
+    <!-- <div class="cui-loading__container" ng-if="usersRegistrationRequests.loading">
+      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
+    </div> -->
+
+    <div class="cui-action__actions">
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="usersRegistrationRequests.sortClicked=!usersRegistrationRequests.sortClicked" id="sort-button" off-click="usersRegistrationRequests.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="usersRegistrationRequests.sortClicked" style="width:171px">
+          <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.name')">{{'cui-alphabetically' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.username')">{{'username' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.status')">{{'status' | translate}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refine -->
+      <div class="cui-action__action-container" ng-click="usersRegistrationRequests.refineClicked=!usersRegistrationRequests.refineClicked" id="refine-button" off-click="usersRegistrationRequests.refineClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span>
+        <!-- Refine Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersRegistrationRequests.refineClicked" style="width:214px">
+          <div class="cui-popover__row" ng-repeat="status in usersRegistrationRequests.statusData" ng-click="usersRegistrationRequests.actionCallbacks.refine(status.value)">
+            <span>{{status.value | translate}} ({{status.count}})</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Organizations -->
+      <div class="cui-action__action-container" ng-click="usersRegistrationRequests.organizationsClicked=!usersRegistrationRequests.organizationsClicked" id="organizations-button" off-click="usersRegistrationRequests.organizationsClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
+        <!-- Organizations Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersRegistrationRequests.organizationsClicked" style="width:214px">
+          <div class="cui-popover__row" ng-if="!usersRegistrationRequests.organizationList">
+            <span>{{'cui-no-org-divisions' | translate}}!</span>
+          </div>
+          <div class="cui-popover__row" ng-if="usersRegistrationRequests.organizationList" ng-repeat="organization in usersRegistrationRequests.organizationList | orderBy:'name' track by organization.id">
+            <span ng-click="usersRegistrationRequests.getOrgMembers(organization);usersRegistrationRequests.organizationsClicked=false">{{organization.name | cuiI18n}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="cuiapplications__main-container">
+    <h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
+
+    <!-- Loading -->
+    <div class="cui-loading__container" ng-if="base.loader.for['usersRegistrationRequests.list']">
+      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+    </div>
+
+    <cui-table-header headers="['cui-name', 'cui-job-title', 'date-submitted', 'request', 'division']"></cui-table-header>
+    <cui-table-row ng-repeat="userRequest in usersRegistrationRequests.data track by $index"
+    ng-click="usersRegistrationRequests.goToDetails(userRequest)">
+      <li class="cui-flex-table__tr cui-flex-table__tr--c">
+        <div class="cui-flex-table__avatar-col">
+          <div class="cui-profile__user-avatar" aria-hidden="true" 
+            cui-avatar cui-avatar-names="[userRequest.personData.name.given, userRequest.personData.name.surname]" 
+            cui-avatar-color-class-prefix="cui-avatar__color" 
+            cui-avatar-color-count="5"></div>
+        </div>
+        <div class="cui-flex-table__mobile-stack">
+           <div class="cui-flex-table__left">
+            <span class="cui-flex-table__title">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.personData.title}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.personData.creation|date}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.packageData.name|cuiI18n}}</span>
+          </div>
+
+          <div class="cui-flex-table__right">
+            <span class="">{{userRequest.personData.organization.name}}</span>
+          </div>
+        </div>
+      </li>
+    </cui-table-row>
+
+    <!-- Pagination -->
+    <div class="cui-paginate__container">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="usersRegistrationRequests.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="usersRegistrationRequests.search.pageSize" count="usersRegistrationRequests.userCount" on-page-change="usersRegistrationRequests.updateSearchParams" ng-model="usersRegistrationRequests.search.page" attach-rerender-to="usersRegistrationRequests.reRenderPagination"></paginate>
+    </div>
+  </section>
+
+</main>
+

@@ -1,0 +1,46 @@
+<div class="cui-action">
+  <div class="cui-action__title">{{'users-requests' | translate}}</div>
+</div>
+<div class="cui-tabs__main-container">
+  <ul class="cui-tabs__nav">
+    <li class="cui-tabs__tab-container" ui-sref="organization.requests.usersRegistrationRequests">
+      <a class="cui-tabs__tab ">{{'cui-new-user' | translate}}</a>
+    </li>
+    <li class="cui-tabs__tab-container" ui-sref="organization.requests.usersAppRequests">
+      <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-applications' | translate}}</a>
+    </li>
+  </ul>
+</div>
+<div class="cui-applications__main-container cui-applications">
+  <div ng-if="usersAppRequests.noRequestsFlag" align="center"><b><label>{{usersAppRequests.message | translate}}</label></b></div>
+  <div ng-if="usersAppRequests.errorFlag" align="center" class="cui-error"><b><label>{{usersAppRequests.message | translate}}</label></b></div>
+  <div class="cui-loading__container" ng-if="usersAppRequests.loading">
+    <div class="cui-loading--center">
+      <div class="cui-loading"></div>
+    </div>
+  </div>
+  <table ng-if="!usersAppRequests.loading && !usersAppRequests.noRequestsFlag" class="cui-table cui-table--borderless ">
+    <thead>
+      <tr>
+        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('name')">{{'user'|translate}} {{'cui-name'|translate}}</th>
+        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('title')">
+          {{'cui-job-title'|translate}}</th>
+        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('date')">
+          {{'date-submitted'|translate}}</th>
+        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('request')">
+          {{'request'|translate}}</th>
+        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('division')">
+          {{'division'|translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="cui-media--tr" ng-repeat="userRequest in usersAppRequests.list track by $index">
+        <td class="cui-media__title" style="word-wrap: break-word;word-break: break-all;white-space: normal;" data-label="{{'user'|translate}} {{'cui-name'|translate}}" scope="row" ng-click="usersAppRequests.goToDetails(userRequest)">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</td>
+        <td data-label="{{'cui-job-title'|translate}}" ng-bind="userRequest.personData.title"></td>
+        <td data-label="{{'date-submitted'|translate}}" ng-bind="userRequest.creation|date"></td>
+        <td data-label="{{'request'|translate}}" ng-bind="userRequest.packageData.name|cuiI18n"></td>
+        <td data-label="{{'division'|translate}}" ng-bind="userRequest.personData.organizationName"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

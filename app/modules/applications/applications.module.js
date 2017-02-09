@@ -5,9 +5,7 @@ angular.module('applications',[])
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
-    const loginRequired = {
-        loginRequired: true
-    };
+    const loginRequired = true;
 
     $stateProvider
         .state('applications', {
