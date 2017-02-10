@@ -1,8 +1,11 @@
-<main class="cui-application cui-applications">
-  <h2 class="cui-sr-only">{{'users-requests' | translate}}</h2>
+<main class="cui-organization cui-organization-req-uers">
+  <h2 class="cui-sr-only">{{'org-req-users-requests' | translate}}</h2>
 
-  <!-- Page Header -->
-  <section class="cui-action">
+  <!-- Header -->
+  <section class="cui-action" ng-if="!usersRegistrationRequests.loading">
+    <h3 class="cui-sr-only">{{'org-req-users-filters' | translate}}</h3>
+    
+    <!-- Tabs -->
     <div class="cui-tabs__main-container">
       <ul class="cui-tabs__nav">
         <li class="cui-tabs__tab-container" 
@@ -15,16 +18,8 @@
         </li>
       </ul>
     </div>
-  </section>
 
-  <!-- Action Sub-header -->
-  <section class="cui-action" ng-if="!usersRegistrationRequests.loading">
-    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
-    
-    <!-- <div class="cui-loading__container" ng-if="usersRegistrationRequests.loading">
-      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
-    </div> -->
-
+    <!-- Action Sub-header -->
     <div class="cui-action__actions">
       <!-- Sort -->
       <div class="cui-action__action-container" ng-click="usersRegistrationRequests.sortClicked=!usersRegistrationRequests.sortClicked" id="sort-button" off-click="usersRegistrationRequests.sortClicked=false">
@@ -40,9 +35,6 @@
           <div class="cui-popover__row">
             <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.username')">{{'username' | translate}}</span>
           </div>
-          <div class="cui-popover__row">
-            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.status')">{{'status' | translate}}</span>
-          </div>
         </div>
       </div>
 
@@ -54,7 +46,8 @@
         <span class="cui-action__action-label">{{'refine' | translate}}</span>
         <!-- Refine Popover -->
         <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersRegistrationRequests.refineClicked" style="width:214px">
-          <div class="cui-popover__row" ng-repeat="status in usersRegistrationRequests.statusData" ng-click="usersRegistrationRequests.actionCallbacks.refine(status.value)">
+          <div class="cui-popover__row" ng-repeat="status in usersRegistrationRequests.statusData" 
+          ng-click="usersRegistrationRequests.actionCallbacks.refine(status.value)">
             <span>{{status.value | translate}} ({{status.count}})</span>
           </div>
         </div>
@@ -80,7 +73,7 @@
   </section>
 
   <!-- Content -->
-  <section class="cuiapplications__main-container">
+  <section class="cui-organization__main-container">
     <h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
 
     <!-- Loading -->

@@ -1,46 +1,126 @@
-<div class="cui-action">
-  <div class="cui-action__title">{{'users-requests' | translate}}</div>
-</div>
-<div class="cui-tabs__main-container">
-  <ul class="cui-tabs__nav">
-    <li class="cui-tabs__tab-container" ui-sref="organization.requests.usersRegistrationRequests">
-      <a class="cui-tabs__tab ">{{'cui-new-user' | translate}}</a>
-    </li>
-    <li class="cui-tabs__tab-container" ui-sref="organization.requests.usersAppRequests">
-      <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-applications' | translate}}</a>
-    </li>
-  </ul>
-</div>
-<div class="cui-applications__main-container cui-applications">
-  <div ng-if="usersAppRequests.noRequestsFlag" align="center"><b><label>{{usersAppRequests.message | translate}}</label></b></div>
-  <div ng-if="usersAppRequests.errorFlag" align="center" class="cui-error"><b><label>{{usersAppRequests.message | translate}}</label></b></div>
-  <div class="cui-loading__container" ng-if="usersAppRequests.loading">
-    <div class="cui-loading--center">
-      <div class="cui-loading"></div>
+<main class="cui-organization cui-organization-req-uers">
+  <h2 class="cui-sr-only">{{'org-req-apps-requests' | translate}}</h2>
+
+  <!-- Header -->
+  <section class="cui-action" ng-if="!usersAppRequests.loading">
+    <h3 class="cui-sr-only">{{'org-req-apps-filters' | translate}}</h3>
+    
+    <!-- Tabs -->
+    <div class="cui-tabs__main-container">
+      <ul class="cui-tabs__nav">
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.usersRegistrationRequests">
+          <a class="cui-tabs__tab cui-tabs__tab">{{'cui-new-user' | translate}}</a>
+        </li>
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.usersAppRequests">
+          <a class="cui-tabs__tab--active">{{'cui-applications' | translate}}</a>
+        </li>
+      </ul>
     </div>
-  </div>
-  <table ng-if="!usersAppRequests.loading && !usersAppRequests.noRequestsFlag" class="cui-table cui-table--borderless ">
-    <thead>
-      <tr>
-        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('name')">{{'user'|translate}} {{'cui-name'|translate}}</th>
-        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('title')">
-          {{'cui-job-title'|translate}}</th>
-        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('date')">
-          {{'date-submitted'|translate}}</th>
-        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('request')">
-          {{'request'|translate}}</th>
-        <th class="cui-media__title" scope="col" ng-click="usersAppRequests.sort('division')">
-          {{'division'|translate}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="cui-media--tr" ng-repeat="userRequest in usersAppRequests.list track by $index">
-        <td class="cui-media__title" style="word-wrap: break-word;word-break: break-all;white-space: normal;" data-label="{{'user'|translate}} {{'cui-name'|translate}}" scope="row" ng-click="usersAppRequests.goToDetails(userRequest)">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</td>
-        <td data-label="{{'cui-job-title'|translate}}" ng-bind="userRequest.personData.title"></td>
-        <td data-label="{{'date-submitted'|translate}}" ng-bind="userRequest.creation|date"></td>
-        <td data-label="{{'request'|translate}}" ng-bind="userRequest.packageData.name|cuiI18n"></td>
-        <td data-label="{{'division'|translate}}" ng-bind="userRequest.personData.organizationName"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+    <!-- Action Sub-header -->
+    <div class="cui-action__actions">
+      <!-- Sort -->
+      <div class="cui-action__action-container" ng-click="usersAppRequests.sortClicked=!usersAppRequests.sortClicked" id="sort-button" off-click="usersAppRequests.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="usersAppRequests.sortClicked" style="width:171px">
+          <div class="cui-popover__row">
+            <span ng-click="usersAppRequests.actionCallbacks.sort('person.name')">{{'cui-alphabetically' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="usersAppRequests.actionCallbacks.sort('person.username')">{{'username' | translate}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refine -->
+      <div class="cui-action__action-container" ng-click="usersAppRequests.refineClicked=!usersAppRequests.refineClicked" id="refine-button" off-click="usersAppRequests.refineClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span>
+        <!-- Refine Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersAppRequests.refineClicked" style="width:214px">
+          <div class="cui-popover__row" ng-repeat="status in usersAppRequests.statusData" 
+          ng-click="usersAppRequests.actionCallbacks.refine(status.value)">
+            <span>{{status.value | translate}} ({{status.count}})</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Organizations -->
+      <div class="cui-action__action-container" ng-click="usersAppRequests.organizationsClicked=!usersAppRequests.organizationsClicked" id="organizations-button" off-click="usersAppRequests.organizationsClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
+        <!-- Organizations Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersAppRequests.organizationsClicked" style="width:214px">
+          <div class="cui-popover__row" ng-if="!usersAppRequests.organizationList">
+            <span>{{'cui-no-org-divisions' | translate}}!</span>
+          </div>
+          <div class="cui-popover__row" ng-if="usersAppRequests.organizationList" ng-repeat="organization in usersAppRequests.organizationList | orderBy:'name' track by organization.id">
+            <span ng-click="usersAppRequests.getOrgMembers(organization);usersAppRequests.organizationsClicked=false">{{organization.name | cuiI18n}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="cui-organization__main-container">
+    <h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
+
+    <!-- Loading -->
+    <div class="cui-loading__container" ng-if="base.loader.for['usersAppRequests.list']">
+      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+    </div>
+
+    <cui-table-header headers="['cui-name', 'cui-job-title', 'date-submitted', 'request', 'division']"></cui-table-header>
+    <cui-table-row ng-repeat="userRequest in usersAppRequests.data track by $index"
+    ng-click="usersAppRequests.goToDetails(userRequest)">
+      <li class="cui-flex-table__tr cui-flex-table__tr--c">
+        <div class="cui-flex-table__avatar-col">
+          <div class="cui-profile__user-avatar" aria-hidden="true" 
+            cui-avatar cui-avatar-names="[userRequest.personData.name.given, userRequest.personData.name.surname]" 
+            cui-avatar-color-class-prefix="cui-avatar__color" 
+            cui-avatar-color-count="5"></div>
+        </div>
+        <div class="cui-flex-table__mobile-stack">
+           <div class="cui-flex-table__left">
+            <span class="cui-flex-table__title">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.personData.title}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.personData.creation|date}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{userRequest.packageData.name|cuiI18n}}</span>
+          </div>
+
+          <div class="cui-flex-table__right">
+            <span class="">{{userRequest.personData.organization.name}}</span>
+          </div>
+        </div>
+      </li>
+    </cui-table-row>
+
+    <!-- Pagination -->
+    <div class="cui-paginate__container">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="usersAppRequests.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="usersAppRequests.search.pageSize" count="usersAppRequests.userCount" on-page-change="usersAppRequests.updateSearchParams" ng-model="usersAppRequests.search.page" attach-rerender-to="usersAppRequests.reRenderPagination"></paginate>
+    </div>
+  </section>
+
+</main>

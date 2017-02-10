@@ -243,10 +243,13 @@ angular.module('common')
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
+
         $state.stateStack.push({
             name: fromState.name,
             params: fromParams || {}
         })
+
+        cui.log('on $stateChangeSuccess', fromState, fromParams, $state.stateStack);
     })
 
     angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {

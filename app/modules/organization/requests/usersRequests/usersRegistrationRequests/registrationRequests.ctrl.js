@@ -1,6 +1,6 @@
 angular.module('organization')
 .controller('usersRegistrationRequestsCtrl', 
-		function(API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$filter,$pagination,$q,$state,$stateParams) {
+		function($filter,$pagination,$q,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User) {
 
     const scopeName = 'usersRegistrationRequests.'
 		const usersRegistrationRequests = this
@@ -20,6 +20,7 @@ angular.module('organization')
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
   	var init = function(organizationId) {
+  		// TODO... properly use the orgId param...
       usersRegistrationRequests.search['organization.id'] = organizationId || $stateParams.orgId || User.user.organization.id
       usersRegistrationRequests.search.pageSize = usersRegistrationRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 
@@ -83,10 +84,11 @@ angular.module('organization')
 				});
 			};
 
+			// TODO figure out qs param creation, especially with respect to sort|refine
 			API.cui.getRegistrationRequests(
 				{ 'qs': [
 					['page', 1],
-					['pageSize', 10]  /* ??? */
+					['pageSize', 10]  
 				]}
 			).then(function(res) {
 				//cui.log('getRegistrationRequests', res);
@@ -116,6 +118,7 @@ angular.module('organization')
 			}).fail(function(error) {
         APIError.onFor(scopeName + 'list')
       }).always(function() {
+        //TODOD... what is this for?
         //CuiMobileNavFactory.setTitle($filter('cuiI18n')( ? ))
         usersRegistrationRequests.reRenderPagination && usersRegistrationRequests.reRenderPagination()
       });
@@ -129,10 +132,11 @@ angular.module('organization')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
+    // TODO figure this out...
     usersRegistrationRequests.updateSearchParams = (page) => {
         if (page) usersRegistrationRequests.search.page = page
         $state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.search, {notify: false})
-        initDirectory(usersRegistrationRequests.search['organization.id'])
+        init(usersRegistrationRequests.search['organization.id'])
     }
 
     usersRegistrationRequests.actionCallbacks = {
@@ -153,11 +157,9 @@ angular.module('organization')
     }
 
 		usersRegistrationRequests.goToDetails = function(request) {
-			// Need to persist the data for next state to avoid further calls
-			DataStorage.setType('personRequest', request);
 			$state.go('organization.requests.personRequest', {
-			 	'userID': request.registrant.id, 
-				'orgID': request.personData.organization.id 
+			 	'userId': request.personData.id, 
+				'orgId': request.personData.organization.id 
 			})
 		}
 
