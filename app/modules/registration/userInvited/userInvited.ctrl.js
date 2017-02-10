@@ -80,6 +80,7 @@ angular.module('registration')
         userInvited.invitationData=res.invitationData
 
         //Check restrict Email flag
+        userInvited.user.email=""
         if (userInvited.invitationData.restrictEmail) {
             userInvited.user.email=userInvited.invitationData.email
             userInvited.emailRe=userInvited.user.email
@@ -233,13 +234,15 @@ angular.module('registration')
                 userInvited.applications.list = grants
                 //Preselect the applications selected by admin
                 if (userInvited.invitationData.servicePackage) {
-                    if(userInvited.preSelectApps(userInvited.applications.list)){
+                    let flagObject=userInvited.preSelectApps(userInvited.applications.list,false,false)
+                    // Check whether we found main apps and sub apps in the current pagination
+                    if(flagObject.appsFoundFlag&&flagObject.subappsFoundFlag){
                         userInvited.applications.process()
                     }
                     // application or subapplication was not retrieved in current set of pagination
                     // need to retrieve all apps and pre selects them
                     else{
-                        userInvited.getAllOrgApps()
+                        userInvited.getAllOrgApps(flagObject)
                         .then(() =>{
                             userInvited.applications.process()
                         })
@@ -258,28 +261,101 @@ angular.module('registration')
         })
     }
 
-    userInvited.preSelectApps= (appList) => {
-        let packageFoundFlag=false
-        let subPackageFoundFlag=true
-        if (userInvited.invitationData.subPackage) {
-            subPackageFoundFlag=false
+    //Updates the selected apps and count and set the found flags
+    userInvited.selectAndUpdateFlags = (application, flags) => {
+        userInvited.applications.selected[application.id]=application.id+','+application.servicePackage.id+','+$filter('cuiI18n')(application.name)+','+application.servicePackage.personTacEnabled
+        flags[application.id]=true
+        if (application.bundledApps&&Object.keys(flags).length===1) {
+            application.bundledApps.forEach(app=>{
+                flags[app.id]=false
+            })
         }
+        return flags;
+    }
+    
+    userInvited.preSelectApps= (appList,appsFoundFlag,subappsFoundFlag) => {
+        let bundledAppFlags={}
+        let subappFlags={}
         appList.forEach(application => {
-            if(userInvited.invitationData.servicePackage.id===application.servicePackage.id){
-                userInvited.applications.selected[application.id]=application.id+','+application.servicePackage.id+','+$filter('cuiI18n')(application.name)+','+application.servicePackage.personTacEnabled
-                userInvited.applications.numberOfSelected += 1
-                packageFoundFlag=true
+            if(appsFoundFlag!==true&&userInvited.invitationData.servicePackage.id===application.servicePackage.id){
+                bundledAppFlags=userInvited.selectAndUpdateFlags(application,bundledAppFlags)
             }
-            if(userInvited.invitationData.subPackage && application.servicePackage.id.indexOf(userInvited.invitationData.subPackage.id)>0){
-                userInvited.applications.selected[application.id]=application.id+','+application.servicePackage.id+','+$filter('cuiI18n')(application.name)+','+application.servicePackage.personTacEnabled
-                userInvited.applications.numberOfSelected += 1
-                subPackageFoundFlag=true
+            if(subappsFoundFlag!==true&&userInvited.invitationData.subPackage){
+                // If subpackages
+                if (userInvited.invitationData.subPackage.id.indexOf(',')>0) {
+                    // If multiple subpackages Then subPackage.id will be string like "id1,id2,...idn"
+                    let subPackages=userInvited.invitationData.subPackage.id.split(',')
+                    subPackages.forEach(subPackage=>{
+                        subappFlags[subPackage]=subappFlags[subPackage]||{}
+                        if (application.servicePackage.id.indexOf(subPackage)>0) {
+                            subappFlags[subPackage]=userInvited.selectAndUpdateFlags(application,subappFlags[subPackage])
+                        }
+                    })                    
+                }
+                else{
+                    // Single Subpackage
+                    if (application.servicePackage.id.indexOf(userInvited.invitationData.subPackage.id)>0) {
+                        subappFlags[userInvited.invitationData.subPackage.id]={}
+                        subappFlags[userInvited.invitationData.subPackage.id]=userInvited.selectAndUpdateFlags(application,subappFlags[userInvited.invitationData.subPackage.id])
+                    }
+                }
             }
         })
-        return packageFoundFlag&&subPackageFoundFlag
+        //Check whether we found all the main apps,
+        let count=0
+        let iteration=0
+        angular.forEach(bundledAppFlags,function(flag){
+            iteration++
+            if (flag===false) {
+                count++
+            }
+            if (iteration===Object.keys(bundledAppFlags).length) {
+                if (count===0) {
+                    appsFoundFlag=true
+                }
+            }
+        })
+        //Check wether we found all the subapps,
+        count=0
+        iteration=0
+        let iterationOut=0
+        let countOut=0
+        angular.forEach(subappFlags,function(subpackage){
+            iterationOut++
+            if (Object.keys(subpackage).length!==0) {
+                angular.forEach(subpackage,function(flag){
+                    iteration++
+                    if (flag===false) {
+                        count++
+                    }
+                    if (iteration===Object.keys(subpackage).length) {
+                        if (count===0) {
+                            subappsFoundFlag=true
+                        }
+                    }
+                })
+            }
+            else{
+                countOut++
+            }
+            if (iterationOut===Object.keys(subappFlags).length) {
+                if (countOut===0) {
+                    subappsFoundFlag=true
+                }
+                else{
+                    subappsFoundFlag=false
+                }
+
+            }
+        })
+        userInvited.applications.numberOfSelected=Object.keys(userInvited.applications.selected).length
+        return {
+            appsFoundFlag:appsFoundFlag,
+            subappsFoundFlag:subappsFoundFlag
+        }
     }
 
-    userInvited.getAllOrgApps=() => {
+    userInvited.getAllOrgApps=(flagObject) => {
         let deferred=$q.defer()
         let tempAllApps=[]
         let tempAppsCount=userInvited.appCount
@@ -293,10 +369,9 @@ angular.module('registration')
         $q.all(apiPromises)
         .then(res=>{
             res.forEach(appList=>{
-                if(userInvited.preSelectApps(appList)){
-                    deferred.resolve()
-                }
+                userInvited.preSelectApps(appList,flagObject.appsFoundFlag,flagObject.subappsFoundFlag)
             })
+            deferred.resolve()
         })
         return deferred.promise
     }
