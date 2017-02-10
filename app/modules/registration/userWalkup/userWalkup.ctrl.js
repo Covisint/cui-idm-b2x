@@ -97,7 +97,7 @@ angular.module('registration')
 
     userWalkup.applications.updateSelected = (application, checkboxValue, index) => {
         if (checkboxValue === true) {
-            userWalkup.applications.selected[index]=application.id+','+application.name+','+application.showTac
+            userWalkup.applications.selected[index]=application.id+','+application.packageId+','+application.name+','+application.showTac
             userWalkup.applications.numberOfSelected += 1;
         } else {
             delete userWalkup.applications.selected[index]          
@@ -109,7 +109,7 @@ angular.module('registration')
         angular.forEach(userWalkup.applications.processedSelected, app =>{
             //need to change later to ===
             if (app.showTac=='true') {
-                Registration.getTac(app.id)
+                Registration.getTac(app.packageId)
                 .then(res =>{
                     app.tac=res;
                 })
@@ -159,11 +159,12 @@ angular.module('registration')
             if (app !== null) {
                 userWalkup.applications.processedSelected.push({
                     id: app.split(',')[0],
-                    name: app.split(',')[1],
+                    packageId:app.split(',')[1],
+                    name: app.split(',')[2],
                     // this fixes an issue where removing an app from the selected list that the user 
                     // had accepted the terms for would carry over that acceptance to the next app on the list
                     acceptedTos: ((oldSelected && oldSelected[index]&&oldSelected[index].id==i)? oldSelected[index].acceptedTos : false),
-                    showTac:app.split(',')[2]
+                    showTac:app.split(',')[3]
                 })
             }
             index++;
@@ -214,10 +215,7 @@ angular.module('registration')
 
             if (!grants.length) userWalkup.applications.list = undefined
             else {
-                userWalkup.applications.list = grants.map((grant) => {
-                    grant = grant.servicePackageResource
-                    return grant
-                })
+                userWalkup.applications.list = grants
             }
 
             userWalkup.passwordRules = res.passwordRules

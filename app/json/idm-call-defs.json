@@ -63,7 +63,7 @@
     "cmdType": "secured",
     "call": "/organization/v3/organizations/{organizationId}/hierarchy",
     "type": "GET",
-    "accepts": "application/vnd.com.covisint.platform.reference.hierarchy.v1+json"
+    "accepts": "application/vnd.com.covisint.platform.reference.hierarchy.v1+json;includedivision=true"
   },
   {
     "cmd": "getPersons",
