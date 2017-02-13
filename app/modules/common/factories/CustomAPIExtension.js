@@ -93,6 +93,13 @@ angular.module('common')
             type: 'GET',
             accepts: 'text/plain',
             call: '/registration/v1/applications/organizations/{organizationId}/count'
+        },
+        {
+            cmd: 'getOrganizationsCountNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'text/plain',
+            call: '/registration/v1/registrations/organizations/count'
         }
     ];
 

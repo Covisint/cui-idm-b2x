@@ -176,7 +176,7 @@ angular.module('common')
 
     // Returns organizations and security questions for the realm.
     // Both must resolve for the walkup registration to work.
-    pub.initWalkupRegistration = () => {    
+    pub.initWalkupRegistration = (pageSize) => {    
         const defer = $q.defer()
         const data = {}
         
@@ -184,7 +184,12 @@ angular.module('common')
 
         API.cui.initiateNonce()
         .then(() => {
-            return API.cui.getOrganizationsNonce()
+            //  2-13-2017 filter resuts by status is not available for count now.
+            return API.cui.getOrganizationsCountNonce()
+        })
+        .then((res) => {
+            data.organizationCount=res
+            return API.cui.getOrganizationsNonce({qs:[['page',1],['pageSize',pageSize],['status','active']]})
         })
         .then(res => {
             data.organizations = res
@@ -204,7 +209,7 @@ angular.module('common')
     // validates invite and Returns Target organization
     //Must resolve for the Invited registration to work.
     pub.initInvitedRegistration= (encodedString) =>{
-                const defer = $q.defer()
+        const defer = $q.defer()
         const data = {}
         
         APIError.offFor('RegistrationFactory.initInvited')
@@ -276,6 +281,16 @@ angular.module('common')
 
     pub.getOrgAppsByPage = (page, pageSize, organizationId) => {
         return API.cui.getOrgAppsNonce({organizationId: organizationId, qs:[['page',page],['pageSize',pageSize]]})
+    }
+
+    pub.getOrgsByPageAndName = (page,pageSize,name) => {
+        if (name!==undefined) {
+            return self.makeNonceCall("getOrganizationsNonce",{qs:[['page',page],['pageSize',pageSize],['status','active'],['name',name]]})
+        }
+        else{
+            return self.makeNonceCall("getOrganizationsNonce",{qs:[['page',page],['pageSize',pageSize],['status','active']]})
+        }
+        
     }
 
     pub.selectOrganization = (organization,pageSize)=>{
