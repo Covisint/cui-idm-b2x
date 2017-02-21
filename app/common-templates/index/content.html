@@ -29,8 +29,24 @@
     </div> -->
 
     <!-- Main Content UI-View -->
-    <div ui-view class="js-main-content" ng-cloak ng-class="{'js-main-content--search-open': searchEnabled}"></div>
-
+    <div class="pending-content_wrapper">
+      <div ui-view class="js-main-content dummy" ng-cloak ng-class="{'js-main-content--search-open': searchEnabled}"></div>
+      <div class="dummy pending-content__block" ng-if="base.pendingNotificationFlag">
+        <div class="pending-content__title-container">
+          <h4 class="cui-action__title cui-action__title-small">{{'pending'|translate}} {{'requests'|translate}}</h4>
+          <!-- Close Icon -->
+          <div ng-click="base.pendingNotificationFlag=false">
+            <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+          </div>
+        </div>
+        <div class="pending-content__row" ng-repeat="pendingApp in base.user.pendingApps">
+          {{'your-app'| translate}} "{{pendingApp|cuiI18n|capitalize}}" {{'pending-approval'|translate }}
+        </div>
+        <div class="pending-content__row" ng-if="base.user.pendingApps.length==0">
+          {{'no-pending-apps'|translate}}
+        </div>
+      </div>
+    </div>
     <!-- Footer -->
     <div class="cui-footer" ng-include="'app/common-templates/index/footer.html'"></div>
   </div>
