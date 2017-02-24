@@ -30,12 +30,21 @@
         <!-- Sort Popover -->
         <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="usersRegistrationRequests.sortClicked" style="width:171px">
           <div class="cui-popover__row">
-            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.name')">{{'cui-alphabetically' | translate}}</span>
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('personData.name')">{{'cui-alphabetically' | translate}}</span>
           </div>
           <div class="cui-popover__row">
-            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('person.username')">{{'username' | translate}}</span>
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('personData.username')">{{'username' | translate}}</span>
           </div>
-        </div>
+          <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('personData.creation')">{{'date-submitted' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('packageData.name')">{{'request' | translate}}</span>
+          </div>
+           <div class="cui-popover__row">
+            <span ng-click="usersRegistrationRequests.actionCallbacks.sort('personData.organization.name')">{{'division' | translate}}</span>
+          </div>
+         </div>
       </div>
 
       <!-- Refine -->
@@ -65,7 +74,10 @@
             <span>{{'cui-no-org-divisions' | translate}}!</span>
           </div>
           <div class="cui-popover__row" ng-if="usersRegistrationRequests.organizationList" ng-repeat="organization in usersRegistrationRequests.organizationList | orderBy:'name' track by organization.id">
-            <span ng-click="usersRegistrationRequests.getOrgMembers(organization);usersRegistrationRequests.organizationsClicked=false">{{organization.name | cuiI18n}}</span>
+            <span ng-click="usersRegistrationRequests.getOrgMembers(organization);usersRegistrationRequests.organizationsClicked=false">
+            {{organization.name}}
+            <!-- {{organization.name | cuiI18n}} -->
+            </span>
           </div>
         </div>
       </div>
@@ -105,7 +117,10 @@
           </div>
 
           <div class="cui-flex-table__middle">
-            <span class="">{{userRequest.packageData.name|cuiI18n}}</span>
+            <span class="">
+            <!-- {{userRequest.packageData.name|cuiI18n}} -->
+            {{userRequest.packageData.name}}
+            </span>
           </div>
 
           <div class="cui-flex-table__right">
@@ -118,8 +133,14 @@
     <!-- Pagination -->
     <div class="cui-paginate__container">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-      <results-per-page class="cui-paginate__select" ng-model="usersRegistrationRequests.search.pageSize"></results-per-page>
-      <paginate class="cui-paginate" results-per-page="usersRegistrationRequests.search.pageSize" count="usersRegistrationRequests.userCount" on-page-change="usersRegistrationRequests.updateSearchParams" ng-model="usersRegistrationRequests.search.page" attach-rerender-to="usersRegistrationRequests.reRenderPagination"></paginate>
+      <results-per-page class="cui-paginate__select" 
+      ng-model="usersRegistrationRequests.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" 
+      results-per-page="usersRegistrationRequests.search.pageSize" 
+      count="usersRegistrationRequests.userCount" 
+      on-page-change="usersRegistrationRequests.updateSearchParams"
+      ng-model="usersRegistrationRequests.search.page" 
+      attach-rerender-to="usersRegistrationRequests.reRenderPagination"></paginate>
     </div>
   </section>
 

@@ -65,7 +65,10 @@
             <span>{{'cui-no-org-divisions' | translate}}!</span>
           </div>
           <div class="cui-popover__row" ng-if="usersAppRequests.organizationList" ng-repeat="organization in usersAppRequests.organizationList | orderBy:'name' track by organization.id">
-            <span ng-click="usersAppRequests.getOrgMembers(organization);usersAppRequests.organizationsClicked=false">{{organization.name | cuiI18n}}</span>
+            <span ng-click="usersAppRequests.getOrgMembers(organization);usersAppRequests.organizationsClicked=false">
+            {{organization.name}}
+            <!-- {{organization.name | cuiI18n}} -->
+            </span>
           </div>
         </div>
       </div>
@@ -105,7 +108,10 @@
           </div>
 
           <div class="cui-flex-table__middle">
-            <span class="">{{userRequest.packageData.name|cuiI18n}}</span>
+            <span class="">
+            <!-- {{userRequest.packageData.name|cuiI18n}} -->
+            {{userRequest.packageData.name}}
+            </span>
           </div>
 
           <div class="cui-flex-table__right">
@@ -118,8 +124,14 @@
     <!-- Pagination -->
     <div class="cui-paginate__container">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-      <results-per-page class="cui-paginate__select" ng-model="usersAppRequests.search.pageSize"></results-per-page>
-      <paginate class="cui-paginate" results-per-page="usersAppRequests.search.pageSize" count="usersAppRequests.userCount" on-page-change="usersAppRequests.updateSearchParams" ng-model="usersAppRequests.search.page" attach-rerender-to="usersAppRequests.reRenderPagination"></paginate>
+      <results-per-page class="cui-paginate__select" 
+      ng-model="usersAppRequests.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" 
+      results-per-page="usersAppRequests.search.pageSize" 
+      count="usersAppRequests.userCount" 
+      on-page-change="usersAppRequests.updateSearchParams" 
+      ng-model="usersAppRequests.search.page" 
+      attach-rerender-to="usersAppRequests.reRenderPagination"></paginate>
     </div>
   </section>
 

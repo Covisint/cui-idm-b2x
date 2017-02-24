@@ -20,8 +20,9 @@ angular.module('organization')
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
   	var init = function(organizationId) {
-  		// TODO... properly use the orgId param...
-      usersRegistrationRequests.search['organization.id'] = organizationId || $stateParams.orgId || User.user.organization.id
+  		cui.log('init organizationId', organizationId);
+
+  		usersRegistrationRequests.search['organization.id'] = organizationId || $stateParams.orgId || User.user.organization.id
       usersRegistrationRequests.search.pageSize = usersRegistrationRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 
 	    usersRegistrationRequests.data = []
@@ -35,61 +36,72 @@ angular.module('organization')
 
 			var getOrg = function(orgId) {
 				return $q(function (resolve, reject) {
-					var cached = _.find(foundOrgs, {id: orgId});
-					if (cached) {
-						resolve(cached.name);
+					if (orgId.length) {
+						var cached = _.find(foundOrgs, {id: orgId});
+						if (cached) {
+							resolve(cached);
+						} else {
+							API.cui.getOrganizationSecured({ organizationId: orgId }).then(function(org) {
+								foundOrgs.push(org);
+								resolve(org);
+							}).fail(function(err) {
+								cui.log('getOrg error', orgId, err);
+								resolve({});
+							});
+						}
 					} else {
-						API.cui.getOrganizationSecured({ organizationId: orgId }).then(function(org) {
-							foundOrgs.push(org);
-							resolve(org);
-						}).fail(function(err) {
-							cui.log('getOrg error', orgId, err);
-							resolve({});
-						});
+						resolve({});
 					}
 				});
 			};
 
 			var getPerson = function(personId) {
 				return $q(function (resolve, reject) {
-					var cached = _.find(foundPersons, {id: personId});
-					if (cached) {
-						resolve(cached);
+					if (personId.length) {
+						var cached = _.find(foundPersons, {id: personId});
+						if (cached) {
+							resolve(cached);
+						} else {
+							API.cui.getPerson({ personId: personId }).then(function(person) {
+								foundPersons.push(person);
+								resolve(person);
+							}).fail(function(err) {
+								cui.log('getPerson error', personId, err);
+								resolve({});
+							});
+						}
 					} else {
-						API.cui.getPerson({ personId: personId }).then(function(person) {
-							foundPersons.push(person);
-							resolve(person);
-						}).fail(function(err) {
-							cui.log('getPerson error', personId, err);
-							resolve({});
-						});
+						resolve({});
 					}
 				});
 			};
 
 			var getPackage = function(packageId) {
 				return $q(function (resolve, reject) {
-					var cached = _.find(foundPackages, {id: packageId});
-					if (cached) {
-						resolve(cached);
+					if (packageId.length) {
+						var cached = _.find(foundPackages, {id: packageId});
+						if (cached) {
+							resolve(cached);
+						} else {
+							API.cui.getPackage({ packageId: packageId }).then(function(pkg) {
+								//cui.log('getPackage', pkg);
+								var p = {id: pkg.id, name: pkg.name[0].text};
+								foundPackages.push(p);
+								resolve(p);
+							}).fail(function(err) {
+								cui.log('getPackage error', packageId, err);
+								resolve({});
+							});
+						}
 					} else {
-						API.cui.getPackage({ packageId: packageId }).then(function(pkg) {
-							foundPackages.push(pkg);
-							resolve(pkg);
-						}).fail(function(err) {
-							cui.log('getPackage error', packageId, err);
-							resolve({});
-						});
+						resolve({});
 					}
 				});
 			};
 
 			// TODO figure out qs param creation, especially with respect to sort|refine
 			API.cui.getRegistrationRequests(
-				{ 'qs': [
-					['page', 1],
-					['pageSize', 10]  
-				]}
+				{ qs: APIHelpers.getQs(usersRegistrationRequests.search) }
 			).then(function(res) {
 				//cui.log('getRegistrationRequests', res);
 				_.each(res, function(regReq) {
@@ -101,26 +113,44 @@ angular.module('organization')
 
         	// ..then populate obj asynchronously...
 	        getPerson(regReq.registrant.id).then(function(person) {
-	        	data.personData = person;
-	          return getPackage(regReq.packages[0].id);
+	        	data.personData = person || {};
+	        	var pkgId = (! _.isEmpty(regReq.packages)) ? regReq.packages[0].id : '';
+	          return getPackage(pkgId);
 					}).then(function(pkg) {
 	        	data.packageData = pkg;
-						return getOrg(data.personData.organization.id);
+	        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
+						return getOrg(orgId);
 					}).then(function(org) {
+						if (! data.personData.organization) {
+							data.personData.organization = {};
+						}
 						data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
 						return;				
 	      	}).then(function() {
 	      		if (_.last(res) === regReq) {
+	      			// DONE!
 			        Loader.offFor(scopeName + 'list')
+	            usersRegistrationRequests.statusData = APIHelpers.getCollectionValuesAndCount(_.uniqBy(foundPackages, 'id'), 'name', true)
+			        //cui.log('statusData', _.uniqBy(foundPackages, 'id'), usersRegistrationRequests.statusData);
+			        //cui.log('foundOrgs', _.uniqBy(foundOrgs, 'id'));
+			        usersRegistrationRequests.organizationList = _.uniqBy(foundOrgs, 'id');
+			        usersRegistrationRequests.reRenderPagination && usersRegistrationRequests.reRenderPagination()
 	      		}
 	      	});
+				});
+			}).then(function(res) {
+				API.cui.getRegistrationRequestsCount({
+					qs: [['organization.id', usersRegistrationRequests.search['organization.id']]]
+				}).then(function(response) {
+					cui.log('usersRegistrationRequests.count', response);
+					usersRegistrationRequests.userCount = response;
+				}).fail(function(error) {
+					cui.log('usersRegistrationRequests.count error', error);
 				});
 			}).fail(function(error) {
         APIError.onFor(scopeName + 'list')
       }).always(function() {
-        //TODOD... what is this for?
-        //CuiMobileNavFactory.setTitle($filter('cuiI18n')( ? ))
-        usersRegistrationRequests.reRenderPagination && usersRegistrationRequests.reRenderPagination()
+        CuiMobileNavFactory.setTitle($filter('cuiI18n')('Registration Requests'))
       });
     };
 
@@ -132,8 +162,8 @@ angular.module('organization')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
-    // TODO figure this out...
     usersRegistrationRequests.updateSearchParams = (page) => {
+    	//cui.log('updateSearchParams', page);
         if (page) usersRegistrationRequests.search.page = page
         $state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.search, {notify: false})
         init(usersRegistrationRequests.search['organization.id'])
@@ -157,11 +187,21 @@ angular.module('organization')
     }
 
 		usersRegistrationRequests.goToDetails = function(request) {
-			$state.go('organization.requests.personRequest', {
-			 	'userId': request.personData.id, 
-				'orgId': request.personData.organization.id 
-			})
+			if (request.personData && request.personData.id && 
+				request.personData.organization && request.personData.organization.id) {
+				$state.go('organization.requests.personRequest', {
+				 	'userId': request.personData.id, 
+					'orgId': request.personData.organization.id 
+				})
+			} else {
+				cui.log('usersRegistrationRequests goToDetails missing keys', request);
+			}
 		}
+
+    usersRegistrationRequests.getOrgMembers = (organization) => {
+        CuiMobileNavFactory.setTitle($filter('cuiI18n')(organization.name))
+        init(organization.id)
+    }
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
