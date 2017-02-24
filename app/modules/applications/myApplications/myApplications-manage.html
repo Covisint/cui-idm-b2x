@@ -1,0 +1,144 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications-manage.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications-manage.ctrl.js" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-action">
+  <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link" >
+        <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
+      </li>
+      <li class="cui-breadcrumb__link cui-breadcrumb__link--current" >
+        <a ui-sref="applications.manageApplications">{{'manage-applications' | translate}}</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="cui-action__actions">
+    <!-- new icon -->
+    <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+      <defs>
+        <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+          <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+          <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+        </filter>
+      </defs>
+      <g id="new-with-shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="New-2" transform="translate(3.000000, 1.000000)">
+            <g id="Oval-73">
+              <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+              <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+            <path d="M22.1371429,17.5349883 L22.1371429,11.8697421 C22.1371429,10.7562937 21.2419442,9.86229506 20.1376608,9.86229506 L19.8623392,9.86229506 C18.7484919,9.86229506 17.8628571,10.7610597 17.8628571,11.8697421 L17.8628571,17.5349883 L12.197611,17.5349883 C11.0841625,17.5349883 10.1901639,18.4301869 10.1901639,19.5344704 L10.1901639,19.8097919 C10.1901639,20.9236392 11.0889286,21.809274 12.197611,21.809274 L17.8628571,21.809274 L17.8628571,27.4745202 C17.8628571,28.5879686 18.7580558,29.4819672 19.8623392,29.4819672 L20.1376608,29.4819672 C21.2515081,29.4819672 22.1371429,28.5832026 22.1371429,27.4745202 L22.1371429,21.809274 L27.802389,21.809274 C28.9158375,21.809274 29.8098361,20.9140754 29.8098361,19.8097919 L29.8098361,19.5344704 C29.8098361,18.4206231 28.9110714,17.5349883 27.802389,17.5349883 L22.1371429,17.5349883 Z" id="Rectangle-352" fill="#FFFFFF" fill-rule="evenodd"></path>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+<!-- Commenting favorites section for now. -->
+<!-- favorite Apps -->
+<!-- <div class="cui-action">
+  <h3 class="cui-action__title">{{'my-favorite-apps' | translate}}</h3>
+</div> -->
+<!-- favorite apps body -->
+<!-- <div class=""> 
+
+</div>-->
+<!-- All apps -->
+<div class="cui-action">
+  <h3 class="cui-action__title ">{{'all-apps' | translate}}</h3>
+  <div class="cui-action__actions">
+    <!-- Categories -->
+    <div class="cui-action__action-container" ng-click="manageApplications.categoriesClicked =! manageApplications.categoriesClicked" id="categories-button" off-click="manageApplications.categoriesClicked=false">
+      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+      <!-- Categories Popover -->
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.categoriesClicked" ng-click="manageApplications.categoriesClicked=false" style="width:214px">
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="manageApplications.updateSearch('category')">{{'all' | translate}}</span>
+          <span>({{manageApplications.count}})</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in manageApplications.categories">
+          <span ng-click="manageApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
+          <span>({{category.count}})</span>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+<!-- All apps body -->
+<div class="cui-applications__main-container">
+  <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['manageApplications.apps']"></div>
+  <div class="cui-loading__container" ng-if="base.loader.for['manageApplications.apps']">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <!-- <div ng-if="!base.loader.for['manageApplications.apps']" style="position:relative"> -->
+
+  <!-- Loader -->
+  <div class="cui-loading__container" ng-if="base.loader.for['manageApplications.reloadingApps']">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <!-- No applications message -->
+  <p ng-if="manageApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
+  <div class="cui-applications__manage-apps" >
+    <div class="cui-tile" ng-repeat="application in manageApplications.list" ng-if="application.servicePackage.displayable==true&&application.grant.status=='active'" ng-class="{'last-item':($index+1)%3==0}">
+      <!-- <div class="cui-tile__inner" ng-if="application.servicePackage.displayable==true&&application.grant.status=='active'">
+        <div class="cui-tile__title">
+        </div>
+        <div class="cui-tile__body">
+          <div class="cui-media__manage">
+            <div class="cui-media__image-container">
+              <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+            </div>
+            <div class="cui-media__title uppercase">{{application.name|cuiI18n}}</div>
+          </div>
+          <div class="cui-media__title">{{'description'|translate}}</div>
+          <div>{{application.description|cuiI18n}}</div>   
+          <div class="cui-tile__footer">
+            <button class="cui-button cui-button--inverted">{{'launch'|translate}}</button>
+            <span class="cui-tile__footer-text">{{application.category|cuiI18n}}</span>
+            <span>asdasd</span>
+          </div>      
+        </div>     
+      </div> -->
+      <div >
+        <div class="cui-tile__title">
+        </div>
+        <div class="cui-tile__body">
+          <div class="cui-media__manage">
+            <div class="cui-media__image-container">
+              <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+            </div>
+            <div class="cui-media__title uppercase">{{application.name|cuiI18n}}</div>
+          </div>
+          <div class="cui-media__title">{{'description'|translate}}</div>
+          <div>{{application.description|cuiI18n}}</div>   
+          <div class="cui-tile__footer">
+            <a class="cui-button cui-button--inverted" ng-class="{'cui-button--error':!application.urls[0].value}" ng-href="{{application.urls[0].value}}" target="_blank">{{'launch'|translate}}</a>
+            <span class="cui-tile__footer-text">{{application.category|cuiI18n}}</span>
+            <svg width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+              <title>Shape</title>
+              <desc>Created with Sketch.</desc>
+              <defs></defs>
+              <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="launch-acc-add-to-fav" transform="translate(-269.000000, -5.000000)" fill="#006C77">
+                      <path d="M286.875,13.6818182 C284.598917,13.6818182 282.75,15.5136364 282.75,17.7727273 C282.75,20.0318182 284.598917,21.8636364 286.875,21.8636364 C289.151083,21.8636364 291,20.0318182 291,17.7727273 C291,15.5136364 289.151083,13.6818182 286.875,13.6818182 L286.875,13.6818182 Z M289.166667,18.2272727 L287.333333,18.2272727 L287.333333,20.0454545 L286.416667,20.0454545 L286.416667,18.2272727 L284.583333,18.2272727 L284.583333,17.3181818 L286.416667,17.3181818 L286.416667,15.5 L287.333333,15.5 L287.333333,17.3181818 L289.166667,17.3181818 L289.166667,18.2272727 L289.166667,18.2272727 Z M283.183583,22.4027273 C282.167917,23.39 281.098167,24.42 280,25.5 C274.105833,19.6990909 269,15.3663636 269,11.1290909 C269,7.48818182 271.839833,5.5 274.757583,5.5 C276.7715,5.5 278.822083,6.44727273 280,8.45272727 C281.172417,6.45727273 283.227583,5.50909091 285.248833,5.50909091 C288.161083,5.50909091 291,7.48272727 291,11.1290909 C291,11.8072727 290.857,12.4890909 290.61225,13.1772727 C290.129167,12.7890909 289.581917,12.4790909 288.990667,12.2554545 C289.1025,11.8690909 289.166667,11.4927273 289.166667,11.1290909 C289.166667,8.51727273 287.135333,7.32727273 285.248833,7.32727273 C282.26325,7.32727273 280.6875,10.4863636 280,11.8918182 C279.31525,10.4918182 277.723,7.31909091 274.756667,7.31818182 C272.634583,7.31727273 270.833333,8.69636364 270.833333,11.1290909 C270.833333,14.2581818 275.180167,18.2654545 280,22.9472727 L281.93325,21.0709091 C282.277917,21.5772727 282.702333,22.0236364 283.183583,22.4027273 L283.183583,22.4027273 Z" id="Shape"></path>
+                  </g>
+              </g>
+            </svg>
+          </div>      
+        </div>     
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginate container -->
+  <div class="cui-paginate__container" ng-if="!base.loader.for['manageApplications.apps']">
+    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    <results-per-page class="cui-paginate__select" ng-model="manageApplications.search.pageSize"></results-per-page>
+    <paginate class="cui-paginate" results-per-page="manageApplications.search.pageSize" count="manageApplications.count" on-page-change="manageApplications.pageChange" ng-model="manageApplications.search.page" attach-rerender-to=" manageApplications.reRenderPaginate"></paginate>
+  </div>
+</div>
