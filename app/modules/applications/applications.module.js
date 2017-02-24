@@ -46,5 +46,10 @@ angular.module('applications',[])
             controller: returnCtrlAs('applicationReview'),
             access:loginRequired
         })
-
+        .state('applications.manageApplications', {
+            url: '/manage?page&pageSize&service.category',
+            templateUrl: templateBase + 'myApplications/myApplications-manage.html',
+            controller: returnCtrlAs('manageApplications'),
+            access:loginRequired
+        })
 }]);
