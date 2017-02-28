@@ -52,6 +52,7 @@ angular.module('applications')
         if (storedData) {
             Loader.onFor(loaderName + 'apps')
             manageApplications.list = storedData.appList
+            manageApplications.viewList = Object.assign(manageApplications.list).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
             manageApplications.count = storedData.appCount
             manageApplications.categories = storedData.categories
             Loader.offFor(loaderName + 'apps')
