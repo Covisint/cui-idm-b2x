@@ -16,7 +16,18 @@ angular.module('applications')
             opts.qs=[['service.category',$filter('cuiI18n')(category.name)]]
             API.cui.getPersonGrantedAppCount(opts)
             .then(res=>{
-                category.count=res;
+                //Need to minus each category count with not displayble and other than active apps according to thier categories
+                category.count=res
+                -
+                (
+                    Object.assign(manageApplications.list).filter(x => 
+                        x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
+                    ).length
+                    -
+                    Object.assign(manageApplications.viewList).filter(x => 
+                            x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
+                    ).length
+                )                
                 if (index===manageApplications.categories.length-1) {
                     $scope.$digest();
                 };
@@ -91,8 +102,9 @@ angular.module('applications')
 
         $q.all(promises)
         .then(res => {
-            // manageApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
+            manageApplications.viewList = Object.assign(res[0]).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
             manageApplications.count = res[1]
+            manageApplications.popupCount = manageApplications.count-Object.assign(res[0]).filter(x => x.servicePackage.displayable!==true || x.grant.status!=='active').length
             manageApplications.list=res[0];
             // re-render pagination if available
             manageApplications.reRenderPaginate && manageApplications.reRenderPaginate()

@@ -57,7 +57,7 @@
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.categoriesClicked" ng-click="manageApplications.categoriesClicked=false" style="width:214px">
         <div class="cui-popover__row cui-popover--row__flex">
           <span ng-click="manageApplications.updateSearch('category')">{{'all' | translate}}</span>
-          <span>({{manageApplications.count}})</span>
+          <span>({{manageApplications.popupCount}})</span>
         </div>
         <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in manageApplications.categories">
           <span ng-click="manageApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
