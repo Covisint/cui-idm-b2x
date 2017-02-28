@@ -73,9 +73,15 @@
           <div class="cui-popover__row" ng-if="!usersRegistrationRequests.organizationList">
             <span>{{'cui-no-org-divisions' | translate}}!</span>
           </div>
-          <div class="cui-popover__row" ng-if="usersRegistrationRequests.organizationList" ng-repeat="organization in usersRegistrationRequests.organizationList | orderBy:'name' track by organization.id">
+          <!--
+          <div class="cui-popover__row" ng-if="usersRegistrationRequests.organizationList" 
+          ng-repeat="organization in usersRegistrationRequests.organizationList | orderBy:'name' track by organization.id">
+          -->
+          <div class="cui-popover__row" ng-if="usersRegistrationRequests.organizationList" 
+          ng-repeat="organization in usersRegistrationRequests.organizationList | orderBy:'value'">
             <span ng-click="usersRegistrationRequests.getOrgMembers(organization);usersRegistrationRequests.organizationsClicked=false">
-            {{organization.name}}
+            <!-- {{organization.name}} -->
+            {{organization.value | translate}} ({{organization.count}})
             <!-- {{organization.name | cuiI18n}} -->
             </span>
           </div>
@@ -89,7 +95,7 @@
     <h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
 
     <!-- Loading -->
-    <div class="cui-loading__container" ng-if="base.loader.for['usersRegistrationRequests.list']">
+    <div class="cui-loading__container" ng-if="base.loader.for['usersRegistrationRequests.data']">
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
 
