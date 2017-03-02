@@ -54,13 +54,6 @@ angular.module('common')
         .then(res => {
             userInfo.organization = res
             User.set(userInfo)
-            //get user apps pending for approval as lazy loading,
-            // No need to hold entire UI apps for this loading.
-            myCUI.getPersonPendingApps({personId: authInfo.cuid})
-            .then((res) => {
-                userInfo.pendingApps=res.map(x=> x.name)
-                User.set(userInfo)
-            })
             deferred.resolve({ roleList, redirect: redirectOpts })
         })
 

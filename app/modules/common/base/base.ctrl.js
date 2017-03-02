@@ -2,7 +2,6 @@ angular.module('common')
 .controller('baseCtrl', function(Base, $scope) {
 
     $scope.base = Base
-    $scope.base.pendingNotificationFlag=false
 })
 
 .filter('capitalize', function() {
