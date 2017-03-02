@@ -52,4 +52,10 @@ angular.module('applications',[])
             controller: returnCtrlAs('manageApplications'),
             access:loginRequired
         })
+        .state('applications.pendingRequests', {
+            url: '/pendingRequests?page&pageSize&sortBy',
+            templateUrl: templateBase + 'pendingRequests/pendingRequests.html',
+            controller: returnCtrlAs('pendingAppRequests'),
+            access:loginRequired
+        })
 }]);
