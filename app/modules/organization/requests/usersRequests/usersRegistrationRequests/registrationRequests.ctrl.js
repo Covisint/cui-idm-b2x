@@ -5,34 +5,25 @@ angular.module('organization')
     const scopeName = 'usersRegistrationRequests.'
 		const usersRegistrationRequests = this
     usersRegistrationRequests.search = {}
-
-    /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
-
-    const switchBetween = (property, firstValue, secondValue) => {
-        usersRegistrationRequests.search[property] === firstValue
-            ? usersRegistrationRequests.search[property] = secondValue
-            : usersRegistrationRequests.search[property] = firstValue
-    }
-
-    /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
+		usersRegistrationRequests.sortBy = {}
 
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+		var foundOrgs = [];
+		var foundPersons = [];
+		var foundPackages = [];
 
-  	var init = function(organizationId) {
-  		cui.log('init', organizationId);
 
-  		usersRegistrationRequests.search['organization.id'] = organizationId || $stateParams.orgId || User.user.organization.id
+  	var init = function() {
+  		cui.log('init');
+
       usersRegistrationRequests.search.pageSize = usersRegistrationRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
+			var qsArray = APIHelpers.getQs(usersRegistrationRequests.search);
+			//cui.log('qsArray', qsArray);
 
 	    usersRegistrationRequests.data = []
       Loader.onFor(scopeName + 'data')
       APIError.offFor(scopeName + 'data')
-
-			var foundOrgs = [];
-			var foundPersons = [];
-			var foundPackages = [];
-
 
 			var getOrg = function(orgId) {
 				return $.Deferred(function (dfr) {
@@ -103,29 +94,16 @@ angular.module('organization')
   			$timeout(function() {
 	        Loader.offFor(scopeName + 'data')
 	        cui.log('done', context);
-
-	        usersRegistrationRequests.statusData = APIHelpers.getCollectionValuesAndCount(foundPackages, 'name', true)
-	       	cui.log('statusData', foundPackages, usersRegistrationRequests.statusData);
-	 
-	        // cui.log('foundOrgs', _.uniqBy(foundOrgs, 'name'));
-	        // usersRegistrationRequests.organizationList = _.uniqBy(foundOrgs, 'name');
-	        usersRegistrationRequests.organizationList = APIHelpers.getCollectionValuesAndCount(_.uniqBy(foundOrgs, 'id'), 'name', true)
-	        cui.log('foundOrgs', _.uniqBy(foundOrgs, 'id'), usersRegistrationRequests.organizationList);
+					cui.log('data', usersRegistrationRequests.data);
 
 	        usersRegistrationRequests.reRenderPagination && usersRegistrationRequests.reRenderPagination()
   			});
 			};
 
-
-			API.cui.getRegistrationRequests(
-				{ qs: APIHelpers.getQs(usersRegistrationRequests.search) }
-			).then(function(res) {
-				//cui.log('getRegistrationRequests', res);
+			API.cui.getRegistrationRequests({ qs: qsArray }).then(function(res) {
 				var calls = [];
 
 				_.each(res, function(regReq) {
-					//cui.log('getRegistrationRequests each', regReq);
-					
 					// NB create an obj and bind it to scope...
 					var data = {};
         	usersRegistrationRequests.data.push(data);
@@ -158,9 +136,7 @@ angular.module('organization')
 				return $.when.apply($, calls);
 			}).then(function() {
 				// do the count (used for pagination)
-				return API.cui.getRegistrationRequestsCount({
-					qs: [['organization.id', usersRegistrationRequests.search['organization.id']]]
-				});
+				return API.cui.getRegistrationRequestsCount();
 			}).then(function(count) {
 				// apply the count
 				usersRegistrationRequests.userCount = count;
@@ -174,36 +150,38 @@ angular.module('organization')
     };
 
     init();
-
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
 
-
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
-
-    usersRegistrationRequests.updateSearchParams = (page) => {
-    	//cui.log('updateSearchParams', page);
-        if (page) usersRegistrationRequests.search.page = page
-        $state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.search, {notify: false})
-        init(usersRegistrationRequests.search['organization.id'])
+    usersRegistrationRequests.sortingCallbacks = {
+      name () {
+          usersRegistrationRequests.sortBy.sortBy = 'name'
+          usersRegistrationRequests.sort(['personData.name.given', 'personData.name.surname'], usersRegistrationRequests.sortBy.sortType)
+      },
+      title () {
+          usersRegistrationRequests.sortBy.sortBy = 'title'
+          usersRegistrationRequests.sort('personData.title', usersRegistrationRequests.sortBy.sortType)
+      },
+      submitted () {
+          usersRegistrationRequests.sortBy.sortBy = 'submitted'
+          usersRegistrationRequests.sort('personData.creation', usersRegistrationRequests.sortBy.sortType)
+      },
+      request () {
+          usersRegistrationRequests.sortBy.sortBy = 'request'
+          usersRegistrationRequests.sort('packageData.name', usersRegistrationRequests.sortBy.sortType)
+      },
+      division () {
+          usersRegistrationRequests.sortBy.sortBy = 'division'
+          usersRegistrationRequests.sort('personData.organization.name', usersRegistrationRequests.sortBy.sortType)
+      }
     }
 
-    usersRegistrationRequests.actionCallbacks = {
-        sort (sortType) {
-            if (!usersRegistrationRequests.search.hasOwnProperty('sortBy')) usersRegistrationRequests.search['sortBy'] = '+' + sortType
-            else if (usersRegistrationRequests.search.sortBy.slice(1) !== sortType) usersRegistrationRequests.search.sortBy = '+' + sortType
-            else switchBetween('sortBy', '+' + sortType, '-' + sortType)
-            usersRegistrationRequests.updateSearchParams()
-        },
-        refine (refineType) {
-            if (refineType === 'all') delete usersRegistrationRequests.search['refine']
-            else {
-                if (!usersRegistrationRequests.search.hasOwnProperty('refine')) usersRegistrationRequests.search['refine'] = refineType
-                else usersRegistrationRequests.search.refine = refineType
-            }
-            usersRegistrationRequests.updateSearchParams()
-        }
+    usersRegistrationRequests.sort = (sortBy, order) => {
+    	cui.log('sort', sortBy, order)
+      usersRegistrationRequests.data = _.orderBy(usersRegistrationRequests.data, sortBy, order)
     }
+
 
 		usersRegistrationRequests.goToDetails = function(request) {
 			if (request.personData && request.personData.id && 
@@ -217,11 +195,13 @@ angular.module('organization')
 			}
 		}
 
-    usersRegistrationRequests.getOrgMembers = (organization) => {
-        CuiMobileNavFactory.setTitle($filter('cuiI18n')(organization.name))
-        init(organization.id)
+    usersRegistrationRequests.updateSearchParams = (page) => {
+    	//cui.log('updateSearchParams', page);
+        if (page) usersRegistrationRequests.search.page = page
+        // WHY transition to this same route? if setting notify:false? what is the purpose? just to add an item to history?
+        $state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.search, {notify: false})
+        init()
     }
-
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
 	});

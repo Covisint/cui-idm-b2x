@@ -5,34 +5,26 @@ angular.module('organization')
     const scopeName = 'usersAppRequests.'
 		const usersAppRequests = this
     usersAppRequests.search = {}
-
-    /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
-
-    const switchBetween = (property, firstValue, secondValue) => {
-        usersAppRequests.search[property] === firstValue
-            ? usersAppRequests.search[property] = secondValue
-            : usersAppRequests.search[property] = firstValue
-    }
-
-    /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
+		usersAppRequests.sortBy = {}
 
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-  	var init = function(organizationId) {
-  		cui.log('init', organizationId);
+		var foundOrgs = [];
+		var foundPersons = [];
+		var foundPackages = [];
+
+
+  	var init = function() {
+  		cui.log('init');
 
       usersAppRequests.search['isApprovable'] = true;
-      usersAppRequests.search['organization.id'] = organizationId || $stateParams.orgId || User.user.organization.id
       usersAppRequests.search.pageSize = usersAppRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
+			var qsArray = APIHelpers.getQs(usersAppRequests.search);
 
 	    usersAppRequests.data = []
       Loader.onFor(scopeName + 'data')
       APIError.offFor(scopeName + 'data')
-
-			var foundOrgs = [];
-			var foundPersons = [];
-			var foundPackages = [];
 
 
 			var getOrg = function(orgId) {
@@ -104,28 +96,17 @@ angular.module('organization')
   			$timeout(function() {
 	        Loader.offFor(scopeName + 'data')
 	        cui.log('done', context);
-
-	        usersAppRequests.statusData = APIHelpers.getCollectionValuesAndCount(foundPackages, 'name', true)
-	       	cui.log('statusData', foundPackages, usersAppRequests.statusData);
-	 
-	        // cui.log('foundOrgs', _.uniqBy(foundOrgs, 'name'));
-	        // usersAppRequests.organizationList = _.uniqBy(foundOrgs, 'name');
-	        usersAppRequests.organizationList = APIHelpers.getCollectionValuesAndCount(_.uniqBy(foundOrgs, 'id'), 'name', true)
-	        cui.log('foundOrgs', _.uniqBy(foundOrgs, 'id'), usersAppRequests.organizationList);
+	        cui.log('data', usersAppRequests.data);
 
 	        usersAppRequests.reRenderPagination && usersAppRequests.reRenderPagination()
   			});
 			};
 
 
-			API.cui.getPackageRequests(
-				{ qs: APIHelpers.getQs(usersAppRequests.search) }
-			).then(function(res) {
-				//cui.log('getRegistrationRequests', res);
+			API.cui.getPackageRequests({ qs: qsArray }).then(function(res) {
 				var calls = [];
 
 				_.each(res, function(pkgReq) {
-					//cui.log('getRegistrationRequests each', pkgReq);
 					
 					// NB create an obj and bind it to scope...
 					var data = {};
@@ -159,9 +140,7 @@ angular.module('organization')
 				return $.when.apply($, calls);
 			}).then(function() {
 				// do the count (used for pagination)
-				return API.cui.getPackageRequestsCount({
-					qs: [['organization.id', usersAppRequests.search['organization.id']]]
-				});
+				return API.cui.getPackageRequestsCount();
 			}).then(function(count) {
 				// apply the count
 				usersAppRequests.userCount = count;
@@ -175,34 +154,36 @@ angular.module('organization')
     };
 
     init();
-
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
 
-
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
-
-    usersAppRequests.updateSearchParams = (page) => {
-        if (page) usersAppRequests.search.page = page
-        $state.transitionTo('organization.requests.usersAppRequests', usersAppRequests.search, {notify: false})
-        init(usersAppRequests.search['organization.id'])
+    usersAppRequests.sortingCallbacks = {
+      name () {
+          usersAppRequests.sortBy.sortBy = 'name'
+          usersAppRequests.sort(['personData.name.given', 'personData.name.surname'], usersAppRequests.sortBy.sortType)
+      },
+      title () {
+          usersAppRequests.sortBy.sortBy = 'title'
+          usersAppRequests.sort('personData.title', usersAppRequests.sortBy.sortType)
+      },
+      submitted () {
+          usersAppRequests.sortBy.sortBy = 'submitted'
+          usersAppRequests.sort('personData.creation', usersAppRequests.sortBy.sortType)
+      },
+      request () {
+          usersAppRequests.sortBy.sortBy = 'request'
+          usersAppRequests.sort('packageData.name', usersAppRequests.sortBy.sortType)
+      },
+      division () {
+          usersAppRequests.sortBy.sortBy = 'division'
+          usersAppRequests.sort('personData.organization.name', usersAppRequests.sortBy.sortType)
+      }
     }
 
-    usersAppRequests.actionCallbacks = {
-        sort (sortType) {
-            if (!usersAppRequests.search.hasOwnProperty('sortBy')) usersAppRequests.search['sortBy'] = '+' + sortType
-            else if (usersAppRequests.search.sortBy.slice(1) !== sortType) usersAppRequests.search.sortBy = '+' + sortType
-            else switchBetween('sortBy', '+' + sortType, '-' + sortType)
-            usersAppRequests.updateSearchParams()
-        },
-        refine (refineType) {
-            if (refineType === 'all') delete usersAppRequests.search['refine']
-            else {
-                if (!usersAppRequests.search.hasOwnProperty('refine')) usersAppRequests.search['refine'] = refineType
-                else usersAppRequests.search.refine = refineType
-            }
-            usersAppRequests.updateSearchParams()
-        }
+    usersAppRequests.sort = (sortBy, order) => {
+    	cui.log('sort', sortBy, order)
+      usersAppRequests.data = _.orderBy(usersAppRequests.data, sortBy, order)
     }
 
 		usersAppRequests.goToDetails = function(request) {
@@ -219,11 +200,11 @@ angular.module('organization')
 			}
 		}
 
-    usersAppRequests.getOrgMembers = (organization) => {
-        CuiMobileNavFactory.setTitle($filter('cuiI18n')(organization.name))
-        init(organization.id)
+    usersAppRequests.updateSearchParams = (page) => {
+        if (page) usersAppRequests.search.page = page
+        $state.transitionTo('organization.requests.usersAppRequests', usersAppRequests.search, {notify: false})
+        init()
     }
-
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
 	});

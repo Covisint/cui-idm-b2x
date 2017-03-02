@@ -18,76 +18,6 @@
         </li>
       </ul>
     </div>
-
-    <!-- Action Sub-header -->
-    <div class="cui-action__actions">
-      <!-- Sort -->
-      <div class="cui-action__action-container" ng-click="usersAppRequests.sortClicked=!usersAppRequests.sortClicked" id="sort-button" off-click="usersAppRequests.sortClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
-        </svg>
-        <span class="cui-action__action-label">{{'sort' | translate}}</span>
-        <!-- Sort Popover -->
-        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="usersAppRequests.sortClicked" style="width:171px">
-          <div class="cui-popover__row">
-            <span ng-click="usersAppRequests.actionCallbacks.sort('personData.name')">{{'cui-alphabetically' | translate}}</span>
-          </div>
-          <div class="cui-popover__row">
-            <span ng-click="usersAppRequests.actionCallbacks.sort('personData.username')">{{'username' | translate}}</span>
-          </div>
-          <div class="cui-popover__row">
-            <span ng-click="usersAppRequests.actionCallbacks.sort('personData.creation')">{{'date-submitted' | translate}}</span>
-          </div>
-          <div class="cui-popover__row">
-            <span ng-click="usersAppRequests.actionCallbacks.sort('packageData.name')">{{'request' | translate}}</span>
-          </div>
-           <div class="cui-popover__row">
-            <span ng-click="usersAppRequests.actionCallbacks.sort('personData.organization.name')">{{'division' | translate}}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Refine -->
-      <div class="cui-action__action-container" ng-click="usersAppRequests.refineClicked=!usersAppRequests.refineClicked" id="refine-button" off-click="usersAppRequests.refineClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
-        </svg>
-        <span class="cui-action__action-label">{{'refine' | translate}}</span>
-        <!-- Refine Popover -->
-        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersAppRequests.refineClicked" style="width:214px">
-          <div class="cui-popover__row" ng-repeat="status in usersAppRequests.statusData" 
-          ng-click="usersAppRequests.actionCallbacks.refine(status.value)">
-            <span>{{status.value | translate}} ({{status.count}})</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Organizations -->
-      <div class="cui-action__action-container" ng-click="usersAppRequests.organizationsClicked=!usersAppRequests.organizationsClicked" id="organizations-button" off-click="usersAppRequests.organizationsClicked=false">
-        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
-        </svg>
-        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
-        <!-- Organizations Popover -->
-        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="usersAppRequests.organizationsClicked" style="width:214px">
-          <div class="cui-popover__row" ng-if="!usersAppRequests.organizationList">
-            <span>{{'cui-no-org-divisions' | translate}}!</span>
-          </div>
-<!--      
-         <div class="cui-popover__row" ng-if="usersAppRequests.organizationList" 
-          ng-repeat="organization in usersAppRequests.organizationList | orderBy:'name' track by organization.id">
- -->          
-          <div class="cui-popover__row" ng-if="usersAppRequests.organizationList" 
-          ng-repeat="organization in usersAppRequests.organizationList | orderBy:'value'">
-            <span ng-click="usersAppRequests.getOrgMembers(organization);usersAppRequests.organizationsClicked=false">
-            <!-- {{organization.name}} -->
-            {{organization.value | translate}} ({{organization.count}})
-            <!-- {{organization.name | cuiI18n}} -->
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- Content -->
@@ -99,7 +29,11 @@
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
 
-    <cui-table-header headers="['cui-name', 'cui-job-title', 'date-submitted', 'request', 'division']"></cui-table-header>
+    <cui-table-header 
+      headers="['cui-name', 'title', 'submitted', 'request', 'division']"
+      sorting="usersAppRequests.sortBy"
+      sorting-callbacks="usersAppRequests.sortingCallbacks">
+      </cui-table-header>
     <cui-table-row ng-repeat="userRequest in usersAppRequests.data track by $index"
     ng-click="usersAppRequests.goToDetails(userRequest)">
       <li class="cui-flex-table__tr cui-flex-table__tr--c">
