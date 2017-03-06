@@ -110,11 +110,20 @@ angular.module('applications')
             case 'date':
                 switchBetween('sortBy', '+requestedDate', '-requestedDate')
                 break
+            case 'name':
+                // Pagination not supported now 
+                // myApplications.search.page = 1
+                pendingAppRequests.search['name'] = updateValue
+                break
         }
 
         // doesn't change state, only updates the url
-        $state.transitionTo('applications.pendingRequests', pendingAppRequests.search, { notify:false })
+        $state.transitionTo('pendingAppRequests', pendingAppRequests.search, { notify:false })
         onLoad(true)
+    }
+
+    pendingAppRequests.searchCallback= (searchWord) => {
+        pendingAppRequests.updateSearch('name',searchWord)
     }
 
     // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------

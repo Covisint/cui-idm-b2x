@@ -33,18 +33,27 @@
 </div>
 
 <div class="cui-applications__main-container">
-  <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['pendingAppRequests.apps']"></div>
+  <div class="cui-applications__search-options">
+      <div class="cui-input-button">
+          <input type="text" class="cui-input-button__input" ng-model="pendingAppRequests.search.name" placeholder="{{'search-by-app-name'| translate}}" on-enter="pendingAppRequests.searchCallback" focus-if/>
+          <button class="cui-input-button__button" ng-click="pendingAppRequests.updateSearch('name',pendingAppRequests.search.name)">{{'go'| translate}}</button>
+      </div>
+  </div>
   <div class="cui-loading__container" ng-if="base.loader.for['pendingAppRequests.apps']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
-    <div ng-if="!base.loader.for['pendingAppRequests.apps']" style="position:relative">
+  <p class="cui-error" ng-if="!base.loader.for['pendingAppRequests.apps'] && base.apiError.for['pendingAppRequests.apps']" >{{'cui-pending-requests-error'|translate}} {{'cui-try-again'|translate}}
+  </p>
+    <div ng-if="!base.loader.for['pendingAppRequests.apps']" style="position:relative; min-height:400px" >
     	<!-- No applications message -->
-    	<p ng-if="pendingAppRequests.list.length===0">{{'cui-no-applications' | translate}}</p>
+    	<p ng-if="!base.loader.for['pendingAppRequests.reloadingApps']&& pendingAppRequests.list.length===0 &&(pendingAppRequests.search.name===undefined || pendingAppRequests.search.name==='')">{{'no-pending-apps' | translate}}</p>
+      <!-- No applications message with search-->
+      <p ng-if="!base.loader.for['pendingAppRequests.reloadingApps']&&pendingAppRequests.list.length===0 && (pendingAppRequests.search.name!==undefined && pendingAppRequests.search.name!=='')">{{'no-requests-by-name' | translate}}</p>
     	<!-- Loader for updating apps -->
 	    <div class="cui-loading__container" ng-if="base.loader.for['pendingAppRequests.reloadingApps']">
 	      <div class="cui-loading--center"><div class="cui-loading"></div></div>
 	    </div>
-    	<table class="cui-table cui-table--borderless ">
+    	<table class="cui-table cui-table--borderless " ng-if="pendingAppRequests.list.length!==0">
 		  <thead>
 		    <tr>
 		      <th class="cui-media__title" scope="col">{{'request-type'|translate}}</th>
