@@ -63,7 +63,7 @@
     "cmdType": "secured",
     "call": "/organization/v3/organizations/{organizationId}/hierarchy",
     "type": "GET",
-    "accepts": "application/vnd.com.covisint.platform.reference.hierarchy.v1+json"
+    "accepts": "application/vnd.com.covisint.platform.reference.hierarchy.v1+json;includedivision=true"
   },
   {
     "cmd": "getPersons",
@@ -759,5 +759,43 @@
     "type": "GET",
     "cmdType": "unsecured",
     "accepts": "application/vnd.com.covisint.platform.package.terms.and.condition.v1+json"
+  },
+  {
+    "cmd": "getPasswordCangeHistory",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}/accounts/password/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.authn.password.change.history.req.v1+json"
+  },
+  {
+    "cmd": "getPersonAppCategories",
+    "cmdType": "secured",
+    "call": "/service/v3/categories/persons/{personId} ",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.category.v1+json"
+  },
+  {
+    "cmd": "getPersonPackagesGrantHistory",
+    "call": "/service/v3/persons/{personId}/packages/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.v1+json"
+  },
+  {
+    "cmd": "getPersonApplicationsGrantHistory",
+    "call": "/service/v3/applications/persons/{personId}/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.grant.history.v1+json"
+  },
+  {
+    "cmd": "getPersonApplicationsRequestHistory",
+    "call": "/service/v3/persons/{personId}/applications/requests/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
+  },
+  {
+    "cmd": "getPersonPendingApps",
+    "call": "/service/v3/persons/{personId}/applications/requests",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.v1+json"
   }
 ]

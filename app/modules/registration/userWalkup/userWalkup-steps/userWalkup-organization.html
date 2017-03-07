@@ -4,12 +4,17 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <div class="cui-div__with-icon-input">
         <cui-icon cui-svg-icon="cui:search" svg-class="cui-icon cui-icon--light-grey cui-icon__with-input" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
-        <input type="text" ng-model="userWalkup.orgFilter.name" placeholder="{{'cui-filter-org-name' | translate}}" class="cui-input__with-icon" />
+        <input type="text" ng-model="userWalkup.orgFilterByname" ng-model-options="{debounce:2000}" placeholder="{{'cui-filter-org-name' | translate}}" class="cui-input__with-icon" />
       </div>
       
     </div>
   </div>
-  <cui-expandable class="cui-expandable" ng-repeat="organization in userWalkup.organizationList |filter:{status:'active',name:userWalkup.orgFilter.name}| orderBy:'name' track by organization.id">
+  <!-- loading container -->
+  <div class="cui-loading__container--organization-list" ng-if="userWalkup.updatingOrgs">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <p ng-if="userWalkup.organizationList.length===0&&!userWalkup.updatingOrgs">{{'cui-no-orgs-for-name'|translate}}</p>
+  <cui-expandable ng-if="!userWalkup.updatingOrgs" class="cui-expandable" ng-repeat="organization in userWalkup.organizationList | orderBy:'name' track by organization.id">
     <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex cui-expandable__title--alt-layout" ng-click="toggleExpand()">
       {{organization.name}}
       <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -26,12 +31,11 @@
   </cui-expandable>
 
   <!-- Pagination Controls -->
-  <!-- Note [7/20/2016]: nonce organizations endpoint does not currently allow pagination -->
-<!--   <div class="cui-paginate__container" ng-if="!base.loader.for.userWalkup.initializing">
+  <div class="cui-paginate__container" ng-if="!base.loader.for.userWalkup.initializing">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="userWalkup.orgPaginationSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage" attach-rerender-to="userWalkup.reRenderPaginate"></paginate>
-  </div> -->
+    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage"></paginate>
+  </div>
 </ng-form>
 
 <div class="cui-wizard__controls">

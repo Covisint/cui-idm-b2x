@@ -1,15 +1,38 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.2.4] - 2017-2-28
+
+### Changed
+* cui-i18n v1.0.28
+* Added include division media header for get org hierarchy.
+* Now Displays the applications name under org instead of package name during registration
+* Invitation based user Registration changes.
+* Pagination for organization and application page during registration.
+* App History page changes.
+* Showing user's Pending Applications and related changes.
+* Manage Applications Page and related changes.
+
+## [v1.2.3] - 2017-1-26
+
+### Changed
+* cui-i18n v1.0.24
+* Added My History tab which display's user's history related information
+* Added history tab link to my profile page
+* Replaced getCategories with GetPersonCategories Call in my applications page
+* Storing App details before going to app details page, because getpersonapplications call with query parameter service.id won't give related and bundled apps
+* My app Details page changes (CSS, JS and CSS)
+* Added capitalize filter
+
 ## [v1.2.2] - 2017-1-18
 
 ### Changed
-*cui-i18n v1.0.23
-*Provided link to login in success page after registration.
-*Show password policy required character display even for one required character.
-*Display only active organizations in registration.
-*Terms and conditions for request flow.
-*Auto selection/Deselection of bundled and related apps based on their relation.
-*CSS changes for application request flows.
+* cui-i18n v1.0.23
+* Provided link to login in success page after registration.
+* Show password policy required character display even for one required character.
+* Display only active organizations in registration.
+* Terms and conditions for request flow.
+* Auto selection/Deselection of bundled and related apps based on their relation.
+* CSS changes for application request flows.
 
 ## [v1.2.1] - 2017-1-4
 

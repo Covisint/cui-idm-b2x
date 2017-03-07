@@ -20,6 +20,18 @@ angular.module('user', [])
             templateUrl: templateBase + 'profile/user-profile.html',
             controller: returnCtrlAs('userProfile'),
             access:loginRequired
+        })
+        .state('user.history',{
+            url: '/history',
+            templateUrl: templateBase + 'history/user-history.html',
+            controller: returnCtrlAs('userHistory'),
+            access:loginRequired
+        })
+        .state('user.appHistory',{
+            url: '/appHistory?name&page&pageSize&sortBy&status',
+            templateUrl: templateBase + 'appHistory/app-history.html',
+            controller: returnCtrlAs('appHistory'),
+            access:loginRequired
         });
 
 }]);

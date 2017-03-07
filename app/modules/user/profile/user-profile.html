@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/profile/user" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/users.scss" class="cui-link" target="blank">here</a></div>
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/modules/user/profile" target="blank">here</a> and the layout styles <a href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/scss/3-views/user" class="cui-link" target="blank">here</a></div>
 <!-- /processHTML -->
 
 <ng-form name="edit" novalidate>
@@ -7,13 +7,23 @@
 
     <!-- Title -->
     <div class="cui-action">
-      <div class="cui-action__title">
-        {{'cui-my-profile' | translate}}
-      </div>
+      <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+          <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
+            <a ui-sref="user.profile">{{'cui-my-profile' | translate}}</a>
+          </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="user.history">{{'cui-my-history' | translate}}</a>
+          </li>
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="user.appHistory">{{'cui-app-history' | translate}}</a>
+          </li>
+        </ul>
+      </nav>
     </div>
+  
 
     <div class="cui-users__main-container">
-
       <!-- Page Loading -->
       <div class="cui-loading__container" ng-if="base.loader.for['userProfile.initProfile']">
         <div class="cui-loading--center"><div class="cui-loading"></div></div>

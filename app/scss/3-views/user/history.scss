@@ -1,0 +1,99 @@
+.cui-users__history{
+	align-items:flex-start;
+	-ms-flex-align:flex-start;
+	.cui-users__profile-info:first-of-type {
+	  @media screen and (min-width: 701px) {
+	    margin-right: 3.4375em;
+	  }
+	}
+	.cui-action{		
+		border-bottom: 1px solid #dee9ee;
+		padding: 1em 0 0 0;
+		margin-bottom: 1em;
+	}
+	.cui-action__title{
+	    color: black;
+	}
+	.cui-users__last-login {
+		color: $secondary-font-color;
+    	font-weight: bold;
+    	letter-spacing: 1px;
+    	font-size: 14px;
+	}
+	.cui-field-val__field {
+		color: $secondary-font-color;
+		font-size:14px;
+		letter-spacing:1px;
+		margin-right:0;
+	}
+	.cui-field-val__val{
+		color: $secondary-font-color;
+		font-size:14px;
+		letter-spacing:1px;
+	}
+	.cui-table-alt{
+		border-spacing: 0;
+    	min-width: 100%;
+    	border:0;
+    	font-family: 'lato', sans-serif;
+    	font-size: 15px;
+    	letter-spacing: 1.3px;
+	    text-align: left;
+	    color: $secondary-font-color;
+	}
+	.cui-table-alt th{
+		border: 0;
+    	padding: 4px 2px;
+    	font-weight: bold;
+	}
+	.cui-table-alt td{
+		border: 0;
+    	padding: 4px 2px;
+    	font-size: 14px;
+    	letter-spacing: 1px;
+	}
+	@media screen and (max-width:701px){
+		.cui-users__profile-info{
+			width:100%;
+		}
+		.cui-users__last-login, .cui-field-val__field, .cui-field-val__val, .cui-table-alt, .cui-table-alt td{
+			font-size:0.875em;
+			letter-spacing:0em;
+		}
+	}
+	.cui-expandable{
+		border-bottom: 0px;
+	}
+	.cui-expandable__title{
+		color: $cui-primary-colors--dark;
+	    margin-bottom: 0.5em;
+	    font-size: 1.25em;
+	    font-weight: 600;
+	}
+	.cui-expandable__body{
+		padding-left: 0;
+    	padding-right: 0;
+	}
+	.cui-expandable__body-pane{
+		margin-left: 0;
+	    background-color: #e8f0f3;
+	    width: 100%;
+	    min-height: 100px;
+	    padding: 2em 1em 1em;
+	}
+	.cui-expandable__body-pane .cui-expandable__body-close{
+	    top: 6px;
+    	right: 6px;
+	}
+	.cui-action__icon use, .cui-action__icon--lg use {
+		color:$cui-primary-colors--dark;
+	}
+	.cui-expandable__body-pane .cui-expandable__pane-title{
+		margin-bottom: 1em;
+	}
+	.cui-expandable__pane-content-item{
+		font-family: 'lato', sans-serif;
+	    font-weight: 400;
+	    font-size: 15px;
+	}
+}

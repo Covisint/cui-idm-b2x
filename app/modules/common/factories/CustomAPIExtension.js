@@ -73,8 +73,36 @@ angular.module('common')
 			contentType: 'application/vnd.com.covisint.platform.person.password.account.v1+json',
 			call: '/registration/v1/registrations/persons/registration/validate'
 		},
+        {
+            cmd: 'securedInitiate',
+            cmdType: 'unsecured',
+            type: 'GET',
+            accepts: 'application/vnd.com.covisint.platform.person.invitation.v1+json',
+            call: '/registration/v1/registrations/securedInvite/initiate/{invitationId}'
+        },
+        {
+            cmd: 'getOrgAppsNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'application/vnd.com.covisint.platform.service.application.v1+json',
+            call: '/registration/v1/applications/organizations/{organizationId}'
+        },
+        {
+            cmd: 'getOrgAppsCountNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'text/plain',
+            call: '/registration/v1/applications/organizations/{organizationId}/count'
+        },
+        {
+            cmd: 'getOrganizationsCountNonce',
+            cmdType: 'nonce',
+            type: 'GET',
+            accepts: 'text/plain',
+            call: '/registration/v1/registrations/organizations/count'
+        },
 
-        // ADMIN... imported from Coke...
+                // ADMIN... imported from Coke...
         {cmd: 'getPackageByQuery',accepts: 'application/vnd.com.covisint.platform.package.v1+json',call: `/service/v3/packages`,type: 'GET' },
         {cmd: "getPersonByQuery",call: "/person/v3/persons",type: "GET",accepts: "application/vnd.com.covisint.platform.person.v1+json"  },
         {cmd: "getRegistrationRequests",call:"/registration/v1/person/requests",type:"GET",accepts:"application/vnd.com.covisint.platform.person.request.v1+json",contentType:"application/vnd.com.covisint.platform.person.request.v1+json"},
@@ -100,6 +128,7 @@ angular.module('common')
         {cmd: "getRegistrationRequestsCount",call: "/registration/v1/person/requests/count",type: "GET",accepts: "text/plain"},
         {cmd: "getPackagesRequestedCount",call: "/service/v3/persons/{personId}/packages/count",type: "GET",accepts: "text/plain"},
         {cmd: 'validatePasswordNonce',cmdType:'nonce',call: '/registration/v1/registrations/persons/password/validate', type:'POST', accepts: 'application/vnd.com.covisint.platform.password.validation.response.v1+json',contentType:'application/vnd.com.covisint.platform.password.validation.v1+json'}
+
 
     ];
 

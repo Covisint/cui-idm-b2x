@@ -1,0 +1,84 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/pendingRequests/pendingRequests.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/pendingRequests/pendingRequests.ctrl.js" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-action">
+  <!-- <nav class="cui-breadcrumb">
+    <ul class="cui-breadcrumb__links">
+      <li class="cui-breadcrumb__link cui-breadcrumb__link--current" >
+        <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
+      </li>
+      <li class="cui-breadcrumb__link" >
+        <a ui-sref="applications.manageApplications">{{'manage-applications' | translate}}</a>
+      </li>
+    </ul>
+  </nav> -->
+  <div class="cui-action__title">{{'pending' | translate}} {{'requests' | translate}}</div>
+  <div class="cui-action__actions">
+    <!-- Sort -->
+    <div class="cui-action__action-container" ng-click="pendingAppRequests.sortClicked =! pendingAppRequests.sortClicked" id="sort-button" off-click="pendingAppRequests.sortClicked=false">
+      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      <span class="cui-action__action-label">{{'sort' | translate}}</span>
+      <!-- Sort Popover -->
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="pendingAppRequests.sortClicked" style="width:171px">
+        <!-- <div class="cui-popover__row">
+          <span ng-click="pendingAppRequests.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+        </div> -->
+        <div class="cui-popover__row">
+          <span ng-click="pendingAppRequests.updateSearch('date')">{{'date-submitted' | translate}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cui-applications__main-container">
+  <div class="cui-applications__search-options">
+      <div class="cui-input-button">
+          <input type="text" class="cui-input-button__input" ng-model="pendingAppRequests.search.name" placeholder="{{'search-by-app-name'| translate}}" on-enter="pendingAppRequests.searchCallback" focus-if/>
+          <button class="cui-input-button__button" ng-click="pendingAppRequests.updateSearch('name',pendingAppRequests.search.name)">{{'go'| translate}}</button>
+      </div>
+  </div>
+  <div class="cui-loading__container" ng-if="base.loader.for['pendingAppRequests.apps']">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <p class="cui-error" ng-if="!base.loader.for['pendingAppRequests.apps'] && base.apiError.for['pendingAppRequests.apps']" >{{'cui-pending-requests-error'|translate}} {{'cui-try-again'|translate}}
+  </p>
+    <div ng-if="!base.loader.for['pendingAppRequests.apps']" style="position:relative; min-height:400px" >
+    	<!-- No applications message -->
+    	<p ng-if="!base.loader.for['pendingAppRequests.reloadingApps']&& pendingAppRequests.list.length===0 &&(pendingAppRequests.search.name===undefined || pendingAppRequests.search.name==='')">{{'no-pending-apps' | translate}}</p>
+      <!-- No applications message with search-->
+      <p ng-if="!base.loader.for['pendingAppRequests.reloadingApps']&&pendingAppRequests.list.length===0 && (pendingAppRequests.search.name!==undefined && pendingAppRequests.search.name!=='')">{{'no-requests-by-name' | translate}}</p>
+    	<!-- Loader for updating apps -->
+	    <div class="cui-loading__container" ng-if="base.loader.for['pendingAppRequests.reloadingApps']">
+	      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+	    </div>
+    	<table class="cui-table cui-table--borderless " ng-if="pendingAppRequests.list.length!==0">
+		  <thead>
+		    <tr>
+		      <th class="cui-media__title" scope="col">{{'request-type'|translate}}</th>
+		      <th class="cui-media__title" scope="col">
+		            {{'request'|translate}}</th>
+		      <th class="cui-media__title" scope="col" >
+		            {{'phase'|translate}}</th>
+		        <th class="cui-media__title" scope="col" >
+		            {{'date-submitted'|translate}}</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr class="cui-media--tr" ng-repeat="appRequest in pendingAppRequests.list track by $index">
+		      <td data-label="{{'request-type'|translate}}" scope="row">{{appRequest.requestType}}</td>
+		      <td data-label="{{'request'|translate}}">{{appRequest.name|cuiI18n}}</td>
+		      <td data-label="{{'phase'|translate}}" ng-bind="appRequest.currentPhase"></td>
+		      <td data-label="{{'date-submitted'|translate}}">{{appRequest.requestedDate|date}}</td>
+		    </tr>
+		  </tbody>
+		</table>
+    </div>
+    <!-- Pagination not supported now 03-02-2017 -->
+<!--     <div class="cui-paginate__container" ng-if="!base.loader.for['pendingAppRequests.apps']">
+	    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+	    <results-per-page class="cui-paginate__select" ng-model="pendingAppRequests.search.pageSize"></results-per-page>
+	    <paginate class="cui-paginate" results-per-page="pendingAppRequests.search.pageSize" count="pendingAppRequests.count" on-page-change="pendingAppRequests.pageChange" ng-model="pendingAppRequests.search.page" attach-rerender-to=" pendingAppRequests.reRenderPaginate"></paginate>
+	</div> -->
+</div>

@@ -1,0 +1,117 @@
+<!-- If there's no applications in that organization -->
+<div ng-if="!userInvited.applications.list">
+  {{'cui-org-no-applications'|translate}}.
+  <div class="cui-wizard__controls" style="margin-top:20px">
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="goToStep(4)">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</div>
+
+<!-- If there's applications -->
+<div ng-if="userInvited.applications.list && (!userInvited.applications.step || userInvited.applications.step===1)" ng-init="userInvited.applications.step=1">
+  <!-- NOTE: Commented out application search as nonce API does not support this at this time [7/20/2016] -->
+  <!-- <input class="cui-input--half" placeholder="{{'cui-filter-app-name' | translate}}" style="margin-bottom:20px;" ng-model="userInvited.applications.search" ng-change="userInvited.applications.searchApplications()"/> -->
+  <div style="direction:rtl;margin-bottom:10px" class="cui-link">
+    <div class="cui-badge" ng-bind="userInvited.applications.numberOfSelected"  ng-click="userInvited.selectionPopUp =! userInvited.selectionPopUp" id="selection-popup" off-click="userInvited.selectionPopUp=false"></div>
+    {{'cui-selections' | translate }}
+    <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-applications-popup.html'"></div>
+  </div>
+  <!-- loading container -->
+  <div class="cui-loading__container--organization-list" ng-if="userInvited.updatingApps">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <div ng-if="!userInvited.updatingApps " ng-repeat="application in userInvited.applications.list | orderBy:'name' track by application.id" style="margin-bottom:10px">
+    <cui-expandable class="cui-expandable">
+      <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+        <div>
+        <input id="application{{application.id}}" type="checkbox" ng-model="userInvited.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.servicePackage.id}},{{application.name | cuiI18n}},{{application.servicePackage.personTacEnabled}}'" ng-false-value="null" ng-change="userInvited.applications.updateNumberOfSelected(userInvited.applications.selected[application.id])" style="margin-right:10px"/>
+        <span ng-bind="application.name | cuiI18n"></span>
+        </div>
+        <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </cui-expandable-title>
+
+      <!-- <cui-expandable-body class="cui-expandable__body">
+      </cui-expandable-body> -->
+    </cui-expandable>
+  </div>
+  <!-- pagination -->
+  <div class="cui-paginate__container">
+    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    <results-per-page class="cui-paginate__select" ng-model="userInvited.pageSize"></results-per-page>
+    <paginate class="cui-paginate" results-per-page="userInvited.pageSize" count="userInvited.appCount" on-page-change="userInvited.pageChange" ng-model="userInvited.page"></paginate>
+  </div>
+  <div class="cui-wizard__controls" style="margin:20px 0 10px">{{'cui-application-select-info'|translate}}</div>
+  <div class="cui-wizard__controls">
+    <button class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
+    <button class="cui-wizard__next" ng-click="userInvited.applications.process()===0? next() : userInvited.getAppicationTaC();userInvited.applications.step=2">{{'cui-next' | translate}}</button>
+  </div>
+</div>
+
+<!-- Checkout Applications -->
+<div ng-if="userInvited.applications.list && userInvited.applications.step===2">
+  <cui-icon cui-svg-icon="fa:chevron20" svg-class="cui-icon cui-icon--light-grey chevron chevron-left" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  <span class="cursor__pointer" ng-click="userInvited.applications.step=1" translate> {{'cui-all-applications'}}</span>
+  <div style="float:right" class="cui-link">
+    {{'cui-selections' | translate }}
+    <div class="cui-badge" ng-bind="userInvited.applications.numberOfSelected" ng-click="userInvited.selectionPopUp =! userInvited.selectionPopUp" id="selection-popup" off-click="userInvited.selectionPopUp=false"></div>
+    <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-applications-popup.html'"></div>
+  </div>
+  <div style="margin:2em 0">
+    {{'cui-tos-applications'|translate}}
+  </div>
+  <ng-form name="selectApps" class="application-review">
+    <div class="application-review__name application-review__label">
+      <span translate>{{ 'cui-application-name' }}</span>
+    </div>
+    <div class="application-review__tos-link application-review__label">
+      <span translate>{{ 'cui-application-tos' }}</span>
+    </div>
+    <div class="application-review__tos-agreement application-review__label">
+      <span translate>{{ 'cui-application-tos-agreement' }}</span>
+    </div>
+    <div ng-repeat="application in userInvited.applications.processedSelected" class="application-review__list">
+        <div class="application-review__name" ng-if="application.showTac=='true'">
+          <span>{{application.name}}</span>
+        </div>
+        <div class="application-review__tos-link" ng-click="userInvited.showTac($index)" ng-if="application.showTac=='true'">
+          <a class="cui-link" translate>{{'cui-view-tos'}}</a>
+        </div>
+        <div class="application-review__tos-agreement" ng-if="application.showTac=='true'">
+          <div class="cui-switch">
+            <input class="cui-switch__input" ng-model="userInvited.applications.processedSelected[$index].acceptedTos" name="application{{$index}}" id="application{{$index}}" type="checkbox" ng-required="true"/>
+            <label class="cui-switch__label" for="application{{$index}}">
+              <div class="cui-switch__container">
+                <span class="cui-switch__checked-message">Accept</span>
+                <span class="cui-switch__unchecked-message">Don't Accept</span>
+              </div>
+            </label>
+          </div>
+        </div>
+    </div>
+  </ng-form>
+
+  <div class="cui-wizard__step-error" ng-if="!selectApps.$valid && userInvited.applications.formTouched">{{ 'cui-package-tos' | translate }}</div>
+  <div class="cui-wizard__controls">
+    <button class="cui-wizard__previous" ng-click="userInvited.applications.step=userInvited.applications.step-1">&#60;&#60; {{'cui-all-applications' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="!wizardFinished" ng-click="userInvited.applications.formTouched=true;nextWithErrorChecking(selectApps)" ng-class="{'cui-wizard__next--error' : !selectApps.$valid }">{{'cui-next' | translate}}</button>
+    <button class="cui-wizard__next" ng-if="wizardFinished" ng-click="selectApps.$valid && goToStep(4)" ng-class="{'cui-wizard__next--error': !selectApps.$valid}">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</div>
+
+<!-- View Terms and Conditions for an Application -->
+<div ng-if="userInvited.applications.list && userInvited.applications.step===3">
+  <cui-icon cui-svg-icon="fa:chevron20" svg-class="cui-icon cui-icon--light-grey chevron chevron-left" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  <span class="cursor__pointer" ng-click="userInvited.applications.step=2" translate> {{'cui-printer-friendly-tac'}}</span>
+  <div style="float:right" class="cui-link">
+    {{'cui-selections' | translate }}
+    <div class="cui-badge" ng-bind="userInvited.applications.numberOfSelected" ng-click="userInvited.selectionPopUp =! userInvited.selectionPopUp" id="selection-popup" off-click="userInvited.selectionPopUp=false"></div>
+    <div ng-include="'app/modules/registration/userInvited/userInvited-steps/userInvited-applications-popup.html'"></div>
+  </div>
+  <div class="tac_wrapper">
+    {{userInvited.tacContent}}
+  </div>
+  <div class="cui-wizard__controls">
+    <button class="cui-wizard__previous" ng-click="userInvited.applications.step=userInvited.applications.step-1" style="font-size:1em">&#60;&#60; {{'cui-all-applications' | translate}}</button>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<!-- Sort Popover -->
+<div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#org-link" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="userInvited.showOrgInfo">
+      <p class="cui-popover__row">{{userInvited.organization.name}}<br>
+      {{userInvited.organization.phones[0].number}}<br>
+      {{userInvited.organization.addresses[0].streets[0]}}<br>
+      {{userInvited.organization.addresses[0].city}}, {{userInvited.organization.addresses[0].state}} 
+      {{userInvited.organization.addresses[0].postal}}<br>
+      {{userInvited.organization.addresses[0].country}}</p>
+</div>

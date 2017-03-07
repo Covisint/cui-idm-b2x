@@ -104,3 +104,52 @@ Global layout styles
   transform: translate3d(0, 60px, 0);
   transition: transform 0.15s linear;
 }
+.bell_badge{
+  position: relative;
+  top:-20px;
+  left:-6px;
+  cursor:pointer;
+}
+.pending-content_wrapper{
+  display:flex;
+
+  .dummy:first-child{
+    width:90%;
+  }
+  .dummy:only-child{
+    width:100%;
+  }
+  .dummy+.dummy{
+    width:20%
+  }
+}
+.cui-action__title-small{
+    font-size: 1.1em;
+}
+
+.pending-content__block{
+  background-color:#d4e2e6;
+  padding: 1.5em 1em;
+}
+.pending-content__title-container{
+  @extend %flex-row;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: .75em;
+}
+.pending-content__row{
+  padding:0.75em 0.2em;
+  border-bottom: 1px solid #ffffff;
+  font-size:0.8em;
+  letter-spacing:1.1px;
+  color:#343534;
+  word-break: break-word;
+}
+@media screen and (max-width:999px){
+  .pending_notification{
+    position:absolute;
+    left: calc( 100% - 50px);
+  }
+}
+.uppercase{
+  text-transform: uppercase;  
+}
