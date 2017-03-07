@@ -5,9 +5,8 @@ angular.module('organization', [])
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
-    const loginRequired = {
-        loginRequired: true
-    };
+    const loginRequired = true;
+
 
     $stateProvider
         .state('organization', {
@@ -132,6 +131,20 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
             access: loginRequired
+        })
+
+        // ADMIN...
+        .state('organization.requests.usersRegistrationRequests', {
+            url:'/userRequests',
+            templateUrl: templateBase + 'requests/usersRequests/usersRegistrationRequests/requests-RegistrationRequests.html',
+            controller: returnCtrlAs('usersRegistrationRequests'),
+            access: appConfig.orgAdminLogic
+        })
+        .state('organization.requests.usersAppRequests', {
+            url:'/applicationRequests',
+            templateUrl: templateBase + 'requests/usersRequests/usersAppRequests/requests-AppRequests.html',
+            controller: returnCtrlAs('usersAppRequests'),
+            access: appConfig.orgAdminLogic
         });
 
 }]);

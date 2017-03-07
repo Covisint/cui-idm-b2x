@@ -20,16 +20,12 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
-    const loginRequired = {
-        loginRequired:true
-    };
-
     $stateProvider
     .state('auth', {
         url: '/auth?xsrfToken&cuid',
         controller: returnCtrlAs('auth'),
         templateUrl: templateBase + 'auth/auth.html',
-        access:loginRequired
+        access:true
     });
 
     if (appConfig.languages) {
@@ -113,8 +109,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme) => {
+    'cui.authorization.routing','cui.authorization.evalRouteRequest','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,evalRouteRequest,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -145,20 +141,41 @@ angular.module('common')
     }
 
     $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-        Theme.clear() // Clear any active Theme. Change to `Theme.useDefault` if you have a default theme set.
+        Theme.clear() 
         APIError.clearAll()
         Loader.clearAll()
         event.preventDefault();
+
+        function attachAccessInfo(toState) {
+            if (toState.access) {
+                if (! _.isObject(toState.access)) {
+                    toState.access = {};
+                }
+                toState.access.roles = User.getRoles();
+                toState.access.entitlements = User.getEntitlements();
+            } else {
+                toState.access = {};                
+            }
+        }
+
+        function go(toState, toParams, fromState, fromParams) {
+            // NB... detailed access logic is evaluated upstream, in cui.authorization.evalRouteRequest...
+            attachAccessInfo(toState);
+            evalRouteRequest(toState, toParams, fromState, fromParams);
+            PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); 
+            Menu.handleStateChange(toState.menu);
+        }
+
         const route = () => {
             if (appConfig.debugServiceUrl) {
                 /**
                     appConfig.debugServiceUrl can be pointed at a localhost server to act as a mock API.
-                    Ex: 'debugServiceUrl': 'http://localhost:8001'
-                    You can get the unofficial mock api server here: https://github.com/thirdwavellc/cui-api-mock
+                        Ex: 'debugServiceUrl': 'http://localhost:8001'
+                    mock api server source code 
+                        https://github.com/thirdwavellc/cui-api-mock
+                    NB this workaround is not calling new evalRouteRequest() logic.
                 **/
-
                 let userInfo = {};
-
                 API.cui.getPerson({personId: 'personId'})
                 .then((res) => {
                     userInfo = res;
@@ -173,6 +190,7 @@ angular.module('common')
                 Menu.handleStateChange(toState.menu );
             }
             else {
+                /* deprecated...
                 if (!toState.access || !toState.access.loginRequired) {
                     Menu.handleStateChange(toState.menu);
                     routing(toState, toParams, fromState, fromParams, User.getEntitlements());
@@ -195,13 +213,24 @@ angular.module('common')
                         Menu.handleStateChange(res.redirect.toState.menu);
                     });
                 }
+                */
+                if (!toState.access || User.get() !== '[cuid]') {
+                    // ...route needs no User info... or ...route needs User and we have User info...
+                    cui.log('stateChangeStart2', toState, toParams);
+                    go(toState, toParams, fromState, fromParams);
+                } else {
+                    // ..route needs (loggedIn) User and we need User info...
+                    API.authenticateUser({toState, toParams, fromState, fromParams}).then((res) => {
+                        cui.log('stateChangeStart3', res.redirect.toState, res.redirect.toParams);
+                        go(res.redirect.toState, res.redirect.toParams, res.redirect.fromState, res.redirect.fromParams);
+                    });
+                }
             }
         };
 
-        // async load API.cui
         if (_.isEmpty(API.cui)) {
-            API.initApi()
-            .then(()=>{
+            // async load API.cui
+            API.initApi().then(() => {
                 route();
             });
         } else {
@@ -214,10 +243,13 @@ angular.module('common')
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
+
         $state.stateStack.push({
             name: fromState.name,
             params: fromParams || {}
         })
+
+        cui.log('on $stateChangeSuccess', fromState, fromParams, $state.stateStack);
     })
 
     angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {
