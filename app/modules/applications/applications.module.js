@@ -46,5 +46,17 @@ angular.module('applications',[])
             controller: returnCtrlAs('applicationReview'),
             access:loginRequired
         })
-
+        .state('applications.manageApplications', {
+            url: '/manage?page&pageSize&service.category',
+            templateUrl: templateBase + 'myApplications/myApplications-manage.html',
+            controller: returnCtrlAs('manageApplications'),
+            access:loginRequired
+        })
+        // seperating out as it is a seperate icon on in menu
+        .state('pendingAppRequests', {
+            url: '/pendingAppRequests?page&pageSize&sortBy&name',
+            templateUrl: templateBase + 'pendingRequests/pendingRequests.html',
+            controller: returnCtrlAs('pendingAppRequests'),
+            access:loginRequired
+        })
 }]);

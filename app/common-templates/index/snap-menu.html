@@ -15,3 +15,10 @@
   <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
   <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>
+
+<!-- Pending Requests -->
+<div class="cui-desktop-menu__option" ui-sref="pendingAppRequests" ui-sref-active-nested="active" ng-click="base.menu.desktop.close()">
+  <span class="cui-desktop-menu__option-name">{{'pending' | translate}} {{'requests' | translate}}</span>
+  <cui-icon cui-svg-icon="cui:status-pending" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
+</div>
+

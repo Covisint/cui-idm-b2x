@@ -366,6 +366,7 @@ angular.module('common')
 
             profile.updatePassword = function(section, toggleOff) {
                 if (section) profile[section] = { submitting: true }
+                profile.lifetimeError=false
 
                 API.cui.updatePersonPassword({ 
                     personId: userId, 
@@ -383,6 +384,9 @@ angular.module('common')
                 })
                 .fail(err => {
                     console.error('Error updating password', err)
+                    if (err.responseJSON.apiMessage.indexOf('does not conform to policy')>1) {
+                        profile.lifetimeError=true
+                    }
                     if (section) profile[section].error = true
                     $scope.$digest()
                 })

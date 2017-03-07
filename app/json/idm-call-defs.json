@@ -791,5 +791,11 @@
     "call": "/service/v3/persons/{personId}/applications/requests/history",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
+  },
+  {
+    "cmd": "getPersonPendingApps",
+    "call": "/service/v3/persons/{personId}/applications/requests",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.v1+json"
   }
 ]
