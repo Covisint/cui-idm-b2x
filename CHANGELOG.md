@@ -1,5 +1,17 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.2.4] - 2017-2-28
+
+### Changed
+* cui-i18n v1.0.28
+* Added include division media header for get org hierarchy.
+* Now Displays the applications name under org instead of package name during registration
+* Invitation based user Registration changes.
+* Pagination for organization and application page during registration.
+* App History page changes.
+* Showing user's Pending Applications and related changes.
+* Manage Applications Page and related changes.
+
 ## [v1.2.3] - 2017-1-26
 
 ### Changed
