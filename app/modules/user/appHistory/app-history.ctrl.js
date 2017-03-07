@@ -5,56 +5,15 @@ angular.module('user')
     const scopeName = 'appHistory.'
     appHistory.search = Object.assign({}, $stateParams)
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
-     const getPkgDetailsGrant = (app) => {
-        appHistory.grantedHistoryWithPkg = []
-        app.forEach(function(list){
-             Loader.onFor(scopeName + 'initHistory')
-            API.cui.getPackage({ packageId: list.packageId})
-            .then(res => {
-                APIError.offFor(scopeName + 'initHistory')
-                list.pkg=res;
-                appHistory.grantedHistoryWithPkg.push(list);
-            })
-            .fail(err => {
-                APIError.onFor(scopeName + 'initHistory')
-            })
-            .always(() => {
-                Loader.offFor(scopeName + 'initHistory')
-                $scope.$digest()
-            })
-        })
-       
-    }
 
-    const getPkgDetailsRequested = (app) => {
-        appHistory.requestHistoryWithPkg = []
-        
-        app.forEach(function(list){
-             Loader.onFor(scopeName + 'initHistory')
-            API.cui.getPackage({ packageId: list.packageId})
-            .then(res => {
-                APIError.offFor(scopeName + 'initHistory')
-                list.pkg=res;
-                appHistory.requestHistoryWithPkg.push(list);
-            })
-            .fail(err => {
-                APIError.onFor(scopeName + 'initHistory')
-            })
-            .always(() => {
-                Loader.offFor(scopeName + 'initHistory')
-                $scope.$digest()
-            })
-        })
-       
-    }
-
-     appHistory.pageGrantedChange = (newpage) => {
+    appHistory.pageGrantedChange = (newpage) => {
         appHistory.updateSearch('page', newpage)
     }
 
-     appHistory.pageRequestedChange = (newpage) => {
+    appHistory.pageRequestedChange = (newpage) => {
         appHistory.updateSearch('page', newpage)
     }
+
     appHistory.updateSearch = (updateType, updateValue,updatePage) => {
         switch (updateType) {
             case 'alphabetic':
@@ -106,8 +65,8 @@ angular.module('user')
          API.cui.getPersonApplicationsRequestHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
          .then(res => {
             appHistory.requestedHistory=res;
-            if(appHistory.requestedHistory.length>0)
-                getPkgDetailsRequested(appHistory.requestedHistory);
+            // if(appHistory.requestedHistory.length>0)
+            //     getPkgDetailsRequested(appHistory.requestedHistory);
             $scope.$digest()
          })
          .fail(err =>{
@@ -121,8 +80,8 @@ angular.module('user')
          API.cui.getPersonApplicationsGrantHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
          .then(res => {
            appHistory.grantedHistory=res;
-            if(appHistory.grantedHistory.length>0)
-                getPkgDetailsGrant(appHistory.grantedHistory);
+            // if(appHistory.grantedHistory.length>0)
+            //     getPkgDetailsGrant(appHistory.grantedHistory);
             $scope.$digest()
          })
          .fail(err =>{
@@ -197,14 +156,14 @@ angular.module('user')
      API.cui.getPersonApplicationsGrantHistory({personId:User.user.id})
      .then(res => {
         appHistory.grantedHistory=res;
-        if(appHistory.grantedHistory.length>0)
-            getPkgDetailsGrant(appHistory.grantedHistory);
+        // if(appHistory.grantedHistory.length>0)
+        //     getPkgDetailsGrant(appHistory.grantedHistory);
         return API.cui.getPersonApplicationsRequestHistory({personId:User.user.id});
      })
      .then(res => {
         appHistory.requestedHistory=res;
-        if(appHistory.requestedHistory.length>0)
-            getPkgDetailsRequested(appHistory.requestedHistory);
+        // if(appHistory.requestedHistory.length>0)
+        //     getPkgDetailsRequested(appHistory.requestedHistory);
 /*        //to display in popover
         getCountsOfStatus("active")
         getCountsOfStatus("suspended")
