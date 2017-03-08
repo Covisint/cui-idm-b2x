@@ -17,20 +17,29 @@
     {{'cui-selections' | translate }}
     <div ng-include="'app/modules/registration/userWalkup/userWalkup-steps/userWalkup-applications-popup.html'"></div>
   </div>
-
-  <div ng-repeat="application in userWalkup.applications.list | orderBy:'name' track by application.id" style="margin-bottom:10px">
+  <!-- loading container -->
+  <div class="cui-loading__container--organization-list" ng-if="userWalkup.updatingApps">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <div ng-if="!userWalkup.updatingApps" ng-repeat="application in userWalkup.applications.list | orderBy:'name' track by application.id" style="margin-bottom:10px">
     <cui-expandable class="cui-expandable">
-  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
-    <div>
-    <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.name | cuiI18n}},{{application.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id])" style="margin-right:10px"/>
-    <span ng-bind="application.name | cuiI18n"></span>
-    </div>
-    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-  </cui-expandable-title>
+      <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+        <div>
+        <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.servicePackage.id}},{{application.name | cuiI18n}},{{application.servicePackage.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id])" style="margin-right:10px"/>
+        <span ng-bind="application.name | cuiI18n"></span>
+        </div>
+        <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </cui-expandable-title>
 
-  <!-- <cui-expandable-body class="cui-expandable__body">
-  </cui-expandable-body> -->
-</cui-expandable>
+      <!-- <cui-expandable-body class="cui-expandable__body">
+      </cui-expandable-body> -->
+    </cui-expandable>
+  </div>
+  <!-- Pagination Controls -->
+  <div class="cui-paginate__container">
+    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    <results-per-page class="cui-paginate__select" ng-model="userWalkup.appPaginationSize"></results-per-page>
+    <paginate class="cui-paginate" results-per-page="userWalkup.appPaginationSize" count="userWalkup.appCount" on-page-change="userWalkup.appPaginationPageHandler" ng-model="userWalkup.appPaginationCurrentPage"></paginate>
   </div>
   <div class="cui-wizard__controls" style="margin:20px 0 10px">{{'cui-application-select-info'|translate}}</div>
   <div class="cui-wizard__controls">

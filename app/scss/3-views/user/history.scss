@@ -15,19 +15,19 @@
 	    color: black;
 	}
 	.cui-users__last-login {
-		color: #4a4a4a;
+		color: $secondary-font-color;
     	font-weight: bold;
     	letter-spacing: 1px;
     	font-size: 14px;
 	}
 	.cui-field-val__field {
-		color: #4a4a4a;
+		color: $secondary-font-color;
 		font-size:14px;
 		letter-spacing:1px;
 		margin-right:0;
 	}
 	.cui-field-val__val{
-		color: #4a4a4a;
+		color: $secondary-font-color;
 		font-size:14px;
 		letter-spacing:1px;
 	}
@@ -39,7 +39,7 @@
     	font-size: 15px;
     	letter-spacing: 1.3px;
 	    text-align: left;
-	    color: #4a4a4a;
+	    color: $secondary-font-color;
 	}
 	.cui-table-alt th{
 		border: 0;
@@ -65,7 +65,7 @@
 		border-bottom: 0px;
 	}
 	.cui-expandable__title{
-		color: #00667c;
+		color: $cui-primary-colors--dark;
 	    margin-bottom: 0.5em;
 	    font-size: 1.25em;
 	    font-weight: 600;
@@ -86,7 +86,7 @@
     	right: 6px;
 	}
 	.cui-action__icon use, .cui-action__icon--lg use {
-		color:#00667c;
+		color:$cui-primary-colors--dark;
 	}
 	.cui-expandable__body-pane .cui-expandable__pane-title{
 		margin-bottom: 1em;

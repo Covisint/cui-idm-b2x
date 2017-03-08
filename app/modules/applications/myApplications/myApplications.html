@@ -1,5 +1,5 @@
 <!-- processHTML:remove -->
-<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.ctrl.js" target="blank">here</a>.</div>
+<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.ctrl.js" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
 <!--
@@ -15,17 +15,19 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
 -->
 
 <div class="cui-action">
-  <nav class="cui-breadcrumb" ng-if="true" cui-access="{requiredEntitlements:['Application Admin','Security Administrator'],entitlementType:'atLeastOne'}" user-entitlements="base.user.entitlements">
+  <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
       <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications.applicationList">{{'organization-applications' | translate}}</a>
       </li>
-      <li class="cui-breadcrumb__link">
-        <a ui-sref="applications.myApplications" ui-sref-active="active">{{'my-applications' | translate}}</a>
+      <li class="cui-breadcrumb__link cui-breadcrumb__link--current" >
+        <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
+      </li>
+      <li class="cui-breadcrumb__link" >
+        <a ui-sref="applications.manageApplications">{{'manage-applications' | translate}}</a>
       </li>
     </ul>
   </nav>
-  <h3 class="cui-action__title">{{'my-applications' | translate}}</h3>
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
@@ -121,7 +123,7 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
     <!-- No applications message -->
     <p ng-if="myApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
 
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id">
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id" ng-if="application.servicePackage.displayable==true">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>

@@ -1,0 +1,158 @@
+<ng-form name="user" novalidate>
+
+  <!-- Organization Information -->
+  <p>{{"cui-all-fields-required" | translate}}. {{"cui-complete-registration" | translate}}
+    <a href='' id="org-link" class="cui-link--medium-light cui-link--no-decoration"  ng-click='userInvited.showOrgInfo = !userInvited.showOrgInfo'>{{userInvited.organization.name}}
+      <div ng-include="'app/modules/registration/userInvited/complete-registration-popover.html'"></div>
+    </a>
+  </p>
+  <!-- First row -->
+  <div class="cui-wizard__field-row">
+    <!-- First Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-given">{{'cui-first-name' | translate}}</label>
+      <div class="cui-error" ng-messages="user.firstName.$error" ng-if="user.firstName.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="firstName" class="cui-input" ng-required="true" ng-model="userInvited.user.name.given"/>
+    </div>
+
+    <!-- Last Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cui-last-name' | translate}}</label>
+      <div class="cui-error" ng-messages="user.lastName.$error" ng-if="user.lastName.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.name.surname" name="lastName" class="cui-input" ng-required="true"/>
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="cui-wizard__field-row">
+    <!-- Email -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-email' | translate}}</label>
+      <div class="cui-error" ng-messages="user.email.$error" ng-if="user.email.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <!-- Custom Error: Check If Email Taken -->
+      <div class="cui-error" ng-if="user.email.$error.email && user.email.$dirty">
+        <div class="cui-error__message">{{'cui-this-is-not-valid-email' | translate}}</div>
+      </div>
+      <div ng-if="!userInvited.isEmailTaken" class="cui-warning">{{'cui-error-email-exists' | translate}}</div>
+      <input type="text" name="email" class="cui-input" custom-error="userInvited.customErrors.email" ng-required="true" ng-model="userInvited.user.email" ng-blur="userInvited.checkDuplicateEmail(userInvited.user.email)" ng-disabled="userInvited.invitationData.restrictEmail"/>
+    </div>
+
+    <!-- Re-enter Email -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-email-re' | translate}}</label>
+      <div class="cui-error" ng-if="user.emailRe.$dirty && user.emailRe.$error.match">
+        <div class="cui-error__message">{{'email-mismatch' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.emailRe" name="emailRe" class="cui-input" ng-required="true" match="userInvited.user.email" ng-disabled="userInvited.invitationData.restrictEmail"/>
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="cui-wizard__field-row">
+    <!-- Country -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="country">{{"cui-country" | translate}}</label>
+      <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <div auto-complete input-name="country" pause="100" selected-object="userInvited.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="userInvited.userCountry"></div>
+    </div>
+
+    <!-- Address 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-address" | translate}} 1</label>
+      <div class="cui-error" ng-messages="user.address1.$error" ng-if="user.address1.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.addresses[0].streets[0]" class="cui-input" name="address1" ng-required="true">
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="cui-wizard__field-row">
+    <!-- Address 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{"cui-address" | translate}} 2</label>
+      <div class="cui-error" ng-messages="user.address2.$error" ng-if="user.address2.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.addresses[0].streets[1]" class="cui-input" name="address2" placeholder="{{'cui-address-example' | translate}}" ng-required="true">
+    </div>
+
+    <!-- City -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-city" | translate}}</label>
+      <div class="cui-error" ng-messages="user.city.$error" ng-if="user.city.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.addresses[0].city" class="cui-input" name="city" ng-required="true"/>
+    </div>
+  </div>
+
+  <!-- Fifth row -->
+  <div class="cui-wizard__field-row">
+    <!-- State/Province -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-state" | translate}}</label>
+      <div class="cui-error" ng-messages="user.state.$error" ng-if="user.state.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.addresses[0].state" class="cui-input" name="state" ng-required="true"/>
+    </div>
+
+    <!-- Postal Code -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="postal-code">{{"cui-postal" | translate}}</label>
+      <div class="cui-error" ng-messages="user.postal.$error" ng-if="user.postal.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.addresses[0].postal" class="cui-input" name="postal" ng-required="true"/>
+    </div>
+  </div>
+
+  <!-- Sixth row -->
+  <div class="cui-wizard__field-row">
+    <!-- Telephone number -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-telephone" | translate}}</label>
+      <div class="cui-error" ng-messages="user.telephone.$error" ng-if="user.telephone.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="userInvited.user.phones[0].number" class="cui-input" name="telephone" ng-required="true"/>
+    </div>
+    <!--Language Preference-->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+        <label>{{'cui-language' | translate}}</label>
+        <cui-dropdown ng-model="userInvited.user.language" class="cui-dropdown" return-value="object" display-value="object.name" options="userInvited.languages"></cui-dropdown>
+    </div>
+  </div>
+    <!-- Seventh row -->
+  <div class="cui-wizard__field-row">
+    <!-- Timezone -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+        <label for="timezone">{{'cui-timezone' | translate}}</label>
+        <cui-dropdown ng-model="userInvited.user.timezone" class="cui-dropdown" return-value="object" display-value="object.name" options="base.timezones"></cui-dropdown>
+    </div>
+  </div>
+
+  <!-- TOS -->
+  <div class='cui-tos-container'>
+    <input type="checkbox" name="TOS" id="TOS" ng-model="usersRegister.tos" ng-required="true" class="cui-checkbox">
+    <label ng-click="usersRegister.tos=!usersRegister.tos" class="cui-checkbox__label"> {{'cui-agree-covisint' | translate}}
+      <a href="" class="cui-link cui-padding--h-5">{{'terms-of-service' | translate}}</a> {{'cui-and' | translate}}
+      <a href="" class="cui-link cui-padding--h-5">{{'privacy-policy' | translate}}</a>
+    </label>
+    <span class="cui-wizard__step-error" ng-if="user.TOS.$dirty && user.TOS.$error.required"><br/><br/> {{'cui-tos-agree' | translate}} </span>
+  </div>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="userInvited.selectOrganization();nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(4)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</ng-form>

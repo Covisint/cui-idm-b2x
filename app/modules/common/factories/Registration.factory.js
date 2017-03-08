@@ -61,6 +61,16 @@ angular.module('common')
                 securityQuestionAccount: this.securityQuestionAccount(_registrationData)
             }
         },
+        InvitedSubmit: function(registrationData,inviteId) {
+            const _registrationData = Object.assign({}, registrationData)
+
+            return {
+                person: this.person(_registrationData),
+                passwordAccount: this.passwordAccount(_registrationData),
+                securityQuestionAccount: this.securityQuestionAccount(_registrationData),
+                inviteId:inviteId
+            }
+        },
         servicePackageRequest: function(personId, personRealm, packageData,requestReason) {
             let request = {
                 registrant: {
@@ -75,12 +85,13 @@ angular.module('common')
                 request.packages = []
                 angular.forEach(packageData.selected, function(servicePackage) {
                     // userWalkup.applications.selected is an array of strings that looks like
-                    // ['<appId>,<appName>','<app2Id>,<app2Name>',etc]
+                    // ['<appId>,<packageId>,<appName>']
                     request.packages.push({
-                        id: servicePackage.split(',')[0],
+                        id: servicePackage.split(',')[1],
                         type: 'servicePackage'
                     })
-                })    
+                })
+                request.packages=_.uniqBy(request.packages,'id')    
             }
 
             return request
@@ -165,7 +176,7 @@ angular.module('common')
 
     // Returns organizations and security questions for the realm.
     // Both must resolve for the walkup registration to work.
-    pub.initWalkupRegistration = () => {    
+    pub.initWalkupRegistration = (pageSize) => {    
         const defer = $q.defer()
         const data = {}
         
@@ -173,7 +184,12 @@ angular.module('common')
 
         API.cui.initiateNonce()
         .then(() => {
-            return API.cui.getOrganizationsNonce()
+            //  2-13-2017 filter resuts by status is not available for count now.
+            return API.cui.getOrganizationsCountNonce()
+        })
+        .then((res) => {
+            data.organizationCount=res
+            return API.cui.getOrganizationsNonce({qs:[['page',1],['pageSize',pageSize],['status','active']]})
         })
         .then(res => {
             data.organizations = res
@@ -185,6 +201,34 @@ angular.module('common')
         })
         .fail(error => {
             APIError.onFor('RegistrationFactory.initWalkup')
+            defer.reject(error)
+        })
+
+        return defer.promise
+    }
+    // validates invite and Returns Target organization
+    //Must resolve for the Invited registration to work.
+    pub.initInvitedRegistration= (encodedString) =>{
+        const defer = $q.defer()
+        const data = {}
+        
+        APIError.offFor('RegistrationFactory.initInvited')
+
+        API.cui.securedInitiate({invitationId:encodedString})
+        .then((res) => {
+            data.invitationData=res;
+            return API.cui.getOrganizationNonce({organizationId:res.targetOrganization.id})
+        })
+        .then(res => {
+            data.organization = res
+            return API.cui.getSecurityQuestionsNonce()
+        })
+        .then(res => {
+            data.securityQuestions = res
+            defer.resolve(data)
+        })
+        .fail(error => {
+            APIError.onFor('RegistrationFactory.initInvited')
             defer.reject(error)
         })
 
@@ -213,8 +257,43 @@ angular.module('common')
         return defer.promise
     }
 
+    pub.invitedSubmit = (registrationData,encodedString,invitationId) => {
+        const defer = $q.defer()
+        const submitData = build.InvitedSubmit(registrationData,invitationId)
 
-    pub.selectOrganization = (organization)=>{
+        API.cui.securedInitiate({invitationId:encodedString})
+        .then(() => {
+            return API.cui.postUserRegistrationNonce({qs:[['inviteId',invitationId]],data: submitData})
+        })
+        .then(res => {
+            const packageRequestData = build.servicePackageRequest(res.person.id, res.person.realm, registrationData.applications,registrationData.requestReason)
+            return API.cui.postPersonRequestNonce({data: packageRequestData})
+        })
+        .then(res => {
+            defer.resolve(res)
+        })
+        .fail(error => {
+            defer.reject(error)
+        })
+
+        return defer.promise
+    }
+
+    pub.getOrgAppsByPage = (page, pageSize, organizationId) => {
+        return API.cui.getOrgAppsNonce({organizationId: organizationId, qs:[['page',page],['pageSize',pageSize]]})
+    }
+
+    pub.getOrgsByPageAndName = (page,pageSize,name) => {
+        if (name!==undefined) {
+            return self.makeNonceCall("getOrganizationsNonce",{qs:[['page',page],['pageSize',pageSize],['status','active'],['name',name]]})
+        }
+        else{
+            return self.makeNonceCall("getOrganizationsNonce",{qs:[['page',page],['pageSize',pageSize],['status','active']]})
+        }
+        
+    }
+
+    pub.selectOrganization = (organization,pageSize)=>{
         const deferred = $.Deferred()
         const results = {
             grants: []
@@ -222,11 +301,15 @@ angular.module('common')
 
         API.cui.initiateNonce()
         .then(res => {
-            return API.cui.getOrgPackageGrantsNonce({organizationId: organization.id})
+            return API.cui.getOrgAppsCountNonce({organizationId: organization.id})
+        })
+        .then(res => {
+            results.appCount=res
+            return pub.getOrgAppsByPage(1,pageSize,organization.id)
         })
         .then(res => {
             res.forEach(grant => {
-                if (grant.servicePackageResource.requestable) results.grants.push(grant)
+                if (grant.servicePackage.requestable) results.grants.push(grant)
             })
             return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
         })

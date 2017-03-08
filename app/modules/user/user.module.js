@@ -7,9 +7,7 @@ angular.module('user', [])
         return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
     };
 
-    const loginRequired = {
-        loginRequired:true
-    };
+    const loginRequired = true;
 
     $stateProvider
         .state('user', {
@@ -27,6 +25,12 @@ angular.module('user', [])
             url: '/history',
             templateUrl: templateBase + 'history/user-history.html',
             controller: returnCtrlAs('userHistory'),
+            access:loginRequired
+        })
+        .state('user.appHistory',{
+            url: '/appHistory?name&page&pageSize&sortBy&status',
+            templateUrl: templateBase + 'appHistory/app-history.html',
+            controller: returnCtrlAs('appHistory'),
             access:loginRequired
         });
 
