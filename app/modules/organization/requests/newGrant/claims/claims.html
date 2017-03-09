@@ -92,7 +92,7 @@
             <div class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
               <li class="cui-checkbox__container">
                 <input class="cui-checkbox" type="checkbox" ng-model="newGrantClaims.packageRequests[
-                application.servicePackage.id].claims[claim.id][claimValue.claimValueId]" id="{{claimValue.name | cuiI18n}}"/>
+                application.servicePackage.id].claims[claim.claimId][claimValue.claimValueId]" id="{{claimValue.name | cuiI18n}}"/>
                 <label class="cui-checkbox__label" for="{{claimValue.name | cuiI18n}}">{{claimValue.name | cuiI18n}}</label>
               </li>
             </div>

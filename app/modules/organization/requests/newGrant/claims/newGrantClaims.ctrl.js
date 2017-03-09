@@ -37,7 +37,7 @@ angular.module('organization')
         .then(res => {
             newGrantClaims['claims' + i] = Object.assign({}, res)
             res.forEach(claim => {
-                newGrantClaims.packageRequests[app.servicePackage.id].claims[claim.id] = {}
+                newGrantClaims.packageRequests[app.servicePackage.id].claims[claim.claimId] = {}
             })
             Loader.offFor(loaderType + 'claims' + i)
             $scope.$digest()
