@@ -35,7 +35,7 @@ angular.module('organization')
     NewGrant.pullFromStorage(newGrantSearch);
 
     Loader.onFor('newGrantSearch.user');
-    API.cui.getPerson({ personId: $stateParams.userID })
+    API.cui.getPerson({ personId: $stateParams.userId })
     .then(res => {
         newGrantSearch.user = Object.assign({}, res);
         Loader.offFor('newGrantSearch.user');
@@ -52,7 +52,7 @@ angular.module('organization')
 
         const queryParams = {
             'service.name': newGrantSearch.search.name,
-            category: newGrantSearch.search.category,
+            'service.category': newGrantSearch.search.category,
             page: newGrantSearch.search.page || 1,
             pageSize: newGrantSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0],
             sortBy: newGrantSearch.search.sortBy
@@ -61,7 +61,7 @@ angular.module('organization')
         const queryArray = APIHelpers.getQs(queryParams);
 
         const queryOptions = {
-            personId: $stateParams.userID,
+            personId: $stateParams.userId,
             qs: queryArray
         };
 
@@ -109,7 +109,7 @@ angular.module('organization')
     }
 
     newGrantSearch.goToClaimSelection = () => {
-        $state.go('organization.requests.newGrantClaims', { userID: $stateParams.userID })
+        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

@@ -1,8 +1,10 @@
 angular.module('organization')
-.controller('newGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage) {
+.controller('newGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage,NewGrant) {
 
     const newGrant = this
-
+    newGrant.prevStateParams={
+        userId:$stateParams.userId
+    }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
@@ -44,20 +46,23 @@ angular.module('organization')
 
     newGrant.searchCallback = (opts) => {
         if (!opts) {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID});
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId});
         } else if (typeof opts ==='string') {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, name: opts});
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, name: opts});
         } else {
             const optsParser = {
                 category: (unparsedCategory) => {
                     const category = $filter('cuiI18n')(unparsedCategory)
-                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userID: $stateParams.userID, category})
+                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, category})
                 }
             }
             optsParser[opts.type](opts.value)
         }
     }
 
+    newGrant.goToClaimSelection = () => {
+        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
+    }
     // ON CLICK END ----------------------------------------------------------------------------------
 
 });

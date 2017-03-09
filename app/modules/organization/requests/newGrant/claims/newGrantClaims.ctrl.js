@@ -3,16 +3,20 @@ angular.module('organization')
     
     const newGrantClaims = this
     const loaderType = 'newGrantClaims.'
-
+    newGrantClaims.prevStateParams={
+        userId:$stateParams.userId
+    }
     newGrantClaims.packageRequests = {}
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    newGrantClaims.appsBeingRequested = DataStorage.getDataThatMatches('newGrant', {userId: $stateParams.userID})[0]
-
+    NewGrant.pullFromStorage(newGrantClaims);
+    if (!newGrantClaims.appsBeingRequested) {
+        $state.go('organization.requests.newGrantSearch',{userId:$stateParams.userId})
+    }
     // get the claims for each app being requested
-    Object.keys(newGrantClaims.appsBeingRequested.applications).forEach((appId, i) => {
-        const app = newGrantClaims.appsBeingRequested.applications[appId]
+    Object.keys(newGrantClaims.appsBeingRequested).forEach((appId, i) => {
+        const app = newGrantClaims.appsBeingRequested[appId]
 
         if (!newGrantClaims.packageRequests[app.servicePackage.id]) {
             newGrantClaims.packageRequests[app.servicePackage.id] = {
@@ -25,7 +29,7 @@ angular.module('organization')
 
         const opts = {
             qs: APIHelpers.getQs({
-                packageId: newGrantClaims.appsBeingRequested.applications[appId].servicePackage.id
+                packageId: newGrantClaims.appsBeingRequested[appId].servicePackage.id
             })
         }
 
@@ -47,7 +51,7 @@ angular.module('organization')
     })
 
     Loader.onFor(loaderType + 'user')
-    API.cui.getPerson({ personId: $stateParams.userID })
+    API.cui.getPerson({ personId: $stateParams.userId })
     .then(res => {
         newGrantClaims.user = Object.assign({}, res)
         Loader.offFor(loaderType + 'user')
@@ -62,10 +66,10 @@ angular.module('organization')
         Loader.onFor(loaderType + 'submit')
 
         // Grant Packages
-        $q.all(NewGrant.packageGrants($stateParams.userID, newGrantClaims.packageRequests).map(opts => API.cui.grantPersonPackage(opts)))
+        $q.all(NewGrant.packageGrants($stateParams.userId, newGrantClaims.packageRequests).map(opts => API.cui.grantPersonPackage(opts)))
         .then(res => {
             // grant claims
-            return $q.all(NewGrant.claimGrants($stateParams.userID, newGrantClaims.packageRequests).map(opts => API.cui.grantClaims(opts)))
+            return $q.all(NewGrant.claimGrants($stateParams.userId, newGrantClaims.packageRequests).map(opts => API.cui.grantClaims(opts)))
         })
         .then(res => {
             Loader.offFor(loaderType + 'submit')
