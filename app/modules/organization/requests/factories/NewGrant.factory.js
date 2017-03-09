@@ -84,6 +84,7 @@ angular.module('organization')
                 personId: userId,
                 packageId: pkgId,
                 data: {
+                    version:'123',
                     status: 'active',
                     grantee: {
                         id: userId,
