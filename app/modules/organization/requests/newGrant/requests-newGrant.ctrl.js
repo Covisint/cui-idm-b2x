@@ -21,23 +21,9 @@ angular.module('organization')
             }
         ]
     ****/
-
-    const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
-    if(newGrantsInStorage) {
-        newGrant.appsBeingRequested = newGrantsInStorage.applications
-        newGrant.packagesBeingRequested = newGrantsInStorage.packages
-    }
-    else {
-        newGrant.appsBeingRequested = {}
-        newGrant.packagesBeingRequested = {}
-    }
-
-    if (newGrant.appsBeingRequested && newGrant.packagesBeingRequested) {
-        newGrant.numberOfRequests = Object.keys(newGrant.appsBeingRequested).length + Object.keys(newGrant.packagesBeingRequested).length
-    }
-
+    NewGrant.pullFromStorage(newGrant);
     Loader.onFor('newGrant.user')
-    API.cui.getPerson({ personId:$stateParams.userID })
+    API.cui.getPerson({ personId:$stateParams.userId })
     .then(res => {
         newGrant.user = Object.assign({}, res)
         Loader.offFor('newGrant.user')

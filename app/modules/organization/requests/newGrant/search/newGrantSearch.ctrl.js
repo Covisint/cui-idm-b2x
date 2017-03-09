@@ -1,15 +1,19 @@
 angular.module('organization')
 .controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q) {
     const newGrantSearch = this;
+    newGrantSearch.prevStateParams={
+        userId:$stateParams.userId
+    }
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const updateStorage = () => {
-        DataStorage.replaceDataThatMatches('newGrant', { userId: $stateParams.userID }, {
-            userId: $stateParams.userID,
+        DataStorage.setType('newGrant', {
+            userId: $stateParams.userId,
             applications: newGrantSearch.requests.application,
             packages: newGrantSearch.requests.package
-        });
+        })
+        console.log(DataStorage.getType('newGrant'))
     };
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------

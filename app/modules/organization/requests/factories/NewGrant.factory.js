@@ -3,8 +3,9 @@ angular.module('organization')
     let newGrant = {}
 
     newGrant.pullFromStorage = (scope) => {
-        const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
-        if (newGrantsInStorage) {
+        // const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
+        let newGrantsInStorage = DataStorage.getType('newGrant')
+        if (newGrantsInStorage&&newGrantsInStorage.userId==$stateParams.userId) {
             scope.appsBeingRequested = Object.assign({}, newGrantsInStorage.applications)
             scope.packagesBeingRequested = Object.assign({}, newGrantsInStorage.packages)
         }
