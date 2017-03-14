@@ -1,11 +1,17 @@
 angular.module('organization')
 .factory('NewGrant', (DataStorage, API, $stateParams) => {
     let newGrant = {}
-
-    newGrant.pullFromStorage = (scope) => {
+    let newGrantsInStorage
+    //Using Same Storage for Org and User grants
+    newGrant.pullFromStorage = (scope,resourceId,type) => {
         // const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
-        let newGrantsInStorage = DataStorage.getType('newGrant')
-        if (newGrantsInStorage&&newGrantsInStorage.userId==$stateParams.userId) {
+        if (type==="person") {
+            newGrantsInStorage = DataStorage.getType('newGrant')
+        }
+        else{
+            newGrantsInStorage = DataStorage.getType('newOrgGrant')
+        }      
+        if (newGrantsInStorage&&newGrantsInStorage.id==resourceId) {
             scope.appsBeingRequested = Object.assign({}, newGrantsInStorage.applications)
             scope.packagesBeingRequested = Object.assign({}, newGrantsInStorage.packages)
         }
@@ -32,7 +38,7 @@ angular.module('organization')
         }
     }
 
-    newGrant.claimGrants = (userId, packageRequestObject) => {
+    newGrant.claimGrants = (id, type,packageRequestObject) => {
         let claimGrants = []
 
         const buildPackageClaims = (claimsObject) => {
@@ -61,8 +67,8 @@ angular.module('organization')
             claimGrants.push({
                 data: {
                     grantee: {
-                        id: userId,
-                        type: 'person'
+                        id: id,
+                        type: type
                     },
                     servicePackage: {
                         id: pkgId,
@@ -76,19 +82,18 @@ angular.module('organization')
        return claimGrants
     }
 
-    newGrant.packageGrants = (userId, packageRequestObject) => {
+    newGrant.packageGrants = (id, type, packageRequestObject) => {
         let packageGrants = []
-
-        Object.keys(packageRequestObject).forEach(pkgId => {
+        let index=0
+        Object.keys(packageRequestObject).forEach(pkgId => {            
             packageGrants.push({
-                personId: userId,
                 packageId: pkgId,
                 data: {
                     version:'123',
                     status: 'active',
                     grantee: {
-                        id: userId,
-                        type: 'person'
+                        id: id,
+                        type: type
                     },
                     servicePackage: {
                         id: pkgId,
@@ -96,6 +101,13 @@ angular.module('organization')
                     }
                 }
             })
+            if (type==='person') {
+                packageGrants[index].personId=id
+            }
+            else{
+                packageGrants[index].organizationId=id
+            }
+            index++
         })
 
         return packageGrants
