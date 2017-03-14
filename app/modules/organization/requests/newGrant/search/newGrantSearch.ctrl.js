@@ -9,7 +9,8 @@ angular.module('organization')
 
     const updateStorage = () => {
         DataStorage.setType('newGrant', {
-            userId: $stateParams.userId,
+            id: $stateParams.userId,
+            type:'person',
             applications: newGrantSearch.requests.application,
             packages: newGrantSearch.requests.package
         })
@@ -32,7 +33,7 @@ angular.module('organization')
         ]
     ****/
 
-    NewGrant.pullFromStorage(newGrantSearch);
+    NewGrant.pullFromStorage(newGrantSearch,$stateParams.userId,'person');
 
     Loader.onFor('newGrantSearch.user');
     API.cui.getPerson({ personId: $stateParams.userId })

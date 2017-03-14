@@ -23,7 +23,7 @@ angular.module('organization')
             }
         ]
     ****/
-    NewGrant.pullFromStorage(newGrant);
+    NewGrant.pullFromStorage(newGrant,$stateParams.userId,'person');
     Loader.onFor('newGrant.user')
     API.cui.getPerson({ personId:$stateParams.userId })
     .then(res => {
