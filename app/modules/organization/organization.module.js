@@ -96,6 +96,25 @@ angular.module('organization', [])
             controller: returnCtrlAs('newGrantClaims'),
             access: loginRequired
         })
+        // Org Grant
+        .state('organization.requests.newOrgGrant', {
+            url: '/new-org-grant?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/requests-newGrant.html',
+            controller: returnCtrlAs('newOrgGrant'),
+            access: loginRequired
+        })
+        .state('organization.requests.newOrgGrantSearch', {
+            url: '/search-org?type&category&name&orgId&page&pageSize&sortBy',
+            templateUrl: templateBase + 'requests/newOrgGrant/search/search.html',
+            controller: returnCtrlAs('newOrgGrantSearch'),
+            access: loginRequired
+        })
+        .state('organization.requests.newOrgGrantClaims', {
+            url: '/claims-org?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/claims/claims.html',
+            controller: returnCtrlAs('newOrgGrantClaims'),
+            access: loginRequired
+        })
         .state('organization.requests.pendingRequests', {
             url: '/pending-requests?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
