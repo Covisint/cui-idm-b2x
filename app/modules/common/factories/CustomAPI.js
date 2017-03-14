@@ -96,7 +96,7 @@ angular.module('common')
         {
             cmd: 'getOrganizationGrantableCount',
             accepts: 'text/plain',
-            call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`,
+            call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable/count`,
             type: 'GET'
         },
         {
