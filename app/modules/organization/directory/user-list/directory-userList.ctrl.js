@@ -3,7 +3,7 @@ angular.module('organization')
     
     const orgDirectory = this
     const scopeName = 'orgDirectory.'
-
+    orgDirectory.stateParamsOrgId=$stateParams.orgId
     orgDirectory.search = {}
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */

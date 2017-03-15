@@ -16,7 +16,7 @@ angular.module('organization', [])
         })
         // Profile --------------------------------------------------
         .state('organization.profile', {
-            url: '/profile?userID&orgID',
+            url: '/profile/:orgId?userId',
             templateUrl: templateBase + 'profile/organization-profile.html',
             controller: returnCtrlAs('orgProfile'),
             access: loginRequired
@@ -27,7 +27,7 @@ angular.module('organization', [])
             template: '<div ui-view></div>'
         })
         .state('organization.directory.userList', {
-            url: '/directory?orgId&page&pageSize&sortBy&refine',
+            url: '/directory/:orgId?page&pageSize&sortBy&refine',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
             access: loginRequired
@@ -60,7 +60,7 @@ angular.module('organization', [])
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
-            url: '/hierarchy?orgID',
+            url: '/hierarchy/:orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
             access:loginRequired
