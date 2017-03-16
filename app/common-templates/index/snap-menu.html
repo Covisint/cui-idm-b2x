@@ -11,7 +11,7 @@
 </div>
 
 <!-- Organization Profile -->
-<div class="cui-desktop-menu__option" ui-sref="organization.profile" ui-sref-active-nested="active" ng-click="base.menu.desktop.close()">
+<div class="cui-desktop-menu__option" ui-sref="organization.profile({orgId:base.user.organization.id})" ui-sref-active-nested="active" ng-click="base.menu.desktop.close()">
   <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
   <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>

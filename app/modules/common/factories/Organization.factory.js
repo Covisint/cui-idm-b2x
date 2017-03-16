@@ -33,6 +33,10 @@ angular.module('common')
 		return defer.promise
 	}
 
+	const getOrganization = (organizationId) => {
+		return API.cui.getOrganizationWithAttributes({organizationId:organizationId})
+	}
+
 	const initOrganizationProfile = (organizationId, policyId, authPolicyId) => {
 		const defer = $q.defer()
 		const organizationProfile = {}
@@ -67,6 +71,7 @@ angular.module('common')
 		getOrganizationAdmins: getOrganizationAdmins,
 		getOrganizationPasswordPolicy: getOrganizationPasswordPolicy,
 		getOrganizationAuthenticationPolicy:getOrganizationAuthenticationPolicy,
+		getOrganization:getOrganization,
 		initOrganizationProfile: initOrganizationProfile
 	}
 

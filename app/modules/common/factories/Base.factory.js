@@ -13,20 +13,19 @@ angular.module('common')
         timezones: Timezones.all,
         user: User.user,
 
-        goBack: (stateName) => {
+        goBack: (stateName,stateParams) => {
             const numberOfStates = $state.stateStack.length
             let i = numberOfStates - 1 // Last state user visited
             let counter = 0
-            let stateParams
-
+            let stateParamsFromStack
             do {
                 if ($state.stateStack[i].name === stateName) {
-                    stateParams = $state.stateStack[i].params
+                    stateParamsFromStack = $state.stateStack[i].params
                 }
                 i--
                 counter++
-            } while (!stateParams && i >= 0 && counter <= 20) // limit our attempts to 20
-
+            } while (!stateParamsFromStack && i >= 0 && counter <= 20) // limit our attempts to 20
+            if (stateParamsFromStack) stateParams=stateParamsFromStack
             if (!stateParams) $state.go(stateName)
             else $state.go(stateName, stateParams)
         },

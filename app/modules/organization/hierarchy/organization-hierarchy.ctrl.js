@@ -1,8 +1,9 @@
 angular.module('organization')
-.controller('orgHierarchyCtrl', function(API,APIError,DataStorage,Loader,User,$scope) {
+.controller('orgHierarchyCtrl', function(API,APIError,DataStorage,Loader,User,$scope,$state,$stateParams) {
 
     const orgHierarchy = this
     const pageLoader = 'orgHierarchy.loading'
+    orgHierarchy.stateParamsOrgId=$stateParams.orgId
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
@@ -14,7 +15,7 @@ angular.module('organization')
 
     if (!storedData) Loader.onFor(pageLoader)
 
-    API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    API.cui.getOrganizationHierarchy({organizationId:orgHierarchy.stateParamsOrgId })
     .done(res => {
         // Put hierarchy response in an array as the hierarchy directive expects an array
         orgHierarchy.organizationHierarchy = [res]
@@ -29,5 +30,9 @@ angular.module('organization')
     })
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
-
+    /* */
+    orgHierarchy.goToOrgPrfile = (org) => {
+        $state.go('organization.profile',{orgId:org.id})
+    }
+    /* */
 })

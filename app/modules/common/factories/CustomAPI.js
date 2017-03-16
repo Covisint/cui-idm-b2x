@@ -96,7 +96,7 @@ angular.module('common')
         {
             cmd: 'getOrganizationGrantableCount',
             accepts: 'text/plain',
-            call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`,
+            call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable/count`,
             type: 'GET'
         },
         {
@@ -181,13 +181,6 @@ angular.module('common')
             accepts: 'application/vnd.com.covisint.platform.organization.request.v1+json',
             call: `/organization/v3/requests`,
             type: 'GET'
-        },
-        {
-            cmd: 'grantPersonPackage',
-            cmdType: 'secured',
-            accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',
-            call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,
-            type: 'PUT'
         },
         {
             cmd: 'getPersonEntitlements',

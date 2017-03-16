@@ -16,7 +16,7 @@ angular.module('organization', [])
         })
         // Profile --------------------------------------------------
         .state('organization.profile', {
-            url: '/profile?userID&orgID',
+            url: '/profile/:orgId?userId',
             templateUrl: templateBase + 'profile/organization-profile.html',
             controller: returnCtrlAs('orgProfile'),
             access: loginRequired
@@ -27,7 +27,7 @@ angular.module('organization', [])
             template: '<div ui-view></div>'
         })
         .state('organization.directory.userList', {
-            url: '/directory?orgId&page&pageSize&sortBy&refine',
+            url: '/directory/:orgId?page&pageSize&sortBy&refine',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
             access: loginRequired
@@ -60,9 +60,16 @@ angular.module('organization', [])
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
-            url: '/hierarchy?orgID',
+            url: '/hierarchy/:orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
+            access:loginRequired
+        })
+        // applications----------------------------------------------
+        .state('organization.applications', {
+            url: '/applications/:orgId?name&page&pageSize&service.category&sortBy&refine',
+            templateUrl: templateBase + 'applications/organization-applications.html',
+            controller: returnCtrlAs('organizationApplications'),
             access:loginRequired
         })
         // Roles ----------------------------------------------------
@@ -79,21 +86,40 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.newGrant', {
-            url: '/new-grant?userID',
+            url: '/new-grant?userId',
             templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
             access: loginRequired
         })
         .state('organization.requests.newGrantSearch', {
-            url: '/search?type&category&name&userID&page&pageSize&sortBy',
+            url: '/search?type&category&name&userId&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newGrant/search/search.html',
             controller: returnCtrlAs('newGrantSearch'),
             access: loginRequired
         })
         .state('organization.requests.newGrantClaims', {
-            url: '/claims?userID',
+            url: '/claims?userId',
             templateUrl: templateBase + 'requests/newGrant/claims/claims.html',
             controller: returnCtrlAs('newGrantClaims'),
+            access: loginRequired
+        })
+        // Org Grant
+        .state('organization.requests.newOrgGrant', {
+            url: '/new-org-grant?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/requests-newGrant.html',
+            controller: returnCtrlAs('newOrgGrant'),
+            access: loginRequired
+        })
+        .state('organization.requests.newOrgGrantSearch', {
+            url: '/search-org?type&category&name&orgId&page&pageSize&sortBy',
+            templateUrl: templateBase + 'requests/newOrgGrant/search/search.html',
+            controller: returnCtrlAs('newOrgGrantSearch'),
+            access: loginRequired
+        })
+        .state('organization.requests.newOrgGrantClaims', {
+            url: '/claims-org?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/claims/claims.html',
+            controller: returnCtrlAs('newOrgGrantClaims'),
             access: loginRequired
         })
         .state('organization.requests.pendingRequests', {

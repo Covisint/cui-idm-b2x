@@ -8,7 +8,7 @@
   <!-- Page Header -->
   <section class="cui-action">
     <h3 class="cui-sr-only">{{'org-nav-invite-links' | translate}}</h3>
-    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgDirectory.stateParamsOrgId"></nav>
     <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
 
     <!-- Invitation Button/Popover is disabled with ng-if="false" until feature is ready -->
@@ -79,13 +79,13 @@
       </div>
 
       <!-- Organizations -->
-      <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked=false">
+      <!--       <div class="cui-action__action-container" ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked" id="organizations-button" off-click="orgDirectory.organizationsClicked=false">
         <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
           <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10"></use>
         </svg>
-        <span class="cui-action__action-label">{{'organizations' | translate}}</span>
+        <span class="cui-action__action-label">{{'organizations' | translate}}</span> -->
         <!-- Organizations Popover -->
-        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="orgDirectory.organizationsClicked" style="width:214px">
+        <!--         <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#organizations-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="orgDirectory.organizationsClicked" style="width:214px">
           <div class="cui-popover__row" ng-if="!orgDirectory.organizationList">
             <span>{{'cui-no-org-divisions' | translate}}!</span>
           </div>
@@ -93,7 +93,7 @@
             <span ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false">{{organization.name | cuiI18n}}</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </section>
 
