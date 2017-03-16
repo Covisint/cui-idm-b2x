@@ -95,7 +95,7 @@ angular.module('applications')
             useCuid:true,
             qs: APIHelpers.getQs(manageApplications.search)
         }
-
+        opts.qs.push(['grant.status','active'])
         const promises = [
             API.cui.getPersonGrantedApps(opts), 
             API.cui.getPersonGrantedAppCount(opts)
