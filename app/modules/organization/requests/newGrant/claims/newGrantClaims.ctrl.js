@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('newGrantClaimsCtrl', function(API,APIHelpers,DataStorage,Loader,NewGrant,$stateParams,$q,$scope,$state) {
+.controller('newGrantClaimsCtrl', function(API,APIHelpers,DataStorage,Loader,NewGrant,$stateParams,$q,$scope,$state,$timeout) {
     
     const newGrantClaims = this
     const loaderType = 'newGrantClaims.'
