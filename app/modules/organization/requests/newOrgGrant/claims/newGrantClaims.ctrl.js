@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('newOrgGrantClaimsCtrl', function(API,APIHelpers,DataStorage,Loader,NewGrant,$stateParams,$q,$scope,$state) {
+.controller('newOrgGrantClaimsCtrl', function(API,APIHelpers,DataStorage,Loader,NewGrant,$stateParams,$q,$scope,$state,$timeout) {
     
     const newOrgGrantClaims = this
     const loaderType = 'newOrgGrantClaims.'
@@ -27,27 +27,27 @@ angular.module('organization')
 
         Loader.onFor(loaderType + 'claims' + i)
 
-        const opts = {
-            qs: APIHelpers.getQs({
-                packageId: newOrgGrantClaims.appsBeingRequested[appId].servicePackage.id
-            })
-        }
+        // const opts = {
+        //     qs: APIHelpers.getQs({
+        //         packageId: newOrgGrantClaims.appsBeingRequested[appId].servicePackage.id
+        //     })
+        // }
 
-        API.cui.getPackageClaims(opts)
-        .then(res => {
-            newOrgGrantClaims['claims' + i] = Object.assign({}, res)
-            res.forEach(claim => {
-                newOrgGrantClaims.packageRequests[app.servicePackage.id].claims[claim.claimId] = {}
-            })
-            Loader.offFor(loaderType + 'claims' + i)
-            $scope.$digest()
-        })
-        .fail(err => { 
-            // claims endpoint throws an error when the package has no claims
-            newOrgGrantClaims['claims' + i] = []
-            Loader.offFor(loaderType + 'claims' + i)
-            $scope.$digest()
-        })
+        // API.cui.getPackageClaims(opts)
+        // .then(res => {
+        //     newOrgGrantClaims['claims' + i] = Object.assign({}, res)
+        //     res.forEach(claim => {
+        //         newOrgGrantClaims.packageRequests[app.servicePackage.id].claims[claim.claimId] = {}
+        //     })
+        //     Loader.offFor(loaderType + 'claims' + i)
+        //     $scope.$digest()
+        // })
+        // .fail(err => { 
+        //     // claims endpoint throws an error when the package has no claims
+        //     newOrgGrantClaims['claims' + i] = []
+        //     Loader.offFor(loaderType + 'claims' + i)
+        //     $scope.$digest()
+        // })
     })
 
     Loader.onFor(loaderType + 'org')
@@ -64,26 +64,27 @@ angular.module('organization')
 
     newOrgGrantClaims.submit = () => {
         Loader.onFor(loaderType + 'submit')
+        newOrgGrantClaims.success = false;
         let claimsPromises=[]
         // Grant Packages
         $q.all(NewGrant.packageGrants($stateParams.orgId ,'organization', newOrgGrantClaims.packageRequests).map(opts => API.cui.grantOrganizationPackage(opts)))
-        .then(res => {
-            // grant claims
-            let claimsData=NewGrant.claimGrants($stateParams.orgId ,'organization', newOrgGrantClaims.packageRequests)
-            claimsData.forEach(claimData => {
-                if(claimData.data.packageClaims&&claimData.data.packageClaims.length!==0){
-                    claimsPromises.push(API.cui.grantClaims(claimData))
-                }
-            })
-            return $q.all(claimsPromises)
-        })
+        // .then(res => {
+        //     // grant claims
+        //     let claimsData=NewGrant.claimGrants($stateParams.orgId ,'organization', newOrgGrantClaims.packageRequests)
+        //     claimsData.forEach(claimData => {
+        //         if(claimData.data.packageClaims&&claimData.data.packageClaims.length!==0){
+        //             claimsPromises.push(API.cui.grantClaims(claimData))
+        //         }
+        //     })
+        //     return $q.all(claimsPromises)
+        // })
         .then(res => {
             Loader.offFor(loaderType + 'submit')
             newOrgGrantClaims.success = true
-            // DataStorage.setType('newOrgGrant',{})
-            // $timeout(() => {
-            //     $state.go('organization.directory.userList');
-            // }, 3000);
+            DataStorage.setType('newOrgGrant',{})
+            $timeout(() => {
+                $state.go('organization.applications',{orgId:newOrgGrantClaims.prevStateParams.orgId});
+            }, 3000);
         })
         .catch(err => {
             Loader.offFor(loaderType + 'submit')
