@@ -15,6 +15,11 @@
         {{'directory' | translate}}
       </a>
     </li>
+    <li class="cui-breadcrumb__link" ng-if="base.user.organization.id!==orgId">
+      <a ui-sref="organization.applications({orgId:orgId})" ui-sref-active-for="organization.applications">
+        {{'cui-applications' | translate}}
+      </a>
+    </li>
     <!-- <li class="cui-breadcrumb__link">
       <a ui-sref="organization.roles({orgID:personRequestReview.user.organization.id})" ui-sref-active-for="organization.roles">
         {{'roles' | translate}}
