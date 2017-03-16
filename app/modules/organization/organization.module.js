@@ -65,6 +65,13 @@ angular.module('organization', [])
             controller: returnCtrlAs('orgHierarchy'),
             access:loginRequired
         })
+        // applications----------------------------------------------
+        .state('organization.applications', {
+            url: '/applications/:orgId?name&page&pageSize&service.category&sortBy&refine',
+            templateUrl: templateBase + 'applications/organization-applications.html',
+            controller: returnCtrlAs('organizationApplications'),
+            access:loginRequired
+        })
         // Roles ----------------------------------------------------
         .state('organization.roles', {
             url: '/roles?orgID',
