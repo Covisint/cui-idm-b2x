@@ -1,16 +1,13 @@
 <main class="cui-organization__new-request-search">
-    <h2 class="cui-sr-only">New Grant Search Results</h2>
-    <section class="cui-action">
-        <h3 class="cui-sr-only">User name and close navigation</h3>
-        <div class="cui-action__title" ng-click="base.goBack('organization.directory.userDetails',newOrgGrantSearch.prevStateParams)">
-          <span ng-if="!base.loader.for['newOrgGrantSearch.user']">
-            &#60; {{newOrgGrantSearch.user.name.given}} {{newOrgGrantSearch.user.name.surname}} - {{'new-grant' | translate}}
-          </span>
-        </div>
-        <div class="cui-action__actions">
-           <ng-include onload="prevStateParams=newOrgGrantSearch.prevStateParams" src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
-        </div>
-    </section>
+  <div class="cui-action" ng-hide="base.loader.for['newOrgGrantSearch.org']">
+    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id==newOrgGrantSearch.prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
+
+    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id!==newOrgGrantSearch.prevStateParams.orgId" ng-click="base.goBack('organization.applications',newOrgGrantSearch.prevStateParams)">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
+    
+    <div class="cui-action__actions">
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newOrgGrantSearch.prevStateParams"></ng-include>
+    </div>
+  </div>
     <section class="cui-action cui-action--alt">
         <h3 class="cui-sr-only">Back navigation and Requests</h3>
         <div class="cui-action__title" ng-if="!newOrgGrantSearch.search.category"

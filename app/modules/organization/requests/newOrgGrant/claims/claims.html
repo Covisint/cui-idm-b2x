@@ -9,14 +9,13 @@
 </div>
 <div class="cui-org-claims">
 <div class="cui-applications">
-  <div class="cui-action">
-    <div class="cui-action__title"
-      ng-hide="base.loader.for['newOrgGrantClaims.org']"
-      ng-click="base.goBack('organization.directory.userDetails',newOrgGrantClaims.prevStateParams)">
-      &#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}
-    </div>
+  <div class="cui-action" ng-hide="base.loader.for['newOrgGrantClaims.org']">
+    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id==newOrgGrantClaims.prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
+
+    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id!==newOrgGrantClaims.prevStateParams.orgId" ng-click="base.goBack('organization.applications',newOrgGrantClaims.prevStateParams)">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
+    
     <div class="cui-action__actions">
-      <ng-include onload="prevStateParams=newOrgGrantClaims.prevStateParams" src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newOrgGrantClaims.prevStateParams"></ng-include>
     </div>
   </div>
   <section class="cui-action cui-action--alt">
@@ -76,30 +75,6 @@
             </div>
           </fieldset> -->
         </div>
-      </div>
-
-      
-      <div class="cui-org-claims__row">
-        
-        <!-- Claims -->
-        <div ng-if="base.loader.for['newOrgGrantClaims.claims' + index]">
-          <!-- Loader for claims here -->
-        </div>
-        <p ng-if="newOrgGrantClaims['claims' + index].length===0">{{'cui-no-claims'|translate}}</p>
-        <div class="cui-org-claims__col" ng-if="!base.loader.for['newOrgGrantClaims.claims' + index]"
-          ng-repeat="claim in newOrgGrantClaims['claims' + index]">
-          <h3 class="bold">{{claim.name | cuiI18n}}</h3>
-          <ul class="cui-checkbox__group">
-            <div class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
-              <li class="cui-checkbox__container">
-                <input class="cui-checkbox" type="checkbox" ng-model="newOrgGrantClaims.packageRequests[
-                application.servicePackage.id].claims[claim.claimId][claimValue.claimValueId]" id="{{claimValue.name | cuiI18n}}"/>
-                <label class="cui-checkbox__label" for="{{claimValue.name | cuiI18n}}">{{claimValue.name | cuiI18n}}</label>
-              </li>
-            </div>
-          </ul>
-        </div>
-
       </div>
     </div>
 
