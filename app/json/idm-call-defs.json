@@ -797,5 +797,11 @@
     "call": "/service/v3/persons/{personId}/applications/requests",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.service.application.request.v1+json"
+  },
+   {
+    "cmd": "getOrganizationsRequestableApps",
+    "call": "/service/v3/applications/organizations/{organizationId}/requestable",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.v1+json"
   }
 ]
