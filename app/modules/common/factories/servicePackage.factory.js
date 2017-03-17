@@ -178,9 +178,11 @@ angular.module('common')
 
             $q.all(packageDetailCalls)
             .then(() => {
+                cui.log('packageDetailCalls then', userId, pendingPackageData);
                 defer.resolve(pendingPackageData)
             })
             .catch(err => {
+                cui.log('packageDetailCalls catch', err);
                 defer.reject(err)
             })
         })

@@ -185,3 +185,7 @@
     display: none;
   }
 }
+
+.flex_row{
+  @extend %flex-row;
+}

@@ -1,42 +1,43 @@
 angular.module('organization')
-.controller('newGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage,NewGrant) {
+.controller('newOrgGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage,NewGrant) {
 
-    const newGrant = this
-    newGrant.prevStateParams={
-        userId:$stateParams.userId
+    const newOrgGrant = this
+    newOrgGrant.prevStateParams={
+        orgId:$stateParams.orgId
     }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    newGrant.searchType = 'applications'
+    newOrgGrant.searchType = 'applications'
 
     /****
         grants in DataStorage are under the type 'newGrant' and look like
 
         [
             {
-                userId:<user for which the grant is being made>,
+                id:<user/org for which the grant is being made>,
                 applications:<array of applications being granted>,
                 packages:<array of packages being granted>
+                type:person or organiztion
             }
         ]
     ****/
-    NewGrant.pullFromStorage(newGrant,$stateParams.userId,'person');
-    Loader.onFor('newGrant.user')
-    API.cui.getPerson({ personId:$stateParams.userId })
+    NewGrant.pullFromStorage(newOrgGrant,$stateParams.orgId,'organization');
+    Loader.onFor('newOrgGrant.org')
+    API.cui.getOrganization({ organizationId:$stateParams.orgId })
     .then(res => {
-        newGrant.user = Object.assign({}, res)
-        Loader.offFor('newGrant.user')
+        newOrgGrant.org = Object.assign({}, res)
+        Loader.offFor('newOrgGrant.org')
         $scope.$digest()
     })
 
-    Loader.onFor('newGrant.categories')
+    Loader.onFor('newOrgGrant.categories')
     API.cui.getCategories()
     .then(res => {
-        newGrant.categories = res.slice()
-        Loader.offFor('newGrant.categories')
+        newOrgGrant.categories = res.slice()
+        Loader.offFor('newOrgGrant.categories')
         $scope.$digest()
     })
 
@@ -44,24 +45,24 @@ angular.module('organization')
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    newGrant.searchCallback = (opts) => {
+    newOrgGrant.searchCallback = (opts) => {
         if (!opts) {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId});
+            $state.go('organization.requests.newOrgGrantSearch',{type:newOrgGrant.searchType, orgId: $stateParams.orgId});
         } else if (typeof opts ==='string') {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, name: opts});
+            $state.go('organization.requests.newOrgGrantSearch',{type:newOrgGrant.searchType, orgId: $stateParams.orgId, name: opts});
         } else {
             const optsParser = {
                 category: (unparsedCategory) => {
                     const category = $filter('cuiI18n')(unparsedCategory)
-                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, category})
+                    $state.go('organization.requests.newOrgGrantSearch',{type:newOrgGrant.searchType, orgId: $stateParams.orgId, category})
                 }
             }
             optsParser[opts.type](opts.value)
         }
     }
 
-    newGrant.goToClaimSelection = () => {
-        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
+    newOrgGrant.goToClaimSelection = () => {
+        $state.go('organization.requests.newOrgGrantClaims', { orgId: $stateParams.orgId })
     }
     // ON CLICK END ----------------------------------------------------------------------------------
 
