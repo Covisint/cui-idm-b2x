@@ -1,8 +1,11 @@
 angular.module('organization')
 .controller('newOrgGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q, APIError) {
     const newOrgGrantSearch = this;
-    newOrgGrantSearch.prevStateParams={
-        orgId:$stateParams.orgId
+    newOrgGrantSearch.prevState={
+        params:{
+            orgId:$stateParams.orgId
+        },
+        name:"organization.applications"
     }
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -42,7 +45,12 @@ angular.module('organization')
         newOrgGrantSearch.org = Object.assign({}, res);
         Loader.offFor('newOrgGrantSearch.org');
         $scope.$digest();
-    });
+    })
+    .fail(err => {
+        console.error('There was an error retreiving organization details '+err)
+        Loader.offFor('newOrgGrantSearch.org');
+        $scope.$digest();
+    })
 
     const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newOrgGrantSearch.apps');
