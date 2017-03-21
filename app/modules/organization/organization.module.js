@@ -7,6 +7,30 @@ angular.module('organization', [])
 
     const loginRequired = true;
 
+    const accessByAnyAdmin = {
+        permittedLogic:{
+        all: {
+            roles: {
+                any: [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Individual Service Admin - Owning Org",
+                    "TIB Administrator",
+                    "Organization Service Admin",
+                    "Organization Password Administrator",
+                    "Federation Configuration Admin",
+                    "Provider Administrator",
+                    "Exchange Operator",
+                    "Help Desk Plus",
+                    "Service Administrator",
+                    "Help Desk Basic",
+                    "User Account Administrator"
+                ]
+            }
+        }
+    }
+    }
+
 
     $stateProvider
         .state('organization', {
@@ -30,7 +54,7 @@ angular.module('organization', [])
             url: '/directory/:orgId?page&pageSize&sortBy&refine',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
-            access: loginRequired
+            access: accessByAnyAdmin
         })
         .state('organization.directory.userDetails', {
             url: '/user-details?userId&orgId',
@@ -56,7 +80,7 @@ angular.module('organization', [])
                     controller: returnCtrlAs('userDetailsHistory')
                 }
             },
-            access: loginRequired
+            access: accessByAnyAdmin
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
