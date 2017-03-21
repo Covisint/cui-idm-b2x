@@ -5,6 +5,7 @@ angular.module('organization')
     const scopeName = 'orgDirectory.'
     orgDirectory.stateParamsOrgId=$stateParams.orgId
     orgDirectory.search = {}
+    orgDirectory.sortBy = {}
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
@@ -68,9 +69,34 @@ angular.module('organization')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
+
+    // headers="['cui-name', 'username', 'status']" 
+
+    orgDirectory.sortingCallbacks = {
+      name () {
+          orgDirectory.sortBy.sortBy = 'name'
+          orgDirectory.sort(['name.given', 'name.surname'], orgDirectory.sortBy.sortType)
+      },
+      username () {
+          orgDirectory.sortBy.sortBy = 'username'
+          orgDirectory.sort('username', orgDirectory.sortBy.sortType)
+      },
+      status () {
+          orgDirectory.sortBy.sortBy = 'status'
+          orgDirectory.sort('status', orgDirectory.sortBy.sortType)
+      }
+    }
+
+    orgDirectory.sort = (sortBy, order) => {
+        cui.log('sort', sortBy, order)
+
+      orgDirectory.userList = _.orderBy(orgDirectory.userList, sortBy, order)
+    }
+
     orgDirectory.updateSearchParams = (page) => {
         if (page) orgDirectory.search.page = page
-        $state.transitionTo('organization.directory.userList', orgDirectory.search, {notify: false})
+        // Causing error. Disabled. 
+        // $state.transitionTo('orgDirectory.userList', orgDirectory.search, {notify: false})
         initDirectory(orgDirectory.search['organization.id'])
     }
 
