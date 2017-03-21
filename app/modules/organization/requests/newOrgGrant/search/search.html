@@ -40,7 +40,7 @@
         <!-- error message -->
         <p class="cui-error" ng-if="base.apiError.for['newOrgGrantSearch.apps']">{{'error-generic'|translate}}</p>
         <!-- TODO we need designs for no applications matching query -->
-
+        <p ng-if="!base.apiError.for['newOrgGrantSearch.apps'] && newOrgGrantSearch.applicationList.length===0">{{'cui-no-details'|translate}}</p>
         <cui-expandable class="cui-expandable" ng-repeat="application in newOrgGrantSearch.applicationList track by application.id"
           ng-if="!base.loader.for['newOrgGrantSearch.apps']" transition-speed="150">
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >

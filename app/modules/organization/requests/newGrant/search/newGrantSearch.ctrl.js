@@ -41,7 +41,12 @@ angular.module('organization')
         newGrantSearch.user = Object.assign({}, res);
         Loader.offFor('newGrantSearch.user');
         $scope.$digest();
-    });
+    })
+    .fail(err =>{
+        console.error("There was an error in fetching user details" + err)
+        Loader.offFor('newGrantSearch.user');
+        $scope.$digest();
+    })
 
     const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newGrantSearch.apps');
@@ -75,8 +80,13 @@ angular.module('organization')
               if(newGrantSearch.reRenderPaginate) {
                 newGrantSearch.reRenderPaginate();
               }
-              Loader.offFor('newGrantSearch.apps');
-          });
+              Loader.offFor('newGrantSearch.apps')
+          })
+          .catch(err => {
+            console.error('There was an error fetching grantable apps or/and its count' + err)
+            Loader.offFor('newGrantSearch.apps')
+            newGrantSearch.grantableAppsError=true
+          })
         }
     };
 

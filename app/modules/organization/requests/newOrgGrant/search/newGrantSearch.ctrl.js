@@ -42,7 +42,12 @@ angular.module('organization')
         newOrgGrantSearch.org = Object.assign({}, res);
         Loader.offFor('newOrgGrantSearch.org');
         $scope.$digest();
-    });
+    })
+    .fail(err => {
+        console.error('There was an error retreiving organization details '+err)
+        Loader.offFor('newOrgGrantSearch.org');
+        $scope.$digest();
+    })
 
     const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newOrgGrantSearch.apps');

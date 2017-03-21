@@ -39,6 +39,11 @@ angular.module('organization')
         Loader.offFor('newGrant.categories')
         $scope.$digest()
     })
+    .fail(err => {
+        Loader.offFor('newGrant.categories')
+        newGrant.categoryError=true
+        $scope.$digest()
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 

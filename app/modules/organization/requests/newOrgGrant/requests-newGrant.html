@@ -56,6 +56,7 @@
           </div>
           <section>
               <h3 class="cui-sr-only">Browse by category</h3>
+              <p class="cui-error" ng-if="newOrgGrant.categoryError">{{'error-generic'|translate}}</p>
               <div ng-repeat="category in newOrgGrant.categories" ng-if="!base.loader.for['newOrgGrant.categories']">
                   <section class="cui-applications__categories"
                     ng-click="newOrgGrant.searchCallback({type:'category', value:category.name})">
