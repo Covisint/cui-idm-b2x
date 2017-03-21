@@ -1,19 +1,18 @@
 <main class="cui-organization__new-request-search">
   <div class="cui-action" ng-hide="base.loader.for['newOrgGrantSearch.org']">
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id==newOrgGrantSearch.prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
 
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id!==newOrgGrantSearch.prevStateParams.orgId" ng-click="base.goBack('organization.applications',newOrgGrantSearch.prevStateParams)">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.applications',newOrgGrantSearch.prevState.params)">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
-      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newOrgGrantSearch.prevStateParams"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrantSearch.prevState"></ng-include>
     </div>
   </div>
     <section class="cui-action cui-action--alt">
         <h3 class="cui-sr-only">Back navigation and Requests</h3>
         <div class="cui-action__title" ng-if="!newOrgGrantSearch.search.category"
-          ng-click="base.goBack('organization.requests.newOrgGrant',newOrgGrantSearch.prevStateParams)">&#60; {{'categories' | translate}}</div>
+          ng-click="base.goBack('organization.requests.newOrgGrant',newOrgGrantSearch.prevState.params)">&#60; {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="newOrgGrantSearch.search.category"
-          ng-click="base.goBack('organization.requests.newOrgGrant',newOrgGrantSearch.prevStateParams)">&#60; {{newOrgGrantSearch.search.category}}</span>
+          ng-click="base.goBack('organization.requests.newOrgGrant',newOrgGrantSearch.prevState.params)">&#60; {{newOrgGrantSearch.search.category}}</span>
         <div class="cui-action__actions">
             <div class="flex_row" ng-click="newOrgGrantSearch.requestPopover=!newOrgGrantSearch.requestPopover" off-click="newOrgGrantSearch.requestPopover=false" id="cui-applications__requested-apps">
                 <cui-icon cui-svg-icon="cui:folder" svg-class="cui-icon--folder" use-class="cui-icon__ref" ng-class="{'cui-action__icon--active': newOrgGrantSearch.numberOfRequests != 0}" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>

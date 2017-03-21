@@ -110,19 +110,19 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.newGrant', {
-            url: '/new-grant?userId',
+            url: '/new-grant?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
             access: loginRequired
         })
         .state('organization.requests.newGrantSearch', {
-            url: '/search?type&category&name&userId&page&pageSize&sortBy',
+            url: '/search?type&category&name&orgId&userId&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newGrant/search/search.html',
             controller: returnCtrlAs('newGrantSearch'),
             access: loginRequired
         })
         .state('organization.requests.newGrantClaims', {
-            url: '/claims?userId',
+            url: '/claims?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/claims/claims.html',
             controller: returnCtrlAs('newGrantClaims'),
             access: loginRequired

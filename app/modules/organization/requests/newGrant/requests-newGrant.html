@@ -1,9 +1,9 @@
 <main class="cui-organization__new-request">
   <div class="cui-action" ng-hide="base.loader.for['newGrant.user']">
-    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userDetails',newGrant.prevStateParams)">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userDetails',newGrant.prevState.params)">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
-      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newGrant.prevStateParams"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newGrant.prevState"></ng-include>
     </div>
   </div>
   

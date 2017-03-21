@@ -2,8 +2,11 @@ angular.module('organization')
 .controller('newOrgGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage,NewGrant) {
 
     const newOrgGrant = this
-    newOrgGrant.prevStateParams={
-        orgId:$stateParams.orgId
+    newOrgGrant.prevState={
+        params:{
+            orgId:$stateParams.orgId
+        },
+        name:"organization.applications"
     }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------

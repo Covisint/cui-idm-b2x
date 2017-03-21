@@ -1,8 +1,12 @@
 angular.module('organization')
 .controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q) {
     const newGrantSearch = this;
-    newGrantSearch.prevStateParams={
-        userId:$stateParams.userId
+    newGrantSearch.prevState={
+        params:{
+            userId:$stateParams.userId,
+            orgId:$stateParams.orgId
+        },
+        name:"organization.directory.userDetails"
     }
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -120,7 +124,7 @@ angular.module('organization')
     }
 
     newGrantSearch.goToClaimSelection = () => {
-        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
+        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId, orgId: $stateParams.orgId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

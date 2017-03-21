@@ -1,11 +1,10 @@
 <main class="cui-organization__new-request">
   <div class="cui-action" ng-hide="base.loader.for['newOrgGrant.org']">
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id==newOrgGrant.prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')">&#60; {{newOrgGrant.org.name}} - {{'new-grant' | translate}}</span>
 
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id!==newOrgGrant.prevStateParams.orgId" ng-click="base.goBack('organization.applications',newOrgGrant.prevStateParams)">&#60; {{newOrgGrant.org.name}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.applications',newOrgGrant.prevState.params)">&#60; {{newOrgGrant.org.name}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
-      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newOrgGrant.prevStateParams"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrant.prevState"></ng-include>
     </div>
   </div>
   
