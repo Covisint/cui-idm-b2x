@@ -23,6 +23,7 @@ angular.module('applications')
             Loader.onFor(loaderName);
         }
         else { 
+            Loader.onFor(loaderName);
             // pre populate fields based on state params on first load
             let numberOfRequests = 0;
 
@@ -47,19 +48,19 @@ angular.module('applications')
         if (orgAppSearch.search.name) query.push(['service.name',orgAppSearch.search.name]);
         if (orgAppSearch.search.category) query.push(['service.category',orgAppSearch.search.category]);
 
-        orgAppSearch.search.pageSize = orgAppSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+        orgAppSearch.search.pageSize = orgAppSearch.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0] || 25;
         query.push(['pageSize',String(orgAppSearch.search.pageSize)]);
 
         orgAppSearch.search.page = orgAppSearch.search.page || 1;
         query.push(['page',String(orgAppSearch.search.page)]);
 
         let opts = {
-            personId: API.getUser(),
+            organizationId: User.user.organization.id,
             useCuid:true,
             qs: query
         };
-
-        const promises = [API.cui.getPersonRequestableApps(opts), API.cui.getPersonRequestableCount(opts)];
+        
+        const promises = [API.cui.getOrganizationsRequestableApps(opts), API.cui.getOrganizationRequestableCount(opts)];
 
         $q.all(promises)
         .then((res) => {
