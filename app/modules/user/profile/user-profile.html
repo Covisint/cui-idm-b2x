@@ -4,8 +4,9 @@
 
 <ng-form name="edit" novalidate>
   <div class="cui-users__edit">
-
+   
     <!-- Title -->
+    <!--  
     <div class="cui-action">
       <nav class="cui-breadcrumb">
         <ul class="cui-breadcrumb__links">
@@ -21,7 +22,7 @@
         </ul>
       </nav>
     </div>
-  
+  -->
 
     <div class="cui-users__main-container">
       <!-- Page Loading -->
@@ -36,7 +37,21 @@
 
       <!-- Header Block -->
       <div ng-include="'app/modules/user/profile/sections/header.html'" ng-if="userProfile.user"></div>
-
+      <div class="">
+        <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+          <li class="user_profile_image cui-breadcrumb__link cui-breadcrumb__link--current"><a ui-sref="user.profile">{{'cui-my-profile' | translate}}</a>
+          </li>
+          <li class="user_roles_image cui-breadcrumb__link">Roles
+          </li>
+          <li class="user_apps_image cui-breadcrumb__link"><a ui-sref="user.appHistory">{{'cui-app-history' | translate}}</a>
+          </li>
+          <li class="user_history_image cui-breadcrumb__link"><a ui-sref="user.history">{{'cui-my-history' | translate}}</a>
+          </li>
+         
+        </ul>
+        </nav>
+      </div>
       <div class="cui-users__profile">
         <!-- Left Block -->
         <div class="cui-users__profile-info">

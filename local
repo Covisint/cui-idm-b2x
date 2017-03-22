@@ -1,0 +1,10 @@
+apigeeHost: "https://apiqa.np.covapp.io"
+clientId: hGtvEDuymk91E2eEJevoiu2iyrkpJ51t
+clientSecret: DlebWYsgqbBWzdIz
+originUri: q-adm-per-dev01.idm.qa.covapp.io
+platformApiBase: "https://q-adm-per-dev01.idm.qa.covapp.io/p/apiProxy"
+realmCode: Q-ADM-PER-DEV01
+serviceUrl: "https://q-adm-per-dev01.idm.qa.covapp.io/p/apiProxy"
+solutionInstanceId: eb0ef6cc-bda0-41b2-b148-630a31488eef
+solutionInstancesUrl: "https://q-adm-per-dev01.idm.qa.covapp.io/p/apiProxy"
+uiHost: "https://q-adm-per-dev01.idm.qa.covapp.io"
