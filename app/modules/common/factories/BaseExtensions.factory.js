@@ -20,7 +20,7 @@ angular.module('common')
 			},
 			canGrantAppToUser: function(){
 				return permitted(appConfig.grantAppToUserLogic, User.getRoles(), User.getEntitlements());
-			}
+			},
 			canGrantAppToOrg: function(){
 				return permitted(appConfig.grantAppToOrgLogic, User.getRoles(), User.getEntitlements());
 			}
