@@ -31,7 +31,6 @@ angular.module('organization', [])
     }
     }
 
-
     $stateProvider
         .state('organization', {
             url: '/organization',
@@ -113,38 +112,50 @@ angular.module('organization', [])
             url: '/new-grant?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
         })
         .state('organization.requests.newGrantSearch', {
             url: '/search?type&category&name&orgId&userId&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newGrant/search/search.html',
             controller: returnCtrlAs('newGrantSearch'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
         })
         .state('organization.requests.newGrantClaims', {
             url: '/claims?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/claims/claims.html',
             controller: returnCtrlAs('newGrantClaims'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
         })
         // Org Grant
         .state('organization.requests.newOrgGrant', {
             url: '/new-org-grant?orgId',
             templateUrl: templateBase + 'requests/newOrgGrant/requests-newGrant.html',
             controller: returnCtrlAs('newOrgGrant'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
         })
         .state('organization.requests.newOrgGrantSearch', {
             url: '/search-org?type&category&name&orgId&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newOrgGrant/search/search.html',
             controller: returnCtrlAs('newOrgGrantSearch'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
         })
         .state('organization.requests.newOrgGrantClaims', {
             url: '/claims-org?orgId',
             templateUrl: templateBase + 'requests/newOrgGrant/claims/claims.html',
             controller: returnCtrlAs('newOrgGrantClaims'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
         })
         .state('organization.requests.pendingRequests', {
             url: '/pending-requests?userId&orgId',
