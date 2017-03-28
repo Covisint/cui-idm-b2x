@@ -44,5 +44,42 @@
                 ]
             }
         }
+    },
+    "grantAppToUserLogic": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            },
+            "entitlements":{
+                "any": [
+                    "Full Tree Access",
+                    "Approve/Grant User Service Request",
+                    "Security Admin - Grant User Package",
+                    "SO Grant User Package"
+                ]
+            }
+        }
+    },
+    "grantAppToOrgLogic": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            },
+            "entitlements":{
+                "any": [
+                    "Full Tree Access",
+                    "Grant Organization Service Request",
+                    "Security Admin - Grant Division Package"
+                ]
+            }
+        }
     }
 }

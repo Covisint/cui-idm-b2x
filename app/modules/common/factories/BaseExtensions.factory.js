@@ -17,6 +17,12 @@ angular.module('common')
 			isOrgAdmin: function() {
 				//cui.log('isOrgAdmin', appConfig.orgAdminLogic, User.getRoles(), User.getEntitlements());
 				return permitted(appConfig.orgAdminLogic, User.getRoles(), User.getEntitlements());
+			},
+			canGrantAppToUser: function(){
+				return permitted(appConfig.grantAppToUserLogic, User.getRoles(), User.getEntitlements());
+			},
+			canGrantAppToOrg: function(){
+				return permitted(appConfig.grantAppToOrgLogic, User.getRoles(), User.getEntitlements());
 			}
 		}
 	}])
