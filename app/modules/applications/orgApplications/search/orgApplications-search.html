@@ -46,7 +46,7 @@
 
   <div class="cui-applications__main-container">
     <!-- Loading -->
-    <div class="cui-loading__container" ng-if="base.loader.orgAppSearch.loading">
+    <div class="cui-loading__container" ng-if="base.loader.for['orgAppSearch.loading']">
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
@@ -96,9 +96,13 @@
         </div>
       </cui-expandable-body>
     </cui-expandable>
+
+    <!-- No applications message -->
+    <p ng-if="orgAppSearch.list.length===0" align="center">{{'cui-no-details' | translate}}</p>
+
   </div>
 
-  <div class="cui-paginate__container" ng-if="!base.loader.orgAppSearch.loading">
+  <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
     <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>

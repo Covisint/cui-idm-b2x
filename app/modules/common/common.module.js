@@ -161,7 +161,7 @@ angular.module('common')
         function go(toState, toParams, fromState, fromParams) {
             // NB... detailed access logic is evaluated upstream, in cui.authorization.evalRouteRequest...
             attachAccessInfo(toState);
-            evalRouteRequest(toState, toParams, fromState, fromParams);
+            evalRouteRequest(toState, toParams, fromState, fromParams,'misc.notAuth');
             PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); 
             Menu.handleStateChange(toState.menu);
         }

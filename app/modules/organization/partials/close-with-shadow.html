@@ -1,15 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close"  ng-if="base.user.organization.id==prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')" preserveAspectRatio="xMidYMid meet" viewBox="3 0 42 42" href="#/organization/user-details?userID=%5BS-3RDWAVE-DEV01%5DS-3RDWAVE-DEV01_ADMIN">
-  <defs>
-    <ellipse id="path-1" cx="20" cy="19.6721311" rx="20" ry="19.6721311"></ellipse>
-    <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
-      <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-      <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-    </filter>
-  </defs>
-  <use class="cui-icon__ref" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-with-shadow"></use>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ng-if="base.user.organization.id!==prevStateParams.orgId" ng-click="base.goBack('organization.applications',prevStateParams)" preserveAspectRatio="xMidYMid meet" viewBox="3 0 42 42" href="#/organization/user-details?userID=%5BS-3RDWAVE-DEV01%5DS-3RDWAVE-DEV01_ADMIN">
+<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ng-if="base.user.organization.id!==prevStateParams.orgId" ng-click="base.goBack(prevState.name,prevState.params)" preserveAspectRatio="xMidYMid meet" viewBox="3 0 42 42" href="#/organization/user-details?userID=%5BS-3RDWAVE-DEV01%5DS-3RDWAVE-DEV01_ADMIN">
   <defs>
     <ellipse id="path-1" cx="20" cy="19.6721311" rx="20" ry="19.6721311"></ellipse>
     <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">

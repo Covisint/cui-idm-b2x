@@ -10,7 +10,7 @@
 <!-- Header -->
 <div>
 	<!-- Page Title -->
-	<h3 class="cui-applications__page-title">{{'cui-applications' | translate}}</h3>
+	<h3 class="cui-applications__page-title">{{'organization-applications'|translate}}</h3>
 
 	<div class="cui-action">
 
@@ -21,6 +21,9 @@
 		      </li>
 		      <li class="cui-breadcrumb__link">
 		        <a class="active" href="#/applications/" ui-sref="applications.myApplications" ui-sref-active="active">{{'my-applications'|translate}}</a>
+		      </li>
+		      <li class="cui-breadcrumb__link" >
+		        <a ui-sref="applications.manageApplications">{{'manage-applications' | translate}}</a>
 		      </li>
 		    </ul>
 	  </nav>
@@ -63,6 +66,8 @@
 		  </p>
 	  </div>
 	  <br/>
+	  <!-- General Error message -->
+        <p class="cui-error" ng-if="orgApplicationDetails.suspendError"><b>{{'cui-error-try-again' | translate}}</b></p>
 		<div class="org-Application--controls">
 		  	<!-- Suspend Button -->
 		  	<button ng-class="(orgApplicationDetails.showPopup==true)? 'cui-button cui-button--small':'cui-button cui-button--inverted'" ng-click="orgApplicationDetails.showPopup=true">{{'suspend-app' | translate}}</button>
@@ -74,7 +79,7 @@
 	  </br>
      
     </cui-expandable-body>
-	  	<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="orgApplicationDetails.showPopup">
+	  	<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="orgApplicationDetails.showPopup">
             <!-- 
                  <span style="cui-expandable__body-close" ng-click="collapse()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 68">

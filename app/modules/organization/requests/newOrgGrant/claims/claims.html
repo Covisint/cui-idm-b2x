@@ -10,17 +10,16 @@
 <div class="cui-org-claims">
 <div class="cui-applications">
   <div class="cui-action" ng-hide="base.loader.for['newOrgGrantClaims.org']">
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id==newOrgGrantClaims.prevStateParams.orgId" ng-click="base.goBack('applications.orgApplications.applicationList')">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
 
-    <span class="cui-action__title cui-action__title--dark" ng-if="base.user.organization.id!==newOrgGrantClaims.prevStateParams.orgId" ng-click="base.goBack('organization.applications',newOrgGrantClaims.prevStateParams)">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.applications',newOrgGrantClaims.prevState.params)">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
-      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevStateParams=newOrgGrantClaims.prevStateParams"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrantClaims.prevState"></ng-include>
     </div>
   </div>
   <section class="cui-action cui-action--alt">
     <h2 class="cui-action__title"
-      ng-click="base.goBack('organization.requests.newOrgGrantSearch',newOrgGrantClaims.prevStateParams)">
+      ng-click="base.goBack('organization.requests.newOrgGrantSearch',newOrgGrantClaims.prevState.params)">
       &#60; {{'select-claims'|translate}}
     </h2>
     <div class="cui-action__actions">

@@ -214,7 +214,9 @@ angular.module('applications')
         })
         .fail((error) => {
             Loader.offFor(loaderName + 'app');
-            APIError.onFor(loaderName + 'grants: ', error);
+            orgApplicationDetails.suspendError=true;
+            $scope.$apply();
+            /*APIError.onFor(loaderName + 'grants: ', error);*/
         });
     };
 
