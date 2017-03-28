@@ -1,17 +1,19 @@
 <div class="cui-organization__requests-person-header">
 
   <!-- User Name -->
-  <div class="cui-action">
+  <!-- <div class="cui-action">
     <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList" ng-if="personRequest.request.person">
       &#60; {{personRequest.request.person.name.given}} {{personRequest.request.person.name.surname}} - {{'pending-request' | translate}}
     </span>
-  </div>
+  </div> -->
 
+  <!-- routehistory POC -->
+  <cui-route-history></cui-route-history>
   <!-- Navigation -->
-  <div class="cui-action">
+  <!-- <div class="cui-action">
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
-  </div>
+  </div> -->
 
   <!-- Name Header -->
   <div class="cui-media--centered" ng-if="personRequest.request.person">
