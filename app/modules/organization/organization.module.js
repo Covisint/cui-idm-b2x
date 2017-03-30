@@ -206,6 +206,19 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/usersRequests/usersAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('usersAppRequests'),
             access: appConfig.orgAdminLogic
-        });
+        })
 
+        // Org Requests/ADMIN
+        .state('organization.requests.orgRegistrationRequests', {
+            url:'/orgRequests',
+            templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
+            controller: returnCtrlAs('orgRegistrationRequests'),
+            access: appConfig.orgAdminLogic
+        })
+        .state('organization.requests.orgAppRequests', {
+            url:'/orgApplicationRequests',
+            templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
+            controller: returnCtrlAs('orgAppRequests'),
+            access: appConfig.orgAdminLogic
+        });
 }]);
