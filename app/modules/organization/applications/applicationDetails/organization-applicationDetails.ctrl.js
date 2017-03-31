@@ -1,10 +1,11 @@
-angular.module('applications')
+angular.module('organization')
 .controller('orgApplicationDetailsCtrl', function(API,APIHelpers,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
 
     const orgApplicationDetails = this;
     const organizationId = User.user.organization.id;
     const serviceId = $stateParams.appId;
     const loaderName = 'orgApplicationDetails.';
+    orgApplicationDetails.stateParamsOrgId=$stateParams.orgId
 
     orgApplicationDetails.sortFlag = true;
 

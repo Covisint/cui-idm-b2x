@@ -1,8 +1,9 @@
-angular.module('applications')
-.controller('orgAppRequestReviewCtrl', function(API,APIError,BuildPackageRequests,DataStorage,Loader,User,$q,$state,$timeout,AppRequests) {
+angular.module('organization')
+.controller('orgAppRequestReviewCtrl', function(API,APIError,BuildPackageRequests,DataStorage,Loader,User,$q,$state,$timeout,AppRequests,$stateParams) {
 
     const orgAppRequestReview = this
     const loaderName = 'orgAppRequestReview.'
+    orgAppRequestReview.stateParamsOrgId=$stateParams.orgId;
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
@@ -19,7 +20,7 @@ angular.module('applications')
         appsBeingRequested=Object.keys(appRequests);
 
     if (appsBeingRequested.length===0) {
-        $state.go('applications.orgApplications.search');
+        $state.go('organization.search',{orgId:orgAppRequestReview.stateParamsOrgId});
     }
 
     orgAppRequestReview.appRequests=[];
@@ -60,7 +61,7 @@ angular.module('applications')
 
         if (Object.keys(orgAppRequestReview.appRequests).length === 0) {
             DataStorage.deleteType('orgAppsBeingRequested')
-            $state.go('applications.orgApplications.applicationList')
+            $state.go('organization.applications',{orgId:orgAppRequestReview.stateParamsOrgId})
         } 
         else {
             DataStorage.setType('orgAppsBeingRequested', orgAppRequestReview.appRequests)
@@ -91,7 +92,7 @@ angular.module('applications')
             DataStorage.setType('orgAppsBeingRequested',{});
             orgAppRequestReview.success=true
             $timeout(() => {
-                 $state.go('applications.orgApplications.applicationList')
+                 $state.go('organization.applications',{orgId:orgAppRequestReview.stateParamsOrgId});
             }, 3000); 
         })
         .catch(error => {

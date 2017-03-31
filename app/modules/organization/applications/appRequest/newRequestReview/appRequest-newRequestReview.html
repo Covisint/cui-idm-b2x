@@ -14,12 +14,12 @@
 <div class="cui-applications__review">
     <div class="cui-action">
         <!-- Title -->
-        <div class="cui-action__title" ng-click="base.goBack('applications.orgApplications.search')">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+        <div class="cui-action__title" ng-click="base.goBack('organization.search',{orgId:orgAppRequestReview.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
         <div class="cui-action__actions">
 
             <!-- close icon -->
 
-            <svg ui-sref="applications.orgApplications.search" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+            <svg ui-sref="organization.search({orgId:orgAppRequestReview.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
                 <defs>
                   <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
                   <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="cui-applications__submit-options">
-                <a class="cui-link" ng-click="base.goBack('applications.orgApplications.search')">{{'cui-cancel' | translate}}</a>
+                <a class="cui-link" ng-click="base.goBack('organization.search',{orgId:orgAppRequestReview.stateParamsOrgId})">{{'cui-cancel' | translate}}</a>
                 <button class="cui-button" ng-class="{'cui-button--error' : !reviewRequest.$valid}" ng-click="orgAppRequestReview.requestReasonRequired=true;reviewRequest.$valid&&orgAppRequestReview.submit()">
                     <span ng-if="!orgAppRequestReview.error">{{'submit-request' | translate}}</span>
                     <span ng-if="orgAppRequestReview.error===true">{{'cui-error-try-again' | translate}}</span>

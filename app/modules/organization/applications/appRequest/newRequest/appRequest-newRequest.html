@@ -3,10 +3,10 @@
 	<!-- Action Header -->
 	<div class="cui-action">
 		<!-- Title -->
-		<div class="cui-action__title" ng-click="base.goBack('applications.orgApplications.applicationList')">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+		<div class="cui-action__title" ng-click="base.goBack('organization.applications')">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
 		<!-- Close Button -->
 		<div class="cui-action__actions">
-			<svg ui-sref="applications.orgApplications.applicationList" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+			<svg ui-sref="organization.applications({orgId:orgAppRequest.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
 				<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
 			</svg>
 		</div>
@@ -43,11 +43,11 @@
 				<!-- Manual Search -->
 				<div class="cui-input-button">
 					<input type="text" class="cui-input-button__input" ng-model="orgAppRequest.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="orgAppRequest.searchCallback" focus-if/>
-					<button class="cui-input-button__button" ui-sref="applications.orgApplications.search({name:orgAppRequest.search})">{{'go' | translate}}</button>
+					<button class="cui-input-button__button" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId,name:orgAppRequest.search})">{{'go' | translate}}</button>
 				</div>
 				<div class="cui-applications__center-text">{{'or' | translate}}</div>
 				<!-- Browse Applications -->
-				<button class="cui-button cui-button--full-width" ui-sref="applications.orgApplications.search">{{'browse-applications' | translate}}</button>
+				<button class="cui-button cui-button--full-width" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId})">{{'browse-applications' | translate}}</button>
 			</div>
 
 			<!-- Main Content -->
@@ -62,7 +62,7 @@
 
 				<!-- Application List -->
 				<div ng-repeat="category in orgAppRequest.categories" ng-if="!base.loader.orgAppRequest.loading">
-					<div class="cui-applications__categories" ui-sref="applications.orgApplications.search({category:'{{category.name | cuiI18n}}'})">
+					<div class="cui-applications__categories" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId,category:'{{category.name | cuiI18n}}'})">
 						<h4 class="cui-applications__category">{{category.name | cuiI18n}}</h4>
 						<svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
 							<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>

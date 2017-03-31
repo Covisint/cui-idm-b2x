@@ -72,6 +72,30 @@ angular.module('organization', [])
             controller: returnCtrlAs('organizationApplications'),
             access:loginRequired
         })
+        .state('organization.applicationDetails', {
+            url: '/applications/:appId/details/:orgId',
+            templateUrl: templateBase + 'applications/applicationDetails/organization-applicationDetails.html',
+            controller: returnCtrlAs('orgApplicationDetails'),
+            access: loginRequired
+        })
+        .state('organization.newRequest', {
+            url: '/request/:orgId',
+            templateUrl: templateBase + 'applications/appRequest/newRequest/appRequest-newRequest.html',
+            controller: returnCtrlAs('orgAppRequest'),
+            access: loginRequired
+        })
+        .state('organization.newRequestReview', {
+            url: '/request/review/:orgId',
+            templateUrl: templateBase + 'applications/appRequest/newRequestReview/appRequest-newRequestReview.html',
+            controller: returnCtrlAs('orgAppRequestReview'),
+            access: loginRequired
+        })
+        .state('organization.search', {
+            url: '/search/:orgId?name&category&page&pageSize',
+            templateUrl: templateBase + 'applications/search/orgApplications-search.html',
+            controller: returnCtrlAs('orgAppSearch'),
+            access: loginRequired
+        })
         // Roles ----------------------------------------------------
         .state('organization.roles', {
             url: '/roles?orgID',
@@ -171,6 +195,34 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/usersRequests/usersAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('usersAppRequests'),
             access: appConfig.orgAdminLogic
+        })
+        .state('invitation', {
+            url: '/invitation',
+            template: '<div ui-view></div>',
+            access: loginRequired
+        })
+        .state('invitation.inviteSelect', {
+            url: '/select',
+            templateUrl:templateBase + 'invitation/invitation.html',
+            access: loginRequired
+        })
+        .state('invitation.inviteUser', {
+            url: '/user',
+            templateUrl:templateBase + 'invitation/user/user.html',
+            controller: returnCtrlAs('user'),
+            access: loginRequired
+        })
+        .state('invitation.division', {
+            url: '/division',
+            templateUrl:templateBase + 'invitation/division/division.html',
+            controller: returnCtrlAs('division'),
+            access: loginRequired
+        })
+        .state('invitation.tlo', {
+            url: '/tlo',
+            templateUrl:templateBase + 'invitation/tlo/tlo.html',
+            controller: returnCtrlAs('tlo'),
+            access: loginRequired
         });
 
 }]);
