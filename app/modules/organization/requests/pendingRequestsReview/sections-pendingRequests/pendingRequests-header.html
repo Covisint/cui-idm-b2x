@@ -1,15 +1,17 @@
 <!-- Navigation -->
 <div class="cui-organization__request-review-header">
   <!-- User Name and Back Arrow -->
-  <div class="cui-action">
+  <!-- <div class="cui-action">
     <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userDetails({userId:pendingRequests.user.id, orgId:pendingRequests.user.organization.id})">&#60; {{pendingRequests.user.name.given}} {{pendingRequests.user.name.surname}} - {{'pending-request' | translate}}</span>
-  </div>
+  </div> -->
 
+  <!-- routehistory POC -->
+  <cui-route-history></cui-route-history>
   <!-- Navigation Breadcrumb -->
-  <div class="cui-action cui-action--min">
+  <!-- <div class="cui-action cui-action--min">
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
-  </div>
+  </div> -->
 </div>
 
 <!-- User Data -->

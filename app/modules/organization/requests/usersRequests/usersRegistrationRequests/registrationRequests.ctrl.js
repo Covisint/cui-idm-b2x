@@ -100,6 +100,8 @@ angular.module('organization')
   			});
 			};
 
+			var start = window.performance.now();
+			var end;
 			API.cui.getRegistrationRequests({ qs: qsArray }).then(function(res) {
 				var calls = [];
 
@@ -146,6 +148,9 @@ angular.module('organization')
       }).always(function() {
         CuiMobileNavFactory.setTitle($filter('cuiI18n')('Registration Requests'))
       	done('finally');
+				var end = window.performance.now();
+				var time = end - start;
+				cui.log('time', time);
       });
     };
 

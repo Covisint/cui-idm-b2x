@@ -1,8 +1,12 @@
 angular.module('organization')
 .controller('newGrantSearchCtrl', function ($scope, $state, $stateParams, API, DataStorage, Loader, $pagination, APIHelpers, NewGrant, $q) {
     const newGrantSearch = this;
-    newGrantSearch.prevStateParams={
-        userId:$stateParams.userId
+    newGrantSearch.prevState={
+        params:{
+            userId:$stateParams.userId,
+            orgId:$stateParams.orgId
+        },
+        name:"organization.directory.userDetails"
     }
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
@@ -41,7 +45,12 @@ angular.module('organization')
         newGrantSearch.user = Object.assign({}, res);
         Loader.offFor('newGrantSearch.user');
         $scope.$digest();
-    });
+    })
+    .fail(err =>{
+        console.error("There was an error in fetching user details" + err)
+        Loader.offFor('newGrantSearch.user');
+        $scope.$digest();
+    })
 
     const searchUpdate = ({ previouslyLoaded }) => {
         Loader.onFor('newGrantSearch.apps');
@@ -75,8 +84,13 @@ angular.module('organization')
               if(newGrantSearch.reRenderPaginate) {
                 newGrantSearch.reRenderPaginate();
               }
-              Loader.offFor('newGrantSearch.apps');
-          });
+              Loader.offFor('newGrantSearch.apps')
+          })
+          .catch(err => {
+            console.error('There was an error fetching grantable apps or/and its count' + err)
+            Loader.offFor('newGrantSearch.apps')
+            newGrantSearch.grantableAppsError=true
+          })
         }
     };
 
@@ -110,7 +124,7 @@ angular.module('organization')
     }
 
     newGrantSearch.goToClaimSelection = () => {
-        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
+        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId, orgId: $stateParams.orgId })
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

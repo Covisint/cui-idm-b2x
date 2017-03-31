@@ -3,8 +3,12 @@ angular.module('organization')
     
     const newGrantClaims = this
     const loaderType = 'newGrantClaims.'
-    newGrantClaims.prevStateParams={
-        userId:$stateParams.userId
+    newGrantClaims.prevState={
+        params:{
+            userId:$stateParams.userId,
+            orgId:$stateParams.orgId
+        },
+        name:"organization.directory.userDetails"
     }
     newGrantClaims.packageRequests = {}
 
@@ -82,7 +86,7 @@ angular.module('organization')
             newGrantClaims.success = true
             DataStorage.setType('newGrant',{})
             $timeout(() => {
-                $state.go('organization.directory.userList');
+                $state.go('organization.directory.userList',{userId:$stateParams.userId,orgId:$stateParams.orgId})
             }, 3000);
         })
         .catch(err => {

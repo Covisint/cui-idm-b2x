@@ -12,16 +12,16 @@
   <div class="cui-action">
     <div class="cui-action__title"
       ng-hide="base.loader.for['newGrantClaims.user']"
-      ng-click="base.goBack('organization.directory.userDetails',newGrantClaims.prevStateParams)">
+      ng-click="base.goBack('organization.directory.userDetails',newGrantClaims.prevState.params)">
       &#60; {{newGrantClaims.user.name.given}} {{newGrantClaims.user.name.surname}} - {{'new-grant' | translate}}
     </div>
     <div class="cui-action__actions">
-      <ng-include onload="prevStateParams=newGrantClaims.prevStateParams" src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
+      <ng-include onload="prevState=newGrantClaims.prevState" src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
     </div>
   </div>
   <section class="cui-action cui-action--alt">
     <h2 class="cui-action__title"
-      ng-click="base.goBack('organization.requests.newGrantSearch',newGrantClaims.prevStateParams)">
+      ng-click="base.goBack('organization.requests.newGrantSearch',newGrantClaims.prevState.params)">
       &#60; {{'select-claims'|translate}}
     </h2>
     <div class="cui-action__actions">

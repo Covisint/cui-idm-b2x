@@ -1,18 +1,20 @@
 <div class="cui-organization__requests-person-header">
   <!-- Organization Name Header and Invitation -->
   <div class="cui-action" ng-if="orgRequest.loading===false">
-    <!-- Organization Name -->
     <span class="cui-action__title cui-action__title--dark" ui-sref="requests.organizationRequestList({orgID: orgRequest.organization.id})">&#60; {{orgRequest.organization.name}} - {{'pending-request' | translate}}</span>
 
     <!-- Invitation Button -->
     <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div>
+  </div>
 
+  <!-- routehistory POC -->
+  <cui-route-history></cui-route-history>
   <!-- Navigation -->
-  <div class="cui-action">
+  <!-- <div class="cui-action">
     <div class="cui-action">
       <nav class="cui-breadcrumb" ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
     </div>
-  </div>
+  </div> -->
 
   <!-- Organization Info Block -->
   <div class="cui-media--centered" ng-if="!personRequest.loading">

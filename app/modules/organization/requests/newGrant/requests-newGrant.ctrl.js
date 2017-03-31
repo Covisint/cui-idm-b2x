@@ -2,14 +2,17 @@ angular.module('organization')
 .controller('newGrantCtrl', function(API, $stateParams, $scope, $state, $filter, Loader, DataStorage,NewGrant) {
 
     const newGrant = this
-    newGrant.prevStateParams={
-        userId:$stateParams.userId
+    newGrant.prevState={
+        params:{
+            userId:$stateParams.userId,
+            orgId:$stateParams.orgId
+        },
+        name:"organization.directory.userDetails"
     }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
-
     newGrant.searchType = 'applications'
 
     /****
@@ -39,6 +42,11 @@ angular.module('organization')
         Loader.offFor('newGrant.categories')
         $scope.$digest()
     })
+    .fail(err => {
+        Loader.offFor('newGrant.categories')
+        newGrant.categoryError=true
+        $scope.$digest()
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -48,12 +56,12 @@ angular.module('organization')
         if (!opts) {
             $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId});
         } else if (typeof opts ==='string') {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, name: opts});
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, orgId: $stateParams.orgId, name: opts});
         } else {
             const optsParser = {
                 category: (unparsedCategory) => {
                     const category = $filter('cuiI18n')(unparsedCategory)
-                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, category})
+                    $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, orgId: $stateParams.orgId, category})
                 }
             }
             optsParser[opts.type](opts.value)
@@ -61,7 +69,7 @@ angular.module('organization')
     }
 
     newGrant.goToClaimSelection = () => {
-        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId })
+        $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId, orgId: $stateParams.orgId })
     }
     // ON CLICK END ----------------------------------------------------------------------------------
 
