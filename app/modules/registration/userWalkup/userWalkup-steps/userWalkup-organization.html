@@ -34,7 +34,7 @@
   <div class="cui-paginate__container" ng-if="!base.loader.for.userWalkup.initializing">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="userWalkup.orgPaginationSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage"></paginate>
+    <paginate class="cui-paginate" results-per-page="userWalkup.orgPaginationSize" count="userWalkup.organizationCount" on-page-change="userWalkup.orgPaginationPageHandler" ng-model="userWalkup.orgPaginationCurrentPage"  attach-rerender-to="userWalkup.orgReRenderPaginate"></paginate>
   </div>
 </ng-form>
 
