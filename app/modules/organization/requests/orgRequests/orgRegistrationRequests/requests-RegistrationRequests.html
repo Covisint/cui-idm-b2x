@@ -15,7 +15,7 @@
       <ul class="cui-tabs__nav">
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.orgRegistrationRequests">
-          <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-new-user' | translate}}</a>
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'new-organization' | translate}}</a>
         </li>
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.usersAppRequests">
@@ -35,7 +35,7 @@
     </div>
 
     <cui-table-header 
-      headers="['cui-name', 'title', 'submitted', 'request', 'division']"
+      headers="['cui-name', 'title', 'submitted', 'request', 'cui-org']"
       sorting="orgRegistrationRequests.sortBy"
       sorting-callbacks="orgRegistrationRequests.sortingCallbacks">
       </cui-table-header>

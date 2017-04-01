@@ -1,79 +1,53 @@
 angular.module('organization')
-.controller('orgRequestCtrl',function(API,$stateParams,$q,$state,DataStorage) {
-    'use strict';
+.controller('organizationRequestCtrl', function(APIError, DataStorage, Loader, PersonRequest, ServicePackage, $state, $stateParams, $timeout,API) {
+    'use strict'
 
-    const orgRequest = this,
-    		orgId = $stateParams.orgID,
-            registrantId = $stateParams.registrantID;
+    const organizationRequest = this
+    const userId = $stateParams.userId
+    const organizationId = $stateParams.orgId
 
-    let apiPromises = [];
+    // HELPER FUNCTIONS START------------------------------------------------------
+    let getAllDetails= () => {
+        API.cui.getOrganization({organizationId:organizationId})
+        .then(res =>{
+            Loader.offFor('organizationRequest.init')
+            organizationRequest.request.personData.organization=res
+        })
 
-    orgRequest.loading = true;
-
-    // HELPER FUNCTIONS START ------------------------------------------------------------------------
-
-    const getPackageServices = (pendingPackage) => {
-        // Get and append services associated with this package
-        return API.cui.getPackageServices({packageId: pendingPackage.servicePackage.id})
-        .then((res) => {
-            pendingPackage.servicePackage.services = res;
-        });
-    };
-
-    const getPackageClaims = (pendingPackage) => {
-        // Get and append claims associated with this package
-        return API.cui.getPackageClaims({qs: [['packageId', pendingPackage.servicePackage.id]]})
-        .then((res) => {
-            pendingPackage.servicePackage.claims = res;
-        });
-    };
-
-    const getPackageDetails = (pendingPackage) => {
-        // Get and append the package details for this package
-        return API.cui.getPackage({packageId: pendingPackage.servicePackage.id})
-        .then((res) => {
-            pendingPackage.servicePackage.packageDetails = res;
-        });
-    };
-
-    // HELPER FUNCTIONS END --------------------------------------------------------------------------
+        ServicePackage.getAllUserPendingPackageData(organizationId)
+        .then(res => {
+            organizationRequest.packages = res
+        })
+    }
+    // HELPER FUNCTIONS END------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    apiPromises.push(
-    	API.cui.getOrganizationRegistrationRequest({qs: [['registrantId', registrantId]]})
-    	.then((res) => {
-    		orgRequest.organizationRequest = res;
-            console.log('orgRequest.organizationRequest',orgRequest.organizationRequest);
-    	})
-    );
-
-    apiPromises.push(
-    	API.cui.getOrganization({organizationId: orgId})
-    	.then((res) => {
-    		orgRequest.organization = res;
-            console.log('orgRequest.organization',orgRequest.organization);
-    	})
-    );
-
-    $q.all(apiPromises)
-    .then(() => {
-        orgRequest.loading = false;
-    })
-    .catch((error) => {
-        orgRequest.loading = false;
-        console.log(error);
-    });
+    Loader.onFor('organizationRequest.init')
+    organizationRequest.request=DataStorage.getType('organizationRegRequest')
+    console.log(organizationRequest.request)
+    if (!organizationRequest.request) {
+        APIError.onFor('organizationRequest.noRequest')
+        Loader.offFor('organizationRequest.init')
+        $timeout(() => $state.go('organization.requests.orgRegistrationRequests'), 5000)
+    }
+    else if (organizationRequest.request.personData.id!==userId || organizationRequest.request.personData.organization.id!==organizationId) {
+        APIError.onFor('organizationRequest.noRequest')
+        Loader.offFor('organizationRequest.init')
+        $timeout(() => $state.go('organization.requests.orgRegistrationRequests'), 5000)
+    }
+    else{
+        getAllDetails()
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
-    orgRequest.reviewApprovals = () => {
-        DataStorage.setType('organizationRequest', orgRequest.organizationRequest);
-        $state.go('requests.organizationRequestReview', {orgID: orgId});
-    };
+    organizationRequest.reviewApprovals = () => {
+        DataStorage.setType('organizationRegRequest', organizationRequest.request)
+        $state.go('organization.requests.organizationRequestReview', { userId: userId, orgId: organizationId })
+    }
 
     // ON CLICK END ----------------------------------------------------------------------------------
-
-});
+})

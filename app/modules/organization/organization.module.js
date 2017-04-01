@@ -170,15 +170,15 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.organizationRequest', {
-            url: '/organization-request?orgID&registrantID',
+            url: '/organization-request?orgId&userId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
-            controller: returnCtrlAs('orgRequest'),
+            controller: returnCtrlAs('organizationRequest'),
             access: loginRequired
         })
         .state('organization.requests.organizationRequestReview', {
-            url: '/organization-request-review?orgID',
+            url: '/organization-request-review?orgId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
-            controller: returnCtrlAs('orgRequestReview'),
+            controller: returnCtrlAs('organizationRequestReview'),
             access: loginRequired
         })
         .state('organization.requests.personRequest', {

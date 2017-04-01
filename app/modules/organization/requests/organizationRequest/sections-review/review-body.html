@@ -5,15 +5,15 @@
 		<h3 class="cui-organization__approval-summary">{{'approval-summary' | translate}}</h3>
 	</div>
 
-	<div ng-if="orgRequestReview.organizationRequest.approval==='approved'">
+	<div ng-if="personRequestReview.request.approval==='approved'">
 		<!-- Approved Items -->
 		<div>
 			<h4 class="cui-organization__approved">{{'approved-items' | translate}}</h4>
 			<div class="cui-organization__approved-row">
 				<ul>
-					<li><span>{{'registration-request' | translate}} ({{orgRequestReview.organizationRequest.id}})</span><br/></li>
-					<li ng-if="orgRequestReview.approvedCount" ng-repeat="package in orgRequestReview.orgPackageRequests track by package.id">
-						<span ng-if="package.approval==='approved'">{{package.servicePackage.packageDetails.name[0].text}}</span>
+					<li><span>{{'registration-request' | translate}} ({{personRequestReview.request.id}})</span><br/></li>
+					<li ng-if="personRequestReview.approvedCount" ng-repeat="package in personRequestReview.packages track by package.id">
+						<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span>
 					</li>
 				</ul>
 			</div>
@@ -21,16 +21,16 @@
 		<!-- Rejected Items -->
 		<div>
 			<h4 class="cui-organization__denied">{{'rejected-items' | translate}}</h4>
-			<p ng-if="orgRequestReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
-			<div class="cui-organization__rejected-row" ng-if="orgRequestReview.deniedCount>0" ng-repeat="package in orgRequestReview.orgPackageRequests track by package.id">
-				<span ng-if="package.approval==='denied'">{{package.servicePackage.packageDetails.name | cuiI18n}}</span>
+			<p ng-if="personRequestReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
+			<div class="cui-organization__rejected-row" ng-if="personRequestReview.deniedCount" ng-repeat="package in personRequestReview.packages track by package.id">
+				<span ng-if="package.approval==='denied'">{{package.details.name | cuiI18n}}</span>
 				<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
 		</div>
 	</div>
 
 	<!-- If the registration request is denied then everything is denied -->
-	<div ng-if="orgRequestReview.organizationRequest.approval==='denied'">
+	<div ng-if="personRequestReview.request.approval==='denied'">
 		<!-- Approved Items -->
 		<div>
 			<h4 class="cui-organization__approved">{{'approved-items' | translate}}</h4>
@@ -42,11 +42,11 @@
 		<div>
 			<h4 class="cui-organization__denied">{{'rejected-items' | translate}}</h4>
 			<div class="cui-organization__rejected-row"">
-				<span>{{'registration-request' | translate}} ({{orgRequestReview.organizationRequest.id}})</span>
-				<textarea class="cui-text-area" ng-model="orgRequestReview.organizationRequest.rejectReason" placeholder="rejection reason (optional)"></textarea>
+				<span>{{'registration-request' | translate}} ({{personRequestReview.request.id}})</span>
+				<textarea class="cui-text-area" ng-model="personRequestReview.request.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
-			<div class="cui-organization__rejected-row" ng-if="orgRequestReview.orgPackageRequests.length>0" ng-repeat="package in orgRequestReview.orgPackageRequests track by package.id">
-				<span>{{package.servicePackage.packageDetails.name | cuiI18n}}</span>
+			<div class="cui-organization__rejected-row" ng-if="personRequestReview.packages.length>0" ng-repeat="package in personRequestReview.packages track by package.id">
+				<span>{{package.details.name | cuiI18n}}</span>
 				<textarea class="cui-text-area" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
 			</div>
 		</div>
