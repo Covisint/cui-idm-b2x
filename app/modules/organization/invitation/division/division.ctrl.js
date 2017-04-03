@@ -13,6 +13,7 @@ angular.module('organization')
     const storedData = DataStorage.getType('orgHierarchy')
 
     if (storedData) {
+        division.organizationHierarchyRoot = storedData
         division.organizationHierarchy = storedData[0].children
         const organizationList=[]
         angular.forEach(division.organizationHierarchy,function(value){
@@ -28,6 +29,7 @@ angular.module('organization')
       API.cui.getOrganizationHierarchy({organizationId:User.user.organization.id })
       .done(res => {
           // Put hierarchy response in an array as the hierarchy directive expects an array
+          division.organizationHierarchyRoot = res
           division.organizationHierarchy = res.children
           const organizationList=[]
           angular.forEach(division.organizationHierarchy,function(value){
@@ -98,5 +100,15 @@ angular.module('organization')
       }else{
          division.emailAddressError=true
       }
+    }
+    division.goToOrgPrfile = (org) => {
+        division.userSelectedOrg.originalObject={}
+        division.userSelectedOrg.originalObject.name=org.name[0].text
+        division.userSelectedOrg.originalObject.id=org.id
+        division.selectOrgFromList=false
+        $scope.$digest()
+    }
+     division.goToOrg = () => {
+        
     }
 })

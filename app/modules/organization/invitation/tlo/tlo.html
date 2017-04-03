@@ -4,7 +4,7 @@
             <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
         </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-        <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your top level organization invitation request sent' | translate}}</span>
     </div>
 </div>
 <ng-form name="edit" novalidate>
@@ -42,7 +42,7 @@
           <div class="cui-users__info-block">
             <div class="cui-users__info-block">
               <!-- Error Messages -->
-                     <p class="cui-users__password-success" style="color:red" ng-if="tlo.sendInvitationError">{{'cui-userProfile-user-error' | translate}}</p></br>    
+                     <p class="cui-users__password-success" style="color:red" ng-if="tlo.sendInvitationError">{{'error-generic' | translate}}</p></br>    
             <div class="cui-users__info-block">
                 <span class="cui-field-val__field">Email Subject* <input type="text" name="emailSubject" ng-model="tlo.emailSubject" class="cui-input" ng-disabled="true" ng-init="tlo.emailSubject"></span>
             </div>

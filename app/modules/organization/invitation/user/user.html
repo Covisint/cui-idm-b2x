@@ -4,7 +4,7 @@
             <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
         </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-        <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your user invitation request sent' | translate}}</span>
     </div>
 </div>
 <ng-form name="edit" novalidate>
@@ -39,12 +39,12 @@
       <div class="cui-users__profile">
         <!-- Left Block -->
         <div class="cui-users__profile-info">
-              <div class="cui-field-val">
+              <div class="cui-field-val" ng-if="user.userSelectedOrg.originalObject.name">
                   <span class="cui-field-val__field">{{user.userSelectedOrg.originalObject.name}}</span>
                   <span class="cui-field-val__val"><nav class="cui-breadcrumb">
                       <ul class="cui-breadcrumb__links">
                         <li class="cui-breadcrumb__link">
-                          <a ui-sref="organization.invitation()" ui-sref-active-for="organization.invitation">
+                          <a class="cui-link" ng-click="user.selectOrgFromList=true">
                             {{'change org' | translate}}
                           </a>
                         </li>
@@ -53,12 +53,15 @@
                   </span>
               </div>
               <!-- Error Messages -->
-              <p class="cui-users__password-success" style="color:red" ng-if="user.sendInvitationError">{{'cui-userProfile-user-error' | translate}}</p>
+              <p class="cui-users__password-success" style="color:red" ng-if="user.sendInvitationError">{{'error-generic' | translate}}</p>
               <div class="cui-users__info-block">
 <!--                   <div class="cui-input-button cui-input-button--alt-bg">
                     <input class="cui-input-button__input" ng-model="user.search.name" focus-if placeholder="{{'Search for an org' | translate}}" on-enter="user.updateSearch"/>
                     <button class="cui-input-button__button" ng-click="user.updateSearch()">{{'go' | translate}}</button>
                   </div> -->
+                     <div class="cui-error" ng-if="!user.userSelectedOrg">
+                      <div class="cui-error__message">{{'cui-this-field-is-required' | translate}}</div>
+                    </div>
                     <div auto-complete input-name="country" pause="100" placeholder="{{'Search for an org' | translate}}" selected-object="user.userSelectedOrg" local-data="user.organizationList" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="user.userSelectedOrg"></div>
               </div>
               <div class="cui-users__info-block">
@@ -80,6 +83,13 @@
               <span ng-if="user.sendInvitationError===true">{{'cui-error-try-again' | translate}}</span>
           </button>
         </div>
+        </div>
+         <!-- Right Block -->
+        <div class="cui-users__profile-info" ng-if="user.selectOrgFromList">
+          <div class="cui-users__info-block">
+            <!-- Hierarchy Tree -->
+            <div class="cui-tree" cui-tree="user.organizationHierarchyRoot" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="user.goToOrgPrfile"></div>
+          </div>
         </div>
       </div>
     </div>
