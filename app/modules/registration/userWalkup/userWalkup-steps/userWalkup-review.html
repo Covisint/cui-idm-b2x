@@ -155,7 +155,7 @@
       <span class="cui-link" ng-click="goToStep(4)">{{'no-applications-selected' | translate}}</span>
     </div>
     <div class="cui-expandable__review-item" ng-repeat="application in userWalkup.applications.processedSelected">
-      <input id="application{{application.id}}" ng-checked="true" type="checkbox" ng-model="userWalkup.check[application.id]" ng-true-value="true" ng-false-value="null"ng-click="userWalkup.applications.updateSelected(application,userWalkup.check[application.id],application.id)" style="margin-right:10px"/>
+      <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.packageId}},{{application.name}},{{application.showTac}}'" ng-false-value="null" ng-click="userWalkup.applications.updateSelected(application,userWalkup.applications.selected[application.id],application.id)" style="margin-right:10px"/>
       <label for="application{{application.id}}" ng-bind="application.name"></label>
     </div>
     <div class="cui-expandable__review-item" ng-if="userWalkup.applications.processedSelected.length!==0 && userWalkup.applications.processedSelected.length">

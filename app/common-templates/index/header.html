@@ -39,4 +39,18 @@
       <cui-icon cui-svg-icon="fa:arrow459" svg-class="cui-profile__chevron" use-class="svg" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
   </div>
+  <div ng-if="!base.user.name.given" class="cui-profile">
+    <li class="cui-off-canvas__section" ng-class="cui-off-canvas__section--active">
+      <a class="cui-off-canvas__section-link" ui-sref="applications.myApplications" disabled>
+         <span class="cui-styleguide__nav__name" >{{'cui-login' | translate }}</span>
+      </a>
+    </li>
+  </div>
+  <div ng-if="!base.user.name.given" class="cui-profile__mobile-login">
+    <li class="cui-off-canvas__section" ng-class="cui-off-canvas__section--active">
+      <a class="cui-off-canvas__section-link" ui-sref="applications.myApplications" disabled>
+         <span class="cui-styleguide__nav__name" >{{'cui-login' | translate }}</span>
+      </a>
+    </li>
+  </div>
 </div>
