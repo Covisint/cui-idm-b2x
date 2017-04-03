@@ -118,14 +118,6 @@ angular.module('applications')
                     }
                 })
             }
-            //Need to delete the other bundled apps if selected to show in review page
-            if (request.bundledApps) {
-                request.bundledApps.forEach(bundledApp => {
-                    if (applicationSearch.packageRequests[bundledApp.id]) {
-                        delete applicationSearch.packageRequests[bundledApp.id]
-                    }                    
-                })
-            }
         })
         AppRequests.set(applicationSearch.packageRequests);
         $state.go('applications.reviewRequest');
