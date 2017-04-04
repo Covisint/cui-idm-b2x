@@ -170,9 +170,10 @@ angular.module('organization')
 
     organizationApplications.goToDetails = (application) => {
         const opts = {
-            appId: application.id
+            appId: application.id,
+            orgId: application.owningOrganization.id
         };
-        $state.go('applications.organizationApplications.applicationDetails', opts);
+        $state.go('organization.applicationDetails', opts);
     };
 
     // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------

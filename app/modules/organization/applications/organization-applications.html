@@ -59,6 +59,11 @@
         </div>
       </div>
     </div>
+        <!-- New Application Request Icon -->
+    <svg ui-sref="organization.newRequest({orgId:organizationApplications.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
+    </svg>
+
     <div class="cui-action__action-container" ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
@@ -84,7 +89,7 @@
         NOTE: 'track by application.id' was removed since the mock server returns duplicate services in some places
               track by should be re-added when the real API is fixed.
      -->
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in organizationApplications.appList">
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in organizationApplications.appList" ng-click="organizationApplications.goToDetails(application)">
       <div class="cui-media__image-container">
         <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
       </div>
