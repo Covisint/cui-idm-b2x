@@ -21,8 +21,12 @@
     </cui-expandable-title>
 
     <cui-expandable-body class="cui-expandable__body">
-      <p>{{organization.url}}</p>
-      <p>{{organization.phones[0].number}}</p>
+      <span class="cui-field-val__val">{{organization.addresses[0].streets[0]}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].city}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].state}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].postal}}</span><br>
+      <span class="cui-field-val__val">{{organization.url}}</span><br>
+      <span class="cui-field-val__val">{{organization.phones[0].number}}</span>
 
       <div class="cui-wizard__controls">
         <button type="button" class="cui-wizard__next" ng-click="userWalkup.selectOrganization(organization);next()">{{'cui-select-org' | translate}}</button>
