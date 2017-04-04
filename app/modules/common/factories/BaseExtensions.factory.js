@@ -23,6 +23,9 @@ angular.module('common')
 			},
 			canGrantAppToOrg: function(){
 				return permitted(appConfig.grantAppToOrgLogic, User.getRoles(), User.getEntitlements());
+			},
+			accessByAnyAdmin: function(){
+				return permitted(appConfig.accessByAnyAdmin, User.getRoles(), User.getEntitlements());
 			}
 		}
 	}])

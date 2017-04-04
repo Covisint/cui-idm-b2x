@@ -7,30 +7,6 @@ angular.module('organization', [])
 
     const loginRequired = true;
 
-    const accessByAnyAdmin = {
-        permittedLogic:{
-        all: {
-            roles: {
-                any: [
-                    "Application Admin",
-                    "Security Administrator",
-                    "Individual Service Admin - Owning Org",
-                    "TIB Administrator",
-                    "Organization Service Admin",
-                    "Organization Password Administrator",
-                    "Federation Configuration Admin",
-                    "Provider Administrator",
-                    "Exchange Operator",
-                    "Help Desk Plus",
-                    "Service Administrator",
-                    "Help Desk Basic",
-                    "User Account Administrator"
-                ]
-            }
-        }
-    }
-    }
-
     $stateProvider
         .state('organization', {
             url: '/organization',
@@ -53,7 +29,9 @@ angular.module('organization', [])
             url: '/directory/:orgId?page&pageSize&sortBy&refine',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
-            access: accessByAnyAdmin
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('organization.directory.userDetails', {
             url: '/user-details?userId&orgId',
@@ -79,27 +57,35 @@ angular.module('organization', [])
                     controller: returnCtrlAs('userDetailsHistory')
                 }
             },
-            access: accessByAnyAdmin
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
             url: '/hierarchy/:orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
-            access:loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         // applications----------------------------------------------
         .state('organization.applications', {
             url: '/applications/:orgId?name&page&pageSize&service.category&sortBy&refine',
             templateUrl: templateBase + 'applications/organization-applications.html',
             controller: returnCtrlAs('organizationApplications'),
-            access:loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('organization.applicationDetails', {
             url: '/applications/:appId/details/:orgId',
             templateUrl: templateBase + 'applications/applicationDetails/organization-applicationDetails.html',
             controller: returnCtrlAs('orgApplicationDetails'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('organization.newRequest', {
             url: '/request/:orgId',
@@ -234,31 +220,41 @@ angular.module('organization', [])
         .state('invitation', {
             url: '/invitation',
             template: '<div ui-view></div>',
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('invitation.inviteSelect', {
             url: '/select',
             templateUrl:templateBase + 'invitation/invitation.html',
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('invitation.inviteUser', {
             url: '/user',
             templateUrl:templateBase + 'invitation/user/user.html',
             controller: returnCtrlAs('user'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('invitation.division', {
             url: '/division',
             templateUrl:templateBase + 'invitation/division/division.html',
             controller: returnCtrlAs('division'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('invitation.tlo', {
             url: '/tlo',
             templateUrl:templateBase + 'invitation/tlo/tlo.html',
             controller: returnCtrlAs('tlo'),
-            access: loginRequired
-
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
         // Org Requests/ADMIN
         .state('organization.requests.orgRegistrationRequests', {
             url:'/orgRequests',
