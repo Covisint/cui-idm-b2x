@@ -8,7 +8,7 @@ angular.module('organization')
         },
         name:"organization.directory.userDetails"
     }
-
+    
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const updateStorage = () => {
@@ -103,16 +103,17 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     newGrantSearch.toggleRequest = ({ type, payload }) => {
-        const storedRequests = newGrantSearch.requests[type]
-        storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
-        if (storedRequests[payload.id]) {
-            newGrantSearch[type + 'Checkbox'][payload.id] = true;
-        } else if (newGrantSearch[type + 'Checkbox'][payload.id]) {
-            delete newGrantSearch[type + 'Checkbox'][payload.id];
+        if (payload) {
+            const storedRequests = newGrantSearch.requests[type]
+            storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
+            if (storedRequests[payload.id]) {
+                newGrantSearch[type + 'Checkbox'][payload.id] = true;
+            } else if (newGrantSearch[type + 'Checkbox'][payload.id]) {
+                delete newGrantSearch[type + 'Checkbox'][payload.id];
+            }
+            newGrantSearch.numberOfRequests = Object.keys(newGrantSearch.applicationCheckbox).length + Object.keys(newGrantSearch.packageCheckbox).length
+            updateStorage()
         }
-        newGrantSearch.numberOfRequests = Object.keys(newGrantSearch.applicationCheckbox).length + Object.keys(newGrantSearch.packageCheckbox).length
-
-        updateStorage()
     }
 
     newGrantSearch.updateSearch = () => {
@@ -127,5 +128,49 @@ angular.module('organization')
         $state.go('organization.requests.newGrantClaims', { userId: $stateParams.userId, orgId: $stateParams.orgId })
     }
 
+    //select parent if it is a child, deselect child if it is a parent
+    newGrantSearch.checkRelatedAppsBody= function(relatedApp){
+        newGrantSearch.toggleRequest(_.find(newGrantSearch.list,{id:relatedApp.id}))   
+        newGrantSearch.checkRelatedAndBundledApps(_.find(newGrantSearch.list,{id:relatedApp.id}))
+    };
+
+    //deselect child if it is a parent, select parent if it is a child 
+    newGrantSearch.checkRelatedAndBundledApps=function(type,application){
+        const storedRequests = newGrantSearch.requests[type]
+        //if unchecked the checkbox
+        if (!storedRequests[application.id]) {
+            //if it is a parent then then deselect childs
+            if (!application.servicePackage.parent) {
+                application.relatedApps && application.relatedApps.forEach((relatedApp)=>{
+                    // if (newGrantSearch[type + 'Checkbox'][relatedApp.id]) {
+                        // newGrantSearch[type + 'Checkbox'][relatedApp.id]=!newGrantSearch[type + 'Checkbox'][relatedApp.id]
+                        newGrantSearch.toggleRequest({type:'application', payload:_.find(newGrantSearch.applicationList,{id:relatedApp.id})})
+                    // }
+                })
+            }
+            newGrantSearch.checkBundledApps(application,false)           
+        }else{
+            if (application.servicePackage.parent) {
+                //Need to select the other parent(if it has any) If user clicks on expandabel title
+                newGrantSearch.applicationList.forEach(app=> {
+                    //if it is a parent and parent of selected app
+                    if (!app.servicePackage.parent&&app.servicePackage.id===application.servicePackage.parent.id&&!newGrantSearch['applicationCheckbox'][app.id]) {
+                       newGrantSearch['applicationCheckbox'][app.id]=!newGrantSearch['applicationCheckbox'][app.id]
+                       newGrantSearch.toggleRequest({type:'application', payload:app})
+                    }
+                })
+            }
+            newGrantSearch.checkBundledApps(application,true)
+        }
+    }
+
+    newGrantSearch.checkBundledApps= function(application,check){
+        if (application.bundledApps) {
+            application.bundledApps.forEach(bundledApp=>{
+                // newGrantSearch['applicationCheckbox'][bundledApp.id]=check
+                newGrantSearch.toggleRequest({type:'application', payload:_.find(newGrantSearch.applicationList,{id:bundledApp.id})})
+            })
+        }
+    }
     // ON CLICK END ----------------------------------------------------------------------------------
 })

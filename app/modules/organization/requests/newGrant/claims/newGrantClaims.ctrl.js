@@ -18,6 +18,18 @@ angular.module('organization')
     if (newGrantClaims.numberOfRequests===0) {
         $state.go('organization.requests.newGrantSearch',{userId:$stateParams.userId})
     }
+    //For PopUp
+    newGrantClaims.appsBeingRequestedforPopup=angular.copy(newGrantClaims.appsBeingRequested)
+    //Keep only one app among all bundled apps
+    angular.forEach(newGrantClaims.appsBeingRequested , (request) =>{
+        if (request.bundledApps) {
+            request.bundledApps.forEach(bundledApp => {
+                if (newGrantClaims.appsBeingRequested[bundledApp.id]) {
+                    delete newGrantClaims.appsBeingRequested[bundledApp.id]
+                }                    
+            })
+        }
+    })
     // get the claims for each app being requested
     Object.keys(newGrantClaims.appsBeingRequested).forEach((appId, i) => {
         const app = newGrantClaims.appsBeingRequested[appId]
