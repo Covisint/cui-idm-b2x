@@ -27,7 +27,7 @@
 
   <!-- Content -->
   <section class="cui-organization__main-container">
-    <h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
+    <h3 class="cui-sr-only">{{'new-organization' | translate}}</h3>
 
     <!-- Loading -->
     <div class="cui-loading__container" ng-if="base.loader.for['orgRegistrationRequests.data']">
@@ -35,7 +35,7 @@
     </div>
 
     <cui-table-header 
-      headers="['cui-name', 'title', 'submitted', 'request', 'cui-org']"
+      headers="['cui-org', 'submitted', 'request', 'administrator']"
       sorting="orgRegistrationRequests.sortBy"
       sorting-callbacks="orgRegistrationRequests.sortingCallbacks">
       </cui-table-header>
@@ -51,11 +51,7 @@
         </div>
         <div class="cui-flex-table__mobile-stack">
            <div class="cui-flex-table__left">
-            <span class="cui-flex-table__title">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
-          </div>
-
-          <div class="cui-flex-table__middle">
-            <span class="">{{userRequest.personData.title}}</span>
+            <span class="cui-flex-table__title">{{userRequest.personData.organization.name}}</span>
           </div>
 
           <div class="cui-flex-table__middle">
@@ -70,7 +66,7 @@
           </div>
 
           <div class="cui-flex-table__right">
-            <span class="">{{userRequest.personData.organization.name}}</span>
+            <span class="">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
           </div>
         </div>
       </li>

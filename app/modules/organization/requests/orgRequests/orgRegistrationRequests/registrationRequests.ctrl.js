@@ -110,7 +110,7 @@ angular.module('organization')
 			//And they need to be removed
 			if (regReq.registrant) {
 				// NB create an obj and bind it to scope...
-				var data = {};
+				var data = regReq
 	        	orgRegistrationRequests.data.push(data);
 
 	        	// ..then cache the calls, which populate obj asynchronously...
@@ -173,13 +173,9 @@ angular.module('organization')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
     orgRegistrationRequests.sortingCallbacks = {
-      name () {
-          orgRegistrationRequests.sortBy.sortBy = 'name'
+      administrator () {
+          orgRegistrationRequests.sortBy.sortBy = 'administrator'
           orgRegistrationRequests.sort(['personData.name.given', 'personData.name.surname'], orgRegistrationRequests.sortBy.sortType)
-      },
-      title () {
-          orgRegistrationRequests.sortBy.sortBy = 'title'
-          orgRegistrationRequests.sort('personData.title', orgRegistrationRequests.sortBy.sortType)
       },
       submitted () {
           orgRegistrationRequests.sortBy.sortBy = 'submitted'

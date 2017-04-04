@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('organizationRequestCtrl', function(APIError, DataStorage, Loader, PersonRequest, ServicePackage, $state, $stateParams, $timeout,API) {
+.controller('organizationRequestCtrl', function(APIError, DataStorage, Loader, $state, $stateParams, $timeout,API,$scope,$q, ServicePackage ) {
     'use strict'
 
     const organizationRequest = this
@@ -8,16 +8,30 @@ angular.module('organization')
 
     // HELPER FUNCTIONS START------------------------------------------------------
     let getAllDetails= () => {
+        let promises=[]
         API.cui.getOrganization({organizationId:organizationId})
         .then(res =>{
-            Loader.offFor('organizationRequest.init')
             organizationRequest.request.personData.organization=res
+            $scope.$digest()
         })
-
-        ServicePackage.getAllUserPendingPackageData(organizationId)
-        .then(res => {
-            organizationRequest.packages = res
-        })
+        if (organizationRequest.request.packages&&organizationRequest.request.packages.length!==0) {
+            organizationRequest.request.packages.forEach(requestedPackage =>{
+                promises.push(ServicePackage.getPackageDetails(requestedPackage.id))
+            })
+            $q.all(promises)
+            .then(res => {
+                organizationRequest.packages =res
+                Loader.offFor('organizationRequest.init')
+            })
+            .catch(err => {
+                APIError.onFor('organizationRequest.packageServices')
+                console.log('There was an error in fetching one or more package service details' +err)
+                Loader.offFor('organizationRequest.init')
+            })
+        }
+        else{
+            Loader.offFor('organizationRequest.init')
+        }
     }
     // HELPER FUNCTIONS END------------------------------------------------------
 
