@@ -1,9 +1,10 @@
-angular.module('applications')
-.controller('orgAppRequestCtrl', function(API,DataStorage,Loader,User,$scope,$state) {
+angular.module('organization')
+.controller('orgAppRequestCtrl', function(API,DataStorage,Loader,User,$scope,$state,$stateParams) {
 
     const orgAppRequest = this;
     const orgAppsBeingRequested = DataStorage.getType('orgAppsBeingRequested');
     const loaderName = 'orgAppRequest.loading';
+    orgAppRequest.stateParamsOrgId=$stateParams.orgId;
 
     orgAppRequest.orgAppsBeingRequested = [];
     orgAppRequest.numberOfOrgRequests = 0;

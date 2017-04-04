@@ -10,11 +10,11 @@
 <!-- Header -->
 <div>
 	<!-- Page Title -->
-	<h3 class="cui-applications__page-title">{{'organization-applications'|translate}}</h3>
+	<h3 class="cui-applications__page-title">{{'cui-applications'|translate}}</h3>
 
 	<div class="cui-action">
 
-		<nav class="cui-breadcrumb">
+<!-- 		<nav class="cui-breadcrumb">
 		    <ul class="cui-breadcrumb__links">
 		      <li class="cui-breadcrumb__link">
 		        <a href="#/applications/organization" ui-sref="applications.orgApplications.applicationList">{{'organization-applications'|translate}}</a>
@@ -26,11 +26,16 @@
 		        <a ui-sref="applications.manageApplications">{{'manage-applications' | translate}}</a>
 		      </li>
 		    </ul>
-	  </nav>
+	  </nav> -->
+	    <!-- Navigation -->
+  <section class="cui-action">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgApplicationDetails.stateParamsOrgId"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  </section>
 
 
 	<!-- New Application Request Icon -->
-	<svg ui-sref="applications.orgApplications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+	<svg ui-sref="organization.newRequest({orgId:orgApplicationDetails.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
 		<use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
 	</svg>
 </div>

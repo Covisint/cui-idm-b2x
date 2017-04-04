@@ -1,8 +1,9 @@
-angular.module('applications')
+angular.module('organization')
 .controller('orgAppSearchCtrl',function(API,DataStorage,Loader,User,$pagination,$q,$state,$stateParams) {
 
     const orgAppSearch = this;
     const loaderName = 'orgAppSearch.loading';
+    orgAppSearch.stateParamsOrgId=$stateParams.orgId;
 
     orgAppSearch.packageRequests = DataStorage.getType('orgAppsBeingRequested', User.user.id) || {};
     orgAppSearch.appCheckbox = {};
@@ -102,7 +103,7 @@ angular.module('applications')
 
     orgAppSearch.saveRequestsAndCheckout = function() {
         DataStorage.setType('orgAppsBeingRequested', orgAppSearch.packageRequests);
-        $state.go('applications.orgApplications.newRequestReview');
+        $state.go('organization.newRequestReview',{orgId:orgAppSearch.stateParamsOrgId});
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
