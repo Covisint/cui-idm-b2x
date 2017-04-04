@@ -38,20 +38,20 @@ angular.module('organization')
         let apiCalls = [
             UserList.getUsers({ qs: APIHelpers.getQs(orgDirectory.search) }),
             UserList.getUserCount({ qs: [['organization.id', orgDirectory.search['organization.id']]] }),
-            API.cui.getOrganizationHierarchy({organizationId: orgDirectory.search['organization.id']})
+            API.cui.getOrganization({organizationId: orgDirectory.search['organization.id']})
         ]
 
         Loader.onFor(scopeName + 'userList')
         APIError.offFor(scopeName + 'userList')
 
         $q.all(apiCalls)
-        .then(([users, userCount, orgHierarchy]) => {
-            orgDirectory.organization = orgHierarchy
-            orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(orgHierarchy)
+        .then(([users, userCount, organization]) => {
+            orgDirectory.organization = organization
+            // orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(orgHierarchy)
             orgDirectory.userList = users
             orgDirectory.userCount = userCount
             orgDirectory.statusData = APIHelpers.getCollectionValuesAndCount(users, 'status', true)
-            CuiMobileNavFactory.setTitle($filter('cuiI18n')(orgHierarchy.name))
+            CuiMobileNavFactory.setTitle(organization.name)
             orgDirectory.reRenderPagination && orgDirectory.reRenderPagination()
             getUserListAppCount(orgDirectory.userList)
         })
