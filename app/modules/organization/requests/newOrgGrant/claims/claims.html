@@ -34,7 +34,7 @@
           <div class="cui-action__popover-section">
             <span ng-if="newOrgGrantClaims.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
             <ul ng-if="newOrgGrantClaims.numberOfRequests > 0">
-                <li ng-repeat="application in newOrgGrantClaims.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                <li ng-repeat="application in newOrgGrantClaims.appsBeingRequestedforPopup">{{application.name | cuiI18n}}</li>
                 <li ng-repeat="package in newOrgGrantClaims.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
             </ul>
           </div>

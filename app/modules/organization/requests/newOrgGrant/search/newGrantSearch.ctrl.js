@@ -103,16 +103,18 @@ angular.module('organization')
     // ON CLICK START --------------------------------------------------------------------------------
 
     newOrgGrantSearch.toggleRequest = ({ type, payload }) => {
-        const storedRequests = newOrgGrantSearch.requests[type]
-        storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
-        if (storedRequests[payload.id]) {
-            newOrgGrantSearch[type + 'Checkbox'][payload.id] = true;
-        } else if (newOrgGrantSearch[type + 'Checkbox'][payload.id]) {
-            delete newOrgGrantSearch[type + 'Checkbox'][payload.id];
-        }
-        newOrgGrantSearch.numberOfRequests = Object.keys(newOrgGrantSearch.applicationCheckbox).length + Object.keys(newOrgGrantSearch.packageCheckbox).length
+        if (payload) {
+            const storedRequests = newOrgGrantSearch.requests[type]
+            storedRequests[payload.id] ? delete storedRequests[payload.id] : storedRequests[payload.id] = payload
+            if (storedRequests[payload.id]) {
+                newOrgGrantSearch[type + 'Checkbox'][payload.id] = true;
+            } else if (newOrgGrantSearch[type + 'Checkbox'][payload.id]) {
+                delete newOrgGrantSearch[type + 'Checkbox'][payload.id];
+            }
+            newOrgGrantSearch.numberOfRequests = Object.keys(newOrgGrantSearch.applicationCheckbox).length + Object.keys(newOrgGrantSearch.packageCheckbox).length
 
-        updateStorage()
+            updateStorage()
+        }
     }
 
     newOrgGrantSearch.updateSearch = () => {
@@ -127,5 +129,49 @@ angular.module('organization')
         $state.go('organization.requests.newOrgGrantClaims', { orgId: $stateParams.orgId })
     }
 
+        //select parent if it is a child, deselect child if it is a parent
+    newOrgGrantSearch.checkRelatedAppsBody= function(relatedApp){
+        newOrgGrantSearch.toggleRequest(_.find(newOrgGrantSearch.list,{id:relatedApp.id}))   
+        newOrgGrantSearch.checkRelatedAndBundledApps(_.find(newOrgGrantSearch.list,{id:relatedApp.id}))
+    };
+
+    //deselect child if it is a parent, select parent if it is a child 
+    newOrgGrantSearch.checkRelatedAndBundledApps=function(type,application){
+        const storedRequests = newOrgGrantSearch.requests[type]
+        //if unchecked the checkbox
+        if (!storedRequests[application.id]) {
+            //if it is a parent then then deselect childs
+            if (!application.servicePackage.parent) {
+                application.relatedApps && application.relatedApps.forEach((relatedApp)=>{
+                    // if (newOrgGrantSearch[type + 'Checkbox'][relatedApp.id]) {
+                        // newOrgGrantSearch[type + 'Checkbox'][relatedApp.id]=!newOrgGrantSearch[type + 'Checkbox'][relatedApp.id]
+                        newOrgGrantSearch.toggleRequest({type:'application', payload:_.find(newOrgGrantSearch.applicationList,{id:relatedApp.id})})
+                    // }
+                })
+            }
+            newOrgGrantSearch.checkBundledApps(application,false)           
+        }else{
+            if (application.servicePackage.parent) {
+                //Need to select the other parent(if it has any) If user clicks on expandabel title
+                newOrgGrantSearch.applicationList.forEach(app=> {
+                    //if it is a parent and parent of selected app
+                    if (!app.servicePackage.parent&&app.servicePackage.id===application.servicePackage.parent.id&&!newOrgGrantSearch['applicationCheckbox'][app.id]) {
+                       newOrgGrantSearch['applicationCheckbox'][app.id]=!newOrgGrantSearch['applicationCheckbox'][app.id]
+                       newOrgGrantSearch.toggleRequest({type:'application', payload:app})
+                    }
+                })
+            }
+            newOrgGrantSearch.checkBundledApps(application,true)
+        }
+    }
+
+    newOrgGrantSearch.checkBundledApps= function(application,check){
+        if (application.bundledApps) {
+            application.bundledApps.forEach(bundledApp=>{
+                // newOrgGrantSearch['applicationCheckbox'][bundledApp.id]=check
+                newOrgGrantSearch.toggleRequest({type:'application', payload:_.find(newOrgGrantSearch.applicationList,{id:bundledApp.id})})
+            })
+        }
+    }
     // ON CLICK END ----------------------------------------------------------------------------------
 })
