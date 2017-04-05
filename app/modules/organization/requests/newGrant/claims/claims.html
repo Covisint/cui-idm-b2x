@@ -66,6 +66,16 @@
           <div ng-if="application.bundledApps" ng-repeat="bundledApp in application.bundledApps">
               <span>{{bundledApp.name|cuiI18n}}</span>
           </div> 
+          <div class="cui-applications__review-text-input" >
+            <h3 ng-if="application.bundledApps" class="cui-media__title cui-media__title-margin__top">{{'request-reason' | translate}}</h3>
+            <div class="cui-wizard__field-row">
+              <!-- First Name -->
+              <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                <textarea name="{{'text_area'+application.id}}" class="cui-text-area" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].reason"></textarea>
+              </div>
+            </div>
+          </div>
+          
 <!-- not needed now 03/12/17 -->
 <!--           <fieldset class="cui-radio__fieldset">
             <div class="cui-radio cui-radio--basic-ltr"> -->
