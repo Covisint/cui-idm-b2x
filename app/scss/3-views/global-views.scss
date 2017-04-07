@@ -165,3 +165,10 @@ Global layout styles
 .uppercase{
   text-transform: uppercase;  
 }
+.cui-profile__mobile-login{
+  display: none;
+  @media screen and (max-width:999px){
+    margin-left: auto;
+    display:flex;
+  }
+}

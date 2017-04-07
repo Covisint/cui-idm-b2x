@@ -53,7 +53,7 @@
                 <div class="cui-expandable__title-end">
                     <span class="cui-checkbox__container">
                         <input class="cui-checkbox" type="checkbox" ng-model="newGrantSearch.applicationCheckbox[application.id]" />
-                        <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:application })"></label>
+                        <label class="cui-checkbox__label" ng-click="newGrantSearch.toggleRequest({ type:'application', payload:application });newGrantSearch.checkRelatedAndBundledApps('application',application)"></label>
                     </span>
                 </div>
             </cui-expandable-title>

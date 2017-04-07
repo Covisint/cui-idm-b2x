@@ -36,7 +36,7 @@
           <div class="cui-action__popover-section">
             <span ng-if="newGrantClaims.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
             <ul ng-if="newGrantClaims.numberOfRequests > 0">
-                <li ng-repeat="application in newGrantClaims.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                <li ng-repeat="application in newGrantClaims.appsBeingRequestedforPopup">{{application.name | cuiI18n}}</li>
                 <li ng-repeat="package in newGrantClaims.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
             </ul>
           </div>
@@ -62,6 +62,20 @@
 
           <!-- Name -->
           <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+          <h3 ng-if="application.bundledApps" class="cui-media__title cui-media__title-margin__top">{{'bundled-applications' | translate}}</h3>
+          <div ng-if="application.bundledApps" ng-repeat="bundledApp in application.bundledApps">
+              <span>{{bundledApp.name|cuiI18n}}</span>
+          </div> 
+          <div class="cui-applications__review-text-input" >
+            <h3 ng-if="application.bundledApps" class="cui-media__title cui-media__title-margin__top">{{'request-reason' | translate}}</h3>
+            <div class="cui-wizard__field-row">
+              <!-- First Name -->
+              <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                <textarea name="{{'text_area'+application.id}}" class="cui-text-area" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].reason"></textarea>
+              </div>
+            </div>
+          </div>
+          
 <!-- not needed now 03/12/17 -->
 <!--           <fieldset class="cui-radio__fieldset">
             <div class="cui-radio cui-radio--basic-ltr"> -->

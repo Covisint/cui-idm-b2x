@@ -142,7 +142,7 @@ angular.module('common')
 
         API.cui.getPersonPendingServicePackages({qs: [
             ['requestor.id', userId],
-            ['requestor.type', 'person']
+            ['requestor.type', 'organization']
         ]})
         .done(servicePackages => {
             defer.resolve(servicePackages)

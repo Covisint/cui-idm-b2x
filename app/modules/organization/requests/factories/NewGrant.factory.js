@@ -98,7 +98,8 @@ angular.module('organization')
                     servicePackage: {
                         id: pkgId,
                         type: 'servicePackage'
-                    }
+                    },
+                    reason:packageRequestObject[pkgId].reason
                 }
             })
             if (type==='person') {
