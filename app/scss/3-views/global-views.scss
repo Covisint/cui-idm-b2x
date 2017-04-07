@@ -2,6 +2,18 @@
 Global layout styles
 */
 
+.cui-breadcrumb__link {
+  .cui-breadcrumb__route {
+    font-size: 0.75em !important;
+  }
+  .cui-breadcrumb__routelast {
+    font-size: 0.75em !important;
+    color: black;
+  }
+  .cui-breadcrumb__route:hover {
+    cursor: pointer;
+  }
+}
 .cui-wrapper {
   background: #fff;
 }
@@ -152,4 +164,11 @@ Global layout styles
 }
 .uppercase{
   text-transform: uppercase;  
+}
+.cui-profile__mobile-login{
+  display: none;
+  @media screen and (max-width:999px){
+    margin-left: auto;
+    display:flex;
+  }
 }

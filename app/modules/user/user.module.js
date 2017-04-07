@@ -7,9 +7,7 @@ angular.module('user', [])
         return name + 'Ctrl as ' + (asPrefix? asPrefix : '') + (asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name);
     };
 
-    const loginRequired = {
-        loginRequired:true
-    };
+    const loginRequired = true;
 
     $stateProvider
         .state('user', {

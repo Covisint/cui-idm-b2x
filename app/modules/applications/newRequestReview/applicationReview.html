@@ -65,7 +65,6 @@
                           </div>
                           <div class="cui-media__body">
                             <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
-                            <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
                             <div class="cui-applications__review-checkbox__wrapper" ng-if="application.servicePackage.personTacEnabled">
                                 <span class="cui-error h6" ng-if="reviewRequest['checkbox'+application.id].$error.required&&(reviewRequest['checkbox'+application.id].$dirty||applicationReview.requestReasonRequired)">{{'cui-tac-agree' | translate}}</span> 
                                 <div class="cui-applications__review-checkbox__flex">
