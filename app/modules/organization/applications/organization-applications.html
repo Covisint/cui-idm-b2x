@@ -59,17 +59,18 @@
         </div>
       </div>
     </div>
-        <!-- New Application Request Icon -->
-    <svg ui-sref="organization.newRequest({orgId:organizationApplications.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
-    </svg>
-
+    <!-- New Grant Application Icon -->
     <div class="cui-action__action-container" ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})">
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
       </svg>
       <span class="cui-action__action-label">{{'new-grant' | translate}}</span>
     </div>
+
+    <!-- New Application Request Icon -->
+    <svg ng-if="organizationApplications.stateParamsOrgId==base.user.organization.id" ui-sref="organization.newRequest({orgId:organizationApplications.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
+    </svg>
   </div>
   </section>
 
