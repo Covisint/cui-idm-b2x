@@ -30,7 +30,7 @@
 
     <!-- Requested Services -->
     <!-- <div ng-if="organizationRequest.packages.length>0 && organizationRequest.request.request.approval==='approved'"> -->
-    <div ng-if="organizationRequest.packages.length>0">
+    <div ng-if="organizationRequest.request.packages.length>0">
       <div class="">
         <div class="cui-flex-table__header cui-flex-table__header--multi cui-flex-table__header--borderless">
           <div class="cui-flex-table__th">
@@ -45,7 +45,7 @@
 
       <!-- Service Content -->
       <div>
-        <cui-expandable class="" transition-speed="100" ng-repeat="package in organizationRequest.packages">
+        <cui-expandable class="" transition-speed="100" ng-repeat="package in organizationRequest.request.packages">
           <!-- Package To Approve/Deny -->
           <cui-expandable-title class="">
             <div class="cui-flex-table__tr">

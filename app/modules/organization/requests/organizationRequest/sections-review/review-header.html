@@ -17,21 +17,21 @@
 
     <!-- Avatar -->
     <div class="cui-media__image-container">
-      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[personRequestReview.person.name.given, personRequestReview.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[organizationRequestReview.personData.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
     </div>
 
     <!-- User Information -->
     <div class="cui-media__body">
       <!-- Name -->
-      <h3 class="cui-media__title">{{personRequestReview.person.name.given}} {{personRequestReview.person.name.surname}}</h3>
+      <h3 class="cui-media__title">{{organizationRequestReview.personData.organization.name}} </h3>
       <!-- userID -->
-      <p class="cui-media__content cui-media__content--dark"">{{'userID' | translate}}: {{personRequestReview.person.id}}</p>
+      <!-- <p class="cui-media__content cui-media__content--dark"">{{'userID' | translate}}: {{personRequestReview.person.id}}</p> -->
+      <!-- Admin -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationRequestReview.personData.name.given}} {{organizationRequestReview.personData.name.surname}}</a></div>
       <!-- Email -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequestReview.person.email}}" class="cui-media__link"> {{personRequestReview.person.email}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}} {{'cui-email' | translate}}:</span> <a href="mailto:{{organizationRequest.request.personData.email}}" class="cui-media__link"> {{organizationRequestReview.personData.email}}</a></div>
       <!-- Registered Date -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{personRequestReview.person.creation | date:base.appConfig.dateFormat}}</div>
-      <!-- Organization -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span><a href="" class="cui-media__link">{{personRequestReview.organization.name}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationRequestReview.personData.creation | date:base.appConfig.dateFormat}}</div>
     </div>
   </div>
 
@@ -40,7 +40,7 @@
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       <div class="cui-expandable__details-status">
         <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
-        <span class="cui-expandable__status" ng-class="'cui-status--'+personRequestReview.person.status">{{personRequestReview.person.status}}</span>
+        <span class="cui-expandable__status" ng-class="'cui-status--'+organizationRequestReview.person.status">{{organizationRequestReview.personData.status}}</span>
       </div>
     </cui-expandable-title>
     <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
@@ -48,21 +48,21 @@
         <!-- Address -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequestReview.organization.addresses[0].streets[0]}}</span>
-          <span class="cui-field-val__val">{{personRequestReview.organization.addresses[0].city}}</span>
-          <span class="cui-field-val__val">{{personRequestReview.organization.addresses[0].state}}, {{personRequestReview.organization.addresses[0].postal}}</span>
-          <span class="cui-field-val__val">{{personRequestReviewrequest.organization.phones[0].number}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].state}}, {{organizationRequestReview.personData.organization.addresses[0].postal}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.phones[0].number}}</span>
         </div>
         <!-- Timezone and Language -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequestReview.person.timezone}}</span>
-          <span class="cui-field-val__val">{{personRequestReview.person.language}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.timezone}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.language}}</span>
         </div>
         <!-- Request -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'request' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequestReview.request.justification}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.justification}}</span>
         </div>
       </div>
     </cui-expandable-body>

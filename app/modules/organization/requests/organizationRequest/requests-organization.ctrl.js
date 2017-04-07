@@ -15,19 +15,32 @@ angular.module('organization')
             $scope.$digest()
         })
         if (organizationRequest.request.packages&&organizationRequest.request.packages.length!==0) {
-            organizationRequest.request.packages.forEach(requestedPackage =>{
-                promises.push(ServicePackage.getPackageDetails(requestedPackage.id))
+            organizationRequest.request.packages.forEach((requestedPackage ,index)=>{
+                ServicePackage.getPackageDetails(requestedPackage.id)
+                .then(packageData => {
+                    requestedPackage=angular.merge(requestedPackage,packageData)
+                })
+                .catch(err => {
+                    APIError.onFor('organizationRequest.packageServices')
+                    console.log('There was an error in fetching following package service details' +err)
+                    Loader.offFor('organizationRequest.init')
+                })
+                .finally(() => {
+                        if (index===organizationRequest.request.packages.length-1) {
+                        Loader.offFor('organizationRequest.init')
+                    }
+                })
             })
-            $q.all(promises)
-            .then(res => {
-                organizationRequest.packages =res
-                Loader.offFor('organizationRequest.init')
-            })
-            .catch(err => {
-                APIError.onFor('organizationRequest.packageServices')
-                console.log('There was an error in fetching one or more package service details' +err)
-                Loader.offFor('organizationRequest.init')
-            })
+            // $q.all(promises)
+            // .then(res => {
+            //     organizationRequest.packageData =res
+                
+            // })
+            // .catch(err => {
+            //     APIError.onFor('organizationRequest.packageServices')
+            //     console.log('There was an error in fetching one or more package service details' +err)
+            //     Loader.offFor('organizationRequest.init')
+            // })
         }
         else{
             Loader.offFor('organizationRequest.init')
