@@ -10,7 +10,7 @@ angular.module('organization')
     division.userSelectedOrg.originalObject.id=User.user.organization.id
     division.emailSubject='Register as a user to join '
 
-    const storedData = DataStorage.getType('orgHierarchy')
+    const storedData = DataStorage.getType('orgHierarchy',User.user.id)
 
     if (storedData) {
         division.organizationHierarchyRoot = storedData
@@ -28,10 +28,13 @@ angular.module('organization')
       division.loader=true
       API.cui.getOrganizationHierarchy({organizationId:User.user.organization.id })
       .done(res => {
-          // Put hierarchy response in an array as the hierarchy directive expects an array
-          division.organizationHierarchyRoot = res
-          division.organizationHierarchy = res.children
+          DataStorage.setType('orgHierarchy', [res],User.user.id)
           const organizationList=[]
+          // Put hierarchy response in an array as the hierarchy directive expects an array
+          const storedDatas = DataStorage.getType('orgHierarchy',User.user.id)
+          division.organizationHierarchyRoot = storedDatas
+          division.organizationHierarchy = storedDatas[0].children
+          
           angular.forEach(division.organizationHierarchy,function(value){
             let array={
               "id":value.id,
@@ -42,7 +45,7 @@ angular.module('organization')
           })
           division.organizationList=organizationList
           console.log(division.organizationList)
-          DataStorage.setType('orgHierarchy', [res])
+         
       })
       .fail(err => {
           APIError.onFor(pageLoader, err)
