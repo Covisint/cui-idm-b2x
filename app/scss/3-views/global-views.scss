@@ -122,7 +122,7 @@ Global layout styles
   left:-6px;
   cursor:pointer;
 }
-.pending-content_wrapper{
+/*.pending-content_wrapper{
   display:flex;
 
   .dummy:first-child{
@@ -134,6 +134,14 @@ Global layout styles
   .dummy+.dummy{
     width:20%
   }
+}*/
+.pending-content_wrapper{
+  position:absolute;
+  top:80px;
+  right:0px;
+  z-index:100;
+  max-height:750px;
+  overflow-y:auto;
 }
 .cui-action__title-small{
     font-size: 1.1em;

@@ -31,12 +31,41 @@ angular.module('common')
             userInfo.organization = res
             User.set(userInfo)
             //cui.log('populateUserInfo', User);
+            //get user notification related information  as lazy loading,
+            // No need to hold entire UI apps for this loading.
+            getNotificationDetails(userInfo)
             deferred.resolve({ roleList: roleList, redirect: redirectOpts })
         })
 
         return deferred.promise
     }
 
+    const getNotificationDetails = (userInfo) => {
+        if (!Base.isOrgAdmin()) {
+            myCUI.getPersonPendingApps({personId: userInfo.id})
+            .then((res) => {
+                userInfo.pendingApps=res.map(x=> x.name)
+                User.set(userInfo)
+            })
+        }
+        else{
+            $q.all([
+                myCUI.getRegistrationRequestsCount(),
+                myCUI.getPackageRequestsCount(),
+                myCUI.getOrgRegistrationRequestsCount(),
+                // myCUI.getPackageRequestsCount({qs:[['requestor.id',userInfo.organization.id],['requestor.type','organization']]})
+            ])
+            .then(res => {
+                userInfo.userRegistrationRequestsCount=res[0]
+                userInfo.userAppRequestsCount=res[1]
+                userInfo.orgRegistrationRequestsCount=res[2]
+                // userInfo.orgAppRequestsCount=res[3]
+                userInfo.totalCount=res[0]+res[1]+res[2]+res[3]
+                User.set(userInfo)
+            })
+        }
+        
+    }
     const jwtAuthHandler = () => {
         return myCUI.covAuth({
             originUri: appConfig.originUri,
