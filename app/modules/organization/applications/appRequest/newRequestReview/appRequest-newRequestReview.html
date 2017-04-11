@@ -1,0 +1,109 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/mew-request&review" target="blank">here</a> and the layout styles <a href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/scss/3-views/applications.scss" class="cui-link" target="blank">here</a></div>
+<!-- /processHTML -->
+<ng-form name="reviewRequest" novalidate ng-if="orgAppRequestReview.step!=2">
+<div class="class-toggle cui-modal" ng-if="orgAppRequestReview.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span>
+    </div>
+</div>
+<div class="cui-applications__review">
+    <div class="cui-action">
+        <!-- Title -->
+        <div class="cui-action__title" ng-click="base.goBack('organization.search',{orgId:orgAppRequestReview.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+        <div class="cui-action__actions">
+
+            <!-- close icon -->
+
+            <svg ui-sref="organization.search({orgId:orgAppRequestReview.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+                <defs>
+                  <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+                  <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                    <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                    <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                    <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+                  </filter>
+                </defs>
+                <g id="close-with-shadow" fill="none" fill-rule="evenodd">
+                    <g id="Oval-73" transform="translate(3 1)">
+                        <use fill="#000" filter="url(#filter-2)" xlink:href="#path-1"/>
+                        <use fill="currentColor" xlink:href="#path-1"/>
+                    </g>
+                    <path d="M26.022 20.672l4.006-4.006c.788-.787.787-2.052.006-2.833l-.195-.195c-.788-.787-2.05-.778-2.834.006L23 17.65l-4.006-4.006c-.787-.788-2.052-.787-2.833-.006l-.194.195c-.788.787-.778 2.05.006 2.833l4.006 4.006-4.006 4.006c-.788.787-.787 2.053-.006 2.833l.195.196c.788.788 2.05.778 2.834-.006L23 23.695l4.006 4.005c.787.788 2.052.787 2.833.006l.194-.195c.788-.786.778-2.048-.006-2.832l-4.006-4.006z" fill="#fff"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+    <div class="cui-applications__main-container" style="position:relative">
+        <div class="cui-loading__container" ng-if="orgAppRequestReview.attempting">
+          <div class="cui-loading cui-loading--center" ></div>
+        </div>
+        <div>
+            <h3 class="h4 bold">{{'requested-items' | translate}}:</h3>
+            <div class="cui-applications__review-apps">
+                <div class="cui-tile--headless" ng-repeat="applicationGroup in orgAppRequestReview.appRequests">
+                    <div ng-repeat="request in applicationGroup | filter:applicationReview.search">
+                        <div class="cui-media">
+                          <div class="cui-media__image-container cui-media__image-container__flex-start">
+                            <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="request.name" cui-avatar-cuii18n-filter cui-avatar="request.iconUrl"></div>
+                          </div>
+                          <div class="cui-media__body">
+                            <h3 class="cui-media__title">{{request.name | cuiI18n}}</h3>
+                            <span class="cui-media__content">{{'owning-org' | translate}}: {{request.owningOrganization.name}}</span>
+                            <div class="cui-applications__review-checkbox__wrapper" ng-if="request.servicePackage.personTacEnabled">
+                                <span class="cui-error h6" ng-if="reviewRequest['checkbox'+request.id].$error.required&&(reviewRequest['checkbox'+request.id].$dirty||orgAppRequestReview.requestReasonRequired)">{{'cui-tac-agree' | translate}}</span> 
+                                <div class="cui-applications__review-checkbox__flex">
+                                    <span class="cui-checkbox_label__flex">{{'cui-accept'|translate}} <span class="cui-link" ng-click="orgAppRequestReview.showTac(request)">{{'cui-tac'|translate}}</span> </span>  
+                                    <span class="cui-checkbox__container">
+                                        <input class="cui-checkbox" name="{{'checkbox'+request.id}}" type="checkbox" ng-model="orgAppRequestReview.tacCheckbox[request.id]" ng-required="true" />
+                                        <label class="cui-checkbox__label" ng-click="orgAppRequestReview.tacCheckbox[request.id]=!orgAppRequestReview.tacCheckbox[request.id]"></label>
+                                    </span>
+                                </div>
+                            </div> 
+                            <h3 ng-if="request.bundledApps" class="cui-media__title cui-media__title-margin__top">{{'bundled-applications' | translate}}</h3>
+                            <div ng-if="request.bundledApps" ng-repeat="bundledApp in request.bundledApps">
+                                <span>{{bundledApp.name|cuiI18n}}</span>
+                            </div> 
+                            <h3 ng-if="request.relatedApps&&request.relatedAppSelectedCount>0" class="cui-media__title cui-media__title-margin__top">{{'cui-selected' | translate}} {{'related-applications'|translate}}</h3>
+                            <div ng-if="request.relatedApps&&request.relatedAppSelectedCount>0" ng-repeat="relatedApp in request.relatedApps">
+                                <span ng-if="relatedApp.selected">{{relatedApp.name|cuiI18n}}</span>
+                            </div>                              
+                          </div>
+                        </div>
+                        <!-- Terms and conditions is not provided by the API, leaving it out for now -->
+                        <div class="cui-applications__review-text-input" >
+                            <label class="cui-text-area__label">{{'request-reason' | translate}}</label>
+                            <span class="cui-error h6" ng-if="reviewRequest['text_area'+request.id].$error.required&&(reviewRequest['text_area'+request.id].$dirty||orgAppRequestReview.requestReasonRequired)">{{'you-must-enter-a-reason' | translate}}</span>
+                            <textarea name="{{'text_area'+request.id}}" ng-required="request.servicePackage.requestReasonRequired" class="cui-text-area" ng-model="request._reason"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cui-applications__submit-options">
+                <a class="cui-link" ng-click="base.goBack('organization.search',{orgId:orgAppRequestReview.stateParamsOrgId})">{{'cui-cancel' | translate}}</a>
+                <button class="cui-button" ng-class="{'cui-button--error' : !reviewRequest.$valid}" ng-click="orgAppRequestReview.requestReasonRequired=true;reviewRequest.$valid&&orgAppRequestReview.submit()">
+                    <span ng-if="!orgAppRequestReview.error">{{'submit-request' | translate}}</span>
+                    <span ng-if="orgAppRequestReview.error===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+            <!-- TODO ng-if="orgAppRequestReview.attempting" is when submit gets pressed and it's trying to submit the requests  ^ put a spinner on the button-->
+
+        </div>
+    </div>
+</div>
+</ng-form>
+<!-- View Terms and Conditions for an Application -->
+<div class=" cui-applications__review cui-applications__main-container" ng-if="orgAppRequestReview.step===2">
+    <cui-icon cui-svg-icon="fa:chevron20" svg-class="cui-icon cui-icon--light-grey chevron chevron-left" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <div class="cursor__pointer" style="padding-top:3px;color:black" ng-click="orgAppRequestReview.step=1" translate> {{'cui-printer-friendly-tac'}}</div>
+    <div class="tac_wrapper">
+    {{orgAppRequestReview.tacContent}}
+    </div>
+    <div class="cui-applications__submit-options">
+        <a class="cui-link" ng-click="orgAppRequestReview.step=1">{{'cui-back-to-review' | translate}}</a>
+    </div>
+</div>
