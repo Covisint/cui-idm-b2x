@@ -34,16 +34,16 @@
             <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userProfileFactory.initPasswordPolicy']">{{'cui-userProfile-password-error' | translate}}</p>
             <!-- Header Block -->
             <div ng-include="'app/modules/user/profile/sections/header.html'" ng-if="userProfile.user"></div>
-            <div class="">
+            <div class="" style=" margin:auto;  width:400px;">
                 <nav class="cui-breadcrumb">
                     <ul class="cui-breadcrumb__links">
-                        <li class="user_profile_image cui-breadcrumb__link cui-breadcrumb__link--current"><a ui-sref="user.profile">{{'cui-my-profile' | translate}}</a>
+                        <li class="user_profile_image cui-breadcrumb__link cui-breadcrumb__link--current"><a ui-sref="user.profile"><img src="app/modules/user/user_icon/profile_current.png" width="46px" height="44px"></a>
                         </li>
-                        <li class="user_roles_image cui-breadcrumb__link "><cui-icon cui-svg-icon="cui:user" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 51"></cui-icon>
+                        <li class="user_roles_image cui-breadcrumb__link "><img src="app/modules/user/user_icon/roles.png" width="34px" height="45px">
                         </li>
-                        <li class="user_apps_image cui-breadcrumb__link"><a ui-sref="user.appHistory">{{'cui-app-history' | translate}}</a>
+                        <li class="user_apps_image cui-breadcrumb__link"><a ui-sref="user.appHistory"><img src="app/modules/user/user_icon/app.png" width="29px" height="45px"></a>
                         </li>
-                        <li class="user_history_image cui-breadcrumb__link"><a ui-sref="user.history">{{'cui-my-history' | translate}}</a>
+                        <li class="user_history_image cui-breadcrumb__link"><a ui-sref="user.history"><img src="app/modules/user/user_icon/history.png" width="49px" height="44px"></a>
                         </li>
                     </ul>
                 </nav>
