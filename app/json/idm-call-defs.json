@@ -817,5 +817,11 @@
     "type": "POST",
     "accepts": "application/vnd.com.covisint.platform.organization.invitation.v1+json",
     "contentType": "application/vnd.com.covisint.platform.organization.invitation.v1+json"
+  },
+  {
+    "cmd": "getOrganizationSecurityAdmins",
+    "call": "/person/v3/persons/organizations/{organizationId}/securityAdmins",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.person.v1+json"
   }
 ]
