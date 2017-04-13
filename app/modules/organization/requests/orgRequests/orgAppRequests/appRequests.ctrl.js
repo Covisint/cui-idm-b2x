@@ -1,6 +1,6 @@
 angular.module('organization')
 .controller('orgAppRequestsCtrl', 
-		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User) {
+		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,DataStorage) {
 
     const scopeName = 'orgAppRequests.'
 		const orgAppRequests = this
@@ -102,25 +102,26 @@ angular.module('organization')
   			});
 			};
 
-
+			qsArray.push(['requestor.type','organization'])
+			qsArray.push(['requestor.id',User.user.organization.id])
 			API.cui.getPackageRequests({ qs: qsArray }).then(function(res) {
 				var calls = [];
 
 				_.each(res, function(pkgReq) {
 					
 					// NB create an obj and bind it to scope...
-					var data = {};
+					var data = pkgReq
         	orgAppRequests.data.push(data);
 
         	// ..then cache the calls, which populate obj asynchronously...
 	        calls.push(
-	        	getPerson(pkgReq.requestor.id).then(function(person) {
+	        	getPerson(pkgReq.creator).then(function(person) {
 	        		data.personData = person || {};
 	        		var pkgId = (pkgReq && pkgReq.servicePackage) ? pkgReq.servicePackage.id : '';
 	          	return getPackage(pkgId);
 						}).then(function(pkg) {
 	        		data.packageData = pkg;
-	        		var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
+	        		var orgId = pkgReq.requestor.id;
 							return getOrg(orgId);
 						}).then(function(org) {
 							if (! data.personData.organization) {
@@ -159,13 +160,9 @@ angular.module('organization')
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
     orgAppRequests.sortingCallbacks = {
-      name () {
-          orgAppRequests.sortBy.sortBy = 'name'
+      administrator () {
+          orgAppRequests.sortBy.sortBy = 'administrator'
           orgAppRequests.sort(['personData.name.given', 'personData.name.surname'], orgAppRequests.sortBy.sortType)
-      },
-      title () {
-          orgAppRequests.sortBy.sortBy = 'title'
-          orgAppRequests.sort('personData.title', orgAppRequests.sortBy.sortType)
       },
       submitted () {
           orgAppRequests.sortBy.sortBy = 'submitted'
@@ -175,8 +172,8 @@ angular.module('organization')
           orgAppRequests.sortBy.sortBy = 'request'
           orgAppRequests.sort('packageData.name', orgAppRequests.sortBy.sortType)
       },
-      division () {
-          orgAppRequests.sortBy.sortBy = 'division'
+      organization () {
+          orgAppRequests.sortBy.sortBy = 'organization'
           orgAppRequests.sort('personData.organization.name', orgAppRequests.sortBy.sortType)
       }
     }
@@ -190,7 +187,8 @@ angular.module('organization')
 			if (request.personData && request.personData.id && 
 				request.personData.organization && request.personData.organization.id &&
 				request.packageData && request.packageData.id) {
-				$state.go('organization.requests.pendingRequests', {
+				DataStorage.setType('organizationAppRequest',request)
+				$state.go('organization.requests.organizationAppRequest', {
 				 	'userId': request.personData.id, 
 					'orgId': request.personData.organization.id,
 					'packageId': request.packageData.id

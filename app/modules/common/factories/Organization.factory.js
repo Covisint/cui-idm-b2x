@@ -6,7 +6,7 @@ angular.module('common')
 	const getOrganizationAdmins = (organizationId) => {
 		const defer = $q.defer()
 
-		API.cui.getPersonsAdmins({qs: [['organization.id', organizationId], ['securityadmin', true]]})
+		API.cui.getOrganizationSecurityAdmins({organizationId: organizationId})
 		.done(response => defer.resolve(response))
 		.fail(error => defer.reject(error))
 

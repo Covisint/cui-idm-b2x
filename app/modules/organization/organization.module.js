@@ -179,17 +179,38 @@ angular.module('organization', [])
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
         })
+        // Approval of Org requests
         .state('organization.requests.organizationRequest', {
             url: '/organization-request?orgId&userId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
             controller: returnCtrlAs('organizationRequest'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.organizationRequestReview', {
             url: '/organization-request-review?orgId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
             controller: returnCtrlAs('organizationRequestReview'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        })
+        .state('organization.requests.organizationAppRequest', {
+            url: '/organization-app-request?orgId&userId',
+            templateUrl: templateBase + 'requests/organizationAppRequests/requests-organization.html',
+            controller: returnCtrlAs('organizationAppRequest'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        })
+        .state('organization.requests.organizationAppRequestReview', {
+            url: '/organization-app-request-review?orgId',
+            templateUrl: templateBase + 'requests/organizationAppRequests/requests-organizationReview.html',
+            controller: returnCtrlAs('organizationAppRequestReview'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.personRequest', {
             url: '/person-request?userId&orgId',
@@ -260,12 +281,16 @@ angular.module('organization', [])
             url:'/orgRequests',
             templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
             controller: returnCtrlAs('orgRegistrationRequests'),
-            access: appConfig.orgAdminLogic
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.orgAppRequests', {
             url:'/orgApplicationRequests',
             templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('orgAppRequests'),
-            access: appConfig.orgAdminLogic
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         });
 }]);
