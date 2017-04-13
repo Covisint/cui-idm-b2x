@@ -53,13 +53,13 @@ angular.module('common')
                 myCUI.getRegistrationRequestsCount(),
                 myCUI.getPackageRequestsCount(),
                 myCUI.getOrgRegistrationRequestsCount(),
-                // myCUI.getPackageRequestsCount({qs:[['requestor.id',userInfo.organization.id],['requestor.type','organization']]})
+                myCUI.getPackageRequestsCount({qs:[['requestor.id',userInfo.organization.id],['requestor.type','organization']]})
             ])
             .then(res => {
                 userInfo.userRegistrationRequestsCount=res[0]
                 userInfo.userAppRequestsCount=res[1]
                 userInfo.orgRegistrationRequestsCount=res[2]
-                // userInfo.orgAppRequestsCount=res[3]
+                userInfo.orgAppRequestsCount=res[3]
                 userInfo.totalCount=res[0]+res[1]+res[2]+res[3]
                 User.set(userInfo)
             })
