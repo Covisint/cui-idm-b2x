@@ -797,5 +797,31 @@
     "call": "/service/v3/persons/{personId}/applications/requests",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.service.application.request.v1+json"
+  },
+   {
+    "cmd": "getOrganizationsRequestableApps",
+    "call": "/service/v3/applications/organizations/{organizationId}/requestable",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.v1+json"
+  },
+  {
+    "cmd": "createOrgCompanyInvitation",
+    "call": "/organization/v3/organizationInvitations/company",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.organization.invitation.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.organization.invitation.v1+json"
+  },
+  {
+    "cmd": "createOrgDivisionInvitation",
+    "call": "/organization/v3/organizationInvitations/division",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.organization.invitation.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.organization.invitation.v1+json"
+  },
+  {
+    "cmd": "getOrganizationSecurityAdmins",
+    "call": "/person/v3/persons/organizations/{organizationId}/securityAdmins",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.person.v1+json"
   }
 ]

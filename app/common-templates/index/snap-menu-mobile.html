@@ -53,7 +53,7 @@
 </span>
 
 <!-- Organization Profile -->
-<span class="snap-menu--option" snap-close ui-sref="organization.profile">
+<span class="snap-menu--option" snap-close ui-sref="organization.profile({orgId:base.user.organization.id})">
   <span class="snap-menu__option-name">{{'cui-org' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="cui:organization" svg-class="snap-menu__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -65,5 +65,13 @@
   <span class="snap-menu__option-name">{{'pending' | translate}} {{'requests' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="cui:status-pending" svg-class="snap-menu__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </div>
+</span>
+
+<!-- Invite -->
+<span class="snap-menu--option" snap-close ui-sref="invitation">
+  <span class="snap-menu__option-name">{{'Invite' | translate}}</span>
+  <div>
+    <cui-icon cui-svg-icon="cui:invite" svg-class="snap-menu__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
   </div>
 </span>

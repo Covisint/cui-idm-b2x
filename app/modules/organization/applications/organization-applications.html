@@ -1,0 +1,114 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/org-applications" target="blank">here</a></div>
+<!-- /processHTML -->
+
+  <!-- Navigation -->
+  <section class="cui-action">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=organizationApplications.stateParamsOrgId"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  </section>
+  <!-- subheader -->
+  <section class="cui-action">
+    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
+    <div class="cui-loading__container" ng-if="orgDirectory.loading">
+      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
+    </div>
+    <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
+    <!-- <span class="cui-action__title cui-mobile-only">{{organizationApplications.orgPersonCount}} People</span> -->
+    <div class="cui-action__actions">
+
+    <!-- Sort -->
+    <!-- <div class="cui-action__action-container" ng-click="organizationApplications.sortClicked =! organizationApplications.sortClicked" id="sort-button" off-click="organizationApplications.sortClicked=false">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+      </svg>
+      <span class="cui-action__action-label">{{'sort' | translate}}</span> -->
+      <!-- Sort Popover -->
+     <!--  <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.sortClicked">
+        <p ng-click="organizationApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</p>
+        <p ng-click="organizationApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</p>  
+      </div>
+    </div> -->
+
+    <!-- Refine -->
+    <div class="cui-action__action-container" ng-click="organizationApplications.refineClicked =! organizationApplications.refineClicked" id="refine-button" off-click="organizationApplications.refineClicked=false">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
+      </svg>
+      <span class="cui-action__action-label">{{'refine' | translate}}</span>
+      <!-- Refine Popover -->
+      <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.refineClicked">
+        <p ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</p>
+        <p ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</p>
+        <p ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
+        <p ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="cui-action__action-container" ng-click="organizationApplications.categoriesClicked =! organizationApplications.categoriesClicked" id="categories-button" off-click="organizationApplications.categoriesClicked=false">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+        <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#categories"></use>
+      </svg>
+      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+      <!-- Categories Popover -->
+      <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.categoriesClicked">
+        <p ng-click="organizationApplications.updateSearch('category')">{{'all' | translate}}</p>
+        <div ng-repeat="category in organizationApplications.categories">
+          <p ng-click="organizationApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</p>
+        </div>
+      </div>
+    </div>
+    <!-- new Grants -->
+    <div class="cui-action__action-container" ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})" ng-if="base.canGrantAppToOrg()">
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
+      </svg>
+      <span class="cui-action__action-label">{{'new-grant' | translate}}</span>
+    </div>
+    <!-- New Application Request Icon -->
+    <svg ui-sref="organization.newRequest({orgId:organizationApplications.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
+    </svg>
+  </div>
+  </section>
+
+<!-- Organization Applications: Content -->
+<div class="cui-applications__main-container">
+  <!-- Loading -->
+  <div class="cui-loading__container" ng-if="organizationApplications.loading">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <div ng-if="!organizationApplications.loading">
+
+    <!-- No applications message -->
+    <p ng-if="organizationApplications.appList.length===0">{{'cui-no-applications' | translate}}</p>
+    <p class="cui-error" ng-if="organizationApplications.loadingError">{{'error-generic' |translate}}</p>
+    <!-- 
+        NOTE: 'track by application.id' was removed since the mock server returns duplicate services in some places
+              track by should be re-added when the real API is fixed.
+     -->
+    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in organizationApplications.appList" ng-click="organizationApplications.goToDetails(application)">
+      <div class="cui-media__image-container">
+        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+      </div>
+      <div class="cui-media__body cui-media__body--full">
+        <div class="cui-media__title-container">
+          <!--          <a class="cui-media__app-launch" ng-class="'cui-media__app-launch--'+application.status" href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a> -->
+          <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
+        </div>
+        <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
+        <span class="cui-status" ng-class="'cui-status--'+application.grant.status" ng-bind="application.grant.status | lowercase"></span>
+      </div>
+    </div>
+
+
+    <!-- Pagination Controls -->
+    <div class="cui-paginate__container" ng-if="!organizationApplications.loading">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="organizationApplications.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="organizationApplications.search.pageSize" count="organizationApplications.count" on-page-change="organizationApplications.pageChange" ng-model="organizationApplications.search.page" attach-rerender-to="organizationApplications.reRenderPaginate"></paginate>
+    </div>
+  </div>
+</div>

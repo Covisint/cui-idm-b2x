@@ -1,0 +1,44 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/organization/requests/organizationAppRequests" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<!-- Submit Sucessful Pane -->
+<div class="class-toggle cui-modal" ng-if="organizationAppRequestReview.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+  <div class="cui-modal__pane">
+    <div class="cui-modal__icon">
+      <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+    </div>
+    <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationAppRequestReview.packageData.approval==='approved'">{{'approvals-submitted' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationAppRequestReview.packageData.approval==='denied'">{{'rejection-submitted' | translate}}</span>
+  </div>
+</div>
+
+<!-- Error -->
+<p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['organizationAppRequestReview.noRequest'] || base.apiError.for['organizationAppRequestReview.active']">{{'request-approve-or-rejected' | translate}}</p>
+<!-- Header -->
+<div ng-include="'app/modules/organization/requests/organizationAppRequests/sections-review/review-header.html'" ng-if="!base.loader.for['organizationAppRequestReview.init']">
+</div>
+
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="base.loader.for['organizationAppRequestReview.init']">
+	<div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<!-- Body -->
+<div ng-include="'app/modules/organization/requests/organizationAppRequests/sections-review/review-body.html'" 
+  ng-if="!base.loader.for['organizationAppRequestReview.init']">
+</div>
+
+<!-- Review Controls -->
+<div class="cui-organization__main-container">
+  <p class="cui-error" style="text-align:end" ng-if="organizationAppRequestReview.error&&organizationAppRequestReview.errorMessage">{{organizationAppRequestReview.errorMessage|translate}}</p>
+<div class="cui-organization__submit-row" disable-animate >
+  <span ui-sref="organization.requests.organizationAppRequest({userId:organizationAppRequestReview.personData.id, orgId:organizationAppRequestReview.personData.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+  <button class="cui-button" ng-if="!base.loader.for['organizationAppRequestReview.submitting'] && !organizationAppRequestReview.error" ng-click="organizationAppRequestReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+  <button class="cui-button" ng-if="base.loader.for['organizationAppRequestReview.submitting']">
+    <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+  </button>
+  <button  class="cui-button" ng-if="!base.loader.for['organizationAppRequestReview.submitting'] && organizationAppRequestReview.error" ng-click="organizationAppRequestReview.submit()">{{'cui-error-try-again' | translate}}</button>
+</div>
+</div>

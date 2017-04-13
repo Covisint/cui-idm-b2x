@@ -1,9 +1,9 @@
 <main class="cui-organization__new-request">
   <div class="cui-action" ng-hide="base.loader.for['newGrant.user']">
-    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userList')">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.directory.userDetails',newGrant.prevState.params)">&#60; {{newGrant.user.name.given}} {{newGrant.user.name.surname}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
-      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'"></ng-include>
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newGrant.prevState"></ng-include>
     </div>
   </div>
   
@@ -11,9 +11,10 @@
       <section class="cui-action cui-action--alt">
           <h2 class="cui-action__title">{{'select-applications' | translate}}</h2>
           <div class="cui-action__actions">
-              <div id="cui-applications__requested-apps" ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false">
+              <div class="flex_row" id="cui-applications__requested-apps" ng-click="newGrant.requestPopover=!newGrant.requestPopover" off-click="newGrant.requestPopover=false">
                 <cui-icon  cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                 <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newGrant.numberOfRequests != 0}">{{newGrant.numberOfRequests}}</sup>
+              </div>
                 <!-- popover -->
                 <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
                 offset="-20px 50px" ng-if="newGrant.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
@@ -25,13 +26,13 @@
                         <li ng-repeat="package in newGrant.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
                     </ul>
                   </div>
-                  <span ng-if="newGrant.appsBeingRequested.length > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+                  <span ng-if="newGrant.numberOfRequests > 0" class="cui-action__popover-button" ng-click="newGrant.goToClaimSelection()">{{'submit-request' | translate}}</span>
                 </div>
-              </div>
           </div>
       </section>
       <section class="cui-applications__main-container">
-          <h3 class="cui-sr-only">Search Parameters</h3>
+        <!-- not needed now -->
+          <!-- <h3 class="cui-sr-only">Search Parameters</h3>
           <fieldset class="cui-organization__radio-container">
             <span class="cui-radio cui-radio--basic-ltr">
               <input class="cui-radio__input" type="radio" name="radio-choice-1" id="radio-choice-1" ng-model="newGrant.searchType" ng-value="'applications'">
@@ -41,11 +42,11 @@
               <input class="cui-radio__input" type="radio" name="radio-choice-2" id="radio-choice-2" ng-model="newGrant.searchType" ng-value="'packages'">
               <label class="cui-radio__label" for="radio-choice-2"><span></span>{{'search-by-package-name' | translate}}</label>
             </span>
-          </fieldset>
+          </fieldset> -->
           <div class="cui-applications__search-options">
               <div class="cui-input-button">
-                  <label for="search-by-text" class="cui-sr-only">Search By Text</label>
-                  <input type="text" class="cui-input-button__input" id="search-by-text" ng-model="newGrant.search" placeholder="{{'search' | translate}}" on-enter="newGrant.searchCallback" focus-if/>
+                  <!-- <label for="search-by-text" class="cui-sr-only">Search By Text</label> -->
+                  <input type="text" class="cui-input-button__input" id="search-by-text" ng-model="newGrant.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="newGrant.searchCallback" focus-if/>
                   <button class="cui-input-button__button" ng-click="newGrant.searchCallback(newGrant.search)">{{'go' | translate}}</button>
               </div>
               <div class="cui-applications__center-text">{{'or' | translate}}</div>
@@ -53,6 +54,7 @@
           </div>
           <section>
               <h3 class="cui-sr-only">Browse by category</h3>
+              <p class="cui-error" ng-if="newGrant.categoryError">{{'error-generic'|translate}}</p>
               <div ng-repeat="category in newGrant.categories" ng-if="!base.loader.for['newGrant.categories']">
                   <section class="cui-applications__categories"
                     ng-click="newGrant.searchCallback({type:'category', value:category.name})">
