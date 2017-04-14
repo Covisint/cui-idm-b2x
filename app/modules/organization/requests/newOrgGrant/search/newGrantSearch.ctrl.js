@@ -20,6 +20,50 @@ angular.module('organization')
         console.log(DataStorage.getType('newOrgGrant'))
     };
 
+    const updateViewList = (list) => {
+        let deferred= $q.defer()
+        newOrgGrantSearch.viewList=[]
+        let qs=[]
+        let apiPromises = []
+        angular.forEach(list, (app,parentIndex) => {
+            // Child App and Parent app requested by user
+            if(app.servicePackage.parent&&app.relatedApps){
+                let flag=false
+                angular.forEach(app.relatedApps, (realtedApp,index) => {
+                    if (_.find(list,{id:realtedApp.id})) {
+                        flag=true
+                    }
+                    else{
+                        qs.push(['service.id',realtedApp.id])
+                    }
+                    if (index===app.relatedApps.length-1&&qs.length!==0) {
+                        apiPromises.push(API.cui.getPersonRequestableApps({personId:API.getUser(),qs:qs}))
+                        qs=[]
+                    }
+                })
+            }
+            else{
+                newOrgGrantSearch.viewList.push(app)
+            }
+        })
+        $q.all(apiPromises)
+        .then(res => {
+            angular.forEach(res, (app) => {
+                if (newOrgGrantSearch.search.name) {
+                    app[0].expanded=true
+                }
+                newOrgGrantSearch.viewList.push(...app)
+                newOrgGrantSearch.list.push(...app)
+            })
+            deferred.resolve()
+        })
+        .catch(err =>{
+            console.log("There was an error loading parent requestable apps")
+                deferred.reject(err)
+        })
+        return deferred.promise
+    }    
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -84,7 +128,10 @@ angular.module('organization')
               if(newOrgGrantSearch.reRenderPaginate) {
                 newOrgGrantSearch.reRenderPaginate();
               }
-              Loader.offFor('newOrgGrantSearch.apps');
+              updateViewList(res[1])
+             .then(() =>{
+                Loader.offFor('newOrgGrantSearch.apps');
+             })
           })
           .catch(err =>{
             console.error("There was an error in retreiving grantable apps. "+err)
