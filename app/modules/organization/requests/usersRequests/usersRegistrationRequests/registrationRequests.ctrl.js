@@ -172,8 +172,8 @@ angular.module('organization')
           usersRegistrationRequests.sortBy.sortBy = 'submitted'
           usersRegistrationRequests.sort('personData.creation', usersRegistrationRequests.sortBy.sortType)
       },
-      request () {
-          usersRegistrationRequests.sortBy.sortBy = 'request'
+      application () {
+          usersRegistrationRequests.sortBy.sortBy = 'application'
           usersRegistrationRequests.sort('packageData.name', usersRegistrationRequests.sortBy.sortType)
       },
       division () {

@@ -18,7 +18,7 @@
     <!-- Name -->
     <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
     <!-- userID -->
-    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{userDetails.user.id}}</p>
+    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{userDetails.user.username}}</p>
     <!-- Registered Date -->
     <p class="cui-media__content">{{'cui-registered' | translate}}: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->

@@ -27,7 +27,7 @@
       <!-- Name -->
       <h3 class="cui-media__title">{{personRequest.request.person.name.given}} {{personRequest.request.person.name.surname}}</h3>
       <!-- userID -->
-      <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.request.person.id}}</span>
+      <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.request.person.username}}</span>
       <!-- Email -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.request.person.email}}" class="cui-media__link"> {{personRequest.request.person.email}}</a></div>
       <!-- Registered Date -->
@@ -53,6 +53,11 @@
           <span class="cui-field-val__val">{{personRequest.request.organization.addresses[0].streets[0]}}</span>
           <span class="cui-field-val__val">{{personRequest.request.organization.addresses[0].city}}</span>
           <span class="cui-field-val__val">{{personRequest.request.organization.addresses[0].state}}, {{personRequest.request.organization.addresses[0].postal}}</span>
+          <!-- <span class="cui-field-val__val">{{personRequest.request.organization.phones[0].number}}</span> -->
+        </div>
+        <!-- Phone Number -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.organization.phones[0].number">
+          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
           <span class="cui-field-val__val">{{personRequest.request.organization.phones[0].number}}</span>
         </div>
         <!-- Time zone and Language -->
