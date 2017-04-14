@@ -21,7 +21,7 @@
     <span class="cui-action__title" ng-if="orgAppSearch.search.category" ui-sref="organization.newRequest({orgId:orgAppSearch.stateParamsOrgId})">&#60; {{orgAppSearch.search.category}}</span>
     <div class="cui-input-button cui-input-button--alt-bg">
       <input class="cui-input-button__input" ng-model="orgAppSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="orgAppSearch.updateSearch"/>
-      <button class="cui-input-button__button" ng-click="orgAppSearch.updateSearch()">{{'filter' | translate}}</button>
+      <button class="cui-input-button__button" ng-click="orgAppSearch.updateSearch('name')">{{'filter' | translate}}</button>
     </div>
 
     <!-- Current Requested Applications -->
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Application List -->
-    <cui-expandable class="cui-expandable" ng-repeat="application in orgAppSearch.list track by application.id" ng-if="!base.loader.orgAppSearch.loading" transition-speed="150">
+    <cui-expandable class="cui-expandable" ng-repeat="application in orgAppSearch.viewList track by application.id" ng-if="!base.loader.orgAppSearch.loading" transition-speed="150">
       <!-- Category -->
       <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
         <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
