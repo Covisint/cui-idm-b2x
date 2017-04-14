@@ -41,7 +41,7 @@ angular.module('common')
     }
 
     const getNotificationDetails = (userInfo) => {
-        if (!Base.isOrgAdmin()) {
+        if (!Base.canGrantAppToUser()) {
             myCUI.getPersonPendingApps({personId: userInfo.id})
             .then((res) => {
                 userInfo.pendingApps=res.map(x=> x.name)
