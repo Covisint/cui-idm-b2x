@@ -43,11 +43,11 @@
 				<!-- Manual Search -->
 				<div class="cui-input-button">
 					<input type="text" class="cui-input-button__input" ng-model="orgAppRequest.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="orgAppRequest.searchCallback" focus-if/>
-					<button class="cui-input-button__button" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId,name:orgAppRequest.search})">{{'go' | translate}}</button>
+					<button class="cui-input-button__button" ui-sref="organization.search({name:orgAppRequest.search})">{{'go' | translate}}</button>
 				</div>
 				<div class="cui-applications__center-text">{{'or' | translate}}</div>
 				<!-- Browse Applications -->
-				<button class="cui-button cui-button--full-width" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId})">{{'browse-applications' | translate}}</button>
+				<button class="cui-button cui-button--full-width" ui-sref="organization.search()">{{'browse-applications' | translate}}</button>
 			</div>
 
 			<!-- Main Content -->

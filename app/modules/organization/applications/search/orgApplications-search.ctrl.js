@@ -3,7 +3,7 @@ angular.module('organization')
 
     const orgAppSearch = this;
     const loaderName = 'orgAppSearch.loading';
-    orgAppSearch.stateParamsOrgId=$stateParams.orgId;
+    orgAppSearch.stateParamsOrgId=User.user.organization.id;
 
     orgAppSearch.packageRequests = DataStorage.getType('orgAppsBeingRequested', User.user.id) || {};
     orgAppSearch.appCheckbox = {};
@@ -89,7 +89,7 @@ angular.module('organization')
         }
 
         // Update current URL without changing the state
-        $state.transitionTo('applications.orgApplications.search', orgAppSearch.search, {notify:false});
+        $state.transitionTo('organization.search', orgAppSearch.search, {notify:false},{orgId:orgAppSearch.stateParamsOrgId});
         onLoad(true);
     };
 

@@ -92,7 +92,7 @@ angular.module('organization')
             DataStorage.setType('orgAppsBeingRequested',{});
             orgAppRequestReview.success=true
             $timeout(() => {
-                 $state.go('organization.applications',{orgId:orgAppRequestReview.stateParamsOrgId});
+                 $state.go('organization.applications',{orgId:User.user.organization.id});
             }, 3000); 
         })
         .catch(error => {

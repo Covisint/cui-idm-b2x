@@ -11,6 +11,10 @@
 <div>
 	<!-- Page Title -->
 	<h3 class="cui-applications__page-title">{{'cui-applications'|translate}}</h3>
+	<section class="cui-action">
+    	<nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgApplicationDetails.stateParamsOrgId"></nav>
+    	<nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    </section>
 
 	<div class="cui-action">
 
@@ -28,10 +32,7 @@
 		    </ul>
 	  </nav> -->
 	    <!-- Navigation -->
-  <section class="cui-action">
-    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgApplicationDetails.stateParamsOrgId"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
-  </section>
+
 
 
 	<!-- New Application Request Icon -->

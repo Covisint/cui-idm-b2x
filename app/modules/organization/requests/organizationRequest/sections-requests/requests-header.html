@@ -55,6 +55,11 @@
           <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.addresses[0].state}}, {{organizationRequest.request.personData.organization.addresses[0].postal}}</span>
           <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.phones[0].number}}</span>
         </div>
+        <!-- Phone -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.phones[0].number}}</span>
+        </div>
         <!-- Time zone and Language -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationRequest.request.personData">
           <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>

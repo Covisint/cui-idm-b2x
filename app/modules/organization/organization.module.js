@@ -88,19 +88,19 @@ angular.module('organization', [])
             }
         })
         .state('organization.newRequest', {
-            url: '/request/:orgId',
+            url: '/request',
             templateUrl: templateBase + 'applications/appRequest/newRequest/appRequest-newRequest.html',
             controller: returnCtrlAs('orgAppRequest'),
             access: loginRequired
         })
         .state('organization.newRequestReview', {
-            url: '/request/review/:orgId',
+            url: '/request/review',
             templateUrl: templateBase + 'applications/appRequest/newRequestReview/appRequest-newRequestReview.html',
             controller: returnCtrlAs('orgAppRequestReview'),
             access: loginRequired
         })
         .state('organization.search', {
-            url: '/search/:orgId?name&category&page&pageSize',
+            url: '/search?name&category&page&pageSize',
             templateUrl: templateBase + 'applications/search/orgApplications-search.html',
             controller: returnCtrlAs('orgAppSearch'),
             access: loginRequired
