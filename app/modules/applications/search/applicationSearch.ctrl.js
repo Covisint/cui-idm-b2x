@@ -18,6 +18,50 @@ angular.module('applications')
         }
     };
 
+    const updateViewList = (list) => {
+        let deferred= $q.defer()
+        applicationSearch.viewList=[]
+        let qs=[]
+        let apiPromises = []
+        angular.forEach(list, (app,parentIndex) => {
+            // Child App and Parent app requested by user
+            if(app.servicePackage.parent&&app.relatedApps){
+                let flag=false
+                angular.forEach(app.relatedApps, (realtedApp,index) => {
+                    if (_.find(list,{id:realtedApp.id})) {
+                        flag=true
+                    }
+                    else{
+                        qs.push(['service.id',realtedApp.id])
+                    }
+                    if (index===app.relatedApps.length-1&&qs.length!==0) {
+                        apiPromises.push(API.cui.getPersonRequestableApps({personId:API.getUser(),qs:qs}))
+                        qs=[]
+                    }
+                })
+            }
+            else{
+                applicationSearch.viewList.push(app)
+            }
+        })
+        $q.all(apiPromises)
+        .then(res => {
+            angular.forEach(res, (app) => {
+                if (applicationSearch.search.name) {
+                    app[0].expanded=true
+                }
+                applicationSearch.viewList.push(...app)
+                applicationSearch.list.push(...app)
+            })
+            deferred.resolve()
+        })
+        .catch(err =>{
+            console.log("There was an error loading parent requestable apps")
+                deferred.reject(err)
+        })
+        return deferred.promise
+    }
+
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -68,7 +112,10 @@ angular.module('applications')
         .then((res) => {
              applicationSearch.list = res[0];
              applicationSearch.count = res[1];
-             applicationSearch.doneReloading = applicationSearch.doneLoading = true;
+             updateViewList(res[0])
+             .then(() =>{
+                applicationSearch.doneReloading = applicationSearch.doneLoading = true;
+             })
         });
     };
     onLoad(false);
@@ -82,10 +129,8 @@ angular.module('applications')
     };
 
     applicationSearch.updateSearch = function(updateType,updateValue) {
-        switch (updateType){
-            case 'name':
-                applicationSearch.search.page = 1;
-                break;
+        if (updateType!=='page'){
+            applicationSearch.search.page = 1;
         }
 
         // doesn't change state, only updates the url
@@ -135,7 +180,7 @@ angular.module('applications')
         if (!applicationSearch.packageRequests[application.id]) {
             //if it is a parent then then deselect childs
             if (!application.servicePackage.parent) {
-                application.relatedApps.forEach((relatedApp)=>{
+                application.relatedApps&&application.relatedApps.forEach((relatedApp)=>{
                     if (applicationSearch.appCheckbox[relatedApp.id]) {
                         applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]
                         applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))
@@ -162,7 +207,8 @@ angular.module('applications')
         if (application.bundledApps) {
             application.bundledApps.forEach(bundledApp=>{
                 applicationSearch.appCheckbox[bundledApp.id]=check
-                applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:bundledApp.id}))
+                if (_.find(applicationSearch.list,{id:bundledApp.id}))
+                    applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:bundledApp.id}))
             })
         }
     }

@@ -3,7 +3,7 @@ angular.module('organization')
 
     const orgAppSearch = this;
     const loaderName = 'orgAppSearch.loading';
-    orgAppSearch.stateParamsOrgId=User.user.organization.id;
+    orgAppSearch.stateParamsOrgId=$stateParams.orgId;
 
     orgAppSearch.packageRequests = DataStorage.getType('orgAppsBeingRequested', User.user.id) || {};
     orgAppSearch.appCheckbox = {};
@@ -15,6 +15,49 @@ angular.module('organization')
         else orgAppSearch.numberOfRequests--;
     };
 
+    const updateViewList = (list) => {
+        let deferred= $q.defer()
+        orgAppSearch.viewList=[]
+        let qs=[]
+        let apiPromises = []
+        angular.forEach(list, (app,parentIndex) => {
+            // Child App and Parent app requested by user
+            if(app.servicePackage.parent&&app.relatedApps){
+                let flag=false
+                angular.forEach(app.relatedApps, (realtedApp,index) => {
+                    if (_.find(list,{id:realtedApp.id})) {
+                        flag=true
+                    }
+                    else{
+                        qs.push(['service.id',realtedApp.id])
+                    }
+                    if (index===app.relatedApps.length-1&&qs.length!==0) {
+                        apiPromises.push(API.cui.getOrganizationsRequestableApps({organizationId: User.user.organization.id,qs:qs}))
+                        qs=[]
+                    }
+                })
+            }
+            else{
+                orgAppSearch.viewList.push(app)
+            }
+        })
+        $q.all(apiPromises)
+        .then(res => {
+            angular.forEach(res, (app) => {
+                if (orgAppSearch.search.name) {
+                    app[0].expanded=true
+                }
+                orgAppSearch.viewList.push(...app)
+                orgAppSearch.list.push(...app)
+            })
+            deferred.resolve()
+        })
+        .catch(err =>{
+            console.log("There was an error loading parent requestable apps")
+                deferred.reject(err)
+        })
+        return deferred.promise
+    }
     /* ----------------------------------------- HELPER FUNCTIONS END ----------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
@@ -67,7 +110,11 @@ angular.module('organization')
         .then((res) => {
              orgAppSearch.list = res[0];
              orgAppSearch.count = res[1];
-             Loader.offFor(loaderName);
+             updateViewList(res[0])
+             .then(() =>{
+                Loader.offFor(loaderName);
+             })
+             
         });
     };
 
@@ -82,14 +129,12 @@ angular.module('organization')
     };
 
     orgAppSearch.updateSearch = function(updateType, updateValue) {
-        switch (updateType){
-            case 'name':
-                orgAppSearch.search.page = 1;
-                break;
+        if (updateType!=='page') {
+            orgAppSearch.search.page = 1
         }
-
+        orgAppSearch.search.orgId=orgAppSearch.stateParamsOrgId
         // Update current URL without changing the state
-        $state.transitionTo('organization.search', orgAppSearch.search, {notify:false},{orgId:orgAppSearch.stateParamsOrgId});
+        $state.transitionTo('organization.search', orgAppSearch.search, {notify:false});
         onLoad(true);
     };
 
@@ -103,7 +148,7 @@ angular.module('organization')
 
     orgAppSearch.saveRequestsAndCheckout = function() {
         DataStorage.setType('orgAppsBeingRequested', orgAppSearch.packageRequests);
-        $state.go('organization.newRequestReview',{orgId:orgAppSearch.stateParamsOrgId});
+        $state.go('organization.newRequestReview');
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */

@@ -90,25 +90,26 @@
     <div class="pending-content_wrapper">      
       <div class="dummy pending-content__block" >
         <div class="pending-content__title-container">
-          <h4 class="cui-action__title cui-action__title-small">{{'pending'|translate}} {{'requests'|translate}}</h4>
+          <h4 class="cui-action__title cui-action__title-small" ng-if="base.canGrantAppToUser()">{{'pending'|translate}} {{'requests'|translate}}</h4>
+          <h4 class="cui-action__title cui-action__title-small" ng-if="!base.canGrantAppToUser()">{{'pending'|translate}} {{'approval'|translate}}</h4>
           <!-- Close Icon -->
           <div ng-click="base.pendingNotificationFlag=false">
             <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
           </div>
         </div>
-        <div ng-if="!base.isOrgAdmin()"> 
+        <div ng-if="!base.canGrantAppToUser()"> 
           <div class="pending-content__row" ng-repeat="pendingApp in base.user.pendingApps">
-            {{'your-app'| translate}} "{{pendingApp|cuiI18n|capitalize}}" {{'pending-approval'|translate }}
+            {{pendingApp|cuiI18n|capitalize}}
           </div>
           <div class="pending-content__row" ng-if="base.user.pendingApps.length==0">
             {{'no-pending-apps'|translate}}
           </div>
         </div>
-        <div ng-if="base.isOrgAdmin()">
-          <div class="pending-content__row" ui-sref="organization.requests.usersRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-new-user'|translate}}({{base.user.userRegistrationRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.usersAppRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-applications'|translate}}({{base.user.userAppRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.orgRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'new-organization'|translate}}({{base.user.orgRegistrationRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.orgAppRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-applications'|translate}}({{base.user.orgAppRequestsCount}})</div>
+        <div ng-if="base.canGrantAppToUser()">
+          <div class="pending-content__row" ui-sref="organization.requests.usersRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'user'|translate}}({{base.user.userRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.usersAppRequests" ng-click="base.pendingNotificationFlag=false"> {{'user'|translate}} {{'cui-applications'|translate}}({{base.user.userAppRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-org'|translate}}({{base.user.orgRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgAppRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-org'|translate}} {{'cui-applications'|translate}}({{base.user.orgAppRequestsCount}})</div>
         </div>
       </div>
     </div>
