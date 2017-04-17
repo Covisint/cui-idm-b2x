@@ -4,7 +4,7 @@ angular.module('organization')
     const orgAppRequest = this;
     const orgAppsBeingRequested = DataStorage.getType('orgAppsBeingRequested');
     const loaderName = 'orgAppRequest.loading';
-    orgAppRequest.stateParamsOrgId=$stateParams.orgId;
+    orgAppRequest.stateParamsOrgId=User.user.organization.id;
 
     orgAppRequest.orgAppsBeingRequested = [];
     orgAppRequest.numberOfOrgRequests = 0;
@@ -29,7 +29,7 @@ angular.module('organization')
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
     orgAppRequest.searchCallback = function(searchWord) {
-        $state.go('applications.orgApplications.orgAppSearch', {name: searchWord});
+        $state.go('organization.search', {name: searchWord});
     };
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */

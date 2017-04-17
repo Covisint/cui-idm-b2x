@@ -48,10 +48,15 @@
         <!-- Address -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
-          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].streets[0]}}</span>
-          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].city}}</span>
-          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.addresses[0].state}}, {{organizationRequestReview.personData.organization.addresses[0].postal}}</span>
-          <span class="cui-field-val__val">{{organizationRequestReview.personData.organization.phones[0].number}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.addresses[0].state}}, {{organizationRequestReview.personData.addresses[0].postal}}</span>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.phones[0].number}}</span>
+        </div>
+        <!-- Phone -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequestReview.personData.phones[0].number}}</span>
         </div>
         <!-- Timezone and Language -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">

@@ -3,7 +3,7 @@
   <!-- Header -->
   <div class="cui-action">
     <!-- Title -->
-    <div class="cui-action__title" ng-click="base.goBack('organization.newRequest')">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+    <div class="cui-action__title" ui-sref="organization.applications({orgId:orgAppSearch.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
     <!-- Close Icon -->
     <div class="cui-action__actions">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="organization.applications({orgId:orgAppSearch.stateParamsOrgId})" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
@@ -15,10 +15,10 @@
   <!-- Sub-Header -->
   <div class="cui-action cui-action--alt">
     <!-- Current Category -->
-    <div class="cui-action__title" ng-if="!orgAppSearch.search.category" ui-sref="organization.newRequest({orgId:orgAppSearch.stateParamsOrgId})">&#60; {{'categories' | translate}}</div>
+    <div class="cui-action__title" ng-if="!orgAppSearch.search.category" ui-sref="organization.newRequest()">&#60; {{'categories' | translate}}</div>
 
     <!-- Filter -->
-    <span class="cui-action__title" ng-if="orgAppSearch.search.category" ui-sref="organization.newRequest({orgId:orgAppSearch.stateParamsOrgId})">&#60; {{orgAppSearch.search.category}}</span>
+    <span class="cui-action__title" ng-if="orgAppSearch.search.category" ui-sref="organization.newRequest()">&#60; {{orgAppSearch.search.category}}</span>
     <div class="cui-input-button cui-input-button--alt-bg">
       <input class="cui-input-button__input" ng-model="orgAppSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="orgAppSearch.updateSearch"/>
       <button class="cui-input-button__button" ng-click="orgAppSearch.updateSearch('name')">{{'filter' | translate}}</button>

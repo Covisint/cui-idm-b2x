@@ -3,7 +3,7 @@
 	<!-- Action Header -->
 	<div class="cui-action">
 		<!-- Title -->
-		<div class="cui-action__title" ng-click="base.goBack('organization.applications')">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+		<div class="cui-action__title" ui-sref="organization.applications({orgId:orgAppRequest.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
 		<!-- Close Button -->
 		<div class="cui-action__actions">
 			<svg ui-sref="organization.applications({orgId:orgAppRequest.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
@@ -47,7 +47,7 @@
 				</div>
 				<div class="cui-applications__center-text">{{'or' | translate}}</div>
 				<!-- Browse Applications -->
-				<button class="cui-button cui-button--full-width" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId})">{{'show-all' | translate}}</button>
+				<button class="cui-button cui-button--full-width" ui-sref="organization.search()">{{'show-all' | translate}}</button>
 			</div>
 
 			<!-- Main Content -->

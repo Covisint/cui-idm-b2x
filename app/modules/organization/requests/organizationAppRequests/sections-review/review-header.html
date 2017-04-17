@@ -53,6 +53,11 @@
           <span class="cui-field-val__val">{{organizationAppRequestReview.personData.organization.addresses[0].state}}, {{organizationAppRequestReview.personData.organization.addresses[0].postal}}</span>
           <span class="cui-field-val__val">{{organizationAppRequestReview.personData.organization.phones[0].number}}</span>
         </div>
+        <!-- Phone -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small">
+          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationAppRequestReview.personData.organization.phones[0].number}}</span>
+        </div>
         <!-- Timezone and Language -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
