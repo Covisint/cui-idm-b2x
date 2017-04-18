@@ -1,33 +1,63 @@
 angular.module('applications')
 .controller('manageApplicationsCtrl', function(API,APIError,APIHelpers,DataStorage,Loader,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
-	const manageApplications = this
+
+    const manageApplications = this
     const userId = User.user.id
     const loaderName = 'manageApplications.'
+
     let checkedLocalStorage = false
 
-    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
+    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
+
+    const switchBetween = (property, firstValue, secondValue) => {
+        // helper function to switch a property between two values or set to undefined if values not passed
+        if (!firstValue) {
+            manageApplications.search[property] = undefined
+            return
+        }
+        manageApplications.search[property] = manageApplications.search[property] === firstValue
+            ? secondValue
+            : firstValue
+    }
+
+    const getCountsOfStatus=(qsValue)=>{
+        let opts = {
+            personId: API.getUser(),
+            useCuid:true
+        }
+        //Assign query strings if any value passed 
+        //otherwise it will get full count
+        if (qsValue) {
+            opts.qs = [['grant.status',qsValue]]
+        }
+        API.cui.getPersonGrantedAppCount(opts)
+        .then(res=>{
+            if (!qsValue) {
+                manageApplications.popupCount=res;
+            }else if (qsValue==="active") {
+                manageApplications.activeCount=res;
+            }
+            else{
+                manageApplications.suspendedCount=res;
+            }
+            $scope.$digest();
+        })
+        .fail(err=>{
+
+        })
+    }
+
     const getCountsOfcategories=()=>{
         manageApplications.categories.forEach((category,index)=>{
             console.log($filter('cuiI18n')(category.name))
             let opts = {
-                personId: userId,
+                personId: API.getUser(),
                 useCuid:true
             }
             opts.qs=[['service.category',$filter('cuiI18n')(category.name)]]
             API.cui.getPersonGrantedAppCount(opts)
             .then(res=>{
-                //Need to minus each category count with not displayble and other than active apps according to thier categories
-                category.count=res
-                -
-                (
-                    Object.assign(manageApplications.list).filter(x => 
-                        x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
-                    ).length
-                    -
-                    Object.assign(manageApplications.viewList).filter(x => 
-                            x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
-                    ).length
-                )                
+                category.count=res;
                 if (index===manageApplications.categories.length-1) {
                     $scope.$digest();
                 };
@@ -44,15 +74,15 @@ angular.module('applications')
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
+
     const loadStoredData = () => {
         // Check DataStorage if this page has been loaded before. We initially populate this screen
         // with data that was previously retrieved from the API while we redo calls to get the up to date data.
-        const storedData = DataStorage.getType('myApplicationsList')
+        const storedData = DataStorage.getType('manageApplicationsList')
 
         if (storedData) {
             Loader.onFor(loaderName + 'apps')
             manageApplications.list = storedData.appList
-            manageApplications.viewList = Object.assign(manageApplications.list).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
             manageApplications.count = storedData.appCount
             manageApplications.categories = storedData.categories
             Loader.offFor(loaderName + 'apps')
@@ -79,7 +109,6 @@ angular.module('applications')
                 APIError.offFor(loaderName + 'categories')
             })
             .fail(err => {
-            	console.error('There was an error in fetcting user\'s app category details ' +err)
                 APIError.onFor(loaderName + 'categories')
             })
             .done(() => {
@@ -95,7 +124,7 @@ angular.module('applications')
             useCuid:true,
             qs: APIHelpers.getQs(manageApplications.search)
         }
-        opts.qs.push(['grant.status','active'])
+
         const promises = [
             API.cui.getPersonGrantedApps(opts), 
             API.cui.getPersonGrantedAppCount(opts)
@@ -103,9 +132,8 @@ angular.module('applications')
 
         $q.all(promises)
         .then(res => {
-            manageApplications.viewList = Object.assign(res[0]).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
+            // manageApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
             manageApplications.count = res[1]
-            manageApplications.popupCount = manageApplications.count-Object.assign(res[0]).filter(x => x.servicePackage.displayable!==true || x.grant.status!=='active').length
             manageApplications.list=res[0];
             // re-render pagination if available
             manageApplications.reRenderPaginate && manageApplications.reRenderPaginate()
@@ -115,11 +143,10 @@ angular.module('applications')
                 appCount: manageApplications.count, 
                 categories: manageApplications.categories
             }
-            DataStorage.setType('myApplicationsList', storageData)
+            DataStorage.setType('manageApplicationsList', storageData)
             APIError.offFor(loaderName + 'apps')
         })
         .catch(err => {
-        	console.error('There was an error in fetcting user\'s granted applications ' +err)
             APIError.onFor(loaderName + 'apps')
         })
         .finally(() => {
@@ -130,6 +157,14 @@ angular.module('applications')
                 checkedLocalStorage ? Loader.offFor(loaderName + 'updating') : Loader.offFor(loaderName + 'apps')
             }
         })
+        //Lazy loading of counts of applications based on status 
+        //to display in popover
+        getCountsOfStatus("active")
+        getCountsOfStatus("suspended")
+        //To getFull count
+        getCountsOfStatus(undefined)
+
+
     }
 
     loadStoredData()
@@ -144,6 +179,16 @@ angular.module('applications')
 
     manageApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
+            case 'alphabetic':
+                switchBetween('sortBy', '+service.name', '-service.name')
+                break
+            case 'date':
+                switchBetween('sortBy', '+grant.instant', '-grant.instant')
+                break
+            case 'status':
+                manageApplications.search.page = 1
+                manageApplications.search['grant.status'] = updateValue
+                break
             case 'category':
                 manageApplications.search.page = 1
                 manageApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
@@ -151,7 +196,18 @@ angular.module('applications')
         }
 
         // doesn't change state, only updates the url
-        $state.transitionTo('applications.myApplications', manageApplications.search, { notify:false })
+        $state.transitionTo('applications.manageApplications', manageApplications.search, { notify:false })
         onLoad(true)
     }
+
+    manageApplications.goToDetails = (application) => {
+        const opts = {
+            appId: application.id
+        }
+        DataStorage.setType('myAppDetail',application)
+        $state.go('applications.myApplicationDetails', opts)
+    }
+
+    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
+
 })
