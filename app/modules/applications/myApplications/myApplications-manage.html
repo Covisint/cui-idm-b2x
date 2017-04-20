@@ -105,6 +105,12 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
   </div>
 </div>
 
+<div class="cui-action cui-action--alt">
+  <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <input class="cui-input-button__input" ng-model="manageApplications.search['service.name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageApplications.updateSearchByName"/>
+      <button class="cui-input-button__button" ng-click="manageApplications.updateSearchByName()">{{'search' | translate}}</button>
+  </div>
+</div>
 <div class="cui-applications__main-container">
   <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['manageApplications.apps']"></div>
   <div class="cui-loading__container" ng-if="base.loader.for['manageApplications.apps']">

@@ -177,6 +177,9 @@ angular.module('applications')
         manageApplications.updateSearch('page', newpage)
     }
 
+    manageApplications.updateSearchByName = () => {
+        manageApplications.updateSearch('name',manageApplications.search['service.name'])
+    }
     manageApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'alphabetic':
@@ -192,6 +195,9 @@ angular.module('applications')
             case 'category':
                 manageApplications.search.page = 1
                 manageApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
+                break
+            case 'name':
+                manageApplications.search.page = 1
                 break
         }
 
