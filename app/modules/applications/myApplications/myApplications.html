@@ -5,7 +5,7 @@
 <div class="cui-action">
   <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
-<!--        <li class="cui-breadcrumb__link" >
+    <!--        <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications.applicationList">{{'organization-applications' | translate}}</a>
       </li> -->
       <li class="cui-breadcrumb__link cui-breadcrumb__link--current" >
@@ -85,9 +85,10 @@
 
   <!-- No applications message -->
   <p ng-if="myApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
+  <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['myApplications.apps']">{{'error-generic'|translate}}</p>
   <div class="cui-applications__manage-apps" >
-    <div class="cui-tile" ng-repeat="application in myApplications.viewList"ng-class="{'last-item':($index+1)%3==0}">
-      <div >
+    <div class="cui-tile" ng-repeat="application in myApplications.viewList"ng-class="{'last-item':($index+1)%5==0}">
+      <div style="height:100%">
         <div class="cui-tile__title">
         </div>
         <div class="cui-tile__body">
@@ -95,15 +96,15 @@
             <div class="cui-media__image-container">
               <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
             </div>
-            <div class="cui-media__title uppercase">{{application.name|cuiI18n}}</div>
+            <div class="cui-media__title">{{application.name|cuiI18n}}</div>
           </div>
-          <div class="cui-media__title">{{'description'|translate}}</div>
-          <div>{{application.description|cuiI18n}}</div>   
-          <div class="cui-tile__footer">
+          <!-- <div class="cui-media__title">{{'description'|translate}}</div>
+          <div>{{application.description|cuiI18n}}</div>   --> 
+          <!-- <div class="cui-tile__footer"> -->
             <a class="cui-button cui-button--inverted" ng-class="{'cui-button--error':!application.mangledUrl}" ng-href="{{application.mangledUrl}}" target="_blank" ng-if="application.mangledUrl">{{'launch'|translate}}</a>
             <a class="cui-button cui-button--inverted" ng-class="{'cui-button--error':!application.urls[0].value}" ng-href="{{application.urls[0].value}}" target="_blank" ng-if="!application.mangledUrl">{{'launch'|translate}}</a>
-            <span class="cui-tile__footer-text">{{application.category|cuiI18n}}</span>
-          </div>      
+            <!-- <span class="cui-tile__footer-text">{{application.category|cuiI18n}}</span> -->
+          <!-- </div>       -->
         </div>     
       </div>
     </div>
