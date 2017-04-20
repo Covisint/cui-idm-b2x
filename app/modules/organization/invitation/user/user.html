@@ -4,7 +4,7 @@
             <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
         </div>
         <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-        <span class="cui-modal__secondary-message">{{'your user invitation request sent' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'cui-invite-user-success' | translate}}</span>
     </div>
 </div>
 <ng-form name="edit" novalidate>
@@ -16,7 +16,7 @@
         <div class="cui-loading--center"><div class="cui-loading"></div></div>
       </div>
       
-      <span class="cui-field-val__field">Invite a User within </span>
+      <span class="cui-field-val__field">{{'cui-invite-user'|translate}}</span>
       <div class="cui-action__actions">
           <svg ui-sref="invitation.inviteSelect" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
           <defs>
@@ -38,14 +38,14 @@
       </div>
       <div class="cui-users__profile">
         <!-- Left Block -->
-        <div class="cui-users__profile-info">
+        <div class="cui-users__profile-info" ng-if="!user.selectOrgFromList">
               <div class="cui-field-val" ng-if="user.userSelectedOrg.originalObject.name">
                   <span class="cui-field-val__field">{{user.userSelectedOrg.originalObject.name}}</span>
                   <span class="cui-field-val__val"><nav class="cui-breadcrumb">
                       <ul class="cui-breadcrumb__links">
                         <li class="cui-breadcrumb__link">
                           <a class="cui-link" ng-click="user.selectOrgFromList=true">
-                            {{'change org' | translate}}
+                            {{'change-org' | translate}}
                           </a>
                         </li>
                       </ul>
@@ -62,24 +62,24 @@
                      <div class="cui-error" ng-if="!user.userSelectedOrg">
                       <div class="cui-error__message">{{'cui-this-field-is-required' | translate}}</div>
                     </div>
-                    <div auto-complete input-name="country" pause="100" placeholder="{{'Search for an org' | translate}}" selected-object="user.userSelectedOrg" local-data="user.organizationList" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="user.userSelectedOrg"></div>
+                    <div auto-complete input-name="country" pause="100" placeholder="{{'cui-invite-user-select' | translate}}" selected-object="user.userSelectedOrg" local-data="user.organizationList" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="user.userSelectedOrg"></div>
               </div>
               <div class="cui-users__info-block">
-                  <span class="cui-field-val__field">Email Subject* <input type="text" name="emailSubject" ng-value="user.emailSubject+user.userSelectedOrg.originalObject.name" class="cui-input" ng-disabled="true"></span>
+                  <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-subject'|translate}}* <input type="text" name="emailSubject" placeholder="{{'cui-invite-user-sub'|translate}} {{user.userSelectedOrg.originalObject.name}}" class="cui-input" ng-disabled="true"></span>
               </div>
               <div class="cui-users__info-block">
-                  <span class="cui-field-val__field">Email Address(es)* 
+                  <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-address' |translate}}{{'cui-es'|translate}}* 
                     <div class="cui-error" ng-if="user.emailAddressError">
                       <div class="cui-error__message">{{'cui-this-is-not-valid-email' | translate}}</div>
                     </div>
                   <!--   <input type="text" ng-required="true" name="emailAddress" ng-model="user.emailAddress" class="cui-input" placeholder="Enter recipient email (separate multiple with commas)" custom-error="user.customErrors.email"> -->
-                <textarea name="emailAddress" ng-required="true" class="cui-text-area" style="min-width: 800px;" ng-model="user.emailAddress" placeholder="Enter recipient email (separate multiple with commas)"></textarea></span>        
+                <textarea name="emailAddress" ng-required="true" class="cui-text-area" style="min-width: 800px;" ng-model="user.emailAddress" placeholder="{{'cui-email-recipt'|translate}}"></textarea></span>        
               </div>
           <!--  </div> -->
           <div class="cui-applications__submit-options" align="right">
           <a class="cui-link" ng-click="base.goBack('invitation.inviteSelect')">{{'cui-cancel' | translate}}</a>
           <button class="cui-button" ng-class="{'cui-button--error' : !edit.$valid}" ng-click="edit.$valid&&user.sendInvitation()">
-              <span ng-if="!user.sendInvitationError">{{'Send Invitation' | translate}}</span>
+              <span ng-if="!user.sendInvitationError">{{'cui-send-invitation' | translate}}</span>
               <span ng-if="user.sendInvitationError===true">{{'cui-error-try-again' | translate}}</span>
           </button>
         </div>

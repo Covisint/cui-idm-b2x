@@ -6,7 +6,7 @@ angular.module('organization')
     const promises=[]
     tlo.organization={}
     tlo.organization.name=User.user.organization.name
-    tlo.emailSubject='Register as a new organization '+tlo.organization.name+''
+    //tlo.emailSubject='Register as a new organization'
 
     tlo.sendInvitation = () => {
       const promises=[]

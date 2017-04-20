@@ -8,7 +8,7 @@ angular.module('organization')
     division.userSelectedOrg.originalObject={}
     division.userSelectedOrg.originalObject.name=User.user.organization.name
     division.userSelectedOrg.originalObject.id=User.user.organization.id
-    division.emailSubject='Register as a user to join '
+    //division.emailSubject='Register as an adminstrator within '
 
     const storedData = DataStorage.getType('orgHierarchy',User.user.id)
 
