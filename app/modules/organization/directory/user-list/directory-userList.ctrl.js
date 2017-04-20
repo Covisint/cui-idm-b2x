@@ -63,6 +63,7 @@ angular.module('organization')
         })
     }
 
+    orgDirectory.search = Object.assign({}, $stateParams)
     initDirectory()
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
@@ -94,12 +95,14 @@ angular.module('organization')
     }
 
     orgDirectory.updateSearchParams = (page) => {
-        if (page) orgDirectory.search.page = page
-        // Causing error. Disabled. 
-        // $state.transitionTo('orgDirectory.userList', orgDirectory.search, {notify: false})
+        if (page) orgDirectory.search.page = page 
+        $state.transitionTo('organization.directory.userList', orgDirectory.search, {notify: false})
         initDirectory(orgDirectory.search['organization.id'])
     }
 
+    orgDirectory.updateSearchByName = (name) => {
+        orgDirectory.updateSearchParams()
+    }
     orgDirectory.actionCallbacks = {
         sort (sortType) {
             if (!orgDirectory.search.hasOwnProperty('sortBy')) orgDirectory.search['sortBy'] = '+' + sortType
@@ -108,10 +111,10 @@ angular.module('organization')
             orgDirectory.updateSearchParams()
         },
         refine (refineType) {
-            if (refineType === 'all') delete orgDirectory.search['refine']
+            if (refineType === 'all') delete orgDirectory.search['status']
             else {
-                if (!orgDirectory.search.hasOwnProperty('refine')) orgDirectory.search['refine'] = refineType
-                else orgDirectory.search.refine = refineType
+                if (!orgDirectory.search.hasOwnProperty('status')) orgDirectory.search['status'] = refineType
+                else orgDirectory.search.status = refineType
             }
             orgDirectory.updateSearchParams()
         }
