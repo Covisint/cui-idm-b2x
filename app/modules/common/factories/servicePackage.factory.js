@@ -197,13 +197,13 @@ angular.module('common')
         let data = [['requestId', packageRequest.id]]
 
         if (packageRequest.approval === 'approved') {
-            API.cui.approvePackage({qs: data})
+            return API.cui.approvePackage({qs: data})
         }
         else if (packageRequest.approval === 'denied') {
             if (packageRequest.rejectReason) {
                 data.push(['justification', packageRequest.rejectReason]);
             }
-            API.cui.denyPackage({qs: data})
+            return API.cui.denyPackage({qs: data})
         } else {
             throw new Error('Package request object must contain "approval" of either "approved" or "denied"');
         }

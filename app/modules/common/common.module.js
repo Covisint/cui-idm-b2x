@@ -109,8 +109,8 @@ angular.module('common',['translate','ngMessages','cui.authorization','cui-ng','
 
 angular.module('common')
 .run(['LocaleService','$rootScope','$state','$http','$templateCache','$cuiI18n','User',
-    'cui.authorization.routing','cui.authorization.evalRouteRequest','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme',
-(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,evalRouteRequest,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme) => {
+    'cui.authorization.routing','cui.authorization.evalRouteRequest','Menu','API','$cuiIcon','$timeout','PubSub','APIError','Loader','Theme','CuiRouteHistoryFactory',
+(LocaleService,$rootScope,$state,$http,$templateCache,$cuiI18n,User,routing,evalRouteRequest,Menu,API,$cuiIcon,$timeout,PubSub,APIError,Loader,Theme,CuiRouteHistoryFactory) => {
 
     if(window.cuiApiInterceptor) {
         const cuiApiInterceptorConfig = {
@@ -161,7 +161,7 @@ angular.module('common')
         function go(toState, toParams, fromState, fromParams) {
             // NB... detailed access logic is evaluated upstream, in cui.authorization.evalRouteRequest...
             attachAccessInfo(toState);
-            evalRouteRequest(toState, toParams, fromState, fromParams);
+            evalRouteRequest(toState, toParams, fromState, fromParams,'misc.notAuth');
             PubSub.publish('stateChange',{ toState, toParams, fromState, fromParams }); 
             Menu.handleStateChange(toState.menu);
         }
@@ -243,13 +243,20 @@ angular.module('common')
 
     $rootScope.$on('$stateChangeSuccess', (e, { toState, toParams, fromState, fromParams }) => {
         // For base.goBack()
-
         $state.stateStack.push({
             name: fromState.name,
             params: fromParams || {}
         })
 
-        cui.log('on $stateChangeSuccess', fromState, fromParams, $state.stateStack);
+        // routeHistory POC
+        var routeTextArray = toState.name.split('.');
+        CuiRouteHistoryFactory.add({
+            text: routeTextArray[routeTextArray.length - 1],
+            uiroute: toState.name,
+            uirouteparams: toParams
+        });
+
+        cui.log('on $stateChangeSuccess', toState, toParams, fromState, fromParams, $state.stateStack);
     })
 
     angular.forEach($cuiIcon.getIconSets(), (iconSettings, namespace) => {

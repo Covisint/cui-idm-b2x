@@ -429,12 +429,18 @@ angular.module('common')
 
             profile.validatePassword = (password, formObject, input) => {
 
-                const validSwitch = (input, isValidBoolean) => {
+                const validSwitch = (input, isValidBoolean, type) => {
                     switch (input) {
                         case 'newPassword':
-                            profile.validNewPassword = isValidBoolean
+                            if (type==='history') 
+                                profile.validNewPasswordHistory = isValidBoolean
+                            else
+                                profile.validNewPasswordDisallowed = isValidBoolean
                         case 'newPasswordRe':
-                            profile.validNewPasswordRe = isValidBoolean
+                            if (type==='history') 
+                                profile.validNewPasswordReHistory = isValidBoolean
+                            else
+                                profile.validNewPasswordReDisallowed = isValidBoolean
                     }
                 }
 
@@ -448,21 +454,39 @@ angular.module('common')
                 API.cui.validatePassword({data: validateData})
                 .then(res => {
                     let validPasswordHistory = false
-
+                    let validateDisallowed =false
+                    // Sometimes disallowed words will not come in response, In that case need to set form object to true
+                    let disallowedFlag=false
                     res.forEach(rule => {
                         if (rule.type === 'HISTORY' && rule.isPassed) {
                             validPasswordHistory = true
-                            return
+                        }
+                        if (rule.type === 'DISALLOWED_WORDS'){
+                            disallowedFlag =true
+                            if(rule.isPassed) {
+                                validateDisallowed = true
+                            }
                         }
                     })
-
+                    //History Validation
                     if (validPasswordHistory) {
-                        validSwitch(input, true)
+                        validSwitch(input, true, 'history')
+                    }
+                    else {
+                        validSwitch(input, false, 'history')
+                    }
+                    //Disallowed words Validation
+                    if (disallowedFlag===false||validateDisallowed===true) {
+                        validSwitch(input, true, 'disallowed')                        
+                    }
+                    else {
+                        validSwitch(input, false, 'disallowed')                        
+                    }
+                    if (validPasswordHistory &&(disallowedFlag===false||validateDisallowed===true)) {
                         formObject[input].$setValidity(input, true)
                         $scope.$digest()
                     }
-                    else {
-                        validSwitch(input, false)
+                    else{
                         formObject[input].$setValidity(input, false)
                         $scope.$digest()
                     }

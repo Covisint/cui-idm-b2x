@@ -15,7 +15,7 @@ angular.module('applications',[])
             abstract: true
         })
         .state('applications.myApplications', {
-            url: '?name&page&pageSize&service.category&sortBy&grant.status',
+            url: '?page&pageSize&service.category',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications'),
             access:loginRequired
@@ -45,7 +45,7 @@ angular.module('applications',[])
             access:loginRequired
         })
         .state('applications.manageApplications', {
-            url: '/manage?page&pageSize&service.category',
+            url: '/manage?name&page&pageSize&service.category&sortBy&grant.status',
             templateUrl: templateBase + 'myApplications/myApplications-manage.html',
             controller: returnCtrlAs('manageApplications'),
             access:loginRequired
@@ -64,7 +64,7 @@ angular.module('applications',[])
             abstract: true,
             access: loginRequired
         })
-        .state('applications.orgApplications.applicationList', {
+/*        .state('applications.orgApplications.applicationList', {
             url: '?name&page&pageSize&service.category&sortBy&grant.status',
             templateUrl: templateBase + 'orgApplications/applicationList/orgApplications-applicationList.html',
             controller: returnCtrlAs('orgApplications'),
@@ -75,14 +75,14 @@ angular.module('applications',[])
             templateUrl: templateBase + 'orgApplications/applicationDetails/orgApplications-applicationDetails.html',
             controller: returnCtrlAs('orgApplicationDetails'),
             access: loginRequired
-        })
+        })*/
         .state('applications.orgApplications.newGrant', {
             url: '/application/:appId/new-grant',
             templateUrl: templateBase + 'orgApplications/newGrant/orgApplications-newGrant.html',
             controller: returnCtrlAs('orgAppNewGrant'),
             access: loginRequired            
-        })
-        .state('applications.orgApplications.newRequest', {
+        });
+/*        .state('applications.orgApplications.newRequest', {
             url: '/request',
             templateUrl: templateBase + 'orgApplications/appRequest/newRequest/appRequest-newRequest.html',
             controller: returnCtrlAs('orgAppRequest'),
@@ -99,5 +99,5 @@ angular.module('applications',[])
             templateUrl: templateBase + 'orgApplications/search/orgApplications-search.html',
             controller: returnCtrlAs('orgAppSearch'),
             access: loginRequired
-        });
+        });*/
 }]);

@@ -25,7 +25,7 @@
     <cui-expandable class="cui-expandable">
       <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
         <div>
-        <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.servicePackage.id}},{{application.name | cuiI18n}},{{application.servicePackage.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id])" style="margin-right:10px"/>
+        <input id="application{{application.id}}" type="checkbox" ng-model="userWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.servicePackage.id}},{{application.name | cuiI18n}},{{application.servicePackage.personTacEnabled}}'" ng-false-value="null" ng-change="userWalkup.applications.updateNumberOfSelected(userWalkup.applications.selected[application.id],application)" style="margin-right:10px"/>
         <span ng-bind="application.name | cuiI18n"></span>
         </div>
         <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -39,7 +39,7 @@
   <div class="cui-paginate__container">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="userWalkup.appPaginationSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="userWalkup.appPaginationSize" count="userWalkup.appCount" on-page-change="userWalkup.appPaginationPageHandler" ng-model="userWalkup.appPaginationCurrentPage"></paginate>
+    <paginate class="cui-paginate" results-per-page="userWalkup.appPaginationSize" count="userWalkup.appCount" on-page-change="userWalkup.appPaginationPageHandler" ng-model="userWalkup.appPaginationCurrentPage" attach-rerender-to="userWalkup.appReRenderPaginate"></paginate>
   </div>
   <div class="cui-wizard__controls" style="margin:20px 0 10px">{{'cui-application-select-info'|translate}}</div>
   <div class="cui-wizard__controls">

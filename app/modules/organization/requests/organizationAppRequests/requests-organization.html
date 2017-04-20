@@ -1,0 +1,24 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/organization/requests/organizationAppRequests" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-organization--pending-requests">
+  <!-- Header -->
+  <div ng-include="'app/modules/organization/requests/organizationAppRequests/sections-requests/requests-header.html'"
+    ng-if="!base.loader.for['organizationAppRequest.init']">
+  </div>
+
+  <!-- Error Messages -->
+  <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['organizationAppRequest.noRequest']">{{'cui-error-person-request' | translate}}</p>
+  
+  <!-- Page Loading -->
+  <div class="cui-loading__container--user-details" ng-if="base.loader.for['organizationAppRequest.init']">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  
+  <!-- Items for approval -->
+  <div ng-include="'app/modules/organization/requests/organizationAppRequests/sections-requests/requests-body.html'" 
+    ng-if="!base.loader.for['organizationAppRequest.init']">
+  </div>
+
+</div>

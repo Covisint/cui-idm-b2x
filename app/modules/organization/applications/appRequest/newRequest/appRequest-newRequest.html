@@ -1,0 +1,75 @@
+<div class="cui-applications__new-request">
+	
+	<!-- Action Header -->
+	<div class="cui-action">
+		<!-- Title -->
+		<div class="cui-action__title" ui-sref="organization.applications({orgId:orgAppRequest.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+		<!-- Close Button -->
+		<div class="cui-action__actions">
+			<svg ui-sref="organization.applications({orgId:orgAppRequest.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+				<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+			</svg>
+		</div>
+	</div>
+
+	<!-- Sub Action Header -->
+	<div class="cui-action cui-action--alt">
+		<h3 class="cui-action__title">{{'select-applications' | translate}}</h3>
+		<!-- Selected Applications Button -->
+		<div class="cui-action__actions">
+			<svg ng-click="orgAppRequest.requestPopover=!orgAppRequest.requestPopover" off-click="orgAppRequest.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon cui-icon--folder" ng-class="{'cui-action__icon--active': orgAppRequest.numberOfOrgRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+				<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
+			</svg>
+			<sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': orgAppRequest.numberOfOrgRequests != 0}">{{orgAppRequest.numberOfOrgRequests}}</sup>
+			<!-- Selected Applications Popover -->
+			<div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="orgAppRequest.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+				<span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+				<div class="cui-action__popover-section">
+					<span ng-if="orgAppRequest.orgAppsBeingRequested.length===0">{{'no-selected-apps' | translate}}<br/></span>
+					<ul ng-if="orgAppRequest.orgAppsBeingRequested.length > 0">
+						<li ng-repeat="application in orgAppRequest.orgAppsBeingRequested">{{application.name | cuiI18n}}</li>
+					</ul>
+				</div>
+				<span ng-if="orgAppRequest.orgAppsBeingRequested.length > 0" class="cui-action__popover-button">{{'submit-request' | translate}}</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="cui-applications__main-container">
+		<div>
+
+			<!-- Search Controls -->
+			<div class="cui-applications__search-options">
+				<!-- Manual Search -->
+				<div class="cui-input-button">
+					<input type="text" class="cui-input-button__input" ng-model="orgAppRequest.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="orgAppRequest.searchCallback" focus-if/>
+					<button class="cui-input-button__button" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId,name:orgAppRequest.search})">{{'go' | translate}}</button>
+				</div>
+				<div class="cui-applications__center-text">{{'or' | translate}}</div>
+				<!-- Browse Applications -->
+				<button class="cui-button cui-button--full-width" ui-sref="organization.search()">{{'show-all' | translate}}</button>
+			</div>
+
+			<!-- Main Content -->
+			<div  style="position:relative">
+
+				<!-- Loading -->
+				<div ng-if="base.loader.orgAppRequest.loading">
+					<div class="cui-loading__container">
+						<div class="cui-loading--center"><div class="cui-loading"></div></div>
+					</div>
+				</div>
+
+				<!-- Application List -->
+				<div ng-repeat="category in orgAppRequest.categories" ng-if="!base.loader.orgAppRequest.loading">
+					<div class="cui-applications__categories" ui-sref="organization.search({orgId:orgAppRequest.stateParamsOrgId,category:'{{category.name | cuiI18n}}'})">
+						<h4 class="cui-applications__category">{{category.name | cuiI18n}}</h4>
+						<svg xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+							<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

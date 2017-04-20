@@ -1,25 +1,13 @@
 <!-- processHTML:remove -->
-<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.ctrl.js" target="blank">here</a>.</div>
+<div class="code-info">The markup for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.html" target="blank">here</a> and the javascript <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/blob/master/app/modules/applications/myApplications/myApplications.ctrl.js" target="blank">here</a>.</div>
 <!-- /processHTML -->
-
-<!--
-info scope vars
-
-base.loader.for['myApplications.apps'] true on first load, while apps are loading, undefined otherwise
-base.loader.for['myApplications.reloadingApps'] true while reloading apps, after a sorting or refinement is passed, undefined otherwise
-base.loader.for['myApplications.categories'] true on first load, while categories are loading, undefined otherwise
-
-base.apiError.for['myApplications.apps'] true only if there was an error getting apps
-base.apiError.for['myApplications.categories'] true only if there was an error getting categories
-
--->
 
 <div class="cui-action">
   <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
-      <li class="cui-breadcrumb__link" >
+<!--        <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications.applicationList">{{'organization-applications' | translate}}</a>
-      </li>
+      </li> -->
       <li class="cui-breadcrumb__link cui-breadcrumb__link--current" >
         <a ui-sref="applications.myApplications">{{'my-applications' | translate}}</a>
       </li>
@@ -29,59 +17,6 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
     </ul>
   </nav>
   <div class="cui-action__actions">
-    <!-- Sort -->
-    <div class="cui-action__action-container" ng-click="myApplications.sortClicked =! myApplications.sortClicked" id="sort-button" off-click="myApplications.sortClicked=false">
-      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-      <span class="cui-action__action-label">{{'sort' | translate}}</span>
-      <!-- Sort Popover -->
-      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="myApplications.sortClicked" style="width:171px">
-        <div class="cui-popover__row">
-          <span ng-click="myApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
-        </div>
-        <div class="cui-popover__row">
-          <span ng-click="myApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Refine -->
-    <div class="cui-action__action-container" ng-click="myApplications.refineClicked =! myApplications.refineClicked" id="refine-button" off-click="myApplications.refineClicked=false">
-      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
-      <span class="cui-action__action-label">{{'refine' | translate}}</span>
-      <!-- Refine Popover -->
-      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.refineClicked" style="width:214px">
-        <div class="cui-popover__row cui-popover--row__flex">
-          <span ng-click="myApplications.updateSearch('status')">{{'all' | translate}}</span>
-          <span>({{myApplications.popupCount}})</span>
-        </div>
-        <div class="cui-popover__row cui-popover--row__flex">
-          <span ng-click="myApplications.updateSearch('status','active')">{{'active' | translate}}</span>
-          <span>({{myApplications.activeCount}})</span>
-        </div>
-        <div class="cui-popover__row cui-popover--row__flex">
-          <span ng-click="myApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
-          <span>({{myApplications.suspendedCount}})</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button" off-click="myApplications.categoriesClicked=false">
-      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
-      <span class="cui-action__action-label">{{'categories' | translate}}</span>
-      <!-- Categories Popover -->
-      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false" style="width:214px">
-        <div class="cui-popover__row cui-popover--row__flex">
-          <span ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</span>
-          <span>({{myApplications.popupCount}})</span>
-        </div>
-        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in myApplications.categories">
-          <span ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
-          <span>({{category.count}})</span>
-        </div>
-      </div>
-    </div>
-
     <!-- new icon -->
     <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
       <defs>
@@ -104,41 +39,77 @@ base.apiError.for['myApplications.categories'] true only if there was an error g
     </svg>
   </div>
 </div>
+<!-- Commenting favorites section for now. -->
+<!-- favorite Apps -->
+<!-- <div class="cui-action">
+  <h3 class="cui-action__title">{{'my-favorite-apps' | translate}}</h3>
+</div> -->
+<!-- favorite apps body -->
+<!-- <div class=""> 
 
+</div>-->
+<!-- All apps -->
+<div class="cui-action">
+  <h3 class="cui-action__title ">{{'cui-all-applications' | translate}}</h3>
+  <div class="cui-action__actions">
+    <!-- Categories -->
+    <div class="cui-action__action-container" ng-click="myApplications.categoriesClicked =! myApplications.categoriesClicked" id="categories-button" off-click="myApplications.categoriesClicked=false">
+      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+      <!-- Categories Popover -->
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="myApplications.categoriesClicked" ng-click="myApplications.categoriesClicked=false" style="width:214px">
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="myApplications.updateSearch('category')">{{'all' | translate}}</span>
+          <span>({{myApplications.popupCount}})</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in myApplications.categories">
+          <span ng-click="myApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
+          <span>({{category.count}})</span>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+<!-- All apps body -->
 <div class="cui-applications__main-container">
   <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['myApplications.apps']"></div>
   <div class="cui-loading__container" ng-if="base.loader.for['myApplications.apps']">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <!-- <div ng-if="!base.loader.for['myApplications.apps']" style="position:relative"> -->
+
+  <!-- Loader -->
+  <div class="cui-loading__container" ng-if="base.loader.for['myApplications.reloadingApps']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
   </div>
-  <!-- TODO styling for no results -->
-  <!-- TODO @SHANE I had to add position relative to this div so that the loading container doesn't overflow onto the pagination -->
-  <!-- also, when there's only 1 result at the last page, for example, the pagination will jump up. Can we maybe force it to be at the bottom of the page? -->
-  <div ng-if="!base.loader.for['myApplications.apps']" style="position:relative">
 
-    <!-- Loader -->
-    <div class="cui-loading__container" ng-if="base.loader.for['myApplications.reloadingApps']">
-      <div class="cui-loading--center"><div class="cui-loading"></div></div>
-    </div>
-
-    <!-- No applications message -->
-    <p ng-if="myApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
-
-    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in myApplications.list track by application.id" ng-if="application.servicePackage.displayable==true">
-      <div class="cui-media__image-container">
-        <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
-      </div>
-      <div class="cui-media__body cui-media__body--full">
-        <div class="cui-media__title-container">
-          <!-- Launch Application Icon -->
-          <a class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
-          <h3 class="cui-media__title" ng-click="myApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
+  <!-- No applications message -->
+  <p ng-if="myApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
+  <div class="cui-applications__manage-apps" >
+    <div class="cui-tile" ng-repeat="application in myApplications.viewList"ng-class="{'last-item':($index+1)%3==0}">
+      <div >
+        <div class="cui-tile__title">
         </div>
-        <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{ application.grant.status | lowercase }}</span>
+        <div class="cui-tile__body">
+          <div class="cui-media__manage">
+            <div class="cui-media__image-container">
+              <a ng-href="{{application.mangledUrl}}" target="_blank"><div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div></a>
+            </div>
+            <div class="cui-media__title uppercase">{{application.name|cuiI18n}}</div>
+          </div>
+          <div class="cui-media__title">{{'description'|translate}}</div>
+          <div>{{application.description|cuiI18n}}</div>   
+          <div class="cui-tile__footer">
+            <a class="cui-button cui-button--inverted" ng-class="{'cui-button--error':!application.mangledUrl}" ng-href="{{application.mangledUrl}}" target="_blank" ng-if="application.mangledUrl">{{'launch'|translate}}</a>
+            <a class="cui-button cui-button--inverted" ng-class="{'cui-button--error':!application.urls[0].value}" ng-href="{{application.urls[0].value}}" target="_blank" ng-if="!application.mangledUrl">{{'launch'|translate}}</a>
+            <span class="cui-tile__footer-text">{{application.category|cuiI18n}}</span>
+          </div>      
+        </div>     
       </div>
     </div>
   </div>
 
+  <!-- Paginate container -->
   <div class="cui-paginate__container" ng-if="!base.loader.for['myApplications.apps']">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="myApplications.search.pageSize"></results-per-page>
