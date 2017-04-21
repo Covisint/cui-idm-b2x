@@ -8,7 +8,8 @@
 		<p ng-if="pendingRequestsReview.approvedCount===0">{{'no-items-approved' | translate}}.</p>
 		<ul>
 			<li ng-if="pendingRequestsReview.approvedCount>0" ng-repeat="package in pendingRequestsReview.pendingRequests track by package.id">
-				<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span><br/>
+				<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span>
+				<br ng-if="package.approval==='approved'" />
 			</li>
 		</ul>
 	</div>

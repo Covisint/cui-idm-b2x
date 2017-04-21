@@ -15,7 +15,7 @@ angular.module('applications',[])
             abstract: true
         })
         .state('applications.myApplications', {
-            url: '?name&page&pageSize&service.category&sortBy&grant.status',
+            url: '?page&pageSize&service.category',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications'),
             access:loginRequired
@@ -45,7 +45,7 @@ angular.module('applications',[])
             access:loginRequired
         })
         .state('applications.manageApplications', {
-            url: '/manage?page&pageSize&service.category',
+            url: '/manage?name&page&pageSize&service.category&sortBy&grant.status&service.name',
             templateUrl: templateBase + 'myApplications/myApplications-manage.html',
             controller: returnCtrlAs('manageApplications'),
             access:loginRequired

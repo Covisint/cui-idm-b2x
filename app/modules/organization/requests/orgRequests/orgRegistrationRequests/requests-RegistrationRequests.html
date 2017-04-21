@@ -1,29 +1,22 @@
-<main class="cui-organization cui-organization-req-uers">
+<main class="cui-organization cui-organization-req-org">
   <!-- <h2 class="cui-sr-only">{{'org-req-users-requests' | translate}}</h2> -->
   <h2 class="cui-sr-only">{{'org-req-users-requests'}}</h2>
 
   <!-- routehistory POC -->
   <cui-route-history></cui-route-history>
-
-  <!-- Header -->
-  <section class="cui-action" ng-if="!orgRegistrationRequests.loading">
-    <!-- <h3 class="cui-sr-only">{{'org-req-users-filters' | translate}}</h3> -->
-    <h3 class="cui-sr-only">{{'org-req-users-filters'}}</h3>
-    
     <!-- Tabs -->
     <div class="cui-tabs__main-container">
       <ul class="cui-tabs__nav">
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.orgRegistrationRequests">
-          <a class="cui-tabs__tab cui-tabs__tab--active">{{'new-organization' | translate}}</a>
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'pending' | translate}} {{'cui-org'|translate}} {{'requests'| translate}}</a>
         </li>
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.orgAppRequests">
-          <a class="cui-tabs__tab">{{'cui-applications' | translate}}</a>
+          <a class="cui-tabs__tab">{{'pending' | translate}} {{'application'|translate}} {{'requests'| translate}}</a>
         </li>
       </ul>
     </div>
-  </section>
 
   <!-- Content -->
   <section class="cui-organization__main-container">

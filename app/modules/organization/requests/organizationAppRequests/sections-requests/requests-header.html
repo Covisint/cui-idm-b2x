@@ -33,45 +33,14 @@
       <!-- Email -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}} {{'cui-email' | translate}}:</span> <a href="mailto:{{organizationAppRequest.request.personData.email}}" class="cui-media__link"> {{organizationAppRequest.request.personData.email}}</a></div>
       <!-- Registered Date -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequest.request.personData.creation | date:base.appConfig.dateFormat}}</div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequest.request.personData.organization.creation | date:base.appConfig.dateFormat}}</div>
+      <!-- status -->
+      <div class="cui-media__content">
+        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequest.request.personData.organization.status}}</a>
+        <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequest.request.personData.organization.status==='active'"></cui-icon>
+        <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequest.request.personData.organization.status==='locked'"></cui-icon>
+      </div>
     </div>
   </div>
-
-  <!-- Details & Status -->
-  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="organizationAppRequest.request.personData && organizationAppRequest.request.personData.organization">
-    <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
-      <div class="cui-expandable__details-status">
-        <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
-        <span class="cui-expandable__status" ng-class=" 'cui-status--'+organizationAppRequest.request.user.status">{{organizationAppRequest.request.personData.organization.status}}</span>
-      </div>
-    </cui-expandable-title>
-    <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
-      <div class="cui-expandable__body-row">
-        <!-- Address -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationAppRequest.request.personData.organization">
-          <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.organization.addresses[0].streets[0]}}</span>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.organization.addresses[0].city}}</span>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.organization.addresses[0].state}}, {{organizationAppRequest.request.personData.organization.addresses[0].postal}}</span>
-          <!-- <span class="cui-field-val__val">{{organizationAppRequest.request.personData.organization.phones[0].number}}</span> -->
-        </div>
-        <!-- Phone -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small">
-          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.organization.phones[0].number}}</span>
-        </div>
-        <!-- Time zone and Language -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationAppRequest.request.personData">
-          <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.timezone}}</span>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.personData.language}}</span>
-        </div>
-        <!-- Request -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationAppRequest.request.request.justification">
-          <div class="cui-field-val__field">{{'request' | translate}}:</div>
-          <span class="cui-field-val__val">{{organizationAppRequest.request.request.justification}}</span>
-        </div>
-      </div>
-    </cui-expandable-body>
-  </cui-expandable>
+  
 </div>
