@@ -152,6 +152,7 @@ angular.module('user')
     /* -------------------------------------------- HELPER FUNCTIONS END ----------------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+    appHistory.user=User.user
     Loader.onFor(scopeName + 'initHistory')
      API.cui.getPersonApplicationsGrantHistory({personId:User.user.id})
      .then(res => {
