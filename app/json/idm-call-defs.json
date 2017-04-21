@@ -793,6 +793,18 @@
     "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
   },
   {
+    "cmd": "getPersonApplicationsGrantHistoryCount",
+    "call": "/service/v3/applications/persons/{personId}/history/count",
+    "type": "GET",
+    "accepts": "text/plain"
+  },
+  {
+    "cmd": "getPersonApplicationsRequestHistoryCount",
+    "call": "/service/v3/persons/{personId}/applications/requests/history/count",
+    "type": "GET",
+    "accepts": "text/plain"
+  },
+  {
     "cmd": "getPersonPendingApps",
     "call": "/service/v3/persons/{personId}/applications/requests",
     "type": "GET",
@@ -823,5 +835,12 @@
     "call": "/person/v3/persons/organizations/{organizationId}/securityAdmins",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.person.v1+json"
+  },
+  {
+    "cmd": "getOrgAppCategories",
+    "cmdType": "secured",
+    "call": "/service/v3/categories/organization/{organizationId} ",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.category.v1+json"
   }
 ]

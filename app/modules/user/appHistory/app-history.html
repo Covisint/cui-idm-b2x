@@ -97,19 +97,19 @@
 					      </div>
 					    </div>
 				</div>
-				<!-- Hiding because count API is not avialble 
-				<div class="cui-paginate__container">
+				<!-- Hiding because count API is not avialble  -->
+				<div class="cui-paginate__container" style="height: 0px;">
 				    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
 				    <results-per-page class="cui-paginate__select" ng-model="appHistory.search.pageSize"></results-per-page>
 				    <paginate class="cui-paginate" results-per-page="appHistory.search.pageSize" count="appHistory.count" on-page-change="appHistory.pageRequestedChange" ng-model="appHistory.search.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
-				  </div> -->
+				  </div>
 		    </div>
 		    
 		    <!-- Right Block -->
 		    <div class="cui-users__profile-info">
 		    	<div class="cui-action">
 		      		<div class="cui-action__title">{{'cui-application-granted-history'|translate}}</div>
-		      				      		  <div class="cui-action__actions">
+		      		<div class="cui-action__actions">
 					    <!-- Sort -->
 					    <div class="cui-action__action-container" ng-click="appHistory.granted.sortClicked =! appHistory.granted.sortClicked" id="sort-buttons" off-click="appHistory.granted.sortClicked=false">
 					      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -165,12 +165,12 @@
 					        <span class="cui-media__content" > {{'evaluator'|translate}}: {{application.actor.given}} {{application.actor.surname}}</span>
 					      </div>
 					    </div>
-				<!-- Hiding because count API is not avialble 
+				<!-- Hiding because count API is not avialble  -->
 				<div class="cui-paginate__container">
 				    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
 				    <results-per-page class="cui-paginate__select" ng-model="appHistory.grantedSearch.pageSize"></results-per-page>
 				    <paginate class="cui-paginate" results-per-page="appHistory.grantedSearch.pageSize" count="appHistory.grantedHistoryCount" on-page-change="appHistory.pageGrantedChange" ng-model="appHistory.grantedSearch.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
-				 </div> -->
+				 </div>
 		    </div>
 		</div>
     </div>
