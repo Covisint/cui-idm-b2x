@@ -9,7 +9,7 @@
       <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
     </div>
     <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
-    <span class="cui-modal__secondary-message" ng-if="organizationRequestReview.request.approval==='denied'">{{'registration-request-denied' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationRequestReview.request.approval==='denied'">{{'registration-request-rejected' | translate}}</span>
     <span class="cui-modal__secondary-message" ng-if="organizationRequestReview.request.approval==='approved'">{{'registration-request-approved' | translate}}</span>
     <span class="cui-modal__secondary-message" ng-if="organizationRequestReview.approvedCount!==0">{{organizationRequestReview.approvedCount}} {{'approvals-submitted' | translate}}</span>
     <span class="cui-modal__secondary-message" ng-if="organizationRequestReview.deniedCount!==0">{{organizationRequestReview.deniedCount}} {{'rejection-submitted' | translate}}</span>
