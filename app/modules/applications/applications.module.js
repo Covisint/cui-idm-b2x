@@ -45,7 +45,7 @@ angular.module('applications',[])
             access:loginRequired
         })
         .state('applications.manageApplications', {
-            url: '/manage?name&page&pageSize&service.category&sortBy&grant.status',
+            url: '/manage?name&page&pageSize&service.category&sortBy&grant.status&service.name',
             templateUrl: templateBase + 'myApplications/myApplications-manage.html',
             controller: returnCtrlAs('manageApplications'),
             access:loginRequired

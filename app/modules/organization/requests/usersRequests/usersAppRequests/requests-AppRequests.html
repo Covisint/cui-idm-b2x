@@ -5,11 +5,6 @@
   <!-- routehistory POC -->
   <cui-route-history></cui-route-history>
 
-  <!-- Header -->
-  <section class="cui-action" ng-if="!usersAppRequests.loading">
-    <!-- <h3 class="cui-sr-only">{{'org-req-apps-filters' | translate}}</h3> -->
-    <h3 class="cui-sr-only">{{'org-req-apps-filters'}}</h3>
-    
     <!-- Tabs -->
     <div class="cui-tabs__main-container">
       <ul class="cui-tabs__nav">
@@ -19,11 +14,10 @@
         </li>
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.usersAppRequests">
-          <a class="cui-tabs__tab--active">{{'pending' | translate}} {{'application' | translate}} {{'requests' | translate}}</a>
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'pending' | translate}} {{'application' | translate}} {{'requests' | translate}}</a>
         </li>
       </ul>
     </div>
-  </section>
 
   <!-- Content -->
   <section class="cui-organization__main-container">

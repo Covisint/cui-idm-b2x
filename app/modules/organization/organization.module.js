@@ -26,7 +26,7 @@ angular.module('organization', [])
             template: '<div ui-view></div>'
         })
         .state('organization.directory.userList', {
-            url: '/directory/:orgId?page&pageSize&sortBy&refine',
+            url: '/directory/:orgId?page&pageSize&sortBy&status&fullName',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
             access: {

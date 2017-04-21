@@ -17,7 +17,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
 <div class="cui-action">
   <nav class="cui-breadcrumb">
     <ul class="cui-breadcrumb__links">
-<!--       <li class="cui-breadcrumb__link" >
+      <!--       <li class="cui-breadcrumb__link" >
         <a ui-sref="applications.orgApplications.applicationList">{{'organization-applications' | translate}}</a>
       </li> -->
       <li class="cui-breadcrumb__link" >
@@ -105,6 +105,12 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
   </div>
 </div>
 
+<div class="cui-action cui-action--alt">
+  <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <input class="cui-input-button__input" ng-model="manageApplications.search['service.name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageApplications.updateSearchByName"/>
+      <button class="cui-input-button__button" ng-click="manageApplications.updateSearchByName()">{{'search' | translate}}</button>
+  </div>
+</div>
 <div class="cui-applications__main-container">
   <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['manageApplications.apps']"></div>
   <div class="cui-loading__container" ng-if="base.loader.for['manageApplications.apps']">
@@ -122,6 +128,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
 
     <!-- No applications message -->
     <p ng-if="manageApplications.list.length===0">{{'cui-no-applications' | translate}}</p>
+    <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['manageApplications.apps']">{{'error-generic'|translate}}</p>
 
     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in manageApplications.list track by application.id">
       <div class="cui-media__image-container">
