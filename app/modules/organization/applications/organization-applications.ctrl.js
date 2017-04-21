@@ -145,6 +145,10 @@ angular.module('organization')
         organizationApplications.updateSearch('page', newpage);
     };
 
+    organizationApplications.updateSearchByName = () => {
+        organizationApplications.updateSearch('name',organizationApplications.search['name'])
+    }
+
     organizationApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType){
             case 'alphabetic':
@@ -161,6 +165,9 @@ angular.module('organization')
                 organizationApplications.search.page = 1;
                 organizationApplications.search.category = $filter('cuiI18n')(updateValue);
                 break;
+            case 'name':
+                organizationApplications.search.page = 1
+                break
         }
 
         // Updates URL, doesn't change state

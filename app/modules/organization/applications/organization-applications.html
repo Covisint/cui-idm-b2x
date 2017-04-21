@@ -14,6 +14,12 @@
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
     </div>
     <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
+    <div class="cui-action cui-action--alt">
+      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+          <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
+          <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
+      </div>
+    </div>
     <!-- <span class="cui-action__title cui-mobile-only">{{organizationApplications.orgPersonCount}} People</span> -->
     <div class="cui-action__actions">
 
