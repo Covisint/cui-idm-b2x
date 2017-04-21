@@ -6,7 +6,7 @@ angular.module('common')
 	const getOrganizationAdmins = (organizationId) => {
 		const defer = $q.defer()
 
-		API.cui.getPersonsAdmins({qs: [['organization.id', organizationId], ['securityadmin', true]]})
+		API.cui.getOrganizationSecurityAdmins({organizationId: organizationId})
 		.done(response => defer.resolve(response))
 		.fail(error => defer.reject(error))
 
@@ -31,6 +31,10 @@ angular.module('common')
 		.fail(error => defer.reject(error))
 
 		return defer.promise
+	}
+
+	const getOrganization = (organizationId) => {
+		return API.cui.getOrganizationWithAttributes({organizationId:organizationId})
 	}
 
 	const initOrganizationProfile = (organizationId, policyId, authPolicyId) => {
@@ -67,6 +71,7 @@ angular.module('common')
 		getOrganizationAdmins: getOrganizationAdmins,
 		getOrganizationPasswordPolicy: getOrganizationPasswordPolicy,
 		getOrganizationAuthenticationPolicy:getOrganizationAuthenticationPolicy,
+		getOrganization:getOrganization,
 		initOrganizationProfile: initOrganizationProfile
 	}
 

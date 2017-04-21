@@ -107,7 +107,7 @@
     font-size: em(14);
     justify-content: space-between;
     margin: 0 auto;
-    width: 210px;
+    width: 100px;
 
     @media screen and (max-width: 700px) {
       margin: em(28, 14) em(13, 14) 0;
@@ -118,12 +118,6 @@
     .cui-expandable__status {
       font-size: 1em;
       letter-spacing: $letter-spacing-lg;
-    }
-
-    .cui-expandable__details {
-      @media screen and (min-width: 701px) {
-        margin-left: -20px;
-      }
     }
   }
 
@@ -184,4 +178,8 @@
   .cui-action {
     display: none;
   }
+}
+
+.flex_row{
+  @extend %flex-row;
 }

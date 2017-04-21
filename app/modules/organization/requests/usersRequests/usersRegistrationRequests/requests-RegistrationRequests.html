@@ -1,24 +1,23 @@
 <main class="cui-organization cui-organization-req-uers">
-  <h2 class="cui-sr-only">{{'org-req-users-requests' | translate}}</h2>
+  <!-- <h2 class="cui-sr-only">{{'org-req-users-requests' | translate}}</h2> -->
+  <h2 class="cui-sr-only">{{'org-req-users-requests'}}</h2>
 
-  <!-- Header -->
-  <section class="cui-action" ng-if="!usersRegistrationRequests.loading">
-    <h3 class="cui-sr-only">{{'org-req-users-filters' | translate}}</h3>
-    
+  <!-- routehistory POC -->
+  <cui-route-history></cui-route-history>
+
     <!-- Tabs -->
     <div class="cui-tabs__main-container">
       <ul class="cui-tabs__nav">
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.usersRegistrationRequests">
-          <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-new-user' | translate}}</a>
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'pending' | translate}} {{'user' | translate}} {{'requests' | translate}}</a>
         </li>
         <li class="cui-tabs__tab-container" 
         ui-sref="organization.requests.usersAppRequests">
-          <a class="cui-tabs__tab">{{'cui-applications' | translate}}</a>
+          <a class="cui-tabs__tab">{{'pending' | translate}} {{'application' | translate}} {{'requests' | translate}}</a>
         </li>
       </ul>
     </div>
-  </section>
 
   <!-- Content -->
   <section class="cui-organization__main-container">
@@ -30,7 +29,7 @@
     </div>
 
     <cui-table-header 
-      headers="['cui-name', 'title', 'submitted', 'request', 'division']"
+      headers="['cui-name', 'submitted', 'application', 'division']"
       sorting="usersRegistrationRequests.sortBy"
       sorting-callbacks="usersRegistrationRequests.sortingCallbacks">
       </cui-table-header>
@@ -49,9 +48,9 @@
             <span class="cui-flex-table__title">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
           </div>
 
-          <div class="cui-flex-table__middle">
+       <!--    <div class="cui-flex-table__middle">
             <span class="">{{userRequest.personData.title}}</span>
-          </div>
+          </div> -->
 
           <div class="cui-flex-table__middle">
             <span class="">{{userRequest.personData.creation|date}}</span>

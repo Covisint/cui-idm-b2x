@@ -1,5 +1,5 @@
 angular.module('registration')
-.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window,Base,$pagination) {
+.controller('userWalkupCtrl', function(APIError, localStorageService, Registration, $scope, $state,$q,LocaleService, $window,Base,$pagination,$filter) {
 
     const userWalkup = this
 
@@ -76,6 +76,7 @@ angular.module('registration')
         // Populate organization list
         userWalkup.organizationList = res.organizations
         userWalkup.organizationCount = res.organizationCount
+        userWalkup.orgReRenderPaginate && userWalkup.orgReRenderPaginate()
 
         userWalkup.initializing = false
     })
@@ -86,25 +87,45 @@ angular.module('registration')
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
+    userWalkup.applications.checkOrUncheckBundledApps = (checkboxValue,application) => {
+        if (application.bundledApps) {
+            application.bundledApps.forEach(bundledApp => {
+                if (checkboxValue !== null) {
+                    bundledApp=_.find(userWalkup.applications.list,{id:bundledApp.id})
+                    userWalkup.applications.selected[bundledApp.id]=bundledApp.id+','+bundledApp.servicePackage.id+','+$filter('cuiI18n')(bundledApp.name)+','+application.servicePackage.personTacEnabled
+                    userWalkup.applications.numberOfSelected += 1;
 
-    userWalkup.applications.updateNumberOfSelected = (checkboxValue) => {
+                } else {
+                    userWalkup.applications.selected[bundledApp.id]=null
+                    userWalkup.applications.numberOfSelected -= 1;
+                } 
+            })
+        }
+
+    }
+
+    userWalkup.applications.updateNumberOfSelected = (checkboxValue,application) => {
         // Update the number of selected apps everytime on of the boxes is checked/unchecked
         if (checkboxValue !== null) {
             userWalkup.applications.numberOfSelected += 1;
         } else {
             userWalkup.applications.numberOfSelected -= 1;
         }
+        userWalkup.applications.checkOrUncheckBundledApps(checkboxValue,application)
         userWalkup.applications.process()
     }
 
     userWalkup.applications.updateSelected = (application, checkboxValue, index) => {
-        if (checkboxValue === true) {
-            userWalkup.applications.selected[index]=application.id+','+application.packageId+','+application.name+','+application.showTac
-            userWalkup.applications.numberOfSelected += 1;
-        } else {
-            delete userWalkup.applications.selected[index]          
-            userWalkup.applications.numberOfSelected -= 1;
-        }
+        let bundledApps=_.filter(userWalkup.applications.processedSelected,{packageId:application.packageId})
+        bundledApps.forEach(bundledApp => {
+            if (checkboxValue !== null) {
+                userWalkup.applications.selected[bundledApp.id]=bundledApp.id+','+bundledApp.packageId+','+bundledApp.name+','+bundledApp.showTac
+                userWalkup.applications.numberOfSelected += 1;
+            } else {
+                delete userWalkup.applications.selected[bundledApp.id]          
+                userWalkup.applications.numberOfSelected -= 1;
+            }
+        })
     }
 
     userWalkup.getAppicationTaC = () => {
@@ -215,6 +236,7 @@ angular.module('registration')
         .then(res => {
             const grants = res.grants
             userWalkup.appCount=res.appCount
+            userWalkup.appReRenderPaginate && userWalkup.appReRenderPaginate()
             if (!grants.length) userWalkup.applications.list = undefined
             else {
                 userWalkup.applications.list = grants
@@ -238,10 +260,12 @@ angular.module('registration')
             userWalkup.orgPaginationCurrentPage=newPage
             userWalkup.organizationList = res
             userWalkup.updatingOrgs = false
+            $scope.$digest()
         })
         .fail((err) => {
             console.error("There was an error in fetching organization list for page "+newPage +err)
             userWalkup.updatingOrgs = false
+            $scope.$digest()
         })
     }
 
@@ -250,13 +274,19 @@ angular.module('registration')
         Registration.getOrgAppsByPage(newPage,userWalkup.appPaginationSize,userWalkup.organization.id)
         .then((res) => {
             userWalkup.appPaginationCurrentPage=newPage
-            if (!res.length) userWalkup.applications.list = undefined
+            if (!res.length) {
+                userWalkup.updatingApps=false
+                userWalkup.applications.list = undefined
+            }
             else {
                 userWalkup.applications.list = res
                 userWalkup.updatingApps = false
             }
+            $scope.$digest()
         })
         .fail((err) =>{
+            userWalkup.updatingApps =false
+            $scope.$digest()
             console.error("There was an error in fetching app list for page "+newPage +err)
         })
     }
@@ -272,11 +302,16 @@ angular.module('registration')
 
     $scope.$watch('userWalkup.orgFilterByname', (a) => {
         if (a!==undefined) {
+            userWalkup.updatingOrgs=true
             Registration.getOrgsByPageAndName(1,userWalkup.orgPaginationSize,a)
             .then((res)=> {
                 userWalkup.organizationList = res
+                userWalkup.updatingOrgs=false
+                $scope.$digest()
             })
             .fail((err) => {
+                userWalkup.updatingOrgs=false
+                $scope.$digest()
                  console.error("There was an error in filtering orgs by name "+err)
             })  
         }

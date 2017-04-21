@@ -101,7 +101,11 @@ angular.module('common')
             accepts: 'text/plain',
             call: '/registration/v1/registrations/organizations/count'
         },
-
+        //New Calls-S
+        {cmd: "getOrgRegistrationRequests",call:"/registration/v1/organization/requests",type:"GET",accepts:"application/vnd.com.covisint.platform.organization.request.v1+json",contentType:"application/vnd.com.covisint.platform.organization.request.v1+json"},
+        {cmd: "getOrgRegistrationRequestsCount",call: "/registration/v1/organization/requests/count",type: "GET",accepts: "text/plain"},
+        {cmd: 'approveOrgRegistrationRequest', call:'/registration/v1/organization/requests/tasks/approve', type:'POST', accepts:'application/vnd.com.covisint.platform.organization.request.v1+json'},
+        {cmd: 'denyOrgRegistrationRequest', call:'/registration/v1/organization/requests/tasks/deny', type:'POST', accepts:'application/vnd.com.covisint.platform.organization.request.v1+json'},
                 // ADMIN... imported from Coke...
         {cmd: 'getPackageByQuery',accepts: 'application/vnd.com.covisint.platform.package.v1+json',call: `/service/v3/packages`,type: 'GET' },
         {cmd: "getPersonByQuery",call: "/person/v3/persons",type: "GET",accepts: "application/vnd.com.covisint.platform.person.v1+json"  },

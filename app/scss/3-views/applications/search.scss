@@ -24,7 +24,7 @@
 
     .cui-input-button {
       @media screen and (min-width: 701px) {
-        flex: 0.5;
+        flex: 0.3;
       }
     }
   }
@@ -57,4 +57,8 @@
   display: flex;
   justify-content: flex-end;
   margin-top: em(40);
+}
+
+.cui-hide__opacity{
+  opacity:0;
 }

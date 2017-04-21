@@ -7,8 +7,17 @@ angular.module('applications')
         AppRequests.set(localStorage.get('appsBeingRequested'));
     }
 
-    const appRequests=AppRequests.get(),
-        appsBeingRequested=Object.keys(appRequests);
+    let appRequests=angular.copy(AppRequests.get());
+    angular.forEach(appRequests , (request) =>{
+        if (request.bundledApps) {
+            request.bundledApps.forEach(bundledApp => {
+                if (appRequests[bundledApp.id]) {
+                    delete appRequests[bundledApp.id]
+                }                    
+            })
+        }
+    })
+    const appsBeingRequested=Object.keys(appRequests)
 
     if (appsBeingRequested.length===0) {
         $state.go('applications.search');

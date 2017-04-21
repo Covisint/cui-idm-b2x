@@ -3,7 +3,7 @@ angular.module('organization')
 
     const userDetails = this
     const scopeName = 'userDetails.'
-
+    userDetails.stateParamsOrgId=$stateParams.orgId
     userDetails.mobileHandler = 'profile'
     userDetails.profileRolesSwitch = 'profile'
     userDetails.appsHistorySwitch = 'apps'
