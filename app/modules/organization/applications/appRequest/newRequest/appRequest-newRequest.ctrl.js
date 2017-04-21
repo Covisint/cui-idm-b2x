@@ -24,6 +24,13 @@ angular.module('organization')
         $scope.$digest();
     });
 
+    API.cui.getOrgAppCategories({organizationId:orgAppRequest.stateParamsOrgId})
+    .then((res)=>{
+        orgAppRequest.categories = res;
+        console.log(res);
+        $scope.$digest();
+    });
+
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
