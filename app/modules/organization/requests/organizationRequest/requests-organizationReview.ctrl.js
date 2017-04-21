@@ -91,23 +91,29 @@ angular.module('organization')
             .fail(handleError)
         }
         else {
-            API.cui.approvePersonRegistration({qs: [['requestId',requestData.registrant.requestId]]})
-            let packageRequestCalls = []
+            API.cui.approveOrganizationRequests({qs: [['requestId',requestData.registrant.requestId]]})
+            .then(res =>{
+                let packageRequestCalls = []
 
-            organizationRequestReview.packages.forEach(packageRequest => {
-                packageRequest.id=packageRequest.requestId
-                packageRequestCalls.push(ServicePackage.handlePackageApproval(packageRequest))
-            })
+                organizationRequestReview.packages.forEach(packageRequest => {
+                    packageRequest.id=packageRequest.requestId
+                    packageRequestCalls.push(ServicePackage.handlePackageApproval(packageRequest))
+                })
 
-            $q.all(packageRequestCalls)
-            .then( res =>{
-                Loader.offFor('organizationRequestReview.submitting')
-                organizationRequestReview.success = true
-                    $timeout(() => {
-                        $state.go('organization.requests.orgRegistrationRequests')
-                }, 3000) 
-            })
-            // .catch(handleError)
+                $q.all(packageRequestCalls)
+                .then( res =>{
+                    Loader.offFor('organizationRequestReview.submitting')
+                    organizationRequestReview.success = true
+                        $timeout(() => {
+                            $state.go('organization.requests.orgRegistrationRequests')
+                    }, 3000) 
+                })
+                .catch(err => {
+                    console.log("Org approval success but One or more package approval/denied failed" +err)
+                    organizationRequestReview.error = true
+                })
+            })            
+            .fail(handleError)
         }
     }
 
