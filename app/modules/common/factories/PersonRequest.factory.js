@@ -90,10 +90,10 @@ angular.module('common')
 		else if (decision === 'denied') {
 			if (request.rejectReason) {
 				data.push(['reason', request.rejectReason])
-				API.cui.denyPersonRegistration({qs: data})
+				return API.cui.denyPersonRegistration({qs: data})
 			}
 			else {
-				API.cui.denyPersonRegistration({qs: data})
+				return API.cui.denyPersonRegistration({qs: data})
 			}
 		}
 		else {
