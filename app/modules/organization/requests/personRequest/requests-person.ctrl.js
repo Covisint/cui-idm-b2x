@@ -26,6 +26,10 @@ angular.module('organization')
     .then(res => {
         personRequest.packages = res
     })
+    .catch(err => {
+        APIError.onFor('personRequest.noRequest')
+        $timeout(() => $state.go('organization.directory.userList',{orgId:organizationId}), 5000)
+    })
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
