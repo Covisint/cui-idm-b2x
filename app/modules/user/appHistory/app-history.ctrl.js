@@ -202,6 +202,9 @@ angular.module('user')
     /* -------------------------------------------- HELPER FUNCTIONS END ----------------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+
+    appHistory.user=User.user
+
     let queryParams = [['page', String(appHistory.search.page)], ['pageSize', String(appHistory.search.pageSize)]];
         if(appHistory.search.sortBy)
             queryParams.push(['sortBy',appHistory.search['sortBy']])
@@ -209,6 +212,7 @@ angular.module('user')
             personId:User.user.id,
             qs: queryParams
         };
+
     Loader.onFor(scopeName + 'initHistory')
      API.cui.getPersonApplicationsGrantHistory(opts)
      .then(res => {

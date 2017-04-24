@@ -3,6 +3,7 @@ angular.module('user')
 
     const userProfile = this
     const scopeName = 'userProfile.'
+    //$cuiIconProvider.iconSet('cui','node_modules/@covisint/cui-icons/dist/icons/icons-out.svg','0 0 48 48')
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
     //Error handler for email inline Edit tag
