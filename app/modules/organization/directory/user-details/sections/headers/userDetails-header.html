@@ -23,6 +23,7 @@
     <p class="cui-media__content">{{'cui-registered' | translate}}: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->
     <div class="cui-media__content">
+      <span class="cui-media__content--dark">{{'status' | translate}}:</span>
       <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status}}</span>
     </div>
   </div>
