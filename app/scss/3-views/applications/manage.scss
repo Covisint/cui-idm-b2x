@@ -61,6 +61,7 @@
         font-size: 1em;
         letter-spacing: 1.4px;
         padding-top: 0.5em;
+        word-break:break-all;
     }
     .cui-tile__footer{
         @extend %flex-row;
