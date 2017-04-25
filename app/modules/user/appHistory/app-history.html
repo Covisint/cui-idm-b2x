@@ -131,8 +131,8 @@
 				<!-- Hiding because count API is not avialble  -->
 				<div class="cui-paginate__container" style="height: 0px;">
 				    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-				    <results-per-page class="cui-paginate__select" ng-model="appHistory.search.pageSize"></results-per-page>
-				    <paginate class="cui-paginate" results-per-page="appHistory.search.pageSize" count="appHistory.count" on-page-change="appHistory.pageRequestedChange" ng-model="appHistory.search.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
+				    <results-per-page class="cui-paginate__select" ng-model="appHistory.requestedSearch.pageSize"></results-per-page>
+				    <paginate class="cui-paginate" results-per-page="appHistory.requestedSearch.pageSize" count="appHistory.count" on-page-change="appHistory.pageRequestedChange" ng-model="appHistory.requestedSearch.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
 				  </div>
 		    </div>
 		    

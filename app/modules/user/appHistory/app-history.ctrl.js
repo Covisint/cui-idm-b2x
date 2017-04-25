@@ -39,8 +39,15 @@ angular.module('user')
                 appHistory.search['grant.status'] = updateValue
                 break
             case 'page':
+            if (updatePage==='requested') {
+                appHistory.search.page = appHistory.requestedSearch.page
+                appHistory.search.pageSize = appHistory.requestedSearch.pageSize
+            };
+            if (updatePage==='granted') {
                 appHistory.search.page = appHistory.grantedSearch.page
                 appHistory.search.pageSize = appHistory.grantedSearch.pageSize
+            };
+                
                 break
         }
 
