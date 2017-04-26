@@ -5,12 +5,12 @@
   <!-- Navigation -->
   <section class="cui-action">
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=organizationApplications.stateParamsOrgId"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <nav ng-if="!organizationApplications.loading"ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=organizationApplications.organization.name"></nav>
   </section>
   <!-- subheader -->
   <section class="cui-action">
     <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
-    <div class="cui-loading__container" ng-if="orgDirectory.loading">
+    <div class="cui-loading__container" ng-if="organizationApplications.loading">
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
     </div>
     <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>

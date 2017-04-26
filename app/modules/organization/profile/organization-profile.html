@@ -6,7 +6,7 @@
   <!-- Action Header -->
   <div class="cui-action">
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgProfile.stateParamsOrgId"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <nav ng-if="!base.loader.for['orgProfile.init']" ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=orgProfile.organization.name"></nav>
     <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </div>
 

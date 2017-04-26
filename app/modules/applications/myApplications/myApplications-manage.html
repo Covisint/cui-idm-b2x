@@ -28,6 +28,10 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
       </li>
     </ul>
   </nav>
+  <cui-mobile-nav show-if="base.appMobileNav" links="{
+    'applications.myApplications':{stateParams:{},label:('my-applications' | translate)},
+    'applications.manageApplications':{stateParams:{},label:('manage-applications' | translate)}
+  }">
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="manageApplications.sortClicked =! manageApplications.sortClicked" id="sort-button" off-click="manageApplications.sortClicked=false">

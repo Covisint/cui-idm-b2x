@@ -7,7 +7,7 @@
   <!-- Navigation -->
   <section class="cui-action">
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgHierarchy.stateParamsOrgId"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <nav ng-if="!base.loader.for['orgHierarchy.loading']" ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=orgHierarchy.organizationHierarchy[0].name[0].text"></nav>
     <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </section>
 

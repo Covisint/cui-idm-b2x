@@ -16,6 +16,11 @@
       </li>
     </ul>
   </nav>
+  <cui-mobile-nav show-if="base.appMobileNav" links="{
+    'applications.myApplications':{stateParams:{},label:('my-applications' | translate)},
+    'applications.manageApplications':{stateParams:{},label:('manage-applications' | translate)}
+  }">
+</cui-mobile-nav>
   <div class="cui-action__actions">
     <!-- new icon -->
     <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">

@@ -174,11 +174,11 @@
   margin-bottom: 15px;
 }
 
-@media screen and (max-width: 375px) {
+/*@media screen and (max-width: 375px) {
   .cui-action {
     display: none;
   }
-}
+}*/
 
 .flex_row{
   @extend %flex-row;
