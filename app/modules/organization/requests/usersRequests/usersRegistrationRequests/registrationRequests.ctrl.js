@@ -1,11 +1,13 @@
 angular.module('organization')
 .controller('usersRegistrationRequestsCtrl', 
-		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User) {
+		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope) {
 
     const scopeName = 'usersRegistrationRequests.'
 		const usersRegistrationRequests = this
     usersRegistrationRequests.search = {}
 		usersRegistrationRequests.sortBy = {}
+	usersRegistrationRequests.searchByOrg=[]
+      usersRegistrationRequests.searchByPerson=[]
 
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
@@ -20,6 +22,17 @@ angular.module('organization')
       usersRegistrationRequests.search.pageSize = usersRegistrationRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 			var qsArray = APIHelpers.getQs(usersRegistrationRequests.search);
 			//cui.log('qsArray', qsArray);
+			if(usersRegistrationRequests.searchByOrg.length>0){
+				usersRegistrationRequests.searchByOrg.forEach(function(val){
+					qsArray.push(['organizationId',val.id])
+				})
+				
+			}else if(usersRegistrationRequests.searchByPerson.length>0){
+				usersRegistrationRequests.searchByPerson.forEach(function(val){
+					qsArray.push(['registrant.id',val.id])
+				})
+			}
+			else{}
 
 	    usersRegistrationRequests.data = []
       Loader.onFor(scopeName + 'data')
@@ -208,5 +221,51 @@ angular.module('organization')
         init()
     }
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
-
+    usersRegistrationRequests.searchBy='person'
+    usersRegistrationRequests.updateSearchByName = () =>{     
+    	//console.log(usersRegistrationRequests.searchBy)
+    	if(usersRegistrationRequests.searchBy==='org'&&usersRegistrationRequests.searchValue){
+    		Loader.onFor(scopeName + 'data')
+      		APIError.offFor(scopeName + 'data')
+      		 usersRegistrationRequests.searchByOrg=[]
+    		API.cui.getOrganizations({qs:[['name',usersRegistrationRequests.searchValue]]})
+    		.then((res) =>{
+    			console.log(res)
+    			usersRegistrationRequests.searchByOrg=res
+    			Loader.offFor(scopeName + 'data')
+    			if(res.length>0){
+    				$state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.searchByOrg, {notify: false})
+        			init()
+        		}else{
+        			usersRegistrationRequests.data=[]
+        			$scope.$apply()
+        		}
+    		})
+    		.fail((err) =>{
+    			console.log(err)
+    		})
+    	}else if (usersRegistrationRequests.searchBy==='person'&&usersRegistrationRequests.searchValue){
+    		Loader.onFor(scopeName + 'data')
+      		APIError.offFor(scopeName + 'data')
+      		 usersRegistrationRequests.searchByPerson=[]
+    		API.cui.getPersons({qs:[['fullName',usersRegistrationRequests.searchValue]]})
+    		.then(res =>{
+    			console.log(res)
+    			usersRegistrationRequests.searchByPerson=res
+    			Loader.offFor(scopeName + 'data')
+    			if(res.length>0){
+    				$state.transitionTo('organization.requests.usersRegistrationRequests', usersRegistrationRequests.searchByPerson, {notify: false})
+        			init()
+        		}else{
+        			usersRegistrationRequests.data=[]
+        			$scope.$apply()
+        		}
+    		})
+    		.fail(err =>{
+    				console.log(err)
+    		})
+    	}else
+    		return undefined
+    }
+	
 	});

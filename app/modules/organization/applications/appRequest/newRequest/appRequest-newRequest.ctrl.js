@@ -17,18 +17,19 @@ angular.module('organization')
         orgAppRequest.numberOfOrgRequests = Object.keys(orgAppsBeingRequested).length;
     }
     
-    API.cui.getCategories()
+    API.cui.getOrgAppCategories({organizationId:orgAppRequest.stateParamsOrgId})
     .then((res)=>{
         orgAppRequest.categories = res;
         Loader.offFor(loaderName);
         $scope.$digest();
-    });
-
-    API.cui.getOrgAppCategories({organizationId:orgAppRequest.stateParamsOrgId})
-    .then((res)=>{
-        orgAppRequest.categories = res;
-        console.log(res);
-        $scope.$digest();
+    })
+    .fail((err)=>{
+         API.cui.getCategories()
+        .then((res)=>{
+            orgAppRequest.categories = res;
+            Loader.offFor(loaderName);
+            $scope.$digest();
+        });
     });
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
