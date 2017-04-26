@@ -106,10 +106,10 @@
           </div>
         </div>
         <div ng-if="base.canGrantAppToUser()">
-          <div class="pending-content__row" ui-sref="organization.requests.usersRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'user'|translate}}({{base.user.userRegistrationRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.usersAppRequests" ng-click="base.pendingNotificationFlag=false"> {{'user'|translate}} {{'cui-applications'|translate}}({{base.user.userAppRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.orgRegistrationRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-org'|translate}}({{base.user.orgRegistrationRequestsCount}})</div>
-          <div class="pending-content__row" ui-sref="organization.requests.orgAppRequests" ng-click="base.pendingNotificationFlag=false">{{'cui-org'|translate}} {{'cui-applications'|translate}}({{base.user.orgAppRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.usersRegistrationRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.userRegistrationRequestsCount!==0">{{'user'|translate}}({{base.user.userRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.usersAppRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.userAppRequestsCount!==0"> {{'user'|translate}} {{'cui-applications'|translate}}({{base.user.userAppRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgRegistrationRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.orgRegistrationRequestsCount!==0">{{'cui-org'|translate}}({{base.user.orgRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgAppRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.orgAppRequestsCount!==0">{{'cui-org'|translate}} {{'cui-applications'|translate}}({{base.user.orgAppRequestsCount}})</div>
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ angular.module('organization')
     .then(res => {
         if (!res.request) {
             APIError.onFor('personRequest.noRequest')
-            $timeout(() => $state.go('organization.directory.userList'), 5000)
+            $timeout(() => $state.go('organization.directory.userList',{orgId:organizationId}), 5000)
         }
         else {
             personRequest.request = res    
@@ -25,6 +25,10 @@ angular.module('organization')
     ServicePackage.getAllUserPendingPackageData(userId)
     .then(res => {
         personRequest.packages = res
+    })
+    .catch(err => {
+        APIError.onFor('personRequest.noRequest')
+        $timeout(() => $state.go('organization.directory.userList',{orgId:organizationId}), 5000)
     })
 
     // ON LOAD END -----------------------------------------------------------------------------------

@@ -28,6 +28,10 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
       </li>
     </ul>
   </nav>
+  <cui-mobile-nav show-if="base.appMobileNav" links="{
+    'applications.myApplications':{stateParams:{},label:('my-applications' | translate)},
+    'applications.manageApplications':{stateParams:{},label:('manage-applications' | translate)}
+  }">
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="manageApplications.sortClicked =! manageApplications.sortClicked" id="sort-button" off-click="manageApplications.sortClicked=false">
@@ -137,7 +141,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
       <div class="cui-media__body cui-media__body--full">
         <div class="cui-media__title-container">
           <!-- Launch Application Icon -->
-          <a class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a>
+          <!-- <a class="cui-media__app-launch" ng-class="{'hide--opacity': application.grant.status!=='active' || !application.urls[0].value}"  ng-href="{{application.urls[0].value}}" title="launch application" aria-labelledby="launch application" target="_blank"><cui-icon cui-svg-icon="cui:launch" svg-class="cui-media__app-launch-icon" viewBox="0 0 35 48" preserveAspectRatio="xMidYMid meet"></cui-icon></a> -->
           <h3 class="cui-media__title" ng-click="manageApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
         </div>
         <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
