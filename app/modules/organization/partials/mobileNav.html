@@ -1,6 +1,7 @@
 <cui-mobile-nav show-if="base.orgMobileNav" links="{
-		'organization.hierarchy': ('cui-org-hierarchy' | translate),
-  	'organization.directory.userList': ('directory' | translate),
-  	'organization.profile': ('cui-org-profile' | translate)
-	}">
+		'organization.profile':{stateParams:{orgId:orgId},label:('cui-org-profile' | translate)},
+		'organization.hierarchy':{stateParams:{orgId:orgId},label:('cui-org-hierarchy' | translate)},
+		'organization.directory.userList':{stateParams:{orgId:orgId},label:('directory' | translate)},
+		'organization.applications':{stateParams:{orgId:orgId},label:('cui-applications' | translate)}
+	}" active-title="{{orgName}}">
 </cui-mobile-nav>
