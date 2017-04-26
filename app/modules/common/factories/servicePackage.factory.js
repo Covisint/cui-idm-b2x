@@ -186,6 +186,9 @@ angular.module('common')
                 defer.reject(err)
             })
         })
+        .catch(err => {
+            defer.reject(err)
+        })
 
         return defer.promise
     }

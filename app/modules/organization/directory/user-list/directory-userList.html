@@ -9,7 +9,7 @@
   <section class="cui-action">
     <h3 class="cui-sr-only">{{'org-nav-invite-links' | translate}}</h3>
     <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgDirectory.stateParamsOrgId"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <nav ng-if="!base.loader.for['orgDirectory.userList']" ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=orgDirectory.organization.name"></nav>
   </section>
 
   <!-- Action Sub-header -->
