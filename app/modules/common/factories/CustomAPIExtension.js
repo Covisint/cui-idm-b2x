@@ -128,7 +128,6 @@ angular.module('common')
         {cmd: "validatePasswordSecured",call: "/person/v3/persons/password/validate",type: "POST",accepts: "application/vnd.com.covisint.platform.password.validation.response.v1+json","contentType": "application/vnd.com.covisint.platform.password.validation.v1+json"},
         {cmd: "getPackageRequestsCount",call: "/service/v3/requests/count",type: "GET",accepts: "text/plain"},
         {cmd: "getOrganizationPackagesCount",call: "/service/v3/organizations/{organizationId}/packages/count",type: "GET",accepts: "text/plain"},
-        {cmd: "getPersonRequestableCount",call: "/service/v3/packages/persons/{personId}/requestable/count",type: "GET",accepts: "text/plain"},
         {cmd: "getRegistrationRequestsCount",call: "/registration/v1/person/requests/count",type: "GET",accepts: "text/plain"},
         {cmd: "getPackagesRequestedCount",call: "/service/v3/persons/{personId}/packages/count",type: "GET",accepts: "text/plain"},
         {cmd: 'validatePasswordNonce',cmdType:'nonce',call: '/registration/v1/registrations/persons/password/validate', type:'POST', accepts: 'application/vnd.com.covisint.platform.password.validation.response.v1+json',contentType:'application/vnd.com.covisint.platform.password.validation.v1+json'}
