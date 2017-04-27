@@ -3,8 +3,9 @@ angular.module('organization')
     
     const orgDirectory = this
     const scopeName = 'orgDirectory.'
-
+    orgDirectory.stateParamsOrgId=$stateParams.orgId
     orgDirectory.search = {}
+    orgDirectory.sortBy = {}
 
     /* ---------------------------------------- HELPER FUNCTIONS START ---------------------------------------- */
 
@@ -37,20 +38,20 @@ angular.module('organization')
         let apiCalls = [
             UserList.getUsers({ qs: APIHelpers.getQs(orgDirectory.search) }),
             UserList.getUserCount({ qs: [['organization.id', orgDirectory.search['organization.id']]] }),
-            API.cui.getOrganizationHierarchy({organizationId: orgDirectory.search['organization.id']})
+            API.cui.getOrganization({organizationId: orgDirectory.search['organization.id']})
         ]
 
         Loader.onFor(scopeName + 'userList')
         APIError.offFor(scopeName + 'userList')
 
         $q.all(apiCalls)
-        .then(([users, userCount, orgHierarchy]) => {
-            orgDirectory.organization = orgHierarchy
-            orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(orgHierarchy)
+        .then(([users, userCount, organization]) => {
+            orgDirectory.organization = organization
+            // orgDirectory.organizationList = APIHelpers.flattenOrgHierarchy(orgHierarchy)
             orgDirectory.userList = users
             orgDirectory.userCount = userCount
             orgDirectory.statusData = APIHelpers.getCollectionValuesAndCount(users, 'status', true)
-            CuiMobileNavFactory.setTitle($filter('cuiI18n')(orgHierarchy.name))
+            CuiMobileNavFactory.setTitle(organization.name)
             orgDirectory.reRenderPagination && orgDirectory.reRenderPagination()
             getUserListAppCount(orgDirectory.userList)
         })
@@ -62,18 +63,46 @@ angular.module('organization')
         })
     }
 
+    orgDirectory.search = Object.assign({}, $stateParams)
     initDirectory()
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
 
+
+    // headers="['cui-name', 'username', 'status']" 
+
+    orgDirectory.sortingCallbacks = {
+      name () {
+          orgDirectory.sortBy.sortBy = 'name'
+          orgDirectory.sort(['name.given', 'name.surname'], orgDirectory.sortBy.sortType)
+      },
+      username () {
+          orgDirectory.sortBy.sortBy = 'username'
+          orgDirectory.sort('username', orgDirectory.sortBy.sortType)
+      },
+      status () {
+          orgDirectory.sortBy.sortBy = 'status'
+          orgDirectory.sort('status', orgDirectory.sortBy.sortType)
+      }
+    }
+
+    orgDirectory.sort = (sortBy, order) => {
+        cui.log('sort', sortBy, order)
+
+      orgDirectory.userList = _.orderBy(orgDirectory.userList, sortBy, order)
+    }
+
     orgDirectory.updateSearchParams = (page) => {
-        if (page) orgDirectory.search.page = page
+        if (page) orgDirectory.search.page = page 
         $state.transitionTo('organization.directory.userList', orgDirectory.search, {notify: false})
         initDirectory(orgDirectory.search['organization.id'])
     }
 
+    orgDirectory.updateSearchByName = (name) => {
+        orgDirectory.updateSearchParams()
+    }
     orgDirectory.actionCallbacks = {
         sort (sortType) {
             if (!orgDirectory.search.hasOwnProperty('sortBy')) orgDirectory.search['sortBy'] = '+' + sortType
@@ -82,10 +111,10 @@ angular.module('organization')
             orgDirectory.updateSearchParams()
         },
         refine (refineType) {
-            if (refineType === 'all') delete orgDirectory.search['refine']
+            if (refineType === 'all') delete orgDirectory.search['status']
             else {
-                if (!orgDirectory.search.hasOwnProperty('refine')) orgDirectory.search['refine'] = refineType
-                else orgDirectory.search.refine = refineType
+                if (!orgDirectory.search.hasOwnProperty('status')) orgDirectory.search['status'] = refineType
+                else orgDirectory.search.status = refineType
             }
             orgDirectory.updateSearchParams()
         }

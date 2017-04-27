@@ -6,8 +6,8 @@
 
   <!-- Navigation -->
   <section class="cui-action">
-    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgHierarchy.stateParamsOrgId"></nav>
+    <nav ng-if="!base.loader.for['orgHierarchy.loading']" ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=orgHierarchy.organizationHierarchy[0].name[0].text"></nav>
     <!-- <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'"></div> -->
   </section>
 
@@ -23,7 +23,7 @@
     <h3 class="cui-organization__page-title">{{orgHierarchy.organizationHierarchy[0].name | cuiI18n}}</h3>
 
     <!-- Hierarchy Tree -->
-    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)"></div>
+    <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="orgHierarchy.goToOrgPrfile"></div>
     
   </div>
 </div>

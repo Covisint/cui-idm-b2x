@@ -1,0 +1,47 @@
+<div class="cui-organization__requests-person-header">
+
+  <!-- User Name -->
+  <!-- <div class="cui-action">
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList" ng-if="organizationAppRequest.request.personData">
+      &#60; {{organizationAppRequest.request.personData.name.given}} {{organizationAppRequest.request.personData.name.surname}} - {{'pending-request' | translate}}
+    </span>
+  </div> -->
+
+  <!-- DISABLED routehistory POC -->
+  <!-- <cui-route-history></cui-route-history> -->
+
+  <!-- Navigation -->
+  <!-- <div class="cui-action">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  </div> -->
+
+  <!-- Name Header -->
+  <div class="cui-media--centered" ng-if="organizationAppRequest.request.personData">
+    <!-- Avatar -->
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[organizationAppRequest.request.personData.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    </div>
+
+    <!-- orgnaization Information -->
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{organizationAppRequest.request.personData.organization.name}}</h3>
+      <!-- orgID -->
+      <!-- <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{organizationAppRequest.request.personData.id}}</span> -->
+      <!-- Admin -->
+      <div class="cui-media__content" ng-if="organizationAppRequest.request.personData.organization"><span class="cui-media__content--dark">{{'administrator' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationAppRequest.request.personData.name.given}} {{organizationAppRequest.request.personData.name.surname}}</a></div>
+      <!-- Email -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}} {{'cui-email' | translate}}:</span> <a href="mailto:{{organizationAppRequest.request.personData.email}}" class="cui-media__link"> {{organizationAppRequest.request.personData.email}}</a></div>
+      <!-- Registered Date -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequest.request.personData.organization.creation | date:base.appConfig.dateFormat}}</div>
+      <!-- status -->
+      <div class="cui-media__content">
+        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequest.request.personData.organization.status}}</a>
+        <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequest.request.personData.organization.status==='active'"></cui-icon>
+        <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequest.request.personData.organization.status==='locked'"></cui-icon>
+      </div>
+    </div>
+  </div>
+  
+</div>

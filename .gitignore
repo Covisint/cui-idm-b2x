@@ -15,3 +15,9 @@ build-sdk/
 .idea
 appConfig-*.json
 npm-debug.log
+cui-idm-b2x.sublime-project
+cui-idm-b2x.sublime-workspace
+app/modules/organization/requests/usersRequests/usersAppRequests/coke-appRequests.ctrl.js
+app/modules/organization/requests/usersRequests/usersAppRequests/coke-requests-AppRequests.html
+app/modules/organization/requests/usersRequests/usersRegistrationRequests/coke-registrationRequests.ctrl.js
+app/modules/organization/requests/usersRequests/usersRegistrationRequests/coke-requests-RegistrationRequests.html

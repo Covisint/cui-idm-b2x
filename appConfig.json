@@ -34,5 +34,73 @@
         "intervals": [10, 25, 50, 100, 200],
         "hidePaginationUnderMin": true
     },
-    "breakpointOption": 700
+    "breakpointOption": 700,
+    "orgAdminLogic": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator"
+                ]
+            }
+        }
+    },
+    "grantAppToUserLogic": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            },
+            "entitlements":{
+                "any": [
+                    "Full Tree Access",
+                    "Approve/Grant User Service Request",
+                    "Security Admin - Grant User Package",
+                    "SO Grant User Package"
+                ]
+            }
+        }
+    },
+    "grantAppToOrgLogic": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            },
+            "entitlements":{
+                "any": [
+                    "Full Tree Access",
+                    "Grant Organization Service Request",
+                    "Security Admin - Grant Division Package"
+                ]
+            }
+        }
+    },
+    "accessByAnyAdmin":{
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Individual Service Admin - Owning Org",
+                    "TIB Administrator",
+                    "Organization Service Admin",
+                    "Organization Password Administrator",
+                    "Federation Configuration Admin",
+                    "Provider Administrator",
+                    "Exchange Operator",
+                    "Help Desk Plus",
+                    "Service Administrator",
+                    "Help Desk Basic",
+                    "User Account Administrator"
+                ]
+            }
+        }
+    }
 }

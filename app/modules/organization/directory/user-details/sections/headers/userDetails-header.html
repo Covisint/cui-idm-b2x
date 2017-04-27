@@ -18,18 +18,19 @@
     <!-- Name -->
     <h3 class="cui-media__title">{{userDetails.user.name.given}} {{userDetails.user.name.surname}}</h3>
     <!-- userID -->
-    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{userDetails.user.id}}</p>
+    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{userDetails.user.username}}</p>
     <!-- Registered Date -->
     <p class="cui-media__content">{{'cui-registered' | translate}}: {{userDetails.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->
     <div class="cui-media__content">
+      <span class="cui-media__content--dark">{{'status' | translate}}:</span>
       <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status}}</span>
     </div>
   </div>
 </div>
 
-<div class="cui-media__button-container" ng-if="false">
+<div class="cui-media__button-container">
   <button class="cui-button cui-button--inverted">{{'suspend' | translate}}</button>
   <button class="cui-button cui-button--inverted">{{'password-reset' | translate}}</button>
-  <button class="cui-button cui-button--inverted" ui-sref="organization.requests.newGrant({userID:userDetails.user.id})">{{'new-grants' | translate}}</button>
+  <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="userDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:userDetails.user.id,orgId:orgId})" ng-class="(userDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
 </div>

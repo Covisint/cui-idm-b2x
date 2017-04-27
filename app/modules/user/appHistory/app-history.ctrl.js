@@ -4,14 +4,17 @@ angular.module('user')
     const appHistory = this
     const scopeName = 'appHistory.'
     appHistory.search = Object.assign({}, $stateParams)
+    appHistory.search.page = appHistory.search.page || 1;
+    appHistory.paginationPageSize = appHistory.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+    appHistory.search.pageSize = appHistory.paginationPageSize;
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
     appHistory.pageGrantedChange = (newpage) => {
-        appHistory.updateSearch('page', newpage)
+        appHistory.updateSearch('page', '1','granted')
     }
 
     appHistory.pageRequestedChange = (newpage) => {
-        appHistory.updateSearch('page', newpage)
+        appHistory.updateSearch('page', '1','requested')
     }
 
     appHistory.updateSearch = (updateType, updateValue,updatePage) => {
@@ -35,14 +38,61 @@ angular.module('user')
                 appHistory.search.page = 1
                 appHistory.search['grant.status'] = updateValue
                 break
+            case 'page':
+            if (updatePage==='requested') {
+                appHistory.search.page = appHistory.requestedSearch.page
+                appHistory.search.pageSize = appHistory.requestedSearch.pageSize
+            };
+            if (updatePage==='granted') {
+                appHistory.search.page = appHistory.grantedSearch.page
+                appHistory.search.pageSize = appHistory.grantedSearch.pageSize
+            };
+                
+                break
         }
+
+        let queryParams = [['page', String(appHistory.search.page)], ['pageSize', String(appHistory.search.pageSize)]];
+        if(appHistory.search.sortBy)
+            queryParams.push(['sortBy',appHistory.search['sortBy']])
+        const opts = {
+            personId:User.user.id,
+            qs: queryParams
+        };
 
         // doesn't change state, only updates the url
         $state.transitionTo('user.appHistory', appHistory.search, { notify:false })
-        if(updatePage=='requested')
-            onLoad(true)
-        else if(updatePage=='granted')
-            onLoadGranted(true)
+        if(updatePage=='requested'){
+            console.log(appHistory.search);
+            appHistory.requestedHistory = [];
+             API.cui.getPersonApplicationsRequestHistory(opts)
+             .then(res => {
+                appHistory.requestedHistory=res;
+                // if(appHistory.requestedHistory.length>0)
+                //     getPkgDetailsRequested(appHistory.requestedHistory);
+                $scope.$digest()
+             })
+             .fail(err =>{
+                APIError.onFor(scopeName + 'initHistory')
+                console.log(err)
+             })
+              //onLoad(true,opts)
+        }
+        else if(updatePage=='granted'){
+            console.log(appHistory.search);
+             appHistory.grantedHistory = [];
+             API.cui.getPersonApplicationsGrantHistory(opts)
+             .then(res => {
+               appHistory.grantedHistory=res;
+                // if(appHistory.grantedHistory.length>0)
+                //     getPkgDetailsGrant(appHistory.grantedHistory);
+                $scope.$digest()
+             })
+             .fail(err =>{
+                APIError.onFor(scopeName + 'initHistory')
+                console.log(err)
+             })
+          //onLoadGranted(true,opts)
+        }  
         else
             return undefined
 
@@ -58,8 +108,8 @@ angular.module('user')
             ? secondValue
             : firstValue
     }
-
-     const onLoad = (previouslyLoaded) => {
+/*
+     const onLoad = (previouslyLoaded,opts) => {
         console.log(appHistory.search);
         appHistory.requestedHistory = [];
          API.cui.getPersonApplicationsRequestHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
@@ -73,9 +123,9 @@ angular.module('user')
             APIError.onFor(scopeName + 'initHistory')
             console.log(err)
          })
-     }
+     }*/
 
-     const onLoadGranted = (previouslyLoaded) => {
+/*     const onLoadGranted = (previouslyLoaded) => {
         appHistory.grantedHistory = [];
          API.cui.getPersonApplicationsGrantHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
          .then(res => {
@@ -88,7 +138,7 @@ angular.module('user')
             APIError.onFor(scopeName + 'initHistory')
             console.log(err)
          })
-     }
+     }*/
 
      const getCountsOfStatus=(qsValue)=>{
         let opts = {
@@ -152,13 +202,24 @@ angular.module('user')
     /* -------------------------------------------- HELPER FUNCTIONS END ----------------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+
+    appHistory.user=User.user
+
+    let queryParams = [['page', String(appHistory.search.page)], ['pageSize', String(appHistory.search.pageSize)]];
+        if(appHistory.search.sortBy)
+            queryParams.push(['sortBy',appHistory.search['sortBy']])
+        const opts = {
+            personId:User.user.id,
+            qs: queryParams
+        };
+
     Loader.onFor(scopeName + 'initHistory')
-     API.cui.getPersonApplicationsGrantHistory({personId:User.user.id})
+     API.cui.getPersonApplicationsGrantHistory(opts)
      .then(res => {
         appHistory.grantedHistory=res;
         // if(appHistory.grantedHistory.length>0)
         //     getPkgDetailsGrant(appHistory.grantedHistory);
-        return API.cui.getPersonApplicationsRequestHistory({personId:User.user.id});
+        return API.cui.getPersonApplicationsRequestHistory(opts);
      })
      .then(res => {
         appHistory.requestedHistory=res;
@@ -174,6 +235,20 @@ angular.module('user')
         getCountsOfStatus("suspended")
         //To getFull count
         getCountsOfStatus(undefined)*/
+       /* Loader.offFor(scopeName + 'initHistory')
+        $scope.$apply();*/
+        return API.cui.getPersonApplicationsGrantHistoryCount(opts)
+     })
+     .then(res =>{
+        console.log(res)
+        appHistory.grantedHistoryCount=res
+        appHistory.grantedHistoryCount=20
+        return API.cui.getPersonApplicationsRequestHistoryCount(opts) 
+     })
+     .then(res => {
+        console.log(res)
+        appHistory.count=15
+        console.log(appHistory.count)
         Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();
      })

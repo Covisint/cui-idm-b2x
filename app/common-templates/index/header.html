@@ -39,4 +39,79 @@
       <cui-icon cui-svg-icon="fa:arrow459" svg-class="cui-profile__chevron" use-class="svg" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
   </div>
+  <div ng-if="!base.user.name.given" class="cui-profile">
+    <li class="cui-off-canvas__section" ng-class="cui-off-canvas__section--active">
+      <a class="cui-off-canvas__section-link" ui-sref="applications.myApplications" disabled>
+         <span class="cui-styleguide__nav__name" >{{'cui-login' | translate }}</span>
+      </a>
+    </li>
+  </div>
+  <div ng-if="!base.user.name.given" class="cui-profile__mobile-login">
+    <li class="cui-off-canvas__section" ng-class="cui-off-canvas__section--active">
+      <a class="cui-off-canvas__section-link" ui-sref="applications.myApplications" disabled>
+         <span class="cui-styleguide__nav__name" >{{'cui-login' | translate }}</span>
+      </a>
+    </li>
+  </div>
+    <!-- Bell icon for notification -->
+  <div class="pending_notification" class-toggle toggled-class="pending_notification--active" ng-click="toggleClass()" off-click="toggleOff()" ng-if="base.user.name.given">
+    <!-- <div class="cui-profile" class-toggle toggled-class="cui-profile--active" ng-click="toggleClass()" off-click="toggleOff()"> -->
+    <svg class="cursor__pointer" width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+      <title>Bell</title>
+      <desc>Created with Sketch.</desc>
+      <defs></defs>
+      <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Notification-Icon" transform="translate(1.000000, -3.000000)" stroke-width="0.5" stroke="#FFFFFF" fill="#FFFFFF">
+              <g id="Bell">
+                  <g transform="translate(0.000000, 3.000000)">
+                      <path d="M0.196491532,19.1216063 C0.0879722556,19.1216063 0.0387030805,19.0412224 0.0846895705,18.9457112 L2.22984183,14.4903604 L2.22984183,7.9274928 C2.22984183,7.9274928 2.38475426,3.00517126 8.09891803,1.93174439 C8.09891803,1.93174439 9.69392945,-0.337757414 11.7378074,1.93174439 C11.7378074,1.93174439 16.5694189,2.6368854 17.3591617,7.91211909 L17.3591617,14.459613 L19.7582272,18.9445435 C19.8105363,19.0423326 19.7644283,19.1216063 19.6564496,19.1216063 L0.196491532,19.1216063 Z" id="Shape"></path>
+                      <path d="M7.5,21.1153846 L11.6357054,21.1153846 C11.6357054,21.1153846 11.7081548,23.5201737 9.68626795,23.5828833 C9.68626795,23.5828833 7.64581208,23.935581 7.5,21.1153846 L7.5,21.1153846 Z" id="Shape"></path>
+                  </g>
+              </g>
+          </g>
+      </g>
+    </svg>
+    <sup class="bell_badge" ng-if="(base.user.pendingApps && base.user.pendingApps.length!=0)|| (base.user.totalCount&&base.user.totalCount!==0)">
+      <svg width="7px" height="7px" viewBox="0 0 7 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+        <title>bell-badge</title>
+        <desc>Created with Sketch.</desc>
+        <defs></defs>
+        <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Notification-Icon" transform="translate(-19.000000, 0.000000)" fill="#FF4400">
+                <g id="bell-badge">
+                    <circle cx="22.8529412" cy="3.92307692" r="3"></circle>
+                </g>
+            </g>
+        </g>
+      </svg>
+    </sup>
+    <div class="pending-content_wrapper">      
+      <div class="dummy pending-content__block" >
+        <div class="pending-content__title-container">
+          <h4 class="cui-action__title cui-action__title-small" ng-if="base.canGrantAppToUser()">{{'pending'|translate}} {{'requests'|translate}}</h4>
+          <h4 class="cui-action__title cui-action__title-small" ng-if="!base.canGrantAppToUser()">{{'pending'|translate}} {{'approval'|translate}}</h4>
+          <!-- Close Icon -->
+          <div ng-click="base.pendingNotificationFlag=false">
+            <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+          </div>
+        </div>
+        <div ng-if="!base.canGrantAppToUser()"> 
+          <div class="pending-content__row" ng-repeat="pendingApp in base.user.pendingApps">
+            {{pendingApp|cuiI18n|capitalize}}
+          </div>
+          <div class="pending-content__row" ng-if="base.user.pendingApps.length==0">
+            {{'no-pending-apps'|translate}}
+          </div>
+        </div>
+        <div ng-if="base.canGrantAppToUser()">
+          <div class="pending-content__row" ui-sref="organization.requests.usersRegistrationRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.userRegistrationRequestsCount!==0">{{'user'|translate}}({{base.user.userRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.usersAppRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.userAppRequestsCount!==0"> {{'user'|translate}} {{'cui-applications'|translate}}({{base.user.userAppRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgRegistrationRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.orgRegistrationRequestsCount!==0">{{'cui-org'|translate}}({{base.user.orgRegistrationRequestsCount}})</div>
+          <div class="pending-content__row" ui-sref="organization.requests.orgAppRequests" ng-click="base.pendingNotificationFlag=false" ng-if="base.user.orgAppRequestsCount!==0">{{'cui-org'|translate}} {{'cui-applications'|translate}}({{base.user.orgAppRequestsCount}})</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
