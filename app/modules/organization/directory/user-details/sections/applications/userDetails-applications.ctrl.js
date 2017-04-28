@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('userDetailsAppsCtrl',function(API,$stateParams,$q) {
+.controller('userDetailsAppsCtrl',function(API,$stateParams,$q,$state,DataStorage) {
     'use strict';
 
 	const userDetailsApps = this,
@@ -81,4 +81,12 @@ angular.module('organization')
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
+    // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
+
+    userDetailsApps.goToDetails = (application) => {
+        DataStorage.setType('userAppDetail',application)
+        $state.go('organization.directory.userAppDetails',{appId:application.id,orgId:organizationId,userId:userId})
+    }
+
+    // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
 });
