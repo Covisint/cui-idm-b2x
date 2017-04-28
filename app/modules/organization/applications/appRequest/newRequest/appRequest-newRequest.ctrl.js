@@ -24,12 +24,7 @@ angular.module('organization')
         $scope.$digest();
     })
     .fail((err)=>{
-         API.cui.getCategories()
-        .then((res)=>{
-            orgAppRequest.categories = res;
-            Loader.offFor(loaderName);
-            $scope.$digest();
-        });
+         Loader.offFor(loaderName);
     });
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */

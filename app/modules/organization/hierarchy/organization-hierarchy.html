@@ -20,7 +20,7 @@
     </div>
 
     <!-- Title -->
-    <h3 class="cui-organization__page-title">{{orgHierarchy.organizationHierarchy[0].name | cuiI18n}}</h3>
+    <h3 class="cui-organization__page-title" ng-if="base.user.organization.id!=orgHierarchy.organizationHierarchy[0].id" ui-sref="" ng-click="orgHierarchy.goToOrgPrfile(base.user.organization)">&lt; {{base.user.organization.name}}</h3>
 
     <!-- Hierarchy Tree -->
     <div class="cui-tree" cui-tree="orgHierarchy.organizationHierarchy" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="orgHierarchy.goToOrgPrfile"></div>
