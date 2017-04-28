@@ -105,9 +105,21 @@ angular.module('organization')
     }
     orgDirectory.actionCallbacks = {
         sort (sortType) {
-            if (!orgDirectory.search.hasOwnProperty('sortBy')) orgDirectory.search['sortBy'] = '+' + sortType
-            else if (orgDirectory.search.sortBy.slice(1) !== sortType) orgDirectory.search.sortBy = '+' + sortType
-            else switchBetween('sortBy', '+' + sortType, '-' + sortType)
+            switch(sortType) {
+            case 'name':
+                switchBetween('sortBy', '+person.name', '-person.name')
+                break
+            case 'username':
+                switchBetween('sortBy', '+person.username', '-person.username')
+                break
+            case 'status':
+                switchBetween('sortBy', '+person.status', '-person.status')
+                break
+            }
+
+            // if (!orgDirectory.search.hasOwnProperty('sortBy')) orgDirectory.search['sortBy'] = '+' + sortType
+            // else if (orgDirectory.search.sortBy.slice(1) !== sortType) orgDirectory.search.sortBy = '+' + sortType
+            // else switchBetween('sortBy', '+' + sortType, '-' + sortType)
             orgDirectory.updateSearchParams()
         },
         refine (refineType) {
