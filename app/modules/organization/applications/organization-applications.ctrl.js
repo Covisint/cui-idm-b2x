@@ -73,11 +73,16 @@ angular.module('organization')
             if($stateParams.pageSize)
                 organizationApplications.search.pageSize = parseInt($stateParams.pageSize);
 
-            API.cui.getCategories()
-            .then((res) => {
+            
+            API.cui.getOrgAppCategories({organizationId:organizationApplications.stateParamsOrgId})
+            .then((res)=>{
                 organizationApplications.categories = res;
                 $scope.$digest();
+            })
+            .fail((err)=>{
+               
             });
+
         }
 
         let queryParams = [['page', String(organizationApplications.search.page)], ['pageSize', String(organizationApplications.search.pageSize)]];

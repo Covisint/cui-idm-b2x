@@ -109,7 +109,7 @@
 					  </div>
 		      </div>
 		      	<div class="cui-users__info-block">
-		      			<div class="cui-media__content" ng-if="!appHistory.requestedHistory">{{'cui-no-details'|translate}}</div>
+		      			<div class="cui-media__content" ng-if="appHistory.requestedHistory.length===0">{{'cui-no-details'|translate}}</div>
 					    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appHistory.requestedHistory">
 					      <div class="cui-media__image-container">
 					       <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
@@ -180,7 +180,7 @@
 					  </div>
 		      	</div>
 		      	<!-- no history -->
-		      	<div class="cui-media__content" ng-if="!appHistory.grantedHistory">{{'cui-no-details'|translate}}</div>
+		      	<div class="cui-media__content" ng-if="appHistory.grantedHistory.length===0">{{'cui-no-details'|translate}}</div>
 		      	 <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appHistory.grantedHistory">
 					      <div class="cui-media__image-container">
 					        <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
