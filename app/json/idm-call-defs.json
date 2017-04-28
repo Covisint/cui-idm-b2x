@@ -842,5 +842,21 @@
     "call": "/service/v3/categories/organization/{organizationId} ",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.category.v1+json"
+  },
+  {
+    "cmd": "suspendPersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/grants/tasks/person/package/suspend",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.status.request.v1+json",
+    "contentType":"application/vnd.com.covisint.platform.package.grant.status.request.v1+json"
+  },
+  {
+    "cmd": "unsuspendPersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/grants/tasks/person/package/unsuspend",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.status.request.v1+json",
+    "contentType":"application/vnd.com.covisint.platform.package.grant.status.request.v1+json"
   }
 ]
