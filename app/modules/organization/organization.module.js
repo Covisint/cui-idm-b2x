@@ -61,6 +61,14 @@ angular.module('organization', [])
                 permittedLogic:appConfig.accessByAnyAdmin
             }
         })
+        .state('organization.directory.userAppDetails', {
+            url: '/user-app-details/:appId?userId&orgId',
+            templateUrl: templateBase + 'directory/user-app-details/directory-userAppDetails.html',
+            controller: returnCtrlAs('userAppDetails'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
             url: '/hierarchy/:orgId',
