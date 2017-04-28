@@ -242,13 +242,13 @@ angular.module('user')
      .then(res =>{
         console.log(res)
         appHistory.grantedHistoryCount=res
-        appHistory.grantedHistoryCount=20
+        /*appHistory.grantedHistoryCount=20*/
         return API.cui.getPersonApplicationsRequestHistoryCount(opts) 
      })
      .then(res => {
         console.log(res)
-        appHistory.count=15
-        console.log(appHistory.count)
+        appHistory.count=res
+        /*console.log(appHistory.count)*/
         Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();
      })
