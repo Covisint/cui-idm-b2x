@@ -1,0 +1,24 @@
+.cui-organization__user-details {
+	.cui-action{
+		padding:0;
+	}
+	.user-app-details__container{
+		margin-top:1.25em;
+	}
+	.cui-expandable__body::before {
+	    left: 50%;
+
+	    @media screen and (max-width: 700px) {
+	      font-size: 0.75em;
+	    }
+	}
+	.cui-expandable__body--alt-bg {
+		margin-top:1em;
+	}
+	.cui-organization__submit-row{
+		margin:0;
+	}
+	.cui-applications__review-text-input textarea{
+		width:100%;
+	}
+}
