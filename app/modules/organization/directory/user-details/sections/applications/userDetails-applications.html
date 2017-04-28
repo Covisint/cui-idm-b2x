@@ -21,7 +21,7 @@
 
 				<!-- Application Details -->
         <div class="cui-flex-table__left--stacked">
-          <h3 class="cui-flex-table__title">{{application.name | cuiI18n}}</h3>
+          <h3 class="cui-flex-table__title" ng-click="userDetailsApps.goToDetails(application)">{{application.name | cuiI18n}}</h3>
           <span class="cui-flex-table__subtitle-info">granted: 10.11.13</span>
           <span class="cui-status cui-mobile-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
         </div>

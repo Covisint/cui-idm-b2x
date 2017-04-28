@@ -59,13 +59,13 @@
         <!-- Sort Popover -->
         <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="orgDirectory.sortClicked" style="width:171px">
           <div class="cui-popover__row">
-            <span ng-click="orgDirectory.actionCallbacks.sort('person.name')">{{'cui-alphabetically' | translate}}</span>
+            <span ng-click="orgDirectory.actionCallbacks.sort('name')">{{'cui-alphabetically' | translate}}</span>
           </div>
           <div class="cui-popover__row">
-            <span ng-click="orgDirectory.actionCallbacks.sort('person.username')">{{'username' | translate}}</span>  
+            <span ng-click="orgDirectory.actionCallbacks.sort('username')">{{'username' | translate}}</span>  
           </div>
           <div class="cui-popover__row">
-            <span ng-click="orgDirectory.actionCallbacks.sort('person.status')">{{'status' | translate}}</span>
+            <span ng-click="orgDirectory.actionCallbacks.sort('status')">{{'status' | translate}}</span>
           </div>
         </div>
       </div>
