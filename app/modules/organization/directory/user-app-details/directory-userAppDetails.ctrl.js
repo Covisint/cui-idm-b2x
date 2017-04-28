@@ -14,7 +14,7 @@ angular.module('organization')
         const packageId = app.servicePackage.id
 
         Loader.onFor(loaderName + 'claims')
-        API.cui.getPersonPackageClaims({ grantee:API.getUser(), useCuid:true, packageId })
+        API.cui.getPersonPackageClaims({ grantee:$stateParams.userId, packageId })
         .then(res => {
             APIError.offFor(loaderName + 'claims')
             userAppDetails.claims = res
@@ -55,7 +55,7 @@ angular.module('organization')
             userAppDetails.app = Object.assign({}, res[0])
             if (!updating) {
                 getPackageClaims(userAppDetails.app.servicePackage.id)
-                // getClaims(userAppDetails.app)
+                getClaims(userAppDetails.app)
                 getRelatedApps(userAppDetails.app)
             }
         })
@@ -168,7 +168,7 @@ angular.module('organization')
     }
     userAppDetails.app=DataStorage.getType('userAppDetail')
     if (userAppDetails.app&& userAppDetails.app.id===$stateParams.appId) {        
-        // getClaims(userAppDetails.app)
+        getClaims(userAppDetails.app)
         getPackageClaims(userAppDetails.app.servicePackage.id)
         getRelatedApps(userAppDetails.app)
         // Update application detail for any new changes during reload
