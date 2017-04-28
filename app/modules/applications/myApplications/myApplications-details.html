@@ -69,8 +69,8 @@
 
       <!-- Mobile -->
       <div class="cui-tabs class-toggle">
-        <ul class="cui-tabs__nav">
-          <!-- <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab1"  ng-class="{'cui-tabs__tab--active':!myApplicationDetails.inClaims}" ng-click="myApplicationDetails.inClaims=false">{{'application-details' | translate}}</a></li> -->
+        <ul class="cui-tabs__nav" ng-if="myApplicationDetails.claims.length>0">
+          <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab1"  ng-class="{'cui-tabs__tab--active':!myApplicationDetails.inClaims}" ng-click="myApplicationDetails.inClaims=false">{{'application-details' | translate}}</a></li>
           <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab2" ng-class="{'cui-tabs__tab--active':myApplicationDetails.inClaims}"  ng-click="myApplicationDetails.inClaims=true">{{'my-claims' | translate}}</a></li>
         </ul>
         <div class="cui-tabs__content">
@@ -129,11 +129,8 @@
           <h4 class="cui-tile__title cui-applications__title">{{'bundled-applications' | translate}}<!-- {{'application-details' | translate}} --></h4>
           <div class="cui-tile__body cui-applications__details">
             <!-- No Details -->
-            <div class="cui-applications__no-details" ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length===0) && (myApplicationDetails.relatedApps.length===0)">
-              <p>{{'no-bundled-or-related' | translate}}</p>
-            </div>
-            <div class="cui-applications__no-details" ng-if="!myApplicationDetails.app.bundledApps">
-              <p>{{'no-bundled-or-related' | translate}}</p>
+            <div class="cui-applications__no-details" ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length===0)">
+              <p>{{'no-bundled' | translate}}</p>
             </div>
             <!-- Bundled Application Details -->
             <div class="cui-applications__bundled-apps" ng-if="myApplicationDetails.app.bundledApps && myApplicationDetails.app.bundledApps.length!==0">
