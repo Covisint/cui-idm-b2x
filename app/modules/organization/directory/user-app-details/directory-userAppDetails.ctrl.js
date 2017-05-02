@@ -11,37 +11,64 @@ angular.module('organization')
     }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     const getClaims = (app) => {
+        let deferred=$q.defer()
         const packageId = app.servicePackage.id
 
         Loader.onFor(loaderName + 'claims')
-        API.cui.getPersonPackageClaims({ grantee:API.getUser(), useCuid:true, packageId })
-        .then(res => {
+        API.cui.getPersonPackageClaims({ grantee:$stateParams.userId, packageId })
+        .then(userClaims => {
             APIError.offFor(loaderName + 'claims')
-            userAppDetails.claims = res
+            deferred.resolve(userClaims)
         })
         .fail(err => {
             APIError.onFor(loaderName + 'claims')
+            deferred.reject(err)
         })
         .always(() => {
             Loader.offFor(loaderName + 'claims')
             $scope.$digest()
         })
+        return deferred.promise
     }
 
     // Returns claims that are associated with a package id
     const getPackageClaims = (packageId) => {
+        let deferred=$q.defer()
         API.cui.getPackageClaims({qs: [['packageId', packageId]]})
         .then(packageClaims => {
             APIError.offFor(loaderName + 'packageClaims')
-            userAppDetails.packageClaims = packageClaims
+            deferred.resolve(packageClaims)
         })
         .fail(err => {
             console.error('Failed getting package claims')
             APIError.onFor(loaderName + 'packageClaims')
+            deferred.reject(err)
         })
         .always(() => {
             Loader.offFor(loaderName + 'packageClaims')
             $scope.$digest()
+        })
+        return deferred.promise
+    }
+
+    const getFormattedClaimData = () => {
+        $q.all([getClaims(userAppDetails.app),getPackageClaims(userAppDetails.app.servicePackage.id)])
+        .then(res => {            
+            userAppDetails.userClaims = res[0]
+            userAppDetails.packageClaims=res[1]
+            userAppDetails.claimSelection={}
+            //initialize and preselect claims which are already granted to user
+            userAppDetails.packageClaims.forEach(packageClaim => {
+                userAppDetails.claimSelection[packageClaim.claimId] = {}
+                let grantedClaim=_.find(userAppDetails.userClaims.packageClaims,{claimId:packageClaim.claimId})
+                if (grantedClaim) {
+                    packageClaim.claimValues.forEach(claimValue => {
+                        if (_.find(grantedClaim.claimValues,{claimValueId:claimValue.claimValueId})) {
+                            userAppDetails.claimSelection[packageClaim.claimId][claimValue.claimValueId]=true
+                        }
+                    })
+                }
+            })
         })
     }
 
@@ -54,8 +81,7 @@ angular.module('organization')
             APIError.offFor(loaderName + 'app')
             userAppDetails.app = Object.assign({}, res[0])
             if (!updating) {
-                getPackageClaims(userAppDetails.app.servicePackage.id)
-                // getClaims(userAppDetails.app)
+                getFormattedClaimData()
                 getRelatedApps(userAppDetails.app)
             }
         })
@@ -125,15 +151,22 @@ angular.module('organization')
                 if (Object.keys(claimsObject[claimId]).length === 0) {
                     return;
                 } // if no claimValues selected for that claimId
-                const claimValues = Object.keys(claimsObject[claimId]).reduce((claims, claimValueId) => {
-                    claims.push({ claimValueId })
-                    return claims
-                },[])
-
-                packageClaims.push({
-                    claimId,
-                    claimValues
+                let claimValues =[]
+                Object.keys(claimsObject[claimId]).forEach(claimValueId => {
+                    if (claimsObject[claimId][claimValueId]) {//If checked
+                        claimValues.push({claimValueId:claimValueId})
+                    }
                 })
+                // const claimValues = Object.keys(claimsObject[claimId]).reduce((claims, claimValueId) => {
+                //     claims.push({ claimValueId })
+                //     return claims
+                // },[])
+                if (claimValues.length!==0) {
+                    packageClaims.push({
+                        claimId,
+                        claimValues
+                    })
+                }
             })
             return packageClaims
         }
@@ -147,7 +180,7 @@ angular.module('organization')
                         id: userAppDetails.app.servicePackage.id,
                         type: 'servicePackage'
                     },
-                    packageClaims: buildPackageClaims(userAppDetails.packageClaims)
+                    packageClaims: buildPackageClaims(userAppDetails.claimSelection)
                 }
             }
     }
@@ -168,8 +201,7 @@ angular.module('organization')
     }
     userAppDetails.app=DataStorage.getType('userAppDetail')
     if (userAppDetails.app&& userAppDetails.app.id===$stateParams.appId) {        
-        // getClaims(userAppDetails.app)
-        getPackageClaims(userAppDetails.app.servicePackage.id)
+        getFormattedClaimData()
         getRelatedApps(userAppDetails.app)
         // Update application detail for any new changes during reload
         // Commenting out as API is not giving full details for service.id query parameter get
@@ -193,6 +225,7 @@ angular.module('organization')
 
     userAppDetails.suspendApp = () => {
         Loader.onFor(loaderName + 'suspend')
+        APIError.offFor(loaderName + 'suspend')
         let data=buildData('suspend')
         API.cui.suspendPersonApp({data:data})
         .then(res => {
@@ -213,6 +246,7 @@ angular.module('organization')
 
     userAppDetails.unsuspendApp = () => {
         Loader.onFor(loaderName + 'unsuspend')
+        APIError.offFor(loaderName + 'unsuspend')
         let data=buildData('unsuspend')
         API.cui.unsuspendPersonApp({data:data})
         .then(res => {
@@ -221,6 +255,7 @@ angular.module('organization')
             $scope.$digest()
             $timeout(() => {
                 userAppDetails.unsuspendExpanded=false
+                userAppDetails.unsuspendAppSuccess=false
             },2000)
         })
         .fail(err => {
@@ -237,6 +272,7 @@ angular.module('organization')
 
     userAppDetails.modifyClaims = () => {
         Loader.onFor(loaderName + 'modifyClaims')
+        APIError.offFor(loaderName + 'modifyClaims')
         API.cui.grantClaims(buildClaimData())
         .then(res => {
             userAppDetails.modifyClaimsSuccess=true
@@ -244,6 +280,7 @@ angular.module('organization')
             $scope.$digest()
             $timeout(() => {
                 userAppDetails.claimsExpanded=false
+                userAppDetails.modifyClaimsSuccess=false
             },2000)
         })
         .fail(err => {
