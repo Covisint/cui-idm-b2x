@@ -858,5 +858,21 @@
     "type": "POST",
     "accepts": "application/vnd.com.covisint.platform.package.grant.status.request.v1+json",
     "contentType":"application/vnd.com.covisint.platform.package.grant.status.request.v1+json"
+  },
+  {
+    "cmd":"resetPersonPassword",
+    "cmdType": "secured",
+    "type":"POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType":" application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/reset"
+  },
+  {
+    "cmd": "expirePersonPassword",
+    "cmdType": "secured",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/expire"
   }
 ]
