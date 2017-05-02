@@ -29,8 +29,55 @@
   </div>
 </div>
 
-<div class="cui-media__button-container">
+<!-- <div class="cui-media__button-container">
   <button class="cui-button cui-button--inverted">{{'suspend' | translate}}</button>
   <button class="cui-button cui-button--inverted">{{'password-reset' | translate}}</button>
   <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="userDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:userDetails.user.id,orgId:orgId})" ng-class="(userDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
+</div> -->
+<!-- Button Controls -->
+<div class="cui-media__button-container">
+  <!-- Suspend -->
+  <button class="cui-button cui-button--inverted" 
+          ng-click="userDetails.suspend(userDetails.user.id)" 
+          ng-if="userDetails.user.status==='active'" 
+          cui-access="{requiredEntitlements:['Suspend User']}" 
+          user-entitlements="base.user.entitlements">
+          {{'suspend' | translate}}
+  </button>
+
+  <!-- Unsuspend -->
+  <button class="cui-button cui-button--inverted" 
+          ng-click="userDetails.unsuspend(userDetails.user.id)" 
+          ng-if="userDetails.user.status==='suspended'" 
+          cui-access="{requiredEntitlements:['Suspend User']}" 
+          user-entitlements="base.user.entitlements">
+          {{'unsuspend' | translate}}
+  </button>
+
+  <!-- Specify Password -->
+  <button class="cui-button cui-button--inverted" id="password-reset" 
+          ng-click="userDetails.specifyPassword()" 
+          cui-access="{requiredEntitlements:['Specify User Password']}" 
+          user-entitlements="base.user.entitlements">
+          {{'password-reset' | translate}}
+  </button>
+
+  <!-- New Grants -->
+   <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="userDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:userDetails.user.id,orgId:orgId})" ng-class="(userDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
+
 </div>
+
+<!-- Suspend Partial -->
+<ng-include ng-if="userDetails.suspend.begun"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/suspend-user.html'">
+</ng-include>
+
+<!-- Unsuspend Partial -->
+<ng-include ng-if="userDetails.unsuspend.begun"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/unsuspend-user.html'">
+</ng-include>
+
+<!-- Specify Password Partial -->
+<ng-include ng-if="userDetails.specifyPassword.begun"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/specify-password.html'">
+</ng-include>

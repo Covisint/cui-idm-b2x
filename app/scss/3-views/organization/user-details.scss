@@ -196,3 +196,21 @@
     }
   }
 }
+
+.user-details__password-reset {
+  margin: 0 auto;
+  margin-top: 2em;
+  width: 50%;
+}
+
+.pwd-ie-faux-button {
+  height: 2.8em;
+  cursor: default;
+  left: 0;
+  position: absolute;
+  width: 10.66em; }
+  .pwd-ie-faux-button__container {
+    height: 2.8em;
+    position: relative;
+    overflow: hidden;
+    width: 10.66em; }
