@@ -1,4 +1,4 @@
-<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="userAppDetails.claimsExpanded">
+<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="userAppDetails.dropDown.claims">
   <!-- Package Claims 3 -->
   <div class="cui-expandable__body-col">
     <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="cui-organization__submit-row" disable-animate >
-    <span ng-click="userAppDetails.claimsExpanded=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+    <span ng-click="userAppDetails.dropDown.claims=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
     <button class="cui-button" ng-if="!base.loader.for['userAppDetails.modifyClaims'] && !base.apiError.for['userAppDetails.modifyClaims'] && !userAppDetails.modifyClaimsSuccess" ng-click="userAppDetails.modifyClaims()" style="margin:5px">{{'cui-update' | translate}}</button>
     <button class="cui-button" ng-if="base.loader.for['userAppDetails.modifyClaims']">
       <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>

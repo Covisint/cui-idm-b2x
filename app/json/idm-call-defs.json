@@ -882,5 +882,11 @@
     "accepts": "application/vnd.com.covisint.platform.password.v1+json",
     "contentType": "application/vnd.com.covisint.platform.password.v1+json",
     "call": "/apiproxy/authn/v4/passwords/tasks/specify"
+  },
+  {
+    "cmd": "revokePersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/persons/{personId}/packages/{packageId}",
+    "type": "DELETE"
   }
 ]

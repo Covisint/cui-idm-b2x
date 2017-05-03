@@ -33,6 +33,11 @@
 
     .cui-organization__admin-block {
       margin-bottom: em(21);
+      border-bottom:$base-font-color solid 1px;
+      .cui-field-val{
+        line-height:normal;
+        margin-bottom: 0;
+      }
     }
     @media screen and (min-width:700px){
       .cui-organization__admin-block {
