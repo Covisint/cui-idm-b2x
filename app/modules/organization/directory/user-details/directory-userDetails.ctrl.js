@@ -63,6 +63,7 @@ angular.module('organization')
         userDetails.suspend.begun = (userDetails.suspend.begun)? false:true
         userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
         userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
+        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
 
         const name = 'userDetails.suspend'
 
@@ -114,6 +115,7 @@ angular.module('organization')
         userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:true
         userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
         userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
+        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
 
         const name = 'userDetails.unsuspend'
 
@@ -161,6 +163,39 @@ angular.module('organization')
         }
     }
 
+    userDetails.resetPassword = () => {
+        userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
+        userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
+        userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
+        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:true
+
+            
+            if(userDetails.resetPassword.begun){
+                const name = 'userDetails.unsuspend'
+
+            Loader.onFor(name)
+            APIError.offFor(name)
+            API.cui.resetPersonPassword({
+                qs: [['subject', $stateParams.userId]],
+            })
+            .then(
+                res => {
+                    APIError.offFor(name)
+                    userDetails.resetPasswordValue=res
+                    userDetails.resetPassword.begun = true
+                },
+                err => {
+                    APIError.onFor(name)
+                }
+            )
+            .always(() => {
+                Loader.offFor(name)
+                $scope.$digest()
+            })
+        }
+       
+    }
+
     userDetails.specifyPassword = () => {
         errorTimer && $timeout.cancel(errorTimer) // cancel the timer if there's one pending
         let errorTimer
@@ -169,6 +204,7 @@ angular.module('organization')
         userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:true
         userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
         userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
+        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
 
         userDetails.specifyPassword.reset = () => {
             Loader.offFor(name)
@@ -238,51 +274,9 @@ angular.module('organization')
                 return
             }*/
 
-       /*     const apiPromisesPwd = [
-                API.cui.getPersonPassword({personId: $stateParams.userId})
-                .then(res => {
-                    const version = res.version
-
-                     API.cui.resetPersonPassword({
-                        qs: [['subject', $stateParams.userId]],
-                        data: {
-                            version: version,
-                            subject: $stateParams.userId,
-                            password: userDetails.specifyPassword.newPassword,
-                            passwordPolicyId: userDetails.passwordPolicy.id,
-                            authenticationPolicyId: userDetails.organization.authenticationPolicy.id
-                        }
-                    })
-                })
-                .then(res => {
-                    const versions = res.version
-
-                     API.cui.expirePersonPassword({
-                        qs: [['subject', $stateParams.userId]],
-                        data: {
-                            version: versions,
-                            subject: $stateParams.userId,
-                            password: userDetails.specifyPassword.newPassword,
-                            passwordPolicyId: userDetails.passwordPolicy.id,
-                            authenticationPolicyId: userDetails.organization.authenticationPolicy.id
-                        }
-                    })
-                })
-            ]
-
-            $q.all(apiPromisesPwd)
-            .then(() => {
-                userDetails.specifyPassword.success = true
-                $timeout(userDetails.specifyPassword.cancel, 1500)
-            })
-            .catch(() => {
-                APIError.onFor(name)
-                errorTimer = $timeout(() => APIError.offFor(name), 1500)
-            })*/
-
             API.cui.getPersonPassword({personId: $stateParams.userId})
             .then(res => {
-                return API.cui.resetPersonPassword({
+                return API.cui.specifyPersonPassword({
                     qs: [['subject', $stateParams.userId]],
                     data: {
                         subject: $stateParams.userId,

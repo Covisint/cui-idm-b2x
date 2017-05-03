@@ -59,6 +59,12 @@
           ng-click="userDetails.specifyPassword()" 
           cui-access="{requiredEntitlements:['Specify User Password']}" 
           user-entitlements="base.user.entitlements">
+          {{'specify-password' | translate}}
+  </button>
+
+  <!-- Password Reset-->
+  <button class="cui-button cui-button--inverted" id="password-specify" 
+          ng-click="userDetails.resetPassword()">
           {{'password-reset' | translate}}
   </button>
 
@@ -81,3 +87,19 @@
 <ng-include ng-if="userDetails.specifyPassword.begun"
   src="'app/modules/organization/directory/user-details/sections/headers/partials/specify-password.html'">
 </ng-include>
+<br/>
+<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="userDetails.resetPassword.begun">
+
+<div class="cui-action__actions">
+      <!-- Close Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ng-click="userDetails.resetPassword.begun=false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+        <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+      </svg>
+    </div>
+    <div class="cui-expandable__body-row">
+      <p>Password Rest successfully done. Your Password is:  <b>{{userDetails.resetPasswordValue.password}}</b> </p>
+    </div>
+      <div class="cui-expandable__body-row">
+      <p>Note: if you are seeing only first half password then the second half password you may received via email.</p>
+    </div>
+</cui-expandable-body>
