@@ -9,6 +9,12 @@ angular.module('organization')
         },
         name:"organization.directory.userDetails"
     }
+    userAppDetails.dropDown={
+        claims:false,
+        suspend:false,
+        unsuspend:false,
+        remove:false
+    }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     const getClaims = (app) => {
         let deferred=$q.defer()
@@ -223,17 +229,28 @@ angular.module('organization')
         })
     }
 
+    userAppDetails.toggleDropDown= (type) => {
+        Object.keys(userAppDetails.dropDown).forEach(key => {
+            if (key===type) {
+                userAppDetails.dropDown[key]=!userAppDetails.dropDown[key]
+            }else{
+                userAppDetails.dropDown[key]=false
+            }
+        })
+    }
     userAppDetails.suspendApp = () => {
         Loader.onFor(loaderName + 'suspend')
         APIError.offFor(loaderName + 'suspend')
         let data=buildData('suspend')
         API.cui.suspendPersonApp({data:data})
         .then(res => {
+            userAppDetails.app.grant.status="suspended"
             userAppDetails.suspendAppSuccess=true
             Loader.offFor(loaderName + 'suspend')
             $scope.$digest()
             $timeout(() => {
-                userAppDetails.suspendExpanded=false
+                userAppDetails.dropDown.suspend=false
+                userAppDetails.suspendAppSuccess=false
             },2000)
         })
         .fail(err => {
@@ -250,11 +267,12 @@ angular.module('organization')
         let data=buildData('unsuspend')
         API.cui.unsuspendPersonApp({data:data})
         .then(res => {
+            userAppDetails.app.grant.status="active"
             userAppDetails.unsuspendAppSuccess=true
             Loader.offFor(loaderName + 'unsuspend')
             $scope.$digest()
             $timeout(() => {
-                userAppDetails.unsuspendExpanded=false
+                userAppDetails.dropDown.unsuspend=false
                 userAppDetails.unsuspendAppSuccess=false
             },2000)
         })
@@ -268,6 +286,27 @@ angular.module('organization')
 
     userAppDetails.removeApp = () => {
         Loader.onFor(loaderName + 'remove')
+        APIError.offFor(loaderName + 'remove')
+        API.cui.revokePersonApp({personId:$stateParams.userId,packageId:userAppDetails.app.servicePackage.id})
+        .then(res => {
+            // userAppDetails.app.grant.status="removeed"
+            userAppDetails.removeAppSuccess=true
+            Loader.offFor(loaderName + 'remove')
+            $scope.$digest()
+            $timeout(() => {
+                userAppDetails.removeAppSuccess=false
+                $state.go('organization.directory.userDetails',userAppDetails.prevState.params)
+            },2000)
+        })
+        .fail(err => {
+            APIError.onFor(loaderName + 'remove')
+            Loader.offFor(loaderName + 'remove')
+            $scope.$digest()
+            $timeout(() => {
+                APIError.offFor(loaderName + 'remove')
+            },3000)
+            console.log('There was an error removing user App', + err)
+        })
     }
 
     userAppDetails.modifyClaims = () => {
@@ -279,7 +318,7 @@ angular.module('organization')
             Loader.offFor(loaderName + 'modifyClaims')
             $scope.$digest()
             $timeout(() => {
-                userAppDetails.claimsExpanded=false
+                userAppDetails.dropDown.claims=false
                 userAppDetails.modifyClaimsSuccess=false
             },2000)
         })
