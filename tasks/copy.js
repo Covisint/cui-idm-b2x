@@ -33,7 +33,11 @@ module.exports = function(grunt, config) {
             'app/json/*.json'
           ],
           dest: '<%= config.buildDir %>/'
-        }
+        },
+		{
+		 src: ['app/modules/user/user_icon/**/*'],
+		 dest: '<%= config.buildDir %>/'
+		 }
       ]
     },
     buildsdk: {
