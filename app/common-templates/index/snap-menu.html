@@ -6,19 +6,19 @@
 
 <!-- My Applications -->
 <div class="cui-desktop-menu__option" ui-sref="applications.myApplications" ui-sref-active-nested="active" ng-if="base.user.id" ng-click="base.menu.desktop.close()">
-  <span class="cui-desktop-menu__option-name">{{'cui-applications' | translate}}</span>
+  <span class="cui-desktop-menu__option-name">{{'my-applications' | translate}}</span>
   <cui-icon cui-svg-icon="cui:applications_v2" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>
 
 <!-- Organization Profile -->
 <div class="cui-desktop-menu__option" ui-sref="organization.profile({orgId:base.user.organization.id})" ui-sref-active-nested="active" ng-if="base.user.id" ng-click="base.menu.desktop.close()">
-  <span class="cui-desktop-menu__option-name">{{'cui-org' | translate}}</span>
+  <span class="cui-desktop-menu__option-name">{{'my-organization' | translate}}</span>
   <cui-icon cui-svg-icon="cui:organization" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>
 
 <!-- Pending Requests -->
 <div class="cui-desktop-menu__option" ui-sref="pendingAppRequests" ui-sref-active-nested="active" ng-if="base.user.id" ng-click="base.menu.desktop.close()">
-  <span class="cui-desktop-menu__option-name">{{'pending' | translate}} {{'requests' | translate}}</span>
+  <span class="cui-desktop-menu__option-name">{{'cui-my-app-requests' | translate}}</span>
   <cui-icon cui-svg-icon="cui:status-pending" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
 </div>
 
