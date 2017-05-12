@@ -29,17 +29,17 @@
       padding-left: em(30);
     }
   }
-
+/*Jay Changes for spacing*/
   .cui-org-claims__col {
-    flex: 0 50%;
-
+    /*flex: 0 50%;*/
+    padding-right: 5%;
     @media screen and (max-width: 700px) {
       flex: 1 100%;
     }
 
-    &:nth-of-type(odd) {
+    /*&:nth-of-type(odd) {
       padding-right: 5%;
-    }
+    }*/
   }
 
   .cui-button {
