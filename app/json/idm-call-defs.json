@@ -888,5 +888,13 @@
     "cmdType": "secured",
     "call": "/service/v3/persons/{personId}/packages/{packageId}",
     "type": "DELETE"
+  },
+  {
+    "cmd": "retriveOrgPendingApps",
+    "cmdType": "secured",
+    "call": "/service/v3/organizations/requests",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.package.request.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.package.request.v1+json"
   }
 ]

@@ -32,6 +32,12 @@ angular.module('user', [])
             templateUrl: templateBase + 'appHistory/app-history.html',
             controller: returnCtrlAs('appHistory'),
             access:loginRequired
+        })
+        .state('user.roles',{
+            url: '/roles',
+            templateUrl: templateBase + 'roles/user-roles.html',
+            controller: returnCtrlAs('userRoles'),
+            access:loginRequired
         });
 
 }]);

@@ -39,7 +39,7 @@
                     <ul class="cui-breadcrumb__links">
                         <li class="user_profile_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.profile"><img src="app/modules/user/user_icon/profile_current.png" width="46px" height="44px"></a>
                         </li>
-                        <li class="user_roles_image" style="padding: 8px; margin-right: 11px" ng-init="rolesrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolesrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolesrc='app/modules/user/user_icon/roles.png'"><img ng-src="{{rolesrc}}" width="34px" height="45px">
+                        <li class="user_roles_image" style="padding: 8px; margin-right: 11px" ng-init="rolesrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolesrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolesrc='app/modules/user/user_icon/roles.png'"><a ui-sref="user.roles"><img ng-src="{{rolesrc}}" width="34px" height="45px"></a>
                         </li>
                         <li class="user_apps_image" style="padding: 8px; margin-right: 10px" ng-init="appsrc='app/modules/user/user_icon/app.png'" ng-mouseover="appsrc='app/modules/user/user_icon/app_mouseover.png'" ng-mouseout="appsrc='app/modules/user/user_icon/app.png'"><a ui-sref="user.appHistory"><img ng-src="{{appsrc}}" width="29px" height="45px"></a>
                         </li>

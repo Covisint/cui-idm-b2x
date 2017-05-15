@@ -102,9 +102,9 @@ angular.module('organization')
   			});
 			};
 
-			qsArray.push(['requestor.type','organization'])
+			/*qsArray.push(['requestor.type','organization'])getPackageRequests*/
 			qsArray.push(['requestor.id',User.user.organization.id])
-			API.cui.getPackageRequests({ qs: qsArray }).then(function(res) {
+			API.cui.retriveOrgPendingApps({ qs: ['requestor.id',User.user.organization.id] }).then(function(res) {
 				var calls = [];
 
 				_.each(res, function(pkgReq) {
