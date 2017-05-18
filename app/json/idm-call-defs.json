@@ -896,5 +896,20 @@
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.package.request.v1+json",
     "contentType": "application/vnd.com.covisint.platform.package.request.v1+json"
+  },
+  {
+    "cmd": "getPersonRolesGrantable",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}/roles/grantable",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.person.role.v1+json"
+  },
+  {
+    "cmd": "assignPersonRoles",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/roles",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.person.assign.role.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.person.assign.role.v1+json"
   }
 ]

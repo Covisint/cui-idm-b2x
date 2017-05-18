@@ -1,5 +1,14 @@
 <!-- processHTML:remove -->
 <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/modules/user/history" target="blank">here</a> and the layout styles <a href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/scss/3-views/user" class="cui-link" target="blank">here</a></div>
+<div class="class-toggle cui-modal" ng-if="userRoles.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <!-- <span class="cui-modal__secondary-message">{{'your-app-request-in-review' | translate}}</span> -->
+    </div>
+</div>
 <!-- /processHTML -->
 <div class="cui-users__appHistory-container">
     <!-- Title -->
@@ -35,9 +44,9 @@
                 <ul class="cui-breadcrumb__links">
                     <li class="user_profile_image" style="padding: 8px; margin-right:10px" ng-init="profilesrc='app/modules/user/user_icon/profile.png'" ng-mouseover="profilesrc='app/modules/user/user_icon/profile_current.png'" ng-mouseout="profilesrc='app/modules/user/user_icon/profile.png'"><a ui-sref="user.profile"><img ng-src="{{profilesrc}}" width="46px" height="44px"></a>
                         </li>
-                        <li class="user_roles_image" style="padding: 8px; margin-right:10px" ng-init="rolesrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolesrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolesrc='app/modules/user/user_icon/roles.png'"><a ui-sref="user.roles"><img ng-src="{{rolesrc}}" width="34px" height="45px"></a>
+                        <li class="user_roles_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.roles"><img ng-src="app/modules/user/user_icon/roles_mouseover.png" width="34px" height="45px"></a>
                         </li>
-                        <li class="user_apps_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.appHistory"><img src="app/modules/user/user_icon/app_mouseover.png" width="29px" height="45px"></a>
+                        <li class="user_apps_image" style="padding: 8px; margin-right:10px" ng-init="appsrc='app/modules/user/user_icon/app.png'" ng-mouseover="appsrc='app/modules/user/user_icon/app_mouseover.png'" ng-mouseout="appsrc='app/modules/user/user_icon/app.png'"><a ui-sref="user.appHistory"><img ng-src="{{appsrc}}" width="29px" height="45px"></a>
                         </li>
                         <li class="user_history_image" style="padding: 8px" ng-init="historysrc='app/modules/user/user_icon/history.png'" ng-mouseover="historysrc='app/modules/user/user_icon/history_mouseover.png'" ng-mouseout="historysrc='app/modules/user/user_icon/history.png'"><a ui-sref="user.history"><img ng-src="{{historysrc}}" width="49px" height="44px"></a>
                 </ul>
@@ -48,8 +57,9 @@
         <!-- Left Block -->
         <div class="cui-users__profile-info">
           <div class="cui-action">
-              <div class="cui-action__title">{{'roles'|translate}}</div>
+              <div class="cui-action__title">Assigned {{'roles'|translate}}</div>
           </div>
+          <p class="cui-users__password-success" style="color:red" ng-if="userRoles.getRolesDetailsError"><b>{{'error-generic'|translate}}</b></p>
             <div class="cui-users__info-block">
                 <div class="cui-media__content" ng-if="userRoles.rolesDetails.length===0">{{'cui-no-details'|translate}}</div>
               <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userRoles.rolesDetails">
@@ -58,6 +68,29 @@
                 </div>
               </div>
         </div>
+        </div>
+        <!-- Right Block -->
+        <div class="cui-users__profile-info">
+            <div class="cui-action">
+                <div class="cui-action__title">Available {{'roles'|translate}}</div>
+            </div>
+            <!-- no history -->
+            <div class="cui-media__content" ng-if="userRoles.rolesGrantable.length===0">{{'cui-no-details'|translate}}</div>
+            <p class="cui-users__password-success" style="color:red" ng-if="userRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
+             <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userRoles.rolesGrantable">
+              <div class="cui-media__body">
+                 <span class="cui-checkbox__container">
+                            <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userRoles.appCheckbox[roles.roleId]" />
+                            <label ng-click="userRoles.checkrequest(roles.roleId)" for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label"> {{roles.name}}</label>
+                        </span>
+              </div>
+            </div>
+            <div class="cui-applications__submit-options">
+                <button class="cui-button" ng-class="{'cui-button--error' : !userRoles.appCheckboxValid }" ng-click="userRoles.appCheckboxValid&&userRoles.assignRoles()">
+                    <span ng-if="!userRoles.rolessubmitError">{{'submit-request' | translate}}</span>
+                    <span ng-if="userRoles.rolessubmitError===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
         </div>
     </div>
     </div>
