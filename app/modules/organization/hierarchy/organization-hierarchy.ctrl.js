@@ -5,6 +5,20 @@ angular.module('organization')
     const pageLoader = 'orgHierarchy.loading'
     orgHierarchy.stateParamsOrgId=$stateParams.orgId
 
+    /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
+
+    const addExpandedProperty = (childOrgs) => {
+
+        childOrgs.forEach(org => {
+            if (org.children) {
+                org.expanded=false
+                addExpandedProperty(org.children)
+            }
+        })
+    }
+
+    /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */    
+
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     const storedData = DataStorage.getType('orgHierarchy')
@@ -19,7 +33,12 @@ angular.module('organization')
     .done(res => {
         // Put hierarchy response in an array as the hierarchy directive expects an array
         orgHierarchy.organizationHierarchy = [res]
-        DataStorage.setType('orgHierarchy', [res])
+        // add expended property to all the org with children directive needs it to work for 
+        // expandable and collapsable function
+        if (orgHierarchy.organizationHierarchy[0].children) {
+            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children)
+        }
+        DataStorage.setType('orgHierarchy', orgHierarchy.organizationHierarchy)
     })
     .fail(err => {
         APIError.onFor(pageLoader, err)
@@ -33,6 +52,11 @@ angular.module('organization')
     /* */
     orgHierarchy.goToOrgPrfile = (org) => {
         $state.go('organization.profile',{orgId:org.id})
+    }
+
+    orgHierarchy.toggleExpand = (object) => {
+        object.expanded=!object.expanded
+        $scope.$digest()
     }
     /* */
 })

@@ -54,7 +54,7 @@ angular.module('organization')
 
     newGrant.searchCallback = (opts) => {
         if (!opts) {
-            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId});
+            $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, orgId: $stateParams.orgId});
         } else if (typeof opts ==='string') {
             $state.go('organization.requests.newGrantSearch',{type:newGrant.searchType, userId: $stateParams.userId, orgId: $stateParams.orgId, name: opts});
         } else {

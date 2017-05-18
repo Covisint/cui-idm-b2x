@@ -22,9 +22,9 @@
     <!-- Title -->
     <h3 class="cui-organization__page-title" ng-if="base.user.organization.id!=orgHierarchy.organizationHierarchy[0].id" ui-sref="organization.profile({orgId:base.user.organization.id})">&lt; {{base.user.organization.name}}</h3>
 
-    <h3 class="cui-organization__page-title" style="color:#006c77;">{{orgHierarchy.organizationHierarchy[0].name|cuiI18n}}</h3>
+    <!-- <h3 class="cui-organization__page-title" style="color:#006c77;">{{orgHierarchy.organizationHierarchy[0].name|cuiI18n}}</h3> -->
     <!-- Hierarchy Tree -->
-    <div class="cui-tree" style="margin-left:2em;" ng-if="orgHierarchy.organizationHierarchy[0].children" cui-tree="orgHierarchy.organizationHierarchy[0].children" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="orgHierarchy.goToOrgPrfile"></div>
+    <div class="cui-tree" ng-if="orgHierarchy.organizationHierarchy" cui-tree-alt="orgHierarchy.organizationHierarchy" cui-tree-alt-leaf-display="(object.name | cuiI18n)" cui-tree-alt-leaf-click-callback="orgHierarchy.goToOrgPrfile" cui-tree-alt-toggle-expand-callback="orgHierarchy.toggleExpand"></div>
     
   </div>
 </div>
