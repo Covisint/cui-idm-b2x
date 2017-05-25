@@ -201,8 +201,7 @@ angular.module('organization')
     }
 
     const opts = {
-        personId: API.getUser(),
-        useCuid:true,
+        personId: $stateParams.userId,
         qs: APIHelpers.getQs(qs)
     }
     userAppDetails.app=DataStorage.getType('userAppDetail')
@@ -212,7 +211,7 @@ angular.module('organization')
         // Update application detail for any new changes during reload
         // Commenting out as API is not giving full details for service.id query parameter get
         //it is relying on previous page details which has full details
-        // getApp(true)
+         getApp(true)
     }
     else{
         getApp(false)
