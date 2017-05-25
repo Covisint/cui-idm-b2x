@@ -24,8 +24,19 @@ angular.module('user')
         Loader.onFor(scopeName + 'initHistory')
         API.cui.getPersonRolesOnly({personId:User.user.id})
         .then(res =>{
-            userRoles.rolesDetails=res
-            API.cui.getPersonRolesGrantable({personId:User.user.id})
+            userRoles.rolesDetails=res;
+            initiGrantable();
+        })
+        .fail(err =>{
+            Loader.offFor(scopeName + 'initHistory')
+            APIError.onFor(scopeName + 'initHistory')
+            userRoles.getRolesDetailsError=true
+            initiGrantable();
+        })
+    };
+
+    let initiGrantable = function initiGrantable(){
+        API.cui.getPersonRolesGrantable({personId:User.user.id})
             .then(res =>{
                 userRoles.rolesGrantable=res
                 Loader.offFor(scopeName + 'initHistory')
@@ -33,16 +44,10 @@ angular.module('user')
             })
             .fail(err =>{
                 Loader.offFor(scopeName + 'initHistory')
+                APIError.onFor(scopeName + 'initHistory')
                 userRoles.grantedHistoryError=true
                 $scope.$digest()
             })
-        })
-        .fail(err =>{
-            Loader.offFor(scopeName + 'initHistory')
-            APIError.onFor(scopeName + 'initHistory')
-            userRoles.getRolesDetailsError=true
-            $scope.$digest()
-        })
     };
 
     init();

@@ -16,7 +16,24 @@ angular.module('organization')
 	    API.cui.getPersonRoles({personId: userId})
 	    .then((res) => {
 	    	userDetailsRoles.assignedRoles = res;
+            API.cui.getPersonRolesGrantable({personId:userId})
+            .then(res =>{
+                userDetailsRoles.rolesGrantable=res;
+            })
+            .fail(err =>{
+                userDetailsRoles.grantedHistoryError=true;
+            })
 	    })
+    );
+
+    apiPromises.push(
+        API.cui.getPersonRolesGrantable({personId:userId})
+        .then(res =>{
+            userDetailsRoles.rolesGrantable=res;
+        })
+        .fail(err =>{
+            userDetailsRoles.grantedHistoryError=true;
+        })
     );
 
     $q.all(apiPromises)
@@ -25,6 +42,7 @@ angular.module('organization')
     })
     .catch((error) => {
 		userDetailsRoles.loading = false;
+        userDetailsRoles.grantedHistoryError=true;
 		console.log(error);
     });
 

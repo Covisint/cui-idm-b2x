@@ -277,12 +277,9 @@ angular.module('organization')
             API.cui.getPersonPassword({personId: $stateParams.userId})
             .then(res => {
                 return API.cui.specifyPersonPassword({
-                    qs: [['subject', $stateParams.userId]],
                     data: {
                         subject: $stateParams.userId,
-                        password: userDetails.specifyPassword.newPassword,
-                        passwordPolicyId: userDetails.passwordPolicy.id,
-                        authenticationPolicyId: userDetails.organization.authenticationPolicy.id
+                        password: userDetails.specifyPassword.newPassword
                     }
                 })
             })
