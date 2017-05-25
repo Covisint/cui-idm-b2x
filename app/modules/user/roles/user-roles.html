@@ -75,7 +75,7 @@
                 <div class="cui-action__title">Available {{'roles'|translate}}</div>
             </div>
             <!-- no history -->
-            <div class="cui-media__content" ng-if="userRoles.rolesGrantable.length===0">{{'cui-no-details'|translate}}</div>
+            <div class="cui-media__content" ng-if="userRoles.rolesGrantable.length===0&&!userRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
             <p class="cui-users__password-success" style="color:red" ng-if="userRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
              <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userRoles.rolesGrantable">
               <div class="cui-media__body">
@@ -85,7 +85,7 @@
                         </span>
               </div>
             </div>
-            <div class="cui-applications__submit-options">
+            <div class="cui-applications__submit-options" ng-if="userRoles.rolesGrantable.length>0&&!userRoles.grantedHistoryError">
                 <button class="cui-button" ng-class="{'cui-button--error' : !userRoles.appCheckboxValid }" ng-click="userRoles.appCheckboxValid&&userRoles.assignRoles()">
                     <span ng-if="!userRoles.rolessubmitError">{{'submit-request' | translate}}</span>
                     <span ng-if="userRoles.rolessubmitError===true">{{'cui-error-try-again' | translate}}</span>
