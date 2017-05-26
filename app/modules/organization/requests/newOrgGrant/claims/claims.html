@@ -20,7 +20,7 @@
   <section class="cui-action cui-action--alt">
     <h2 class="cui-action__title"
       ng-click="base.goBack('organization.requests.newOrgGrantSearch',newOrgGrantClaims.prevState.params)">
-      &#60; {{'select-claims'|translate}}
+      &#60; {{'cui-review'|translate}}
     </h2>
     <div class="cui-action__actions">
       <div class="flex_row" id="cui-applications__requested-apps" ng-click="newOrgGrantClaims.requestPopover=!newOrgGrantClaims.requestPopover" off-click="newOrgGrantClaims.requestPopover=false">
@@ -65,7 +65,7 @@
               <span>{{bundledApp.name|cuiI18n}}</span>
           </div> 
           <div class="cui-applications__review-text-input" >
-            <h3 class="cui-media__title cui-media__title-margin__top">{{'request-reason' | translate}}</h3>
+            <h3 class="cui-media__title cui-media__title-margin__top">{{'grant-reason' | translate}}</h3>
             <div class="cui-wizard__field-row">
               <!-- First Name -->
               <div class="cui-wizard__field-container cui-wizard__field-container--half">
