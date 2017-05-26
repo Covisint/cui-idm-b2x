@@ -1,9 +1,14 @@
 angular.module('organization')
-.controller('userDetailsCtrl', function(API, Loader, CuiMobileNavFactory, $scope, $stateParams,APIError,APIHelpers,$timeout,$q) {
+.controller('userDetailsCtrl', function(API, Loader, $scope, $stateParams,APIError,APIHelpers,$timeout,$q) {
 
     const userDetails = this
     const scopeName = 'userDetails.'
-    userDetails.stateParamsOrgId=$stateParams.orgId
+    userDetails.prevState={
+        params:{
+            orgId:$stateParams.orgId
+        },
+        name:"organization.directory.userList"
+    }
     userDetails.mobileHandler = 'profile'
     userDetails.profileRolesSwitch = 'profile'
     userDetails.appsHistorySwitch = 'apps'
@@ -30,15 +35,18 @@ angular.module('organization')
         API.cui.getPerson({
             personId: $stateParams.userId
         }),
-
-        API.cui.getOrganization({ organizationId: $stateParams.orgId  })
+        API.cui.getOrganization({ organizationId: $stateParams.orgId  }),
+        API.cui.getPersonPassword({
+            personId: $stateParams.userId
+        })
     ]
 
     $q.all(apiPromises)
-    .then(([ user, organization ]) => {
-        CuiMobileNavFactory.setTitle(user.name.given + '.' + user.name.surname)
+    .then(([ user, organization ,password]) => {
+        // CuiMobileNavFactory.setTitle(user.name.given + '.' + user.name.surname)
        userDetails.user = Object.assign({}, user)
         userDetails.organization = Object.assign({}, organization);
+        userDetails.passwordAccount= Object.assign({}, password)
         return API.cui.getPasswordPolicy({ policyId: userDetails.organization.passwordPolicy.id })
     })
     .then(res => {
