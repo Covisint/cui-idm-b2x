@@ -2,24 +2,33 @@
 <div class="cui-loading__container--user-details" ng-if="userDetailsRoles.loading">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
+<div class="class-toggle cui-modal" ng-if="userDetailsRoles.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your-assign-role-success' | translate}}</span>
+    </div>
+</div>
 
 <div ng-if="!userDetailsRoles.loading">
 	<!-- Assigned Roles -->
 	<div class="cui-users__profile-info">
 		<!-- Assigned Roles: Title -->
 		<div class="cui-action">
-			<div class="cui-action__title">Assigned Roles</div>
+			<div class="cui-action__title">{{'cui-assigned-roles'|translate}}</div>
 		</div>
 		<!-- Assigned Roles: List -->
 		<div ng-repeat="role in userDetailsRoles.assignedRoles | orderBy:'name' track by role.roleId">
-			<p ng-if="userDetailsRoles.assignedRoles.length===0">This user has no assigned roles.</p>
+			<p ng-if="userDetailsRoles.assignedRoles.length===0">{{'cui-no-roles-assigned'|translate}}</p>
 			<span>{{role.name}}</span>
 		</div>
 	</div>
 	        <!-- Right Block -->
         <div class="cui-users__profile-info">
             <div class="cui-action">
-                <div class="cui-action__title">Available {{'roles'|translate}}</div>
+                <div class="cui-action__title">{{'cui-available-roles'|translate}}</div>
             </div>
             <!-- no history -->
             <div class="cui-media__content" ng-if="userDetailsRoles.rolesGrantable.length===0&&!userDetailsRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>

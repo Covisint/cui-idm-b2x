@@ -1,7 +1,7 @@
 <main class="cui-organization__new-request-search">
-    <h2 class="cui-sr-only">New Grant Search Results</h2>
+    <h2 class="cui-sr-only">{{'cui-new-grant-search-results' | translate}}</h2>
     <section class="cui-action">
-        <h3 class="cui-sr-only">User name and close navigation</h3>
+        <h3 class="cui-sr-only">{{'cui-username-close'|translate}}</h3>
         <div class="cui-action__title" ng-click="base.goBack('organization.directory.userDetails',newGrantSearch.prevState.params)">
           <span ng-if="!base.loader.for['newGrantSearch.user']">
             &#60; {{newGrantSearch.user.name.given}} {{newGrantSearch.user.name.surname}} - {{'new-grant' | translate}}
@@ -12,7 +12,7 @@
         </div>
     </section>
     <section class="cui-action cui-action--alt">
-        <h3 class="cui-sr-only">Back navigation and Requests</h3>
+        <h3 class="cui-sr-only">{{'cui-back-navigation-requests'|translate}}</h3>
         <div class="cui-action__title" ng-if="!newGrantSearch.search.category"
           ng-click="base.goBack('organization.requests.newGrant',newGrantSearch.prevState.params)">&#60; {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="newGrantSearch.search.category"
