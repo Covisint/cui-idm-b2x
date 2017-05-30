@@ -64,24 +64,6 @@
     }
   }
 
-  .cui-button--inverted {
-    letter-spacing: 1.6px;
-    padding: em(6, 15) em(12, 15) em(12, 15);
-    margin-right: em(14, 15);
-    width: auto;
-
-    @media screen and (max-width: 1024px) {
-      font-size: em(14);
-      letter-spacing: 1.5px;
-    }
-
-    @media screen and (max-width: 700px) {
-      margin-right: 0;
-      margin-bottom:1em;
-      width : 30%;
-    }
-  }
-
   .cui-media__button-container {
     display: flex;
     justify-content: center;
@@ -90,6 +72,23 @@
     @media screen and (max-width: 700px) {
       justify-content: flex-start;
       flex-wrap:wrap;
+    }
+    .cui-button {
+      letter-spacing: 1.6px;
+      padding: em(6, 15) em(12, 15) em(12, 15);
+      margin-right: em(14, 15);
+      width: auto;
+
+      @media screen and (max-width: 1024px) {
+        font-size: em(14);
+        letter-spacing: 1.5px;
+      }
+
+      @media screen and (max-width: 700px) {
+        margin-right: 0;
+        margin-bottom:1em;
+        width : 30%;
+      }
     }
   }
 

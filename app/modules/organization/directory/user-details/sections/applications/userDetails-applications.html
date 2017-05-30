@@ -22,7 +22,7 @@
 				<!-- Application Details -->
         <div class="cui-flex-table__left--stacked">
           <h3 class="cui-flex-table__title" ng-click="userDetailsApps.goToDetails(application)">{{application.name | cuiI18n}}</h3>
-          <span class="cui-flex-table__subtitle-info">{{ 'granted' | translate }}: {{application.grant.instant | date:base.appConfig.dateFormat}}</span>
+          <span ng-if="application.grant.status!=='pending'" class="cui-flex-table__subtitle-info">{{ 'granted' | translate }}: {{application.grant.instant | date:base.appConfig.dateFormat}}</span>
           <span class="cui-status cui-mobile-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
         </div>
         <div class="cui-flex-table__middle cui-desktop-only">

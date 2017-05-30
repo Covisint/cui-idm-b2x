@@ -48,11 +48,22 @@
 
 
   <!-- unlock user -->
-  <button class="cui-button cui-button--inverted" 
-          ng-click="userDetails.unlockUser()"
-          ng-if="userDetails.passwordAccount.locked&&(userDetails.user.status==='active'||userDetails.user.status==='locked')">
-          {{'cui-unlock' | translate}}
-  </button>
+
+  <cui-button 
+      disable-animate 
+      ng-if="userDetails.passwordAccount.locked&&(userDetails.user.status==='active'||userDetails.user.status==='locked')"
+      loading-if="base.loader.for['userDetails.unlockUser']"
+      success-if="userDetails.unlockUserSuccess"
+      error-if="base.apiError.for['userDetails.unlockUser']"
+      button-click="userDetails.unlockUser()"
+      loading-message="{{'cui-button-loading-text'|translate}}"
+      error-message="{{'cui-error-try-again'|translate}}"
+    >
+      <button class="cui-button cui-button--inverted"
+      >
+        {{'cui-unlock' | translate}}
+      </button>
+    </cui-button>
 
   <!-- Unsuspend -->
   <button class="cui-button cui-button--inverted" 

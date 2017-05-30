@@ -911,5 +911,13 @@
     "type": "POST",
     "accepts": "application/vnd.com.covisint.platform.person.assign.role.v1+json",
     "contentType": "application/vnd.com.covisint.platform.person.assign.role.v1+json"
+  },
+  {
+    "cmd":"unlockPersonPassword",
+    "cmdType": "secured",
+    "type":"POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType":" application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/unlock"
   }
 ]
