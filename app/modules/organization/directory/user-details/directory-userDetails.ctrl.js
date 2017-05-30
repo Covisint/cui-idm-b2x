@@ -66,6 +66,7 @@ angular.module('organization')
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
+    /* --------------------------------------------- ON CLICK START ---------------------------------------------- */
     userDetails.suspend = (personId) => {
 
         userDetails.suspend.begun = (userDetails.suspend.begun)? false:true
@@ -322,4 +323,35 @@ angular.module('organization')
         }
     }
 
+    userDetails.unlockUser = () => {
+        Loader.onFor('userDetails.unlockUser')
+        APIError.offFor('userDetails.unlockUser')
+        //Need to call two API's One is unlock Password Account and Update person stutus to active
+        API.cui.unlockPersonPassword({qs:[['subject', $stateParams.userId]]})
+        .then(res => {
+            userDetails.user.stutus='active'
+            API.cui.updatePerson({personId:$stateParams.userId, data:userDetails.user})
+            .then(res => {
+                userDetails.unlockUserSuccess=true
+            })
+            .fail(err => {
+                APIError.onFor('userDetails.unlockUser')
+                $timeout(() => {APIError.offFor('userDetails.unlockUser')},3000)
+            })
+            .always(() => {
+                Loader.offFor('userDetails.unlockUser')
+                $scope.$digest()
+            })
+        })
+        .fail(err => {
+            APIError.onFor('userDetails.unlockUser')
+            $timeout(() => {APIError.offFor('userDetails.unlockUser')},3000)
+        })
+        .always(() => {
+            Loader.offFor('userDetails.unlockUser')
+            $scope.$digest()
+        })
+    }
+
+    /* --------------------------------------------- ON CLICK END ---------------------------------------------- */
 })
