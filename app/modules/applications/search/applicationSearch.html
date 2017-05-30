@@ -57,7 +57,7 @@
         <div class="cui-loading__container" ng-if="!applicationSearch.doneReloading">
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
-
+        <p class="cui-users__password-success" style=" margin:20px; text-align:center" ng-if="applicationSearch.viewList.length===0">{{'no-apps-found' |translate}} <span ng-if="applicationSearch.search.name">{{'refine-search' |translate}}</span> </p>
         <!-- TODO @SHANE we need designs for no applications matching query -->
 
         <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.viewList track by application.id" ng-class="application.expanded?'expanded':''" ng-if="applicationSearch.doneReloading" transition-speed="150">
