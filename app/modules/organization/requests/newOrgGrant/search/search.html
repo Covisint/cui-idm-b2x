@@ -8,7 +8,7 @@
     </div>
   </div>
     <section class="cui-action cui-action--alt">
-        <h3 class="cui-sr-only">Back navigation and Requests</h3>
+        <h3 class="cui-sr-only">{{'cui-back-navigation-requests'|translate}}</h3>
         <div class="cui-action__title" ng-if="!newOrgGrantSearch.search.category"
           ng-click="base.goBack('organization.requests.newOrgGrant',newOrgGrantSearch.prevState.params)">&#60; {{'categories' | translate}}</div>
         <span class="cui-action__title" ng-if="newOrgGrantSearch.search.category"
@@ -32,7 +32,7 @@
         </div>
     </section>
     <section class="cui-applications__main-container">
-        <h3 class="cui-sr-only">Search Results</h3>
+        <h3 class="cui-sr-only">{{'cui-search-results'|translate}}</h3>
         <div class="cui-loading__container" ng-if="base.loader.for['newOrgGrantSearch.apps']">
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>

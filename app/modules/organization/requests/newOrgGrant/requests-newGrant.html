@@ -54,7 +54,7 @@
               <a class="cui-link" ng-click="newOrgGrant.searchCallback()">{{'show-all' | translate}}</a>
           </div>
           <section>
-              <h3 class="cui-sr-only">Browse by category</h3>
+              <h3 class="cui-sr-only">{{'cui-browse-by-category'|translate}}</h3>
               <p class="cui-error" ng-if="newOrgGrant.categoryError">{{'error-generic'|translate}}</p>
               <div ng-repeat="category in newOrgGrant.categories" ng-if="!base.loader.for['newOrgGrant.categories']">
                   <section class="cui-applications__categories"
