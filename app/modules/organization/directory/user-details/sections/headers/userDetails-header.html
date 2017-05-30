@@ -1,6 +1,7 @@
 <div class="cui-action">
   <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
-  <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  <!-- Mobile nav doesnot support in other states -->
+  <span class="cui-action__title cui-mobile-only" ng-click="base.goBack('organization.directory.userList',userDetails.prevState.params)">&#60; {{'directory' | translate}}</span>
   <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
 </div>
 
@@ -43,6 +44,14 @@
           cui-access="{requiredEntitlements:['Suspend User']}" 
           user-entitlements="base.user.entitlements">
           {{'suspend' | translate}}
+  </button>
+
+
+  <!-- unlock user -->
+  <button class="cui-button cui-button--inverted" 
+          ng-click="userDetails.unlockUser()"
+          ng-if="userDetails.passwordAccount.locked&&(userDetails.user.status==='active'||userDetails.user.status==='locked')">
+          {{'cui-unlock' | translate}}
   </button>
 
   <!-- Unsuspend -->
