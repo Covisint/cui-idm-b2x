@@ -88,7 +88,7 @@
                 <span class="">{{relatedApp.name | cuiI18n}} </span>
                 <span class="cui-checkbox__container">
                   <input class="cui-checkbox" type="checkbox" ng-model="orgAppSearch.appCheckbox[relatedApp.id]" />
-                  <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[relatedApp.id]=!orgAppSearch.appCheckbox[relatedApp.id]; orgAppSearch.toggleRequest(relatedApp)"></label>
+                  <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[relatedApp.id]=!orgAppSearch.appCheckbox[relatedApp.id]; orgAppSearch.checkRelatedAppsBody(relatedApp,application)"></label>
                 </span>
               </span>
             </div>

@@ -146,10 +146,97 @@ angular.module('organization')
         processNumberOfRequestedApps(orgAppSearch.packageRequests[application.id]);
     };
 
-    orgAppSearch.saveRequestsAndCheckout = function() {
+   /* orgAppSearch.saveRequestsAndCheckout = function() {
         DataStorage.setType('orgAppsBeingRequested', orgAppSearch.packageRequests);
         $state.go('organization.newRequestReview');
+    };*/
+
+    
+    orgAppSearch.saveRequestsAndCheckout = function() {
+        let qs = []
+        //needed to set a flag for related apps to display in review page
+        angular.forEach(orgAppSearch.packageRequests,(request)=>{
+            if (request.relatedApps) {
+                request.relatedAppSelectedCount=0
+                request.relatedApps.forEach(relatedApp=>{
+                    if(_.find(orgAppSearch.packageRequests,{id:relatedApp.id})){
+                        relatedApp.selected=true
+                        request.relatedAppSelectedCount++
+                    }
+                    else{
+                        relatedApp.selected=false
+                    }
+                })
+            }
+            // If Selected Related app full details not available need to fetch it
+            if (!request.servicePackage) {
+                qs.push(['service.id',request.id])
+            }
+        })
+        if (qs.length!==0) {
+            API.cui.getPersonRequestableApps({personId:API.getUser(),qs:qs})
+            .then(res => {
+                res.forEach(app =>{
+                    orgAppSearch.packageRequests[app.id] = app
+                })
+                /*AppRequests.set(orgAppSearch.packageRequests);*/
+                DataStorage.setType('orgAppsBeingRequested', orgAppSearch.packageRequests)
+                $state.go('organization.newRequestReview');
+            })
+        }
+        else{
+            /*AppRequests.set(orgAppSearch.packageRequests);*/
+            DataStorage.setType('orgAppsBeingRequested', orgAppSearch.packageRequests)
+            $state.go('organization.newRequestReview');
+        }
     };
+    //Related apps will always appear inside body, So need to select parent if it is selected 
+    orgAppSearch.checkRelatedAppsBody= function(relatedApp, parent){
+        if (_.find(orgAppSearch.list,{id:relatedApp.id})) {
+            orgAppSearch.toggleRequest(_.find(orgAppSearch.list,{id:relatedApp.id}))
+        }
+        else{
+            orgAppSearch.list.push(relatedApp)
+            orgAppSearch.toggleRequest(relatedApp)
+        }           
+        orgAppSearch.checkRelatedAndBundledApps(_.find(orgAppSearch.list,{id:relatedApp.id}),parent)
+    };
+
+//Deselect Child apps If it has any and select parent if checked from parent body 
+    orgAppSearch.checkRelatedAndBundledApps=function(application,parent){
+        //if unchecked the checkbox
+        if (!orgAppSearch.packageRequests[application.id]) {
+            //if it is a parent then then deselect childs
+            if (!parent) {
+                application.relatedApps&&application.relatedApps.forEach((relatedApp)=>{
+                    if (orgAppSearch.appCheckbox[relatedApp.id]) {
+                        orgAppSearch.appCheckbox[relatedApp.id]=!orgAppSearch.appCheckbox[relatedApp.id]
+                        orgAppSearch.toggleRequest(_.find(orgAppSearch.list,{id:relatedApp.id}))
+                    }
+                })
+                orgAppSearch.checkBundledApps(application,false)
+            }      
+        }else{
+            if (parent) {
+                if (!orgAppSearch.appCheckbox[parent.id]) {
+                    orgAppSearch.appCheckbox[parent.id]=true
+                    orgAppSearch.toggleRequest(parent)
+                    orgAppSearch.checkBundledApps(parent,true)
+                }
+            }else
+            orgAppSearch.checkBundledApps(application,true)
+        }
+    }
+
+    orgAppSearch.checkBundledApps= function(application,check){
+        if (application.bundledApps) {
+            application.bundledApps.forEach(bundledApp=>{
+                orgAppSearch.appCheckbox[bundledApp.id]=check
+                if (_.find(orgAppSearch.list,{id:bundledApp.id}))
+                    orgAppSearch.toggleRequest(_.find(orgAppSearch.list,{id:bundledApp.id}))
+            })
+        }
+    }
 
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
