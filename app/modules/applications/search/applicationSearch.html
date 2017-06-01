@@ -99,7 +99,7 @@
                                 <span class="cui-checkbox_label__flex">{{relatedApp.name | cuiI18n}} </span>  
                                 <span class="cui-checkbox__container">
                                     <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id];applicationSearch.checkRelatedAppsBody(relatedApp)"></label>
+                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id];applicationSearch.checkRelatedAppsBody(relatedApp,application)"></label>
                                 </span>
                             </span>
                         </div>
