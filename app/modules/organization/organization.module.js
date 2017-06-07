@@ -69,6 +69,34 @@ angular.module('organization', [])
                 permittedLogic:appConfig.accessByAnyAdmin
             }
         })
+        .state('organization.directory.orgDetails', {
+            url: '/org-details?orgId',
+            views: {
+                '': {
+                    templateUrl: templateBase + 'directory/org-details/directory-orgDetails.html',
+                    controller: returnCtrlAs('orgDetails')
+                },
+                'profile@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/profile/orgDetails-profile.html',
+                    controller: returnCtrlAs('orgDetailsProfile')
+                },
+                'applications@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/applications/orgDetails-applications.html',
+                    controller: returnCtrlAs('orgDetailsApps')
+                },
+                'roles@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/roles/orgDetails-roles.html',
+                    controller: returnCtrlAs('orgDetailsRoles')
+                },
+                'history@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/history/orgDetails-history.html',
+                    controller: returnCtrlAs('orgDetailsHistory')
+                }
+            },
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
             url: '/hierarchy/:orgId',

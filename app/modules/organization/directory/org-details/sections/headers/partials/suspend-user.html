@@ -1,0 +1,24 @@
+<div class="cui-users__address-container user-details__password-reset show-address">
+  {{'cui-suspend-confirm' | translate}}*
+
+  <div class="cui-server-error" ng-if="base.apiError.for['userDetails.suspend']">
+    <div class="cui-server-error__container">
+      <span >{{ 'suspend-error' | translate }}</span>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-server-error__close" ng-click="base.apiError.for['userDetails.suspend'] = !base.apiError.for['userDetails.suspend']" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+      <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+    </svg>
+  </div>
+
+  <textarea class="cui-text-area jlr-text-area--black-text" ng-required="true" style="margin: 20px" ng-model="userDetails.user.suspendReason" placeholder="{{'request-reason' | translate}}"></textarea>
+
+<div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="userDetails.suspend.cancel()" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : userDetails.user.suspendReason.length==0}" ng-if="!base.loader.for['userDetails.suspend'] && !base.apiError.for['userDetails.suspend'] && !userDetails.suspend.success" ng-click="userDetails.user.suspendReason.length>0&&userDetails.suspend.confirm()" style="margin:5px">{{'yes' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['userDetails.suspend']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-class="{'cui-button--error' : userDetails.user.suspendReason.length==0}" ng-if="!base.loader.for['userDetails.suspend'] && base.apiError.for['userDetails.suspend'] && !userDetails.suspend.success " ng-click="userDetails.user.suspendReason.length>0&&userDetails.suspend.confirm()">{{'cui-error-try-again' | translate}}</button>
+      <button  class="cui-button" ng-class="{'cui-button--error' : userDetails.user.suspendReason.length==0}" ng-if="!base.loader.for['userDetails.suspend'] && !base.apiError.for['userDetails.suspend'] && userDetails.suspend.success">{{'cui-success' | translate}}</button>
+    </div>
+</div>
