@@ -51,7 +51,7 @@ angular.module('organization')
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
     /* */
     orgHierarchy.goToOrgPrfile = (org) => {
-        $state.go('organization.profile',{orgId:org.id})
+        $state.go('organization.directory.orgDetails',{orgId:org.id})
     }
 
     orgHierarchy.toggleExpand = (object) => {

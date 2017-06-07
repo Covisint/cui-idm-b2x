@@ -1,0 +1,50 @@
+<div class="cui-organization__profile-left-header">
+
+  <!-- Profile Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="orgDetails.profileRolesSwitch='profile'" id="profile-button" off-click="">
+    <div>
+      <cui-icon cui-svg-icon="cui:profile" ng-class="{'cui-action__icon--active':orgDetails.profileRolesSwitch==true}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
+  </div>
+
+  <!-- Roles Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="orgDetails.profileRolesSwitch='roles'" id="roles-button">
+    <div>
+      <cui-icon cui-svg-icon="cui:roles" ng-class="{'cui-action__icon--active':orgDetails.profileRolesSwitch==false}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
+  </div>
+
+  <!-- Profile Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="orgDetails.mobileHandler='profile'" id="profile-button">
+    <div>
+      <cui-icon cui-svg-icon="cui:profile" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='profile'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
+  </div>
+
+  <!-- Roles Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="orgDetails.mobileHandler='roles'" id="roles-button">
+    <div>
+      <cui-icon cui-svg-icon="cui:roles" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='roles'}"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
+  </div>
+
+  <!-- Applications Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="orgDetails.mobileHandler='apps'">
+    <div>
+      <cui-icon cui-svg-icon="cui:applications_v2" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='apps'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
+  </div>
+
+  <!-- History Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="orgDetails.mobileHandler='history'" ng-if="false">
+    <div>
+      <cui-icon cui-svg-icon="cui:history" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='history'}" svg-class="cui-action__icon cui-action__icon--history" use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
+  </div>
+</div>
