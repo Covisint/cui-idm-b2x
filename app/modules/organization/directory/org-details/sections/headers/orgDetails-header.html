@@ -6,26 +6,24 @@
 </div>
 
 <!-- Page Loading -->
-<div class="cui-loading__container" ng-if="base.loader.for['orgDetails.userInfo']">
+<div class="cui-loading__container" ng-if="base.loader.for['orgDetails.orgInfo']">
   <div class="cui-loader cui-loader--content cui-loader--content-vert" ng-include="'app/common-templates/partials/loader-content-vert.html'"></div>
 </div>
 
 <!-- Name Header -->
-<div class="cui-media--centered">
-  <div class="cui-media__image-container" ng-if="!base.loader.for['orgDetails.userInfo']">
-    <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[orgDetails.user.name.given, orgDetails.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="orgDetails.user.email"></div>
+<div class="cui-media--centered" ng-if="!base.loader.for['orgDetails.orgInfo']">
+  <div class="cui-media__image-container">
+    <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[orgDetails.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="orgDetails.organization.email"></div>
   </div>
-  <div class="cui-media__body" ng-if="!orgDetails.loading">
+  <div class="cui-media__body">
     <!-- Name -->
-    <h3 class="cui-media__title">{{orgDetails.user.name.given}} {{orgDetails.user.name.surname}}</h3>
-    <!-- userID -->
-    <p class="cui-media__content cui-media__content--bold">{{'userID' | translate}}: {{orgDetails.user.username}}</p>
+    <h3 class="cui-media__title">{{orgDetails.organization.name}}</h3>
     <!-- Registered Date -->
-    <p class="cui-media__content">{{'cui-registered' | translate}}: {{orgDetails.user.creation | date:base.appConfig.dateFormat}}</p>
+    <p class="cui-media__content">{{'cui-registered' | translate}}: {{orgDetails.organization.creation | date:base.appConfig.dateFormat}}</p>
     <!-- Status: Active -->
     <div class="cui-media__content">
       <span class="cui-media__content--dark">{{'status' | translate}}:</span>
-      <span class="cui-status" ng-class=" 'cui-status--'+orgDetails.user.status ">{{orgDetails.user.status}}</span>
+      <span class="cui-status" ng-class=" 'cui-status--'+orgDetails.organization.status ">{{orgDetails.organization.status}}</span>
     </div>
   </div>
 </div>
@@ -39,8 +37,8 @@
 <div class="cui-media__button-container">
   <!-- Suspend -->
   <button class="cui-button cui-button--inverted" 
-          ng-click="orgDetails.suspend(orgDetails.user.id)" 
-          ng-if="orgDetails.user.status==='active'" 
+          ng-click="orgDetails.suspend(orgDetails.organization.id)" 
+          ng-if="orgDetails.organization.status==='active'" 
           cui-access="{requiredEntitlements:['Suspend User']}" 
           user-entitlements="base.user.entitlements">
           {{'suspend' | translate}}
@@ -49,7 +47,7 @@
 
   <!-- unlock user -->
 
-  <cui-button 
+<!--   <cui-button 
       disable-animate 
       ng-if="orgDetails.passwordAccount.locked&&(orgDetails.user.status==='active'||orgDetails.user.status==='locked')"
       loading-if="base.loader.for['orgDetails.unlockUser']"
@@ -63,7 +61,7 @@
       >
         {{'cui-unlock' | translate}}
       </button>
-    </cui-button>
+    </cui-button> -->
 
   <!-- Unsuspend -->
   <button class="cui-button cui-button--inverted" 
@@ -75,17 +73,17 @@
   </button>
 
   <!-- New Grants -->
-   <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="orgDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:orgDetails.user.id,orgId:orgId})" ng-class="(orgDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
+   <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="orgDetails.organization.status!=='active'" ui-sref="organization.requests.newOrgGrant({orgId:orgId})" ng-class="(orgDetails.organization.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
 
 </div>
 
 <!-- Suspend Partial -->
 <ng-include ng-if="orgDetails.suspend.begun"
-  src="'app/modules/organization/directory/user-details/sections/headers/partials/suspend-user.html'">
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/suspend-user.html'">
 </ng-include>
 
 <!-- Unsuspend Partial -->
 <ng-include ng-if="orgDetails.unsuspend.begun"
-  src="'app/modules/organization/directory/user-details/sections/headers/partials/unsuspend-user.html'">
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/unsuspend-user.html'">
 </ng-include>
 <br/>
