@@ -43,11 +43,24 @@
       </svg>
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
-      <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.refineClicked">
+      <!-- <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.refineClicked">
         <p ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</p>
         <p ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</p>
         <p ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
-        <p ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</p>
+        <p ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</p> -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="organizationApplications.refineClicked" style="width:214px">
+         <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</span>
+         </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+         </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+         </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
+         </div>
       </div>
     </div>
 

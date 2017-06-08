@@ -70,7 +70,7 @@ angular.module('organization', [])
             }
         })
         .state('organization.directory.orgDetails', {
-            url: '/org-details?orgId',
+            url: '/org-details?orgId&page&pageSize',
             views: {
                 '': {
                     templateUrl: templateBase + 'directory/org-details/directory-orgDetails.html',
@@ -86,7 +86,7 @@ angular.module('organization', [])
                 },
                 'users@organization.directory.orgDetails': {
                     templateUrl: templateBase + 'directory/org-details/sections/users/orgDetails-users.html',
-                    controller: returnCtrlAs('orgDetailsRoles')
+                    controller: returnCtrlAs('orgDetailsUsers')
                 },
                 'hierarchy@organization.directory.orgDetails': {
                     templateUrl: templateBase + 'directory/org-details/sections/hierarchy/orgDetails-hierarchy.html',
