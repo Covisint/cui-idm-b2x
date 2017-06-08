@@ -6,10 +6,45 @@
 <!-- Page Errors -->
 <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['orgDetailsProfile.init']">{{'error-generic' | translate}}</p>
 <div class="org-details__container" ng-if="!base.loader.for['orgDetailsProfile.init'] && orgDetailsProfile.organization">
-  <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
   <div class="cui-organization__row">
-    <!-- Admins -->
     <div class="cui-organization__info-block">
+      <!-- Address -->
+      <div class="cui-organization__admin-block-wrapper">
+        <div class="cui-field-val cui-field-val--stack cui-organization__admin-block cui-organization__admin-block__right">
+          <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
+          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].state}}, {{orgDetailsProfile.organization.addresses[0].postal}}</span>
+          <span class="cui-field-val__val">{{orgDetailsProfile.organization.phones[0].number}}</span>
+        </div>
+
+        <!-- Info -->
+        <div class="cui-organization__admin-block cui-organization__admin-block__right">
+          <h4 class="cui-field-val__field">{{'cui-info' | translate}}:</h4>
+          <div class="cui-field-val" ng-if="orgDetailsProfile.organization.url">
+            <span class="cui-field-val__field">{{'url' | translate}}: </span>
+            <span class="cui-field-val__val"><a class="cui-link" ng-href="{{orgDetailsProfile.organization.url}}">{{orgDetailsProfile.organization.url}}</a></span>
+          </div>
+          <div class="cui-field-val" ng-if="orgDetailsProfile.passwordPolicy">
+            <span class="cui-field-val__field">{{'cui-password-policy' | translate}}: </span>
+            <span class="cui-field-val__val">{{orgDetailsProfile.passwordPolicy.name}}</span>
+          </div>
+          <div class="cui-field-val" ng-if="orgDetailsProfile.authenticationPolicy">
+            <span class="cui-field-val__field">{{'cui-authentication-policy' | translate}}: </span>
+            <span class="cui-field-val__val">{{orgDetailsProfile.authenticationPolicy.name}}</span>
+          </div>
+        </div>
+        <!-- More Info -->
+        <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-if="orgDetailsProfile.organization.attributes" >
+          <h4 class="cui-field-val__field">{{'cui-more-information' | translate}}:</h4>
+          <div class="cui-field-val" ng-repeat=" attribute in orgDetailsProfile.organization.attributes">
+            <span class="cui-field-val__field">{{attribute.name}}: </span>
+            <span class="cui-field-val__val">{{attribute.value}}</span>
+          </div>
+        </div>
+      </div>
+      <!-- Admins -->
+      <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
       <div class="cui-organization__admin-block-wrapper" ng-if="orgDetailsProfile.securityAdmins">
         <div class="cui-organization__admin-block" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
           <!-- Name -->
@@ -36,42 +71,6 @@
           <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
             <span class="cui-field-val__val"><a class="cui-link" href="mailto:{{admin.email}}">{{admin.email}}</a></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Address -->
-      <div class="cui-organization__admin-block-wrapper">
-        <div class="cui-field-val cui-field-val--stack cui-organization__admin-block cui-organization__admin-block__right">
-          <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
-          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].streets[0]}}</span>
-          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].city}}</span>
-          <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].state}}, {{orgDetailsProfile.organization.addresses[0].postal}}</span>
-          <span class="cui-field-val__val">{{orgDetailsProfile.organization.phones[0].number}}</span>
-        </div>
-
-        <!-- Info -->
-        <div class="cui-organization__admin-block cui-organization__admin-block__right">
-          <!-- <h4 class="cui-field-val__field">{{'cui-info' | translate}}:</h4> -->
-          <div class="cui-field-val" ng-if="orgDetailsProfile.organization.url">
-            <span class="cui-field-val__field">{{'url' | translate}}: </span>
-            <span class="cui-field-val__val"><a class="cui-link" ng-href="{{orgDetailsProfile.organization.url}}">{{orgDetailsProfile.organization.url}}</a></span>
-          </div>
-          <div class="cui-field-val" ng-if="orgDetailsProfile.passwordPolicy">
-            <span class="cui-field-val__field">{{'cui-password-policy' | translate}}: </span>
-            <span class="cui-field-val__val">{{orgDetailsProfile.passwordPolicy.name}}</span>
-          </div>
-          <div class="cui-field-val" ng-if="orgDetailsProfile.authenticationPolicy">
-            <span class="cui-field-val__field">{{'cui-authentication-policy' | translate}}: </span>
-            <span class="cui-field-val__val">{{orgDetailsProfile.authenticationPolicy.name}}</span>
-          </div>
-        </div>
-        <!-- More Info -->
-        <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-if="orgDetailsProfile.organization.attributes" >
-          <h4 class="cui-field-val__field">{{'cui-more-information' | translate}}:</h4>
-          <div class="cui-field-val" ng-repeat=" attribute in orgDetailsProfile.organization.attributes">
-            <span class="cui-field-val__field">{{attribute.name}}: </span>
-            <span class="cui-field-val__val">{{attribute.value}}</span>
           </div>
         </div>
       </div>
