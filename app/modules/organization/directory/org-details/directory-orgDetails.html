@@ -4,14 +4,14 @@
 
 <div class="cui-organization cui-organization__user-details">
   <!-- Page Header -->
-  <ng-include src="'app/modules/organization/directory/user-details/sections/headers/orgDetails-header.html'" onload="orgId=orgDetails.prevState.params.orgId"></ng-include>
+  <ng-include src="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header.html'" onload="orgId=orgDetails.prevState.params.orgId"></ng-include>
 
   <div class="cui-organization__details-container">
     <!-- Left Content -->
     <div class="cui-organization__details-col">
 
       <!-- Left Header -->
-      <div ng-include="'app/modules/organization/directory/user-details/sections/headers/orgDetails-header-left.html'"></div>
+      <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-left.html'"></div>
 
       <!-- Profile Desktop -->
       <cui-resize-handler desktop show-if="orgDetails.profileDesktop" ng-if="orgDetails.profileRolesSwitch==='profile'">
@@ -48,7 +48,7 @@
     <div class="cui-organization__details-col">
 
       <!-- Right Header -->
-      <div ng-include="'app/modules/organization/directory/user-details/sections/headers/orgDetails-header-right.html'"></div>
+      <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-right.html'"></div>
 
       <!-- Applications Desktop -->
       <cui-resize-handler desktop show-if="orgDetails.applicationsDesktop" ng-if="orgDetails.appsHistorySwitch==='apps'">

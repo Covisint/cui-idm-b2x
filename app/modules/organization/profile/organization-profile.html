@@ -70,8 +70,8 @@
 
             <!-- Info -->
             <div class="cui-organization__admin-block cui-organization__admin-block__right">
-              <h4 class="cui-field-val__field">{{'cui-info' | translate}}:</h4>
-              <div class="cui-field-val">
+              <!-- <h4 class="cui-field-val__field">{{'cui-info' | translate}}:</h4> -->
+              <div class="cui-field-val" ng-if="orgProfile.organization.url">
                 <span class="cui-field-val__field">{{'url' | translate}}: </span>
                 <span class="cui-field-val__val"><a class="cui-link" ng-href="{{orgProfile.organization.url}}">{{orgProfile.organization.url}}</a></span>
               </div>
