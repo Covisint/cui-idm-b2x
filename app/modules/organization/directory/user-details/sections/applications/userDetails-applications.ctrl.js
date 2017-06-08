@@ -18,6 +18,7 @@ angular.module('organization')
                 pendingService.grant = { 
                     status: 'pending'
                 };
+                pendingService.servicePackage=servicePackage
                 userDetailsApps.appList.push(pendingService);
             });
         });
@@ -85,6 +86,14 @@ angular.module('organization')
 
     userDetailsApps.goToDetails = (application) => {
         DataStorage.setType('userAppDetail',application)
+        if (application.grant.status==='pending') {
+            $state.go('organization.requests.pendingRequests', {
+                    'userId': userId, 
+                    'orgId': organizationId,
+                    'packageId': application.servicePackage.servicePackage.id
+                })
+        }
+        else
         $state.go('organization.directory.userAppDetails',{appId:application.id,orgId:organizationId,userId:userId})
     }
 
