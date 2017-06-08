@@ -84,13 +84,13 @@ angular.module('organization', [])
                     templateUrl: templateBase + 'directory/org-details/sections/applications/orgDetails-applications.html',
                     controller: returnCtrlAs('orgDetailsApps')
                 },
-                'roles@organization.directory.orgDetails': {
-                    templateUrl: templateBase + 'directory/org-details/sections/roles/orgDetails-roles.html',
+                'users@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/users/orgDetails-users.html',
                     controller: returnCtrlAs('orgDetailsRoles')
                 },
-                'history@organization.directory.orgDetails': {
-                    templateUrl: templateBase + 'directory/org-details/sections/history/orgDetails-history.html',
-                    controller: returnCtrlAs('orgDetailsHistory')
+                'hierarchy@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/hierarchy/orgDetails-hierarchy.html',
+                    controller: returnCtrlAs('orgDetailsHierarchy')
                 }
             },
             access: {

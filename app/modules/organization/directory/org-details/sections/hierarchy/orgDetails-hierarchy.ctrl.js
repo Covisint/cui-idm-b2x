@@ -1,31 +1,31 @@
 angular.module('organization')
-.controller('orgDetailsHistoryCtrl',function(API,$stateParams,$q) {
+.controller('orgDetailsHierarchyCtrl',function(API,$stateParams,$q) {
 	'use strict';
 
-	const orgDetailsHistory = this,
+	const orgDetailsHierarchy = this,
         userId = $stateParams.userId,
         organizationId = $stateParams.orgId;
 
     let apiPromises = [];
 
-    orgDetailsHistory.loading = true;
-    orgDetailsHistory.sortClicked = false;
+    orgDetailsHierarchy.loading = true;
+    orgDetailsHierarchy.sortClicked = false;
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
 	apiPromises.push(
 		API.cui.getPersonStatusHistory({qs: [['userId', String(userId)]]})
     	.then((res) => {
-    		orgDetailsHistory.personStatusHistory = res;
+    		orgDetailsHierarchy.personStatusHistory = res;
     	})
     );
 
     $q.all(apiPromises)
     .then((res) => {
-    	orgDetailsHistory.loading = false;
+    	orgDetailsHierarchy.loading = false;
     })
     .catch((error) => {
-    	orgDetailsHistory.loading = false;
+    	orgDetailsHierarchy.loading = false;
     	console.log(error);
     });
 

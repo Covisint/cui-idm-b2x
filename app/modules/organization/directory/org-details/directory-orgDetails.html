@@ -14,7 +14,7 @@
       <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-left.html'"></div>
 
       <!-- Profile Desktop -->
-      <cui-resize-handler desktop show-if="orgDetails.profileDesktop" ng-if="orgDetails.profileRolesSwitch==='profile'">
+      <cui-resize-handler desktop show-if="orgDetails.profileDesktop" ng-if="orgDetails.profileUsersSwitch==='profile'">
         <div ui-view="profile"></div>
       </cui-resize-handler>
 
@@ -23,14 +23,14 @@
         <div ui-view="profile"></div>
       </cui-resize-handler>
 
-      <!-- Roles Desktop -->
-      <cui-resize-handler desktop show-if="orgDetails.rolesDesktop" ng-if="orgDetails.profileRolesSwitch==='roles'">
-        <div ui-view="roles"></div>
+      <!-- Users Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.usersDesktop" ng-if="orgDetails.profileUsersSwitch==='users'">
+        <div ui-view="users"></div>
       </cui-resize-handler>
 
-      <!-- Roles Mobile -->
-      <cui-resize-handler mobile show-if="orgDetails.rolesMobile" ng-if="orgDetails.mobileHandler==='roles'">
-        <div ui-view="roles"></div>
+      <!-- Users Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.usersMobile" ng-if="orgDetails.mobileHandler==='users'">
+        <div ui-view="users"></div>
       </cui-resize-handler>
 
       <!-- Applications Mobile -->
@@ -38,9 +38,9 @@
         <div ui-view="applications"></div>
       </cui-resize-handler>
 
-      <!-- History Mobile -->
-      <cui-resize-handler mobile show-if="orgDetails.historyMobile" ng-if="orgDetails.mobileHandler==='history'">
-        <div ui-view="history"></div>
+      <!-- Hierarchy Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.hierarchyMobile" ng-if="orgDetails.mobileHandler==='hierarchy'">
+        <div ui-view="hierarchy"></div>
       </cui-resize-handler>
     </div>
 
@@ -51,13 +51,13 @@
       <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-right.html'"></div>
 
       <!-- Applications Desktop -->
-      <cui-resize-handler desktop show-if="orgDetails.applicationsDesktop" ng-if="orgDetails.appsHistorySwitch==='apps'">
+      <cui-resize-handler desktop show-if="orgDetails.applicationsDesktop" ng-if="orgDetails.appsHierarchySwitch==='apps'">
         <div ui-view="applications"></div>
       </cui-resize-handler>
 
-      <!-- History Desktop -->
-      <cui-resize-handler desktop show-if="orgDetails.historyDesktop" ng-if="orgDetails.appsHistorySwitch==='history'">
-        <div ui-view="history"></div>
+      <!-- Hierarchy Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.hierarchyDesktop" ng-if="orgDetails.appsHierarchySwitch==='hierarchy'">
+        <div ui-view="hierarchy"></div>
       </cui-resize-handler>
     </div>
   </div>
