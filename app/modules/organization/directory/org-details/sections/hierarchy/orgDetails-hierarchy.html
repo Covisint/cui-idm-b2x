@@ -1,9 +1,9 @@
 <!-- Page Loading -->
-<div class="cui-loading__container--user-details" ng-if="orgDetailsHistory.loading">
+<div class="cui-loading__container--user-details" ng-if="orgDetailsHierarchy.loading">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
-<div ng-if="!orgDetailsHistory.loading">
+<div ng-if="!orgDetailsHierarchy.loading">
 	<!-- Status History -->
 	<div>
 		<!-- Status History: Title -->
@@ -11,8 +11,8 @@
 			<h3>{{'cui-user-status-history'|translate}}</h3>
 		</div>
 		<!-- Status History: List -->
-		<p ng-if="orgDetailsHistory.personStatusHistory.length===0">{{'cui-no-status-history'|translate}}</p>
-		<div ng-repeat="status in orgDetailsHistory.personStatusHistory">
+		<p ng-if="orgDetailsHierarchy.personStatusHistory.length===0">{{'cui-no-status-history'|translate}}</p>
+		<div ng-repeat="status in orgDetailsHierarchy.personStatusHistory">
 			<p>{{status}}</p>
 		</div>
 	<div>
@@ -24,7 +24,7 @@
 		<span class="cui-action__title">{{'cui-app-history'|translate}}</span>
   		<div class="cui-action__actions">
     		<!-- Sort -->
-    		<div class="cui-action__action-container" id="sort-button" ng-click="orgDetailsHistory.sortClicked=!orgDetailsHistory.sortClicked" off-click="orgDetailsHistory.sortClicked=false">
+    		<div class="cui-action__action-container" id="sort-button" ng-click="orgDetailsHierarchy.sortClicked=!orgDetailsHierarchy.sortClicked" off-click="orgDetailsHierarchy.sortClicked=false">
           <div>
             <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
           </div>
@@ -33,13 +33,13 @@
       		</svg-->
       		<span class="cui-action__action-label">{{'sort'|translate}}</span>
       		<!-- Sort Popover -->
-      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetailsHistory.sortClicked">
+      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetailsHierarchy.sortClicked">
         		<p>{{'cui-alphabetically' | translate}}</p>
         		<p>{{'cui-by-date-added' | translate}}</p>
       		</div>
     		</div>
     		<!-- Refine -->
-    		<div class="cui-action__action-container" id="refine-button" ng-click="orgDetailsHistory.refineClicked=!orgDetailsHistory.refineClicked" off-click="orgDetailsHistory.refineClicked=false">
+    		<div class="cui-action__action-container" id="refine-button" ng-click="orgDetailsHierarchy.refineClicked=!orgDetailsHierarchy.refineClicked" off-click="orgDetailsHierarchy.refineClicked=false">
                     
           <div>
             <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
@@ -49,7 +49,7 @@
       		</svg-->
       		<span class="cui-action__action-label">{{'refine'|translate}}</span>
       		<!-- Refine Popover -->
-      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetailsHistory.refineClicked">
+      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetailsHierarchy.refineClicked">
         		<p>TODO: REFINE</p>
       		</div>
     		</div>

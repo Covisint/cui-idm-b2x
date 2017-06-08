@@ -10,8 +10,8 @@ angular.module('organization')
         name:"organization.directory.userList"
     }
     orgDetails.mobileHandler = 'profile'
-    orgDetails.profileRolesSwitch = 'profile'
-    orgDetails.appsHistorySwitch = 'apps'
+    orgDetails.profileUsersSwitch = 'profile'
+    orgDetails.appsHierarchySwitch = 'apps'
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
