@@ -155,7 +155,7 @@ Global layout styles
 }
 
 .pending-content__block{
-  background-color:#d4e2e6;
+  background-color:$tertiary-background;
   padding: 1.5em 1em;
 }
 .pending-content__title-container{
@@ -168,7 +168,7 @@ Global layout styles
   border-bottom: 1px solid #ffffff;
   font-size:0.8em;
   letter-spacing:1.1px;
-  color:#343534;
+  color:$cui-greyscale--medium-light;
   word-break: break-word;
 }
 @media screen and (max-width:999px){
