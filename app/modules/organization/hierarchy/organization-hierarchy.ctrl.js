@@ -25,20 +25,25 @@ angular.module('organization')
 
     if (storedData) {
         orgHierarchy.organizationHierarchy = storedData
-    }
-
-    if (!storedData) Loader.onFor(pageLoader)
-
-    API.cui.getOrganizationHierarchy({organizationId:orgHierarchy.stateParamsOrgId })
-    .done(res => {
-        // Put hierarchy response in an array as the hierarchy directive expects an array
-        orgHierarchy.organizationHierarchy = [res]
         // add expended property to all the org with children directive needs it to work for 
         // expandable and collapsable function
         if (orgHierarchy.organizationHierarchy[0].children) {
             addExpandedProperty(orgHierarchy.organizationHierarchy[0].children)
         }
+    }
+
+    if (!storedData) Loader.onFor(pageLoader)
+    // Loader.onFor(pageLoader)
+    API.cui.getOrganizationHierarchy({organizationId:orgHierarchy.stateParamsOrgId })
+    .done(res => {
+        // Put hierarchy response in an array as the hierarchy directive expects an array
+        orgHierarchy.organizationHierarchy = [res]
         DataStorage.setType('orgHierarchy', orgHierarchy.organizationHierarchy)
+        // add expended property to all the org with children directive needs it to work for 
+        // expandable and collapsable function
+        if (orgHierarchy.organizationHierarchy[0].children) {
+            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children)
+        }
     })
     .fail(err => {
         APIError.onFor(pageLoader, err)
@@ -56,6 +61,21 @@ angular.module('organization')
 
     orgHierarchy.toggleExpand = (object) => {
         object.expanded=!object.expanded
+        let updateOrgChildren= (orgs) => {
+            orgs.forEach(org => {
+                if (org.id===object.id) {
+                    org.expanded=object.expanded
+                    return;
+                }
+                if (org.children) {
+                    updateOrgChildren(org.children)
+                }
+            })
+            
+            if (true) {};
+        }
+        updateOrgChildren(orgHierarchy.organizationHierarchy[0].children)
+        console.log(orgHierarchy.organizationHierarchy)
         $scope.$digest()
     }
     /* */
