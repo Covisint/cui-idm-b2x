@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgDetailsAppsCtrl',function(API,$stateParams,$q,$state,DataStorage,$pagination,Loader) {
+.controller('orgDetailsAppsCtrl',function(API,$stateParams,$q,$state,DataStorage,$pagination,Loader,$filter,$scope) {
     'use strict';
 
 	
