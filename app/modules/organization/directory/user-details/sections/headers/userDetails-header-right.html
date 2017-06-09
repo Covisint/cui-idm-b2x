@@ -2,16 +2,16 @@
 
   <!-- Applications -->
   <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch='apps'">
-    <div>
-      <cui-icon cui-svg-icon="cui:applications_v2" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==true}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <div ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch=='apps'}">
+      <cui-icon cui-svg-icon="cui:applications_v2" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
     <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
   </div>
 
   <!-- History -->
   <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch='history'" ng-if="false">
-    <div>
-      <cui-icon cui-svg-icon="cui:history" svg-class="cui-action__icon cui-action__icon--history" ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch==false}" use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <div ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch=='history'}">
+      <cui-icon cui-svg-icon="cui:history" svg-class="cui-action__icon cui-action__icon--history"  use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
     <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
   </div>
