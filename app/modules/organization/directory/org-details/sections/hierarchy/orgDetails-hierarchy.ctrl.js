@@ -1,34 +1,66 @@
 angular.module('organization')
-.controller('orgDetailsHierarchyCtrl',function(API,$stateParams,$q) {
+.controller('orgDetailsHierarchyCtrl',function(API,APIError,Loader,User,$scope,$state,$stateParams) {
 	'use strict';
+    const orgDetailsHierarchy = this
+    const pageLoader = 'orgDetailsHierarchy.loading'
+    orgDetailsHierarchy.stateParamsOrgId=$stateParams.orgId
 
-	const orgDetailsHierarchy = this,
-        userId = $stateParams.userId,
-        organizationId = $stateParams.orgId;
+    /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    let apiPromises = [];
+    const addExpandedProperty = (childOrgs) => {
 
-    orgDetailsHierarchy.loading = true;
-    orgDetailsHierarchy.sortClicked = false;
+        childOrgs.forEach(org => {
+            if (org.children) {
+                org.expanded=false
+                addExpandedProperty(org.children)
+            }
+        })
+    }
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */    
 
-	apiPromises.push(
-		API.cui.getPersonStatusHistory({qs: [['userId', String(userId)]]})
-    	.then((res) => {
-    		orgDetailsHierarchy.personStatusHistory = res;
-    	})
-    );
-
-    $q.all(apiPromises)
-    .then((res) => {
-    	orgDetailsHierarchy.loading = false;
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
+    Loader.onFor(pageLoader)
+    API.cui.getOrganizationHierarchy({organizationId:orgDetailsHierarchy.stateParamsOrgId })
+    .done(res => {
+        // Put hierarchy response in an array as the hierarchy directive expects an array
+        orgDetailsHierarchy.organizationHierarchy = [res]
+        // add expended property to all the org with children directive needs it to work for 
+        // expandable and collapsable function
+        if (orgDetailsHierarchy.organizationHierarchy[0].children) {
+            addExpandedProperty(orgDetailsHierarchy.organizationHierarchy[0].children)
+        }
     })
-    .catch((error) => {
-    	orgDetailsHierarchy.loading = false;
-    	console.log(error);
-    });
+    .fail(err => {
+        APIError.onFor(pageLoader, err)
+    })
+    .always(() => {
+        Loader.offFor(pageLoader)
+        $scope.$digest()
+    })
 
-    // ON LOAD END -----------------------------------------------------------------------------------
+    /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
+    /* */
+    orgDetailsHierarchy.goToOrgPrfile = (org) => {
+        $state.go('organization.directory.orgDetails',{orgId:org.id})
+    }
 
+    orgDetailsHierarchy.toggleExpand = (object) => {
+        object.expanded=!object.expanded
+        // let updateOrgChildren= (orgs) => {
+        //     orgs.forEach(org => {
+        //         if (org.id===object.id) {
+        //             org.expanded=object.expanded
+        //             return;
+        //         }
+        //         if (org.children) {
+        //             updateOrgChildren(org.children)
+        //         }
+        //     })
+            
+        //     if (true) {};
+        // }
+        // updateOrgChildren(orgDetailsHierarchy.organizationHierarchy[0].children)
+        $scope.$digest()
+    }
 });
