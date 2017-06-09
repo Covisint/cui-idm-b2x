@@ -6,8 +6,13 @@ angular.module('organization')
     newOrgGrantClaims.prevState={
         params:{
             orgId:$stateParams.orgId
-        },
-        name:"organization.applications"
+        }
+    }
+    if (API.user.organization.id===$stateParams.orgId) {
+        newOrgGrantClaims.prevState.name="organization.applications"
+    }
+    else{
+        newOrgGrantClaims.prevState.name="organization.directory.orgDetails"
     }
     newOrgGrantClaims.packageRequests = {}
 

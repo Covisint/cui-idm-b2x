@@ -4,10 +4,15 @@ angular.module('organization')
     newOrgGrantSearch.prevState={
         params:{
             orgId:$stateParams.orgId
-        },
-        name:"organization.applications"
+        }
     }
 
+    if (API.user.organization.id===$stateParams.orgId) {
+        newOrgGrantSearch.prevState.name="organization.applications"
+    }
+    else{
+        newOrgGrantSearch.prevState.name="organization.directory.orgDetails"
+    }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
     const updateStorage = () => {
