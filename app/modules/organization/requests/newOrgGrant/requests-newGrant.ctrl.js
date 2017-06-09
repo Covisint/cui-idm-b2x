@@ -5,9 +5,15 @@ angular.module('organization')
     newOrgGrant.prevState={
         params:{
             orgId:$stateParams.orgId
-        },
-        name:"organization.applications"
+        }
     }
+    if (API.user.organization.id===$stateParams.orgId) {
+        newOrgGrant.prevState.name="organization.applications"
+    }
+    else{
+        newOrgGrant.prevState.name="organization.directory.orgDetails"
+    }
+    
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
