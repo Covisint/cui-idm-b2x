@@ -1,0 +1,41 @@
+<ng-form name="timezoneLanguage">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">{{'timezone-and-language' | translate}}</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="userDetailsProfile.toggleAllOff();toggleOn()">{{'cui-edit' | translate}}</span>
+        <div ng-if="toggled" ng-click="toggleOff()">
+            <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" aria-label="{{'cui-close' | translate}}"></cui-icon>
+        </div>
+        <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+        </svg-->
+      </div>
+      <div ng-if="!toggled">
+        <span class="cui-field-val__field">{{'cui-timezone' | translate}}:</span>
+        <span class="cui-field-val__val">{{userDetailsProfile.timezoneById(userDetailsProfile.user.timezone)}}</span><br/>
+        <span class="cui-field-val__field">{{'cui-language' | translate}}:</span>
+        <span class="cui-field-val__val">{{base.languages[userDetailsProfile.user.language]}}</span>
+      </div>
+
+      <!-- Language/Timezone edit -->
+      <div ng-if="toggled" ng-init="userDetailsProfile.pushToggleOff({'name':'timezoneLangauge','function':toggleOff})">
+        <!-- Timezone -->
+        <label for="timezone">{{'cui-timezone' | translate}}</label>
+        <select class="cui-input  cui-select" ng-model="userDetailsProfile.tempUser.timezone" ng-options="timezone.id as timezone.name for timezone in base.timezones"></select>
+        <!-- Language -->
+        <label for="language">{{'cui-language' | translate}}</label>
+        <select class="cui-input  cui-select" ng-model="userDetailsProfile.tempUser.language" ng-options="languageCode as languageName for (languageCode,languageName) in base.languages"></select>
+        <!-- language/timezone edit Controls -->
+        <div class="cui-users__address-submit">
+          <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-click="userDetailsProfile.updatePerson('timezoneLanguage',toggleOff);">
+            <span ng-if="!userDetailsProfile.timezoneLanguage || !userDetailsProfile.timezoneLanguage.submitting">{{'cui-update' | translate}}</span>
+            <div class="cui-loading--medium-ctr" ng-if="userDetailsProfile.timezoneLanguage.submitting"></div>
+            <span ng-if="userDetailsProfile.timezoneLanguage.error">{{'cui-error-try-again'| translate}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

@@ -5,9 +5,7 @@ angular.module('organization', [])
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
-    const loginRequired = {
-        loginRequired: true
-    };
+    const loginRequired = true;
 
     $stateProvider
         .state('organization', {
@@ -17,7 +15,7 @@ angular.module('organization', [])
         })
         // Profile --------------------------------------------------
         .state('organization.profile', {
-            url: '/profile?userID&orgID',
+            url: '/profile/:orgId?userId',
             templateUrl: templateBase + 'profile/organization-profile.html',
             controller: returnCtrlAs('orgProfile'),
             access: loginRequired
@@ -28,10 +26,12 @@ angular.module('organization', [])
             template: '<div ui-view></div>'
         })
         .state('organization.directory.userList', {
-            url: '/directory?orgId&page&pageSize&sortBy&refine',
+            url: '/directory/:orgId?page&pageSize&sortBy&status&fullName',
             templateUrl: templateBase + 'directory/user-list/directory-userList.html',
             controller: returnCtrlAs('orgDirectory'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         .state('organization.directory.userDetails', {
             url: '/user-details?userId&orgId',
@@ -57,14 +57,89 @@ angular.module('organization', [])
                     controller: returnCtrlAs('userDetailsHistory')
                 }
             },
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('organization.directory.userAppDetails', {
+            url: '/user-app-details/:appId?userId&orgId',
+            templateUrl: templateBase + 'directory/user-app-details/directory-userAppDetails.html',
+            controller: returnCtrlAs('userAppDetails'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('organization.directory.orgDetails', {
+            url: '/org-details?orgId&page&pageSize',
+            views: {
+                '': {
+                    templateUrl: templateBase + 'directory/org-details/directory-orgDetails.html',
+                    controller: returnCtrlAs('orgDetails')
+                },
+                'profile@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/profile/orgDetails-profile.html',
+                    controller: returnCtrlAs('orgDetailsProfile')
+                },
+                'applications@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/applications/orgDetails-applications.html',
+                    controller: returnCtrlAs('orgDetailsApps')
+                },
+                'users@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/users/orgDetails-users.html',
+                    controller: returnCtrlAs('orgDetailsUsers')
+                },
+                'hierarchy@organization.directory.orgDetails': {
+                    templateUrl: templateBase + 'directory/org-details/sections/hierarchy/orgDetails-hierarchy.html',
+                    controller: returnCtrlAs('orgDetailsHierarchy')
+                }
+            },
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
         })
         // Hierarchy ------------------------------------------------
         .state('organization.hierarchy', {
-            url: '/hierarchy?orgID',
+            url: '/hierarchy/:orgId',
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
-            access:loginRequired
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        // applications----------------------------------------------
+        .state('organization.applications', {
+            url: '/applications/:orgId?name&page&pageSize&service.category&sortBy&refine',
+            templateUrl: templateBase + 'applications/organization-applications.html',
+            controller: returnCtrlAs('organizationApplications'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('organization.applicationDetails', {
+            url: '/applications/:appId/details/:orgId',
+            templateUrl: templateBase + 'applications/applicationDetails/organization-applicationDetails.html',
+            controller: returnCtrlAs('orgApplicationDetails'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('organization.newRequest', {
+            url: '/request',
+            templateUrl: templateBase + 'applications/appRequest/newRequest/appRequest-newRequest.html',
+            controller: returnCtrlAs('orgAppRequest'),
+            access: loginRequired
+        })
+        .state('organization.newRequestReview', {
+            url: '/request/review',
+            templateUrl: templateBase + 'applications/appRequest/newRequestReview/appRequest-newRequestReview.html',
+            controller: returnCtrlAs('orgAppRequestReview'),
+            access: loginRequired
+        })
+        .state('organization.search', {
+            url: '/search?name&category&page&pageSize',
+            templateUrl: templateBase + 'applications/search/orgApplications-search.html',
+            controller: returnCtrlAs('orgAppSearch'),
+            access: loginRequired
         })
         // Roles ----------------------------------------------------
         .state('organization.roles', {
@@ -80,22 +155,53 @@ angular.module('organization', [])
             access: loginRequired
         })
         .state('organization.requests.newGrant', {
-            url: '/new-grant?userID',
+            url: '/new-grant?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/requests-newGrant.html',
             controller: returnCtrlAs('newGrant'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
         })
         .state('organization.requests.newGrantSearch', {
-            url: '/search?type&category&name&userID&page&pageSize&sortBy',
+            url: '/search?type&category&name&orgId&userId&page&pageSize&sortBy',
             templateUrl: templateBase + 'requests/newGrant/search/search.html',
             controller: returnCtrlAs('newGrantSearch'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
         })
         .state('organization.requests.newGrantClaims', {
-            url: '/claims?userID',
+            url: '/claims?orgId&userId',
             templateUrl: templateBase + 'requests/newGrant/claims/claims.html',
             controller: returnCtrlAs('newGrantClaims'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.grantAppToUserLogic
+            }
+        })
+        // Org Grant
+        .state('organization.requests.newOrgGrant', {
+            url: '/new-org-grant?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/requests-newGrant.html',
+            controller: returnCtrlAs('newOrgGrant'),
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
+        })
+        .state('organization.requests.newOrgGrantSearch', {
+            url: '/search-org?type&category&name&orgId&page&pageSize&sortBy',
+            templateUrl: templateBase + 'requests/newOrgGrant/search/search.html',
+            controller: returnCtrlAs('newOrgGrantSearch'),
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
+        })
+        .state('organization.requests.newOrgGrantClaims', {
+            url: '/claims-org?orgId',
+            templateUrl: templateBase + 'requests/newOrgGrant/claims/claims.html',
+            controller: returnCtrlAs('newOrgGrantClaims'),
+            access: {
+                permittedLogic:appConfig.grantAppToOrgLogic
+            }
         })
         .state('organization.requests.pendingRequests', {
             url: '/pending-requests?userId&orgId',
@@ -109,17 +215,38 @@ angular.module('organization', [])
             controller: returnCtrlAs('pendingRequestsReview'),
             access: loginRequired
         })
+        // Approval of Org requests
         .state('organization.requests.organizationRequest', {
-            url: '/organization-request?orgID&registrantID',
+            url: '/organization-request?orgId&userId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
-            controller: returnCtrlAs('orgRequest'),
-            access: loginRequired
+            controller: returnCtrlAs('organizationRequest'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.organizationRequestReview', {
-            url: '/organization-request-review?orgID',
+            url: '/organization-request-review?orgId',
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
-            controller: returnCtrlAs('orgRequestReview'),
-            access: loginRequired
+            controller: returnCtrlAs('organizationRequestReview'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        })
+        .state('organization.requests.organizationAppRequest', {
+            url: '/organization-app-request?orgId&userId',
+            templateUrl: templateBase + 'requests/organizationAppRequests/requests-organization.html',
+            controller: returnCtrlAs('organizationAppRequest'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        })
+        .state('organization.requests.organizationAppRequestReview', {
+            url: '/organization-app-request-review?orgId',
+            templateUrl: templateBase + 'requests/organizationAppRequests/requests-organizationReview.html',
+            controller: returnCtrlAs('organizationAppRequestReview'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.personRequest', {
             url: '/person-request?userId&orgId',
@@ -132,6 +259,74 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
             access: loginRequired
-        });
+        })
 
+        // ADMIN...
+        .state('organization.requests.usersRegistrationRequests', {
+            url:'/userRequests',
+            templateUrl: templateBase + 'requests/usersRequests/usersRegistrationRequests/requests-RegistrationRequests.html',
+            controller: returnCtrlAs('usersRegistrationRequests'),
+            access: appConfig.orgAdminLogic
+        })
+        .state('organization.requests.usersAppRequests', {
+            url:'/applicationRequests',
+            templateUrl: templateBase + 'requests/usersRequests/usersAppRequests/requests-AppRequests.html',
+            controller: returnCtrlAs('usersAppRequests'),
+            access: appConfig.orgAdminLogic
+        })
+        .state('invitation', {
+            url: '/invitation',
+            template: '<div ui-view></div>',
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('invitation.inviteSelect', {
+            url: '/select',
+            templateUrl:templateBase + 'invitation/invitation.html',
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('invitation.inviteUser', {
+            url: '/user',
+            templateUrl:templateBase + 'invitation/user/user.html',
+            controller: returnCtrlAs('user'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('invitation.division', {
+            url: '/division',
+            templateUrl:templateBase + 'invitation/division/division.html',
+            controller: returnCtrlAs('division'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        .state('invitation.tlo', {
+            url: '/tlo',
+            templateUrl:templateBase + 'invitation/tlo/tlo.html',
+            controller: returnCtrlAs('tlo'),
+            access: {
+                permittedLogic:appConfig.accessByAnyAdmin
+            }
+        })
+        // Org Requests/ADMIN
+        .state('organization.requests.orgRegistrationRequests', {
+            url:'/orgRequests',
+            templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
+            controller: returnCtrlAs('orgRegistrationRequests'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        })
+        .state('organization.requests.orgAppRequests', {
+            url:'/orgApplicationRequests',
+            templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
+            controller: returnCtrlAs('orgAppRequests'),
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
+        });
 }]);

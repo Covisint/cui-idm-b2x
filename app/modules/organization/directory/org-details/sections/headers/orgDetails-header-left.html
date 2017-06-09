@@ -1,0 +1,50 @@
+<div class="cui-organization__profile-left-header">
+
+  <!-- Profile Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="orgDetails.profileUsersSwitch='profile'" id="profile-button" off-click="">
+    <div ng-class="{'cui-action__icon--active':orgDetails.profileUsersSwitch=='profile'}">
+      <cui-icon cui-svg-icon="fa:nine10"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
+  </div>
+
+  <!-- Users Desktop -->
+  <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="orgDetails.profileUsersSwitch='users'" id="users-button">
+    <div ng-class="{'cui-action__icon--active':orgDetails.profileUsersSwitch=='users'}">
+      <cui-icon cui-svg-icon="cui:profile"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'users-upper' | translate}}</span>
+  </div>
+
+  <!-- Profile Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="orgDetails.mobileHandler='profile'" id="profile-button">
+    <div>
+      <cui-icon cui-svg-icon="fa:nine10" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='profile'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
+  </div>
+
+  <!-- Users Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="orgDetails.mobileHandler='users'" id="users-button">
+    <div>
+      <cui-icon cui-svg-icon="cui:profile" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='users'}"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'users-upper' | translate}}</span>
+  </div>
+
+  <!-- Applications Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="applications-button" ng-click="orgDetails.mobileHandler='apps'">
+    <div>
+      <cui-icon cui-svg-icon="cui:applications_v2" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='apps'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
+  </div>
+
+  <!-- Hierarchy Mobile -->
+  <div class="cui-organization__profile-header-item cui-mobile-only" id="hierarchy-button" ng-click="orgDetails.mobileHandler='hierarchy'">
+    <div>
+      <cui-icon cui-svg-icon="cui:division" ng-class="{ 'cui-action__icon--active':orgDetails.profileSwitch=='hierarchy'}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'hierarchy-upper' | translate}}</span>
+  </div>
+</div>

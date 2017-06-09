@@ -2,6 +2,9 @@
   position: relative;
 }
 
+.cui-tabs__main-container{
+      padding: 0.9375em 3.4375em 0 4.0625em;  
+}
 .cui-organization__main-container {
   min-height: 400px;
   padding: em(15) em(13);
@@ -30,6 +33,11 @@
 
     .cui-organization__admin-block {
       margin-bottom: em(21);
+      border-bottom:$base-font-color solid 1px;
+      .cui-field-val{
+        line-height:normal;
+        margin-bottom: 0;
+      }
     }
     @media screen and (min-width:700px){
       .cui-organization__admin-block {

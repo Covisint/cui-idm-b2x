@@ -1,0 +1,78 @@
+<div class="cui-organization__requests-person-header">
+
+  <!-- User Name -->
+  <!-- <div class="cui-action">
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList" ng-if="organizationRequest.request.personData">
+      &#60; {{organizationRequest.request.personData.name.given}} {{organizationRequest.request.personData.name.surname}} - {{'pending-request' | translate}}
+    </span>
+  </div> -->
+
+  <!-- DISABLED routehistory POC -->
+  <!-- <cui-route-history></cui-route-history> -->
+  
+  <!-- Navigation -->
+  <!-- <div class="cui-action">
+    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+    <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  </div> -->
+
+  <!-- Name Header -->
+  <div class="cui-media--centered" ng-if="organizationRequest.request.personData">
+    <!-- Avatar -->
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[organizationRequest.request.personData.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+    </div>
+
+    <!-- orgnaization Information -->
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{organizationRequest.request.personData.organization.name}}</h3>
+      <!-- orgID -->
+      <!-- <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{organizationRequest.request.personData.id}}</span> -->
+      <!-- Admin -->
+      <div class="cui-media__content" ng-if="organizationRequest.request.personData.organization"><span class="cui-media__content--dark">{{'administrator' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationRequest.request.personData.name.given}} {{organizationRequest.request.personData.name.surname}}</a></div>
+      <!-- Email -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}} {{'cui-email' | translate}}:</span> <a href="mailto:{{organizationRequest.request.personData.email}}" class="cui-media__link"> {{organizationRequest.request.personData.email}}</a></div>
+      <!-- Registered Date -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationRequest.request.personData.creation | date:base.appConfig.dateFormat}}</div>
+      <!-- status -->
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationRequest.request.personData.organization.status}}</a></div>
+    </div>
+  </div>
+
+  <!-- Details & Status -->
+  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="organizationRequest.request.personData && organizationRequest.request.personData.organization">
+    <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
+      <div class="cui-expandable__details-status">
+        <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
+      </div>
+    </cui-expandable-title>
+    <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
+      <div class="cui-expandable__body-row">
+        <!-- Address -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationRequest.request.personData.organization">
+          <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.addresses[0].state}}, {{organizationRequest.request.personData.organization.addresses[0].postal}}</span>
+        </div>
+        <!-- Phone -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationRequest.request.personData.organization.phones[0].number">
+          <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.organization.phones[0].number}}</span>
+        </div>
+        <!-- Time zone and Language -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationRequest.request.personData">
+          <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.timezone}}</span>
+          <span class="cui-field-val__val">{{organizationRequest.request.personData.language}}</span>
+        </div>
+        <!-- Request -->
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="organizationRequest.request.justification">
+          <div class="cui-field-val__field">{{'request-reason' | translate}}:</div>
+          <span class="cui-field-val__val">{{organizationRequest.request.justification}}</span>
+        </div>
+      </div>
+    </cui-expandable-body>
+  </cui-expandable>
+</div>

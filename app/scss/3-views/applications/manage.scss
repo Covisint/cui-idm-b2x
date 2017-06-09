@@ -7,13 +7,13 @@
     .cui-tile{
         border:1px solid $cui-primary-colors--medium;
         border-radius: 4px;
-    	width:31%;
+    	width:18%;
     	margin-bottom:2em;
         background:$quaternary-background;
-        margin-right:3.5%
+        margin-right:2%
     }
     .cui-tile__inner{        
-        margin-right:3.5%;
+        margin-right:2%;
     }
     @media screen and (max-width:701px){
         flex-direction:column;
@@ -28,12 +28,16 @@
     	background:$cui-primary-colors--medium-dark;
     	border:0;
         padding: 0;
+        height:2.125em;
     }
     .cui-tile__body {
+        height: calc(100% - 2.125em);
+        @extend %flex-col;
         background:$quaternary-background;
     	border:0;
         padding-top: 0em;
         overflow:inherit;
+        justify-content:space-between;
     }
 
     .cui-media__image{
@@ -54,9 +58,10 @@
     }
     .cui-media__title{
         font-family: 'lato-bold', sans-serif;
-        font-size: 1.2em;
-        letter-spacing: 1.6px;
+        font-size: 1em;
+        letter-spacing: 1.4px;
         padding-top: 0.5em;
+        word-break:break-all;
     }
     .cui-tile__footer{
         @extend %flex-row;
@@ -64,7 +69,7 @@
         flex-wrap:wrap;
     }
     .cui-button{
-        width:30%;
+        width:auto;
         height:2em;
         text-decoration:none;
         word-break:normal;

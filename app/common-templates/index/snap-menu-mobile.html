@@ -45,25 +45,33 @@
 </span>
 
 <!-- Applications -->
-<span class="snap-menu--option" snap-close ui-sref="applications.myApplications">
-  <span class="snap-menu__option-name">{{'cui-applications' | translate}}</span>
+<span class="snap-menu--option" snap-close ui-sref="applications.myApplications" ng-if="base.user.id">
+  <span class="snap-menu__option-name">{{'my-applications' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="cui:applications_v2" svg-class="snap-menu__icon" viewbox="0 0 49 49" preserveAspectRatio="xMidYMid meet" ></cui-icon>
   </div>
 </span>
 
 <!-- Organization Profile -->
-<span class="snap-menu--option" snap-close ui-sref="organization.profile">
-  <span class="snap-menu__option-name">{{'cui-org' | translate}}</span>
+<span class="snap-menu--option" snap-close ui-sref="organization.profile({orgId:base.user.organization.id})" ng-if="base.user.id">
+  <span class="snap-menu__option-name">{{'my-organization' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="cui:organization" svg-class="snap-menu__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
   </div>
 </span>
 
 <!-- Pending Requests -->
-<span class="snap-menu--option" snap-close ui-sref="pendingAppRequests">
-  <span class="snap-menu__option-name">{{'pending' | translate}} {{'requests' | translate}}</span>
+<span class="snap-menu--option" snap-close ui-sref="pendingAppRequests" ng-if="base.user.id">
+  <span class="snap-menu__option-name">{{'cui-my-app-requests' | translate}}</span>
   <div>
     <cui-icon cui-svg-icon="cui:status-pending" svg-class="snap-menu__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </div>
+</span>
+
+<!-- Invite -->
+<span class="snap-menu--option" snap-close ui-sref="invitation" ng-if="base.accessByAnyAdmin()">
+  <span class="snap-menu__option-name">{{'invite' | translate}}</span>
+  <div>
+    <cui-icon cui-svg-icon="cui:mail-open" svg-class="snap-menu__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
   </div>
 </span>

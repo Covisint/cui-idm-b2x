@@ -1,0 +1,91 @@
+<div class="cui-action">
+  <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
+  <!-- Mobile nav doesnot support in other states -->
+  <span class="cui-action__title cui-mobile-only" ng-click="base.goBack('organization.directory.userList',orgDetails.prevState.params)">&#60; {{'directory' | translate}}</span>
+  <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
+</div>
+
+<div>
+  <!-- Page Loading -->
+  <div class="cui-loading__container" ng-if="base.loader.for['orgDetails.orgInfo']">
+    <div class="cui-loader cui-loader--content cui-loader--content-vert" ng-include="'app/common-templates/partials/loader-content-vert.html'"></div>
+  </div>
+
+  <!-- Name Header -->
+  <div class="cui-media--centered" ng-if="!base.loader.for['orgDetails.orgInfo']">
+    <div class="cui-media__image-container">
+      <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[orgDetails.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-email="orgDetails.organization.email"></div>
+    </div>
+    <div class="cui-media__body">
+      <!-- Name -->
+      <h3 class="cui-media__title">{{orgDetails.organization.name}}</h3>
+      <!-- Registered Date -->
+      <p class="cui-media__content">{{'cui-registered' | translate}}: {{orgDetails.organization.creation | date:base.appConfig.dateFormat}}</p>
+      <!-- Status: Active -->
+      <div class="cui-media__content">
+        <span class="cui-media__content--dark">{{'status' | translate}}:</span>
+        <span class="cui-status" ng-class=" 'cui-status--'+orgDetails.organization.status ">{{orgDetails.organization.status}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="cui-media__button-container">
+    <button class="cui-button cui-button--inverted">{{'suspend' | translate}}</button>
+    <button class="cui-button cui-button--inverted">{{'password-reset' | translate}}</button>
+    <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="orgDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:orgDetails.user.id,orgId:orgId})" ng-class="(orgDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
+  </div> -->
+  <!-- Button Controls -->
+  <div class="cui-media__button-container">
+    <!-- Suspend -->
+    <!--   <button class="cui-button cui-button--inverted" 
+            ng-click="orgDetails.suspend(orgDetails.organization.id)" 
+            ng-if="orgDetails.organization.status==='active'" 
+            cui-access="{requiredEntitlements:['Suspend User']}" 
+            user-entitlements="base.user.entitlements">
+            {{'suspend' | translate}}
+    </button> -->
+
+
+    <!-- unlock user -->
+
+      <!--   <cui-button 
+        disable-animate 
+        ng-if="orgDetails.passwordAccount.locked&&(orgDetails.user.status==='active'||orgDetails.user.status==='locked')"
+        loading-if="base.loader.for['orgDetails.unlockUser']"
+        success-if="orgDetails.unlockUserSuccess"
+        error-if="base.apiError.for['orgDetails.unlockUser']"
+        button-click="orgDetails.unlockUser()"
+        loading-message="{{'cui-button-loading-text'|translate}}"
+        error-message="{{'cui-error-try-again'|translate}}"
+      >
+        <button class="cui-button cui-button--inverted"
+        >
+          {{'cui-unlock' | translate}}
+        </button>
+      </cui-button> -->
+
+    <!-- Unsuspend -->
+    <!--   <button class="cui-button cui-button--inverted" 
+            ng-click="orgDetails.unsuspend(orgDetails.user.id)" 
+            ng-if="orgDetails.user.status==='suspended'" 
+            cui-access="{requiredEntitlements:['Suspend User']}" 
+            user-entitlements="base.user.entitlements">
+            {{'unsuspend' | translate}}
+    </button> -->
+
+    <!-- New Grants -->
+     <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToOrg()" ng-disabled="orgDetails.organization.status!=='active'" ui-sref="organization.requests.newOrgGrant({orgId:orgId})" ng-class="(orgDetails.organization.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
+
+  </div>
+</div>
+
+<!-- Suspend Partial -->
+<ng-include ng-if="orgDetails.suspend.begun"
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/suspend-user.html'">
+</ng-include>
+
+<!-- Unsuspend Partial -->
+<ng-include ng-if="orgDetails.unsuspend.begun"
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/unsuspend-user.html'">
+</ng-include>
+<br/>

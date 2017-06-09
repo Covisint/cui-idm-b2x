@@ -16,7 +16,7 @@
 
   <!-- Action Buttons -->
   <div class="cui-action">
-    <span class="cui-action__title" ng-click="base.goBack('applications.myApplications')">{{'my-applications' | translate}}</span>
+    <span class="cui-action__title" ng-click="base.goBack('applications.manageApplications')">{{'manage-applications' | translate}}</span>
     <!-- New Request -->
     <div class="cui-action__actions">
       <!-- new icon -->
@@ -69,7 +69,7 @@
 
       <!-- Mobile -->
       <div class="cui-tabs class-toggle">
-        <ul class="cui-tabs__nav">
+        <ul class="cui-tabs__nav" ng-if="myApplicationDetails.claims.length>0">
           <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab1"  ng-class="{'cui-tabs__tab--active':!myApplicationDetails.inClaims}" ng-click="myApplicationDetails.inClaims=false">{{'application-details' | translate}}</a></li>
           <li class="cui-tabs__tab-container"><a class="cui-tabs__tab" data-pane="tab2" ng-class="{'cui-tabs__tab--active':myApplicationDetails.inClaims}"  ng-click="myApplicationDetails.inClaims=true">{{'my-claims' | translate}}</a></li>
         </ul>
@@ -109,7 +109,7 @@
           </div>
 
           <!-- My Claims -->
-          <div id="tab2" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':myApplicationDetails.inClaims}">
+          <div id="tab2" class="cui-tabs__tab-pane" ng-class="{'cui-tabs__tab-pane--active':myApplicationDetails.inClaims}" ng-if="myApplicationDetails.claims.length>0">
             <p ng-if="!base.apiError.for['myApplicationDetails.claims'] && !myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>
             <!-- Error Message -->
             <p style="color:red" ng-if="base.apiError.for['myApplicationDetails.claims']">{{'cui-claims-error' | translate}} {{'cui-try-again'|translate}}</p>
@@ -126,15 +126,15 @@
 
         <!-- Application Details -->
         <div class="cui-tile cui-applications__left">
-          <h4 class="cui-tile__title cui-applications__title">{{'application-details' | translate}}</h4>
+          <h4 class="cui-tile__title cui-applications__title">{{'bundled-applications' | translate}}<!-- {{'application-details' | translate}} --></h4>
           <div class="cui-tile__body cui-applications__details">
             <!-- No Details -->
-            <div class="cui-applications__no-details" ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length===0) && (myApplicationDetails.relatedApps.length===0)">
-              <p>{{'no-bundled-or-related' | translate}}</p>
+            <div class="cui-applications__no-details" ng-if="(!myApplicationDetails.app.bundledApps || myApplicationDetails.app.bundledApps.length===0)">
+              <p>{{'no-bundled' | translate}}</p>
             </div>
             <!-- Bundled Application Details -->
             <div class="cui-applications__bundled-apps" ng-if="myApplicationDetails.app.bundledApps && myApplicationDetails.app.bundledApps.length!==0">
-              <h4 class="cui-applications__related-apps-title">{{'bundled-applications' | translate}}</h4>
+              <!-- <h4 class="cui-applications__related-apps-title">{{'bundled-applications' | translate}}</h4> -->
               <div class="cui-applications__bundled-app" ng-repeat="application in myApplicationDetails.app.bundledApps">
                 <div class="cui-applications__related-app-col">
                   <a class="cui-link bold" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
@@ -143,9 +143,13 @@
                 <div class="cui-media__status" ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{myApplicationDetails.app.grant.status |lowercase}}</div>  <!-- If the user has a grant on that service -->
               </div>
             </div>
+          </div>
+          <br>
+          <h4 class="cui-tile__title cui-applications__title" ng-if="myApplicationDetails.relatedApps.length!==0">{{'related-applications' | translate}}</h4>
+            <div class="cui-tile__body cui-applications__details" ng-if="myApplicationDetails.relatedApps.length!==0">
             <!-- Related Application Details -->
-            <div class="cui-applications__related-apps" ng-if="myApplicationDetails.relatedApps.length!==0">
-              <h4 class="cui-applications__related-apps-title">{{'related-applications' | translate}}</h4>
+            <div class="cui-applications__related-apps">
+              <!-- <h4 class="cui-applications__related-apps-title">{{'related-applications' | translate}}</h4> -->
                 <div class="cui-applications__related-app" ng-repeat="application in myApplicationDetails.relatedApps">
                   <div class="cui-applications__related-app-col">
                     <a class="cui-link bold" ng-click="myApplicationDetails.goToDetails(application)" ng-if="application.grant">{{application.name | cuiI18n}}</a> <!-- If the user has a grant on that service -->
@@ -160,7 +164,7 @@
           </div>
 
           <!-- My Claims TODO @SHANE style this and the mobile one above-->
-          <div class="cui-tile cui-applications__right">
+          <div class="cui-tile cui-applications__right" ng-if="myApplicationDetails.claims.length>0">
             <h4 class="cui-tile__title cui-tile__title--bg-light cui-applications__title">{{'my-claims' | translate}}</h4>
             <div class="cui-tile__body cui-applications__claims">
               <p class="cui-applications__no-claims" ng-if="!base.apiError.for['myApplicationDetails.claims'] && !myApplicationDetails.claims || myApplicationDetails.claims.length===0">{{'cui-no-claims' | translate}}</p>

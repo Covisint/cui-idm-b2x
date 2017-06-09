@@ -1,0 +1,17 @@
+<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="userAppDetails.dropDown.suspend">
+  <ng-form name="suspendApp" novalidate>
+    <p>{{'cui-suspend-confirm' |translate}}</p>
+    <div class="cui-applications__review-text-input" >
+      <p class="cui-error h6" ng-if="suspendApp.reason.$error.required&&suspendApp.reason.$dirty">{{'cui-this-field-is-required' | translate}}</p>
+      <textarea name="reason" class="cui-text-area" ng-required="true" ng-model="userAppDetails.suspendReason" placeholder="{{'reason'|translate}}({{'required'|translate}})"></textarea>
+    </div>
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="userAppDetails.dropDown.suspend=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : !suspendApp.$valid}" ng-if="!base.loader.for['userAppDetails.suspend'] && !base.apiError.for['userAppDetails.suspend']" ng-click="suspendApp.$valid&&userAppDetails.suspendApp()" style="margin:5px">{{'suspend' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['userAppDetails.suspend']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-class="{'cui-button--error' : !suspendApp.$valid}" ng-if="!base.loader.for['userAppDetails.suspend'] && base.apiError.for['userAppDetails.suspend']" ng-click="suspendApp.$valid&&userAppDetails.suspendApp()">{{'cui-error-try-again' | translate}}</button>
+    </div>
+  </ng-form>
+</div>

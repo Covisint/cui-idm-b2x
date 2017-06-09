@@ -1,18 +1,24 @@
 <nav class="cui-breadcrumb">
   <ul class="cui-breadcrumb__links">
     <li class="cui-breadcrumb__link">
-      <a ui-sref="organization.profile({orgID:personRequestReview.user.organization.id})" ui-sref-active-for="organization.profile">
+      <a ui-sref="organization.profile({orgId:base.user.organization.id})" ui-sref-active-for="organization.profile">
         {{'cui-org-profile' | translate}}
       </a>
     </li>
-    <li class="cui-breadcrumb__link">
-      <a ui-sref="organization.hierarchy({orgID:personRequestReview.user.organization.id})" ui-sref-active-for="organization.hierarchy">
+    <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+      <a ui-sref="organization.hierarchy({orgId:base.user.organization.id})" ui-sref-active-for="organization.hierarchy">
         {{'cui-org-hierarchy' | translate}}
       </a>
     </li>
-    <li class="cui-breadcrumb__link">
-      <a ui-sref="organization.directory.userList({orgID:personRequestReview.user.organization.id})" ui-sref-active-for="organization.directory">
+    <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+      <a ui-sref="organization.directory.userList({orgId:base.user.organization.id})" ui-sref-active-for="organization.directory">
         {{'directory' | translate}}
+      </a>
+    </li>
+    <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+       <!-- <li class="cui-breadcrumb__link" ng-if="base.user.organization.id!==orgId"> -->
+      <a ui-sref="organization.applications({orgId:base.user.organization.id})" ui-sref-active-for="organization.applications">
+        {{'cui-applications' | translate}}
       </a>
     </li>
     <!-- <li class="cui-breadcrumb__link">

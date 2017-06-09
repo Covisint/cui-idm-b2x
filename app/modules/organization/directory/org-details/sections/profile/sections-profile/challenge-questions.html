@@ -1,0 +1,47 @@
+<ng-form name="challengeQuestions">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">{{'challenge-questions' | translate}}</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="userDetailsProfile.toggleAllOff();toggleOn()">{{'cui-edit' | translate}}</span>
+        <div ng-if="toggled" ng-click="toggleOff()">
+            <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" aria-label="{{'cui-close' | translate}}" ></cui-icon>
+        </div>
+        <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+        </svg-->
+      </div>
+      <div ng-if="!toggled">
+        <div ng-repeat="question in userDetailsProfile.challengeQuestionsTexts">
+          <span class="cui-field-val__field">{{$index+1}}:</span>
+          <span class="cui-field-val__val">{{question}}</span>
+          </br>
+        </div>
+      </div>
+
+      <!-- Challenge question edit -->
+      <div ng-if="toggled" ng-init="userDetailsProfile.pushToggleOff({'name':'challengeQuestions','function':toggleOff})">
+        <div ng-repeat="question in userDetailsProfile.tempUserSecurityQuestions.questions">
+          <b>{{'cui-challenge-question' | translate}} {{$index+1}}</b>
+          <select class="cui-input cui-input--full cui-select" ng-model="question.question.id" ng-options="question.id as (question.question | cuiI18n) for question in userDetailsProfile['allChallengeQuestions' + $index]"></select>
+          {{'cui-answer' | translate}}
+          <div class="cui-error" ng-messages="challengeQuestions['answer' + $index].$error">
+            <div ng-messages-include="app/common-templates/messages.html"></div>
+          </div>
+          <input type="text" ng-model="question.answer" class="cui-input" ng-class="{'cui-input--error':!challengeQuestions['answer'+$index].$valid}" name="answer{{$index}}" ng-change="userDetailsProfile.checkIfRepeatedSecurityAnswer(userDetailsProfile.tempUserSecurityQuestions.questions,challengeQuestions)" ng-required="true"/>
+          <br/><br/>
+        </div>
+
+        <!-- Edit Controls -->
+        <div class="cui-users__address-submit">
+          <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-click="userDetailsProfile.saveChallengeQuestions('challengeQuestions',toggleOff);" ng-class="{'cui-button--error':!challengeQuestions.$valid}">
+            <span ng-if="( !userDetailsProfile.challengeQuestions || !userDetailsProfile.challengeQuestions.submitting ) && !userDetailsProfile.challengeQuestions.error">{{'cui-update' | translate}}</span>
+            <div class="cui-loading--medium-ctr" ng-if="userDetailsProfile.challengeQuestions.submitting"></div>
+            <span ng-if="userDetailsProfile.challengeQuestions.error">{{'cui-error-try-again'| translate}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

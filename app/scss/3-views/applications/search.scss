@@ -24,7 +24,7 @@
 
     .cui-input-button {
       @media screen and (min-width: 701px) {
-        flex: 0.5;
+        flex: 0.3;
       }
     }
   }
@@ -50,11 +50,15 @@
 
 
 .cui-action__title-link{
-  color:#00667c !important;
+  color:$cui-primary-colors--dark !important;
 }
 
 .cui-applications__search-button {
   display: flex;
   justify-content: flex-end;
   margin-top: em(40);
+}
+
+.cui-hide__opacity{
+  opacity:0;
 }

@@ -1,0 +1,113 @@
+<div class="cui-applications__search">
+  
+  <!-- Header -->
+  <div class="cui-action">
+    <!-- Title -->
+    <div class="cui-action__title" ui-sref="organization.applications({orgId:orgAppSearch.stateParamsOrgId})">&lt; {{'organization-applications' | translate}} &#8211; {{'new-request' | translate}}</div>
+    <!-- Close Icon -->
+    <div class="cui-action__actions">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ui-sref="organization.applications({orgId:orgAppSearch.stateParamsOrgId})" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+      	<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Sub-Header -->
+  <div class="cui-action cui-action--alt">
+    <!-- Current Category -->
+    <div class="cui-action__title" ng-if="!orgAppSearch.search.category" ui-sref="organization.newRequest()">&#60; {{'categories' | translate}}</div>
+
+    <!-- Filter -->
+    <span class="cui-action__title" ng-if="orgAppSearch.search.category" ui-sref="organization.newRequest()">&#60; {{orgAppSearch.search.category}}</span>
+    <div class="cui-input-button cui-input-button--alt-bg">
+      <input class="cui-input-button__input" ng-model="orgAppSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="orgAppSearch.updateSearch"/>
+      <button class="cui-input-button__button" ng-click="orgAppSearch.updateSearch('name')">{{'filter' | translate}}</button>
+    </div>
+
+    <!-- Current Requested Applications -->
+    <div class="cui-action__actions">
+      <svg ng-click="orgAppSearch.requestPopover=!orgAppSearch.requestPopover" off-click="orgAppSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': orgAppSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
+        <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#folder"></use>
+      </svg>
+      <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': orgAppSearch.numberOfRequests != 0}">{{orgAppSearch.numberOfRequests}}</sup>
+      <!-- Requested Apps Popover -->
+      <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left" offset="-20px 50px" ng-if="orgAppSearch.requestPopover">
+        <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+        <div class="cui-action__popover-section">
+          <span ng-if="orgAppSearch.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+          <ul ng-if="orgAppSearch.numberOfRequests > 0">
+            <li ng-repeat="(applicationId,application) in orgAppSearch.packageRequests">{{application.name | cuiI18n}}</li>
+          </ul>
+        </div>
+        <span ng-if="orgAppSearch.numberOfRequests > 0" class="cui-action__popover-button" ui-sref="">{{'submit-request' | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cui-applications__main-container">
+    <!-- Loading -->
+    <div class="cui-loading__container" ng-if="base.loader.for['orgAppSearch.loading']">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+    <!-- Application List -->
+    <cui-expandable class="cui-expandable" ng-repeat="application in orgAppSearch.viewList track by application.id" ng-if="!base.loader.orgAppSearch.loading" transition-speed="150">
+      <!-- Category -->
+      <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+        <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+          <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
+        </div>
+        <div class="cui-expandable__title-end">
+          <span class="cui-checkbox__container">
+            <input class="cui-checkbox" type="checkbox" ng-model="orgAppSearch.appCheckbox[application.id]" />
+            <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[application.id]=!orgAppSearch.appCheckbox[application.id]; orgAppSearch.toggleRequest(application)"></label>
+          </span>
+        </div>
+      </cui-expandable-title>
+      <!-- Category Expandable -->
+      <cui-expandable-body class="cui-expandable__body">
+        <div class="cui-expandable__body-pane">
+          <span class="cui-expandable__body-close" ng-click="collapse()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+              <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+            </svg>
+          </span>
+          <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
+          <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
+            <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
+            <div class="cui-expandable__pane-content">
+              <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
+                {{bundledApp.name | cuiI18n}}
+              </span>
+            </div>
+          </div>
+          <div class="cui-expandable__pane-col" ng-if="application.relatedApps && application.relatedApps.length > 0">
+            <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
+            <div class="cui-expandable__pane-content">
+              <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
+                <span class="">{{relatedApp.name | cuiI18n}} </span>
+                <span class="cui-checkbox__container">
+                  <input class="cui-checkbox" type="checkbox" ng-model="orgAppSearch.appCheckbox[relatedApp.id]" />
+                  <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[relatedApp.id]=!orgAppSearch.appCheckbox[relatedApp.id]; orgAppSearch.checkRelatedAppsBody(relatedApp,application)"></label>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </cui-expandable-body>
+    </cui-expandable>
+
+    <!-- No applications message -->
+    <p ng-if="orgAppSearch.list.length===0" align="center">{{'cui-no-details' | translate}}</p>
+
+  </div>
+
+  <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
+    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
+    <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>
+  </div>
+  <div class="cui-applications__search-button">
+    <button class="cui-button" ng-class="{'cui-button--error' : orgAppSearch.numberOfRequests===0}" ng-click="orgAppSearch.numberOfRequests != 0 && orgAppSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+  </div>
+</div>

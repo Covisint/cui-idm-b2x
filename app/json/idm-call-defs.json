@@ -793,9 +793,131 @@
     "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
   },
   {
+    "cmd": "getPersonApplicationsGrantHistoryCount",
+    "call": "/service/v3/applications/persons/{personId}/history/count",
+    "type": "GET",
+    "accepts": "text/plain"
+  },
+  {
+    "cmd": "getPersonApplicationsRequestHistoryCount",
+    "call": "/service/v3/persons/{personId}/applications/requests/history/count",
+    "type": "GET",
+    "accepts": "text/plain"
+  },
+  {
     "cmd": "getPersonPendingApps",
     "call": "/service/v3/persons/{personId}/applications/requests",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.service.application.request.v1+json"
+  },
+   {
+    "cmd": "getOrganizationsRequestableApps",
+    "call": "/service/v3/applications/organizations/{organizationId}/requestable",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.v1+json"
+  },
+  {
+    "cmd": "createOrgCompanyInvitation",
+    "call": "/organization/v3/organizationInvitations/company",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.organization.invitation.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.organization.invitation.v1+json"
+  },
+  {
+    "cmd": "createOrgDivisionInvitation",
+    "call": "/organization/v3/organizationInvitations/division",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.organization.invitation.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.organization.invitation.v1+json"
+  },
+  {
+    "cmd": "getOrganizationSecurityAdmins",
+    "call": "/person/v3/persons/organizations/{organizationId}/securityAdmins",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.person.v1+json"
+  },
+  {
+    "cmd": "getOrgAppCategories",
+    "cmdType": "secured",
+    "call": "/service/v3/categories/organization/{organizationId} ",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.category.v1+json"
+  },
+  {
+    "cmd": "suspendPersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/grants/tasks/person/package/suspend",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.status.request.v1+json",
+    "contentType":"application/vnd.com.covisint.platform.package.grant.status.request.v1+json"
+  },
+  {
+    "cmd": "unsuspendPersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/grants/tasks/person/package/unsuspend",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.package.grant.status.request.v1+json",
+    "contentType":"application/vnd.com.covisint.platform.package.grant.status.request.v1+json"
+  },
+  {
+    "cmd":"resetPersonPassword",
+    "cmdType": "secured",
+    "type":"POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType":" application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/reset"
+  },
+  {
+    "cmd": "expirePersonPassword",
+    "cmdType": "secured",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/expire"
+  },
+  {
+    "cmd": "specifyPersonPassword",
+    "cmdType": "secured",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/specify"
+  },
+  {
+    "cmd": "revokePersonApp",
+    "cmdType": "secured",
+    "call": "/service/v3/persons/{personId}/packages/{packageId}",
+    "type": "DELETE"
+  },
+  {
+    "cmd": "retriveOrgPendingApps",
+    "cmdType": "secured",
+    "call": "/service/v3/organizations/requests",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.package.request.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.package.request.v1+json"
+  },
+  {
+    "cmd": "getPersonRolesGrantable",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}/roles/grantable",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.person.role.v1+json"
+  },
+  {
+    "cmd": "assignPersonRoles",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/roles",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.person.assign.role.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.person.assign.role.v1+json"
+  },
+  {
+    "cmd":"unlockPersonPassword",
+    "cmdType": "secured",
+    "type":"POST",
+    "accepts": "application/vnd.com.covisint.platform.password.v1+json",
+    "contentType":" application/vnd.com.covisint.platform.password.v1+json",
+    "call": "/authn/v4/passwords/tasks/unlock"
   }
 ]

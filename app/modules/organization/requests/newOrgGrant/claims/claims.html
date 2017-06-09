@@ -1,0 +1,109 @@
+<div class="class-toggle cui-modal" ng-if="newOrgGrantClaims.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'grants-assigned' | translate}}</span>
+    </div>
+</div>
+<div class="cui-org-claims">
+<div class="cui-applications">
+  <div class="cui-action" ng-hide="base.loader.for['newOrgGrantClaims.org']">
+
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack(newOrgGrantClaims.prevState.name,newOrgGrantClaims.prevState.params)">&#60; {{newOrgGrantClaims.org.name}} - {{'new-grant' | translate}}</span>
+    
+    <div class="cui-action__actions">
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrantClaims.prevState"></ng-include>
+    </div>
+  </div>
+  <section class="cui-action cui-action--alt">
+    <h2 class="cui-action__title"
+      ng-click="base.goBack('organization.requests.newOrgGrantSearch',newOrgGrantClaims.prevState.params)">
+      &#60; {{'cui-review'|translate}}
+    </h2>
+    <div class="cui-action__actions">
+      <div class="flex_row" id="cui-applications__requested-apps" ng-click="newOrgGrantClaims.requestPopover=!newOrgGrantClaims.requestPopover" off-click="newOrgGrantClaims.requestPopover=false">
+        <cui-icon  cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newOrgGrantClaims.numberOfRequests != 0}">{{newOrgGrantClaims.numberOfRequests}}</sup>
+      </div>
+        <!-- popover -->
+        <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
+        offset="-20px 50px" ng-if="newOrgGrantClaims.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+          <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+          <div class="cui-action__popover-section">
+            <span ng-if="newOrgGrantClaims.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+            <ul ng-if="newOrgGrantClaims.numberOfRequests > 0">
+                <li ng-repeat="application in newOrgGrantClaims.appsBeingRequestedforPopup">{{application.name | cuiI18n}}</li>
+                <li ng-repeat="package in newOrgGrantClaims.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+  </section>
+  <div class="cui-organization__main-container">
+  <div>
+    <div class="cui-org-claims__claim" ng-repeat="(applicationId, application) in newOrgGrantClaims.appsBeingRequested" ng-init="index=$index">
+
+      <div class="cui-media">
+        <!-- Avatar -->
+        <div class="cui-media__image-container">
+          <div class="cui-media__image"
+            cui-avatar-color-class-prefix="cui-avatar__color"
+            cui-avatar-color-count="5"
+            cui-avatar-names="application.name"
+            cui-avatar-cuii18n-filter cui-avatar="application.iconUrl">
+          </div>
+        </div>
+
+        <div class="cui-media__body">
+
+          <!-- Name -->
+          <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
+          <h3 ng-if="application.bundledApps" class="cui-media__title cui-media__title-margin__top">{{'bundled-applications' | translate}}</h3>
+          <div ng-if="application.bundledApps" ng-repeat="bundledApp in application.bundledApps">
+              <span>{{bundledApp.name|cuiI18n}}</span>
+          </div> 
+          <div class="cui-applications__review-text-input" >
+            <h3 class="cui-media__title cui-media__title-margin__top">{{'grant-reason' | translate}}</h3>
+            <div class="cui-wizard__field-row">
+              <!-- First Name -->
+              <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                <textarea name="{{'text_area'+application.id}}" class="cui-text-area" ng-model="newOrgGrantClaims.packageRequests[application.servicePackage.id].reason"></textarea>
+              </div>
+            </div>
+          </div>
+<!-- not needed now 03/12/17 -->
+<!--           <fieldset class="cui-radio__fieldset">
+            <div class="cui-radio cui-radio--basic-ltr"> -->
+
+            <!-- Administrator radio -->
+<!--               <div class="cui-media__content">{{'administrator-?' | translate}}
+                <input class="cui-radio__input" type="radio" ng-model="newOrgGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" id="false" />
+                <label class="cui-radio__label" for="false"><span></span>No</label>
+                <input class="cui-radio__input" type="radio" ng-model="newOrgGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" id="true" />
+                <label class="cui-radio__label" for="true"><span></span>Yes</label>
+              </div>
+            </div>
+          </fieldset> -->
+        </div>
+      </div>
+    </div>
+
+    <!--
+      base.loader.for['newOrgGrantClaims.submit'] is true when the request has been sent out and we're waiting for a response
+      and then
+      newOrgGrantClaims.success if successful or
+      newOrgGrantClaims.error if there was an error
+    -->
+    <button disable-animate class="cui-button" ng-if="!base.loader.for['newOrgGrantClaims.submit'] && !newOrgGrantClaims.error" ng-click="newOrgGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
+    <button disable-animate class="cui-button" ng-if="base.loader.for['newOrgGrantClaims.submit']">
+      <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+    </button>
+    <button disable-animate class="cui-button" ng-if="!base.loader.for['newOrgGrantClaims.submit'] && newOrgGrantClaims.error" ng-click="newOrgGrantClaims.submit()">{{'cui-error-try-again' | translate}}</button>
+
+  </div> 
+  </div>
+</div>
+</div>
+

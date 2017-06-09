@@ -2,18 +2,50 @@
 <div class="cui-loading__container--user-details" ng-if="userDetailsRoles.loading">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
+<div class="class-toggle cui-modal" ng-if="userDetailsRoles.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your-assign-role-success' | translate}}</span>
+    </div>
+</div>
 
 <div ng-if="!userDetailsRoles.loading">
 	<!-- Assigned Roles -->
-	<div>
+	<div class="cui-users__profile-info">
 		<!-- Assigned Roles: Title -->
-		<div>
-			<h3>Assigned Roles</h3>
+		<div class="cui-action">
+			<div class="cui-action__title">{{'cui-assigned-roles'|translate}}</div>
 		</div>
 		<!-- Assigned Roles: List -->
 		<div ng-repeat="role in userDetailsRoles.assignedRoles | orderBy:'name' track by role.roleId">
-			<p ng-if="userDetailsRoles.assignedRoles.length===0">This user has no assigned roles.</p>
+			<p ng-if="userDetailsRoles.assignedRoles.length===0">{{'cui-no-roles-assigned'|translate}}</p>
 			<span>{{role.name}}</span>
 		</div>
-	<div>
+	</div>
+	        <!-- Right Block -->
+        <div class="cui-users__profile-info">
+            <div class="cui-action">
+                <div class="cui-action__title">{{'cui-available-roles'|translate}}</div>
+            </div>
+            <!-- no history -->
+            <div class="cui-media__content" ng-if="userDetailsRoles.rolesGrantable.length===0&&!userDetailsRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
+            <p class="cui-users__password-success" style="color:red" ng-if="userDetailsRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
+             <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userDetailsRoles.rolesGrantable">
+              <div class="cui-media__body">
+                 <span class="cui-checkbox__container">
+                            <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.appCheckbox[roles.roleId]" />
+                            <label ng-click="userDetailsRoles.checkrequest(roles.roleId)" for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label"> {{roles.name}}</label>
+                        </span>
+              </div>
+            </div>
+            <div class="cui-applications__submit-options" ng-if="userDetailsRoles.rolesGrantable.length>0&&!userDetailsRoles.grantedHistoryError">
+                <button class="cui-button" ng-class="{'cui-button--error' : !userDetailsRoles.appCheckboxValid }" ng-click="userDetailsRoles.appCheckboxValid&&userDetailsRoles.assignRoles()">
+                    <span ng-if="!userDetailsRoles.rolessubmitError">{{'submit-request' | translate}}</span>
+                    <span ng-if="userDetailsRoles.rolessubmitError===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+        </div>
 </div>

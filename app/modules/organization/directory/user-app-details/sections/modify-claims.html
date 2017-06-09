@@ -1,0 +1,37 @@
+<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="userAppDetails.dropDown.claims">
+  <!-- Package Claims 3 -->
+  <div class="cui-expandable__body-col">
+    <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
+    <p ng-if="userAppDetails.packageClaims.length===0">{{'cui-package-no-claims' | translate}}.</p>
+    <div ng-if="userAppDetails.packageClaims.length>0" ng-repeat="claim in userAppDetails.packageClaims">
+      <h3 class="bold">{{claim.name | cuiI18n}}</h3>
+      <ul class="cui-checkbox__group">
+        <div class="cui-checkbox__group" ng-repeat="claimValue in claim.claimValues">
+          <li class="cui-checkbox__container">
+            <input class="cui-checkbox" type="checkbox" ng-model="userAppDetails.claimSelection[claim.claimId][claimValue.claimValueId]" id="{{claimValue.name | cuiI18n}}"/>
+            <label class="cui-checkbox__label" for="{{claimValue.name | cuiI18n}}">{{claimValue.name | cuiI18n}}</label>
+          </li>
+        </div>
+      </ul>
+      <!-- <li class="cui-checkbox__container cui-checkbox__container--right">
+        
+        <input class="cui-checkbox" type="checkbox" 
+        id="option-{{$index}}-{{$parent.$parent.$index}}" 
+        ng-model="claim.accepted"/>
+        <label class="cui-checkbox__label" 
+        for="option-{{$index}}-{{$parent.$parent.$index}}">
+          {{claim.description | cuiI18n}}
+        </label>
+      </li> -->
+    </div>
+  </div>
+  <div class="cui-organization__submit-row" disable-animate >
+    <span ng-click="userAppDetails.dropDown.claims=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+    <button class="cui-button" ng-if="!base.loader.for['userAppDetails.modifyClaims'] && !base.apiError.for['userAppDetails.modifyClaims'] && !userAppDetails.modifyClaimsSuccess" ng-click="userAppDetails.modifyClaims()" style="margin:5px">{{'cui-update' | translate}}</button>
+    <button class="cui-button" ng-if="base.loader.for['userAppDetails.modifyClaims']">
+      <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+    </button>
+    <button  class="cui-button" ng-if="!base.loader.for['userAppDetails.modifyClaims'] && base.apiError.for['userAppDetails.modifyClaims']" ng-click="userAppDetails.modifyClaims()">{{'cui-error-try-again' | translate}}</button>
+    <button  class="cui-button" ng-if="!base.loader.for['userAppDetails.modifyClaims'] && userAppDetails.modifyClaimsSuccess">{{'cui-success' | translate}}</button>
+  </div>
+</div>

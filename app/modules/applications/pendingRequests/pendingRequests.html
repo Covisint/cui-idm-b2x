@@ -34,7 +34,7 @@
 
 <div class="cui-applications__main-container">
   <div class="cui-applications__search-options">
-      <div class="cui-input-button">
+      <div class="cui-input-button" style="width:350px">
           <input type="text" class="cui-input-button__input" ng-model="pendingAppRequests.search.name" placeholder="{{'search-by-app-name'| translate}}" on-enter="pendingAppRequests.searchCallback" focus-if/>
           <button class="cui-input-button__button" ng-click="pendingAppRequests.updateSearch('name',pendingAppRequests.search.name)">{{'go'| translate}}</button>
       </div>
@@ -58,7 +58,7 @@
 		    <tr>
 		      <th class="cui-media__title" scope="col">{{'request-type'|translate}}</th>
 		      <th class="cui-media__title" scope="col">
-		            {{'request'|translate}}</th>
+		            {{'application'|translate}}</th>
 		      <th class="cui-media__title" scope="col" >
 		            {{'phase'|translate}}</th>
 		        <th class="cui-media__title" scope="col" >

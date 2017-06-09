@@ -1,0 +1,33 @@
+<!-- Application Summary -->
+<div class="cui-media cui-media--centered">
+  <!-- Application Image -->
+  <div class="cui-media__image-container">
+    <a ng-href="{{userAppDetails.app.mangledUrl}}" target="_blank">
+      <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="userAppDetails.app.name"
+      cui-avatar-cuii18n-filter cui-avatar="userAppDetails.app.iconUrl"></div>
+    </a>
+  </div>
+  <!-- Summary Information -->
+  <div class="cui-media__body">
+    <h3 class="cui-media__title">{{userAppDetails.app.name | cuiI18n|capitalize}}</h3>
+    <span class="cui-media__content" >{{ 'granted' | translate }}: {{userAppDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
+    <!-- status -->
+    <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <span ng-class="'cui-status--'+userAppDetails.app.grant.status">{{userAppDetails.app.grant.status | lowercase}}</span></div>
+  </div>
+</div>
+
+<div class="cui-media__button-container" disable-animate>
+  <button class="cui-button cui-button--inverted" ng-if="userAppDetails.app.grant.status=='active'" ng-click="userAppDetails.toggleDropDown('suspend')">{{'suspend-app' | translate}}</button>
+  <button class="cui-button cui-button--inverted" ng-if="userAppDetails.app.grant.status=='suspended'" ng-click="userAppDetails.toggleDropDown('unsuspend')">{{'unsuspend-app' | translate}}</button>
+  <button class="cui-button cui-button--inverted" ng-if="userAppDetails.app.grant.status=='suspended'&&!base.loader.for['userAppDetails.remove']" ng-click="userAppDetails.toggleDropDown('remove'); userAppDetails.removeApp()" >
+    <span ng-if="!base.apiError.for['userAppDetails.remove']">{{'remove-app' | translate}}</span>
+    <span ng-if="base.apiError.for['userAppDetails.remove']">{{'cui-error-try-again' | translate}}</span>
+  </button>
+  <button class="cui-button cui-button--inverted" ng-if="userAppDetails.app.grant.status=='suspended'&&base.loader.for['userAppDetails.remove']" ><div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+  </button>
+  <button class="cui-button cui-button--inverted" ng-if="userAppDetails.packageClaims.length!==0" ng-click="userAppDetails.toggleDropDown('claims')">{{'modify-claims' | translate}}</button>
+  <!-- <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToUser()" ng-disabled="userDetails.user.status!=='active'" ui-sref="organization.requests.newGrant({userId:userDetails.user.id,orgId:orgId})" ng-class="(userDetails.user.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button >-->
+</div>
+<div ng-include="'app/modules/organization/directory/user-app-details/sections/modify-claims.html'"></div>
+<div ng-include="'app/modules/organization/directory/user-app-details/sections/suspend-body.html'"></div>
+<div ng-include="'app/modules/organization/directory/user-app-details/sections/unsuspend-body.html'"></div>

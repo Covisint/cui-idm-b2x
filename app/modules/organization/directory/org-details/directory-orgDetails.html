@@ -1,0 +1,64 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/app/modules/organization/directory" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-organization cui-organization__user-details">
+  <!-- Page Header -->
+  <ng-include src="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header.html'" onload="orgId=orgDetails.prevState.params.orgId"></ng-include>
+
+  <div class="cui-organization__details-container">
+    <!-- Left Content -->
+    <div class="cui-organization__details-col">
+
+      <!-- Left Header -->
+      <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-left.html'"></div>
+
+      <!-- Profile Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.profileDesktop" ng-if="orgDetails.profileUsersSwitch==='profile'">
+        <div ui-view="profile"></div>
+      </cui-resize-handler>
+
+      <!-- Profile Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.profileMobile" ng-if="orgDetails.mobileHandler==='profile'">
+        <div ui-view="profile"></div>
+      </cui-resize-handler>
+
+      <!-- Users Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.usersDesktop" ng-if="orgDetails.profileUsersSwitch==='users'">
+        <div ui-view="users"></div>
+      </cui-resize-handler>
+
+      <!-- Users Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.usersMobile" ng-if="orgDetails.mobileHandler==='users'">
+        <div ui-view="users"></div>
+      </cui-resize-handler>
+
+      <!-- Applications Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.applicationsMobile" ng-if="orgDetails.mobileHandler==='apps'">
+        <div ui-view="applications"></div>
+      </cui-resize-handler>
+
+      <!-- Hierarchy Mobile -->
+      <cui-resize-handler mobile show-if="orgDetails.hierarchyMobile" ng-if="orgDetails.mobileHandler==='hierarchy'">
+        <div ui-view="hierarchy"></div>
+      </cui-resize-handler>
+    </div>
+
+    <!-- Right Content -->
+    <div class="cui-organization__details-col">
+
+      <!-- Right Header -->
+      <div ng-include="'app/modules/organization/directory/org-details/sections/headers/orgDetails-header-right.html'"></div>
+
+      <!-- Applications Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.applicationsDesktop" ng-if="orgDetails.appsHierarchySwitch==='apps'">
+        <div ui-view="applications"></div>
+      </cui-resize-handler>
+
+      <!-- Hierarchy Desktop -->
+      <cui-resize-handler desktop show-if="orgDetails.hierarchyDesktop" ng-if="orgDetails.appsHierarchySwitch==='hierarchy'">
+        <div ui-view="hierarchy"></div>
+      </cui-resize-handler>
+    </div>
+  </div>
+</div>
