@@ -75,7 +75,6 @@ angular.module('organization')
             if (true) {};
         }
         updateOrgChildren(orgHierarchy.organizationHierarchy[0].children)
-        console.log(orgHierarchy.organizationHierarchy)
         $scope.$digest()
     }
     /* */
