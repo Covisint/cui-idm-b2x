@@ -9,6 +9,7 @@ angular.module('organization')
         },
         name:"organization.directory.userList"
     }
+    userDetails.stateParamsOrgId=$stateParams.orgId
     userDetails.mobileHandler = 'profile'
     userDetails.profileRolesSwitch = 'profile'
     userDetails.appsHistorySwitch = 'apps'
