@@ -7,12 +7,17 @@ angular.module('organization')
 
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    const addExpandedProperty = (childOrgs) => {
+    const addExpandedProperty = (childOrgs,parentOrg) => {
 
         childOrgs.forEach(org => {
+            // Need to remove org if it is pending
+            if (org.status==="PENDING") {
+                parentOrg.children.splice(index,1)
+                return
+            }
             if (org.children) {
                 org.expanded=false
-                addExpandedProperty(org.children)
+                addExpandedProperty(org.children,org)
             }
         })
     }
@@ -28,7 +33,7 @@ angular.module('organization')
         // add expended property to all the org with children directive needs it to work for 
         // expandable and collapsable function
         if (orgDetailsHierarchy.organizationHierarchy[0].children) {
-            addExpandedProperty(orgDetailsHierarchy.organizationHierarchy[0].children)
+            addExpandedProperty(orgDetailsHierarchy.organizationHierarchy[0].children,orgDetailsHierarchy.organizationHierarchy[0])
         }
     })
     .fail(err => {
