@@ -9,8 +9,10 @@
 </div>
 <!-- Header -->
 	<!-- Page Title -->
-	<h3 class="cui-applications__page-title">{{'cui-applications'|translate}}</h3>
+	<!-- <h3 class="cui-applications__page-title">{{'cui-applications'|translate}}</h3> -->
 	<section class="cui-action">
+		 	<!-- Action Header -->
+	
     	<nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=orgApplicationDetails.stateParamsOrgId"></nav>
     	<nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
     
@@ -23,9 +25,11 @@
 	   
 </div>
     </section>
-
-
-
+    <div class="cui-action">
+		<!-- Title -->
+		<div class="cui-action__title" ng-if="orgApplicationDetails.stateParamsOrgId==base.user.organization.id" ui-sref="organization.applications({orgId:orgApplicationDetails.stateParamsOrgId})">&lt; {{'cui-back' | translate}}</div>
+		<div class="cui-action__title" ng-if="orgApplicationDetails.stateParamsOrgId!=base.user.organization.id" ui-sref="organization.directory.orgDetails({orgId:orgApplicationDetails.stateParamsOrgId})">&lt; {{'cui-back' | translate}}</div>
+	</div>
 <div class="cui-loading__container" ng-if="base.loader.for['orgApplicationDetails.app']">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>

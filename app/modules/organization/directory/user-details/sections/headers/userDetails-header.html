@@ -1,9 +1,13 @@
 <div class="cui-action">
   <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'"></nav>
   <!-- Mobile nav doesnot support in other states -->
-  <span class="cui-action__title cui-mobile-only" ng-click="base.goBack('organization.directory.userList',userDetails.prevState.params)">&#60; {{'directory' | translate}}</span>
+  <nav ng-include="'app/modules/organization/partials/mobileNav.html'"></nav>
+  <!-- <span class="cui-action__title cui-mobile-only" ng-click="base.goBack('organization.directory.userList',userDetails.prevState.params)">&#60; {{'directory' | translate}}</span> -->
   <div class="cui-action__actions" ng-include="'app/modules/organization/partials/invite-actions.html'" ng-if="false"></div>
 </div>
+    <!-- Title -->
+    <div class="cui-action__title" ng-if="userDetails.stateParamsOrgId==base.user.organization.id" ui-sref="organization.directory.userList({orgId:userDetails.stateParamsOrgId})">&lt; {{'cui-back' | translate}}</div>
+    <div class="cui-action__title" ng-if="userDetails.stateParamsOrgId!=base.user.organization.id" ui-sref="organization.directory.orgDetails({orgId:userDetails.stateParamsOrgId})">&lt; {{'cui-back' | translate}}</div>
 
 <!-- Page Loading -->
 <div class="cui-loading__container" ng-if="base.loader.for['userDetails.userInfo']">

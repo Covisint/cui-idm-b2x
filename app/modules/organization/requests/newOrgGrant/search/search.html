@@ -1,7 +1,7 @@
 <main class="cui-organization__new-request-search">
   <div class="cui-action" ng-hide="base.loader.for['newOrgGrantSearch.org']">
 
-    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack('organization.applications',newOrgGrantSearch.prevState.params)">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack(newOrgGrantSearch.prevState.name,newOrgGrantSearch.prevState.params)">&#60; {{newOrgGrantSearch.org.name}} - {{'new-grant' | translate}}</span>
     
     <div class="cui-action__actions">
       <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrantSearch.prevState"></ng-include>

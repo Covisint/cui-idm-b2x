@@ -1,0 +1,65 @@
+<ng-form name="address">
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <span class="cui-field-val__field">{{'cui-address' | translate}}</span>
+        <span class="cui-link" href="" ng-if="!toggled" ng-click="userDetailsProfile.toggleAllOff();toggleOn()">{{'cui-edit' | translate}}</span>
+        <div ng-if="toggled" ng-click="toggleOff()">
+            <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" aria-label="{{'cui-close' | translate}}"></cui-icon>
+        </div>
+        <!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" ng-if="toggled" ng-click="toggleOff()" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+        </svg-->
+      </div>
+      <!-- Address Block -->
+      <div ng-if="!toggled">
+        <div class="cui-field-val__val">{{userDetailsProfile.user.addresses[0].streets[0]}} </div>
+        <div class="cui-field-val__val" ng-if="userDetailsProfile.user.addresses[0].streets[1]">{{userDetailsProfile.user.addresses[0].streets[1]}}</div>
+        <div class="cui-field-val__val">{{userDetailsProfile.user.addresses[0].city}}</div>
+        <div class="cui-field-val__val">{{userDetailsProfile.user.addresses[0].state}}<span ng-if="userDetailsProfile.user.addresses[0].state && userDetailsProfile.user.addresses[0].postal">, </span>{{userDetailsProfile.user.addresses[0].postal}}</div>
+        <div class="cui-field-val__val">{{base.countries.getCountryByCode(userDetailsProfile.user.addresses[0].country).name}}</div>
+      </div>
+      <!-- Address Edit -->
+      <div ng-if='toggled' ng-init="userDetailsProfile.pushToggleOff({'name':'address','function':toggleOff})">
+        <!-- Street Address -->
+        <label for="{{'cui-street-address' | translate}}">{{'cui-street-address' | translate}}</label>
+        <input type="text" name="{{'cui-street-address' | translate}}" class="cui-input" ng-model="userDetailsProfile.tempUser.addresses[0].streets[0]">
+        <!-- Address 2 -->
+        <label for="{{'cui-address-2' | translate}}">{{'cui-address-2' | translate}}</label>
+        <input type="text" name="{{'cui-address-2' | translate}}" ng-model="userDetailsProfile.tempUser.addresses[0].streets[1]" class="cui-input">
+        <!-- City -->
+        <label for="{{'cui-city' | translate}}">{{'cui-city' | translate}}</label>
+        <input type="text" name="{{'cui-city' | translate}}" class="cui-input" ng-model="userDetailsProfile.tempUser.addresses[0].city">
+        <!-- City -->
+        <div class="cui-form__field-row">
+          <div class="cui-form__field-container cui-form__field-container--half">
+            <label for="{{'cui-state' | translate}}">{{'cui-state' | translate}}</label>
+            <input type="text" name="{{'cui-state' | translate}}" class="cui-input" ng-model="userDetailsProfile.tempUser.addresses[0].state">
+          </div>
+          <!-- Postal -->
+          <div class="cui-form__field-container cui-form__field-container--half">
+            <label for="{{'cui-zip' | translate}}">{{'cui-zip' | translate}}</label>
+            <input type="text" name="{{'cui-zip' | translate}}" class="cui-input" ng-model="userDetailsProfile.tempUser.addresses[0].postal">
+          </div>
+        </div>
+        <!-- Country -->
+        <div class="cui-wizard__field-container">
+          <label for="country">{{"cui-country" | translate}}</label>
+          <div class="cui-error" ng-messages="user.country.$error" ng-if="user.country.$touched">
+            <div ng-messages-include="app/angular-templates/messages.html"></div>
+          </div>
+          <div auto-complete input-name="country" pause="100" selected-object="userDetailsProfile.userCountry" initial-value="base.countries.getCountryByCode(userDetailsProfile.tempUser.addresses[0].country)" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true"></div>
+        </div>
+        <!-- Address Edit Controls -->
+        <div class="cui-users__address-submit">
+          <a class="cui-link cui-form__cancel" href="" ng-click="userDetailsProfile.resetTempObject(userDetailsProfile.user, userDetailsProfile.tempUser); toggleOff()">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-click="userDetailsProfile.updatePerson('address',toggleOff);">
+            <span ng-if="!userDetailsProfile.address || !userDetailsProfile.address.submitting">{{'cui-update' | translate}}</span>
+            <div class="cui-loading--medium-ctr" ng-if="userDetailsProfile.address.submitting"></div>
+            <span ng-if="userDetailsProfile.address.error">{{'cui-error-try-again'| translate}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

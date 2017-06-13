@@ -2,16 +2,16 @@
 
   <!-- Profile Desktop -->
   <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch='profile'" id="profile-button" off-click="">
-    <div>
-      <cui-icon cui-svg-icon="cui:profile" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==true}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <div ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch=='profile'}">
+      <cui-icon cui-svg-icon="cui:profile"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 -1 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
     <span class="cui-action__action-label">{{'profile-upper' | translate}}</span>
   </div>
 
   <!-- Roles Desktop -->
   <div class="cui-organization__profile-header-item cui-desktop-only" ng-click="userDetails.profileRolesSwitch='roles'" id="roles-button">
-    <div>
-      <cui-icon cui-svg-icon="cui:roles" ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch==false}" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    <div ng-class="{'cui-action__icon--active':userDetails.profileRolesSwitch=='roles'}">
+      <cui-icon cui-svg-icon="cui:roles"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
     <span class="cui-action__action-label">{{'roles-upper' | translate}}</span>
   </div>
@@ -25,7 +25,7 @@
   </div>
 
   <!-- Roles Mobile -->
-  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.mobileHandler='roles'" id="roles-button" ng-if="false">
+  <div class="cui-organization__profile-header-item cui-mobile-only" ng-click="userDetails.mobileHandler='roles'" id="roles-button">
     <div>
       <cui-icon cui-svg-icon="cui:roles" ng-class="{ 'cui-action__icon--active':userDetails.profileSwitch=='roles'}"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>

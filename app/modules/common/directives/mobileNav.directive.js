@@ -23,7 +23,8 @@ angular.module('common')
     scope: {
         showIf: '=',
         links: '=',
-        activeTitle:'@activeTitle'
+        activeTitle:'@activeTitle',
+        label: '=?'
     },
     link: (scope, elem, attrs) => {
         // attrs.activeTitle ? scope.activeTitle = attrs.activeTitle : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
@@ -44,7 +45,8 @@ angular.module('common')
         <nav class="cui-breadcrumb--mobile" id="breadcrumb-button" aria-hidden="true" ng-click="toggle()" off-click="close()">
             <ul class="cui-breadcrumb__links">
                 <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
-                    <span class="cui-breadcrumb__mobile-link" class="active"><span class="cui-mobile-only" ng-if="activeTitle">{{activeTitle}}.</span>{{links[currentState].label}}</span>
+                    <span class="cui-breadcrumb__mobile-link" ng-if="links[currentState]" class="active"><span class="cui-mobile-only" ng-if="activeTitle">{{activeTitle}}.</span>{{links[currentState].label}}</span>
+                    <span class="cui-breadcrumb__mobile-link" ng-if="!links[currentState]" class="active"><span class="cui-mobile-only" ng-if="activeTitle">{{activeTitle}}.</span>{{label}}</span>
                 </li>
                 <div class="cui-popover cui-popover--menu cui-breadcrumb__popover cui-popover--top cui-popover__categories-popover" tether target="#breadcrumb-button" attachment="top left" target-attachment="bottom left" offset="-10px 0" ng-if="showIf">
                     <li class="cui-breadcrumb__link cui-popover__row" ng-repeat="(state, stateDetails) in links" ng-if="currentState!==state">
