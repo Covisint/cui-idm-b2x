@@ -7,12 +7,16 @@ angular.module('organization')
 
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    const addExpandedProperty = (childOrgs) => {
-
-        childOrgs.forEach(org => {
+    const addExpandedProperty = (childOrgs, parentOrg) => {
+        childOrgs.forEach((org ,index) => {
+            // Need to remove org if it is pending
+            if (org.status==="PENDING") {
+                parentOrg.children.splice(index,1)
+                return
+            }
             if (org.children) {
                 org.expanded=false
-                addExpandedProperty(org.children)
+                addExpandedProperty(org.children,org)
             }
         })
     }
@@ -20,7 +24,7 @@ angular.module('organization')
     /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */    
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
-
+    
     const storedData = DataStorage.getType('orgHierarchy')
 
     if (storedData) {
@@ -28,7 +32,7 @@ angular.module('organization')
         // add expended property to all the org with children directive needs it to work for 
         // expandable and collapsable function
         if (orgHierarchy.organizationHierarchy[0].children) {
-            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children)
+            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children, orgHierarchy.organizationHierarchy[0])
         }
     }
 
@@ -42,7 +46,7 @@ angular.module('organization')
         // add expended property to all the org with children directive needs it to work for 
         // expandable and collapsable function
         if (orgHierarchy.organizationHierarchy[0].children) {
-            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children)
+            addExpandedProperty(orgHierarchy.organizationHierarchy[0].children, orgHierarchy.organizationHierarchy[0])
         }
     })
     .fail(err => {
