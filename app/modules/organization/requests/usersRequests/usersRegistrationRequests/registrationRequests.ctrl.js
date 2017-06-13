@@ -24,7 +24,7 @@ angular.module('organization')
 			//cui.log('qsArray', qsArray);
 			if(usersRegistrationRequests.searchByOrg.length>0){
 				usersRegistrationRequests.searchByOrg.forEach(function(val){
-					qsArray.push(['organizationId',val.id])
+					qsArray.push(['organization.id',val.id])
 				})
 				
 			}else if(usersRegistrationRequests.searchByPerson.length>0){
@@ -131,6 +131,7 @@ angular.module('organization')
 		          return getPackage(pkgId);
 						}).then(function(pkg) {
 		        	data.packageData = pkg;
+		        	console.log(data.personData.organization.id)
 		        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
 							return getOrg(orgId);
 						}).then(function(org) {
