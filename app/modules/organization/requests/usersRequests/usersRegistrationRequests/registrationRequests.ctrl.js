@@ -265,8 +265,13 @@ angular.module('organization')
     		.fail(err =>{
     				console.log(err)
     		})
-    	}else
-    		return undefined
+    	}else{
+    		usersRegistrationRequests.searchByOrg=[]
+            usersRegistrationRequests.searchByPerson=[]
+    		$state.transitionTo('organization.requests.usersRegistrationRequests', {notify: false})
+    		init()
+    	}
+    		/*return undefined*/
     }
 	
 	});
