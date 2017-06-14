@@ -2,7 +2,7 @@ angular.module('misc')
     .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', 'AppRequests', 'localStorageService', '$q', '$pagination', function(API, $scope, $stateParams, $state, AppRequests, localStorage, $q, $pagination) {
         let search = this;
 
-        $scope.currentParentOrg = "OQ-ADM-PER-DEV01273702";
+        $scope.currentParentOrg = API.user.organization.id;
 
         $scope.users = null;
         $scope.timer = null
@@ -44,7 +44,7 @@ angular.module('misc')
             const stateOpts = {
                 orgId: clickedOrd.id,
             }
-            $state.go('organization.profile', stateOpts)
+            $state.go('organization.directory.orgDetails', stateOpts)
         }
 
         $scope.flattenOrgHierarchy = function(orgHierarchy) {
@@ -107,41 +107,10 @@ angular.module('misc')
             if ($scope.searchterms) {
 
                 if ($scope.searchType == "people") {
-
+                    
                     API.cui.getPersons({
                             qs: [
-                                ['name.surname', $scope.searchterms]
-                                // ['organization.id', 'OQ-ADM-PER-DEV01273701']
-                            ]
-                        })
-                        .done(personResponse => {
-                            personResponse.forEach(function(x) {
-                                $scope.addPerson(x);
-                            })
-                            $scope.$apply();
-                        })
-                        .fail(error => {
-
-                        })
-
-                    API.cui.getPersons({
-                            qs: [
-                                ['name.given', $scope.searchterms]
-                            ]
-                        })
-                        .done(personResponse => {
-                            personResponse.forEach(function(x) {
-                                $scope.addPerson(x);
-                            })
-
-                            $scope.$apply();
-                        })
-                        .fail(error => {
-
-                        })
-                    API.cui.getPersons({
-                            qs: [
-                                ['fullName', "*" + $scope.searchterms + "*"]
+                                ['fullName', $scope.searchterms]
                             ]
                         })
                         .done(personResponse => {
