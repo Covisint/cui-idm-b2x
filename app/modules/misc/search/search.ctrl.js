@@ -2,7 +2,7 @@ angular.module('misc')
     .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', 'AppRequests', 'localStorageService', '$q', '$pagination', function(API, $scope, $stateParams, $state, AppRequests, localStorage, $q, $pagination) {
         let search = this;
 
-        $scope.currentParentOrg = "OQ-ADM-PER-DEV01273702";
+        $scope.currentParentOrg = API.user.organization.id;
 
         $scope.users = null;
         $scope.timer = null
