@@ -7,6 +7,7 @@ angular.module('misc', [])
             return name + 'Ctrl as ' + (asPrefix ? asPrefix : '') + (asPrefix ? name[0].toUpperCase() + name.slice(1, name.length) : name);
         };
 
+        const loginRequired = true;
         $stateProvider
             .state('welcome', {
                 url: '/welcome',
@@ -16,6 +17,7 @@ angular.module('misc', [])
                 url: '/search',
                 templateUrl: templateBase + 'search/search.html',
                 controller: returnCtrlAs('search'),
+                access:loginRequired
             })
             .state('misc', {
                 url: '/status',
