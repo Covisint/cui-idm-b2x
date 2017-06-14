@@ -44,7 +44,7 @@ angular.module('misc')
             const stateOpts = {
                 orgId: clickedOrd.id,
             }
-            $state.go('organization.profile', stateOpts)
+            $state.go('organization.directory.orgDetails', stateOpts)
         }
 
         $scope.flattenOrgHierarchy = function(orgHierarchy) {
