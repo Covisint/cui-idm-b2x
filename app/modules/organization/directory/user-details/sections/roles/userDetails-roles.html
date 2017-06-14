@@ -33,14 +33,49 @@
             <!-- no history -->
             <div class="cui-media__content" ng-if="userDetailsRoles.rolesGrantable.length===0&&!userDetailsRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
             <p class="cui-users__password-success" style="color:red" ng-if="userDetailsRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
-             <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userDetailsRoles.rolesGrantable">
+         <!--     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userDetailsRoles.rolesGrantable">
               <div class="cui-media__body">
                  <span class="cui-checkbox__container">
                             <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.appCheckbox[roles.roleId]" />
                             <label ng-click="userDetailsRoles.checkrequest(roles.roleId)" for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label"> {{roles.name}}</label>
                         </span>
               </div>
-            </div>
+            </div> -->
+
+        <cui-expandable class="cui-expandable" ng-repeat="roles in userDetailsRoles.rolesGrantable" ng-class="application.expanded?'expanded':''" transition-speed="150">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+               
+                <span class="cui-checkbox__container">
+                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.appCheckbox[roles.roleId]" />
+                    <label for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label" ng-click="userDetailsRoles.checkrequest(roles.roleId)"></label>
+                </span>
+                
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+                    <h3 class="cui-expandable__title-left">{{roles.name}}</h3>
+                </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': }" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <div class="cui-expandable__pane-col" ng-if="roles.privileges && roles.privileges.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'privileges' | translate}}:</h4>
+                        <span ng-if="(!roles.privileges || roles.privileges.length===0)">{{'cui-no-details' | translate}}</span>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="privileges in roles.privileges">
+                                {{privileges.privilegeName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
             <div class="cui-applications__submit-options" ng-if="userDetailsRoles.rolesGrantable.length>0&&!userDetailsRoles.grantedHistoryError">
                 <button class="cui-button" ng-class="{'cui-button--error' : !userDetailsRoles.appCheckboxValid }" ng-click="userDetailsRoles.appCheckboxValid&&userDetailsRoles.assignRoles()">
                     <span ng-if="!userDetailsRoles.rolessubmitError">{{'submit-request' | translate}}</span>
