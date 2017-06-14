@@ -107,41 +107,10 @@ angular.module('misc')
             if ($scope.searchterms) {
 
                 if ($scope.searchType == "people") {
-
+                    
                     API.cui.getPersons({
                             qs: [
-                                ['name.surname', $scope.searchterms]
-                                // ['organization.id', 'OQ-ADM-PER-DEV01273701']
-                            ]
-                        })
-                        .done(personResponse => {
-                            personResponse.forEach(function(x) {
-                                $scope.addPerson(x);
-                            })
-                            $scope.$apply();
-                        })
-                        .fail(error => {
-
-                        })
-
-                    API.cui.getPersons({
-                            qs: [
-                                ['name.given', $scope.searchterms]
-                            ]
-                        })
-                        .done(personResponse => {
-                            personResponse.forEach(function(x) {
-                                $scope.addPerson(x);
-                            })
-
-                            $scope.$apply();
-                        })
-                        .fail(error => {
-
-                        })
-                    API.cui.getPersons({
-                            qs: [
-                                ['fullName', "*" + $scope.searchterms + "*"]
+                                ['fullName', $scope.searchterms]
                             ]
                         })
                         .done(personResponse => {
