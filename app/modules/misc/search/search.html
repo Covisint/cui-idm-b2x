@@ -1,0 +1,156 @@
+<!-- 
+    Note!
+
+    The "Top-Level-Organization" and "New Division" tiles are currently "hidden" using ng-if="false".
+    There is some work already done on these registrations in the "b2x-snapshot" branch. We hid these tiles
+    and moved this work to that branch as these types of registrations were not supported by the API and due to
+    developers thinking these registrations were in a finished state in downstream projects.
+ -->
+<div class="welcome-wrapper">
+    <h4>Search:</h4>
+    <br>
+    <div class="cui-applications__search-options">
+        <div class="cui-input-button">
+            <input type="text" class="cui-input-button__input" ng-model="searchterms" ng-keyup="keypress()" placeholder="" focus-if/>
+            <div class="cui-input-button__input" style="padding-top:10px;text-align: center">
+                <input class="cui-radio__input" type="radio" name="radio-choice-basic1" id="radio-choice-1" ng-model="searchType" value="people" ng-change="searchNow()">
+                <label class="cui-radio__label" for="radio-choice-1"><span></span>People</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="cui-radio__input" type="radio" name="radio-choice-basic2" id="radio-choice-3" ng-model="searchType" value="organizations" ng-change="searchNow()">
+                <label class="cui-radio__label" for="radio-choice-3"><span></span>Organizations</label>
+            </div>
+            <button class="cui-input-button__button" ng-click="keypress()">{{'go'| translate}}</button>
+        </div>
+    </div>
+    <br>
+    <!-- User List Loading -->
+    <!-- User List Loading -->
+<!--     <div ng-if="s">
+        <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+    </div>
+    <div ng-show="users.length == 0 && searching && !search1 && !search2 && !search3 && !search4">
+        No Results found
+    </div> -->
+    <div ng-show="users.length > 0">
+        <!-- Action Sub-header -->
+        <section class=" cui-action " ng-if="1==2">
+            <h3 class="cui-sr-only ">{{'org-dir-filters' | translate}}</h3>
+            <div class="cui-loading__container " ng-if="orgDirectory.loading ">
+                <div class="cui-loader cui-loader--content " ng-include=" 'app/common-templates/partials/loader-content-header.html' "></div>
+            </div>
+            <span class="cui-action__title cui-desktop-only ">{{orgDirectory.organization.name | cuiI18n}}</span>
+            <span class="cui-action__title cui-mobile-only ">{{orgDirectory.orgPersonCount}} People</span>
+            <div class="cui-action__actions ">
+                <!-- Sort -->
+                <div ng-show="1==2" class="cui-action__action-container " ng-click="orgDirectory.sortClicked=!orgDirectory.sortClicked " id="sort-button " off-click="orgDirectory.sortClicked=false ">
+                    <svg xmlns="http://www.w3.org/2000/svg " class="cui-action__icon " preserveAspectRatio="xMidYMid meet " viewBox="0 0 216 146 ">
+                        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14 "></use>
+                    </svg>
+                    <span class="cui-action__action-label ">{{'sort' | translate}}</span>
+                    <!-- Sort Popover -->
+                    <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless " target="#sort-button " pointer-height="13 " pointer-width="10 " popover-positions="[{position: 'bottom',contentOffset: '-40px'}, 'any'] " ng-if="orgDirectory.sortClicked " style="width:171px ">
+                        <div class="cui-popover__row ">
+                            <span ng-click="orgDirectory.actionCallbacks.sort( 'person.name') ">{{'cui-alphabetically' | translate}}</span>
+                        </div>
+                        <div class="cui-popover__row ">
+                            <span ng-click="orgDirectory.actionCallbacks.sort( 'person.username') ">{{'username' | translate}}</span>
+                        </div>
+                        <div class="cui-popover__row ">
+                            <span ng-click="orgDirectory.actionCallbacks.sort( 'person.status') ">{{'status' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Refine -->
+                <div ng-show="1==2 " class="cui-action__action-container " ng-click="orgDirectory.refineClicked=!orgDirectory.refineClicked " id="refine-button " off-click="orgDirectory.refineClicked=false ">
+                    <svg xmlns="http://www.w3.org/2000/svg " class="cui-action__icon " preserveAspectRatio="xMidYMid meet " viewBox="0 0 216 146 ">
+                        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10 "></use>
+                    </svg>
+                    <span class="cui-action__action-label ">{{'refine' | translate}}</span>
+                    <!-- Refine Popover -->
+                    <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless " target="#refine-button " pointer-height="13 " pointer-width="10 " popover-positions="[{position: 'bottom',contentOffset: '-70px'}, 'any'] " ng-if="orgDirectory.refineClicked " style="width:214px ">
+                        <div class="cui-popover__row " ng-repeat="status in orgDirectory.statusData " ng-click="orgDirectory.actionCallbacks.refine(status.value) ">
+                            <span>{{status.value | translate}} ({{status.count}})</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Organizations -->
+                <div ng-show="1==2 " class="cui-action__action-container " ng-click="orgDirectory.organizationsClicked=!orgDirectory.organizationsClicked " id="organizations-button " off-click="orgDirectory.organizationsClicked=false ">
+                    <svg xmlns="http://www.w3.org/2000/svg " class="cui-action__icon " preserveAspectRatio="xMidYMid meet " viewBox="0 0 216 146 ">
+                        <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#nine10 "></use>
+                    </svg>
+                    <span class="cui-action__action-label ">{{'organizations' | translate}}</span>
+                    <!-- Organizations Popover -->
+                    <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless " target="#organizations-button " pointer-height="13 " pointer-width="10 " popover-positions="[{position: 'bottom',contentOffset: '-70px'}, 'any'] " ng-if="orgDirectory.organizationsClicked " style="width:214px ">
+                        <div class="cui-popover__row " ng-if="!orgs ">
+                            <span>{{'cui-no-org-divisions' | translate}}!</span>
+                        </div>
+                        <div class="cui-popover__row " ng-if="orgs " ng-repeat="organization in orgs | orderBy: 'name' track by organization.id ">
+                            <span ng-click="orgDirectory.getOrgMembers(organization);orgDirectory.organizationsClicked=false ">{{organization.name | cuiI18n}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>People</h1>
+            <!-- User List Loading -->
+            <cui-table-header headers="[ 'cui-name', 'username', 'status'] " sorting="orgDirectory.sortBy " sorting-callbacks="orgDirectory.sortingCallbacks ">
+            </cui-table-header>
+            <cui-table-row ng-repeat="user in users track by user.id " ng-click="userClick(user) ">
+                <li class="cui-flex-table__tr cui-flex-table__tr--c ">
+                    <!-- Avatar -->
+                    <div class="cui-flex-table__avatar-col ">
+                        <div class="cui-profile__user-avatar " aria-hidden="true " cui-avatar cui-avatar-names="[user.name.given, user.name.surname] " cui-avatar-color-class-prefix="cui-avatar__color " cui-avatar-color-count="5 "></div>
+                    </div>
+                    <div class="cui-flex-table__mobile-stack ">
+                        <!-- Name -->
+                        <div class="cui-flex-table__left "><span class="cui-flex-table__title ">{{user.name.given}} {{user.name.surname}}</span></div>
+                        <!-- Username -->
+                        <div class="cui-flex-table__middle "><span class="cui-mobile-only ">{{'username' | translate | lowercase}}: &nbsp;</span>{{user.username}}</div>
+                        <!-- Status -->
+                        <div class="cui-flex-table__right ">
+                            <span class="cui-mobile-only ">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
+                            <span ng-class=" 'cui-status--'+user.status ">{{user.status}}</span>
+                        </div>
+                    </div>
+                </li>
+            </cui-table-row>
+            <!-- Pagination Controls -->
+            <!--         <div class="cui-paginate__container ">
+            <span class="cui-paginate__results-label ">{{'cui-num-results-page' | translate}}</span>
+            <results-per-page class="cui-paginate__select " ng-model="orgDirectory.search.pageSize "></results-per-page>
+            <paginate class="cui-paginate " results-per-page="orgDirectory.search.pageSize " count="orgDirectory.userCount " on-page-change="orgDirectory.updateSearchParams " ng-model="orgDirectory.search.page " attach-rerender-to="orgDirectory.reRenderPagination "></paginate>
+        </div> -->
+        </section>
+    </div>
+    <div ng-show="orgs.length > 0">
+        <section>
+            <h1>Organizations</h1>
+            <!-- User List Loading -->
+            <cui-table-header headers="[ 'cui-name','status'] " sorting="orgDirectory.sortBy " sorting-callbacks="orgDirectory.sortingCallbacks ">
+            </cui-table-header>
+            <cui-table-row ng-repeat="org in orgs track by org.id " ng-click="orgClick(org) ">
+                <li class="cui-flex-table__tr cui-flex-table__tr--c ">
+                    <!-- Avatar -->
+                    <div class="cui-flex-table__avatar-col ">
+                        <div class="cui-profile__user-avatar " aria-hidden="true " cui-avatar cui-avatar-names="[user.name.given, user.name.surname] " cui-avatar-color-class-prefix="cui-avatar__color " cui-avatar-color-count="5 "></div>
+                    </div>
+                    <div class="cui-flex-table__mobile-stack ">
+                        <!-- Name -->
+                        <div class="cui-flex-table__left "><span class="cui-flex-table__title ">{{org.name}}</span></div>
+                        <!-- Status -->
+                        <div class="cui-flex-table__right ">
+                            <span class="cui-mobile-only ">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
+                            <span ng-class=" 'cui-status--'+user.status ">{{org.status}}</span>
+                        </div>
+                    </div>
+                </li>
+            </cui-table-row>
+            <!-- Pagination Controls -->
+            <!--         <div class="cui-paginate__container ">
+            <span class="cui-paginate__results-label ">{{'cui-num-results-page' | translate}}</span>
+            <results-per-page class="cui-paginate__select " ng-model="orgDirectory.search.pageSize "></results-per-page>
+            <paginate class="cui-paginate " results-per-page="orgDirectory.search.pageSize " count="orgDirectory.userCount " on-page-change="orgDirectory.updateSearchParams " ng-model="orgDirectory.search.page " attach-rerender-to="orgDirectory.reRenderPagination "></paginate>
+        </div> -->
+        </section>
+    </div>
+</div>
