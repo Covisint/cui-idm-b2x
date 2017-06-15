@@ -27,10 +27,16 @@ angular.module('user', [])
             controller: returnCtrlAs('userHistory'),
             access:loginRequired
         })
-        .state('user.appHistory',{
-            url: '/appHistory?name&page&pageSize&sortBy&status',
-            templateUrl: templateBase + 'appHistory/app-history.html',
-            controller: returnCtrlAs('appHistory'),
+        .state('user.appRequestHistory',{
+            url: '/appRequestHistory?name&page&pageSize&sortBy&status',
+            templateUrl: templateBase + 'appHistory/app-requestHistory.html',
+            controller: returnCtrlAs('appRequestHistory'),
+            access:loginRequired
+        })
+        .state('user.appGrantHistory',{
+            url: '/appGrantHistory?name&page&pageSize&sortBy&status',
+            templateUrl: templateBase + 'appHistory/app-grantHistory.html',
+            controller: returnCtrlAs('appGrantHistory'),
             access:loginRequired
         })
         .state('user.roles',{
