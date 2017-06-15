@@ -23,26 +23,26 @@
     <div class="cui-users__main-container">
 
 		<!-- Page Loading -->
-		<div class="cui-loading__container" ng-if="base.loader.for['appHistory.initHistory']">
+		<div class="cui-loading__container" ng-if="base.loader.for['appRequestHistory.initHistory']">
 			<div class="cui-loading--center"><div class="cui-loading"></div></div>
 		</div>
 
       	<!-- Error Messages -->
-		<p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['appHistory.initHistory']"><b>{{'error-generic'|translate}}</b></p>
+		<p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['appRequestHistory.initHistory']"><b>{{'error-generic'|translate}}</b></p>
         <!-- User info -->
-        <div class="cui-users__profile-media" ng-if="!appHistory.loading">
+        <div class="cui-users__profile-media" ng-if="!appRequestHistory.loading">
             <div class="cui-media">
                 <div class="cui-media__image-container">
                     <!-- Profile Image: Currently displays users initials only -->
-                    <div class="cui-media__image" cui-avatar cui-avatar-email="appHistory.user.email" cui-avatar-names="[appHistory.user.name.given, appHistory.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+                    <div class="cui-media__image" cui-avatar cui-avatar-email="appRequestHistory.user.email" cui-avatar-names="[appRequestHistory.user.name.given, appRequestHistory.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
                 </div>
                 <div class="cui-media__body">
                     <!-- User full name -->
-                    <h3 class="cui-media__title">{{appHistory.user.name.given}} {{appHistory.user.name.surname}}</h3>
+                    <h3 class="cui-media__title">{{appRequestHistory.user.name.given}} {{appRequestHistory.user.name.surname}}</h3>
                     <!-- UserID -->
-                    <p class="cui-media__content--small" ng-if="appHistory.registeredDate">{{'cui-registered' | translate}}: {{appHistory.registeredDate | date:base.appConfig.dateFormat}}</p>
-                    <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{appHistory.user.username}}</p>
-                    <p class="cui-media__content--small" ng-if="appHistory.user.lastLoginDate">{{'cui-last-login' | translate}}: {{appHistory.user.lastLoginDate | date:base.appConfig.dateFormat}}</p>
+                    <p class="cui-media__content--small" ng-if="appRequestHistory.registeredDate">{{'cui-registered' | translate}}: {{appRequestHistory.registeredDate | date:base.appConfig.dateFormat}}</p>
+                    <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{appRequestHistory.user.username}}</p>
+                    <p class="cui-media__content--small" ng-if="appRequestHistory.user.lastLoginDate">{{'cui-last-login' | translate}}: {{appRequestHistory.user.lastLoginDate | date:base.appConfig.dateFormat}}</p>
                 </div>
             </div>
         </div>
@@ -54,63 +54,63 @@
                         </li>
                         <li class="user_roles_image" style="padding: 8px; margin-right:10px" ng-init="rolesrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolesrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolesrc='app/modules/user/user_icon/roles.png'"><a ui-sref="user.roles"><img ng-src="{{rolesrc}}" width="34px" height="45px"></a>
                         </li>
-                        <li class="user_apps_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.appHistory"><img src="app/modules/user/user_icon/app_mouseover.png" width="29px" height="45px"></a>
+                        <li class="user_apps_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.appRequestHistory"><img src="app/modules/user/user_icon/app_mouseover.png" width="29px" height="45px"></a>
                         </li>
                         <li class="user_history_image" style="padding: 8px" ng-init="historysrc='app/modules/user/user_icon/history.png'" ng-mouseover="historysrc='app/modules/user/user_icon/history_mouseover.png'" ng-mouseout="historysrc='app/modules/user/user_icon/history.png'"><a ui-sref="user.history"><img ng-src="{{historysrc}}" width="49px" height="44px"></a>
                 </ul>
             </nav>
         </div>
         <hr>
-		<div class="cui-users__profile cui-users__history" ng-if="!base.loader.for['appHistory.initHistory']&&!base.apiError.for['appHistory.initHistory']">
+		<div class="cui-users__profile cui-users__history" ng-if="!base.loader.for['appRequestHistory.initHistory']&&!base.apiError.for['appRequestHistory.initHistory']">
 		    <!-- Left Block -->
 		    <div class="cui-users__profile-info">
 		      <div class="cui-action">
 		      		<div class="cui-action__title">{{'cui-application-requested-history'|translate}}</div>
 		      		  <div class="cui-action__actions">
 					    <!-- Sort -->
-					    <div class="cui-action__action-container" ng-click="appHistory.requestsortClicked =! appHistory.requestsortClicked" id="sort-button" off-click="appHistory.requestsortClicked=false">
+					    <div class="cui-action__action-container" ng-click="appRequestHistory.requestsortClicked =! appRequestHistory.requestsortClicked" id="sort-button" off-click="appRequestHistory.requestsortClicked=false">
 					      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 					      <span class="cui-action__action-label">{{'sort' | translate}}</span>
 					      <!-- Sort Popover -->
-					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="appHistory.requestsortClicked" style="width:171px">
+					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="appRequestHistory.requestsortClicked" style="width:171px">
 					        <!-- Hiding because API is not supporting 
 					        <div class="cui-popover__row">
-					          <span ng-click="appHistory.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+					          <span ng-click="appRequestHistory.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
 					        </div> -->
 					        <div class="cui-popover__row">
-					          <span ng-click="appHistory.updateSearch('requesteddate','','requested')">{{'cui-by-request-date' | translate}}</span>
+					          <span ng-click="appRequestHistory.updateSearch('requesteddate','','requested')">{{'cui-by-request-date' | translate}}</span>
 					        </div>
 					         <div class="cui-popover__row">
-					          <span ng-click="appHistory.updateSearch('decisiondate','','requested')">{{'cui-by-decision-date' | translate}}</span>
+					          <span ng-click="appRequestHistory.updateSearch('decisiondate','','requested')">{{'cui-by-decision-date' | translate}}</span>
 					        </div>
 					      </div>
 					    </div>
 
 					    <!-- Refine -->
-					    <!-- <div class="cui-action__action-container" ng-click="appHistory.requestrefineClicked =! appHistory.requestrefineClicked" id="refine-button" off-click="appHistory.requestrefineClicked=false">
+					    <!-- <div class="cui-action__action-container" ng-click="appRequestHistory.requestrefineClicked =! appRequestHistory.requestrefineClicked" id="refine-button" off-click="appRequestHistory.requestrefineClicked=false">
 					      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
 					      <span class="cui-action__action-label">{{'refine' | translate}}</span> -->
 					      <!-- Refine Popover -->
-					     <!--  <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appHistory.requestrefineClicked" style="width:214px">
+					     <!--  <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appRequestHistory.requestrefineClicked" style="width:214px">
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.updateSearch('status')">{{'all' | translate}}</span>
-					          <span>({{appHistory.popupCount}})</span>
+					          <span ng-click="appRequestHistory.updateSearch('status')">{{'all' | translate}}</span>
+					          <span>({{appRequestHistory.popupCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.updateSearch('status','active')">{{'yes' | translate}}</span>
-					          <span>({{appHistory.activeCount}})</span>
+					          <span ng-click="appRequestHistory.updateSearch('status','active')">{{'yes' | translate}}</span>
+					          <span>({{appRequestHistory.activeCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.updateSearch('status','suspended')">{{'cui-no' | translate}}</span>
-					          <span>({{appHistory.suspendedCount}})</span>
+					          <span ng-click="appRequestHistory.updateSearch('status','suspended')">{{'cui-no' | translate}}</span>
+					          <span>({{appRequestHistory.suspendedCount}})</span>
 					        </div>
 					      </div>
 					    </div> -->
 					  </div>
 		      </div>
 		      	<div class="cui-users__info-block">
-		      			<div class="cui-media__content" ng-if="appHistory.requestedHistory.length===0">{{'cui-no-details'|translate}}</div>
-					    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appHistory.requestedHistory">
+		      			<div class="cui-media__content" ng-if="appRequestHistory.requestedHistory.length===0">{{'cui-no-details'|translate}}</div>
+					    <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appRequestHistory.requestedHistory">
 					      <div class="cui-media__image-container">
 					       <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
 					      </div>
@@ -131,8 +131,8 @@
 				<!-- Hiding because count API is not avialble  -->
 				<div class="cui-paginate__container" style="height: 0px;">
 				    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-				    <results-per-page class="cui-paginate__select" ng-model="appHistory.requestedSearch.pageSize"></results-per-page>
-				    <paginate class="cui-paginate" results-per-page="appHistory.requestedSearch.pageSize" count="appHistory.count" on-page-change="appHistory.pageRequestedChange" ng-model="appHistory.requestedSearch.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
+				    <results-per-page class="cui-paginate__select" ng-model="appRequestHistory.requestedSearch.pageSize"></results-per-page>
+				    <paginate class="cui-paginate" results-per-page="appRequestHistory.requestedSearch.pageSize" count="appRequestHistory.count" on-page-change="appRequestHistory.pageRequestedChange" ng-model="appRequestHistory.requestedSearch.page" attach-rerender-to=" appRequestHistory.reRenderPaginate"></paginate>
 				  </div>
 		    </div>
 		    
@@ -142,46 +142,52 @@
 		      		<div class="cui-action__title">{{'cui-application-granted-history'|translate}}</div>
 		      		<div class="cui-action__actions">
 					    <!-- Sort -->
-					    <div class="cui-action__action-container" ng-click="appHistory.granted.sortClicked =! appHistory.granted.sortClicked" id="sort-buttons" off-click="appHistory.granted.sortClicked=false">
+					    <div class="cui-action__action-container" ng-click="appRequestHistory.granted.sortClicked =! appRequestHistory.granted.sortClicked" id="sort-buttons" off-click="appRequestHistory.granted.sortClicked=false">
 					      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 					      <span class="cui-action__action-label">{{'sort' | translate}}</span>
 					      <!-- Sort Popover -->
-					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="appHistory.granted.sortClicked" style="width:171px">
+					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="appRequestHistory.granted.sortClicked" style="width:171px">
 					        <!-- Hiding Because API is not supporting
 					        <div class="cui-popover__row">
-					          <span ng-click="appHistory..granted.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+					          <span ng-click="appRequestHistory..granted.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
 					        </div> -->
 					        <div class="cui-popover__row">
-					          <span ng-click="appHistory.updateSearch('eventdate','','granted')">{{'cui-by-decision-date' | translate}}</span>
+					          <span ng-click="appRequestHistory.updateSearch('eventdate','','granted')">{{'cui-by-decision-date' | translate}}</span>
+					        </div>
+					        <div class="cui-popover__row">
+					           <span ng-click="appRequestHistory.updateSearch('eventType','','granted')">{{'action' | translate}}</span>
+					        </div>
+					        <div class="cui-popover__row">
+					           <span ng-click="appRequestHistory.updateSearch('actorId','','granted')">{{'evaluator' | translate}}</span>
 					        </div>
 					      </div>
 					    </div>
 
 					    <!-- Refine -->
-<!-- 					    Hiding because APi is not supporting <div class="cui-action__action-container" ng-click="appHistory.granted.refineClicked =! appHistory.granted.refineClicked" id="refine-buttons" off-click="appHistory.granted.refineClicked=false">
+<!-- 					    Hiding because APi is not supporting <div class="cui-action__action-container" ng-click="appRequestHistory.granted.refineClicked =! appRequestHistory.granted.refineClicked" id="refine-buttons" off-click="appRequestHistory.granted.refineClicked=false">
 					      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
 					      <span class="cui-action__action-label">{{'refine' | translate}}</span> -->
 					      <!-- Refine Popover -->
-<!-- 					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appHistory.granted.refineClicked" style="width:214px">
+<!-- 					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appRequestHistory.granted.refineClicked" style="width:214px">
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.granted.updateSearch('status')">{{'all' | translate}}</span>
-					          <span>({{appHistory.popupCount}})</span>
+					          <span ng-click="appRequestHistory.granted.updateSearch('status')">{{'all' | translate}}</span>
+					          <span>({{appRequestHistory.popupCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.granted.updateSearch('status','active')">{{'active' | translate}}</span>
-					          <span>({{appHistory.activeCount}})</span>
+					          <span ng-click="appRequestHistory.granted.updateSearch('status','active')">{{'active' | translate}}</span>
+					          <span>({{appRequestHistory.activeCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appHistory.granted.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
-					          <span>({{appHistory.suspendedCount}})</span>
+					          <span ng-click="appRequestHistory.granted.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+					          <span>({{appRequestHistory.suspendedCount}})</span>
 					        </div>
 					      </div>
 					    </div> -->
 					  </div>
 		      	</div>
 		      	<!-- no history -->
-		      	<div class="cui-media__content" ng-if="appHistory.grantedHistory.length===0">{{'cui-no-details'|translate}}</div>
-		      	 <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appHistory.grantedHistory">
+		      	<div class="cui-media__content" ng-if="appRequestHistory.grantedHistory.length===0">{{'cui-no-details'|translate}}</div>
+		      	 <div class="cui-media cui-media--border cui-media--tr" ng-repeat="application in appRequestHistory.grantedHistory">
 					      <div class="cui-media__image-container">
 					        <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
 					      </div>
@@ -199,8 +205,8 @@
 				<!-- Hiding because count API is not avialble  -->
 				<div class="cui-paginate__container">
 				    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-				    <results-per-page class="cui-paginate__select" ng-model="appHistory.grantedSearch.pageSize"></results-per-page>
-				    <paginate class="cui-paginate" results-per-page="appHistory.grantedSearch.pageSize" count="appHistory.grantedHistoryCount" on-page-change="appHistory.pageGrantedChange" ng-model="appHistory.grantedSearch.page" attach-rerender-to=" appHistory.reRenderPaginate"></paginate>
+				    <results-per-page class="cui-paginate__select" ng-model="appRequestHistory.grantedSearch.pageSize"></results-per-page>
+				    <paginate class="cui-paginate" results-per-page="appRequestHistory.grantedSearch.pageSize" count="appRequestHistory.grantedHistoryCount" on-page-change="appRequestHistory.pageGrantedChange" ng-model="appRequestHistory.grantedSearch.page" attach-rerender-to=" appRequestHistory.reRenderPaginate"></paginate>
 				 </div>
 		    </div>
 		</div>

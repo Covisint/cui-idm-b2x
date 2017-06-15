@@ -46,7 +46,7 @@
                         </li>
                         <li class="user_roles_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.roles"><img ng-src="app/modules/user/user_icon/roles_mouseover.png" width="34px" height="45px"></a>
                         </li>
-                        <li class="user_apps_image" style="padding: 8px; margin-right:10px" ng-init="appsrc='app/modules/user/user_icon/app.png'" ng-mouseover="appsrc='app/modules/user/user_icon/app_mouseover.png'" ng-mouseout="appsrc='app/modules/user/user_icon/app.png'"><a ui-sref="user.appHistory"><img ng-src="{{appsrc}}" width="29px" height="45px"></a>
+                        <li class="user_apps_image" style="padding: 8px; margin-right:10px" ng-init="appsrc='app/modules/user/user_icon/app.png'" ng-mouseover="appsrc='app/modules/user/user_icon/app_mouseover.png'" ng-mouseout="appsrc='app/modules/user/user_icon/app.png'"><a ui-sref="user.appRequestHistory"><img ng-src="{{appsrc}}" width="29px" height="45px"></a>
                         </li>
                         <li class="user_history_image" style="padding: 8px" ng-init="historysrc='app/modules/user/user_icon/history.png'" ng-mouseover="historysrc='app/modules/user/user_icon/history_mouseover.png'" ng-mouseout="historysrc='app/modules/user/user_icon/history.png'"><a ui-sref="user.history"><img ng-src="{{historysrc}}" width="49px" height="44px"></a>
                 </ul>
@@ -77,14 +77,40 @@
             <!-- no history -->
             <div class="cui-media__content" ng-if="userRoles.rolesGrantable.length===0&&!userRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
             <p class="cui-users__password-success" style="color:red" ng-if="userRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
-             <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userRoles.rolesGrantable">
-              <div class="cui-media__body">
-                 <span class="cui-checkbox__container">
-                            <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userRoles.appCheckbox[roles.roleId]" />
-                            <label ng-click="userRoles.checkrequest(roles.roleId)" for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label"> {{roles.name}}</label>
-                        </span>
-              </div>
-            </div>
+        <cui-expandable class="cui-expandable" ng-repeat="roles in userRoles.rolesGrantable" ng-class="application.expanded?'expanded':''" transition-speed="150" style="border-bottom:1px solid #ddd">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+               
+                <span class="cui-checkbox__container">
+                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userRoles.appCheckbox[roles.roleId]" />
+                    <label for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label" ng-click="userRoles.checkrequest(roles.roleId)"></label>
+                </span>
+                
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+                    <h3 class="cui-expandable__title-left">{{roles.name}}</h3>
+                </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': }" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <div class="cui-expandable__pane-col" ng-if="roles.privileges && roles.privileges.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'privileges' | translate}}:</h4>
+                        <span ng-if="(!roles.privileges || roles.privileges.length===0)">{{'cui-no-details' | translate}}</span>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="privileges in roles.privileges">
+                                {{privileges.privilegeName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
             <div class="cui-applications__submit-options" ng-if="userRoles.rolesGrantable.length>0&&!userRoles.grantedHistoryError">
                 <button class="cui-button" ng-class="{'cui-button--error' : !userRoles.appCheckboxValid }" ng-click="userRoles.appCheckboxValid&&userRoles.assignRoles()">
                     <span ng-if="!userRoles.rolessubmitError">{{'submit-request' | translate}}</span>
