@@ -15,8 +15,8 @@
     "contentType": "application/vnd.com.covisint.platform.organization.v1+json"
   },
   {
-    "cmd": "countOrganizations",
-    "cmdType": "unsecured",
+    "cmd": "getOrganizationsCount",
+    "cmdType": "secured",
     "call": "/organization/v3/organizations/count",
     "type": "GET",
     "accepts": "text/plain"
