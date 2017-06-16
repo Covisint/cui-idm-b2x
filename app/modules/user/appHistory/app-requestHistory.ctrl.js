@@ -9,15 +9,11 @@ angular.module('user')
     appRequestHistory.search.pageSize = appRequestHistory.paginationPageSize;
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    appRequestHistory.pageGrantedChange = (newpage) => {
-        appRequestHistory.updateSearch('page', '1','granted')
+    appRequestHistory.pageChange = (newpage) => {
+        appRequestHistory.updateSearch('page', newpage)
     }
 
-    appRequestHistory.pageRequestedChange = (newpage) => {
-        appRequestHistory.updateSearch('page', '1','requested')
-    }
-
-    appRequestHistory.updateSearch = (updateType, updateValue,updatePage) => {
+    appRequestHistory.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'alphabetic':
                 switchBetween('sortBy', '+service.name', '-service.name')
@@ -44,17 +40,6 @@ angular.module('user')
                 appRequestHistory.search.page = 1
                 appRequestHistory.search['grant.status'] = updateValue
                 break
-            case 'page':
-            if (updatePage==='requested') {
-                appRequestHistory.search.page = appRequestHistory.requestedSearch.page
-                appRequestHistory.search.pageSize = appRequestHistory.requestedSearch.pageSize
-            };
-            if (updatePage==='granted') {
-                appRequestHistory.search.page = appRequestHistory.grantedSearch.page
-                appRequestHistory.search.pageSize = appRequestHistory.grantedSearch.pageSize
-            };
-                
-                break
         }
 
         let queryParams = [['page', String(appRequestHistory.search.page)], ['pageSize', String(appRequestHistory.search.pageSize)]];
@@ -67,7 +52,6 @@ angular.module('user')
 
         // doesn't change state, only updates the url
         $state.transitionTo('user.appRequestHistory', appRequestHistory.search, { notify:false })
-        if(updatePage=='requested'){
             console.log(appRequestHistory.search);
             appRequestHistory.requestedHistory = [];
              API.cui.getPersonApplicationsRequestHistory(opts)
@@ -82,26 +66,6 @@ angular.module('user')
                 console.log(err)
              })
               //onLoad(true,opts)
-        }
-        else if(updatePage=='granted'){
-            console.log(appRequestHistory.search);
-             appRequestHistory.grantedHistory = [];
-             API.cui.getPersonApplicationsGrantHistory(opts)
-             .then(res => {
-               appRequestHistory.grantedHistory=res;
-                // if(appRequestHistory.grantedHistory.length>0)
-                //     getPkgDetailsGrant(appRequestHistory.grantedHistory);
-                $scope.$digest()
-             })
-             .fail(err =>{
-                APIError.onFor(scopeName + 'initHistory')
-                console.log(err)
-             })
-          //onLoadGranted(true,opts)
-        }  
-        else
-            return undefined
-
     }
 
     const switchBetween = (property, firstValue, secondValue) => {
@@ -220,13 +184,7 @@ angular.module('user')
         };
 
     Loader.onFor(scopeName + 'initHistory')
-     API.cui.getPersonApplicationsGrantHistory(opts)
-     .then(res => {
-        appRequestHistory.grantedHistory=res;
-        // if(appRequestHistory.grantedHistory.length>0)
-        //     getPkgDetailsGrant(appRequestHistory.grantedHistory);
-        return API.cui.getPersonApplicationsRequestHistory(opts);
-     })
+     API.cui.getPersonApplicationsRequestHistory(opts)
      .then(res => {
         appRequestHistory.requestedHistory=res;
         // if(appRequestHistory.requestedHistory.length>0)
@@ -243,18 +201,10 @@ angular.module('user')
         getCountsOfStatus(undefined)*/
        /* Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();*/
-        return API.cui.getPersonApplicationsGrantHistoryCount(opts)
-     })
-     .then(res =>{
-        console.log(res)
-        appRequestHistory.grantedHistoryCount=res
-        /*appRequestHistory.grantedHistoryCount=20*/
         return API.cui.getPersonApplicationsRequestHistoryCount(opts) 
      })
      .then(res => {
-        console.log(res)
         appRequestHistory.count=res
-        /*console.log(appRequestHistory.count)*/
         Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();
      })
