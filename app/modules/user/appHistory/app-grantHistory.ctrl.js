@@ -10,14 +10,10 @@ angular.module('user')
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
     appGrantHistory.pageGrantedChange = (newpage) => {
-        appGrantHistory.updateSearch('page', '1','granted')
+        appGrantHistory.updateSearch('page', newpage)
     }
 
-    appGrantHistory.pageRequestedChange = (newpage) => {
-        appGrantHistory.updateSearch('page', '1','requested')
-    }
-
-    appGrantHistory.updateSearch = (updateType, updateValue,updatePage) => {
+    appGrantHistory.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'decisiondate':
                 switchBetween('sortBy', '+evaluationDate', '-evaluationDate')
@@ -38,13 +34,6 @@ angular.module('user')
                 appGrantHistory.search.page = 1
                 appGrantHistory.search['grant.status'] = updateValue
                 break
-            case 'page':
-            if (updatePage==='granted') {
-                appGrantHistory.search.page = appGrantHistory.grantedSearch.page
-                appGrantHistory.search.pageSize = appGrantHistory.grantedSearch.pageSize
-            };
-                
-                break
         }
 
         let queryParams = [['page', String(appGrantHistory.search.page)], ['pageSize', String(appGrantHistory.search.pageSize)]];
@@ -57,23 +46,6 @@ angular.module('user')
 
         // doesn't change state, only updates the url
         $state.transitionTo('user.appGrantHistory', appGrantHistory.search, { notify:false })
-        if(updatePage=='requested'){
-            console.log(appGrantHistory.search);
-            appGrantHistory.requestedHistory = [];
-             API.cui.getPersonApplicationsRequestHistory(opts)
-             .then(res => {
-                appGrantHistory.requestedHistory=res;
-                // if(appGrantHistory.requestedHistory.length>0)
-                //     getPkgDetailsRequested(appGrantHistory.requestedHistory);
-                $scope.$digest()
-             })
-             .fail(err =>{
-                APIError.onFor(scopeName + 'initHistory')
-                console.log(err)
-             })
-              //onLoad(true,opts)
-        }
-        else if(updatePage=='granted'){
             console.log(appGrantHistory.search);
              appGrantHistory.grantedHistory = [];
              API.cui.getPersonApplicationsGrantHistory(opts)
@@ -88,10 +60,6 @@ angular.module('user')
                 console.log(err)
              })
           //onLoadGranted(true,opts)
-        }  
-        else
-            return undefined
-
     }
 
     const switchBetween = (property, firstValue, secondValue) => {
@@ -184,10 +152,6 @@ angular.module('user')
         appGrantHistory.grantedHistory=res;
         // if(appGrantHistory.grantedHistory.length>0)
         //     getPkgDetailsGrant(appGrantHistory.grantedHistory);
-        return API.cui.getPersonApplicationsRequestHistory(opts);
-     })
-     .then(res => {
-        appGrantHistory.requestedHistory=res;
         // if(appGrantHistory.requestedHistory.length>0)
         //     getPkgDetailsRequested(appGrantHistory.requestedHistory);
 /*        //to display in popover
@@ -206,14 +170,7 @@ angular.module('user')
      })
      .then(res =>{
         console.log(res)
-        appGrantHistory.grantedHistoryCount=res
-        /*appGrantHistory.grantedHistoryCount=20*/
-        return API.cui.getPersonApplicationsRequestHistoryCount(opts) 
-     })
-     .then(res => {
-        console.log(res)
         appGrantHistory.count=res
-        /*console.log(appGrantHistory.count)*/
         Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();
      })
