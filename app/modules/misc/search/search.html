@@ -23,22 +23,16 @@
           <button class="cui-input-button__button" ng-click="search.searchNow(true)">{{'search' | translate}}</button>
       </div>
     </div>
-    <!-- <br> -->
-    <!-- </section> -->
-    <!-- User List Loading -->
-    <!-- User List Loading -->
-<!--     <div ng-if="s">
-        <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
-    </div>
-    <div ng-show="users.length == 0 && searching && !search1 && !search2 && !search3 && !search4">
-        No Results found
-    </div> -->
     <section class="cui-organization__main-container">
             <!-- Loading -->
         <div class="cui-loading__container" ng-if="base.loader.for['search.loading']">
           <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
         </div>
-        <div ng-if="!base.loader.for['search.loading']">
+        <!-- No Results -->
+        <p class="cui-users__password-success" ng-if="search.noRecords">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
+        <!-- Error Message -->
+        <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['search.pageError']">{{'error-generic' | translate}}</p>
+        <div ng-if="!base.loader.for['search.loading'] && !search.pageError && !search.noRecords" >
             <!-- Action Sub-header -->
             <section class=" cui-action " ng-if="1==2">
                 <h3 class="cui-sr-only ">{{'org-dir-filters' | translate}}</h3>
@@ -99,7 +93,7 @@
                 </div>
             </section>
             <section ng-if="search.searchType==='people'">
-                <h1>People</h1>
+                <h1>{{'people'|translate}}</h1>
                 <!-- User List Loading -->
                 <cui-table-header headers="[ 'cui-name', 'username', 'status'] " sorting="search.sortBy " sorting-callbacks="search.sortingCallbacks ">
                 </cui-table-header>
@@ -130,7 +124,7 @@
                 </div>
             </section>
             <section ng-if="search.searchType==='organizations'">
-                <h1>Organizations</h1>
+                <h1>{{'organizations'|translate}}</h1>
                 <!-- User List Loading -->
                 <cui-table-header headers="[ 'cui-name','status'] " sorting="search.sortBy " sorting-callbacks="search.sortingCallbacks ">
                 </cui-table-header>

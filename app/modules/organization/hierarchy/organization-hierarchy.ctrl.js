@@ -4,6 +4,7 @@ angular.module('organization')
     const orgHierarchy = this
     const pageLoader = 'orgHierarchy.loading'
     orgHierarchy.stateParamsOrgId=$stateParams.orgId
+    orgHierarchy.expanded=false
 
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
@@ -80,6 +81,19 @@ angular.module('organization')
         }
         updateOrgChildren(orgHierarchy.organizationHierarchy[0].children)
         $scope.$digest()
+    }
+
+    orgHierarchy.toggleAll = (toggleFlag) => {
+        orgHierarchy.expanded=!orgHierarchy.expanded
+        let updateFlag= (orgs) => {
+            orgs.forEach(org => {
+                if (org.children) {
+                    org.expanded=!toggleFlag
+                    updateFlag(org.children)
+                }
+            })
+        }
+        updateFlag(orgHierarchy.organizationHierarchy[0].children)
     }
     /* */
 })
