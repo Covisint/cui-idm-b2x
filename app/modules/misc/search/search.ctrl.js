@@ -1,6 +1,6 @@
 angular.module('misc')
-    .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', 'AppRequests', 'localStorageService', '$q', '$pagination','APIHelpers','Loader', 
-    function(API, $scope, $stateParams, $state, AppRequests, localStorage, $q, $pagination,APIHelpers,Loader) {
+    .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', '$q', '$pagination','APIHelpers','Loader', 'APIError',
+    function(API, $scope, $stateParams, $state, $q, $pagination,APIHelpers,Loader,APIError) {
         let search = this;
         search.currentParentOrg = API.user.organization.id;
 
@@ -10,6 +10,7 @@ angular.module('misc')
         search.searchOrgId = "";
         search.searchterms=""
         search.count=1000
+        search.pageError=false
 
         // search.keypress = function() {
         //     search.users = [];
@@ -74,6 +75,7 @@ angular.module('misc')
         }
 
         search.searchNow = function(type) {
+            search.pageError=false
             if (type) {
                 search.searchParams.page=1
             }
@@ -91,11 +93,14 @@ angular.module('misc')
                     .then(res=>{
                         search.personCount=res[0]
                         search.users=res[1]
+                        if (search.users.length===0) {
+                            search.noRecords=true
+                        }
                         Loader.offFor('search.loading')
                     })                    
                     .catch(error => {
                         Loader.offFor('search.loading')
-
+                        search.pageError=true
                     })
                     //     qsArray.push(['email', search.searchterms])
                     // API.cui.getPersons({
@@ -119,14 +124,21 @@ angular.module('misc')
                     API.cui.getOrganizations({qs: qsArray})
                     .done(orgsResponse => {
                         search.orgs = orgsResponse;
-                        Loader.offFor('search.loading')
-                        $scope.$digest()
+                        if (search.orgs.length===0) {
+                            search.noRecords=true
+                        }
                     })
                     .fail(error => {
-                        Loader.offFor('search.loading')
+                        search.pageError=true
                     })
+                    .always(handleAll)
                 }
             // }
+        }
+
+        const handleAll= () => {
+            Loader.offFor('search.loading')
+            $scope.$digest()
         }
 
         /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */
@@ -148,12 +160,14 @@ angular.module('misc')
         API.cui.getOrganizations({qs:APIHelpers.getQs(search.searchParams)})
         .then(res => {
             search.orgs = res
-            Loader.offFor('search.loading')
-            $scope.$digest()
+            if (search.orgs.length===0) {
+                search.noRecords=true
+            }
         })
         .fail(error => {
-
+            search.pageError=true
         })
+        .always(handleAll)
 
         /* -------------------------------------------- ON LOAD END --------------------------------------------- */
 
