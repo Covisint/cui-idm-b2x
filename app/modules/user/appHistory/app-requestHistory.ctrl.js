@@ -1,23 +1,23 @@
 angular.module('user')
-.controller('appHistoryCtrl', function(Loader, User, $scope, API, APIError, $filter,$pagination,$q,$state,$stateParams) {
+.controller('appRequestHistoryCtrl', function(Loader, User, $scope, API, APIError, $filter,$pagination,$q,$state,$stateParams) {
 
-    const appHistory = this
-    const scopeName = 'appHistory.'
-    appHistory.search = Object.assign({}, $stateParams)
-    appHistory.search.page = appHistory.search.page || 1;
-    appHistory.paginationPageSize = appHistory.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
-    appHistory.search.pageSize = appHistory.paginationPageSize;
+    const appRequestHistory = this
+    const scopeName = 'appRequestHistory.'
+    appRequestHistory.search = Object.assign({}, $stateParams)
+    appRequestHistory.search.page = appRequestHistory.search.page || 1;
+    appRequestHistory.paginationPageSize = appRequestHistory.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+    appRequestHistory.search.pageSize = appRequestHistory.paginationPageSize;
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    appHistory.pageGrantedChange = (newpage) => {
-        appHistory.updateSearch('page', '1','granted')
+    appRequestHistory.pageGrantedChange = (newpage) => {
+        appRequestHistory.updateSearch('page', '1','granted')
     }
 
-    appHistory.pageRequestedChange = (newpage) => {
-        appHistory.updateSearch('page', '1','requested')
+    appRequestHistory.pageRequestedChange = (newpage) => {
+        appRequestHistory.updateSearch('page', '1','requested')
     }
 
-    appHistory.updateSearch = (updateType, updateValue,updatePage) => {
+    appRequestHistory.updateSearch = (updateType, updateValue,updatePage) => {
         switch (updateType) {
             case 'alphabetic':
                 switchBetween('sortBy', '+service.name', '-service.name')
@@ -28,47 +28,53 @@ angular.module('user')
             case 'decisiondate':
                 switchBetween('sortBy', '+evaluationDate', '-evaluationDate')
                 break
-             case 'eventdate':
+            case 'eventdate':
                 switchBetween('sortBy', '+eventDate', '-eventDate')
+                break
+            case 'eventType':
+                switchBetween('sortBy', '+eventType', '-eventType')
+                break
+            case 'actorId':
+                switchBetween('sortBy', '+actorId', '-actorId')
                 break
             case 'evaluator':
                 switchBetween('sortBy', '+evaluatorId', '-evaluatorId')
                 break
             case 'status':
-                appHistory.search.page = 1
-                appHistory.search['grant.status'] = updateValue
+                appRequestHistory.search.page = 1
+                appRequestHistory.search['grant.status'] = updateValue
                 break
             case 'page':
             if (updatePage==='requested') {
-                appHistory.search.page = appHistory.requestedSearch.page
-                appHistory.search.pageSize = appHistory.requestedSearch.pageSize
+                appRequestHistory.search.page = appRequestHistory.requestedSearch.page
+                appRequestHistory.search.pageSize = appRequestHistory.requestedSearch.pageSize
             };
             if (updatePage==='granted') {
-                appHistory.search.page = appHistory.grantedSearch.page
-                appHistory.search.pageSize = appHistory.grantedSearch.pageSize
+                appRequestHistory.search.page = appRequestHistory.grantedSearch.page
+                appRequestHistory.search.pageSize = appRequestHistory.grantedSearch.pageSize
             };
                 
                 break
         }
 
-        let queryParams = [['page', String(appHistory.search.page)], ['pageSize', String(appHistory.search.pageSize)]];
-        if(appHistory.search.sortBy)
-            queryParams.push(['sortBy',appHistory.search['sortBy']])
+        let queryParams = [['page', String(appRequestHistory.search.page)], ['pageSize', String(appRequestHistory.search.pageSize)]];
+        if(appRequestHistory.search.sortBy)
+            queryParams.push(['sortBy',appRequestHistory.search['sortBy']])
         const opts = {
             personId:User.user.id,
             qs: queryParams
         };
 
         // doesn't change state, only updates the url
-        $state.transitionTo('user.appHistory', appHistory.search, { notify:false })
+        $state.transitionTo('user.appRequestHistory', appRequestHistory.search, { notify:false })
         if(updatePage=='requested'){
-            console.log(appHistory.search);
-            appHistory.requestedHistory = [];
+            console.log(appRequestHistory.search);
+            appRequestHistory.requestedHistory = [];
              API.cui.getPersonApplicationsRequestHistory(opts)
              .then(res => {
-                appHistory.requestedHistory=res;
-                // if(appHistory.requestedHistory.length>0)
-                //     getPkgDetailsRequested(appHistory.requestedHistory);
+                appRequestHistory.requestedHistory=res;
+                // if(appRequestHistory.requestedHistory.length>0)
+                //     getPkgDetailsRequested(appRequestHistory.requestedHistory);
                 $scope.$digest()
              })
              .fail(err =>{
@@ -78,13 +84,13 @@ angular.module('user')
               //onLoad(true,opts)
         }
         else if(updatePage=='granted'){
-            console.log(appHistory.search);
-             appHistory.grantedHistory = [];
+            console.log(appRequestHistory.search);
+             appRequestHistory.grantedHistory = [];
              API.cui.getPersonApplicationsGrantHistory(opts)
              .then(res => {
-               appHistory.grantedHistory=res;
-                // if(appHistory.grantedHistory.length>0)
-                //     getPkgDetailsGrant(appHistory.grantedHistory);
+               appRequestHistory.grantedHistory=res;
+                // if(appRequestHistory.grantedHistory.length>0)
+                //     getPkgDetailsGrant(appRequestHistory.grantedHistory);
                 $scope.$digest()
              })
              .fail(err =>{
@@ -101,22 +107,22 @@ angular.module('user')
     const switchBetween = (property, firstValue, secondValue) => {
         // helper function to switch a property between two values or set to undefined if values not passed
         if (!firstValue) {
-            appHistory.search[property] = undefined
+            appRequestHistory.search[property] = undefined
             return
         }
-        appHistory.search[property] = appHistory.search[property] === firstValue
+        appRequestHistory.search[property] = appRequestHistory.search[property] === firstValue
             ? secondValue
             : firstValue
     }
 /*
      const onLoad = (previouslyLoaded,opts) => {
-        console.log(appHistory.search);
-        appHistory.requestedHistory = [];
-         API.cui.getPersonApplicationsRequestHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
+        console.log(appRequestHistory.search);
+        appRequestHistory.requestedHistory = [];
+         API.cui.getPersonApplicationsRequestHistory({personId:User.user.id,'qs':[['sortBy',appRequestHistory.search['sortBy']]] })
          .then(res => {
-            appHistory.requestedHistory=res;
-            // if(appHistory.requestedHistory.length>0)
-            //     getPkgDetailsRequested(appHistory.requestedHistory);
+            appRequestHistory.requestedHistory=res;
+            // if(appRequestHistory.requestedHistory.length>0)
+            //     getPkgDetailsRequested(appRequestHistory.requestedHistory);
             $scope.$digest()
          })
          .fail(err =>{
@@ -126,12 +132,12 @@ angular.module('user')
      }*/
 
 /*     const onLoadGranted = (previouslyLoaded) => {
-        appHistory.grantedHistory = [];
-         API.cui.getPersonApplicationsGrantHistory({personId:User.user.id,'qs':[['sortBy',appHistory.search['sortBy']]] })
+        appRequestHistory.grantedHistory = [];
+         API.cui.getPersonApplicationsGrantHistory({personId:User.user.id,'qs':[['sortBy',appRequestHistory.search['sortBy']]] })
          .then(res => {
-           appHistory.grantedHistory=res;
-            // if(appHistory.grantedHistory.length>0)
-            //     getPkgDetailsGrant(appHistory.grantedHistory);
+           appRequestHistory.grantedHistory=res;
+            // if(appRequestHistory.grantedHistory.length>0)
+            //     getPkgDetailsGrant(appRequestHistory.grantedHistory);
             $scope.$digest()
          })
          .fail(err =>{
@@ -153,15 +159,15 @@ angular.module('user')
         API.cui.getPersonApplicationsGrantHistory(opts)
         .then(res=>{
             if (!qsValue) {
-                appHistory.popupGrantedCount=res.length;
-                console.log(appHistory.popupGrantedCount);
+                appRequestHistory.popupGrantedCount=res.length;
+                console.log(appRequestHistory.popupGrantedCount);
             }else if (qsValue==="active") {
-                appHistory.activeCount=res.length;
-                console.log(appHistory.activeCount);
+                appRequestHistory.activeCount=res.length;
+                console.log(appRequestHistory.activeCount);
             }
             else{
-                appHistory.suspendedCount=res.length;
-                console.log(appHistory.suspendedCount);
+                appRequestHistory.suspendedCount=res.length;
+                console.log(appRequestHistory.suspendedCount);
             }
             $scope.$digest();
         })
@@ -183,15 +189,15 @@ angular.module('user')
         API.cui.getPersonApplicationsRequestHistory(opts)
         .then(res=>{
             if (!qsValue) {
-                appHistory.popuprequestedCount=res.length;
-                console.log(appHistory.popuprequestedCount);
+                appRequestHistory.popuprequestedCount=res.length;
+                console.log(appRequestHistory.popuprequestedCount);
             }else if (qsValue==="active") {
-                appHistory.yesCount=res.length;
-                console.log(appHistory.yesCount);
+                appRequestHistory.yesCount=res.length;
+                console.log(appRequestHistory.yesCount);
             }
             else{
-                appHistory.noCount=res.length;
-                console.log(appHistory.noCount);
+                appRequestHistory.noCount=res.length;
+                console.log(appRequestHistory.noCount);
             }
             $scope.$digest();
         })
@@ -203,11 +209,11 @@ angular.module('user')
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
-    appHistory.user=User.user
+    appRequestHistory.user=User.user
 
-    let queryParams = [['page', String(appHistory.search.page)], ['pageSize', String(appHistory.search.pageSize)]];
-        if(appHistory.search.sortBy)
-            queryParams.push(['sortBy',appHistory.search['sortBy']])
+    let queryParams = [['page', String(appRequestHistory.search.page)], ['pageSize', String(appRequestHistory.search.pageSize)]];
+        if(appRequestHistory.search.sortBy)
+            queryParams.push(['sortBy',appRequestHistory.search['sortBy']])
         const opts = {
             personId:User.user.id,
             qs: queryParams
@@ -216,15 +222,15 @@ angular.module('user')
     Loader.onFor(scopeName + 'initHistory')
      API.cui.getPersonApplicationsGrantHistory(opts)
      .then(res => {
-        appHistory.grantedHistory=res;
-        // if(appHistory.grantedHistory.length>0)
-        //     getPkgDetailsGrant(appHistory.grantedHistory);
+        appRequestHistory.grantedHistory=res;
+        // if(appRequestHistory.grantedHistory.length>0)
+        //     getPkgDetailsGrant(appRequestHistory.grantedHistory);
         return API.cui.getPersonApplicationsRequestHistory(opts);
      })
      .then(res => {
-        appHistory.requestedHistory=res;
-        // if(appHistory.requestedHistory.length>0)
-        //     getPkgDetailsRequested(appHistory.requestedHistory);
+        appRequestHistory.requestedHistory=res;
+        // if(appRequestHistory.requestedHistory.length>0)
+        //     getPkgDetailsRequested(appRequestHistory.requestedHistory);
 /*        //to display in popover
         getCountsOfStatus("active")
         getCountsOfStatus("suspended")
@@ -241,14 +247,14 @@ angular.module('user')
      })
      .then(res =>{
         console.log(res)
-        appHistory.grantedHistoryCount=res
-        /*appHistory.grantedHistoryCount=20*/
+        appRequestHistory.grantedHistoryCount=res
+        /*appRequestHistory.grantedHistoryCount=20*/
         return API.cui.getPersonApplicationsRequestHistoryCount(opts) 
      })
      .then(res => {
         console.log(res)
-        appHistory.count=res
-        /*console.log(appHistory.count)*/
+        appRequestHistory.count=res
+        /*console.log(appRequestHistory.count)*/
         Loader.offFor(scopeName + 'initHistory')
         $scope.$apply();
      })

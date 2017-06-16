@@ -33,15 +33,7 @@
             <!-- no history -->
             <div class="cui-media__content" ng-if="userDetailsRoles.rolesGrantable.length===0&&!userDetailsRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
             <p class="cui-users__password-success" style="color:red" ng-if="userDetailsRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
-         <!--     <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userDetailsRoles.rolesGrantable">
-              <div class="cui-media__body">
-                 <span class="cui-checkbox__container">
-                            <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.appCheckbox[roles.roleId]" />
-                            <label ng-click="userDetailsRoles.checkrequest(roles.roleId)" for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label"> {{roles.name}}</label>
-                        </span>
-              </div>
-            </div> -->
-
+      
         <cui-expandable class="cui-expandable" ng-repeat="roles in userDetailsRoles.rolesGrantable" ng-class="application.expanded?'expanded':''" transition-speed="150">
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                
