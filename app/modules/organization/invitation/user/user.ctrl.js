@@ -8,6 +8,7 @@ angular.module('organization')
     user.userSelectedOrg.originalObject={}
     user.userSelectedOrg.originalObject.name=User.user.organization.name
     user.userSelectedOrg.originalObject.id=User.user.organization.id
+    user.stateParamsOrgId=User.user.organization.id
     //user.emailSubject='Register as a user to join '
     user.selectOrgFromList=false
 

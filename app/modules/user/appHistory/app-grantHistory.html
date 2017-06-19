@@ -77,6 +77,18 @@
 		      </ul>
 			</div>
 		    	<div class="cui-action">
+		    		    <div class="cui-action cui-action--alt">
+					      <div class="cui-radio cui-radio--basic-ltr">
+					          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="appGrantHistory.searchBy" value="name">
+					          <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'cui-name' | translate}}</label>
+					          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="appGrantHistory.searchBy" value="action">
+					          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'action' | translate}}</label>
+					      </div>&nbsp;
+					      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+					          <input class="cui-input-button__input" ng-model="appGrantHistory.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)"/>
+					          <button class="cui-input-button__button" ng-click="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)">{{'search' | translate}}</button>
+					      </div>
+					</div>
 		      		<div class="cui-action__actions">
 					    <!-- Sort -->
 					    <div class="cui-action__action-container" ng-click="appGrantHistory.granted.sortClicked =! appGrantHistory.granted.sortClicked" id="sort-buttons" off-click="appGrantHistory.granted.sortClicked=false">
@@ -89,37 +101,37 @@
 					          <span ng-click="appGrantHistory..granted.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
 					        </div> -->
 					        <div class="cui-popover__row">
-					          <span ng-click="appGrantHistory.updateSearch('eventdate','','granted')">{{'cui-by-decision-date' | translate}}</span>
+					          <span ng-click="appGrantHistory.updateSearch('eventdate','')">{{'cui-by-decision-date' | translate}}</span>
 					        </div>
 					        <div class="cui-popover__row">
-					           <span ng-click="appGrantHistory.updateSearch('eventType','','granted')">{{'action' | translate}}</span>
+					           <span ng-click="appGrantHistory.updateSearch('eventType','')">{{'action' | translate}}</span>
 					        </div>
 					        <div class="cui-popover__row">
-					           <span ng-click="appGrantHistory.updateSearch('actorId','','granted')">{{'evaluator' | translate}}</span>
+					           <span ng-click="appGrantHistory.updateSearch('actorId','')">{{'evaluator' | translate}}</span>
 					        </div>
 					      </div>
 					    </div>
 
 					    <!-- Refine -->
-<!-- 					    Hiding because APi is not supporting <div class="cui-action__action-container" ng-click="appGrantHistory.granted.refineClicked =! appGrantHistory.granted.refineClicked" id="refine-buttons" off-click="appGrantHistory.granted.refineClicked=false">
+					    <div class="cui-action__action-container" ng-click="appGrantHistory.granted.refineClicked =! appGrantHistory.granted.refineClicked" id="refine-buttons" off-click="appGrantHistory.granted.refineClicked=false">
 					      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
-					      <span class="cui-action__action-label">{{'refine' | translate}}</span> -->
+					      <span class="cui-action__action-label">{{'refine' | translate}}</span>
 					      <!-- Refine Popover -->
-<!-- 					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appGrantHistory.granted.refineClicked" style="width:214px">
+					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appGrantHistory.granted.refineClicked" style="width:214px">
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appGrantHistory.granted.updateSearch('status')">{{'all' | translate}}</span>
+					          <span ng-click="appGrantHistory.updateSearch('status')">{{'all' | translate}}</span>
 					          <span>({{appGrantHistory.popupCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appGrantHistory.granted.updateSearch('status','active')">{{'active' | translate}}</span>
+					          <span ng-click="appGrantHistory.updateSearch('status','active')">{{'active' | translate}}</span>
 					          <span>({{appGrantHistory.activeCount}})</span>
 					        </div>
 					        <div class="cui-popover__row cui-popover--row__flex">
-					          <span ng-click="appGrantHistory.granted.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+					          <span ng-click="appGrantHistory.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
 					          <span>({{appGrantHistory.suspendedCount}})</span>
 					        </div>
 					      </div>
-					    </div> -->
+					    </div>
 					  </div>
 		      	</div>
 		<!-- Content -->
@@ -132,7 +144,7 @@
 		</div>
 
 		<cui-table-header 
-		  headers="['cui-name', 'status', 'action', 'decision', 'evaluator']"
+		  headers="['cui-name', 'status', 'action', 'cui-by-decision-date', 'evaluator']"
 		  sorting="appGrantHistory.sortBy"
 		  sorting-callbacks="appGrantHistory.sortingCallbacks">
 		  </cui-table-header>
