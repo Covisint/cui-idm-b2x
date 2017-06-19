@@ -7,6 +7,7 @@ angular.module('user')
     appGrantHistory.search.page = appGrantHistory.search.page || 1;
     appGrantHistory.paginationPageSize = appGrantHistory.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
     appGrantHistory.search.pageSize = appGrantHistory.paginationPageSize;
+    appGrantHistory.searchBy='name'
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
     appGrantHistory.pageGrantedChange = (newpage) => {
@@ -15,9 +16,6 @@ angular.module('user')
 
     appGrantHistory.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
-            case 'decisiondate':
-                switchBetween('sortBy', '+evaluationDate', '-evaluationDate')
-                break
             case 'eventdate':
                 switchBetween('sortBy', '+eventDate', '-eventDate')
                 break
@@ -27,18 +25,28 @@ angular.module('user')
             case 'actorId':
                 switchBetween('sortBy', '+actorId', '-actorId')
                 break
-            case 'evaluator':
-                switchBetween('sortBy', '+evaluatorId', '-evaluatorId')
-                break
             case 'status':
                 appGrantHistory.search.page = 1
-                appGrantHistory.search['grant.status'] = updateValue
+                appGrantHistory.search['status'] = updateValue
                 break
+            case 'search':
+                if(appGrantHistory.searchBy==='name')
+                    appGrantHistory.search['name'] = updateValue
+                else
+                    appGrantHistory.search['eventType'] = updateValue
+                break
+
         }
 
         let queryParams = [['page', String(appGrantHistory.search.page)], ['pageSize', String(appGrantHistory.search.pageSize)]];
         if(appGrantHistory.search.sortBy)
             queryParams.push(['sortBy',appGrantHistory.search['sortBy']])
+        if(appGrantHistory.search.status)
+            queryParams.push(['status',appGrantHistory.search['status']])
+        if(appGrantHistory.search.name)
+            queryParams.push(['name',appGrantHistory.search['name']])
+        if(appGrantHistory.search.eventType)
+            queryParams.push(['eventType',appGrantHistory.search['eventType']])
         const opts = {
             personId:User.user.id,
             qs: queryParams
@@ -102,36 +110,6 @@ angular.module('user')
 
         })
     }
-
-    const getCountsOfApproved=(qsValue)=>{
-        let opts = {
-            personId: API.getUser(),
-            useCuid:true
-        }
-        //Assign query strings if any value passed 
-        //otherwise it will get full count
-        if (qsValue) {
-            opts.qs = [['status',qsValue]]
-        }
-        API.cui.getPersonApplicationsRequestHistory(opts)
-        .then(res=>{
-            if (!qsValue) {
-                appGrantHistory.popuprequestedCount=res.length;
-                console.log(appGrantHistory.popuprequestedCount);
-            }else if (qsValue==="active") {
-                appGrantHistory.yesCount=res.length;
-                console.log(appGrantHistory.yesCount);
-            }
-            else{
-                appGrantHistory.noCount=res.length;
-                console.log(appGrantHistory.noCount);
-            }
-            $scope.$digest();
-        })
-        .fail(err=>{
-
-        })
-    }
     /* -------------------------------------------- HELPER FUNCTIONS END ----------------------------------------------- */
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
@@ -154,18 +132,12 @@ angular.module('user')
         //     getPkgDetailsGrant(appGrantHistory.grantedHistory);
         // if(appGrantHistory.requestedHistory.length>0)
         //     getPkgDetailsRequested(appGrantHistory.requestedHistory);
-/*        //to display in popover
+        //to display in popover
         getCountsOfStatus("active")
         getCountsOfStatus("suspended")
         //To getFull count
-        getCountsOfStatus(undefined)*/
-/*        //to display in popover
-        getCountsOfStatus("active")
-        getCountsOfStatus("suspended")
-        //To getFull count
-        getCountsOfStatus(undefined)*/
-       /* Loader.offFor(scopeName + 'initHistory')
-        $scope.$apply();*/
+        getCountsOfStatus(undefined)
+    
         return API.cui.getPersonApplicationsGrantHistoryCount(opts)
      })
      .then(res =>{
