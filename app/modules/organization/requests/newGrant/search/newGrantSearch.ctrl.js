@@ -11,16 +11,6 @@ angular.module('organization')
     
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    const updateStorage = () => {
-        DataStorage.setType('newGrant', {
-            id: $stateParams.userId,
-            type:'person',
-            applications: newGrantSearch.requests.application,
-            packages: newGrantSearch.requests.package
-        })
-        console.log(DataStorage.getType('newGrant'))
-    };
-
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
     // ON LOAD START ---------------------------------------------------------------------------------
@@ -112,7 +102,7 @@ angular.module('organization')
                 delete newGrantSearch[type + 'Checkbox'][payload.id];
             }
             newGrantSearch.numberOfRequests = Object.keys(newGrantSearch.applicationCheckbox).length + Object.keys(newGrantSearch.packageCheckbox).length
-            updateStorage()
+            NewGrant.updateStorage('person',$stateParams.userId, newGrantSearch.requests.application)
         }
     }
 

@@ -15,15 +15,15 @@ angular.module('organization')
     }
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
 
-    const updateStorage = () => {
-        DataStorage.setType('newOrgGrant', {
-            id: $stateParams.orgId,
-            type:'organization',
-            applications: newOrgGrantSearch.requests.application,
-            packages: newOrgGrantSearch.requests.package
-        })
-        console.log(DataStorage.getType('newOrgGrant'))
-    };
+    // const updateStorage = () => {
+    //     DataStorage.setType('newOrgGrant', {
+    //         id: $stateParams.orgId,
+    //         type:'organization',
+    //         applications: newOrgGrantSearch.requests.application,
+    //         packages: newOrgGrantSearch.requests.package
+    //     })
+    //     console.log(DataStorage.getType('newOrgGrant'))
+    // };
 
     const updateViewList = (list) => {
         let deferred= $q.defer()
@@ -165,7 +165,7 @@ angular.module('organization')
             }
             newOrgGrantSearch.numberOfRequests = Object.keys(newOrgGrantSearch.applicationCheckbox).length + Object.keys(newOrgGrantSearch.packageCheckbox).length
 
-            updateStorage()
+            NewGrant.updateStorage('organization',$stateParams.orgId, newOrgGrantSearch.requests.application)
         }
     }
 

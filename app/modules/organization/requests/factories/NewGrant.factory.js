@@ -2,7 +2,23 @@ angular.module('organization')
 .factory('NewGrant', (DataStorage, API, $stateParams) => {
     let newGrant = {}
     let newGrantsInStorage
-    //Using Same Storage for Org and User grants
+    /*
+        This Factory provides common platform to share common logic between granting an app to 
+        User and Organization
+    */
+    // Not handling package requests as not needed
+    newGrant.updateStorage = (type,id,application) => {
+        let storageType
+        if(type==="person") storageType='newGrant'
+        else storageType='newOrgGrant'
+        DataStorage.setType(storageType, {
+            id: id,
+            type: type,
+            applications: application
+        })
+        // console.log(DataStorage.getType('newGrant'))
+    }
+
     newGrant.pullFromStorage = (scope,resourceId,type) => {
         // const newGrantsInStorage = DataStorage.getDataThatMatches('newGrant', { userId: $stateParams.userID })
         if (type==="person") {
