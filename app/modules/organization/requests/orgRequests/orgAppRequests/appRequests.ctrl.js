@@ -145,6 +145,7 @@ angular.module('organization')
 			}).then(function(count) {
 				// apply the count
 				orgAppRequests.userCount = count;
+				API.user.orgAppRequestsCount=count
 				return $.Deferred().resolve();				
 			}).fail(function(error) {
         APIError.onFor(scopeName + 'data')
