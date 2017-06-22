@@ -153,6 +153,7 @@ angular.module('organization')
 	.then(function(count) {
 		// apply the count
 		orgRegistrationRequests.userCount = count;
+		API.user.orgRegistrationRequestsCount=count
 		return $.Deferred().resolve();				
 	})
 	.fail(function(error) {

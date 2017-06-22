@@ -30,7 +30,7 @@ angular.module('organization')
             personRequestReview.success = true
             $scope.$digest()
             $timeout(() => {
-                $state.go('organization.directory.userDetails', {userId: userId, orgId: orgId})
+                $state.go('organization.requests.usersRegistrationRequests')
         }, 3000)  
     }
 
@@ -47,6 +47,9 @@ angular.module('organization')
     Loader.onFor('personRequestReview.init')
 
     const requestData = DataStorage.getType('userPersonRequest').personRequest
+    if (!requestData) {
+        $state.go('organization.requests.personRequest',{userId:userId, orgId:orgId})
+    };
 
     personRequestReview.packages = requestData.packages
     personRequestReview.person = requestData.request.person
@@ -90,7 +93,7 @@ angular.module('organization')
                     Loader.offFor('personRequestReview.submitting')
                     personRequestReview.success = true
                     $timeout(() => {
-                        $state.go('organization.directory.userDetails', {userId: userId, orgId: orgId})
+                        $state.go('organization.requests.usersRegistrationRequests')
                     }, 3000)  
                 })
                 .catch(err => {

@@ -8,8 +8,9 @@
 <div class="org-details__container" ng-if="!base.loader.for['orgDetailsProfile.init'] && orgDetailsProfile.organization">
   <div class="cui-organization__row">
     <div class="cui-organization__info-block">
-      <!-- Address -->
       <div class="cui-organization__admin-block-wrapper">
+
+        <!-- Address -->
         <div class="cui-field-val cui-field-val--stack cui-organization__admin-block cui-organization__admin-block__right">
           <h4 class="cui-field-val__field">{{'cui-address' | translate}}: </h4>
           <span class="cui-field-val__val">{{orgDetailsProfile.organization.addresses[0].streets[0]}}</span>
@@ -34,6 +35,7 @@
             <span class="cui-field-val__val">{{orgDetailsProfile.authenticationPolicy.name}}</span>
           </div>
         </div>
+
         <!-- More Info -->
         <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-if="orgDetailsProfile.organization.attributes" >
           <h4 class="cui-field-val__field">{{'cui-more-information' | translate}}:</h4>
@@ -42,10 +44,9 @@
             <span class="cui-field-val__val">{{attribute.value}}</span>
           </div>
         </div>
-      </div>
-      <!-- Admins -->
-      <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
-      <div class="cui-organization__admin-block-wrapper" ng-if="orgDetailsProfile.securityAdmins">
+        
+        <!-- Admins -->
+        <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
         <div class="cui-organization__admin-block" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
           <!-- Name -->
           <div class="cui-field-val">
