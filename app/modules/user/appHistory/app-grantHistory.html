@@ -185,13 +185,13 @@
 		<div class="cui-paginate__container" ng-if="!base.loader.for['appGrantHistory.initHistory']">
 		  <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
 		  <results-per-page class="cui-paginate__select" 
-		  ng-model="appGrantHistory.grantedSearch.pageSize"></results-per-page>
+		  ng-model="appGrantHistory.search.pageSize"></results-per-page>
 		  <paginate class="cui-paginate" 
-		  results-per-page="appGrantHistory.grantedSearch.pageSize" 
+		  results-per-page="appGrantHistory.search.pageSize" 
 		  count="appGrantHistory.count" 
-		  on-page-change="appGrantHistory.pageRequestedChange" 
-		  ng-model="appGrantHistory.grantedSearch.page" 
-		  attach-rerender-to="appRequestHistory.reRenderPaginate"></paginate>
+		  on-page-change="appGrantHistory.pageGrantedChange" 
+		  ng-model="appGrantHistory.search.page" 
+		  attach-rerender-to="appGrantHistory.reRenderPaginate"></paginate>
 		</div>
 		</section>
 
