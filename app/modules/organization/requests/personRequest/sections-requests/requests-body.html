@@ -116,8 +116,17 @@
     </div>
 
     <!-- Form Controls -->
-    <div class="cui-organization__submit-row">
+    <!-- <div class="cui-organization__submit-row">
       <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="personRequest.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+    </div> -->
+    <!-- Review Controls -->
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ui-sref="organization.requests.usersRegistrationRequests" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-if="!base.loader.for['personRequest.submitting'] && !personRequest.error" ng-click="personRequest.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['personRequest.submitting']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-if="!base.loader.for['personRequest.submitting'] && personRequest.error" ng-click="personRequest.submit()">{{'cui-error-try-again' | translate}}</button>
     </div>
 
   </div>
