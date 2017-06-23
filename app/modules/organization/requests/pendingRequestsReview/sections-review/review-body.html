@@ -25,8 +25,12 @@
 	</div>
 	
 	<!-- Review Controls -->
-	<div class="cui-organization__submit-row">
-		<span ui-sref="organization.directory.userDetails({userId:pendingRequests.user.id, orgId:pendingRequests.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
-		<button class="cui-button" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+	<div class="cui-organization__submit-row" disable-animate>
+		<span ui-sref="organization.directory.pendingRequests({userId:pendingRequests.user.id, orgId:pendingRequests.user.organization.id})" style="margin:5px">{{'cui-cancel' | translate}}</span>
+		<button class="cui-button" ng-if="!pendingRequestsReview.submitting" ng-click="pendingRequestsReview.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+		<button class="cui-button" ng-if="pendingRequestsReview.submitting">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      	</button>
+      	<button  class="cui-button" ng-if="!pendingRequestsReview.submitting && pendingRequestsReview.error" ng-click="pendingRequestsReview.submit()">{{'cui-error-try-again' | translate}}</button>
 	</div>
 </div>
