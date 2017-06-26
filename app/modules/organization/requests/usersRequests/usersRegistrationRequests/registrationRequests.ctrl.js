@@ -230,7 +230,7 @@ angular.module('organization')
     		Loader.onFor(scopeName + 'data')
       		APIError.offFor(scopeName + 'data')
       		 usersRegistrationRequests.searchByOrg=[]
-    		API.cui.getOrganizations({qs:[['name',usersRegistrationRequests.searchValue]]})
+    		API.cui.getOrganizations({qs:[['name',usersRegistrationRequests.searchValue+'*']]})
     		.then((res) =>{
     			console.log(res)
     			usersRegistrationRequests.searchByOrg=res
