@@ -7,7 +7,7 @@
   <!-- <svg class="cui-header__svg-logo" viewBox="0 0 640 124"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href=""></use></svg> -->
 
   <!-- Global Search -->
-    <div class="cui-header__search-container" ng-model="searchEnabled" ng-if="base.user.name.given">
+    <div class="cui-header__search-container" ng-model="searchEnabled" ng-if="base.accessByAnyAdmin()">
         <a ui-sref="search"><cui-icon cui-svg-icon="cui:search" svg-class="cui-header__search-icon" preserveAspectRatio="xMidYMid meet"></cui-icon>
         </a>
     </div>

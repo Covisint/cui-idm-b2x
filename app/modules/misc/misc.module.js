@@ -17,7 +17,9 @@ angular.module('misc', [])
                 url: '/search?page&pageSize',
                 templateUrl: templateBase + 'search/search.html',
                 controller: returnCtrlAs('search'),
-                access:loginRequired
+                access: {
+                    permittedLogic:appConfig.accessByAnyAdmin
+                }
             })
             .state('misc', {
                 url: '/status',
