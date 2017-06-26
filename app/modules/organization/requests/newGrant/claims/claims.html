@@ -7,6 +7,7 @@
         <span class="cui-modal__secondary-message">{{'grants-assigned' | translate}}</span>
     </div>
 </div>
+<ng-form name="grantApp" novalidate>
 <div class="cui-org-claims">
 <div class="cui-applications">
   <div class="cui-action">
@@ -68,20 +69,22 @@
           </div> 
           <div class="cui-applications__review-text-input" >
             <h3 class="cui-media__title cui-media__title-margin__top">{{'grant-reason' | translate}}</h3>
+            <div class="cui-error" ng-messages="grantApp['text_area'+application.id].$error" ng-if="grantApp['text_area'+application.id].$dirty">
+              <div ng-messages-include="app/common-templates/messages.html"></div>
+            </div>
             <div class="cui-wizard__field-row">
-              <!-- First Name -->
               <div class="cui-wizard__field-container cui-wizard__field-container--half">
-                <textarea name="{{'text_area'+application.id}}" class="cui-text-area" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].reason" ></textarea>
+                <textarea name="{{'text_area'+application.id}}" class="cui-text-area" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].reason" ng-required="true"></textarea>
               </div>
             </div>
           </div>
           
-<!-- not needed now 03/12/17 -->
-<!--           <fieldset class="cui-radio__fieldset">
+  <!-- not needed now 03/12/17 -->
+  <!--           <fieldset class="cui-radio__fieldset">
             <div class="cui-radio cui-radio--basic-ltr"> -->
 
             <!-- Administrator radio -->
-<!--               <div class="cui-media__content">{{'administrator-?' | translate}}
+  <!--               <div class="cui-media__content">{{'administrator-?' | translate}}
                 <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="false" id="false" />
                 <label class="cui-radio__label" for="false"><span></span>No</label>
                 <input class="cui-radio__input" type="radio" ng-model="newGrantClaims.packageRequests[application.servicePackage.id].administratorRights" ng-value="true" id="true" />
@@ -122,14 +125,15 @@
       newGrantClaims.success if successful or
       newGrantClaims.error if there was an error
     -->
-    <button disable-animate class="cui-button" ng-if="!base.loader.for['newGrantClaims.submit'] && !newGrantClaims.error" ng-click="newGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
+    <button disable-animate class="cui-button" ng-class="{'cui-button--error':!grantApp.$valid}"ng-if="!base.loader.for['newGrantClaims.submit'] && !newGrantClaims.error" ng-click="grantApp.$valid&&newGrantClaims.submit()">{{'submit-grant-update' | translate}}</button>
     <button disable-animate class="cui-button" ng-if="base.loader.for['newGrantClaims.submit']">
       <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
     </button>
-    <button disable-animate class="cui-button" ng-if="!base.loader.for['newGrantClaims.submit'] && newGrantClaims.error" ng-click="newGrantClaims.submit()">{{'cui-error-try-again' | translate}}</button>
+    <button disable-animate class="cui-button" ng-class="{'cui-button--error':!grantApp.$valid}" ng-if="!base.loader.for['newGrantClaims.submit'] && newGrantClaims.error" ng-click="grantApp.$valid&&newGrantClaims.submit()">{{'cui-error-try-again' | translate}}</button>
 
   </div> 
   </div>
 </div>
 </div>
+<ng-form>
 
