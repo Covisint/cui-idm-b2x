@@ -28,7 +28,8 @@
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
     <!-- No Requests -->
-    <p class="cui-users__password-success" style=" margin:20px; text-align:center" ng-if="orgRegistrationRequests.data.length===0">{{'cui-no-details' | translate}}</p>
+    <p class="cui-users__password-success" style=" margin:20px; text-align:center" ng-if="orgRegistrationRequests.data.length===0&&!base.apiError.for['orgRegistrationRequests.data']">{{'cui-no-details' | translate}}</p>
+    <p class="cui-users__password-success" style=" color:red; margin:20px; text-align:center" ng-if="base.apiError.for['orgRegistrationRequests.data']">{{'error-generic' | translate}}</p>
     <div ng-if="orgRegistrationRequests.data.length!==0">
       <cui-table-header 
         headers="['cui-org', 'submitted', 'request', 'administrator']"

@@ -3,10 +3,13 @@ angular.module('organization')
 		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,DataStorage) {
 
     const scopeName = 'orgAppRequests.'
-		const orgAppRequests = this
+	const orgAppRequests = this
     orgAppRequests.search = {}
-		orgAppRequests.sortBy = {}
+	orgAppRequests.sortBy = {}
 
+	orgAppRequests.search=Object.assign({},$stateParams)
+	if(!orgAppRequests.search.page)
+		orgAppRequests.search.page=1
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
