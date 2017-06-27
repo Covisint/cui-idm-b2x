@@ -83,11 +83,13 @@ angular.module('misc')
             search.users = [];
             search.orgs = [];
             let qsArray=APIHelpers.getQs(search.searchParams)
+            //Need to filter out pending and unactive
+            qsArray.push(['status','active'],['status','suspended'])
             // if (search.searchterms|| !type) {
 
                 if (search.searchType == "people") {
                     let qsArrayNameSearch=angular.copy(qsArray)
-                    qsArrayNameSearch.push(['fullName', search.searchterms])
+                    qsArrayNameSearch.push(['fullName', search.searchterms],['status','locked'])
                     const promises= [API.cui.countPersons({qs:qsArrayNameSearch}),API.cui.getPersons({qs: qsArrayNameSearch})]
                     $q.all(promises)
                     .then(res=>{
@@ -157,7 +159,9 @@ angular.module('misc')
         //     return API.cui.getOrganizations({qs:APIHelpers.getQs(search.searchParams)})
         // })
         Loader.onFor('search.loading')
-        API.cui.getOrganizations({qs:APIHelpers.getQs(search.searchParams)})
+        let qs=APIHelpers.getQs(search.searchParams)
+        qs.push(['status','active'],['status','suspended'])
+        API.cui.getOrganizations({qs:qs})
         .then(res => {
             search.orgs = res
             if (search.orgs.length===0) {

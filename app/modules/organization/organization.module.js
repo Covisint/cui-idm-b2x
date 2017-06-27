@@ -314,7 +314,7 @@ angular.module('organization', [])
         })
         // Org Requests/ADMIN
         .state('organization.requests.orgRegistrationRequests', {
-            url:'/orgRequests',
+            url:'/orgRequests?page&pageSize',
             templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
             controller: returnCtrlAs('orgRegistrationRequests'),
             access: {
@@ -322,7 +322,7 @@ angular.module('organization', [])
             }
         })
         .state('organization.requests.orgAppRequests', {
-            url:'/orgApplicationRequests',
+            url:'/orgApplicationRequests?pageSize&page',
             templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('orgAppRequests'),
             access: {

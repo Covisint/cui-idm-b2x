@@ -7,6 +7,9 @@ angular.module('organization')
     orgRegistrationRequests.search = {}
 	orgRegistrationRequests.sortBy = {}
 
+	orgRegistrationRequests.search=Object.assign({},$stateParams)
+	if(!orgRegistrationRequests.search.page)
+		orgRegistrationRequests.search.page=1
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 	var foundOrgs = [];
