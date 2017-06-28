@@ -2,8 +2,8 @@
 
   <!-- User Name -->
   <!-- <div class="cui-action">
-    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList" ng-if="personRequest.request.person">
-      &#60; {{personRequest.request.person.name.given}} {{personRequest.request.person.name.surname}} - {{'pending-request' | translate}}
+    <span class="cui-action__title cui-action__title--dark" ui-sref="organization.directory.userList" ng-if="personRequest.request.personData">
+      &#60; {{personRequest.request.personData.name.given}} {{personRequest.request.personData.name.surname}} - {{'pending-request' | translate}}
     </span>
   </div> -->
 
@@ -17,57 +17,57 @@
   </div> -->
 
   <!-- Name Header -->
-  <div class="cui-media--centered" ng-if="personRequest.request.person">
+  <div class="cui-media--centered" ng-if="personRequest.request.personData">
     <!-- Avatar -->
     <div class="cui-media__image-container">
-      <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[personRequest.request.person.name.given, personRequest.request.person.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <div class="cui-profile__user-avatar cui-media__image" cui-avatar cui-avatar-names="[personRequest.request.personData.name.given, personRequest.request.personData.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
     </div>
 
     <!-- User Information -->
     <div class="cui-media__body">
       <!-- Name -->
-      <h3 class="cui-media__title">{{personRequest.request.person.name.given}} {{personRequest.request.person.name.surname}}</h3>
+      <h3 class="cui-media__title">{{personRequest.request.personData.name.given}} {{personRequest.request.personData.name.surname}}</h3>
       <!-- userID -->
-      <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.request.person.username}}</span>
+      <span class="cui-media__content cui-media__content--dark">{{'userID' | translate}}: {{personRequest.request.personData.username}}</span>
       <!-- Email -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.request.person.email}}" class="cui-media__link"> {{personRequest.request.person.email}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-email' | translate}}:</span> <a href="mailto:{{personRequest.request.personData.email}}" class="cui-media__link"> {{personRequest.request.personData.email}}</a></div>
       <!-- Registered Date -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{personRequest.request.person.creation | date:base.appConfig.dateFormat}}</div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{personRequest.request.personData.creation | date:base.appConfig.dateFormat}}</div>
       <!-- Organization -->
       <div class="cui-media__content" ng-if="personRequest.request.organization"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span>  <a href="" class="cui-media__link">{{personRequest.request.organization.name}}</a></div>
       <!-- status -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <a href="" class="cui-media__link">{{personRequest.request.person.status}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <a href="" class="cui-media__link">{{personRequest.request.personData.status}}</a></div>
     </div>
   </div>
 
   <!-- Details & Status -->
-  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="personRequest.request.person && personRequest.request.organization">
+  <cui-expandable class="cui-expandable" transition-speed="150" ng-if="personRequest.request.personData && personRequest.request.organization">
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       <div class="cui-expandable__details-status">
         <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
-       <!--  <span class="cui-expandable__status" ng-class=" 'cui-status--'+personRequest.request.user.status">{{personRequest.request.person.status}}</span> -->
+       <!--  <span class="cui-expandable__status" ng-class=" 'cui-status--'+personRequest.request.user.status">{{personRequest.request.personData.status}}</span> -->
       </div>
     </cui-expandable-title>
     <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
       <div class="cui-expandable__body-row">
         <!-- Address -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.person">
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.personData">
           <div class="cui-field-val__field">{{'cui-address' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequest.request.person.addresses[0].streets[0]}}</span>
-          <span class="cui-field-val__val">{{personRequest.request.person.addresses[0].city}}</span>
-          <span class="cui-field-val__val">{{personRequest.request.person.addresses[0].state}}, {{personRequest.request.person.addresses[0].postal}}</span>
-          <!-- <span class="cui-field-val__val">{{personRequest.request.person.phones[0].number}}</span> -->
+          <span class="cui-field-val__val">{{personRequest.request.personData.addresses[0].streets[0]}}</span>
+          <span class="cui-field-val__val">{{personRequest.request.personData.addresses[0].city}}</span>
+          <span class="cui-field-val__val">{{personRequest.request.personData.addresses[0].state}}, {{personRequest.request.personData.addresses[0].postal}}</span>
+          <!-- <span class="cui-field-val__val">{{personRequest.request.personData.phones[0].number}}</span> -->
         </div>
         <!-- Phone Number -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small">
           <div class="cui-field-val__field">{{'cui-phone' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequest.request.person.phones[0].number}}</span>
+          <span class="cui-field-val__val">{{personRequest.request.personData.phones[0].number}}</span>
         </div>
         <!-- Time zone and Language -->
-        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.person">
+        <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.personData">
           <div class="cui-field-val__field">{{'timezone-and-language' | translate}}:</div>
-          <span class="cui-field-val__val">{{personRequest.request.person.timezone}}</span>
-          <span class="cui-field-val__val">{{personRequest.request.person.language}}</span>
+          <span class="cui-field-val__val">{{personRequest.request.personData.timezone}}</span>
+          <span class="cui-field-val__val">{{personRequest.request.personData.language}}</span>
         </div>
         <!-- Request -->
         <div class="cui-expandable__body-col cui-expandable__body-col--small" ng-if="personRequest.request.request.justification">

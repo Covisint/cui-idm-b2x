@@ -56,7 +56,7 @@ angular.module('common')
 
 		CommonAPI.getPerson(userId)
 		.then(personData => {
-			requestData.person = personData
+			requestData.personData = personData
 		})
 		.finally(() => {
 			callsCompleted += 1

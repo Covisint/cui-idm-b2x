@@ -5,6 +5,9 @@ angular.module('organization')
     const personRequest = this
     const userId = $stateParams.userId
     const organizationId = $stateParams.orgId
+    // Needed when there is no packages
+    personRequest.approvedCount = 0
+    personRequest.deniedCount = 0
 
     personRequest.success = false
 
@@ -28,11 +31,12 @@ angular.module('organization')
 
     const handleSuccess = (res) => {
         Loader.offFor('personRequest.submitting')
-            personRequest.success = true
-            API.user.userRegistrationRequestsCount=API.user.userRegistrationRequestsCount-1
-            $scope.$digest()
-            $timeout(() => {
-                $state.go('organization.requests.usersRegistrationRequests')
+        personRequest.success = true
+        DataStorage.deleteType('userPersonRequest')
+        API.user.userRegistrationRequestsCount=API.user.userRegistrationRequestsCount-1
+        $scope.$digest()
+        $timeout(() => {
+            $state.go('organization.requests.usersRegistrationRequests')
         }, 3000)  
     }
 
@@ -47,35 +51,50 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    Loader.onFor('personRequest.init')
-
-    PersonRequest.getPersonRegistrationRequestData(userId, organizationId)
-    .then(res => {
-        if (!res.request) {
-            APIError.onFor('personRequest.noRequest')
-            $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
+    let getPackageDetails = () => {
+        if (personRequest.request.request.packages) {
+            ServicePackage.getAllUserPendingPackageData(userId)
+            .then(res => {
+                personRequest.request.completePackageData = res
+            })
+            .catch(err => {
+                APIError.onFor('personRequest.noRequest')
+                $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
+            })
         }
-        else {
-            personRequest.request = res    
-            Loader.offFor('personRequest.init')
+        else{
+            personRequest.request.completePackageData =[]
         }
-    })
+    }
 
-    ServicePackage.getAllUserPendingPackageData(userId)
-    .then(res => {
-        personRequest.packages = res
-    })
-    .catch(err => {
-        APIError.onFor('personRequest.noRequest')
-        $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
-    })
+    // Check LocalStorage if data is already obtained in previous page
+    let storageData=DataStorage.getType('userPersonRequest')
+    if (storageData&&userId===storageData.request.registrant.id) {
+        personRequest.request=storageData;
+        getPackageDetails()
+    }
+    else{
+        Loader.onFor('personRequest.init')
+        PersonRequest.getPersonRegistrationRequestData(userId, organizationId)
+        .then(res => {
+            if (!res.request) {
+                APIError.onFor('personRequest.noRequest')
+                $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
+            }
+            else {
+                personRequest.request = res
+                getPackageDetails()    
+                Loader.offFor('personRequest.init')
+            }
+        })
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
     // ON CLICK START --------------------------------------------------------------------------------
 
     personRequest.reviewApprovals = () => {
-        DataStorage.setType('userPersonRequest', { personRequest })
+        DataStorage.setType('userPersonRequest', personRequest.request )
         $state.go('organization.requests.personRequestReview', { userId: userId, orgId: organizationId })
     }
 
