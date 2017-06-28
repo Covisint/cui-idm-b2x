@@ -214,12 +214,25 @@ angular.module('organization')
 			}
 		}
 
-    orgRegistrationRequests.updateSearchParams = (page) => {
+    orgRegistrationRequests.updateSearch = (updateType, updateValue) => {
     	//cui.log('updateSearchParams', page);
-        if (page) orgRegistrationRequests.search.page = page
+    	switch(updateType){
+    		case 'organizationName':
+    			orgRegistrationRequests.search.page=1
+    			orgRegistrationRequests.search.organizationName=updateValue
+    			break
+    	}
         // WHY transition to this same route? if setting notify:false? what is the purpose? just to add an item to history?
         $state.transitionTo('organization.requests.orgRegistrationRequests', orgRegistrationRequests.search, {notify: false})
         init()
+    }
+
+    orgRegistrationRequests.pageChange = (newpage) => {
+        orgRegistrationRequests.updateSearch('page', newpage)
+    }
+
+    orgRegistrationRequests.searchCallback= (searchWord) => {
+        orgRegistrationRequests.updateSearch('organizationName',searchWord)
     }
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 

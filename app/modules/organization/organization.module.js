@@ -314,7 +314,7 @@ angular.module('organization', [])
         })
         // Org Requests/ADMIN
         .state('organization.requests.orgRegistrationRequests', {
-            url:'/orgRequests?page&pageSize',
+            url:'/orgRequests?page&pageSize&organizationName',
             templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
             controller: returnCtrlAs('orgRegistrationRequests'),
             access: {
