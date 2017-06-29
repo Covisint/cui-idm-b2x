@@ -111,7 +111,7 @@
                             <!-- Status -->
                             <div class="cui-flex-table__right ">
                                 <span class="cui-mobile-only ">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
-                                <span ng-class=" 'cui-status--'+user.status ">{{user.status}}</span>
+                                <span ng-class=" 'cui-status--'+user.status ">{{user.status|lowercase|translate}}</span>
                             </div>
                         </div>
                     </li>

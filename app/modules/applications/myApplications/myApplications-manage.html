@@ -146,7 +146,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
           <h3 class="cui-media__title" ng-click="manageApplications.goToDetails(application)">{{ application.name | cuiI18n }}</h3>
         </div>
         <span class="cui-media__content" > {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{ application.grant.status | lowercase }}</span>
+        <span class="cui-status" ng-class=" 'cui-status--'+application.grant.status ">{{ application.grant.status | lowercase |translate}}</span>
       </div>
     </div>
   </div>
