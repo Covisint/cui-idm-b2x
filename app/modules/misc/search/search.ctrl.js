@@ -1,6 +1,6 @@
 angular.module('misc')
-    .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', '$q', '$pagination','APIHelpers','Loader', 'APIError',
-    function(API, $scope, $stateParams, $state, $q, $pagination,APIHelpers,Loader,APIError) {
+    .controller('searchCtrl', ['API', '$scope', '$stateParams', '$state', '$q', '$pagination','APIHelpers','Loader', 'APIError','Base',
+    function(API, $scope, $stateParams, $state, $q, $pagination,APIHelpers,Loader,APIError,Base) {
         let search = this;
         search.currentParentOrg = API.user.organization.id;
 
@@ -74,9 +74,9 @@ angular.module('misc')
 
         }
 
-        search.searchNow = function(type) {
+        search.searchNow = function(searchOrPage) {
             search.pageError=false
-            if (type) {
+            if (searchOrPage) {
                 search.searchParams.page=1
             }
             Loader.onFor('search.loading')
@@ -158,20 +158,14 @@ angular.module('misc')
         //     search.orgCount=count
         //     return API.cui.getOrganizations({qs:APIHelpers.getQs(search.searchParams)})
         // })
-        Loader.onFor('search.loading')
-        let qs=APIHelpers.getQs(search.searchParams)
-        qs.push(['status','active'],['status','suspended'])
-        API.cui.getOrganizations({qs:qs})
-        .then(res => {
-            search.orgs = res
-            if (search.orgs.length===0) {
-                search.noRecords=true
-            }
-        })
-        .fail(error => {
-            search.pageError=true
-        })
-        .always(handleAll)
+        // Authorization for org serach and user search
+        if (Base.accessToSecurityAndExchangeAdmins()) {            
+            search.searchNow(true)
+        }
+        else{
+            search.searchType = "people"
+            search.searchNow(true)
+        }
 
         /* -------------------------------------------- ON LOAD END --------------------------------------------- */
 

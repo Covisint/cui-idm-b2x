@@ -102,5 +102,26 @@
                 ]
             }
         }
+    },
+    "globalSearch": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Application Admin",
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            }
+        }
+    },
+    "accessToSecurityAndExchangeAdmins": {
+        "all": {
+            "roles": {
+                "any": [
+                    "Security Administrator",
+                    "Exchange Operator"
+                ]
+            }
+        }
     }
 }

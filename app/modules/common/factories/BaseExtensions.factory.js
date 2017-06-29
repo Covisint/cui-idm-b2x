@@ -26,6 +26,12 @@ angular.module('common')
 			},
 			accessByAnyAdmin: function(){
 				return permitted(appConfig.accessByAnyAdmin, User.getRoles(), User.getEntitlements());
+			},
+			globalSearch: function(){
+				return permitted(appConfig.globalSearch, User.getRoles(), User.getEntitlements());
+			},
+			accessToSecurityAndExchangeAdmins:function(){
+				return permitted(appConfig.accessToSecurityAndExchangeAdmins, User.getRoles(), User.getEntitlements());
 			}
 		}
 	}])
