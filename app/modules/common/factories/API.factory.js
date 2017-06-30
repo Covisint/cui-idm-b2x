@@ -42,7 +42,7 @@ angular.module('common')
     }
 
     const getNotificationDetails = (userInfo) => {
-        if (!Base.canGrantAppToUser()) {
+        if (!Base.isOrgAdmin()) {
             myCUI.getPersonPendingApps({personId: userInfo.id})
             .then((res) => {
                 userInfo.pendingApps=res.map(x=> x.name)
@@ -50,18 +50,27 @@ angular.module('common')
             })
         }
         else{
-            $q.all([
-                myCUI.getRegistrationRequestsCount(),
-                myCUI.getPackageRequestsCount(),
-                myCUI.getOrgRegistrationRequestsCount(),
-                myCUI.getPackageRequestsCount({qs:[['requestor.id',userInfo.organization.id],['requestor.type','organization']]})
-            ])
+            let apiPromises=[]
+            apiPromises.push(myCUI.getPackageRequestsCount())
+            if (Base.accessToSecurityAndExchangeAdmins()) {
+                apiPromises.push(
+                    myCUI.getRegistrationRequestsCount(),
+                    myCUI.getOrgRegistrationRequestsCount(),
+                    myCUI.getPackageRequestsCount({qs:[['requestor.id',userInfo.organization.id],['requestor.type','organization']]})
+                    )
+            }
+            $q.all(apiPromises)
             .then(res => {
-                userInfo.userRegistrationRequestsCount=res[0]
-                userInfo.userAppRequestsCount=res[1]
-                userInfo.orgRegistrationRequestsCount=res[2]
-                userInfo.orgAppRequestsCount=res[3]
-                userInfo.totalCount=res[0]+res[1]+res[2]+res[3]
+                userInfo.userAppRequestsCount=res[0]
+                if (Base.accessToSecurityAndExchangeAdmins()){
+                   userInfo.userRegistrationRequestsCount=res[1]
+                    userInfo.orgRegistrationRequestsCount=res[2]
+                    userInfo.orgAppRequestsCount=res[3]
+                    userInfo.totalCount=res[0]+res[1]+res[2]+res[3] 
+                }
+                else{
+                    userInfo.totalCount=res[0]
+                }
                 User.set(userInfo)
             })
         }
