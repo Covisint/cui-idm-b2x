@@ -1,6 +1,6 @@
 angular.module('organization')
 .controller('usersRegistrationRequestsCtrl', 
-		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope) {
+		function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage) {
 
     const scopeName = 'usersRegistrationRequests.'
 		const usersRegistrationRequests = this
@@ -121,30 +121,38 @@ angular.module('organization')
 				_.each(res, function(regReq) {
 					// NB create an obj and bind it to scope...
 					var data = {};
-        	usersRegistrationRequests.data.push(data);
+					data.request=regReq
+		        	usersRegistrationRequests.data.push(data);
 
-        	// ..then cache the calls, which populate obj asynchronously...
-	        calls.push(
-		        getPerson(regReq.registrant.id).then(function(person) {
-		        	data.personData = person || {};
-		        	var pkgId = (! _.isEmpty(regReq.packages)) ? regReq.packages[0].id : '';
-		          return getPackage(pkgId);
-						}).then(function(pkg) {
-		        	data.packageData = pkg;
-		        	console.log(data.personData.organization.id)
-		        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
+		        	// ..then cache the calls, which populate obj asynchronously...
+			        calls.push(
+				        getPerson(regReq.registrant.id)
+				        .then(function(person) {
+				        	data.personData = person || {};
+				        	var pkgId = (! _.isEmpty(regReq.packages)) ? regReq.packages[0].id : '';
+				          	return getPackage(pkgId);
+						})
+				        .then(function(pkg) {
+				        	data.packageData = pkg;
+				        	console.log(data.personData.organization.id)
+				        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
 							return getOrg(orgId);
-						}).then(function(org) {
+						})
+				        .then(function(org) {
 							if (! data.personData.organization) {
 								data.personData.organization = {};
 							}
-							data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
+							data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';
+							data.organization={
+								id:org.id,
+								name:org.name
+							}        	
 							return $.Deferred().resolve();
-	      		}).fail(function() {
-	      			// mute the failures so as not to derail the entire list
+			      		}).fail(function() {
+			      			// mute the failures so as not to derail the entire list
 							return $.Deferred().resolve();
-	      		})
-		      );
+			      		})
+				    );
 				});
 				return $.Deferred().resolve(calls);
 			}).then(function(calls) {
@@ -206,6 +214,7 @@ angular.module('organization')
 		usersRegistrationRequests.goToDetails = function(request) {
 			if (request.personData && request.personData.id && 
 				request.personData.organization && request.personData.organization.id) {
+				DataStorage.setType('userPersonRequest', {personData:request.personData, organization:request.organization,request:request.request,packageData:request.packageData} )
 				$state.go('organization.requests.personRequest', {
 				 	'userId': request.personData.id, 
 					'orgId': request.personData.organization.id 

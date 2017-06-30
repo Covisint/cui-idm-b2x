@@ -49,13 +49,13 @@
 		<!-- Granted -->
 		<p class="org-Application--text">Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
 	  <!-- Status: Active -->
-	  	<p class="org-application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status}}
+	  	<p class="org-application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
 		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
 		  		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
 		  	</svg>
 		</p>
 		  <!-- Status: Locked -->
-		  <p class="org-Application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='locked'">{{orgApplicationDetails.application.grant.status}}
+		  <p class="org-Application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='locked'">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
 		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
 		    	<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#lock24"></use>
 		    </svg>
@@ -111,7 +111,7 @@
             	<p>{{'cui-org-app-suspend-msg1'|translate}}</p>
             </div>
             <div class="cui-expandable__body-row">
-            	<p>{{'cui-org-app-suspend-msg2'|translate}} <b>{{orgApplicationDetails.application.name | cuiI18n}}</b> {{'cui-from'|translate}} <b>{{orgApplicationDetails.organizationList[0].name | cuiI18n}}</b> ?</p>
+            	<p>{{'cui-org-app-suspend-msg2'|translate}} <b>{{orgApplicationDetails.application.name | cuiI18n}}</b> {{'cui-from'|translate}} <b>{{orgApplicationDetails.organization.name}}</b> ?</p>
             </div>
             <div class="cui-expandable__body-row">
 		        <table>
@@ -169,7 +169,7 @@
                   <a class="cui-link bold" ng-click="orgApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
                   <span class="cui-media__content">{{ 'granted' | translate | lowercase}}: {{orgApplicationDetails.application.grant.instant | date:base.appConfig.dateFormat}}</span>
                 </div>
-                <div class="cui-media__status" ng-class="'cui-status--'+nyApplicationDetails.application.grant.status">{{orgApplicationDetails.application.grant.status | lowercase}}</div>  <!-- If the user has a grant on that service -->
+                <div class="cui-media__status" ng-class="'cui-status--'+nyApplicationDetails.application.grant.status">{{orgApplicationDetails.application.grant.status | lowercase|translate}}</div>  <!-- If the user has a grant on that service -->
               </div>
             </div>
           </div>
@@ -189,7 +189,7 @@
                     <span class="cui-media__content" >{{ 'granted' | translate }}: {{orgApplicationDetails.application.grant.instant | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                   </div>
                   <div class="cui-button cui-button--small-rounded" ng-if="!application.status">{{'request' | translate}}</div>
-                  <div class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{orgApplicationDetails.application.grant.status | uppercase}}</div>  <!-- If the user has a grant on that service -->
+                  <div class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{orgApplicationDetails.application.grant.status | lowercase|translate}}</div>  <!-- If the user has a grant on that service -->
                 </div>
               </div>
                 </div>
@@ -213,7 +213,7 @@
 			<div id="tab1" class="cui-tabs__tab-pane cui-tabs__tab-pane--active" ng-if="orgApplicationDetails.mobileTabs.bundled">
 				<div class="org-Application--bundled-related__bundled cui-tile">
 					<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
-						<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+						<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status|lowercase|translate}}</span>
 						<span class="active">{{'active' | translate}}</span>
 					</p>
 				</div>

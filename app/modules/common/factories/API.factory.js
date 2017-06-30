@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('API', (Base, CustomAPI, Loader, localStorageService, User, $location, $q, $timeout, $window) => {
+.factory('API', (Base, CustomAPI, Loader, localStorageService, User, $location, $q, $timeout, $window,LocaleService) => {
 
     let authInfo = {}
     let myCUI = {}
@@ -25,6 +25,7 @@ angular.module('common')
             User.setEntitlements(entitlementList)
 
             userInfo = res[2]
+            LocaleService.setLocaleByDisplayName(appConfig.languages[userInfo.language])
             return myCUI.getOrganizationWithAttributes({ organizationId: res[2].organization.id })
         })
         .then(res => {

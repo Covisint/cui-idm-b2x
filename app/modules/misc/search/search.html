@@ -12,7 +12,7 @@
     </section>
     <!-- <section class="cui-action"> -->
     <div class="cui-action cui-action--alt">
-      <div class="cui-radio cui-radio--basic-ltr">
+      <div class="cui-radio cui-radio--basic-ltr" ng-if="base.accessToSecurityAndExchangeAdmins()">
           <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="search.searchType" value="people" ng-change="search.searchNow(true)">
           <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'people' | translate}}</label>
           <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="search.searchType" value="organizations" ng-change="search.searchNow(true)">
@@ -31,7 +31,7 @@
         <!-- No Results -->
         <p class="cui-users__password-success" ng-if="search.noRecords">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
         <!-- Error Message -->
-        <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['search.pageError']">{{'error-generic' | translate}}</p>
+        <p class="cui-users__password-success" style="color:red" ng-if="search.pageError">{{'error-generic' | translate}}</p>
         <div ng-if="!base.loader.for['search.loading'] && !search.pageError && !search.noRecords" >
             <!-- Action Sub-header -->
             <section class=" cui-action " ng-if="1==2">
@@ -111,7 +111,7 @@
                             <!-- Status -->
                             <div class="cui-flex-table__right ">
                                 <span class="cui-mobile-only ">{{'apps' | translate}} ({{user.appCount}}) &nbsp;</span>
-                                <span ng-class=" 'cui-status--'+user.status ">{{user.status}}</span>
+                                <span ng-class=" 'cui-status--'+user.status ">{{user.status|lowercase|translate}}</span>
                             </div>
                         </div>
                     </li>

@@ -2,7 +2,7 @@ angular.module('organization')
 .controller('orgApplicationDetailsCtrl', function(API,APIHelpers,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
 
     const orgApplicationDetails = this;
-    const organizationId = User.user.organization.id;
+    const organizationId = $stateParams.orgId
     const serviceId = $stateParams.appId;
     const loaderName = 'orgApplicationDetails.';
     orgApplicationDetails.stateParamsOrgId=$stateParams.orgId
@@ -67,9 +67,9 @@ angular.module('organization')
 
     Loader.onFor(loaderName + 'app');
 
-    API.cui.getOrganizationHierarchy({organizationId: User.user.organization.id})
+    API.cui.getOrganization({organizationId: organizationId})
     .then((res) => {
-        orgApplicationDetails.organizationList = APIHelpers.flattenOrgHierarchy(res);
+        orgApplicationDetails.organization = res
         return API.cui.getOrganizationGrantedApps({organizationId: organizationId, qs: [['service.id', serviceId]]});
     })
     .then((res) => {

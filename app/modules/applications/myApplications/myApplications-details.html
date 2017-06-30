@@ -63,7 +63,7 @@
         <div class="cui-media__body">
           <h3 class="cui-media__title">{{myApplicationDetails.app.name | cuiI18n|capitalize}}</h3>
           <span class="cui-media__content" >{{ 'granted' | translate }}: {{myApplicationDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
-          <span ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{myApplicationDetails.app.grant.status | lowercase}}</span>
+          <span ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{myApplicationDetails.app.grant.status | lowercase|translate}}</span>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
                     <a class="cui-media__link" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
                     <span class="cui-media__content">{{ 'granted' | translate }}: {{myApplicationDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
                   </div>
-                  <span class="cui-media__status" ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{application.status | lowercase}}</span>  <!-- If the user has a grant on that service -->
+                  <span class="cui-media__status" ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{application.status | lowercase|translate}}</span>  <!-- If the user has a grant on that service -->
                 </div>
               </div>
               <!-- Related Application Details -->
@@ -102,7 +102,7 @@
                     <span class="cui-media__content" ng-if="application.grant">{{ 'granted' | translate }}: {{application.grant.instant| date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                     <span class="cui-button" ng-if="!application.grant">{{'request' | translate}}</span>
                   </div>
-                  <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.grant.status | lowercase}}</span>  <!-- If the user has a grant on that service -->
+                  <span class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.status">{{application.grant.status | lowercase|translate}}</span>  <!-- If the user has a grant on that service -->
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@
                   <a class="cui-link bold" ng-click="myApplicationDetails.goToDetails(application)">{{application.name | cuiI18n}}</a>
                   <span class="cui-media__content">{{ 'granted' | translate | lowercase}}: {{myApplicationDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
                 </div>
-                <div class="cui-media__status" ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{myApplicationDetails.app.grant.status |lowercase}}</div>  <!-- If the user has a grant on that service -->
+                <div class="cui-media__status" ng-class="'cui-status--'+myApplicationDetails.app.grant.status">{{myApplicationDetails.app.grant.status |lowercase|translate}}</div>  <!-- If the user has a grant on that service -->
               </div>
             </div>
           </div>
@@ -157,7 +157,7 @@
                     <span class="cui-media__content" ng-if="application.grant">{{ 'granted' | translate }}: {{application.grant.instant | date:base.appConfig.dateFormat}}</span> <!-- If the user has a grant on that service -->
                   </div>
                   <div class="cui-button cui-button--small-rounded" ng-if="!application.grant">{{'request' | translate}}</div>
-                  <div class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.grant">{{application.grant.status | lowercase}}</div>  <!-- If the user has a grant on that service -->
+                  <div class="cui-media__status" ng-class="'cui-status--'+application.status" ng-if="application.grant">{{application.grant.status | lowercase|translate}}</div>  <!-- If the user has a grant on that service -->
                 </div>
               </div>
             </div>

@@ -28,6 +28,7 @@ angular.module('organization')
     const handleSuccess = (res) => {
         Loader.offFor('personRequestReview.submitting')
             personRequestReview.success = true
+            DataStorage.deleteType('userPersonRequest')
             $scope.$digest()
             $timeout(() => {
                 $state.go('organization.requests.usersRegistrationRequests')
@@ -44,23 +45,20 @@ angular.module('organization')
 
     // ON LOAD START ---------------------------------------------------------------------------------
 
-    Loader.onFor('personRequestReview.init')
+    const requestData = DataStorage.getType('userPersonRequest')
+    if (requestData&&requestData.request.registrant.id===userId) {
+        personRequestReview.packages = requestData.completePackageData
+        personRequestReview.personData = requestData.personData
+        personRequestReview.organization = requestData.organization
+        personRequestReview.request = requestData.request
 
-    const requestData = DataStorage.getType('userPersonRequest').personRequest
-    if (!requestData) {
-        $state.go('organization.requests.personRequest',{userId:userId, orgId:orgId})
-    };
-
-    personRequestReview.packages = requestData.packages
-    personRequestReview.person = requestData.request.person
-    personRequestReview.organization = requestData.request.organization
-    personRequestReview.request = requestData.request.request
-
-    if (personRequestReview.packages.length > 0) {
-    	getApprovalCounts(personRequestReview.packages)
+        if (personRequestReview.packages.length > 0) {
+            getApprovalCounts(personRequestReview.packages)
+        }
     }
-
-    Loader.offFor('personRequestReview.init')
+    else{
+        $state.go('organization.requests.personRequest',{userId:userId, orgId:orgId})
+    }
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -92,6 +90,7 @@ angular.module('organization')
                 .then(() => {
                     Loader.offFor('personRequestReview.submitting')
                     personRequestReview.success = true
+                    DataStorage.deleteType('userPersonRequest')
                     $timeout(() => {
                         $state.go('organization.requests.usersRegistrationRequests')
                     }, 3000)  

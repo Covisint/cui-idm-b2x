@@ -18,7 +18,7 @@ angular.module('misc', [])
                 templateUrl: templateBase + 'search/search.html',
                 controller: returnCtrlAs('search'),
                 access: {
-                    permittedLogic:appConfig.accessByAnyAdmin
+                    permittedLogic:appConfig.globalSearch
                 }
             })
             .state('misc', {
