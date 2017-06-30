@@ -103,7 +103,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
             access: {
-                permittedLogic:appConfig.accessByAnyAdmin
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         // applications----------------------------------------------
