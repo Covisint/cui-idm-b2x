@@ -5,7 +5,7 @@
         {{'cui-org-profile' | translate}}
       </a>
     </li>
-    <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+    <li class="cui-breadcrumb__link" ng-if="base.accessToSecurityAndExchangeAdmins()">
       <a ui-sref="organization.hierarchy({orgId:base.user.organization.id})" ui-sref-active-for="organization.hierarchy">
         {{'cui-org-hierarchy' | translate}}
       </a>

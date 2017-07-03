@@ -103,7 +103,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'hierarchy/organization-hierarchy.html',
             controller: returnCtrlAs('orgHierarchy'),
             access: {
-                permittedLogic:appConfig.accessByAnyAdmin
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         // applications----------------------------------------------
@@ -207,13 +207,17 @@ angular.module('organization', [])
             url: '/pending-requests?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequests.html',
             controller: returnCtrlAs('pendingRequests'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('organization.requests.pendingRequestsReview', {
             url: '/pending-requests/review?userId&orgId',
             templateUrl: templateBase + 'requests/pendingRequestsReview/requests-pendingRequestsReview.html',
             controller: returnCtrlAs('pendingRequestsReview'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         // Approval of Org requests
         .state('organization.requests.organizationRequest', {
@@ -221,7 +225,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/organizationRequest/requests-organization.html',
             controller: returnCtrlAs('organizationRequest'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         .state('organization.requests.organizationRequestReview', {
@@ -229,7 +233,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/organizationRequest/requests-organizationReview.html',
             controller: returnCtrlAs('organizationRequestReview'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         .state('organization.requests.organizationAppRequest', {
@@ -237,7 +241,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/organizationAppRequests/requests-organization.html',
             controller: returnCtrlAs('organizationAppRequest'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         .state('organization.requests.organizationAppRequestReview', {
@@ -245,20 +249,24 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/organizationAppRequests/requests-organizationReview.html',
             controller: returnCtrlAs('organizationAppRequestReview'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         .state('organization.requests.personRequest', {
             url: '/person-request?userId&orgId',
             templateUrl: templateBase + 'requests/personRequest/requests-person.html',
             controller: returnCtrlAs('personRequest'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
         })
         .state('organization.requests.personRequestReview', {
             url: '/person-request-review?userId&orgId',
             templateUrl: templateBase + 'requests/personRequest/requests-personReview.html',
             controller: returnCtrlAs('personRequestReview'),
-            access: loginRequired
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
         })
 
         // ADMIN...
@@ -266,13 +274,17 @@ angular.module('organization', [])
             url:'/userRequests',
             templateUrl: templateBase + 'requests/usersRequests/usersRegistrationRequests/requests-RegistrationRequests.html',
             controller: returnCtrlAs('usersRegistrationRequests'),
-            access: appConfig.orgAdminLogic
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
         })
         .state('organization.requests.usersAppRequests', {
             url:'/applicationRequests',
             templateUrl: templateBase + 'requests/usersRequests/usersAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('usersAppRequests'),
-            access: appConfig.orgAdminLogic
+            access: {
+                permittedLogic:appConfig.orgAdminLogic
+            }
         })
         .state('invitation', {
             url: '/invitation',
@@ -318,7 +330,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/orgRequests/orgRegistrationRequests/requests-RegistrationRequests.html',
             controller: returnCtrlAs('orgRegistrationRequests'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         })
         .state('organization.requests.orgAppRequests', {
@@ -326,7 +338,7 @@ angular.module('organization', [])
             templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('orgAppRequests'),
             access: {
-                permittedLogic:appConfig.orgAdminLogic
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
             }
         });
 }]);

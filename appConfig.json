@@ -40,7 +40,8 @@
             "roles": {
                 "any": [
                     "Application Admin",
-                    "Security Administrator"
+                    "Security Administrator",
+                    "Exchange Operator"
                 ]
             }
         }

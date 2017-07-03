@@ -9,7 +9,6 @@ angular.module('misc')
         search.searchType = "organizations";
         search.searchOrgId = "";
         search.searchterms=""
-        search.count=1000
         search.pageError=false
 
         // search.keypress = function() {
@@ -122,18 +121,21 @@ angular.module('misc')
 
                 }
                 if (search.searchType == "organizations") {
-                    qsArray.push(['name', search.searchterms + "*"])
-                    API.cui.getOrganizations({qs: qsArray})
-                    .done(orgsResponse => {
-                        search.orgs = orgsResponse;
+                    qsArray.push(['name', search.searchterms])
+                    const promises=[API.cui.getOrganizationsCount({qs: qsArray}),API.cui.getOrganizations({qs: qsArray})]
+                    $q.all(promises)
+                    .then(res => {
+                        search.orgs = res[1]
+                        search.count=res[0]
                         if (search.orgs.length===0) {
                             search.noRecords=true
                         }
+                        Loader.offFor('search.loading')
                     })
-                    .fail(error => {
+                    .catch(error => {
                         search.pageError=true
+                        Loader.offFor('search.loading')
                     })
-                    .always(handleAll)
                 }
             // }
         }

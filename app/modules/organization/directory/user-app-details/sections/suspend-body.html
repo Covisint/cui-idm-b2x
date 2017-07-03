@@ -7,11 +7,12 @@
     </div>
     <div class="cui-organization__submit-row" disable-animate >
       <span ng-click="userAppDetails.dropDown.suspend=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
-      <button class="cui-button" ng-class="{'cui-button--error' : !suspendApp.$valid}" ng-if="!base.loader.for['userAppDetails.suspend'] && !base.apiError.for['userAppDetails.suspend']" ng-click="suspendApp.$valid&&userAppDetails.suspendApp()" style="margin:5px">{{'suspend' | translate}}</button>
+      <button class="cui-button" ng-class="{'cui-button--error' : !suspendApp.$valid}" ng-if="!base.loader.for['userAppDetails.suspend'] && !base.apiError.for['userAppDetails.suspend']&&!userAppDetails.suspendAppSuccess" ng-click="suspendApp.$valid&&userAppDetails.suspendApp()" style="margin:5px">{{'suspend' | translate}}</button>
       <button class="cui-button" ng-if="base.loader.for['userAppDetails.suspend']">
         <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
       </button>
       <button  class="cui-button" ng-class="{'cui-button--error' : !suspendApp.$valid}" ng-if="!base.loader.for['userAppDetails.suspend'] && base.apiError.for['userAppDetails.suspend']" ng-click="suspendApp.$valid&&userAppDetails.suspendApp()">{{'cui-error-try-again' | translate}}</button>
+      <button  class="cui-button" ng-if="!base.loader.for['userAppDetails.suspend'] && userAppDetails.suspendAppSuccess">{{'cui-success' | translate}}</button>
     </div>
   </ng-form>
 </div>
