@@ -149,7 +149,9 @@ angular.module('organization')
 	})
 	.then(function(count) {
 		// apply the count
-		orgRegistrationRequests.userCount = count;
+		// Need to change hardcoded value, Once API starts working
+		// orgRegistrationRequests.userCount = count;
+		orgRegistrationRequests.userCount= 600
 		API.user.orgRegistrationRequestsCount=count
 		return $.Deferred().resolve();				
 	})
