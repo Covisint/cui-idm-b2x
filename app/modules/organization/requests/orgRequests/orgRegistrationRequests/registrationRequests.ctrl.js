@@ -127,13 +127,7 @@ angular.module('organization')
 			        .then(function(pkg) {
 			        	data.packageData = pkg;
 			        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
-						return getOrg(orgId);
-					})
-			        .then(function(org) {
-						if (! data.personData.organization) {
-							data.personData.organization = {};
-						}
-						data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
+						data.personData.organization.name =  regReq.organizationName       	
 						return $.Deferred().resolve();
 		      		})
 		      		.fail(function() {
