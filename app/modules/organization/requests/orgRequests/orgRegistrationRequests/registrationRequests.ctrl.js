@@ -113,7 +113,8 @@ angular.module('organization')
 			//And they need to be removed
 			if (regReq.registrant) {
 				// NB create an obj and bind it to scope...
-				var data = regReq
+				var data = {}
+				data.request=regReq
 	        	orgRegistrationRequests.data.push(data);
 
 	        	// ..then cache the calls, which populate obj asynchronously...
@@ -125,9 +126,11 @@ angular.module('organization')
 			            return getPackage(pkgId);
 					})
 			        .then(function(pkg) {
-			        	data.packageData = pkg;
-			        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
-						data.personData.organization.name =  regReq.organizationName       	
+			        	data.packageData = pkg; 
+						data.organization={
+							id:data.personData.organization.id,
+							name:regReq.organizationName
+						}     	
 						return $.Deferred().resolve();
 		      		})
 		      		.fail(function() {
@@ -136,6 +139,9 @@ angular.module('organization')
 		      		})
 			    );
 			}
+			// else{
+			// 	API.cui.approveOrgRegistrationRequest({qs:[['requestId',regReq.id]]})
+			// }
 		});
 		return $.Deferred().resolve(calls);
 	})

@@ -45,7 +45,7 @@
 
       <!-- Service Content -->
       <div>
-        <cui-expandable class="" transition-speed="100" ng-repeat="package in organizationRequest.request.packages">
+        <cui-expandable class="" transition-speed="100" ng-repeat="package in organizationRequest.request.request.packages">
           <!-- Package To Approve/Deny -->
           <cui-expandable-title class="">
             <div class="cui-flex-table__tr">
@@ -92,7 +92,8 @@
               </div>
 
               <!-- Package Claims 2 -->
-              <div class="cui-expandable__body-col">
+              <!-- Not Required for Organization grant -->
+<!--               <div class="cui-expandable__body-col">
                 <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
                 <p ng-if="package.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
                 <div ng-if="package.claims.length>0" ng-repeat="claim in package.claims">
