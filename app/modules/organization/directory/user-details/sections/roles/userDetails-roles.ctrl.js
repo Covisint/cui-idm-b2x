@@ -85,7 +85,6 @@ angular.module('organization')
         })
         .fail(err =>{
             userDetailsRoles.loading=false
-            APIError.onFor(scopeName + 'initHistory')
             userDetailsRoles.rolessubmitError=true
             $scope.$digest()
         })
