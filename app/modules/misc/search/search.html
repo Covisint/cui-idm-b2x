@@ -9,6 +9,51 @@
 <main class="global-search">
     <section class="cui-action">
     <div class="cui-action__title">{{'search' | translate}}</div>
+    <div class="cui-action__actions" ng-if="search.searchType==='people'">
+      <!-- Refine -->
+      <!-- <div class="cui-action__action-container" ng-click="search.refineClicked=!search.refineClicked" id="refine-button" off-click="search.refineClicked=false">
+        <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span> -->
+        <!-- Refine Popover -->
+        <!-- <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="search.refineClicked" style="width:214px">
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('all')">{{'all' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('active')">{{'active' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('pending')">{{'pending' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('locked')">{{'locked' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('suspended')">{{'suspended' | translate}}</span>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Sort -->
+      <div ng-show="1==1" class="cui-action__action-container" ng-click="search.sortClicked=!search.sortClicked" id="sort-button" off-click="search.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="search.sortClicked" style="width:171px">
+          <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('name')">{{'cui-alphabetically' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('activated')">{{'cui-by-date-added' | translate}}</span>  
+          </div>
+          <!-- <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('status')">{{'status' | translate}}</span>
+          </div> -->
+        </div>
+      </div>
+    </div>
     </section>
     <!-- <section class="cui-action"> -->
     <div class="cui-action cui-action--alt">
