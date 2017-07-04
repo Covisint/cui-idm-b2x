@@ -919,5 +919,12 @@
     "accepts": "application/vnd.com.covisint.platform.password.v1+json",
     "contentType":" application/vnd.com.covisint.platform.password.v1+json",
     "call": "/authn/v4/passwords/tasks/unlock"
+  },
+  {
+    "cmd": "retriveOrgPendingAppsCount",
+    "cmdType": "secured",
+    "call": "/service/v3/organizations/requests/count",
+    "type": "GET",
+    "accepts": "text/plain"
   }
 ]
