@@ -94,7 +94,7 @@ angular.module('organization')
           division.success=true
            division.sendInvitationError=false;
            $timeout(() => {
-                 $state.go('invitation.inviteSelect');
+                  $state.go('organization.profile', {'orgId':division.stateParamsOrgId});
             }, 3000); 
         })
         .catch(error => {

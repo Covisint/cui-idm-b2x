@@ -45,7 +45,7 @@ angular.module('organization')
           tlo.success=true
            tlo.sendInvitationError=false;
            $timeout(() => {
-                 $state.go('invitation.inviteSelect');
+                 $state.go('organization.profile', {'orgId':tlo.stateParamsOrgId});
             }, 3000); 
         })
         .catch(error => {
