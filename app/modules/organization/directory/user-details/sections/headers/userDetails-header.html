@@ -88,7 +88,9 @@
 
   <!-- Password Reset-->
   <button class="cui-button cui-button--inverted" id="password-specify" 
-          ng-click="userDetails.resetPassword()">
+          ng-click="userDetails.resetPassword()"
+          cui-access="{requiredEntitlements:['Reset Password']}" 
+          user-entitlements="base.user.entitlements">
           {{'password-reset' | translate}}
   </button>
 
