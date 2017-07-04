@@ -113,7 +113,8 @@ angular.module('organization')
 			//And they need to be removed
 			if (regReq.registrant) {
 				// NB create an obj and bind it to scope...
-				var data = regReq
+				var data = {}
+				data.request=regReq
 	        	orgRegistrationRequests.data.push(data);
 
 	        	// ..then cache the calls, which populate obj asynchronously...
@@ -125,15 +126,11 @@ angular.module('organization')
 			            return getPackage(pkgId);
 					})
 			        .then(function(pkg) {
-			        	data.packageData = pkg;
-			        	var orgId = (data.personData && data.personData.organization) ? data.personData.organization.id : '';
-						return getOrg(orgId);
-					})
-			        .then(function(org) {
-						if (! data.personData.organization) {
-							data.personData.organization = {};
-						}
-						data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
+			        	data.packageData = pkg; 
+						data.organization={
+							id:data.personData.organization.id,
+							name:regReq.organizationName
+						}     	
 						return $.Deferred().resolve();
 		      		})
 		      		.fail(function() {
@@ -142,6 +139,9 @@ angular.module('organization')
 		      		})
 			    );
 			}
+			// else{
+			// 	API.cui.approveOrgRegistrationRequest({qs:[['requestId',regReq.id]]})
+			// }
 		});
 		return $.Deferred().resolve(calls);
 	})
@@ -155,7 +155,9 @@ angular.module('organization')
 	})
 	.then(function(count) {
 		// apply the count
-		orgRegistrationRequests.userCount = count;
+		// Need to change hardcoded value, Once API starts working
+		// orgRegistrationRequests.userCount = count;
+		orgRegistrationRequests.userCount= 600
 		API.user.orgRegistrationRequestsCount=count
 		return $.Deferred().resolve();				
 	})

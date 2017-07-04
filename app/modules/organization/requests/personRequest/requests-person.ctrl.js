@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('personRequestCtrl', function(APIError, DataStorage, Loader, PersonRequest, ServicePackage, $state, $stateParams, $timeout,API,$scope) {
+.controller('personRequestCtrl', function(APIError, DataStorage, Loader, PersonAndOrgRequest, ServicePackage, $state, $stateParams, $timeout,API,$scope) {
     'use strict'
 
     const personRequest = this
@@ -70,14 +70,19 @@ angular.module('organization')
     // Check LocalStorage if data is already obtained in previous page
     let storageData=DataStorage.getType('userPersonRequest')
     if (storageData&&userId===storageData.request.registrant.id) {
+        if (storageData.personData.status==='active') {
+            Loader.onFor('personRequest.init')
+            APIError.onFor('personRequest.noRequest')
+            $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
+        }
         personRequest.request=storageData;
         getPackageDetails()
     }
     else{
         Loader.onFor('personRequest.init')
-        PersonRequest.getPersonRegistrationRequestData(userId, organizationId)
+        PersonAndOrgRequest.getRegistrationRequestData(userId, organizationId,'person')
         .then(res => {
-            if (!res.request) {
+            if (!res.request || res.personData.status==='active') {
                 APIError.onFor('personRequest.noRequest')
                 $timeout(() => $state.go('organization.requests.usersRegistrationRequests'), 5000)
             }

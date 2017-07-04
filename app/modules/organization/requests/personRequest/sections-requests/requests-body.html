@@ -29,7 +29,7 @@
     </div>
 
     <!-- Requested Services -->
-    <div ng-if="personRequest.packages.length>0 && personRequest.request.request.approval==='approved'">
+    <div ng-if="personRequest.request.completePackageData.length>0 && personRequest.request.request.approval==='approved'">
     <!-- <div ng-if="personRequest.packages.length>0"> -->
       <div class="">
         <div class="cui-flex-table__header cui-flex-table__header--multi cui-flex-table__header--borderless">
@@ -45,7 +45,7 @@
 
       <!-- Service Content -->
       <div>
-        <cui-expandable class="" transition-speed="100" ng-repeat="package in personRequest.packages">
+        <cui-expandable class="" transition-speed="100" ng-repeat="package in personRequest.request.completePackageData">
           <!-- Package To Approve/Deny -->
           <cui-expandable-title class="">
             <div class="cui-flex-table__tr">

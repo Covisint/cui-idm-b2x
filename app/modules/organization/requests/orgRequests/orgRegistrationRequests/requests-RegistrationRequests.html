@@ -22,7 +22,7 @@
   <div class="cui-tabs__main-container">
     <div class="cui-applications__search-options">
       <div class="cui-input-button" style="width:350px">
-          <input type="text" class="cui-input-button__input" ng-model="orgRegistrationRequests.search.organizationName" placeholder="{{'search-by-app-name'| translate}}" on-enter="orgRegistrationRequests.searchCallback" focus-if/>
+          <input type="text" class="cui-input-button__input" ng-model="orgRegistrationRequests.search.organizationName" placeholder="{{'search-by-org-name'| translate}}" on-enter="orgRegistrationRequests.searchCallback" focus-if/>
           <button class="cui-input-button__button" ng-click="orgRegistrationRequests.updateSearch('organizationName',orgRegistrationRequests.search.organizationName)">{{'go'| translate}}</button>
       </div>
     </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="cui-flex-table__mobile-stack">
              <div class="cui-flex-table__left">
-              <span class="cui-flex-table__title">{{userRequest.personData.organization.name}}</span>
+              <span class="cui-flex-table__title">{{userRequest.organization.name}}</span>
             </div>
 
             <div class="cui-flex-table__middle">

@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('personRequestReviewCtrl', function(DataStorage, Loader, PersonRequest, ServicePackage, $q, $state, $stateParams, $timeout,API,$scope) {
+.controller('personRequestReviewCtrl', function(DataStorage, Loader, PersonAndOrgRequest, ServicePackage, $q, $state, $stateParams, $timeout,API,$scope) {
     'use strict'
 
     const personRequestReview = this

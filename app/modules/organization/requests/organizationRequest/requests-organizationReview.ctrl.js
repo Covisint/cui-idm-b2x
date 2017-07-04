@@ -4,6 +4,7 @@ angular.module('organization')
 
     const organizationRequestReview = this
     const orgId = $stateParams.orgId
+    const userId = $stateParams.userId
 
     organizationRequestReview.success = false
     organizationRequestReview.approvedCount = 0
@@ -47,13 +48,8 @@ angular.module('organization')
     Loader.onFor('organizationRequestReview.init')
 
     const requestData = DataStorage.getType('organizationRegRequest')
-    if (!requestData) {
-        APIError.onFor('organizationRequestReview.noRequest')
-        $timeout(() => $state.go('organization.requests.orgRegistrationRequests'), 5000)
-    }
-    else if (requestData.personData.organization.id!==orgId) {
-        APIError.onFor('organizationRequestReview.noRequest')
-        $timeout(() => $state.go('organization.requests.orgRegistrationRequests'), 5000)
+    if (!requestData || requestData.organization.id!==orgId) {
+        $state.go('organization.requests.organizationRequest',{userId:userId, orgId:orgId})
     }
     else if (requestData.personData.status!=="pending") {
         APIError.onFor('organizationRequestReview.active')
