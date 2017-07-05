@@ -245,7 +245,7 @@ angular.module('organization', [])
             }
         })
         .state('organization.requests.organizationAppRequestReview', {
-            url: '/organization-app-request-review?orgId',
+            url: '/organization-app-request-review?orgId&userId',
             templateUrl: templateBase + 'requests/organizationAppRequests/requests-organizationReview.html',
             controller: returnCtrlAs('organizationAppRequestReview'),
             access: {
