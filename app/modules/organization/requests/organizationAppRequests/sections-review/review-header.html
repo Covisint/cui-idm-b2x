@@ -18,13 +18,13 @@
 
     <!-- Avatar -->
     <div class="cui-media__image-container">
-      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[organizationAppRequestReview.personData.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+      <div class="cui-profile__user-avatar" cui-avatar cui-avatar-names="[organizationAppRequestReview.organization.name]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
     </div>
 
     <!-- User Information -->
     <div class="cui-media__body">
       <!-- Name -->
-      <h3 class="cui-media__title">{{organizationAppRequestReview.personData.organization.name}} </h3>
+      <h3 class="cui-media__title">{{organizationAppRequestReview.organization.name}} </h3>
       <!-- userID -->
       <!-- <p class="cui-media__content cui-media__content--dark"">{{'userID' | translate}}: {{personRequestReview.person.id}}</p> -->
       <!-- Admin -->
@@ -32,12 +32,12 @@
       <!-- Email -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'administrator' | translate}} {{'cui-email' | translate}}:</span> <a href="mailto:{{organizationRequest.request.personData.email}}" class="cui-media__link"> {{organizationAppRequestReview.personData.email}}</a></div>
       <!-- Registered Date -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequestReview.personData.organization.creation | date:base.appConfig.dateFormat}}</div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequestReview.organization.creation | date:base.appConfig.dateFormat}}</div>
       <!-- status -->
       <div class="cui-media__content">
-        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequestReview.personData.organization.status}}</a>
-        <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.personData.organization.status==='active'"></cui-icon>
-        <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.personData.organization.status==='locked'"></cui-icon>
+        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequestReview.organization.status}}</a>
+        <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.organization.status==='active'"></cui-icon>
+        <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.organization.status==='locked'"></cui-icon>
       </div>
     </div>
   </div>

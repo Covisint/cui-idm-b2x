@@ -33,7 +33,7 @@ angular.module('organization')
 
     $q.all([
         API.cui.getPerson({personId: userId}),
-        ServicePackage.getAllUserPendingPackageData(userId)
+        ServicePackage.getAllPendingPackageData(userId,'person')
     ])
     .then(res => {
         pendingRequests.user = res[0]
