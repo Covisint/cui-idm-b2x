@@ -5,8 +5,8 @@ angular.module('organization')
     const scopeName = 'usersAppRequests.'
 		const usersAppRequests = this
     usersAppRequests.search = {}
-		usersAppRequests.sortBy = {}
-
+	usersAppRequests.sortBy = {}
+	usersAppRequests.searchByPerson=[]
 
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
@@ -21,6 +21,16 @@ angular.module('organization')
       usersAppRequests.search['isApprovable'] = true;
       usersAppRequests.search.pageSize = usersAppRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 			var qsArray = APIHelpers.getQs(usersAppRequests.search);
+			if(usersAppRequests.searchByPerson.length>0){
+				let typeFlag=false
+				usersAppRequests.searchByPerson.forEach(function(val){
+					qsArray.push(['requestor.id',val.id])
+					if (!typeFlag) {
+						qsArray.push(['requestor.type','person'])
+						typeFlag=true
+					}
+				})
+			}
 
 	    usersAppRequests.data = []
       Loader.onFor(scopeName + 'data')
@@ -205,6 +215,29 @@ angular.module('organization')
         if (page) usersAppRequests.search.page = page
         $state.transitionTo('organization.requests.usersAppRequests', usersAppRequests.search, {notify: false})
         init()
+    }
+
+    usersAppRequests.updateSearchByName = () =>{     
+		Loader.onFor(scopeName + 'data')
+  		APIError.offFor(scopeName + 'data')
+  		 usersAppRequests.searchByPerson=[]
+		API.cui.getPersons({qs:[['fullName',usersAppRequests.searchValue]]})
+		.then(res =>{
+			console.log(res)
+			usersAppRequests.searchByPerson=res
+			Loader.offFor(scopeName + 'data')
+			if(res.length>0){
+				$state.transitionTo('organization.requests.usersAppRequests', usersAppRequests.searchByPerson, {notify: false})
+    			init()
+    		}else{
+    			usersAppRequests.data=[]
+    			$scope.$apply()
+    		}
+		})
+		.fail(err =>{
+				console.log(err)
+		})
+    		/*return undefined*/
     }
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 
