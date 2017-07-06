@@ -21,7 +21,6 @@ angular.module('organization')
   	var init = function() {
   		cui.log('init');
 
-      orgAppRequests.search['isApprovable'] = true;
       orgAppRequests.search.pageSize = orgAppRequests.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 			var qsArray = APIHelpers.getQs(orgAppRequests.search);
 
@@ -106,56 +105,67 @@ angular.module('organization')
 			};
 
 			/*qsArray.push(['requestor.type','organization'])getPackageRequests*/
-			qsArray.push(['requestor.id',User.user.organization.id])
-			API.cui.retriveOrgPendingApps({ qs: ['requestor.id',User.user.organization.id] }).then(function(res) {
-				var calls = [];
+			// qsArray.push(['requestor.id',User.user.organization.id])
+			API.cui.retriveOrgPendingApps({qs:qsArray}).then(function(res) {
+			var calls = [];
 
-				_.each(res, function(pkgReq) {
-					
-					// NB create an obj and bind it to scope...
-					var data = pkgReq
-        	orgAppRequests.data.push(data);
+			_.each(res, function(pkgReq) {
+				
+				// NB create an obj and bind it to scope...
+				var data = pkgReq
+	        	orgAppRequests.data.push(data);
 
-        	// ..then cache the calls, which populate obj asynchronously...
-	        calls.push(
-	        	getPerson(pkgReq.creator).then(function(person) {
-	        		data.personData = person || {};
-	        		var pkgId = (pkgReq && pkgReq.servicePackage) ? pkgReq.servicePackage.id : '';
-	          	return getPackage(pkgId);
-						}).then(function(pkg) {
-	        		data.packageData = pkg;
-	        		var orgId = pkgReq.requestor.id;
-							return getOrg(orgId);
-						}).then(function(org) {
-							if (! data.personData.organization) {
-								data.personData.organization = {};
-							}
-							data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
-							return $.Deferred().resolve();
-	      		}).fail(function() {
-	      			// mute the failures so as not to derail the entire list
-							return $.Deferred().resolve();
-	      		})
-					);
-				});
-				return $.Deferred().resolve(calls);
-			}).then(function(calls) {
+	        	// ..then cache the calls, which populate obj asynchronously...
+		        calls.push(
+		        	getPerson(pkgReq.creator)
+		        	.then(function(person) {
+		        		data.personData = person || {};
+		        		var pkgId = (pkgReq && pkgReq.servicePackage) ? pkgReq.servicePackage.id : '';
+		          		return getPackage(pkgId);
+					})
+		        	.then(function(pkg) {
+		        		data.packageData = pkg;
+		        		var orgId = pkgReq.requestor.id;
+						return getOrg(orgId);
+					})
+		        	.then(function(org) {
+						if (! data.personData.organization) {
+							data.personData.organization = {};
+						}
+						data.personData.organization.name = (! _.isEmpty(org)) ? org.name : '';	        	
+						return $.Deferred().resolve();
+		      		})
+		      		.fail(function() {
+		      			// mute the failures so as not to derail the entire list
+								return $.Deferred().resolve();
+		      		})
+				);
+			});
+			return $.Deferred().resolve(calls);
+			})
+			.then(function(calls) {
 				// do the cached calls
 				return $.when.apply($, calls);
-			}).then(function() {
+			})
+			.then(function() {
 				// do the count (used for pagination)
-				return API.cui.getPackageRequestsCount();
-			}).then(function(count) {
+				// hardcoded value need to be removed once API implemented
+			// 	return API.cui.retriveOrgPendingAppsCount();
+			// })
+			// .then(function(count) {
 				// apply the count
+				let count=600
 				orgAppRequests.userCount = count;
 				API.user.orgAppRequestsCount=count
 				return $.Deferred().resolve();				
-			}).fail(function(error) {
-        APIError.onFor(scopeName + 'data')
-      }).always(function() {
-        CuiMobileNavFactory.setTitle($filter('cuiI18n')('App Requests'))
-      	done('finally');
-      });
+			})
+			.fail(function(error) {
+		        APIError.onFor(scopeName + 'data')
+		      })
+			.always(function() {
+		        CuiMobileNavFactory.setTitle($filter('cuiI18n')('App Requests'))
+		      	done('finally');
+		    });
     };
 
     init();
@@ -202,10 +212,30 @@ angular.module('organization')
 			}
 		}
 
-    orgAppRequests.updateSearchParams = (page) => {
-        if (page) orgAppRequests.search.page = page
+    // orgAppRequests.updateSearchParams = (page) => {
+    //     if (page) orgAppRequests.search.page = page
+    //     $state.transitionTo('organization.requests.orgAppRequests', orgAppRequests.search, {notify: false})
+    //     init()
+    // }
+    orgAppRequests.updateSearch = (updateType, updateValue) => {
+    	//cui.log('updateSearchParams', page);
+    	switch(updateType){
+    		case 'organizationName':
+    			orgAppRequests.search.page=1
+    			orgAppRequests.search.organizationName=updateValue
+    			break
+    	}
+        // WHY transition to this same route? if setting notify:false? what is the purpose? just to add an item to history?
         $state.transitionTo('organization.requests.orgAppRequests', orgAppRequests.search, {notify: false})
         init()
+    }
+
+    orgAppRequests.pageChange = (newpage) => {
+        orgAppRequests.updateSearch('page', newpage)
+    }
+
+    orgAppRequests.searchCallback= (searchWord) => {
+        orgAppRequests.updateSearch('organizationName',searchWord)
     }
     /* ---------------------------------------- ON CLICK FUNCTIONS END ---------------------------------------- */
 

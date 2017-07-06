@@ -53,7 +53,7 @@ angular.module('organization')
 
     let getPackageDetails = () => {
         if (personRequest.request.request.packages) {
-            ServicePackage.getAllUserPendingPackageData(userId)
+            ServicePackage.getAllPendingPackageData(userId,'person')
             .then(res => {
                 personRequest.request.completePackageData = res
             })

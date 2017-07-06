@@ -4,16 +4,31 @@ angular.module('organization')
 
     const organizationAppRequestReview = this
     const orgId = $stateParams.orgId
+    const userId = $stateParams.userId
 
     organizationAppRequestReview.success = false
+    organizationAppRequestReview.approvedCount = 0
+    organizationAppRequestReview.deniedCount = 0
 
     // HELPER FUNCTIONS START ------------------------------------------------------------------------
+
+    const getApprovalCounts = (requests) => {
+        requests.forEach(request => {
+            switch (request.approval) {
+                case 'approved':
+                    organizationAppRequestReview.approvedCount += 1
+                    break
+                case 'denied':
+                    organizationAppRequestReview.deniedCount += 1
+                    break
+            }
+        })
+    }
 
     const handleSuccess = (res) => {
         Loader.offFor('organizationAppRequestReview.submitting')
         organizationAppRequestReview.success = true
-        DataStorage.setType('organizationAppRequest',{})
-        $scope.$digest()
+        DataStorage.deleteType('organizationAppRequest')
             $timeout(() => {
                 $state.go('organization.requests.orgAppRequests')
         }, 3000)  
@@ -21,14 +36,13 @@ angular.module('organization')
 
     const handleError = (err) => {
         console.log(`There was an error in approving org app request ${err.responseJSON}`)
-        if (err&&err.responseJSON.apiMessage==='The service request does not exist') {
+        if (err&&err.responseJSON&&err.responseJSON.apiMessage==='The service request does not exist') {
             organizationAppRequestReview.errorMessage='request-approve-or-rejected'
         }else{
             organizationAppRequestReview.errorMessage=undefined
         }
         Loader.offFor('organizationAppRequestReview.submitting')
         organizationAppRequestReview.error = true
-        $scope.$digest()
     }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
@@ -38,23 +52,20 @@ angular.module('organization')
     Loader.onFor('organizationAppRequestReview.init')
 
     const requestData = DataStorage.getType('organizationAppRequest')
-    if (!requestData) {
-        APIError.onFor('organizationAppRequestReview.noRequest')
-        // $timeout(() => $state.go('organization.requests.orgAppRequests'), 5000)
-    }
-    else if (requestData.personData.organization.id!==orgId) {
-        APIError.onFor('organizationAppRequestReview.noRequest')
-        // $timeout(() => $state.go('organization.requests.orgAppRequests'), 5000)
+    if (!requestData || requestData.personData.organization.id!==orgId) {
+        $state.go('organization.requests.organizationAppRequest',$stateParams)
     }
     else{
         Loader.offFor('organizationAppRequestReview.init')
     }
+
     organizationAppRequestReview.packageData = requestData.packageData
     organizationAppRequestReview.personData = requestData.personData
     organizationAppRequestReview.organization = requestData.organization
-    organizationAppRequestReview.request = requestData.request
-    organizationAppRequestReview.justification=requestData.justification
-    organizationAppRequestReview.id=requestData.id
+    getApprovalCounts(organizationAppRequestReview.packageData)
+    // organizationAppRequestReview.request = requestData.request
+    // organizationAppRequestReview.justification=requestData.justification
+    // organizationAppRequestReview.id=requestData.id
 
     // ON LOAD END -----------------------------------------------------------------------------------
 
@@ -62,40 +73,14 @@ angular.module('organization')
 
     organizationAppRequestReview.submit = () => {
         Loader.onFor('organizationAppRequestReview.submitting')
-        organizationAppRequestReview.packageData.id=organizationAppRequestReview.id
-        ServicePackage.handlePackageApproval(organizationAppRequestReview.packageData)
+        let submitCalls = []
+        organizationAppRequestReview.packageData.forEach(packageRequest => {
+            submitCalls.push(ServicePackage.handlePackageApproval(packageRequest))
+        })
+
+        $q.all(submitCalls)
         .then(handleSuccess)
-        .fail(handleError)
-        // if (organizationAppRequestReview.packageData.approval === 'approved'){
-        //     API.cui.denyOrgRegistrationRequest({qs:[['requestId',requestData.id],['reason',organizationAppRequestReview.request.rejectReason]]})
-        //     .then(handleSuccess)
-        //     .fail(handleError)
-        // }
-        // //all approval then call registration endpoint directly
-        // else (organizationAppRequestReview.deniedCount===0) {
-        //     API.cui.approveOrgRegistrationRequest({qs:[['requestId',requestData.id]]})
-        //     .then(handleSuccess)
-        //     .fail(handleError)
-        // }
-        // else {
-        //     API.cui.approvePersonRegistration({qs: [['requestId',requestData.registrant.requestId]]})
-        //     let packageRequestCalls = []
-
-        //     organizationAppRequestReview.packages.forEach(packageRequest => {
-        //         packageRequest.id=packageRequest.requestId
-        //         packageRequestCalls.push(ServicePackage.handlePackageApproval(packageRequest))
-        //     })
-
-        //     $q.all(packageRequestCalls)
-        //     .then( res =>{
-        //         Loader.offFor('organizationAppRequestReview.submitting')
-        //         organizationAppRequestReview.success = true
-        //             $timeout(() => {
-        //                 $state.go('organization.requests.orgRegistrationRequests')
-        //         }, 3000) 
-        //     })
-        //     // .catch(handleError)
-        // }
+        .catch(handleError)
     }
 
     // ON CLICK END ----------------------------------------------------------------------------------

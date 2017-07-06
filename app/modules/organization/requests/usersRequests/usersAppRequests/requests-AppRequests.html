@@ -27,7 +27,15 @@
     <div class="cui-loading__container" ng-if="base.loader.for['usersAppRequests.data']">
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
+    <!-- search -->
 
+    <div class="cui-applications__search-options">
+      <div class="cui-input-button" style="width:350px">
+          <input type="text" class="cui-input-button__input" ng-model="usersAppRequests.searchValue" placeholder="{{'search-by-person-name'| translate}}" on-enter="usersAppRequests.updateSearchByName" focus-if/>
+          <button class="cui-input-button__button" ng-click="usersAppRequests.updateSearchByName()">{{'go'| translate}}</button>
+      </div>
+    </div>
+    
     <cui-table-header 
       headers="['cui-name', 'submitted', 'application', 'division']"
       sorting="usersAppRequests.sortBy"

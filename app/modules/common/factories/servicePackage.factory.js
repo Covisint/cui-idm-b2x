@@ -136,18 +136,26 @@ angular.module('common')
         return defer.promise
     }
 
-    // Returns all packages for the specified userId with a pending status
-    servicePackage.getPersonPendingPackages = (userId) => {
+    // Returns all packages for the specified org or person with a pending status
+    servicePackage.getPendingPackages = (id,type) => {
         const defer = $q.defer()
-
-        API.cui.getPersonPendingServicePackages({qs: [
-            ['requestor.id', userId],
-            ['requestor.type', 'person']
-        ]})
-        .done(servicePackages => {
-            defer.resolve(servicePackages)
+        let promise=[]
+        if (type==='person') {
+            promise.push(
+                API.cui.getPersonPendingServicePackages({qs: [
+                    ['requestor.id', id],
+                    ['requestor.type', 'person']
+                ]})
+                )
+        }else{
+            promise.push(API.cui.retriveOrgPendingApps({qs: [['requestor.id', id]]}))
+        }
+        
+        $q.all(promise)
+        .then(servicePackages => {
+            defer.resolve(servicePackages[0])
         })
-        .fail(err => {
+        .catch(err => {
             console.error('There was an error retrieving pending service packages')
             APIError.onFor(errorName + 'getPendingPackages')
             defer.reject(err)
@@ -158,11 +166,11 @@ angular.module('common')
 
     // This call wraps the service.getPersonPendingServicesPackages() and service.getPackageDetails() calls
     // Returns all relevant data for a user's pending packages
-    servicePackage.getAllUserPendingPackageData = (userId) => {
+    servicePackage.getAllPendingPackageData = (id, type) => {
         const defer = $q.defer()
         let pendingPackageData = []
 
-        servicePackage.getPersonPendingPackages(userId)
+        servicePackage.getPendingPackages(id,type)
         .then(pendingPackages => {
             let packageDetailCalls = []
 
@@ -178,7 +186,7 @@ angular.module('common')
 
             $q.all(packageDetailCalls)
             .then(() => {
-                cui.log('packageDetailCalls then', userId, pendingPackageData);
+                cui.log('packageDetailCalls then', id, pendingPackageData);
                 defer.resolve(pendingPackageData)
             })
             .catch(err => {

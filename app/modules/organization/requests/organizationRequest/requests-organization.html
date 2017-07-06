@@ -2,6 +2,20 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/organization/requests/organizationRequest" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
+<!-- Submit Sucessful Pane -->
+<div class="class-toggle cui-modal" ng-if="organizationRequest.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+  <div class="cui-modal__pane">
+    <div class="cui-modal__icon">
+      <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+    </div>
+    <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationRequest.request.approval==='denied'">{{'registration-request-rejected' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationRequest.request.approval==='approved'">{{'registration-request-approved' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationRequest.approvedCount!==0">{{organizationRequest.approvedCount}} {{'approvals-submitted' | translate}}</span>
+    <span class="cui-modal__secondary-message" ng-if="organizationRequest.deniedCount!==0">{{organizationRequest.deniedCount}} {{'rejection-submitted' | translate}}</span>
+  </div>
+</div>
+
 <div class="cui-organization--pending-requests">
   <!-- Header -->
   <div ng-include="'app/modules/organization/requests/organizationRequest/sections-requests/requests-header.html'"
@@ -9,7 +23,7 @@
   </div>
 
   <!-- Error Messages -->
-  <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['organizationRequest.noRequest']">{{'cui-error-person-request' | translate}}</p>
+  <p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['organizationRequest.noRequest']">{{'cui-error-organization-request' | translate}}</p>
   
   <!-- Page Loading -->
   <div class="cui-loading__container--user-details" ng-if="base.loader.for['organizationRequest.init']">
