@@ -14,19 +14,58 @@
 
 <div ng-if="!userDetailsRoles.loading">
 	<!-- Assigned Roles -->
-	<div class="cui-users__profile-info">
+	<div>
 		<!-- Assigned Roles: Title -->
 		<div class="cui-action">
 			<div class="cui-action__title">{{'cui-assigned-roles'|translate}}</div>
 		</div>
+        <p ng-if="userDetailsRoles.assignedRoles.length===0">{{'cui-no-roles-assigned'|translate}}</p>
 		<!-- Assigned Roles: List -->
-		<div ng-repeat="role in userDetailsRoles.assignedRoles | orderBy:'name' track by role.roleId">
-			<p ng-if="userDetailsRoles.assignedRoles.length===0">{{'cui-no-roles-assigned'|translate}}</p>
-			<span>{{role.name}}</span>
-		</div>
+        <cui-expandable class="cui-expandable" ng-repeat="roles in userDetailsRoles.assignedRoles" ng-class="application.expanded?'expanded':''" transition-speed="150">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+               
+                <span class="cui-checkbox__container">
+                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.removeCheckbox[roles.roleId]" />
+                    <label for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label" ng-click="userDetailsRoles.checkrequest(roles.roleId)"></label>
+                </span>
+                
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+                    <h3 class="cui-expandable__title-left">{{roles.name}}</h3>
+                </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="cui-hide__opacity" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <div class="cui-expandable__pane-col" ng-if="roles.privileges && roles.privileges.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'privileges' | translate}}:</h4>
+                        <span ng-if="(!roles.privileges || roles.privileges.length===0)">{{'cui-no-details' | translate}}</span>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="privileges in roles.privileges">
+                                {{privileges.privilegeName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
+            <div class="cui-applications__submit-options" ng-if="userDetailsRoles.assignedRoles.length>0&&!userDetailsRoles.grantedHistoryError">
+                <button class="cui-button" ng-class="{'cui-button--error' : !userDetailsRoles.removeCheckboxValid }" ng-click="userDetailsRoles.removeCheckboxValid&&userDetailsRoles.removeRoles()">
+                    <span ng-if="!userDetailsRoles.removeSubmitError">{{'remove' | translate}} {{'roles'|translate}}</span>
+                    <span ng-if="userDetailsRoles.removeSubmitError===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+
 	</div>
 	        <!-- Right Block -->
-        <div class="cui-users__profile-info">
+            <!-- Assignable roles -->
+        <div >
             <div class="cui-action">
                 <div class="cui-action__title">{{'cui-available-roles'|translate}}</div>
             </div>
@@ -38,7 +77,7 @@
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                
                 <span class="cui-checkbox__container">
-                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.appCheckbox[roles.roleId]" />
+                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userDetailsRoles.assignCheckbox[roles.roleId]" />
                     <label for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label" ng-click="userDetailsRoles.checkrequest(roles.roleId)"></label>
                 </span>
                 
@@ -69,9 +108,9 @@
             </cui-expandable-body>
         </cui-expandable>
             <div class="cui-applications__submit-options" ng-if="userDetailsRoles.rolesGrantable.length>0&&!userDetailsRoles.grantedHistoryError">
-                <button class="cui-button" ng-class="{'cui-button--error' : !userDetailsRoles.appCheckboxValid }" ng-click="userDetailsRoles.appCheckboxValid&&userDetailsRoles.assignRoles()">
-                    <span ng-if="!userDetailsRoles.rolessubmitError">{{'submit-request' | translate}}</span>
-                    <span ng-if="userDetailsRoles.rolessubmitError===true">{{'cui-error-try-again' | translate}}</span>
+                <button class="cui-button" ng-class="{'cui-button--error' : !userDetailsRoles.assignCheckboxValid }" ng-click="userDetailsRoles.assignCheckboxValid&&userDetailsRoles.assignRoles()">
+                    <span ng-if="!userDetailsRoles.assignSubmitError">{{'assign' | translate}} {{'roles' | translate}}</span>
+                    <span ng-if="userDetailsRoles.assignSubmitError===true">{{'cui-error-try-again' | translate}}</span>
                 </button>
             </div>
         </div>

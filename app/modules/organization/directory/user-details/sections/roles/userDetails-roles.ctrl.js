@@ -10,14 +10,21 @@ angular.module('organization')
 
     userDetailsRoles.loading = true;
 
-    // ON LOAD START ---------------------------------------------------------------------------------
+    /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     let init = function init(){
 
-    apiPromises.push(
-	    API.cui.getPersonRoles({personId: userId})
-	    .then((res) => {
-	    	userDetailsRoles.assignedRoles = res;
+        apiPromises.push(
+    	    API.cui.getPersonRoles({personId: userId})
+    	    .then((res) => {
+    	    	userDetailsRoles.assignedRoles = res;
+            })
+            .fail(err =>{
+                userDetailsRoles.grantedHistoryError=true;
+            })
+        );
+
+        apiPromises.push(
             API.cui.getPersonRolesGrantable({personId:userId})
             .then(res =>{
                 userDetailsRoles.rolesGrantable=res;
@@ -25,37 +32,28 @@ angular.module('organization')
             .fail(err =>{
                 userDetailsRoles.grantedHistoryError=true;
             })
-	    })
-    );
+        );
 
-    apiPromises.push(
-        API.cui.getPersonRolesGrantable({personId:userId})
-        .then(res =>{
-            userDetailsRoles.rolesGrantable=res;
+        $q.all(apiPromises)
+        .then((res) => {
+        	userDetailsRoles.loading = false;
+            userDetailsRoles.success=false
         })
-        .fail(err =>{
+        .catch((error) => {
+    		userDetailsRoles.loading = false;
             userDetailsRoles.grantedHistoryError=true;
-        })
-    );
-
-    $q.all(apiPromises)
-    .then((res) => {
-    	userDetailsRoles.loading = false;
-        userDetailsRoles.success=false
-    })
-    .catch((error) => {
-		userDetailsRoles.loading = false;
-        userDetailsRoles.grantedHistoryError=true;
-        userDetailsRoles.success=false
-		console.log(error);
-    });
-}
+            userDetailsRoles.success=false
+    		console.log(error);
+        });
+    }
 
      init();
+    /* -------------------------------------------- ON LOAD END --------------------------------------------- */
 
+    /* --------------------------------------------- ON CLICK START ---------------------------------------------- */
     userDetailsRoles.assignRoles = () =>{
        let roles =[]
-       angular.forEach(userDetailsRoles.appCheckbox,function(dsd,appId){
+       angular.forEach(userDetailsRoles.assignCheckbox,function(dsd,appId){
        /*Object.keys(userRoles.appCheckbox).forEach(function(appId) {*/
            if(dsd){
                 let test={
@@ -85,25 +83,77 @@ angular.module('organization')
         })
         .fail(err =>{
             userDetailsRoles.loading=false
-            userDetailsRoles.rolessubmitError=true
+            userDetailsRoles.assignSubmitError=true
             $scope.$digest()
         })
     }
 
-     $scope.$watch("userDetailsRoles.appCheckbox", function(n) {
+    userDetailsRoles.removeRoles = () =>{
+       let roles =[]
+       angular.forEach(userDetailsRoles.removeCheckbox,function(dsd,appId){
+       /*Object.keys(userRoles.appCheckbox).forEach(function(appId) {*/
+           if(dsd){
+                let test={
+                "id":appId
+               }
+               roles.push(test)
+           }
+        });
+        let rolesSubmitData={
+        "userId": userId,
+        "roles": roles
+        }
+        console.log(rolesSubmitData)
+        
+       userDetailsRoles.loading = true
+        API.cui.removePersonRoles({data:rolesSubmitData})
+        .then(res =>{
+            console.log(res)
+            $scope.$digest()
+            userDetailsRoles.success=true
+             $timeout(() => {
+                userDetailsRoles.loading = false
+
+                init();
+            }, 3000);
+            
+        })
+        .fail(err =>{
+            userDetailsRoles.loading=false
+            userDetailsRoles.assignSubmitError=true
+            $scope.$digest()
+        })
+    }
+
+    /* --------------------------------------------- ON CLICK END ---------------------------------------------- */
+
+    /* --------------------------------------------- WATCHERS START ---------------------------------------------- */
+    $scope.$watch("userDetailsRoles.assignCheckbox", function(n) {
        let count=0
-       angular.forEach(userDetailsRoles.appCheckbox,function(dsd,key){
+       angular.forEach(userDetailsRoles.assignCheckbox,function(dsd,key){
         console.log(key)
         if(dsd)
             count+=1
        })
        if(count>0){
-        userDetailsRoles.appCheckboxValid=true
+        userDetailsRoles.assignCheckboxValid=true
        }else{
-        userDetailsRoles.appCheckboxValid=false
+        userDetailsRoles.assignCheckboxValid=false
        }
     }, true);
 
-    // ON LOAD END -----------------------------------------------------------------------------------
-
+    $scope.$watch("userDetailsRoles.removeCheckbox", function(n) {
+       let count=0
+       angular.forEach(userDetailsRoles.removeCheckbox,function(dsd,key){
+        console.log(key)
+        if(dsd)
+            count+=1
+       })
+       if(count>0){
+        userDetailsRoles.removeCheckboxValid=true
+       }else{
+        userDetailsRoles.removeCheckboxValid=false
+       }
+    }, true);
+    /* --------------------------------------------- WATCHERS END ---------------------------------------------- */
 });
