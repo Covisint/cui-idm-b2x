@@ -280,7 +280,19 @@ angular.module('common')
     }
 
     pub.getOrgAppsByPage = (page, pageSize, organizationId) => {
-        return API.cui.getOrgAppsNonce({organizationId: organizationId, qs:[['page',page],['pageSize',pageSize]]})
+        const deferred = $.Deferred()
+        let grants=[]
+        API.cui.getOrgAppsNonce({organizationId: organizationId, qs:[['page',page],['pageSize',pageSize]]})
+        .then(res =>{
+            res.forEach(grant => {
+                if (grant.servicePackage.requestable) grants.push(grant)
+            })
+            deferred.resolve(grants)
+        })
+        .fail(err => {
+            deferred.reject(err)
+        })
+        return deferred.promise()
     }
 
     pub.getOrgsByPageAndName = (page,pageSize,name) => {
@@ -308,9 +320,7 @@ angular.module('common')
             return pub.getOrgAppsByPage(1,pageSize,organization.id)
         })
         .then(res => {
-            res.forEach(grant => {
-                if (grant.servicePackage.requestable) results.grants.push(grant)
-            })
+            results.grants=res
             return API.cui.getPasswordPoliciesNonce({policyId: organization.passwordPolicy.id})
         })
         .then(res => {
