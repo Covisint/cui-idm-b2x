@@ -23,13 +23,13 @@
         <div class="cui-flex-table__left--stacked">
           <h3 class="cui-flex-table__title" ng-click="userDetailsApps.goToDetails(application)">{{application.name | cuiI18n}}</h3>
           <span ng-if="application.grant.status!=='pending'" class="cui-flex-table__subtitle-info">{{ 'granted' | translate }}: {{application.grant.instant | date:base.appConfig.dateFormat}}</span>
-          <span class="cui-status cui-mobile-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
+          <span class="cui-status cui-mobile-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase | translate}}</span>
         </div>
         <div class="cui-flex-table__middle cui-desktop-only">
           <span class="cui-media__content"> {{application.category | cuiI18n}}</span>
         </div>
         <div class="cui-flex-table__right cui-flex-table__right--stacked">
-          <span class="cui-status cui-desktop-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase}}</span>
+          <span class="cui-status cui-desktop-only" ng-class=" 'cui-status--'+application.grant.status ">{{application.grant.status | lowercase | translate}}</span>
           <span class="cui-flex-table__review" ng-if="application.grant.status==='pending'" ui-sref="organization.requests.pendingRequests({userId:userDetails.user.id,orgId:userDetails.user.organization.id})">{{'cui-review' | translate}}</span>
         </div>
 	    </li>

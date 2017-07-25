@@ -135,7 +135,7 @@
 			<h3 class="cui-tile__title">{{'bundled-applications' | translate}}</h3>
 			<div class="cui-tile__body">
 				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
-					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status | lowercase | translate}}</span>
 					<span class="active">{{'active' | translate}}</span>
 				</p>
 			</div>

@@ -35,7 +35,7 @@
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationAppRequestReview.organization.creation | date:base.appConfig.dateFormat}}</div>
       <!-- status -->
       <div class="cui-media__content">
-        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequestReview.organization.status}}</a>
+        <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{organizationAppRequestReview.organization.status | lowercase | translate}}</a>
         <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.organization.status==='active'"></cui-icon>
         <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="organizationAppRequestReview.organization.status==='locked'"></cui-icon>
       </div>

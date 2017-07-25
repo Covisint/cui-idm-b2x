@@ -29,7 +29,7 @@
     <!-- Status: Active -->
     <div class="cui-media__content">
       <span class="cui-media__content--dark">{{'status' | translate}}:</span>
-      <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status}}</span>
+      <span class="cui-status" ng-class=" 'cui-status--'+userDetails.user.status ">{{userDetails.user.status | lowercase | translate}}</span>
     </div>
   </div>
 </div>

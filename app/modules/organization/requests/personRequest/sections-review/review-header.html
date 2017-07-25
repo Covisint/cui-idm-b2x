@@ -34,7 +34,7 @@
       <!-- Organization -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'cui-org' | translate}}:</span><a href="" class="cui-media__link">{{personRequestReview.organization.name}}</a></div>
       <!-- status -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{personRequestReview.personData.status}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{personRequestReview.personData.status | lowercase | translate}}</a></div>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
     <cui-expandable-title class="cui-expandable__title" ng-click="toggleExpand()">
       <div class="cui-expandable__details-status">
         <span class="cui-link cui-expandable__details">{{'view-details' | translate}}</span>
-<!--         <span class="cui-expandable__status" ng-class="'cui-status--'+personRequestReview.personData.status">{{personRequestReview.personData.status}}</span> -->
+<!--         <span class="cui-expandable__status" ng-class="'cui-status--'+personRequestReview.personData.status">{{personRequestReview.personData.status | lowercase | translate}}</span> -->
       </div>
     </cui-expandable-title>
     <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">

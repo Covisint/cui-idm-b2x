@@ -36,7 +36,7 @@
       <!-- Registered Date -->
       <div class="cui-media__content"><span class="cui-media__content--dark">{{'request-date' | translate}}:</span> {{organizationRequest.request.personData.creation | date:base.appConfig.dateFormat}}</div>
       <!-- status -->
-      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationRequest.request.organization.status}}</a></div>
+      <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <a href="" class="cui-media__link">{{organizationRequest.request.organization.status | lowercase | translate}}</a></div>
     </div>
   </div>
 
