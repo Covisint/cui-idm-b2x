@@ -12,7 +12,7 @@
     <h3 class="cui-media__title">{{userAppDetails.app.name | cuiI18n|capitalize}}</h3>
     <span class="cui-media__content" >{{ 'granted' | translate }}: {{userAppDetails.app.grant.instant | date:base.appConfig.dateFormat}}</span>
     <!-- status -->
-    <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <span ng-class="'cui-status--'+userAppDetails.app.grant.status">{{userAppDetails.app.grant.status | lowercase}}</span></div>
+    <div class="cui-media__content"><span class="cui-media__content--dark">{{'status' | translate}}:</span>  <span ng-class="'cui-status--'+userAppDetails.app.grant.status">{{userAppDetails.app.grant.status | lowercase | translate}}</span></div>
   </div>
 </div>
 

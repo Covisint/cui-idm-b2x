@@ -87,7 +87,7 @@
           <h3 class="cui-media__title" ng-bind="application.name | cuiI18n"></h3>
         </div>
         <span class="cui-media__content" ng-if="application.category"> {{application.category | cuiI18n}}</span>
-        <span class="cui-status" ng-class="'cui-status--'+application.grant.status" ng-bind="application.grant.status | lowercase"></span>
+        <span class="cui-status" ng-class="'cui-status--'+application.grant.status" ng-bind="application.grant.status | lowercase | translate"></span>
       </div>
     </div>
 

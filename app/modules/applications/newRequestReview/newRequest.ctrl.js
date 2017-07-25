@@ -1,6 +1,6 @@
 angular.module('applications')
-.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests','localStorageService',
-function(API,$scope,$state,AppRequests,localStorage) {
+.controller('newAppRequestCtrl',['API','$scope','$state','AppRequests','DataStorage',
+function(API,$scope,$state,AppRequests,DataStorage) {
 
     let newAppRequest = this;
 
@@ -10,8 +10,8 @@ function(API,$scope,$state,AppRequests,localStorage) {
 
     // ON LOAD START ----------------------------------------------------------------------------------------
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
-        AppRequests.set(localStorage.get('appsBeingRequested'));
+    if(Object.keys(AppRequests.get()).length===0 && DataStorage.getType('appsBeingRequested')) {
+        AppRequests.set(DataStorage.getType('appsBeingRequested'));
     }
     const appsBeingRequested = AppRequests.get();
 

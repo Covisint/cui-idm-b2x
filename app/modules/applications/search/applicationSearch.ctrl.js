@@ -1,9 +1,9 @@
 angular.module('applications')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','localStorageService','$q','$pagination', function (API,$scope,$stateParams,$state,AppRequests,localStorage,$q,$pagination) {
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','DataStorage','$q','$pagination', function (API,$scope,$stateParams,$state,AppRequests,DataStorage,$q,$pagination) {
     let applicationSearch = this;
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) { // If there's nothing in app memory and there's something in local storage
-        AppRequests.set(localStorage.get('appsBeingRequested'));
+    if(Object.keys(AppRequests.get()).length===0 && DataStorage.getType('appsBeingRequested')) { // If there's nothing in app memory and there's something in local storage
+        AppRequests.set(DataStorage.getType('appsBeingRequested'));
     }
     applicationSearch.packageRequests = AppRequests.get();
     applicationSearch.appCheckbox = {};
@@ -144,7 +144,7 @@ angular.module('applications')
         } else {
             delete applicationSearch.packageRequests[application.id];
         }
-        localStorage.set('appsBeingRequested',applicationSearch.packageRequests);
+        DataStorage.setType('appsBeingRequested',applicationSearch.packageRequests);
         processNumberOfRequestedApps(applicationSearch.packageRequests[application.id]);
     };
 
