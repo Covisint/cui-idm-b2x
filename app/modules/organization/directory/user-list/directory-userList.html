@@ -113,13 +113,15 @@
     <div class="cui-loading__container" ng-if="base.loader.for['orgDirectory.userList']">
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
+    <!-- No Results -->
+    <p class="cui-users__password-success" ng-if="orgDirectory.userList.length===0&&!base.apiError.for['orgDirectory.userList']">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
     <!-- Error Message -->
     <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['orgDirectory.userList']">{{'error-generic' | translate}}</p>
 
     <cui-table-header 
           headers="['cui-name', 'username', 'status']" 
           sorting="orgDirectory.sortBy"
-          sorting-callbacks="orgDirectory.sortingCallbacks">
+          sorting-callbacks="orgDirectory.sortingCallbacks" ng-if="orgDirectory.userList.length!==0">
       </cui-table-header>
 
     <cui-table-row ng-repeat="user in orgDirectory.userList track by user.id" ng-click="orgDirectory.userClick(user)">
@@ -147,7 +149,7 @@
     </cui-table-row>
 
     <!-- Pagination Controls -->
-    <div class="cui-paginate__container">
+    <div class="cui-paginate__container" ng-if="orgDirectory.userList.length!==0">
       <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
       <results-per-page class="cui-paginate__select" ng-model="orgDirectory.search.pageSize"></results-per-page>
       <paginate class="cui-paginate" results-per-page="orgDirectory.search.pageSize" count="orgDirectory.userCount" on-page-change="orgDirectory.updateSearchParams" ng-model="orgDirectory.search.page" attach-rerender-to="orgDirectory.reRenderPagination"></paginate>
