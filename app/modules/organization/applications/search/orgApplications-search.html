@@ -50,6 +50,9 @@
       <div class="cui-loading--center"><div class="cui-loading"></div></div>
     </div>
 
+    <!-- Error message -->
+    <p ng-if="orgAppSearch.loadingError" align="center" class="cui-error">{{'error-generic' | translate}}</p>
+
     <!-- Application List -->
     <cui-expandable class="cui-expandable" ng-repeat="application in orgAppSearch.viewList track by application.id" ng-if="!base.loader.orgAppSearch.loading" transition-speed="150">
       <!-- Category -->
