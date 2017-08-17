@@ -74,7 +74,7 @@
           <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
         </div>
         <!-- No Results -->
-        <p class="cui-users__password-success" ng-if="search.noRecords">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
+        <p class="cui-users__password-success" ng-if="search.noRecords&&!search.pageError">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
         <!-- Error Message -->
         <p class="cui-users__password-success" style="color:red" ng-if="search.pageError">{{'error-generic' | translate}}</p>
         <div ng-if="!base.loader.for['search.loading'] && !search.pageError && !search.noRecords" >
