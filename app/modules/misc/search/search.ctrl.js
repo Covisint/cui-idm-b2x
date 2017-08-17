@@ -81,6 +81,7 @@ function(API, $scope, $stateParams, $state, $q, $pagination,APIHelpers,Loader,AP
 
     search.searchNow = function(searchOrPage) {
         search.pageError=false
+        search.noRecords=false
         if (searchOrPage) {
             search.searchParams.page=1
         }
