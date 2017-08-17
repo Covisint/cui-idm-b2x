@@ -160,4 +160,11 @@
     font-size:em(20);
   }
 }
-
+.user-profile__breadcrumb{
+  @media screen and (max-width:700px){
+    .cui-breadcrumb{
+      display:flex;
+    }
+  }
+  
+}
