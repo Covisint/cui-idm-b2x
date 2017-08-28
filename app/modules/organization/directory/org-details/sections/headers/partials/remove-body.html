@@ -1,0 +1,18 @@
+<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="orgDetails.dropDown.remove">
+  <ng-form name="removeOrg" novalidate>
+    <p>{{'remove-confirm' |translate}}</p>
+    <div class="cui-applications__review-text-input" >
+      <p class="cui-error h6" ng-if="removeOrg.reason.$error.required&&removeOrg.reason.$dirty">{{'cui-this-field-is-required' | translate}}</p>
+      <textarea name="reason" class="cui-text-area" ng-required="true" ng-model="orgDetails.removeReason" placeholder="{{'reason'|translate}}({{'required'|translate}})"></textarea>
+    </div>
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="orgDetails.dropDown.remove=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : !removeOrg.$valid}" ng-if="!base.loader.for['orgDetails.remove'] && !base.apiError.for['orgDetails.remove'] &&!orgDetails.removeOrgSuccess" ng-click="removeOrg.$valid&&orgDetails.removeOrg()" style="margin:5px">{{'remove' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['orgDetails.remove']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-class="{'cui-button--error' : !removeOrg.$valid}" ng-if="!base.loader.for['orgDetails.remove'] && base.apiError.for['orgDetails.remove']" ng-click="removeOrg.$valid&&orgDetails.removeOrg()">{{'cui-error-try-again' | translate}}</button>
+      <button  class="cui-button" ng-if="!base.loader.for['orgDetails.remove'] && orgDetails.removeOrgSuccess">{{'cui-success' | translate}}</button>
+    </div>
+  </ng-form>
+</div>
