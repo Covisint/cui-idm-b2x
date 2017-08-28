@@ -55,6 +55,10 @@ angular.module('organization', [])
                 'history@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/history/userDetails-history.html',
                     controller: returnCtrlAs('userDetailsHistory')
+                },
+                'appHistory@organization.directory.userDetails': {
+                    templateUrl: templateBase + 'directory/user-details/sections/appHistory/userDetails-appHistory.html',
+                    controller: returnCtrlAs('userDetailsAppsHistory')
                 }
             },
             access: {

@@ -38,6 +38,11 @@
         <div ui-view="applications"></div>
       </cui-resize-handler>
 
+      <!-- Applications History Mobile -->
+      <cui-resize-handler mobile show-if="userDetails.appHistoryMobile" ng-if="userDetails.mobileHandler==='appHistory'">
+        <div ui-view="appHistory"></div>
+      </cui-resize-handler>
+
       <!-- History Mobile -->
       <cui-resize-handler mobile show-if="userDetails.historyMobile" ng-if="userDetails.mobileHandler==='history'">
         <div ui-view="history"></div>
@@ -54,7 +59,10 @@
       <cui-resize-handler desktop show-if="userDetails.applicationsDesktop" ng-if="userDetails.appsHistorySwitch==='apps'">
         <div ui-view="applications"></div>
       </cui-resize-handler>
-
+      <!-- Applications History Desktop -->
+      <cui-resize-handler desktop show-if="userDetails.appHistoryDesktop" ng-if="userDetails.appsHistorySwitch==='appHistory'">
+        <div ui-view="appHistory"></div>
+      </cui-resize-handler>
       <!-- History Desktop -->
       <cui-resize-handler desktop show-if="userDetails.historyDesktop" ng-if="userDetails.appsHistorySwitch==='history'">
         <div ui-view="history"></div>
