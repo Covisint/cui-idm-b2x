@@ -36,7 +36,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
   <div class="cui-action__actions">
     <!-- Sort -->
     <div class="cui-action__action-container" ng-click="manageApplications.sortClicked =! manageApplications.sortClicked" id="sort-button" off-click="manageApplications.sortClicked=false">
-      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
       <span class="cui-action__action-label">{{'sort' | translate}}</span>
       <!-- Sort Popover -->
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="manageApplications.sortClicked" style="width:171px">
@@ -51,7 +51,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
 
     <!-- Refine -->
     <div class="cui-action__action-container" ng-click="manageApplications.refineClicked =! manageApplications.refineClicked" id="refine-button" off-click="manageApplications.refineClicked=false">
-      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.refineClicked" style="width:214px">
@@ -72,7 +72,7 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
 
     <!-- Categories -->
     <div class="cui-action__action-container" ng-click="manageApplications.categoriesClicked =! manageApplications.categoriesClicked" id="categories-button" off-click="manageApplications.categoriesClicked=false">
-      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
       <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.categoriesClicked" ng-click="manageApplications.categoriesClicked=false" style="width:214px">
