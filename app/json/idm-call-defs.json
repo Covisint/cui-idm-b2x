@@ -934,5 +934,23 @@
     "type": "POST",
     "accepts": "application/vnd.com.covisint.platform.person.remove.v1+json",
     "contentType": "application/vnd.com.covisint.platform.person.remove.v1+json"
+  },
+  {
+    "cmd": "suspendOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/suspend",
+    "type": "POST"
+  },
+  {
+    "cmd": "unsuspendOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/unsuspend",
+    "type": "POST"
+  },
+  {
+    "cmd": "removeOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/remove",
+    "type": "POST"
   }
 ]
