@@ -24,11 +24,10 @@ angular.module('organization')
        
 	
     apiPromises.push(
-		
        API.cui.getPersonApplicationsGrantHistory(opts),
-        API.cui.getPersonApplicationsGrantHistoryCount(opts),
-        API.cui.getPersonApplicationsRequestHistory(opts),
-        API.cui.getPersonApplicationsRequestHistoryCount(opts)
+       API.cui.getPersonApplicationsGrantHistoryCount(opts),
+       API.cui.getPersonApplicationsRequestHistory(opts),
+       API.cui.getPersonApplicationsRequestHistoryCount(opts)
     );
 
     $q.all(apiPromises)
@@ -93,6 +92,7 @@ angular.module('organization')
     }
 
     userDetailsAppsHistory.updateSearch = (updateType, updateValue, updatePage) => {
+        userDetailsAppsHistory.loading = true
         switch (updateType) {
             case 'requesteddate':
                 switchBetween('sortBy', '+requestedDate', '-requestedDate')
@@ -145,20 +145,24 @@ angular.module('organization')
                 userDetailsAppsHistory.requestedHistory = [];
                  API.cui.getPersonApplicationsRequestHistory(opts)
                  .then(res => {
-                    userDetailsAppsHistory.requestedHistory=res;
+                    userDetailsAppsHistory.requestedHistory=res
+                    userDetailsAppsHistory.loading = false
                     $scope.$digest()
                  })
                  .fail(err =>{
+                    userDetailsAppsHistory.loading = false
                     console.log(err)
                  })
              }else{
                  userDetailsAppsHistory.grantedHistory = [];
                  API.cui.getPersonApplicationsGrantHistory(opts)
                  .then(res => {
-                   userDetailsAppsHistory.grantedHistory=res;
+                   userDetailsAppsHistory.grantedHistory=res
+                   userDetailsAppsHistory.loading = false
                     $scope.$digest()
                  })
                  .fail(err =>{
+                    userDetailsAppsHistory.loading = false
                     console.log(err)
                  })
              } 
@@ -179,10 +183,16 @@ angular.module('organization')
             userDetailsAppsHistory.search = undefined
             userDetailsAppsHistory.search = Object.assign({}, {})
             userDetailsAppsHistory.search.page = 1
+            let value=(userDetailsAppsHistory.activeRequestTab)?'request':'grant'
+            userDetailsAppsHistory.search.pageSize = userDetailsAppsHistory.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+            userDetailsAppsHistory.updateSearch('','',value)
     }, true);
     $scope.$watch("userDetailsAppsHistory.activeGrantTab", function(n) {
            userDetailsAppsHistory.search = undefined  
            userDetailsAppsHistory.search = Object.assign({}, {})
            userDetailsAppsHistory.search.page = 1
+           userDetailsAppsHistory.search.pageSize = userDetailsAppsHistory.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+           let value=(userDetailsAppsHistory.activeGrantTab)?'grant':'request'
+           userDetailsAppsHistory.updateSearch('','',value)
     }, true);
 });
