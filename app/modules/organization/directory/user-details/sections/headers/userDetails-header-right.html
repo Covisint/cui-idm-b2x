@@ -17,12 +17,11 @@
   </div>
 
   <!-- History -->
-  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="userDetails.appsHistorySwitch='history'" ng-if="true">
+  <div class="cui-organization__profile-header-item" id="history-button" ng-click="userDetails.appsHistorySwitch='history'">
     <div ng-class="{ 'cui-action__icon--active':userDetails.appsHistorySwitch=='history'}">
-      <!-- <cui-icon cui-svg-icon="cui:history" svg-class="cui-action__icon cui-action__icon--history"  use-class="cui-card__icon" viewbox="0 0 48 52" preserveAspectRatio="xMidYMid meet" ></cui-icon> -->
-      <img ng-src="app/modules/user/user_icon/history_mouseover.png" width="49px" height="44px">
+      <cui-icon cui-svg-icon="cui:setting-roll" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
     </div>
-    <!-- <span class="cui-action__action-label">{{'history-upper' | translate}}</span> -->
+    <span class="cui-action__action-label">{{'history-upper' | translate}}</span>
   </div>
 
   <div class="cui-organization__profile-header-items--right" ng-if="false">
