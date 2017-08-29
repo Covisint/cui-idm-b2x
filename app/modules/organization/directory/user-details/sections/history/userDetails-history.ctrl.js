@@ -33,7 +33,7 @@ angular.module('organization')
     $q.all(apiPromises)
     .then((res) => {
         userDetailsHistory.statusHistory = res[0]
-         /*userDetailsHistory.passwordChangeHistory = res[1]*/
+        /*userDetailsHistory.passwordChangeHistory = res[1]*/
     	userDetailsHistory.loading = false;
     })
     .catch((error) => {
