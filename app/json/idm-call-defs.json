@@ -952,5 +952,23 @@
     "cmdType": "secured",
     "call": "/organization/v3/organizations/tasks/remove",
     "type": "POST"
+  },
+  {
+    "cmd": "getOrgAppsGrantHistory",
+    "call": "/service/v3/applications/organizations/{organizationId}/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.grant.history.v1+json"
+  },
+  {
+    "cmd": "getOrgAppsRequestHistory",
+    "call": "/service/v3/organizations/{organizationId}/applications/requests/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
+  },
+  {
+    "cmd": "getOrgstatusHistory",
+    "call": "/organization/v3/organizations/statusHistory",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.organization.status.history.v1+json"
   }
 ]
