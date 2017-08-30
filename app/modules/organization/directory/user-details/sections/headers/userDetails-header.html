@@ -52,8 +52,11 @@
 
 
   <!-- unlock user -->
-
-  <cui-button 
+  <!-- Outer div to remove isolate scope error -->
+  <div 
+  cui-access="{requiredEntitlements:['Full Tree Access','Permanently Remove User'],entitlementType:'atLeastOne'}" 
+  user-entitlements="base.user.entitlements">
+    <cui-button 
       disable-animate 
       ng-if="userDetails.passwordAccount.locked&&(userDetails.user.status==='active'||userDetails.user.status==='locked')"
       loading-if="base.loader.for['userDetails.unlockUser']"
@@ -68,6 +71,8 @@
         {{'cui-unlock' | translate}}
       </button>
     </cui-button>
+  </div>
+  
 
   <!-- Unsuspend -->
   <button class="cui-button cui-button--inverted" 
