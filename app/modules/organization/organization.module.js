@@ -127,6 +127,32 @@ angular.module('organization', [])
                 permittedLogic:appConfig.accessByAnyAdmin
             }
         })
+        // History----------------------------------------------
+        .state('organization.statusHistory', {
+            url: '/statusHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/status/organization-status.html',
+            controller: returnCtrlAs('organizationStatusHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        .state('organization.appGrantHistory', {
+            url: '/appGrantHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/app-grant/organization-appGrant.html',
+            controller: returnCtrlAs('organizationAppGrantHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        .state('organization.appRequestHistory', {
+            url: '/appRequestHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/app-request/organization-appRequest.html',
+            controller: returnCtrlAs('organizationAppRequestHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        
         .state('organization.newRequest', {
             url: '/request',
             templateUrl: templateBase + 'applications/appRequest/newRequest/appRequest-newRequest.html',
