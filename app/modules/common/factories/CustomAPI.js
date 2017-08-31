@@ -203,6 +203,14 @@ angular.module('common')
             contentType: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
             call: `/service/v3/grants/tasks/organization/package/suspend`,
             type: 'POST'
+        },
+        {
+            cmd: 'unsuspendOrgPkg',
+            cmdType: 'secured',
+            accepts: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            contentType: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            call: `/service/v3/grants/tasks/organization/package/unsuspend`,
+            type: 'POST'
         }
     ]
 

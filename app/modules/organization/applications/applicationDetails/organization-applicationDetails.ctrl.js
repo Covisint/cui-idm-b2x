@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgApplicationDetailsCtrl', function(API,APIHelpers,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams) {
+.controller('orgApplicationDetailsCtrl', function(API,APIHelpers,APIError,Loader,Sort,User,$q,$scope,$state,$stateParams,$timeout) {
 
     const orgApplicationDetails = this;
     const organizationId = $stateParams.orgId
@@ -189,7 +189,44 @@ angular.module('organization')
     };
 
     orgApplicationDetails.suspendApplication = (organization) => {
-        Loader.onFor(loaderName + 'app');
+        Loader.onFor(loaderName + 'suspend');
+        APIError.offFor(loaderName + 'suspend')
+        var suspendObj= {
+                "grantee":{
+                  "id":orgApplicationDetails.application.owningOrganization.id,
+                  "type":"organization",
+                  "realm":orgApplicationDetails.application.realm
+                },
+                "servicePackage":{
+                  "id":orgApplicationDetails.application.servicePackage.id,
+                  "type":"servicepackage",
+                  "realm":orgApplicationDetails.application.realm
+                },
+                "justification":orgApplicationDetails.suspendReason
+                };
+
+        API.cui.suspendOrgPkg({data: suspendObj})
+        .then((res) => {
+            orgApplicationDetails.application.grant.status="suspended"
+            orgApplicationDetails.suspendAppSuccess=true
+            Loader.offFor(loaderName + 'suspend')
+            $scope.$digest()
+            $timeout(() => {
+                orgApplicationDetails.dropDown.suspend=false
+                orgApplicationDetails.suspendAppSuccess=false
+            },2000)
+        })
+        .fail((error) => {
+             APIError.onFor(loaderName + 'suspend')
+            Loader.offFor(loaderName + 'suspend')
+            $scope.$digest()
+            console.log('There was an error suspending user App', + err)
+        });
+    };
+
+    orgApplicationDetails.unsuspendApplication = (organization) => {
+        Loader.onFor(loaderName + 'unsuspend')
+        APIError.offFor(loaderName + 'unsuspend')
 
         var suspendObj= {
                 "grantee":{
@@ -202,22 +239,25 @@ angular.module('organization')
                   "type":"servicepackage",
                   "realm":orgApplicationDetails.application.realm
                 },
-                "justification":"Suspending Organization Application"
+                "justification":orgApplicationDetails.unsuspendReason
                 };
 
-        API.cui.suspendOrgPkg({data: suspendObj})
+        API.cui.unsuspendOrgPkg({data: suspendObj})
         .then((res) => {
-            orgApplicationDetails.success='true';
-            Loader.offFor(loaderName + 'app');
+           orgApplicationDetails.application.grant.status="active"
+            orgApplicationDetails.unsuspendAppSuccess=true
+            Loader.offFor(loaderName + 'unsuspend')
+            $scope.$digest()
             $timeout(() => {
-                $state.go('applications.orgApplications.applicationList');
-            }, 3000);
+                orgApplicationDetails.dropDown.unsuspend=false
+                orgApplicationDetails.unsuspendAppSuccess=false
+            },2000)
         })
         .fail((error) => {
-            Loader.offFor(loaderName + 'app');
-            orgApplicationDetails.suspendError=true;
-            $scope.$apply();
-            /*APIError.onFor(loaderName + 'grants: ', error);*/
+           APIError.onFor(loaderName + 'unsuspend')
+            Loader.offFor(loaderName + 'unsuspend')
+            $scope.$digest()
+            console.log('There was an error suspending user App', + err)
         });
     };
 
