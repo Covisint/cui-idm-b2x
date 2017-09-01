@@ -33,6 +33,7 @@ angular.module('organization')
             orgProfile.securityAdmins = res.admins
             orgProfile.passwordPolicy = res.passwordPolicy
             orgProfile.authenticationPolicy=res.authenticationPolicy
+            orgProfile.statusHistory=res.statusHistory
             DataStorage.setType('orgProfile', res)
             Loader.offFor('orgProfile.init')
         })
