@@ -49,7 +49,7 @@
 		<!-- Granted -->
 		<p class="org-Application--text">Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
 	  <!-- Status: Active -->
-	  	<p class="org-application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
+	  	<p class="org-application--text cui-media__content">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
 		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
 		  		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
 		  	</svg>
