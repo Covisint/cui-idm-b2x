@@ -127,6 +127,14 @@
                 <span class="cui-field-val__val">{{attribute.value}}</span>
               </div>
             </div>
+            <!-- Status History -->
+            <div class="cui-organization__admin-block cui-organization__admin-block__right cui-users__history" ng-if="orgProfile.statusHistory">
+              <h4 class="cui-field-val__field">{{'status-history' | translate}}:</h4>
+              <div class="cui-field-val" ng-repeat=" status in orgProfile.statusHistory">
+                <span class="cui-field-val__field">{{status.status|lowercase}}</span>
+                <span class="cui-field-val__val">: {{status.creation |date:base.appConfig.dateFormat}}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
