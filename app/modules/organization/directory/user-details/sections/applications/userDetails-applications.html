@@ -1,12 +1,12 @@
 <ul class="cui-tabs__nav">
   <li class="cui-tabs__tab-container">
-    <a ng-class="(userDetailsApps.activeAppsTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeAppsTab)?'':userDetailsApps.activeGrantTab=false;userDetailsApps.activeRequestTab=false;userDetailsApps.activeAppsTab=true">Apps</a>
+    <a ng-class="(userDetailsApps.activeAppsTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeAppsTab)?'':userDetailsApps.activeGrantTab=false;userDetailsApps.activeRequestTab=false;userDetailsApps.activeAppsTab=true">{{'apps-upper'|translate}}</a>
   </li>
   <li class="cui-tabs__tab-container">
-    <a ng-class="(userDetailsApps.activeRequestTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeRequestTab)?'':userDetailsApps.activeGrantTab=false;userDetailsApps.activeRequestTab=true;userDetailsApps.activeAppsTab=false">Requested History</a>
+    <a ng-class="(userDetailsApps.activeRequestTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeRequestTab)?'':userDetailsApps.activeGrantTab=false;userDetailsApps.activeRequestTab=true;userDetailsApps.activeAppsTab=false">{{'request-history'|translate}}</a>
   </li>
   <li class="cui-tabs__tab-container">
-    <a ng-class="(userDetailsApps.activeGrantTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeGrantTab)?'':userDetailsApps.activeRequestTab=false;userDetailsApps.activeGrantTab=true;userDetailsApps.activeAppsTab=false">Granted History</a>
+    <a ng-class="(userDetailsApps.activeGrantTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(userDetailsApps.activeGrantTab)?'':userDetailsApps.activeRequestTab=false;userDetailsApps.activeGrantTab=true;userDetailsApps.activeAppsTab=false">{{'grant-history'|translate}}</a>
   </li>
 </ul>
 
