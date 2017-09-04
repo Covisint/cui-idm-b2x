@@ -20,6 +20,7 @@ angular.module('organization')
             orgDetailsProfile.securityAdmins = res.admins
             orgDetailsProfile.passwordPolicy = res.passwordPolicy
             orgDetailsProfile.authenticationPolicy=res.authenticationPolicy
+            orgDetailsProfile.statusHistory=res.statusHistory
             Loader.offFor('orgDetailsProfile.init')
         })
         .catch(err => {

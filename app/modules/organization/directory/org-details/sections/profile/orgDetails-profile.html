@@ -47,7 +47,7 @@
         
         <!-- Admins -->
         <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
-        <div class="cui-organization__admin-block" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
+        <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
           <!-- Name -->
           <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
@@ -72,6 +72,15 @@
           <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
             <span class="cui-field-val__val"><a class="cui-link" href="mailto:{{admin.email}}">{{admin.email}}</a></span>
+          </div>
+        </div>
+
+        <!-- Status History -->
+        <h4 class="cui-field-val__field">{{'status-history' | translate}}:</h4>
+        <div class="cui-organization__admin-block cui-users__history cui-organization__admin-block__right" ng-if="orgDetailsProfile.statusHistory">
+          <div class="cui-field-val" ng-repeat=" status in orgDetailsProfile.statusHistory">
+            <span class="cui-field-val__field">{{status.status |lowercase}}</span>
+            <span class="cui-field-val__val">: {{status.creation |date:base.appConfig.dateFormat}}</span>
           </div>
         </div>
       </div>
