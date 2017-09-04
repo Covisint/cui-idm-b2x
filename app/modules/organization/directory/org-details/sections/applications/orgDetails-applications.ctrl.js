@@ -186,7 +186,7 @@ angular.module('organization')
     orgDetailsApps.goToDetails = (application) => {
         const opts = {
             appId: application.id,
-            orgId: application.owningOrganization.id
+            orgId: $stateParams.orgId
         };
         $state.go('organization.applicationDetails', opts);
     };
