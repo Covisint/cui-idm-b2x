@@ -1,9 +1,11 @@
 .cui-organization {
   position: relative;
 }
-
 .cui-tabs__main-container{
       padding: 0.9375em 3.4375em 0 4.0625em;  
+      @media screen and (max-width:700px){
+        padding: 0;
+      }
 }
 .cui-organization__main-container {
   min-height: 400px;
@@ -14,6 +16,16 @@
     padding: em(15) em(55) 0 em(65);
   }
 }
+
+.cui-users__main-container, .cui-organization__user-details{
+  .cui-tabs__main-container{
+    padding:0;
+  }
+  .cui-organization__main-container{
+      padding: 0;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .cui-organization__info-block {
     -ms-flex-direction: column;
