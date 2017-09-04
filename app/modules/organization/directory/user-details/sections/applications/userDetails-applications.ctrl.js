@@ -16,6 +16,15 @@ angular.module('organization')
     userDetailsApps.loading = true;
     userDetailsApps.appList = [];
 
+    userDetailsApps.search = Object.assign({}, $stateParams)
+    userDetailsApps.search.page = userDetailsApps.search.page || 1;
+    userDetailsApps.search.pageSize = userDetailsApps.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+    userDetailsApps.searchBy='name'
+    const opts = {
+        personId:userId
+    };
+
+    // HELPER FUNCTIONS START ------------------------------------------------------------------------
     const getPackageServices = (servicePackage) => {
         return API.cui.getPackageServices({packageId: servicePackage.servicePackage.id})
         .then((res) => {
@@ -29,116 +38,6 @@ angular.module('organization')
         });
     };
 
-    // ON LOAD START ---------------------------------------------------------------------------------
-
-    apiPromises.push(
-        // Get user's granted applications
-        API.cui.getPersonGrantedApps({personId: userId})
-        .then((res) => {
-            res.forEach((grantedApp) => {
-                userDetailsApps.appList.push(grantedApp);
-            });
-        })
-    );
-
-    apiPromises.push(
-        // Get user's pending service packages
-        API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person']]})
-        .then((res) => {
-            let pendingServicePromises = [];
-
-            res.forEach((servicePackage) => {
-                // For each packages get its services
-                pendingServicePromises.push(getPackageServices(servicePackage));
-            });
-
-            $q.all(pendingServicePromises)
-            .then(() => {
-                userDetailsApps.loading = false;
-            })
-            .catch((error) => {
-                userDetailsApps.loading = false;
-                console.log(error);
-            });
-        })
-    );
-
-    apiPromises.push(
-        // Get categories of applications
-        API.cui.getCategories()
-        .then((res) => {
-            userDetailsApps.appCategories = res;
-        })
-    );
-
-    apiPromises.push(
-        // Get user's granted applications count
-        API.cui.getPersonGrantedAppCount({personId: userId})
-        .then((res) => {
-            userDetailsApps.appCount = res;
-        })
-    );
-
-    $q.all(apiPromises)
-    .catch((error) => {
-        userDetailsApps.loading = false;
-        console.log(error);
-    });
-
-    // ON LOAD END -----------------------------------------------------------------------------------
-
-    // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
-
-    userDetailsApps.goToDetails = (application) => {
-        DataStorage.setType('userAppDetail',application)
-        if (application.grant.status==='pending') {
-            $state.go('organization.requests.pendingRequests', {
-                    'userId': userId, 
-                    'orgId': organizationId,
-                    'packageId': application.servicePackage.servicePackage.id
-                })
-        }
-        else
-        $state.go('organization.directory.userAppDetails',{appId:application.id,orgId:organizationId,userId:userId})
-    }
-
-    /*     let queryParams = [['page', String(userDetailsApps.search.page)], ['pageSize', String(userDetailsApps.search.pageSize)]];
-        if(userDetailsApps.search.sortBy)
-            queryParams.push(['sortBy',userDetailsApps.search['sortBy']])*/
-        const opts = {
-            personId:userId
-        };
-
-    // ON LOAD START ---------------------------------------------------------------------------------
-       
-    
-    /*apiPromises.push(
-       API.cui.getPersonApplicationsGrantHistory(opts),
-       API.cui.getPersonApplicationsGrantHistoryCount(opts),
-       API.cui.getPersonApplicationsRequestHistory(opts),
-       API.cui.getPersonApplicationsRequestHistoryCount(opts)
-    );
-
-    $q.all(apiPromises)
-    .then((res) => {
-        userDetailsApps.grantedHistory=res[0]
-        userDetailsApps.grantedHistoryCount=res[1]
-        userDetailsApps.requestedHistory=res[2]
-        userDetailsApps.requestedHistoryCount=res[3]
-        if(userDetailsApps.grantedHistory.length>0){
-            getCountsOfStatus("active")
-            getCountsOfStatus("suspended")
-            //To getFull count
-            getCountsOfStatus(undefined)
-        }
-        userDetailsApps.loading = false
-    })
-    .catch((error) => {
-        userDetailsApps.loading = false
-        console.log(error);
-    });*/
-
-    // ON LOAD END -----------------------------------------------------------------------------------
     const getCountsOfStatus=(qsValue)=>{
         let opts = {
             personId: userId
@@ -164,20 +63,149 @@ angular.module('organization')
 
         })
     }
-    
-    userDetailsApps.search = Object.assign({}, $stateParams)
-    userDetailsApps.search.page = userDetailsApps.search.page || 1;
-    userDetailsApps.paginationPageSize = userDetailsApps.paginationPageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
-    userDetailsApps.search.pageSize = userDetailsApps.paginationPageSize;
-    userDetailsApps.searchBy='name'
-    /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
+    // HELPER FUNCTIONS END ------------------------------------------------------------------------
+    // ON LOAD START ---------------------------------------------------------------------------------
+
+    const getPersonApps = () =>{
+        // Pagination is complicated as we are showing the data from two api calls
+        apiPromises.push(
+            // Get user's granted applications
+            API.cui.getPersonGrantedApps({personId: userId, qs:[['page','1'],['pageSize','200']]})
+            .then((res) => {
+                res.forEach((grantedApp) => {
+                    userDetailsApps.appList.push(grantedApp);
+                });
+            })
+        )
+        apiPromises.push(
+            // Get user's pending service packages
+            API.cui.getPersonPendingServicePackages({qs: [['requestor.id', userId],['requestor.type', 'person'],['page','1'],['pageSize','200']]})
+            .then((res) => {
+                let pendingServicePromises = [];
+
+                res.forEach((servicePackage) => {
+                    // For each packages get its services
+                    pendingServicePromises.push(getPackageServices(servicePackage));
+                });
+
+                $q.all(pendingServicePromises)
+                .then(() => {
+                    userDetailsApps.loading = false;
+                })
+                .catch((error) => {
+                    userDetailsApps.loading = false;
+                    console.log(error);
+                });
+            })
+        )
+        apiPromises.push(
+            // Get categories of applications
+            API.cui.getCategories()
+            .then((res) => {
+                userDetailsApps.appCategories = res;
+            })
+        );
+
+        apiPromises.push(
+            // Get user's granted applications count
+            API.cui.getPersonGrantedAppCount({personId: userId})
+            .then((res) => {
+                userDetailsApps.appCount = res;
+            })
+        );
+
+        $q.all(apiPromises)
+        .catch((error) => {
+            userDetailsApps.loading = false;
+            console.log(error);
+        });
+    }
+
+    getPersonApps()
+
+    const getPersonRequestedApps = (opts) => {
+        userDetailsApps.requestedHistory = [];
+         API.cui.getPersonApplicationsRequestHistory(opts)
+         .then(res => {
+            userDetailsApps.requestedHistory=res
+            API.cui.getPersonApplicationsRequestHistoryCount(opts)
+            .then(res =>{
+                userDetailsApps.requestedHistoryCount=res
+                userDetailsApps.loading = false
+                $scope.$digest()
+            })
+            .fail(err =>{
+                userDetailsApps.loading = false
+                console.log(err)
+                $scope.$digest()
+            })
+
+         })
+         .fail(err =>{
+            userDetailsApps.loading = false
+            console.log(err)
+         })
+    }
+
+    const getPersonGrantedApps = (opts) => {
+        userDetailsApps.grantedHistory = [];
+         API.cui.getPersonApplicationsGrantHistory(opts)
+         .then(res => {
+           userDetailsApps.grantedHistory=res
+           if(userDetailsApps.grantedHistory.length>0&&userDetailsApps.onLoadFirst){
+                getCountsOfStatus("active")
+                getCountsOfStatus("suspended")
+                //To getFull count
+                getCountsOfStatus(undefined)
+                userDetailsApps.onLoadFirst=false
+            }
+            API.cui.getPersonApplicationsGrantHistoryCount(opts)
+            .then(res =>{
+                userDetailsApps.grantedHistoryCount=res
+                userDetailsApps.loading = false
+                $scope.$digest()
+            })
+            .fail(err =>{
+                userDetailsApps.loading = false
+                console.log(err)
+                $scope.$digest()
+            })
+         })
+         .fail(err =>{
+            userDetailsApps.loading = false
+            console.log(err)
+         })
+    }
+ 
+
+    // ON LOAD END -----------------------------------------------------------------------------------
+
+    // ON CLICK FUNCTIONS START ----------------------------------------------------------------------
+
+    userDetailsApps.goToDetails = (application) => {
+        DataStorage.setType('userAppDetail',application)
+        if (application.grant.status==='pending') {
+            $state.go('organization.requests.pendingRequests', {
+                    'userId': userId, 
+                    'orgId': organizationId,
+                    'packageId': application.servicePackage.servicePackage.id
+                })
+        }
+        else
+        $state.go('organization.directory.userAppDetails',{appId:application.id,orgId:organizationId,userId:userId})
+    }
+    
     userDetailsApps.pageChange = (newpage) => {
         userDetailsApps.updateSearch('page', newpage, 'request')
     }
 
     userDetailsApps.pageGrantedChange = (newpage) => {
         userDetailsApps.updateSearch('page', newpage, 'grant')
+    }
+
+    userDetailsApps.pageAppsChange = (newpage) => {
+        userDetailsApps.updateSearch('page', newpage, 'apps')
     }
 
     userDetailsApps.updateSearch = (updateType, updateValue, updatePage) => {
@@ -235,55 +263,13 @@ angular.module('organization')
         // doesn't change state, only updates the url
         $state.transitionTo('organization.directory.userDetails', userDetailsApps.search, { notify:false })
              if(updatePage=='request'){
-                userDetailsApps.requestedHistory = [];
-                 API.cui.getPersonApplicationsRequestHistory(opts)
-                 .then(res => {
-                    userDetailsApps.requestedHistory=res
-                    API.cui.getPersonApplicationsRequestHistoryCount(opts)
-                    .then(res =>{
-                        userDetailsApps.requestedHistoryCount=res
-                        userDetailsApps.loading = false
-                        $scope.$digest()
-                    })
-                    .fail(err =>{
-                        userDetailsApps.loading = false
-                        console.log(err)
-                        $scope.$digest()
-                    })
-       
-                 })
-                 .fail(err =>{
-                    userDetailsApps.loading = false
-                    console.log(err)
-                 })
-             }else{
-                 userDetailsApps.grantedHistory = [];
-                 API.cui.getPersonApplicationsGrantHistory(opts)
-                 .then(res => {
-                   userDetailsApps.grantedHistory=res
-                   if(userDetailsApps.grantedHistory.length>0&&userDetailsApps.onLoadFirst){
-                        getCountsOfStatus("active")
-                        getCountsOfStatus("suspended")
-                        //To getFull count
-                        getCountsOfStatus(undefined)
-                        userDetailsApps.onLoadFirst=false
-                    }
-                    API.cui.getPersonApplicationsGrantHistoryCount(opts)
-                    .then(res =>{
-                        userDetailsApps.grantedHistoryCount=res
-                        userDetailsApps.loading = false
-                        $scope.$digest()
-                    })
-                    .fail(err =>{
-                        userDetailsApps.loading = false
-                        console.log(err)
-                        $scope.$digest()
-                    })
-                 })
-                 .fail(err =>{
-                    userDetailsApps.loading = false
-                    console.log(err)
-                 })
+                getPersonGrantedApps(opts)
+             }
+             else if(updatePage=='apps'){
+                getPersonApps(opts)
+             }
+             else{
+                 getPersonRequestedApps(opts)
              } 
     }
 
@@ -297,6 +283,10 @@ angular.module('organization')
             ? secondValue
             : firstValue
     }
+
+// ON CLICK FUNCTIONS END ------------------------------------------------------------------------
+
+// $WATCHERS START ------------------------------------------------------------------------
 
     $scope.$watch("userDetailsApps.activeRequestTab", function(n) {
             userDetailsApps.search = undefined
@@ -319,5 +309,5 @@ angular.module('organization')
            } 
     }, true);
 
-    // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
+    // $WATCHERS END ------------------------------------------------------------------------
 });
