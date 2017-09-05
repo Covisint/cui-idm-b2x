@@ -67,3 +67,10 @@
   @extend %bold;
   margin-bottom: em(21);
 }
+
+.cui-field-val--stack {
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  -ms-flex-align:flex-start;
+}
