@@ -263,13 +263,13 @@ angular.module('organization')
         // doesn't change state, only updates the url
         $state.transitionTo('organization.directory.userDetails', userDetailsApps.search, { notify:false })
              if(updatePage=='request'){
-                getPersonGrantedApps(opts)
+                getPersonRequestedApps(opts)
              }
              else if(updatePage=='apps'){
                 getPersonApps(opts)
              }
              else{
-                 getPersonRequestedApps(opts)
+                 getPersonGrantedApps(opts)
              } 
     }
 
