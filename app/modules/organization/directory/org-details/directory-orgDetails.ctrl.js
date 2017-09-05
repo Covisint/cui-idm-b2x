@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('orgDetailsCtrl', function(API, Loader, $scope, $stateParams,APIError,APIHelpers,$timeout,$q) {
+.controller('orgDetailsCtrl', function(API, Loader, $scope, $stateParams,APIError,APIHelpers,$timeout,$q,$state) {
 
     const orgDetails = this
     const loaderName = 'orgDetails.'
@@ -126,9 +126,6 @@ angular.module('organization')
             APIError.onFor(loaderName + 'remove')
             Loader.offFor(loaderName + 'remove')
             $scope.$digest()
-            $timeout(() => {
-                APIError.offFor(loaderName + 'remove')
-            },3000)
             console.log('There was an error removing the organization', + err)
         })
     }
