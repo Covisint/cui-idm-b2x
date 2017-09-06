@@ -1,7 +1,9 @@
 /*
 Global layout styles
 */
-
+.snap-content{
+  overflow:inherit;
+}
 .cui-breadcrumb__link {
   .cui-breadcrumb__route {
     font-size: 0.75em !important;
