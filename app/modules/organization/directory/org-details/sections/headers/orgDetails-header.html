@@ -54,10 +54,10 @@
             user-entitlements="base.user.entitlements">
             {{'unsuspend' | translate}}
     </button> -->
-    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status!=='active'" ng-click="orgDetails.toggleDropDown('unsuspend')">{{'unsuspend' | translate}}</button>
+    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status==='suspended'" ng-click="orgDetails.toggleDropDown('unsuspend')">{{'unsuspend' | translate}}</button>
     
     <!-- Remove -->
-    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status!=='active'" ng-click="orgDetails.toggleDropDown('remove')">{{'remove' | translate}}</button>
+    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status==='suspended'" ng-click="orgDetails.toggleDropDown('remove')">{{'remove' | translate}}</button>
 
     <!-- New Grants -->
      <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToOrg()" ng-disabled="orgDetails.organization.status!=='active'" ui-sref="organization.requests.newOrgGrant({orgId:orgId})" ng-class="(orgDetails.organization.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
