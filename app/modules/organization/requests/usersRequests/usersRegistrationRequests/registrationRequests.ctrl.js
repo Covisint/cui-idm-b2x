@@ -83,7 +83,7 @@ angular.module('organization')
 
 			var getPackage = function(packageId) {
 				return $.Deferred(function (dfr) {
-					if (packageId.length) {
+					if (packageId&&packageId.length) {
 						var cached = _.find(foundPackages, {id: packageId});
 						if (cached) {
 							dfr.resolve(cached);
@@ -239,7 +239,7 @@ angular.module('organization')
     		Loader.onFor(scopeName + 'data')
       		APIError.offFor(scopeName + 'data')
       		 usersRegistrationRequests.searchByOrg=[]
-    		API.cui.getOrganizations({qs:[['name',usersRegistrationRequests.searchValue+'*']]})
+    		API.cui.getOrganizations({qs:[['name',usersRegistrationRequests.searchValue]]})
     		.then((res) =>{
     			console.log(res)
     			usersRegistrationRequests.searchByOrg=res
