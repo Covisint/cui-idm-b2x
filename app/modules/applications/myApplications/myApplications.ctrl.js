@@ -104,9 +104,7 @@ angular.module('applications')
         $q.all(promises)
         .then(res => {
             myApplications.viewList = Object.assign(res[0]).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
-            if (!previouslyLoaded) {
                 myApplications.count = res[1]
-            }
             myApplications.popupCount = myApplications.count-Object.assign(res[0]).filter(x => x.servicePackage.displayable!==true || x.grant.status!=='active').length
             myApplications.list=res[0];
             // re-render pagination if available
