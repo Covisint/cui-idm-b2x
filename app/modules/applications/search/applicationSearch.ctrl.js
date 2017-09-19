@@ -112,6 +112,7 @@ angular.module('applications')
         .then((res) => {
              applicationSearch.list = res[0];
              applicationSearch.count = res[1];
+             applicationSearch.reRenderPaginate &&applicationSearch.reRenderPaginate()
              updateViewList(res[0])
              .then(() =>{
                 applicationSearch.doneReloading = applicationSearch.doneLoading = true;

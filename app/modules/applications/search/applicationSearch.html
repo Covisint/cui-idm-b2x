@@ -113,7 +113,7 @@
         <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
                 <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
                 <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
-                <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
+                <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to="applicationSearch.reRenderPaginate"></paginate>
         </div>
 
         <!-- search button -->
