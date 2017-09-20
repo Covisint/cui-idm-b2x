@@ -28,7 +28,7 @@
   .cui-applications__review-apps {
     @extend .cui-applications__row;
     flex-wrap: wrap;
-    margin-top: em(24);
+    margin-top: 1.5em;
 
     & div:nth-child(odd) {
       margin-right: 3.6%;
@@ -59,7 +59,7 @@
     align-items: center;
     display: flex;
     justify-content: flex-end;
-    margin: em(40) 0;
+    margin: 2.5em 0;
 
     .cui-link {
       margin-right: em(43);
@@ -75,6 +75,21 @@
       position: absolute;
       left: 2.5em;
       top:inherit;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .cui-tile--headless{
+      flex:1;
+      margin-top: 1.5em;
+    }
+  }
+  @media screen and (max-width: 700px){
+    .cui-applications__review-apps{
+      margin-top:0;
+      flex-direction:column;
+      & .cui-tile--headless:nth-child(odd) {
+        margin-right: 0;
+      }
     }
   }
 }

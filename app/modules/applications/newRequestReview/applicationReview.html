@@ -56,9 +56,9 @@
         </div>
         <div>
             <h3 class="h4 bold">{{'requested-items' | translate}}:</h3>
-            <div class="cui-applications__review-apps">
-                <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
-                    <div ng-repeat="application in applicationGroup | filter:applicationReview.search">
+            <div class="cui-applications__review-apps" ng-repeat="applicationGroup in applicationReview.appRequests">
+                <div class="cui-tile--headless" ng-repeat="application in applicationGroup | filter:applicationReview.search">
+                    <div >
                         <div class="cui-media">
                           <div class="cui-media__image-container cui-media__image-container__flex-start">
                             <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>

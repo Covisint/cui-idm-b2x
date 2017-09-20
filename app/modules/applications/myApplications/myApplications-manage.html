@@ -154,6 +154,6 @@ base.apiError.for['manageApplications.categories'] true only if there was an err
   <div class="cui-paginate__container" ng-if="!base.loader.for['manageApplications.apps']">
     <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
     <results-per-page class="cui-paginate__select" ng-model="manageApplications.search.pageSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="manageApplications.search.pageSize" count="manageApplications.count" on-page-change="manageApplications.pageChange" ng-model="manageApplications.search.page" attach-rerender-to=" manageApplications.reRenderPaginate"></paginate>
+    <paginate class="cui-paginate" results-per-page="manageApplications.search.pageSize" count="manageApplications.count" on-page-change="manageApplications.pageChange" ng-model="manageApplications.search.page" attach-rerender-to="manageApplications.reRenderPaginate"></paginate>
   </div>
 </div>
