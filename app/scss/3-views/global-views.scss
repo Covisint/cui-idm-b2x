@@ -189,3 +189,13 @@ Global layout styles
     display:flex;
   }
 }
+@media screen and (min-width:701px){
+  .cui-input-button--alt-bg{
+    width:350px;
+  }
+}
+@media screen and (max-width:700px){
+ .cui-input-button--alt-bg{
+  max-width:350px;
+} 
+}
