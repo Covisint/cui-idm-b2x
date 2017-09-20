@@ -29,7 +29,7 @@
     </div>
     <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
     <div class="cui-action cui-action--alt">
-      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <div class="cui-input-button cui-input-button--alt-bg">
           <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
           <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
       </div>
@@ -161,7 +161,7 @@
                               <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="organizationApplications.searchBy" value="action">
                               <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'action' | translate}}</label>
                           </div>&nbsp;
-                          <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+                          <div class="cui-input-button cui-input-button--alt-bg">
                               <input class="cui-input-button__input" ng-model="organizationApplications.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="organizationApplications.updateSearch('search',organizationApplications.searchValue,'grant')"/>
                               <button class="cui-input-button__button" ng-click="organizationApplications.updatesSearch('search',organizationApplications.searchValue,'grant')">{{'search' | translate}}</button>
                           </div>

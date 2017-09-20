@@ -74,3 +74,27 @@
   align-items:flex-start;
   -ms-flex-align:flex-start;
 }
+@media screen and (min-width:701px){
+  .cui-organization__user-details{
+    .cui-input-button--alt-bg{
+      width:270px;
+    }
+    .cui-input-button__input {
+      padding-left: 1em;
+    }
+  }
+}
+
+@media screen and (max-width:700px){
+  .cui-organization__user-details{
+    .cui-action--alt{
+      flex-direction:column;
+      padding-top:1em !important;
+    }
+    .cui-users__address-container.show-address {
+      margin: 0;
+    }
+  }
+}
+
+

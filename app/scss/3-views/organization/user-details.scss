@@ -211,6 +211,11 @@
   margin-top: 2em;
   width: 50%;
 }
+@media screen and (max-width:700px){
+  .user-details__password-reset {
+    width: 100%;
+  }
+}
 
 .pwd-ie-faux-button {
   height: 2.8em;

@@ -20,7 +20,7 @@
     </div>
     <!-- <span class="cui-action__title cui-desktop-only">{{orgDetailsApps.organization.name}}</span> -->
     <div class="cui-action cui-action--alt">
-      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <div class="cui-input-button cui-input-button--alt-bg">
           <input class="cui-input-button__input" ng-model="orgDetailsApps.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="orgDetailsApps.updateSearchByName"/>
           <button class="cui-input-button__button" ng-click="orgDetailsApps.updateSearchByName()">{{'search' | translate}}</button>
       </div>
@@ -73,7 +73,7 @@
   </section>
 
 <!-- Organization Applications: Content -->
-<div class="cui-applications__main-container" ng-if="!base.loader.for['orgDetailsApps.init']&&orgDetailsApps.activeAppsTab">
+<div ng-if="!base.loader.for['orgDetailsApps.init']&&orgDetailsApps.activeAppsTab">
   <!-- Loading -->
 <!--   <div class="cui-loading__container" ng-if="orgDetailsApps.loading">
     <div class="cui-loading--center"><div class="cui-loading"></div></div>
@@ -120,7 +120,7 @@
                               <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="orgDetailsApps.searchBy" value="action">
                               <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'action' | translate}}</label>
                           </div>&nbsp;
-                          <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+                          <div class="cui-input-button cui-input-button--alt-bg">
                               <input class="cui-input-button__input" ng-model="orgDetailsApps.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="orgDetailsApps.updateSearch('search',orgDetailsApps.searchValue,'grant')"/>
                               <button class="cui-input-button__button" ng-click="orgDetailsApps.updatesSearch('search',orgDetailsApps.searchValue,'grant')">{{'search' | translate}}</button>
                           </div>

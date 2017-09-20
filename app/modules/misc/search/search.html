@@ -63,7 +63,7 @@
           <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="search.searchType" value="organizations" ng-change="search.searchNow(true)">
           <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'organizations' | translate}}</label>
       </div>&nbsp;
-      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <div class="cui-input-button cui-input-button--alt-bg">
           <input class="cui-input-button__input" ng-model="search.searchterms" focus-if placeholder="{{'search' | translate}}" on-enter="search.searchNow"/>
           <button class="cui-input-button__button" ng-click="search.searchNow(true)">{{'search' | translate}}</button>
       </div>
