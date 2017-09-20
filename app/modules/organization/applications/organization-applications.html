@@ -93,7 +93,10 @@
       </div>
     </div>
     <!-- New Grant Application Icon -->
-    <div class="cui-action__action-container" ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})" ng-if="base.canGrantAppToOrg()">
+    <div class="cui-action__action-container" 
+    cui-access="{requiredEntitlements:['Full Tree Access','View All Organization Package Grants','Security Admin - Grant Division Package']}" 
+    user-entitlements="base.user.entitlements"
+    ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})" >
     <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" style="height:3em">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
       </svg>
@@ -101,7 +104,11 @@
     </div>
 
     <!-- New Application Request Icon -->
-    <div ng-if="organizationApplications.stateParamsOrgId==base.user.organization.id" class="cui-action__action-container" ui-sref="organization.newRequest()">
+    <div ng-if="organizationApplications.stateParamsOrgId==base.user.organization.id" 
+    class="cui-action__action-container"
+    cui-access="{requiredEntitlements:['Security Admin - Request Package For Division']}" 
+    user-entitlements="base.user.entitlements" 
+    ui-sref="organization.newRequest()">
       <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" style="height:3em">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
       </svg>
