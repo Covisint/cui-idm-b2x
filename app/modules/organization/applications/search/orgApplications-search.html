@@ -106,14 +106,13 @@
     <!-- No applications message -->
     <p ng-if="orgAppSearch.list.length===0" align="center">{{'cui-no-details' | translate}}</p>
 
-  </div>
-
-  <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
-    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-    <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>
-  </div>
-  <div class="cui-applications__search-button">
-    <button class="cui-button" ng-class="{'cui-button--error' : orgAppSearch.numberOfRequests===0}" ng-click="orgAppSearch.numberOfRequests != 0 && orgAppSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+    <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>
+    </div>
+    <div class="cui-applications__search-button">
+      <button class="cui-button" ng-class="{'cui-button--error' : orgAppSearch.numberOfRequests===0}" ng-click="orgAppSearch.numberOfRequests != 0 && orgAppSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+    </div>
   </div>
 </div>
