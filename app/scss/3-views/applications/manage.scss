@@ -60,7 +60,9 @@
         font-size: 1em;
         letter-spacing: 1.4px;
         padding-top: 0.5em;
-        max-width:100%
+        max-width:100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .cui-tile__footer{
         @extend %flex-row;
