@@ -66,10 +66,13 @@
             <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[application.id]=!orgAppSearch.appCheckbox[application.id]; orgAppSearch.toggleRequest(application)"></label>
           </span>
         </div>
+        <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+        </svg>
       </cui-expandable-title>
       <!-- Category Expandable -->
       <cui-expandable-body class="cui-expandable__body">
-        <div class="cui-expandable__body-pane">
+        <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))">
           <span class="cui-expandable__body-close" ng-click="collapse()">
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
