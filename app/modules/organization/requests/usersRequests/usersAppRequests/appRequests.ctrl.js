@@ -119,7 +119,7 @@ angular.module('organization')
 				_.each(res, function(pkgReq) {
 					
 					// NB create an obj and bind it to scope...
-					var data = {};
+					var data = {request:pkgReq};
         	usersAppRequests.data.push(data);
 
         	// ..then cache the calls, which populate obj asynchronously...
