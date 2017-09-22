@@ -2,40 +2,45 @@
 <div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/thirdwavellc/cui-idm-b2x/tree/master/assets/app/applications/org-applications" target="blank">here</a></div>
 <!-- /processHTML -->
 
-  <!-- Navigation -->
-  <section class="cui-action">
-    <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=organizationApplications.stateParamsOrgId"></nav>
-    <nav ng-if="!organizationApplications.loading"ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=organizationApplications.organization.name"></nav>
-  </section>
+<!-- Navigation -->
+<section class="cui-action">
+  <nav ng-include="'app/modules/organization/partials/breadcrumbs.html'" onload="orgId=organizationApplications.stateParamsOrgId"></nav>
+  <nav ng-if="!organizationApplications.loading"ng-include="'app/modules/organization/partials/mobileNav.html'" ng-init="orgName=organizationApplications.organization.name"></nav>
+</section>
+<div class="cui-tabs__main-container">
   <ul class="cui-tabs__nav">
-  <li class="cui-tabs__tab-container">
-    <a ng-class="(organizationApplications.activeAppsTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeAppsTab)?'':organizationApplications.activeGrantTab=false;organizationApplications.activeRequestTab=false;organizationApplications.activeAppsTab=true">{{'apps'|translate}}</a>
-  </li>
-  <li class="cui-tabs__tab-container">
-    <a ng-class="(organizationApplications.activeRequestTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeRequestTab)?'':organizationApplications.activeGrantTab=false;organizationApplications.activeRequestTab=true;organizationApplications.activeAppsTab=false">{{'request-history'|translate}}</a>
-  </li>
-  <li class="cui-tabs__tab-container">
-    <a ng-class="(organizationApplications.activeGrantTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeGrantTab)?'':organizationApplications.activeRequestTab=false;organizationApplications.activeGrantTab=true;organizationApplications.activeAppsTab=false">{{'grant-history'|translate}}</a>
-  </li>
-</ul>
- <div class="cui-loading__container--user-details" ng-if="base.loader.for['organizationApplications.init']">
- <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+    <li class="cui-tabs__tab-container">
+      <a ng-class="(organizationApplications.activeAppsTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeAppsTab)?'':organizationApplications.activeGrantTab=false;organizationApplications.activeRequestTab=false;organizationApplications.activeAppsTab=true">{{'apps'|translate}}</a>
+    </li>
+    <li class="cui-tabs__tab-container">
+      <a ng-class="(organizationApplications.activeRequestTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeRequestTab)?'':organizationApplications.activeGrantTab=false;organizationApplications.activeRequestTab=true;organizationApplications.activeAppsTab=false">{{'request-history'|translate}}</a>
+    </li>
+    <li class="cui-tabs__tab-container">
+      <a ng-class="(organizationApplications.activeGrantTab)?'cui-tabs__tab cui-tabs__tab--active':'cui-tabs__tab cui-tabs__tab'" ng-click="(organizationApplications.activeGrantTab)?'':organizationApplications.activeRequestTab=false;organizationApplications.activeGrantTab=true;organizationApplications.activeAppsTab=false">{{'grant-history'|translate}}</a>
+    </li>
+  </ul>
 </div>
-  <!-- subheader -->
-  <section class="cui-action" ng-if="!base.loader.for['organizationApplications.init']&&organizationApplications.activeAppsTab">
-    <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
-    <div class="cui-loading__container" ng-if="organizationApplications.loading">
-      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
+  
+  <div class="cui-tabs__main-container">
+   <div class="cui-loading__container--user-details" ng-if="base.loader.for['organizationApplications.init']">
+    <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+  </div>
+</div>
+<!-- subheader -->
+<section class="cui-action" ng-if="!base.loader.for['organizationApplications.init']&&organizationApplications.activeAppsTab">
+  <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
+  <div class="cui-loading__container" ng-if="organizationApplications.loading">
+    <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
+  </div>
+  <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
+  <div class="cui-action cui-action--alt">
+    <div class="cui-input-button cui-input-button--alt-bg">
+        <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
+        <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
     </div>
-    <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
-    <div class="cui-action cui-action--alt">
-      <div class="cui-input-button cui-input-button--alt-bg">
-          <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
-          <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
-      </div>
-    </div>
-    <!-- <span class="cui-action__title cui-mobile-only">{{organizationApplications.orgPersonCount}} People</span> -->
-    <div class="cui-action__actions">
+  </div>
+  <!-- <span class="cui-action__title cui-mobile-only">{{organizationApplications.orgPersonCount}} People</span> -->
+  <div class="cui-action__actions">
 
     <!-- Sort -->
     <!-- <div class="cui-action__action-container" ng-click="organizationApplications.sortClicked =! organizationApplications.sortClicked" id="sort-button" off-click="organizationApplications.sortClicked=false">
@@ -57,24 +62,19 @@
       </svg>
       <span class="cui-action__action-label">{{'refine' | translate}}</span>
       <!-- Refine Popover -->
-      <!-- <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.refineClicked">
-        <p ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</p>
-        <p ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</p>
-        <p ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</p>
-        <p ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</p> -->
-        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="organizationApplications.refineClicked" style="width:214px">
-         <div class="cui-popover__row cui-popover--row__flex">
-            <span ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</span>
-         </div>
-          <div class="cui-popover__row cui-popover--row__flex">
-            <span ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</span>
-         </div>
-          <div class="cui-popover__row cui-popover--row__flex">
-            <span ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
-         </div>
-          <div class="cui-popover__row cui-popover--row__flex">
-            <span ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
-         </div>
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="organizationApplications.refineClicked" style="width:214px">
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="organizationApplications.updateSearch('status')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="organizationApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="organizationApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="organizationApplications.updateSearch('status','pending')">{{'pending' | translate}}</span>
+        </div>
       </div>
     </div>
 
@@ -97,7 +97,7 @@
     cui-access="{requiredEntitlements:['Full Tree Access','View All Organization Package Grants','Security Admin - Grant Division Package']}" 
     user-entitlements="base.user.entitlements"
     ui-sref="organization.requests.newOrgGrant({orgId:organizationApplications.stateParamsOrgId})" >
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" style="height:3em">
+      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" style="height:3em">
         <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26"></use>
       </svg>
       <span class="cui-action__action-label">{{'new-grant' | translate}}</span>
@@ -114,11 +114,8 @@
       </svg>
       <span class="cui-action__action-label">{{'request-app' | translate}}</span>
     </div>
-    <!-- <svg ng-if="organizationApplications.stateParamsOrgId==base.user.organization.id" ui-sref="organization.newRequest()" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-      <use xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#new"></use>
-    </svg> -->
   </div>
-  </section>
+</section>
 
 <!-- Organization Applications: Content -->
 <div class="cui-applications__main-container" ng-if="!base.loader.for['organizationApplications.init']&&organizationApplications.activeAppsTab">
