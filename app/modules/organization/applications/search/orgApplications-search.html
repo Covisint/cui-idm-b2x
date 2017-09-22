@@ -66,10 +66,13 @@
             <label class="cui-checkbox__label" ng-click="orgAppSearch.appCheckbox[application.id]=!orgAppSearch.appCheckbox[application.id]; orgAppSearch.toggleRequest(application)"></label>
           </span>
         </div>
+        <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+        </svg>
       </cui-expandable-title>
       <!-- Category Expandable -->
       <cui-expandable-body class="cui-expandable__body">
-        <div class="cui-expandable__body-pane">
+        <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))">
           <span class="cui-expandable__body-close" ng-click="collapse()">
             <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
               <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
@@ -103,14 +106,13 @@
     <!-- No applications message -->
     <p ng-if="orgAppSearch.list.length===0" align="center">{{'cui-no-details' | translate}}</p>
 
-  </div>
-
-  <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
-    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
-    <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
-    <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>
-  </div>
-  <div class="cui-applications__search-button">
-    <button class="cui-button" ng-class="{'cui-button--error' : orgAppSearch.numberOfRequests===0}" ng-click="orgAppSearch.numberOfRequests != 0 && orgAppSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+    <div class="cui-paginate__container" ng-if="!base.loader.for['orgAppSearch.loading']">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" ng-model="orgAppSearch.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" results-per-page="orgAppSearch.search.pageSize" count="orgAppSearch.count" on-page-change="orgAppSearch.pageChange" ng-model="orgAppSearch.search.page" attach-rerender-to=" orgAppSearch.reRenderPaginate"></paginate>
+    </div>
+    <div class="cui-applications__search-button">
+      <button class="cui-button" ng-class="{'cui-button--error' : orgAppSearch.numberOfRequests===0}" ng-click="orgAppSearch.numberOfRequests != 0 && orgAppSearch.saveRequestsAndCheckout()">{{'review-request' | translate}}</button>
+    </div>
   </div>
 </div>

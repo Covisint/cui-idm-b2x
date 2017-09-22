@@ -65,7 +65,7 @@ angular.module('organization')
 
     const onLoad = (previouslyLoaded) => {
         if (previouslyLoaded) {
-            Loader.offFor(loaderName);
+            // Loader.offFor(loaderName);
         }
         else { 
             Loader.onFor(loaderName);
@@ -138,6 +138,7 @@ angular.module('organization')
         if (updateType!=='page') {
             orgAppSearch.search.page = 1
         }
+        Loader.onFor(loaderName);
         orgAppSearch.search.orgId=orgAppSearch.stateParamsOrgId
         // Update current URL without changing the state
         $state.transitionTo('organization.search', orgAppSearch.search, {notify:false});
