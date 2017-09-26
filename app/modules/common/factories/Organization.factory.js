@@ -33,10 +33,13 @@ angular.module('common')
 		return defer.promise
 	}
 
-	const getOrganizationStatusHistory = (organizationId) => {
+	const getOrganizationStatusHistory = (organizationId,status) => {
 		const defer = $q.defer()
-
-		API.cui.getOrgstatusHistory({qs:[['organizationId',organizationId]]})
+		let qs=[['organizationId',organizationId]]
+		if (status) {
+			qs.push(['status',status])
+		}
+		API.cui.getOrgstatusHistory({qs:qs})
 		.done(response => defer.resolve(response))
 		.fail(error => defer.reject(error))
 
@@ -95,6 +98,7 @@ angular.module('common')
 		getOrganizationPasswordPolicy: getOrganizationPasswordPolicy,
 		getOrganizationAuthenticationPolicy:getOrganizationAuthenticationPolicy,
 		getOrganization:getOrganization,
+		getOrganizationStatusHistory:getOrganizationStatusHistory,
 		initOrganizationProfile: initOrganizationProfile
 	}
 

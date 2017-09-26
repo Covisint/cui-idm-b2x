@@ -97,4 +97,16 @@
   }
 }
 
+.cui-organization__admin-block{
+  .cui-action{
+    padding:0;
+  }
+  .cui-action__title{
+    flex:auto !important;
+  }
+}
+.custom-loading__container{
+  position:relative;
+  min-height:90px;
+}
 

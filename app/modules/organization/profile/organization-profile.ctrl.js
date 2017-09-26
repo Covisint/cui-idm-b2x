@@ -51,4 +51,22 @@ angular.module('organization')
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
+    /* --------------------------------------------- ON CLICK START ---------------------------------------------- */
+
+    orgProfile.updateSearch = (status) => {
+        Loader.onFor('orgProfile.status')
+        Organization.getOrganizationStatusHistory(orgProfile.organization.id,status)
+        .then(res => {
+            orgProfile.statusHistory=res
+        })
+        .catch(err => {
+            APIError.onFor('orgProfile.status')
+        })
+        .finally(() =>{
+            Loader.offFor('orgProfile.status')
+        })
+    }
+
+    /* --------------------------------------------- ON CLICK END ---------------------------------------------- */
+
 })
