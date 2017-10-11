@@ -1,0 +1,197 @@
+<!-- User Information -->
+<cui-expandable class="cui-expandable expanded">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(1)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div> -->
+  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+    {{'cui-user-information' | translate}}
+    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+  </cui-expandable-title>
+
+  <cui-expandable-body disable-animate class="cui-expandable__body">
+    <!-- First Name -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.firstNameError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-first-name" model="orgWalkup.user.name.given" on-edit="orgWalkup.inlineEdit.firstName" hide-save-if="orgWalkup.inlineEdit.noSaveFirstName" on-save="orgWalkup.inlineEdit.updateFirstNameError"></inline-edit>
+    </div>
+    <!-- Last Name -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.lastNameError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-last-name" model="orgWalkup.user.name.surname" on-edit="orgWalkup.inlineEdit.lastName" hide-save-if="orgWalkup.inlineEdit.noSaveLastName" on-save="orgWalkup.inlineEdit.updateLastNameError"></inline-edit>
+    </div>
+    <!-- Email -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.emailError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+      </div>
+      <div ng-if="!orgWalkup.isEmailTaken" class="cui-warning">{{'cui-error-email-exists' | translate}}</div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-email" model="orgWalkup.user.email" on-edit="orgWalkup.inlineEdit.email" on-save="orgWalkup.inlineEdit.updateEmailError" hide-save-if="orgWalkup.inlineEdit.noSaveEmail"></inline-edit>
+    </div>
+    <!-- Country -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.countryError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  type="auto-complete" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input cui-expandable__review-input__autocomplete" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-country" model="orgWalkup.userCountry" display="orgWalkup.userCountry.title" selected-object="orgWalkup.userCountry" local-data="base.countries.list" search-fields="name" title-field="name" on-edit="orgWalkup.inlineEdit.country" on-save="orgWalkup.inlineEdit.updateCountryError" hide-save-if="orgWalkup.inlineEdit.noSaveCountry" field-required="orgWalkup.userCountry"></inline-edit>
+    </div>
+    <!-- Address1 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.address1Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-1" model="orgWalkup.user.addresses[0].streets[0]" on-edit="orgWalkup.inlineEdit.address1" hide-save-if="orgWalkup.inlineEdit.noSaveAddress1" on-save="orgWalkup.inlineEdit.updateAddress1Error"></inline-edit>
+    </div>
+    <!-- Address2 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-address-2" model="orgWalkup.user.addresses[0].streets[1]"></inline-edit>
+    </div>
+    <!-- City -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-city" model="orgWalkup.user.addresses[0].city"></inline-edit>
+    </div>
+    <!-- state -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-state" model="orgWalkup.user.addresses[0].state"></inline-edit>
+    </div>
+    <!-- postal -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-postal" model="orgWalkup.user.addresses[0].postal"></inline-edit>
+    </div>
+    <!-- Phone Number -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.telephoneError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-telephone" model="orgWalkup.user.phones[0].number" on-edit="orgWalkup.inlineEdit.telephone" hide-save-if="orgWalkup.inlineEdit.noSaveTelephone" on-save="orgWalkup.inlineEdit.updateTelephoneError"></inline-edit>
+    </div> 
+    <!-- Language -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-language" model="orgWalkup.user.language" display="orgWalkup.user.language.name"options-expression="language as language.name  for language in options"  options="orgWalkup.languages"></inline-edit>
+    </div>
+    <!-- Timezone -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-timezone" model="orgWalkup.user.timezone" display="orgWalkup.user.timezone.name" options-expression="timeZone as timeZone.name  for timeZone in options"  options="base.timezones"></inline-edit>
+    </div>
+  </cui-expandable-body>
+</cui-expandable>
+
+<!-- Organization Information -->
+<cui-expandable class="cui-expandable expanded">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(2)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div> -->
+  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+      {{'cui-organization-information' | translate}}
+      <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </cui-expandable-title>
+
+    <cui-expandable-body class="cui-expandable__body">
+      <!-- Company/Division -->
+      <div class="cui-expandable__review-item"><span class="cui-expandable__review-item__field">{{'cui-org' | translate}}</span> <span class="review-item__value">{{orgWalkup.organization.name}}</span></div>
+  </cui-expandable-body>
+</cui-expandable>
+
+<!-- Sign In Information -->
+<cui-expandable class="cui-expandable expanded">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(3)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div> -->
+  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+    {{'cui-sign-in-information' | translate}}
+    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </cui-expandable-title>
+
+  <cui-expandable-body disable-animate class="cui-expandable__body">
+    <!-- User ID -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.userIdError">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-user-id" model="orgWalkup.userLogin.username" on-edit="orgWalkup.inlineEdit.userId" hide-save-if="orgWalkup.inlineEdit.noSaveUserId" on-save="orgWalkup.inlineEdit.updateUserIdError"></inline-edit>
+    </div>
+    <!-- Password -->
+    <div class="cui-expandable__review-item__inline-wrapper"><span class="cui-expandable__review-item__field">{{'cui-password' | translate}}</span> <span class="review-item__value">{{orgWalkup.userLogin.hiddenPassword}}</span></div>
+    <!-- Challenge Question 1 -->
+        <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-question" model="orgWalkup.userLogin.question1" display="orgWalkup.userLogin.question1.question | cuiI18n" options-expression="question as (question.question|cuiI18n) for question in options"  options="orgWalkup.userLogin.challengeQuestions1"></inline-edit>
+    </div>
+    <!-- Challenge Answer 1 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.challengeAnswer1Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="orgWalkup.userLogin.challengeAnswer1" on-edit="orgWalkup.inlineEdit.challengeAnswer1" hide-save-if="orgWalkup.inlineEdit.noSaveChallengeAnswer1" on-save="orgWalkup.inlineEdit.updateChallengeAnswer1Error"></inline-edit>
+    </div>
+    <!-- Challenge Question 2 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <inline-edit  type="dropdown" wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input__dropdown" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-question" model="orgWalkup.userLogin.question2" display="orgWalkup.userLogin.question2.question | cuiI18n" options-expression="question as (question.question|cuiI18n) for question in options"  options="orgWalkup.userLogin.challengeQuestions2"></inline-edit>
+    </div>
+    <!-- Challenge Answer 2 -->
+    <div class="cui-expandable__review-item__inline-edit">
+      <div class="cui-error" ng-messages="orgWalkup.inlineEdit.challengeAnswer2Error">
+          <div ng-messages-include="app/common-templates/messages.html"></div>
+        </div>
+      <inline-edit  wrapper-class="cui-expandable__review-item__inline-wrapper" input-class="cui-expandable__review-input" label-class="cui-expandable__review-item__field" value-class="dummy" class="cui-users__field" label="cui-challenge-answer" model="orgWalkup.userLogin.challengeAnswer2" on-edit="orgWalkup.inlineEdit.challengeAnswer2" hide-save-if="orgWalkup.inlineEdit.noSaveChallengeAnswer2" on-save="orgWalkup.inlineEdit.updateChallengeAnswer2Error"></inline-edit>
+    </div>
+  </cui-expandable-body>
+</cui-expandable>
+
+<!-- Application Selection -->
+<cui-expandable class="cui-expandable expanded">
+  <!-- <div class="cui-expandable__edit-button" ng-click="goToStep(4)">
+    <cui-icon cui-svg-icon="fa:edit" svg-class="cui-expandable__edit-icon"></cui-icon>
+  </div> -->
+  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+    {{'cui-application-selection' | translate}}
+    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </cui-expandable-title>
+
+  <cui-expandable-body class="cui-expandable__body">
+    <div class="cui-expandable__review-item" ng-if="orgWalkup.applications.processedSelected.length===0 || !orgWalkup.applications.processedSelected.length">
+      <span class="cui-link" ng-click="goToStep(4)">{{'no-applications-selected' | translate}}</span>
+    </div>
+    <div class="cui-expandable__review-item" ng-repeat="application in orgWalkup.applications.processedSelected">
+      <input id="application{{application.id}}" type="checkbox" ng-model="orgWalkup.applications.selected[application.id]" ng-true-value="'{{application.id}},{{application.packageId}},{{application.name}},{{application.showTac}}'" ng-false-value="null" ng-click="orgWalkup.applications.updateSelected(application,orgWalkup.applications.selected[application.id],application.id)" style="margin-right:10px"/>
+      <label for="application{{application.id}}" ng-bind="application.name"></label>
+    </div>
+    <div class="cui-expandable__review-item" ng-if="orgWalkup.applications.processedSelected.length!==0 && orgWalkup.applications.processedSelected.length">
+      <span >{{'cui-need-different-app' | translate}}</span>
+      <span >? {{'cui-go-back-to' | translate}}</span>
+      <span class="cui-link" ng-click="orgWalkup.applications.step=1;goToStep(4)"> {{'cui-all-applications' | translate}}</span>
+    </div>
+  </cui-expandable-body>
+</cui-expandable>
+<!-- Request reason service package -->
+<cui-expandable class="cui-expandable expanded">
+  <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" ng-click="toggleExpand()">
+    {{'request-reason' | translate}}
+    <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </cui-expandable-title>
+
+  <cui-expandable-body class="cui-expandable__title">
+    <div class="cui-applications__review-text-input">
+        <input type="text" class="cui-input" ng-model="orgWalkup.reason"></input>
+    </div>
+
+  </cui-expandable-body>
+</cui-expandable>
+
+<!-- Submit Controls -->
+<div class="cui-wizard__controls">
+  <div class="cui-error" ng-if="orgWalkup.submitError"><label>{{orgWalkup.errorMessage | translate}}</label></div>
+  <cui-button disable-animate
+    button-click="orgWalkupRegForm.$valid && orgWalkup.submit()"
+    loading-if="orgWalkup.submitting"
+    loading-message="{{'cui-button-loading-text' | translate}}"
+    error-if="orgWalkup.submitError"
+    error-message="{{'cui-error-try-again' | translate}}"
+  >
+    <button class="cui-wizard__next" ng-class="(!orgWalkupRegForm.$valid)? 'cui-wizard__next--error' : orgWalkup.sucess? 'success' : usersInvite.success===false? 'fail' : ''" style="position:relative">
+      <span ng-if="!orgWalkup.submitting && !orgWalkup.submitError">{{'cui-submit' | translate}}</span>
+    </button>
+  </cui-button>
+</div>

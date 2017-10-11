@@ -29,6 +29,15 @@ angular.module('registration',[])
             desktop: false,
             mobile: false
         }
+    })
+    .state('registration.division', {
+        url: '/division',
+        templateUrl:templateBase + 'orgWalkup/orgWalkup.html',
+        controller: returnCtrlAs('orgWalkup'),
+        menu: {
+            desktop: false,
+            mobile: false
+        }
     });
 
 }]);
