@@ -68,6 +68,10 @@
                         <!-- Phones/Fax -->
                         <div ng-include="'app/modules/user/profile/sections/phone-fax.html'" ng-if="userProfile.user"></div>
                     </div>
+                    <div class="cui-users__info-block">
+                        <!-- Social Login -->
+                        <div ng-include="'app/modules/user/profile/sections/social-login.html'" ng-if="userProfile.linkableSocialAccounts"></div>
+                    </div>
                 </div>
             </div>
         </div>
