@@ -130,8 +130,20 @@ angular.module('common')
         {cmd: "getOrganizationPackagesCount",call: "/service/v3/organizations/{organizationId}/packages/count",type: "GET",accepts: "text/plain"},
         {cmd: "getRegistrationRequestsCount",call: "/registration/v1/person/requests/count",type: "GET",accepts: "text/plain"},
         {cmd: "getPackagesRequestedCount",call: "/service/v3/persons/{personId}/packages/count",type: "GET",accepts: "text/plain"},
-        {cmd: 'validatePasswordNonce',cmdType:'nonce',call: '/registration/v1/registrations/persons/password/validate', type:'POST', accepts: 'application/vnd.com.covisint.platform.password.validation.response.v1+json',contentType:'application/vnd.com.covisint.platform.password.validation.v1+json'}
+        {cmd: 'validatePasswordNonce',cmdType:'nonce',call: '/registration/v1/registrations/persons/password/validate', type:'POST', accepts: 'application/vnd.com.covisint.platform.password.validation.response.v1+json',contentType:'application/vnd.com.covisint.platform.password.validation.v1+json'},
+        // Social Login Calls
+        {cmd: 'getSocialLoginAccounts', call: '/social-accounts/v1/social/accounts/{personId}', type: 'GET', accepts: 'application/json', contenttype: 'application/json'},
+        {cmd: 'unlinkSocialLoginAccount', call: '/social-accounts/v1/social/unlink/{personId}/{configId}', type: 'DELETE', accepts: 'application/json', contenttype: 'application/json'},
+        {cmd: 'getlinkableSocialAccounts', call: '/social-accounts/v1/social', type: 'GET', accepts: 'application/json', contentType: 'application/json'},
+        // twitter...
+        {cmd: 'twitterAuthentication', call: '/social-accounts/v1/social/twitter/authorize', type: 'GET', accepts: 'application/json', contentType: 'application/json'},  
+        {cmd: 'twitterLoginCallback', call: '/social-accounts/v1/social/callback/twitter', type: 'GET', accepts: 'application/json', contentType: 'application/json'},  
+        {cmd: 'twitterLinkCallback', call: '/social-accounts/v1/social/link/twitter', type: 'GET', accepts: 'application/json', contentType: 'application/json'},  
 
+        // facebook...
+        {cmd: 'facebookAuthentication', call: '/social-accounts/v1/social/fb/authorize', type: 'GET', accepts: 'application/json', contenttype: 'application/json'},  
+        {cmd: 'facebookLoginCallback', call: '/social-accounts/v1/social/callback/fb', type: 'GET', accepts: 'application/json', contentType: 'application/json'},  
+        {cmd: 'facebookLinkCallback', call: '/social-accounts/v1/social/link/facebook/{personId}', type: 'GET', accepts: 'application/json', contentType: 'application/json'} 
 
     ];
 
