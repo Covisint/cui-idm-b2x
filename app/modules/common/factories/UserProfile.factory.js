@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfile', function(API, APIError, LocaleService, Timezones, $filter, $q, $timeout) {
+.factory('UserProfile', function(API, APIError, LocaleService, Timezones, $filter, $q, $timeout,$window) {
 
     const errorName = 'userProfileFactory.'
 
@@ -205,11 +205,32 @@ angular.module('common')
             return defer.promise
         },
 
+        initSocialLogin: function(userId) {
+            let defer = $q.defer()
+            let socialLogin = {}
+
+            $q.all([API.cui.getlinkableSocialAccounts(),API.cui.getSocialLoginAccounts({ personId: userId })])
+            .then(res => {
+                socialLogin.linkableSocialAccounts=res[0]
+                socialLogin.socialLoginAccounts=res[1]
+                defer.resolve(socialLogin)
+            })
+            .catch(err => {
+                console.error('Failed getting SocialLoginAccounts information', err)
+                APIError.onFor(errorName + 'initSocialLogin')
+                $timeout(() => {
+                    APIError.offFor(errorName + 'initSocialLogin')
+                }, 5000)
+                defer.reject(err)
+            })
+            return defer.promise
+        },
+
         initUserProfile: function(userId, organizationId) {
             let defer = $q.defer()
             let profile = {}
             let callsCompleted = 0
-            const callsToComplete = 4
+            const callsToComplete = 5
 
             UserProfile.initUser(userId)
             .then(res => {
@@ -241,6 +262,15 @@ angular.module('common')
             UserProfile.initRegisteredDate(userId)
             .then(res => {
                 profile['registeredDate'] = res
+            })
+            .finally(() => {
+                callsCompleted += 1
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
+            })
+
+            UserProfile.initSocialLogin(userId)
+            .then(res => {
+                angular.merge(profile,res)
             })
             .finally(() => {
                 callsCompleted += 1
@@ -490,6 +520,34 @@ angular.module('common')
                         formObject[input].$setValidity(input, false)
                         $scope.$digest()
                     }
+                })
+            }
+
+            profile.updateSocialLogin = (section, toggleOff) => {
+                if (section) {
+                    profile[section] = { submitting: true }
+                    console.log("In SocialLoginAccounts00")
+                    var socialLoingUrl=appConfig.serviceUrl;
+                    var sid=localStorage.getItem("cui.sii");
+                    let xt= localStorage.getItem("cui.xt");
+                    console.log("solutionInstanceId : "+sid)
+                    API.cui.facebookLinkCallback({personId:profile.user.id})
+                    .then((res) => {
+                        
+                    })
+                    .fail(err =>{
+                        
+                    })
+                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
+                    console.log(socialLoingUrl)
+                         $window.location.href=encodeURI(socialLoingUrl)
+                }
+
+            }
+            profile.unlinkSocialAccount = (userId,config) => {
+                API.cui.unlinkSocialLoginAccount({personId:userId,configId:config})
+                .then(res=>{
+                    debugger
                 })
             }
         }
