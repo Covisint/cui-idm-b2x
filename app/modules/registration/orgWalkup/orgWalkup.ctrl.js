@@ -87,6 +87,9 @@ angular.module('registration')
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------- ON CLICK FUNCTIONS START --------------------------------------- */
+    
+    orgWalkup.prefillFields = () => {}
+
     orgWalkup.applications.checkOrUncheckBundledApps = (checkboxValue,application) => {
         if (application.bundledApps) {
             application.bundledApps.forEach(bundledApp => {
