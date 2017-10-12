@@ -213,6 +213,10 @@ angular.module('common')
             .then(res => {
                 socialLogin.linkableSocialAccounts=res[0]
                 socialLogin.socialLoginAccounts=res[1]
+                socialLogin.socialLoginAccounts.forEach(account => {
+                    account.unlinking=false
+                    account.error=false
+                })
                 defer.resolve(socialLogin)
             })
             .catch(err => {
@@ -525,29 +529,39 @@ angular.module('common')
 
             profile.updateSocialLogin = (section, toggleOff) => {
                 if (section) {
+                    userProfile.socialLogin.submitting=true
                     profile[section] = { submitting: true }
-                    console.log("In SocialLoginAccounts00")
                     var socialLoingUrl=appConfig.serviceUrl;
                     var sid=localStorage.getItem("cui.sii");
                     let xt= localStorage.getItem("cui.xt");
-                    console.log("solutionInstanceId : "+sid)
-                    API.cui.facebookLinkCallback({personId:profile.user.id})
-                    .then((res) => {
+                    // API.cui.facebookLinkCallback({personId:profile.user.id})
+                    // .then((res) => {
                         
-                    })
-                    .fail(err =>{
+                    // })
+                    // .fail(err =>{
                         
-                    })
-                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
-                    console.log(socialLoingUrl)
-                         $window.location.href=encodeURI(socialLoingUrl)
+                    // })
+                    //socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
+                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/facebook?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                    $window.location.href=encodeURI(socialLoingUrl)
                 }
 
             }
             profile.unlinkSocialAccount = (userId,config) => {
-                API.cui.unlinkSocialLoginAccount({personId:userId,configId:config})
+                config.unlinking=true
+                API.cui.unlinkSocialLoginAccount({personId:userId,configId:config.socialName})
                 .then(res=>{
-                    debugger
+                    config.linked=false
+                    $scope.$digest()
+                })
+                .fail(err => {
+                    config.unlinking=false
+                    console.log('There was an error in umlinking social account'+err)
+                    config.error=true 
+                    $timeout(() => {
+                        config.error=false
+                    },5000)
+                    $scope.$digest()
                 })
             }
         }
