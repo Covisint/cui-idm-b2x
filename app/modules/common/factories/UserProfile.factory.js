@@ -529,8 +529,8 @@ angular.module('common')
 
             profile.updateSocialLogin = (section, toggleOff) => {
                 if (section) {
-                    userProfile.socialLogin.submitting=true
-                    profile[section] = { submitting: true }
+                    profile.socialLoginSubmitting=true
+                    // profile[section] = { submitting: true }
                     var socialLoingUrl=appConfig.serviceUrl;
                     var sid=localStorage.getItem("cui.sii");
                     let xt= localStorage.getItem("cui.xt");
@@ -542,7 +542,7 @@ angular.module('common')
                         
                     // })
                     //socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
-                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/facebook?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+profile.socialLogin+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
                     $window.location.href=encodeURI(socialLoingUrl)
                 }
 

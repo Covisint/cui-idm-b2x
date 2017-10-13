@@ -37,7 +37,7 @@
           </div>
           <div class="cui-radio cui-radio--basic-ltr">
             <div ng-repeat="config in userProfile.linkableSocialAccounts">
-              <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="userProfile.socialLogin" value="config.socialName" ng-required="!userProfile.socialLogin">
+              <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="userProfile.socialLogin" value="{{config.socialName}}" ng-required="!userProfile.socialLogin">
               <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{config.socialName}}</label>
             </div>
           <!-- <label>
@@ -59,7 +59,7 @@
           <div class="cui-users__address-submit" disable-animate>
             <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
             <cui-button
-              loading-if="userProfile.socialLogin.submitting"
+              loading-if="userProfile.socialLoginSubmitting"
               loading-message="{{'cui-button-loading-text' | translate}}"
               button-click="socialLogin.$valid&&userProfile.updateSocialLogin('socialLogin', toggleOff)"
             >
