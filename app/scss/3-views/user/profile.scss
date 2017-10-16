@@ -173,9 +173,57 @@
     background:$cui-white;
   }
   .cui-radio--basic-ltr .cui-radio__input:checked + .cui-radio__label::before{
-    border: 4px solid $cui-white;;
+    border: 4px solid $cui-white;
   }
   .cui-radio__label{
     padding-bottom:0.5em;
+  }
+}
+.cui-button__social{
+  color:$cui-white;
+  display:flex;
+  justify-content:flex-start;
+  transition: 0.2s ease all;
+  width:185px;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+  }
+  .social-icon{
+    flex:0.2;
+  }
+  .social-label{
+    padding-left:1em;
+    padding-right:1em;
+    &::before{
+      content:'';
+      width:1px;
+      height:100%;
+      position:absolute;
+      background:$cui-white;
+      left:20%;
+      top:0;
+    }
+  }
+  .cui-action__icon {
+    fill:$cui-white;
+  }
+  &_facebook{
+    background-color:#3b5998;
+    &:hover{
+      background-color: #2d4373;
+    }
+  }
+  &_twitter{
+    background-color:#55acee;
+    &:hover{
+      background-color: #2795e9;
+    }
+  }
+  &_linkedin{
+    background-color:#007bb6;
+    &:hover{
+      background-color: #005983;
+    }
   }
 }
