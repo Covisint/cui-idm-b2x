@@ -216,6 +216,15 @@ angular.module('common')
                 socialLogin.socialLoginAccounts.forEach(account => {
                     account.unlinking=false
                     account.error=false
+                    account.linking=false
+                    switch (account.socialName) {
+                        case 'facebook': account.iconName='facebook25'
+                            break
+                        case 'twitter': account.iconName='twitter16'
+                            break
+                        case 'linkedin': account.iconName='linkedin10'
+                            break
+                    }
                 })
                 defer.resolve(socialLogin)
             })
@@ -527,9 +536,9 @@ angular.module('common')
                 })
             }
 
-            profile.updateSocialLogin = (section, toggleOff) => {
-                if (section) {
-                    profile.socialLoginSubmitting=true
+            profile.updateSocialLogin = (config, toggleOff) => {
+                if (config) {
+                    config.linking=true
                     // profile[section] = { submitting: true }
                     var socialLoingUrl=appConfig.serviceUrl;
                     var sid=localStorage.getItem("cui.sii");
@@ -542,7 +551,7 @@ angular.module('common')
                         
                     // })
                     //socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
-                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+profile.socialLogin+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+config.socialName+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
                     $window.location.href=encodeURI(socialLoingUrl)
                 }
 
