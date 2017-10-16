@@ -14,7 +14,17 @@
       <div ng-if="!toggled" ng-repeat="socialLoginAccount in userProfile.socialLoginAccounts">
           <span class="cui-field-val__val">{{socialLoginAccount.socialName|capitalize}} - 
             <div ng-switch on="socialLoginAccount.linked">
-              <div ng-switch-when="true">Linked -  <input type="submit" value="Unlink" class="cui-button" ng-click="userProfile.unlinkSocialAccount(base.user.id,socialLoginAccount.socialName)"/>
+              <div ng-switch-when="true">Linked -  
+                <cui-button
+                  loading-if="socialLoginAccount.unlinking"
+                  loading-message="{{'cui-button-loading-text' | translate}}"
+                  button-click="userProfile.unlinkSocialAccount(base.user.id,socialLoginAccount)"
+                >
+                  <button class="cui-button">
+                    <span ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'unlink' | translate}}</span>
+                    <span ng-if="!socialLoginAccount.unlinking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
+                  </button>
+                </cui-button>
               </div>
               <div ng-switch-when="false">Not Linked</div>
             <!-- <span class="cui-field-val__val">{{socialLoginAccount.linkedDate}}</span> -->
@@ -27,7 +37,7 @@
           </div>
           <div class="cui-radio cui-radio--basic-ltr">
             <div ng-repeat="config in userProfile.linkableSocialAccounts">
-              <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="userProfile.socialLogin" value="config.socialName" ng-required="!userProfile.socialLogin">
+              <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="userProfile.socialLogin" value="{{config.socialName}}" ng-required="!userProfile.socialLogin">
               <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{config.socialName}}</label>
             </div>
           <!-- <label>
@@ -49,7 +59,7 @@
           <div class="cui-users__address-submit" disable-animate>
             <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
             <cui-button
-              loading-if="userProfile.updateSocialLogin.submitting"
+              loading-if="userProfile.socialLoginSubmitting"
               loading-message="{{'cui-button-loading-text' | translate}}"
               button-click="socialLogin.$valid&&userProfile.updateSocialLogin('socialLogin', toggleOff)"
             >

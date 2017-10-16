@@ -134,7 +134,8 @@
   </div>
 
   <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
     <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(user)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
-    <button type="button" class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(5)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-if="wizardFinished" ng-click="user.$valid && goToStep(6)" ng-class="(user.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
   </div>
 </ng-form>

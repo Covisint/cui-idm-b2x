@@ -1,0 +1,96 @@
+<ng-form name="org" novalidate>
+
+  <!-- First row -->
+  <div class="cui-wizard__field-row">
+    <!-- First Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="name">{{'cui-name' | translate}}</label>
+      <div class="cui-error" ng-messages="org.name.$error" ng-if="org.name.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="orgWalkup.org.name"/>
+    </div>
+        <!-- Country -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="country">{{"cui-country" | translate}}</label>
+      <div class="cui-error" ng-messages="org.country.$error" ng-if="org.country.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <div auto-complete input-name="country" pause="100" selected-object="orgWalkup.orgCountry" local-data="base.countries.list" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="orgWalkup.orgCountry"></div>
+    </div>
+  </div>
+
+  <!-- second row -->
+  <div class="cui-wizard__field-row">
+    <!-- Address 1 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-street-address" | translate}}</label>
+      <div class="cui-error" ng-messages="org.address1.$error" ng-if="org.address1.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.addresses[0].streets[0]" class="cui-input" name="address1" ng-required="true">
+    </div>
+     <!-- Address 2 -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{"cui-address" | translate}} 2</label>
+      <input type="text" ng-model="orgWalkup.org.addresses[0].streets[1]" class="cui-input" name="address2" placeholder="{{'cui-address-example' | translate}}">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="cui-wizard__field-row">
+    <!-- City -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-city" | translate}}</label>
+      <div class="cui-error" ng-messages="org.city.$error" ng-if="org.city.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.addresses[0].city" class="cui-input" name="city" ng-required="true"/>
+    </div>
+        <!-- State/Province -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-state" | translate}}</label>
+      <div class="cui-error" ng-messages="org.state.$error" ng-if="org.state.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.addresses[0].state" class="cui-input" name="state"/>
+    </div>
+  </div>
+
+  <!-- Fifth row -->
+  <div class="cui-wizard__field-row">
+    <!-- Postal Code -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="postal-code">{{"cui-postal" | translate}}</label>
+      <div class="cui-error" ng-messages="org.postal.$error" ng-if="org.postal.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.addresses[0].postal" class="cui-input" name="postal" ng-required="true"/>
+    </div>
+        <!-- Telephone number -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"cui-telephone" | translate}}</label>
+      <div class="cui-error" ng-messages="org.telephone.$error" ng-if="org.telephone.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.phones[0].number" class="cui-input" name="telephone" ng-required="true"/>
+    </div>
+  </div>
+
+  <!-- Sixth row -->
+  <div class="cui-wizard__field-row">
+    <!-- URL -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{"url" | translate}}</label>
+      <div class="cui-error" ng-if="org.url.$error&&org.url.$dirty">
+        <div class="cui-error__message">{{'invalid-url' | translate}}</div>
+      </div>
+      <input type="text" ng-model="orgWalkup.org.url" class="cui-input" name="url"/>
+    </div>
+  </div>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(org);orgWalkup.prefillFields()" ng-class="(org.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-if="wizardFinished" ng-click="org.$valid && goToStep(6)" ng-class="(org.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-back-to-review' | translate}}</button>
+  </div>
+</ng-form>
