@@ -224,6 +224,8 @@ angular.module('common')
                             break
                         case 'linkedin': account.iconName='linkedin10'
                             break
+                        case 'google': account.iconName='google26'
+                            break
                     }
                 })
                 defer.resolve(socialLogin)

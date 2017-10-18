@@ -27,17 +27,15 @@
   </div>
 </div>
 <!-- subheader -->
-<section class="cui-action" ng-if="!base.loader.for['organizationApplications.init']&&organizationApplications.activeAppsTab">
+<section class="cui-action cui-action__with-search" ng-if="!base.loader.for['organizationApplications.init']&&organizationApplications.activeAppsTab">
   <h3 class="cui-sr-only">{{'org-dir-filters' | translate}}</h3>
   <div class="cui-loading__container" ng-if="organizationApplications.loading">
     <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content-header.html'"></div>
   </div>
   <span class="cui-action__title cui-desktop-only">{{organizationApplications.organization.name}}</span>
-  <div class="cui-action cui-action--alt">
-    <div class="cui-input-button cui-input-button--alt-bg">
-        <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
-        <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
-    </div>
+  <div class="cui-input-button cui-input-button--alt-bg">
+    <input class="cui-input-button__input" ng-model="organizationApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="organizationApplications.updateSearchByName"/>
+    <button class="cui-input-button__button" ng-click="organizationApplications.updateSearchByName()">{{'search' | translate}}</button>
   </div>
   <!-- <span class="cui-action__title cui-mobile-only">{{organizationApplications.orgPersonCount}} People</span> -->
   <div class="cui-action__actions">
@@ -85,10 +83,12 @@
       </svg>
       <span class="cui-action__action-label">{{'categories' | translate}}</span>
       <!-- Categories Popover -->
-      <div cui-popover class="cui-popover cui-popover--top cui-popover__categories-popover" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom'}, 'any']" ng-if="organizationApplications.categoriesClicked">
-        <p ng-click="organizationApplications.updateSearch('category')">{{'all' | translate}}</p>
-        <div ng-repeat="category in organizationApplications.categories">
-          <p ng-click="organizationApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</p>
+      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="organizationApplications.categoriesClicked" style="width:214px">
+        <div class="cui-popover__row cui-popover--row__flex">
+          <span ng-click="organizationApplications.updateSearch('category')">{{'all' | translate}}</span>
+        </div>
+        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in organizationApplications.categories">
+          <span ng-click="organizationApplications.updateSearch('category',category.name)">{{category.name | cuiI18n}}</span>
         </div>
       </div>
     </div>
