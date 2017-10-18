@@ -20,7 +20,7 @@
                     <span class="social-icon" >
                       <cui-icon cui-svg-icon="fa:{{socialLoginAccount.iconName}}" svg-class="cui-action__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                     </span>
-                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'Unlink' | translate}} {{socialLoginAccount.socialName|translate}}</span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'unlink' | translate}} {{socialLoginAccount.socialName|translate}}</span>
                     <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
                     <span class= "social-label" ng-if="socialLoginAccount.unlinking">{{'cui-button-loading-text' | translate}}</span>
                   </button>
