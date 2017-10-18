@@ -109,4 +109,27 @@
   position:relative;
   min-height:90px;
 }
-
+.cui-action__with-search{
+  .cui-action__title{
+    flex:0.35
+  }
+  .cui-input-button--alt-bg{
+    flex:0.4
+  }
+  @media screen and (max-width:550px) {
+    .cui-input-button--alt-bg{
+      order:2;
+      align-self: baseline;
+      width:100%;
+    }
+    .cui-action__actions{
+      margin-top:1em;
+      margin-bottom:1em;
+    }
+  }
+}
+@media screen and (max-width:550px) {
+    .cui-action__with-search{
+      flex-flow:column;
+    }
+}
