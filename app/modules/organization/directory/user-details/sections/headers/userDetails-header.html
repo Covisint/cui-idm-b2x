@@ -84,7 +84,7 @@
   </button>
 
   <!-- Specify Password -->
-  <button class="cui-button cui-button--inverted" id="password-reset" 
+  <button class="cui-button cui-button--inverted" id="password-specify" 
           ng-click="userDetails.specifyPassword()" 
           cui-access="{requiredEntitlements:['Specify User Password']}" 
           user-entitlements="base.user.entitlements">
@@ -92,7 +92,7 @@
   </button>
 
   <!-- Password Reset-->
-  <button class="cui-button cui-button--inverted" id="password-specify" 
+  <button class="cui-button cui-button--inverted" id="password-reset" 
           ng-click="userDetails.resetPassword()"
           cui-access="{requiredEntitlements:['Reset Password']}" 
           user-entitlements="base.user.entitlements">
@@ -121,16 +121,21 @@
 <br/>
 <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="userDetails.resetPassword.begun">
 
-<div class="cui-action__actions">
-      <!-- Close Icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ng-click="userDetails.resetPassword.begun=false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
-        <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
-      </svg>
-    </div>
-    <div class="cui-expandable__body-row">
-      <p>{{'cui-pwd-reset-msg1'|translate}}  <b>{{userDetails.resetPasswordValue.password}}</b> </p>
-    </div>
-      <div class="cui-expandable__body-row">
-      <p>{{'cui-pwd-reset-msg2'|translate}}</p>
-    </div>
+  <div class="cui-action__actions">
+    <!-- Close Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" ng-click="userDetails.resetPassword.begun=false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53">
+      <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close"></use>
+    </svg>
+  </div>
+
+  <div class="cui-loading__container" ng-if="base.loader.for['userDetails.resetPassword']">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+
+  <div class="cui-expandable__body-row" ng-if="!base.loader.for['userDetails.resetPassword']">
+    <p>{{'cui-pwd-reset-msg1'|translate}}  <b>{{userDetails.resetPasswordValue.password}}</b> </p>
+  </div>
+  <div class="cui-expandable__body-row" ng-if="!base.loader.for['userDetails.resetPassword']">
+    <p>{{'cui-pwd-reset-msg2'|translate}}</p>
+  </div>
 </cui-expandable-body>

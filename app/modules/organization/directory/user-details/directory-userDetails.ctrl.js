@@ -181,7 +181,7 @@ angular.module('organization')
 
             
             if(userDetails.resetPassword.begun){
-                const name = 'userDetails.unsuspend'
+                const name = 'userDetails.resetPassword'
 
             Loader.onFor(name)
             APIError.offFor(name)
