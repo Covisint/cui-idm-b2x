@@ -1,15 +1,6 @@
 <div class="cui-users__address-container user-details__password-reset show-address">
   {{'cui-suspend-confirm' | translate}}*
 
-  <div class="cui-server-error" ng-if="base.apiError.for['userDetails.suspend']">
-    <div class="cui-server-error__container">
-      <span >{{ 'suspend-error' | translate }}</span>
-    </div>
-    <svg xmlns="http://www.w3.org/2000/svg" class="cui-server-error__close" ng-click="base.apiError.for['userDetails.suspend'] = !base.apiError.for['userDetails.suspend']" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 53" aria-label="{{'cui-close' | translate}}">
-      <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-    </svg>
-  </div>
-
   <textarea class="cui-text-area jlr-text-area--black-text" ng-required="true" style="margin: 20px" ng-model="userDetails.user.suspendReason" placeholder="{{'request-reason' | translate}}"></textarea>
 
 <div class="cui-organization__submit-row" disable-animate >
