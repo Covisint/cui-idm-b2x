@@ -536,6 +536,12 @@ angular.module('common')
                         $scope.$digest()
                     }
                 })
+                .fail(err => {
+                    console.log("There was an error in validating password against rules",err)
+                    validSwitch(input, false, 'disallowed')
+                    validSwitch(input, false, 'history')
+                    formObject[input].$setValidity(input, false)
+                })
             }
 
             profile.updateSocialLogin = (config, toggleOff) => {
