@@ -970,5 +970,11 @@
     "call": "/organization/v3/organizations/statusHistory",
     "type": "GET",
     "accepts": "application/vnd.com.covisint.platform.organization.status.history.v1+json"
+  },
+  {
+    "cmd": "removePerson",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}",
+    "type": "DELETE"
   }
 ]
