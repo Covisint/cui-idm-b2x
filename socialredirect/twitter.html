@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <title>Redirecting..</title>
+    </head>
+    <script type="text/javascript">
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+</script>
+    <script>
+$(document).ready(function() {
+var xsrfToken = localStorage.getItem("cui.xt");
+var solInstanceId = localStorage.getItem("cui.sii");
+var cuid = localStorage.getItem("cui.c");
+
+
+var settings = {
+"url" : '/p/apiproxy/social-accounts/v1/social/link/twitter?oauth_token='+$.urlParam('oauth_token')+'&oauth_verifier='+$.urlParam('oauth_verifier')+'&cuid='+cuid+'&type=link',
+"method" : "GET"
+};
+
+settings.beforeSend = function(xhr, settings) {
+xhr.setRequestHeader("Accept","application/json");
+xhr.setRequestHeader("Content-Type","application/json");
+xhr.setRequestHeader("xsrfToken", xsrfToken);
+xhr.setRequestHeader("solutionInstanceId", solInstanceId);
+};
+
+$.ajax(settings).done(function(response) {
+            var finalUrl= '/#/user/profile'
+            window.location = finalUrl;
+}).fail(function(err) {
+var finalUrl= '/#/error'
+window.location = finalUrl;
+});
+});
+</script>
+    <body></body>
+</html>
