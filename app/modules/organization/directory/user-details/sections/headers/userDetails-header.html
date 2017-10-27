@@ -43,7 +43,7 @@
 <div class="cui-media__button-container">
   <!-- Suspend -->
   <button class="cui-button cui-button--inverted" 
-          ng-click="userDetails.suspend(userDetails.user.id)" 
+          ng-click="userDetails.toggleDropDown('suspend');userDetails.suspend(userDetails.user.id)" 
           ng-if="userDetails.user.status==='active'" 
           cui-access="{requiredEntitlements:['Suspend User']}" 
           user-entitlements="base.user.entitlements">
@@ -76,16 +76,25 @@
 
   <!-- Unsuspend -->
   <button class="cui-button cui-button--inverted" 
-          ng-click="userDetails.unsuspend(userDetails.user.id)" 
+          ng-click="userDetails.toggleDropDown('unsuspend');userDetails.unsuspend(userDetails.user.id)" 
           ng-if="userDetails.user.status==='suspended'" 
           cui-access="{requiredEntitlements:['Suspend User']}" 
           user-entitlements="base.user.entitlements">
           {{'unsuspend' | translate}}
   </button>
 
+  <!-- Unsuspend -->
+  <button class="cui-button cui-button--inverted" 
+          ng-click="userDetails.toggleDropDown('remove');userDetails.remove(userDetails.user.id)" 
+          ng-if="userDetails.user.status==='suspended'" 
+          cui-access="{requiredEntitlements:['Permanently Remove User']}" 
+          user-entitlements="base.user.entitlements">
+          {{'remove' | translate}}
+  </button>
+
   <!-- Specify Password -->
   <button class="cui-button cui-button--inverted" id="password-specify" 
-          ng-click="userDetails.specifyPassword()" 
+          ng-click="userDetails.toggleDropDown('specifyPassword');userDetails.specifyPassword()" 
           cui-access="{requiredEntitlements:['Specify User Password']}" 
           user-entitlements="base.user.entitlements">
           {{'specify-password' | translate}}
@@ -93,7 +102,7 @@
 
   <!-- Password Reset-->
   <button class="cui-button cui-button--inverted" id="password-reset" 
-          ng-click="userDetails.resetPassword()"
+          ng-click="userDetails.toggleDropDown('resetPassword');userDetails.resetPassword()"
           cui-access="{requiredEntitlements:['Reset Password']}" 
           user-entitlements="base.user.entitlements">
           {{'password-reset' | translate}}
@@ -105,21 +114,26 @@
 </div>
 
 <!-- Suspend Partial -->
-<ng-include ng-if="userDetails.suspend.begun"
-  src="'app/modules/organization/directory/user-details/sections/headers/partials/suspend-user.html'">
+<ng-include ng-if="userDetails.dropDown.suspend"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/suspend-user.html'" disable-animate>
 </ng-include>
 
 <!-- Unsuspend Partial -->
-<ng-include ng-if="userDetails.unsuspend.begun"
-  src="'app/modules/organization/directory/user-details/sections/headers/partials/unsuspend-user.html'">
+<ng-include ng-if="userDetails.dropDown.unsuspend"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/unsuspend-user.html'" disable-animate>
+</ng-include>
+
+<!-- remove Partial -->
+<ng-include ng-if="userDetails.dropDown.remove"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/remove-user.html'" disable-animate>
 </ng-include>
 
 <!-- Specify Password Partial -->
-<ng-include ng-if="userDetails.specifyPassword.begun"
-  src="'app/modules/organization/directory/user-details/sections/headers/partials/specify-password.html'">
+<ng-include ng-if="userDetails.dropDown.specifyPassword"
+  src="'app/modules/organization/directory/user-details/sections/headers/partials/specify-password.html'" disable-animate>
 </ng-include>
 <br/>
-<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="userDetails.resetPassword.begun">
+<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="userDetails.dropDown.resetPassword">
 
   <div class="cui-action__actions">
     <!-- Close Icon -->

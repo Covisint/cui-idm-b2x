@@ -14,23 +14,17 @@ angular.module('organization')
     userDetails.profileRolesSwitch = 'profile'
     userDetails.appsHistorySwitch = 'apps'
 
+    userDetails.dropDown={
+        suspend:false,
+        unsuspend:false,
+        remove:false,
+        specifyPassword:false,
+        resetPassword:false
+    }
+
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
     Loader.onFor(scopeName + 'userInfo')
-/*
-    API.cui.getPerson({ personId: $stateParams.userId })
-    .then(res => {
-        userDetails.user = res
-        CuiMobileNavFactory.setTitle(res.name.given + '.' + res.name.surname)
-    })
-    .fail(error => {
-        console.error('Failed getting user information')
-    })
-    .always(() => {
-        Loader.offFor(scopeName + 'userInfo')
-        $scope.$digest()
-    })*/
-
 
     const apiPromises = [
         API.cui.getPerson({
@@ -68,12 +62,17 @@ angular.module('organization')
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
 
     /* --------------------------------------------- ON CLICK START ---------------------------------------------- */
-    userDetails.suspend = (personId) => {
+    userDetails.toggleDropDown= (type) => {
+        Object.keys(userDetails.dropDown).forEach(key => {
+            if (key===type) {
+                userDetails.dropDown[key]=!userDetails.dropDown[key]
+            }else{
+                userDetails.dropDown[key]=false
+            }
+        })
+    }
 
-        userDetails.suspend.begun = (userDetails.suspend.begun)? false:true
-        userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
-        userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
-        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
+    userDetails.suspend = (personId) => {
 
         const name = 'userDetails.suspend'
 
@@ -116,16 +115,12 @@ angular.module('organization')
         }
 
         userDetails.suspend.cancel = () => {
-            userDetails.suspend.begun = false
+            userDetails.dropDown.suspend = false
             userDetails.suspend.reset()
         }
     }
 
     userDetails.unsuspend = (personId) => {
-        userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:true
-        userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
-        userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
-        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
 
         const name = 'userDetails.unsuspend'
 
@@ -168,31 +163,44 @@ angular.module('organization')
         }
 
         userDetails.unsuspend.cancel = () => {
-            userDetails.unsuspend.begun = false
+            userDetails.dropDown.unsuspend = false
             userDetails.unsuspend.reset()
         }
     }
 
-    userDetails.resetPassword = () => {
-        userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
-        userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
-        userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:false
-        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:true
+    userDetails.remove =(personId) => {
 
-            
-            if(userDetails.resetPassword.begun){
-                const name = 'userDetails.resetPassword'
+        const name = 'userDetails.remove'
 
+        userDetails.remove.reset = () => {
+            Loader.offFor(name)
+            APIError.offFor(name)
+            userDetails.user.removeReason = ''
+            userDetails.remove.success && delete userDetails.remove.success
+        }
+
+        userDetails.remove.reset()
+
+        userDetails.remove.confirm = () => {
             Loader.onFor(name)
             APIError.offFor(name)
-            API.cui.resetPersonPassword({
-                qs: [['subject', $stateParams.userId]],
+
+            const reason = encodeURIComponent(userDetails.user.removeReason)
+
+            API.cui.removePerson({
+                personId:personId,
+                qs: APIHelpers.getQs({
+                    reason
+                })
             })
             .then(
                 res => {
                     APIError.offFor(name)
-                    userDetails.resetPasswordValue=res
-                    userDetails.resetPassword.begun = true
+                    userDetails.remove.success = true
+                    $scope.$digest()
+                    $timeout(()=>{
+                $state.go('organization.directory',{orgId:API.user.organization.id})
+            }, 1500)
                 },
                 err => {
                     APIError.onFor(name)
@@ -203,7 +211,35 @@ angular.module('organization')
                 $scope.$digest()
             })
         }
-       
+
+        userDetails.remove.cancel = () => {
+            userDetails.dropDown.remove = false
+            userDetails.remove.reset()
+        }        
+    }
+
+    userDetails.resetPassword = () => {
+        const name = 'userDetails.resetPassword'
+
+        Loader.onFor(name)
+        APIError.offFor(name)
+        API.cui.resetPersonPassword({
+            qs: [['subject', $stateParams.userId]],
+        })
+        .then(
+            res => {
+                APIError.offFor(name)
+                userDetails.resetPasswordValue=res
+                userDetails.resetPassword.begun = true
+            },
+            err => {
+                APIError.onFor(name)
+            }
+        )
+        .always(() => {
+            Loader.offFor(name)
+            $scope.$digest()
+        })       
     }
 
     userDetails.specifyPassword = () => {
@@ -211,10 +247,6 @@ angular.module('organization')
         let errorTimer
 
         const name = 'userDetails.specifyPassword'
-        userDetails.specifyPassword.begun = (userDetails.specifyPassword.begun)? false:true
-        userDetails.suspend.begun = (userDetails.suspend.begun)? false:false
-        userDetails.unsuspend.begun = (userDetails.unsuspend.begun)? false:false
-        userDetails.resetPassword.begun = (userDetails.resetPassword.begun)? false:false
 
         userDetails.specifyPassword.reset = () => {
             Loader.offFor(name)
@@ -319,7 +351,7 @@ angular.module('organization')
         }
 
         userDetails.specifyPassword.cancel = () => {
-            userDetails.specifyPassword.begun = false
+            userDetails.dropDown.specifyPassword = false
             userDetails.specifyPassword.reset()
         }
     }
