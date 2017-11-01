@@ -1,0 +1,102 @@
+  <div class="class-toggle cui-modal" ng-if="division.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'cui-invite-division-success' | translate}}</span>
+    </div>
+</div>
+<ng-form name="edit" novalidate>
+  <div class="cui-users__edit"> 
+
+    <div class="cui-users__main-container">
+      <!-- Page Loading -->
+      <div class="cui-loading__container" ng-if="division.loader">
+        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+      </div>
+      <span class="cui-field-val__field">{{'cui-invite-division'|translate}} </span>
+        <div class="cui-action__actions">
+            <svg ui-sref="organization.profile({orgId:division.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+            <defs>
+                <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+                <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                    <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                    <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                    <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+                </filter>
+            </defs>
+            <g id="close-with-shadow" fill="none" fill-rule="evenodd">
+                <g id="Oval-73" transform="translate(3 1)">
+                    <use fill="#000" filter="url(#filter-2)" xlink:href="#path-1"/>
+                    <use fill="currentColor" xlink:href="#path-1"/>
+                </g>
+                <path d="M26.022 20.672l4.006-4.006c.788-.787.787-2.052.006-2.833l-.195-.195c-.788-.787-2.05-.778-2.834.006L23 17.65l-4.006-4.006c-.787-.788-2.052-.787-2.833-.006l-.194.195c-.788.787-.778 2.05.006 2.833l4.006 4.006-4.006 4.006c-.788.787-.787 2.053-.006 2.833l.195.196c.788.788 2.05.778 2.834-.006L23 23.695l4.006 4.005c.787.788 2.052.787 2.833.006l.194-.195c.788-.786.778-2.048-.006-2.832l-4.006-4.006z" fill="#fff"/>
+            </g>
+          </svg>
+        </div>
+
+      <div class="cui-users__profile">
+        <!-- Left Block -->
+        <div class="cui-users__profile-info" ng-if="!division.selectOrgFromList">
+
+          <div class="cui-users__info-block">
+              <div class="cui-users__info-block">
+                <div class="cui-field-val">
+                     <span class="cui-field-val__field">{{division.userSelectedOrg.originalObject.name}}</span>
+                <span class="cui-field-val__val"><nav class="cui-breadcrumb">
+                <ul class="cui-breadcrumb__links">
+                  <li class="cui-breadcrumb__link">
+                    <a class="cui-link" ng-click="division.selectOrgFromList=true">
+                      {{'change-org' | translate}}
+                    </a>
+                  </li>
+                </ul>
+              </nav></span></div>
+<!-- Error Messages -->
+      <p class="cui-users__password-success" style="color:red" ng-if="division.sendInvitationError">{{'error-generic' | translate}}</p></br>   
+  <div class="cui-users__info-block" >
+    <!-- <div class="cui-input-button cui-input-button--alt-bg">
+      <input class="cui-input-button__input" ng-model="division.search.name" focus-if placeholder="{{'Search for an org' | translate}}" on-enter="division.updateSearch"/>
+      <button class="cui-input-button__button" ng-click="division.updateSearch()">{{'go' | translate}}</button>
+    </div> -->
+    <div class="cui-error" ng-if="!division.userSelectedOrg">
+        <div class="cui-error__message">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+     <div auto-complete input-name="country" pause="100" placeholder="{{'cui-invite-user-select' | translate}}" selected-object="division.userSelectedOrg" remote-api-handler="division.searchOrgs" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="division.userSelectedOrg"></div>
+  </div>
+  <div class="cui-users__info-block">
+    <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-subject'|translate}}* <input type="text" name="emailSubject" placeholder="{{'cui-division-sub'|translate}} {{division.userSelectedOrg.originalObject.name}}" class="cui-input" ng-disabled="true" ></span>
+    </div>
+    <div class="cui-users__info-block">
+      <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-address'|translate}}{{'cui-es'}}* 
+        <div class="cui-error" ng-if="division.emailAddressError">
+          <div class="cui-error__message">{{'cui-this-is-not-valid-email' | translate}}</div>
+        </div>
+    <textarea name="emailAddress" ng-required="true" class="cui-text-area" style="min-width: 800px;" ng-model="division.emailAddress" placeholder="{{'cui-email-recipt'|translate}}"></textarea></span>   
+   <!--  <span class="cui-field-val__field">Email Address(es)* <input type="text" name="emailAddress" ng-model="division.emailAddress" class="cui-input" placeholder="Enter recipient email (separate multiple with commas)"></span> -->
+    </div>
+    <!-- <div class="cui-users__info-block"> -->
+
+    <!-- </div> -->
+          </div>
+        </div>
+        <div class="cui-applications__submit-options" align="right">
+                <a class="cui-link" ng-click="base.goBack('invitation.inviteSelect')">{{'cui-cancel' | translate}}</a>
+                <button class="cui-button" ng-class="{'cui-button--error' : !edit.$valid}" ng-click="edit.$valid&&division.sendInvitation()">
+                    <span ng-if="!division.sendInvitationError">{{'cui-send-invitation' | translate}}</span>
+                    <span ng-if="division.sendInvitationError===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+        </div>
+        <!-- Right Block -->
+        <div class="cui-users__profile-info" ng-if="division.selectOrgFromList">
+          <div class="cui-users__info-block">
+            <!-- Hierarchy Tree -->
+            <div class="cui-tree" cui-tree="division.organizationHierarchyRoot" cui-tree-leaf-display="(object.name | cuiI18n)" cui-tree-leaf-click-callback="division.goToOrgPrfile"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

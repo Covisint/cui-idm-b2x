@@ -1,0 +1,47 @@
+<ng-form name="organizationSelect" novalidate>
+<h6 class="h6">{{'cui-all-organizations' | translate}}</h6>
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <div class="cui-div__with-icon-input">
+        <cui-icon cui-svg-icon="cui:search" svg-class="cui-icon cui-icon--light-grey cui-icon__with-input" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+        <input type="text" ng-model="orgWalkup.orgFilterByname" ng-model-options="{debounce:2000}" placeholder="{{'cui-filter-org-name' | translate}}" class="cui-input__with-icon" />
+      </div>
+      
+    </div>
+  </div>
+  <!-- loading container -->
+  <div class="cui-loading__container--organization-list" ng-if="orgWalkup.updatingOrgs">
+    <div class="cui-loading--center"><div class="cui-loading"></div></div>
+  </div>
+  <p ng-if="orgWalkup.organizationList.length===0&&!orgWalkup.updatingOrgs">{{'cui-no-orgs-for-name'|translate}}</p>
+  <cui-expandable ng-if="!orgWalkup.updatingOrgs" class="cui-expandable" ng-repeat="organization in orgWalkup.organizationList | orderBy:'name' track by organization.id">
+    <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex cui-expandable__title--alt-layout" ng-click="toggleExpand()">
+      {{organization.name}}
+      <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </cui-expandable-title>
+
+    <cui-expandable-body class="cui-expandable__body">
+      <span class="cui-field-val__val">{{organization.addresses[0].streets[0]}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].city}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].state}}</span>
+      <span class="cui-field-val__val">{{organization.addresses[0].postal}}</span><br>
+      <span class="cui-field-val__val">{{organization.url}}</span><br>
+      <span class="cui-field-val__val">{{organization.phones[0].number}}</span>
+
+      <div class="cui-wizard__controls">
+        <button type="button" class="cui-wizard__next" ng-click="orgWalkup.selectOrganization(organization);next()">{{'cui-select-org' | translate}}</button>
+      </div>
+    </cui-expandable-body>
+  </cui-expandable>
+
+  <!-- Pagination Controls -->
+  <div class="cui-paginate__container" ng-if="!base.loader.for.orgWalkup.initializing">
+    <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    <results-per-page class="cui-paginate__select" ng-model="orgWalkup.orgPaginationSize"></results-per-page>
+    <paginate class="cui-paginate" results-per-page="orgWalkup.orgPaginationSize" count="orgWalkup.organizationCount" on-page-change="orgWalkup.orgPaginationPageHandler" ng-model="orgWalkup.orgPaginationCurrentPage"  attach-rerender-to="orgWalkup.orgReRenderPaginate"></paginate>
+  </div>
+</ng-form>
+
+<div class="cui-wizard__controls">
+  <button type="button" class="cui-wizard__previous" ng-click="previous()" style="margin-right:0">&#60;&#60; {{'cui-previous' | translate}}</button>
+</div>

@@ -30,10 +30,15 @@ module.exports = function(grunt, config) {
             'appConfig.json',
             'appConfig-env.json',
             'appConfig-build.json',
-            'app/json/*.json'
+            'app/json/*.json',
+            'socialredirect/**'
           ],
           dest: '<%= config.buildDir %>/'
-        }
+        },
+		{
+		 src: ['app/modules/user/user_icon/**/*'],
+		 dest: '<%= config.buildDir %>/'
+		 }
       ]
     },
     buildsdk: {

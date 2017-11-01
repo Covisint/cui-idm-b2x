@@ -1,0 +1,70 @@
+  <div class="class-toggle cui-modal" ng-if="tlo.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'cui-invite-tlo-success' | translate}}</span>
+    </div>
+</div>
+<ng-form name="edit" novalidate>
+  <div class="cui-users__edit"> 
+    <div class="cui-users__main-container">
+      <!-- Page Loading -->
+      <div class="cui-loading__container" ng-if="tlo.loader">
+        <div class="cui-loading--center"><div class="cui-loading"></div></div>
+      </div>
+   
+      <span class="cui-field-val__field">{{'cui-invite-tlo'|translate}} </span>
+      <div class="cui-action__actions">
+          <svg ui-sref="organization.profile({orgId:tlo.stateParamsOrgId})" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--close" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+          <defs>
+            <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+            <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+                <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+            </filter>
+          </defs>
+          <g id="close-with-shadow" fill="none" fill-rule="evenodd">
+              <g id="Oval-73" transform="translate(3 1)">
+                  <use fill="#000" filter="url(#filter-2)" xlink:href="#path-1"/>
+                  <use fill="currentColor" xlink:href="#path-1"/>
+              </g>
+              <path d="M26.022 20.672l4.006-4.006c.788-.787.787-2.052.006-2.833l-.195-.195c-.788-.787-2.05-.778-2.834.006L23 17.65l-4.006-4.006c-.787-.788-2.052-.787-2.833-.006l-.194.195c-.788.787-.778 2.05.006 2.833l4.006 4.006-4.006 4.006c-.788.787-.787 2.053-.006 2.833l.195.196c.788.788 2.05.778 2.834-.006L23 23.695l4.006 4.005c.787.788 2.052.787 2.833.006l.194-.195c.788-.786.778-2.048-.006-2.832l-4.006-4.006z" fill="#fff"/>
+          </g>
+          </svg>
+      </div>
+
+      <div class="cui-users__profile">
+        <!-- Left Block -->
+        <div class="cui-users__profile-info">
+          <div class="cui-users__info-block">
+            <div class="cui-users__info-block">
+              <!-- Error Messages -->
+                     <p class="cui-users__password-success" style="color:red" ng-if="tlo.sendInvitationError">{{'error-generic' | translate}}</p></br>    
+            <div class="cui-users__info-block">
+                <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-subject'|translate}}* <input type="text" name="emailSubject" ng-model="tlo.emailSubject" class="cui-input" ng-disabled="true" placeholder="{{'cui-tlo-sub'|translate}}"></span>
+            </div>
+            <div class="cui-users__info-block">
+              <!-- <span class="cui-field-val__field">Email Address(es)* <input type="text" name="emailAddress" ng-model="tlo.emailAddress" class="cui-input" placeholder="Enter recipient email (separate multiple with commas)"></span> -->
+              <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-address'|translate}}{{'cui-es'|translate}}* 
+                <div class="cui-error" ng-if="tlo.emailAddressError">
+                  <div class="cui-error__message">{{'cui-this-is-not-valid-email' | translate}}</div>
+                </div>
+                <textarea name="emailAddress" ng-required="true" class="cui-text-area" style="min-width: 800px;" ng-model="tlo.emailAddress" placeholder="{{'cui-email-recipt'|translate}}"></textarea></span>   
+            </div>
+          </div>
+        </div>
+        <div class="cui-applications__submit-options" align="right">
+          <a class="cui-link" ng-click="base.goBack('invitation.inviteSelect')">{{'cui-cancel' | translate}}</a>
+          <button class="cui-button" ng-class="{'cui-button--error' : !edit.$valid}" ng-click="edit.$valid&&tlo.sendInvitation()">
+              <span ng-if="!tlo.sendInvitationError">{{'cui-send-invitation' | translate}}</span>
+              <span ng-if="tlo.sendInvitationError===true">{{'cui-error-try-again' | translate}}</span>
+          </button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

@@ -60,6 +60,7 @@
     @extend %flex-row;
     border-bottom: 1px solid $cui-greyscale--x-light;
     padding: em(20) 0;
+    cursor:pointer;
 
     .cui-applications__category {
       @extend %bold;

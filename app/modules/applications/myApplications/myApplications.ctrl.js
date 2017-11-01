@@ -1,63 +1,33 @@
 angular.module('applications')
 .controller('myApplicationsCtrl', function(API,APIError,APIHelpers,DataStorage,Loader,User,$filter,$pagination,$q,$scope,$state,$stateParams) {
-
-    const myApplications = this
+	const myApplications = this
     const userId = User.user.id
     const loaderName = 'myApplications.'
-
     let checkedLocalStorage = false
 
-    // HELPER FUNCTIONS START ---------------------------------------------------------------------------------
-
-    const switchBetween = (property, firstValue, secondValue) => {
-        // helper function to switch a property between two values or set to undefined if values not passed
-        if (!firstValue) {
-            myApplications.search[property] = undefined
-            return
-        }
-        myApplications.search[property] = myApplications.search[property] === firstValue
-            ? secondValue
-            : firstValue
-    }
-
-    const getCountsOfStatus=(qsValue)=>{
-        let opts = {
-            personId: API.getUser(),
-            useCuid:true
-        }
-        //Assign query strings if any value passed 
-        //otherwise it will get full count
-        if (qsValue) {
-            opts.qs = [['grant.status',qsValue]]
-        }
-        API.cui.getPersonGrantedAppCount(opts)
-        .then(res=>{
-            if (!qsValue) {
-                myApplications.popupCount=res;
-            }else if (qsValue==="active") {
-                myApplications.activeCount=res;
-            }
-            else{
-                myApplications.suspendedCount=res;
-            }
-            $scope.$digest();
-        })
-        .fail(err=>{
-
-        })
-    }
-
+    // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
     const getCountsOfcategories=()=>{
         myApplications.categories.forEach((category,index)=>{
             console.log($filter('cuiI18n')(category.name))
             let opts = {
-                personId: API.getUser(),
+                personId: userId,
                 useCuid:true
             }
             opts.qs=[['service.category',$filter('cuiI18n')(category.name)]]
             API.cui.getPersonGrantedAppCount(opts)
             .then(res=>{
-                category.count=res;
+                //Need to minus each category count with not displayble and other than active apps according to thier categories
+                category.count=res
+                -
+                (
+                    Object.assign(myApplications.list).filter(x => 
+                        x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
+                    ).length
+                    -
+                    Object.assign(myApplications.viewList).filter(x => 
+                            x.category&& $filter('cuiI18n')(x.category)===$filter('cuiI18n')(category.name)
+                    ).length
+                )                
                 if (index===myApplications.categories.length-1) {
                     $scope.$digest();
                 };
@@ -74,7 +44,6 @@ angular.module('applications')
     // HELPER FUNCTIONS END -----------------------------------------------------------------------------------
 
     // ON LOAD START ------------------------------------------------------------------------------------------
-
     const loadStoredData = () => {
         // Check DataStorage if this page has been loaded before. We initially populate this screen
         // with data that was previously retrieved from the API while we redo calls to get the up to date data.
@@ -83,6 +52,7 @@ angular.module('applications')
         if (storedData) {
             Loader.onFor(loaderName + 'apps')
             myApplications.list = storedData.appList
+            myApplications.viewList = Object.assign(myApplications.list).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
             myApplications.count = storedData.appCount
             myApplications.categories = storedData.categories
             Loader.offFor(loaderName + 'apps')
@@ -109,6 +79,7 @@ angular.module('applications')
                 APIError.offFor(loaderName + 'categories')
             })
             .fail(err => {
+            	console.error('There was an error in fetcting user\'s app category details ' +err)
                 APIError.onFor(loaderName + 'categories')
             })
             .done(() => {
@@ -124,7 +95,7 @@ angular.module('applications')
             useCuid:true,
             qs: APIHelpers.getQs(myApplications.search)
         }
-
+        opts.qs.push(['grant.status','active'])
         const promises = [
             API.cui.getPersonGrantedApps(opts), 
             API.cui.getPersonGrantedAppCount(opts)
@@ -132,8 +103,9 @@ angular.module('applications')
 
         $q.all(promises)
         .then(res => {
-            // myApplications.list = Object.assign(res[0]).filter(x => x.hasOwnProperty('urls'))
-            myApplications.count = res[1]
+            myApplications.viewList = Object.assign(res[0]).filter(x => x.servicePackage.displayable===true&&x.grant.status=='active')
+                myApplications.count = res[1]
+            myApplications.popupCount = myApplications.count-Object.assign(res[0]).filter(x => x.servicePackage.displayable!==true || x.grant.status!=='active').length
             myApplications.list=res[0];
             // re-render pagination if available
             myApplications.reRenderPaginate && myApplications.reRenderPaginate()
@@ -147,6 +119,7 @@ angular.module('applications')
             APIError.offFor(loaderName + 'apps')
         })
         .catch(err => {
+        	console.error('There was an error in fetcting user\'s granted applications ' +err)
             APIError.onFor(loaderName + 'apps')
         })
         .finally(() => {
@@ -157,14 +130,6 @@ angular.module('applications')
                 checkedLocalStorage ? Loader.offFor(loaderName + 'updating') : Loader.offFor(loaderName + 'apps')
             }
         })
-        //Lazy loading of counts of applications based on status 
-        //to display in popover
-        getCountsOfStatus("active")
-        getCountsOfStatus("suspended")
-        //To getFull count
-        getCountsOfStatus(undefined)
-
-
     }
 
     loadStoredData()
@@ -179,16 +144,6 @@ angular.module('applications')
 
     myApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
-            case 'alphabetic':
-                switchBetween('sortBy', '+service.name', '-service.name')
-                break
-            case 'date':
-                switchBetween('sortBy', '+grant.instant', '-grant.instant')
-                break
-            case 'status':
-                myApplications.search.page = 1
-                myApplications.search['grant.status'] = updateValue
-                break
             case 'category':
                 myApplications.search.page = 1
                 myApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
@@ -199,15 +154,4 @@ angular.module('applications')
         $state.transitionTo('applications.myApplications', myApplications.search, { notify:false })
         onLoad(true)
     }
-
-    myApplications.goToDetails = (application) => {
-        const opts = {
-            appId: application.id
-        }
-        DataStorage.setType('myAppDetail',application)
-        $state.go('applications.myApplicationDetails', opts)
-    }
-
-    // ON CLICK FUNCTIONS END ---------------------------------------------------------------------------------
-
 })

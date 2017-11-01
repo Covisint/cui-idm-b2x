@@ -1,0 +1,69 @@
+<main class="cui-organization__new-request">
+  <div class="cui-action" ng-hide="base.loader.for['newOrgGrant.org']">
+
+    <span class="cui-action__title cui-action__title--dark" ng-click="base.goBack(newOrgGrant.prevState.name,newOrgGrant.prevState.params)">&#60; {{newOrgGrant.org.name}} - {{'new-grant' | translate}}</span>
+    
+    <div class="cui-action__actions">
+      <ng-include src="'app/modules/organization/partials/close-with-shadow.html'" onload="prevState=newOrgGrant.prevState"></ng-include>
+    </div>
+  </div>
+  
+  <div class="cui-applications__new-request">
+      <section class="cui-action cui-action--alt">
+          <h2 class="cui-action__title">{{'select-applications' | translate}}</h2>
+          <div class="cui-action__actions">
+              <div class="flex_row" id="cui-applications__requested-apps" ng-click="newOrgGrant.requestPopover=!newOrgGrant.requestPopover" off-click="newOrgGrant.requestPopover=false">
+                <cui-icon  cui-svg-icon="cui:folder" id="cui-applications__requested-apps" svg-class="cui-icon cui-icon--folder" use-class="cui-icon__ref" viewbox="0 0 40 33" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+                <sup class="cui-action__icon-counter" ng-class="{'cui-action__icon-counter--active': newOrgGrant.numberOfRequests != 0}">{{newOrgGrant.numberOfRequests}}</sup>
+              </div>
+                <!-- popover -->
+                <div tether class="cui-action__popover" target="#cui-applications__requested-apps" attachment="top middle" targetAttachment="bottom left"
+                offset="-20px 50px" ng-if="newOrgGrant.requestPopover" constraints="[{to:'scrollParent',attachment:'together',pin:['right']}]">
+                  <span class="cui-action__popover-title">{{'collected-items-for-request' | translate}}</span>
+                  <div class="cui-action__popover-section">
+                    <span ng-if="newOrgGrant.numberOfRequests === 0">{{'no-selected-apps' | translate}}<br/></span>
+                    <ul ng-if="newOrgGrant.numberOfRequests > 0">
+                        <li ng-repeat="application in newOrgGrant.appsBeingRequested">{{application.name | cuiI18n}}</li>
+                        <li ng-repeat="package in newOrgGrant.packagesBeingRequested">{{packages.name | cuiI18n}}</li>
+                    </ul>
+                  </div>
+                  <span ng-if="newOrgGrant.numberOfRequests > 0" class="cui-action__popover-button" ng-click="newOrgGrant.goToClaimSelection()">{{'submit-request' | translate}}</span>
+                </div>
+          </div>
+      </section>
+      <section class="cui-applications__main-container">
+        <!-- not needed now -->
+          <!-- <h3 class="cui-sr-only">Search Parameters</h3>
+          <fieldset class="cui-organization__radio-container">
+            <span class="cui-radio cui-radio--basic-ltr">
+              <input class="cui-radio__input" type="radio" name="radio-choice-1" id="radio-choice-1" ng-model="newOrgGrant.searchType" ng-value="'applications'">
+              <label class="cui-radio__label" for="radio-choice-1"><span></span>{{'search-by-app-name' | translate}}</label>
+            </span>
+            <span class="cui-radio cui-radio--basic-ltr">
+              <input class="cui-radio__input" type="radio" name="radio-choice-2" id="radio-choice-2" ng-model="newOrgGrant.searchType" ng-value="'packages'">
+              <label class="cui-radio__label" for="radio-choice-2"><span></span>{{'search-by-package-name' | translate}}</label>
+            </span>
+          </fieldset> -->
+          <div class="cui-applications__search-options">
+              <div class="cui-input-button">
+                  <!-- <label for="search-by-text" class="cui-sr-only">Search By Text</label> -->
+                  <input type="text" class="cui-input-button__input" id="search-by-text" ng-model="newOrgGrant.search" placeholder="{{'search-by-app-name' | translate}}" on-enter="newOrgGrant.searchCallback" focus-if/>
+                  <button class="cui-input-button__button" ng-click="newOrgGrant.searchCallback(newOrgGrant.search)">{{'go' | translate}}</button>
+              </div>
+              <div class="cui-applications__center-text">{{'or' | translate}}</div>
+              <a class="cui-link" ng-click="newOrgGrant.searchCallback()">{{'show-all' | translate}}</a>
+          </div>
+          <section>
+              <h3 class="cui-sr-only">{{'cui-browse-by-category'|translate}}</h3>
+              <p class="cui-error" ng-if="newOrgGrant.categoryError">{{'error-generic'|translate}}</p>
+              <div ng-repeat="category in newOrgGrant.categories" ng-if="!base.loader.for['newOrgGrant.categories']">
+                  <section class="cui-applications__categories"
+                    ng-click="newOrgGrant.searchCallback({type:'category', value:category.name})">
+                      <h4 class="cui-applications__category" >{{ category.name | cuiI18n }}</h4>
+                      <cui-icon cui-svg-icon="cui:chevron18" svg-class="cui-icon cui-icon--light-grey" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+                  </section>
+              </div>
+          </section>
+      </section>
+  </div>
+</main>

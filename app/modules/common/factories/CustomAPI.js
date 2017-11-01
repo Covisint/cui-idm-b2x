@@ -96,7 +96,7 @@ angular.module('common')
         {
             cmd: 'getOrganizationGrantableCount',
             accepts: 'text/plain',
-            call: `/service/v3/applications/persons/${ '{organizationId}' }/grantable/count`,
+            call: `/service/v3/applications/organizations/${ '{organizationId}' }/grantable/count`,
             type: 'GET'
         },
         {
@@ -183,19 +183,34 @@ angular.module('common')
             type: 'GET'
         },
         {
-            cmd: 'grantPersonPackage',
-            cmdType: 'secured',
-            accepts: 'application/vnd.com.covisint.platform.package.grant.v1+json',
-            call: `/service/v3/applications/persons/${ '{personId}' }/packages/${ '{packageId}' }`,
-            type: 'PUT'
-        },
-        {
             cmd: 'getPersonEntitlements',
             cmdType: 'secured',
             contentType: 'application/vnd.com.covisint.platform.person.privilege.v1+json',
             accepts: 'application/vnd.com.covisint.platform.person.privilege.v1+json',
             call: `/person/v3/persons/privileges/${ '{personId}'}`,
             type: 'GET'
+        },
+        {   cmd: 'getPersonGrantedCount',
+            cmdType: 'secured',
+            accepts: 'text/plain',
+            call: `/person/v3/persons/count`,
+            type: 'GET' 
+        },
+        {
+            cmd: 'suspendOrgPkg',
+            cmdType: 'secured',
+            accepts: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            contentType: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            call: `/service/v3/grants/tasks/organization/package/suspend`,
+            type: 'POST'
+        },
+        {
+            cmd: 'unsuspendOrgPkg',
+            cmdType: 'secured',
+            accepts: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            contentType: 'application/vnd.com.covisint.platform.package.grant.status.request.v1+json',
+            call: `/service/v3/grants/tasks/organization/package/unsuspend`,
+            type: 'POST'
         }
     ]
 

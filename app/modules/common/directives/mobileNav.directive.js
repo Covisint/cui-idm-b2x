@@ -18,21 +18,23 @@ angular.module('common')
         }
     }
 })
-.directive('cuiMobileNav', (CuiMobileNavFactory,PubSub,$state) => ({
+.directive('cuiMobileNav', (CuiMobileNavFactory,PubSub,$state,Base) => ({
     restrict: 'E',
     scope: {
         showIf: '=',
-        links: '='
+        links: '=',
+        activeTitle:'@activeTitle',
+        label: '=?'
     },
     link: (scope, elem, attrs) => {
-        attrs.activeTitle ? scope.activeTitle = attrs.activeTitle : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
+        // attrs.activeTitle ? scope.activeTitle = attrs.activeTitle : scope.activeTitle = CuiMobileNavFactory.getDefaultTitle()
         scope.currentState = $state.current.name
-
+        scope.base=Base
         scope.close = () => scope.showIf = false
         scope.toggle = () => scope.showIf =! scope.showIf
 
         const pubSubSubscription = PubSub.subscribe('mobileNavTitleChange', () => {
-            scope.activeTitle = CuiMobileNavFactory.getTitle()
+            // scope.activeTitle = CuiMobileNavFactory.getTitle()
         })
 
         scope.$on('$destroy', () => {
@@ -43,11 +45,12 @@ angular.module('common')
         <nav class="cui-breadcrumb--mobile" id="breadcrumb-button" aria-hidden="true" ng-click="toggle()" off-click="close()">
             <ul class="cui-breadcrumb__links">
                 <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
-                    <span class="cui-breadcrumb__mobile-link" class="active"><span class="cui-mobile-only">{{activeTitle}}.</span>{{links[currentState]}}</span>
+                    <span class="cui-breadcrumb__mobile-link" ng-if="links[currentState]" class="active"><span class="cui-mobile-only" ng-if="activeTitle">{{activeTitle}}.</span>{{links[currentState].label}}</span>
+                    <span class="cui-breadcrumb__mobile-link" ng-if="!links[currentState]" class="active"><span class="cui-mobile-only" ng-if="activeTitle">{{activeTitle}}.</span>{{label}}</span>
                 </li>
                 <div class="cui-popover cui-popover--menu cui-breadcrumb__popover cui-popover--top cui-popover__categories-popover" tether target="#breadcrumb-button" attachment="top left" target-attachment="bottom left" offset="-10px 0" ng-if="showIf">
-                    <li class="cui-breadcrumb__link cui-popover__row" ng-repeat="(state, name) in links" ng-if="currentState!==state">
-                        <a class="cui-breadcrumb__mobile-link" ui-sref="{{state}}">{{name}}</a>
+                    <li class="cui-breadcrumb__link cui-popover__row" ng-repeat="(state, stateDetails) in links" ng-if="currentState!==state" ng-hide="!base.accessToSecurityAndExchangeAdmins()&&state==='organization.hierarchy'">
+                        <a class="cui-breadcrumb__mobile-link" ui-sref="{{state}}(stateDetails.stateParams)">{{stateDetails.label}}</a>
                     </li>
                 </div>
             </ul>

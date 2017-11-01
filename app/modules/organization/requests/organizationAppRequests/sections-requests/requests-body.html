@@ -1,0 +1,87 @@
+<ng-form name="pendingRequestsApproval">
+  <div class="cui-organization__main-container">
+
+    <!-- Requested Services -->
+    <!-- <div ng-if="organizationAppRequest.packages.length>0 && organizationAppRequest.request.request.approval==='approved'"> -->
+    <div>
+      <div class="">
+        <div class="cui-flex-table__header cui-flex-table__header--multi cui-flex-table__header--borderless">
+          <div class="cui-flex-table__th">
+            <span class="cui-flex-table__heading">{{'requested-items' | translate}}</span>
+          </div>
+          <div class="cui-flex-table__th--radio">
+            <span class="cui-flex-table__heading">{{'deny' | translate}}</span>
+            <span class="cui-flex-table__heading">{{'approve' | translate}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- List Of Applications -->
+      <div>
+        <cui-expandable class="" transition-speed="100" ng-repeat="package in organizationAppRequest.request.packageData">
+          <!-- Package To Approve/Deny -->
+          <cui-expandable-title class="">
+            <div class="cui-flex-table__tr">
+              <div class="cui-flex-table__mobile-stack">
+                <div class="cui-flex-table__left">
+                  <span class="cui-flex-table__title">{{package.details.name | cuiI18n}}</span>
+                </div>
+                <div class="cui-flex-table__middle">
+                  <span class="cui-flex-table__text">{{'requested' | translate}}: {{package.creation | date:base.appConfig.dateFormat}}</span>
+                </div>
+              </div>
+              <fieldset class="cui-flex-table__fieldset">
+                <div class="cui-flex-table__right cui-flex-table__multi">
+                  <div class="cui-radio cui-radio--deny">
+                    <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-{{$index+'a'}}" value="denied" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index+'a'}}">
+                      <div class="cui-radio__outer-button" ng-click="collapse()"><div class="cui-radio__inner-button"></div></div>
+                    </label>
+                  </div>
+                  <div class="cui-radio cui-radio--approve">
+                    <input class="cui-radio__input" type="radio" id="radio-choice-{{$index}}" value="approved" ng-model="package.approval" required />
+                    <label class="cui-radio__label" for="radio-choice-{{$index}}">
+                      <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </cui-expandable-title>
+          
+          <!-- Approve expanded information -->
+          <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg">
+            <!-- Close Icon -->
+            <div ng-click="collapse()">
+              <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-expandable__close" use-class="" viewbox="0 0 48 51" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+            </div>
+            <div class="cui-expandable__body-row">
+              <!-- Bundled Apps -->
+              <div class="cui-expandable__body-col">
+                <div class="cui-expandable__body-header" ng-if="package.services.length>0">{{'bundled-applications' | translate}}:</div>
+                <div class="cui-expandable__links-container">
+                  <p ng-if="package.services.length===0">{{'no-bundled-or-related' | translate}}.</p>
+                  <div ng-if="package.services.length>0" ng-repeat="service in package.services">
+                    <span class="cui-expandable__link">{{service.name | cuiI18n}}</span><br/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+          </cui-expandable-body>
+        </cui-expandable>
+      </div>
+    </div>
+
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ui-sref="organization.requests.orgAppRequests" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="organizationAppRequest.submit()" style="margin:5px" ng-if="!base.loader.for['organizationAppRequest.submitting'] && !organizationAppRequest.error">{{'submit-approvals' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['organizationAppRequest.submitting']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-if="!base.loader.for['organizationAppRequest.submitting'] && organizationAppRequest.error" ng-click="organizationAppRequest.submit()">{{'cui-error-try-again' | translate}}</button>
+    </div>
+
+  </div>
+</ng-form>

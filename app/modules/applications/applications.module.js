@@ -5,9 +5,7 @@ angular.module('applications',[])
 
     const returnCtrlAs = (name, asPrefix) => `${name}Ctrl as ${ asPrefix || ''}${(asPrefix? name[0].toUpperCase() + name.slice(1, name.length) : name)}`;
 
-    const loginRequired = {
-        loginRequired: true
-    };
+    const loginRequired = true;
 
     $stateProvider
         .state('applications', {
@@ -17,7 +15,7 @@ angular.module('applications',[])
             abstract: true
         })
         .state('applications.myApplications', {
-            url: '?name&page&pageSize&service.category&sortBy&grant.status',
+            url: '?page&pageSize&service.category',
             templateUrl: templateBase + 'myApplications/myApplications.html',
             controller: returnCtrlAs('myApplications'),
             access:loginRequired
@@ -47,7 +45,7 @@ angular.module('applications',[])
             access:loginRequired
         })
         .state('applications.manageApplications', {
-            url: '/manage?page&pageSize&service.category',
+            url: '/manage?name&page&pageSize&service.category&sortBy&grant.status&service.name',
             templateUrl: templateBase + 'myApplications/myApplications-manage.html',
             controller: returnCtrlAs('manageApplications'),
             access:loginRequired
@@ -59,4 +57,47 @@ angular.module('applications',[])
             controller: returnCtrlAs('pendingAppRequests'),
             access:loginRequired
         })
+        /*Organization Applications*/
+        .state('applications.orgApplications', {
+            url: '/organization',
+            template: '<div ui-view></div>',
+            abstract: true,
+            access: loginRequired
+        })
+/*        .state('applications.orgApplications.applicationList', {
+            url: '?name&page&pageSize&service.category&sortBy&grant.status',
+            templateUrl: templateBase + 'orgApplications/applicationList/orgApplications-applicationList.html',
+            controller: returnCtrlAs('orgApplications'),
+            access: loginRequired
+        })
+        .state('applications.orgApplications.applicationDetails', {
+            url: '/application/:appId/details',
+            templateUrl: templateBase + 'orgApplications/applicationDetails/orgApplications-applicationDetails.html',
+            controller: returnCtrlAs('orgApplicationDetails'),
+            access: loginRequired
+        })*/
+        .state('applications.orgApplications.newGrant', {
+            url: '/application/:appId/new-grant',
+            templateUrl: templateBase + 'orgApplications/newGrant/orgApplications-newGrant.html',
+            controller: returnCtrlAs('orgAppNewGrant'),
+            access: loginRequired            
+        });
+/*        .state('applications.orgApplications.newRequest', {
+            url: '/request',
+            templateUrl: templateBase + 'orgApplications/appRequest/newRequest/appRequest-newRequest.html',
+            controller: returnCtrlAs('orgAppRequest'),
+            access: loginRequired
+        })
+        .state('applications.orgApplications.newRequestReview', {
+            url: '/request/review',
+            templateUrl: templateBase + 'orgApplications/appRequest/newRequestReview/appRequest-newRequestReview.html',
+            controller: returnCtrlAs('orgAppRequestReview'),
+            access: loginRequired
+        })
+        .state('applications.orgApplications.search', {
+            url: '/search?name&category&page&pageSize',
+            templateUrl: templateBase + 'orgApplications/search/orgApplications-search.html',
+            controller: returnCtrlAs('orgAppSearch'),
+            access: loginRequired
+        });*/
 }]);

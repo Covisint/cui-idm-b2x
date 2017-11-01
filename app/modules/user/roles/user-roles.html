@@ -1,0 +1,111 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/modules/user/history" target="blank">here</a> and the layout styles <a href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/scss/3-views/user" class="cui-link" target="blank">here</a></div>
+<div class="class-toggle cui-modal" ng-if="userRoles.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'your-assign-role-success' | translate}}</span>
+    </div>
+</div>
+<!-- /processHTML -->
+<div class="cui-users__appHistory-container">
+    <!-- Title -->
+    <div class="cui-users__main-container">
+
+    <!-- Page Loading -->
+    <div class="cui-loading__container" ng-if="base.loader.for['userRoles.initHistory']">
+      <div class="cui-loading--center"><div class="cui-loading"></div></div>
+    </div>
+
+        <!-- Error Messages -->
+    <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userRoles.initHistory']"><b>{{'error-generic'|translate}}</b></p>
+        <!-- User info -->
+        <div class="cui-users__profile-media" ng-if="!userRoles.loading">
+            <div class="cui-media">
+                <div class="cui-media__image-container">
+                    <!-- Profile Image: Currently displays users initials only -->
+                    <div class="cui-media__image" cui-avatar cui-avatar-email="userRoles.user.email" cui-avatar-names="[userRoles.user.name.given, userRoles.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+                </div>
+                <div class="cui-media__body">
+                    <!-- User full name -->
+                    <h3 class="cui-media__title">{{userRoles.user.name.given}} {{userRoles.user.name.surname}}</h3>
+                    <!-- UserID -->
+                    <p class="cui-media__content--small" ng-if="userRoles.registeredDate">{{'cui-registered' | translate}}: {{userRoles.registeredDate | date:base.appConfig.dateFormat}}</p>
+                    <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{userRoles.user.username}}</p>
+                    <p class="cui-media__content--small" ng-if="userRoles.user.lastLoginDate">{{'cui-last-login' | translate}}: {{userRoles.user.lastLoginDate | date:base.appConfig.dateFormat}}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div ng-include="'app/modules/user/sections/breadcrumb.html'" ng-init="activeRoles=true"></div>
+        <hr>
+    <div class="cui-users__profile cui-users__history" ng-if="!base.loader.for['userRoles.initHistory']&&!base.apiError.for['userRoles.initHistory']">
+        <!-- Left Block -->
+        <div class="cui-users__profile-info">
+          <div class="cui-action">
+              <div class="cui-action__title">{{'cui-assigned-roles'|translate}}</div>
+          </div>
+          <p class="cui-users__password-success" style="color:red" ng-if="userRoles.getRolesDetailsError"><b>{{'error-generic'|translate}}</b></p>
+            <div class="cui-users__info-block">
+                <div class="cui-media__content" ng-if="userRoles.rolesDetails.length===0">{{'cui-no-details'|translate}}</div>
+              <div class="cui-media cui-media--border cui-media--tr" ng-repeat="roles in userRoles.rolesDetails">
+                <div class="cui-media__body">
+                  <span class="cui-media__content">{{roles.name}}</span>
+                </div>
+              </div>
+        </div>
+        </div>
+        <!-- Right Block -->
+        <div class="cui-users__profile-info" ng-if="base.accessByAnyAdmin()">
+            <div class="cui-action">
+                <div class="cui-action__title">{{'cui-available-roles'|translate}}</div>
+            </div>
+            <!-- no history -->
+            <div class="cui-media__content" ng-if="userRoles.rolesGrantable.length===0&&!userRoles.grantedHistoryError">{{'cui-no-details'|translate}}</div>
+            <p class="cui-users__password-success" style="color:red" ng-if="userRoles.grantedHistoryError"><b>{{'error-generic'|translate}}</b></p>
+        <cui-expandable class="cui-expandable" ng-repeat="roles in userRoles.rolesGrantable" ng-class="application.expanded?'expanded':''" transition-speed="150" style="border-bottom:1px solid #ddd">
+            <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+               
+                <span class="cui-checkbox__container">
+                    <input class="cui-checkbox" type="checkbox" id="{{'checkbox-'+roles.roleId}}" ng-model="userRoles.appCheckbox[roles.roleId]" />
+                    <label for="{{'checkbox-'+roles.roleId}}" class="cui-checkbox__label" ng-click="userRoles.checkrequest(roles.roleId)"></label>
+                </span>
+                
+                <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+                    <h3 class="cui-expandable__title-left">{{roles.name}}</h3>
+                </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="cui-hide__opacity" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <div class="cui-expandable__pane-col" ng-if="roles.privileges && roles.privileges.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'privileges' | translate}}:</h4>
+                        <span ng-if="(!roles.privileges || roles.privileges.length===0)">{{'cui-no-details' | translate}}</span>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="privileges in roles.privileges">
+                                {{privileges.privilegeName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
+            <div class="cui-applications__submit-options" ng-if="userRoles.rolesGrantable.length>0&&!userRoles.grantedHistoryError">
+                <button class="cui-button" ng-class="{'cui-button--error' : !userRoles.appCheckboxValid }" ng-click="userRoles.appCheckboxValid&&userRoles.assignRoles()">
+                    <span ng-if="!userRoles.rolessubmitError">{{'submit-request' | translate}}</span>
+                    <span ng-if="userRoles.rolessubmitError===true">{{'cui-error-try-again' | translate}}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

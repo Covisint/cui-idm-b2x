@@ -1,0 +1,95 @@
+<main class="cui-organization cui-organization-req-org">
+  <!-- <h2 class="cui-sr-only">{{'org-req-users-requests' | translate}}</h2> -->
+  <h2 class="cui-sr-only">{{'org-req-users-requests'}}</h2>
+
+  <!-- DISABLED routehistory POC -->
+  <!-- <cui-route-history></cui-route-history> -->
+
+    <!-- Tabs -->
+    <div class="cui-tabs__main-container">
+      <ul class="cui-tabs__nav">
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.orgRegistrationRequests">
+          <a class="cui-tabs__tab cui-tabs__tab--active">{{'pending' | translate}} {{'cui-org'|translate}} {{'requests'| translate}}</a>
+        </li>
+        <li class="cui-tabs__tab-container" 
+        ui-sref="organization.requests.orgAppRequests">
+          <a class="cui-tabs__tab">{{'pending' | translate}} {{'application'|translate}} {{'requests'| translate}}</a>
+        </li>
+      </ul>
+    </div>
+  <!-- search -->
+  <div class="cui-tabs__main-container">
+    <div class="cui-applications__search-options">
+      <div class="cui-input-button" style="width:350px">
+          <input type="text" class="cui-input-button__input" ng-model="orgRegistrationRequests.search.organizationName" placeholder="{{'search-by-org-name'| translate}}" on-enter="orgRegistrationRequests.searchCallback" focus-if/>
+          <button class="cui-input-button__button" ng-click="orgRegistrationRequests.updateSearch('organizationName',orgRegistrationRequests.search.organizationName)">{{'go'| translate}}</button>
+      </div>
+    </div>
+  </div>
+  <!-- Content -->
+  <section class="cui-organization__main-container">
+    <h3 class="cui-sr-only">{{'new-organization' | translate}}</h3>
+
+    <!-- Loading -->
+    <div class="cui-loading__container" ng-if="base.loader.for['orgRegistrationRequests.data']">
+      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+    </div>
+    <!-- No Requests -->
+    <p class="cui-users__password-success" style=" margin:20px; text-align:center" ng-if="orgRegistrationRequests.data.length===0&&!base.apiError.for['orgRegistrationRequests.data']">{{'cui-no-details' | translate}}</p>
+    <p class="cui-users__password-success" style=" color:red; margin:20px; text-align:center" ng-if="base.apiError.for['orgRegistrationRequests.data']">{{'error-generic' | translate}}</p>
+    <div ng-if="orgRegistrationRequests.data.length!==0">
+      <cui-table-header 
+        headers="['cui-org', 'submitted', 'request', 'administrator']"
+        sorting="orgRegistrationRequests.sortBy"
+        sorting-callbacks="orgRegistrationRequests.sortingCallbacks">
+        </cui-table-header>
+      <cui-table-row 
+      ng-repeat="userRequest in orgRegistrationRequests.data track by $index"
+      ng-click="orgRegistrationRequests.goToDetails(userRequest)">
+        <li class="cui-flex-table__tr cui-flex-table__tr--c">
+          <div class="cui-flex-table__avatar-col">
+            <div class="cui-profile__user-avatar" aria-hidden="true" 
+              cui-avatar cui-avatar-names="[userRequest.personData.name.given, userRequest.personData.name.surname]" 
+              cui-avatar-color-class-prefix="cui-avatar__color" 
+              cui-avatar-color-count="5"></div>
+          </div>
+          <div class="cui-flex-table__mobile-stack">
+             <div class="cui-flex-table__left">
+              <span class="cui-flex-table__title">{{userRequest.organization.name}}</span>
+            </div>
+
+            <div class="cui-flex-table__middle">
+              <span class="">{{userRequest.personData.creation|date}}</span>
+            </div>
+
+            <div class="cui-flex-table__middle">
+              <span class="">
+              <!-- {{userRequest.packageData.name|cuiI18n}} -->
+              {{userRequest.packageData.name}}
+              </span>
+            </div>
+
+            <div class="cui-flex-table__right">
+              <span class="">{{userRequest.personData.name.prefix}} {{userRequest.personData.name.given}} {{userRequest.personData.name.middle}} {{userRequest.personData.name.surname}} {{userRequest.personData.name.suffix}}</span>
+            </div>
+          </div>
+        </li>
+      </cui-table-row>
+    </div>
+    <!-- Pagination -->
+    <div class="cui-paginate__container">
+      <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+      <results-per-page class="cui-paginate__select" 
+      ng-model="orgRegistrationRequests.search.pageSize"></results-per-page>
+      <paginate class="cui-paginate" 
+      results-per-page="orgRegistrationRequests.search.pageSize" 
+      count="orgRegistrationRequests.userCount" 
+      on-page-change="orgRegistrationRequests.pageChange"
+      ng-model="orgRegistrationRequests.search.page" 
+      attach-rerender-to="orgRegistrationRequests.reRenderPagination"></paginate>
+    </div>
+  </section>
+
+</main>
+

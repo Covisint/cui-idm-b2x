@@ -56,16 +56,15 @@
         </div>
         <div>
             <h3 class="h4 bold">{{'requested-items' | translate}}:</h3>
-            <div class="cui-applications__review-apps">
-                <div class="cui-tile--headless" ng-repeat="applicationGroup in applicationReview.appRequests">
-                    <div ng-repeat="application in applicationGroup | filter:applicationReview.search">
+            <div class="cui-applications__review-apps" ng-repeat="applicationGroup in applicationReview.appRequests">
+                <div class="cui-tile--headless" ng-repeat="application in applicationGroup | filter:applicationReview.search">
+                    <div >
                         <div class="cui-media">
                           <div class="cui-media__image-container cui-media__image-container__flex-start">
                             <div class="cui-media__image" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5" cui-avatar-names="application.name" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
                           </div>
                           <div class="cui-media__body">
                             <h3 class="cui-media__title">{{application.name | cuiI18n}}</h3>
-                            <span class="cui-media__content">{{'owning-org' | translate}}: {{application.owningOrganization.name}}</span>
                             <div class="cui-applications__review-checkbox__wrapper" ng-if="application.servicePackage.personTacEnabled">
                                 <span class="cui-error h6" ng-if="reviewRequest['checkbox'+application.id].$error.required&&(reviewRequest['checkbox'+application.id].$dirty||applicationReview.requestReasonRequired)">{{'cui-tac-agree' | translate}}</span> 
                                 <div class="cui-applications__review-checkbox__flex">

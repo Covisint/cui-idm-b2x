@@ -48,7 +48,7 @@ angular.module('organization')
 
     pendingRequestsReview.submit = () => {
         let submitCalls = []
-
+        pendingRequestsReview.submitting=true
         pendingRequestsReview.pendingRequests.forEach(packageRequest => {
             submitCalls.push(ServicePackage.handlePackageApproval(packageRequest))
         })
@@ -56,9 +56,15 @@ angular.module('organization')
         $q.all(submitCalls)
         .then(() => {
             pendingRequestsReview.success = true
+            pendingRequestsReview.submitting=false
             $timeout(() => {
-                $state.go('organization.directory.userDetails', { userId: userId, orgId: orgId })
+                $state.go('organization.requests.usersAppRequests',)
             }, 3000)
+        })
+        .catch(err => {
+            console.log("There was an error in approving user application requests" + err)
+            pendingRequestsReview.submitting=false
+            pendingRequestsReview.error=true
         })
     }
 

@@ -1,0 +1,15 @@
+<div class="cui-users__address-container user-details__password-reset show-address">
+  {{'cui-suspend-confirm' | translate}}*
+
+  <textarea class="cui-text-area jlr-text-area--black-text" ng-required="true" style="margin: 20px" ng-model="userDetails.user.suspendReason" placeholder="{{'request-reason' | translate}}"></textarea>
+
+<div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="userDetails.suspend.cancel()" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : userDetails.user.suspendReason.length==0}" ng-click="userDetails.user.suspendReason.length>0&&userDetails.suspend.confirm()" style="margin:5px">
+        <span ng-if="!base.loader.for['userDetails.suspend'] && !base.apiError.for['userDetails.suspend'] && !userDetails.suspend.success">{{'yes' | translate}}</span>
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['userDetails.suspend']"></div>
+        <span ng-if="!base.loader.for['userDetails.suspend'] && base.apiError.for['userDetails.suspend'] && !userDetails.suspend.success ">{{'cui-error-try-again' | translate}}</span>
+        <span ng-if="!base.loader.for['userDetails.suspend'] && !base.apiError.for['userDetails.suspend'] && userDetails.suspend.success">{{'cui-success' | translate}}</span>
+      </button>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<!-- Page Loading -->
+<div class="cui-loading__container--user-details" ng-if="base.loader.for['orgDetailsHierarchy.loading']">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div ng-if="!base.loader.for['orgDetailsHierarchy.loading']">
+  <!-- Hierarchy Tree -->
+    <div class="cui-tree" ng-if="orgDetailsHierarchy.organizationHierarchy" cui-tree-alt="orgDetailsHierarchy.organizationHierarchy" cui-tree-alt-leaf-display="(object.name | cuiI18n)" cui-tree-alt-leaf-click-callback="orgDetailsHierarchy.goToOrgPrfile" cui-tree-alt-toggle-expand-callback="orgDetailsHierarchy.toggleExpand"></div>
+
+</div>

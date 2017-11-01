@@ -1,12 +1,12 @@
 angular.module('common')
-.factory('Organization', (API, $q) => {
+.factory('Organization', (API, $q,Base) => {
 
 	const factoryName = 'organizationFactory.'
 
 	const getOrganizationAdmins = (organizationId) => {
 		const defer = $q.defer()
 
-		API.cui.getPersonsAdmins({qs: [['organization.id', organizationId], ['securityadmin', true]]})
+		API.cui.getOrganizationSecurityAdmins({organizationId: organizationId})
 		.done(response => defer.resolve(response))
 		.fail(error => defer.reject(error))
 
@@ -33,10 +33,27 @@ angular.module('common')
 		return defer.promise
 	}
 
+	const getOrganizationStatusHistory = (organizationId,status) => {
+		const defer = $q.defer()
+		let qs=[['organizationId',organizationId]]
+		if (status) {
+			qs.push(['status',status])
+		}
+		API.cui.getOrgstatusHistory({qs:qs})
+		.done(response => defer.resolve(response))
+		.fail(error => defer.reject(error))
+
+		return defer.promise
+	}
+
+	const getOrganization = (organizationId) => {
+		return API.cui.getOrganizationWithAttributes({organizationId:organizationId})
+	}
+
 	const initOrganizationProfile = (organizationId, policyId, authPolicyId) => {
 		const defer = $q.defer()
 		const organizationProfile = {}
-		const callsToComplete = 3
+		const callsToComplete = 4
 		let callsCompleted = 0
 
 		getOrganizationAdmins(organizationId)
@@ -60,6 +77,19 @@ angular.module('common')
 			if (callsCompleted === callsToComplete) defer.resolve(organizationProfile)
 		})
 
+		// Make this call only if he is sec or exc admiin
+		if (Base.accessToSecurityAndExchangeAdmins()) {
+			getOrganizationStatusHistory(organizationId)
+			.then(response => organizationProfile['statusHistory'] = response)
+			.finally(() => {
+				callsCompleted += 1
+				if (callsCompleted === callsToComplete) defer.resolve(organizationProfile)
+			})
+		}
+		else{
+			callsCompleted += 1
+		}
+		
 		return defer.promise
 	}
 
@@ -67,6 +97,8 @@ angular.module('common')
 		getOrganizationAdmins: getOrganizationAdmins,
 		getOrganizationPasswordPolicy: getOrganizationPasswordPolicy,
 		getOrganizationAuthenticationPolicy:getOrganizationAuthenticationPolicy,
+		getOrganization:getOrganization,
+		getOrganizationStatusHistory:getOrganizationStatusHistory,
 		initOrganizationProfile: initOrganizationProfile
 	}
 

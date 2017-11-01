@@ -66,15 +66,19 @@
               </div>
             </div>
 
-            <!-- Package Claims -->
-            <!-- Package claims are currently disabled as they currently are not working in this flow -->
-            <div class="cui-expandable__body-col" ng-if="false">
+            <!-- Package Claims 3 -->
+            <div class="cui-expandable__body-col">
               <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
               <p ng-if="package.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
               <div ng-if="package.claims.length>0" ng-repeat="claim in package.claims">
                 <li class="cui-checkbox__container cui-checkbox__container--right">
-                  <input class="cui-checkbox" type="checkbox" id="option-{{$index}}-{{$parent.$parent.$index}}" ng-model="claim.accepted"/>
-                  <label class="cui-checkbox__label" for="option-{{$index}}-{{$parent.$parent.$index}}">{{claim.claimValues[0].name | cuiI18n}}</label>
+                  <input class="cui-checkbox" type="checkbox" 
+                  id="option-{{$index}}-{{$parent.$parent.$index}}" 
+                  ng-model="claim.accepted"/>
+                  <label class="cui-checkbox__label" 
+                  for="option-{{$index}}-{{$parent.$parent.$index}}">
+                    {{claim.description | cuiI18n}}
+                  </label>
                 </li>
               </div>
             </div>
@@ -85,8 +89,16 @@
     </div>
 
     <!-- Form Controls -->
-    <div class="cui-organization__submit-row">
+    <!-- <div class="cui-organization__submit-row">
       <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+    </div> -->
+    <div class="cui-organization__submit-row" disable-animate>
+      <span ui-sref="organization.requests.usersAppRequests" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-if="!pendingRequests.submitting&&!pendingRequests.error" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+      <button class="cui-button" ng-if="pendingRequests.submitting">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-if="!pendingRequests.submitting && pendingRequests.error" ng-click="pendingRequests.submit()">{{'cui-error-try-again' | translate}}</button>
     </div>
   </div>
 </ng-form>

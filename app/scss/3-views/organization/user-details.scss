@@ -64,29 +64,31 @@
     }
   }
 
-  .cui-button--inverted {
-    letter-spacing: 1.6px;
-    padding: em(6, 15) em(12, 15) em(12, 15);
-    margin-right: em(14, 15);
-    width: auto;
-
-    @media screen and (max-width: 1024px) {
-      font-size: em(14);
-      letter-spacing: 1.5px;
-    }
-
-    @media screen and (max-width: 700px) {
-      margin-right: 0;
-    }
-  }
-
   .cui-media__button-container {
     display: flex;
     justify-content: center;
     margin-top: em(5);
 
     @media screen and (max-width: 700px) {
-      justify-content: space-between;
+      justify-content: flex-start;
+      flex-wrap:wrap;
+    }
+    .cui-button {
+      letter-spacing: 1.6px;
+      padding: em(6, 15) em(12, 15) em(12, 15);
+      margin-right: em(14, 15);
+      width: auto;
+
+      @media screen and (max-width: 1024px) {
+        font-size: em(14);
+        letter-spacing: 1.5px;
+      }
+
+      @media screen and (max-width: 700px) {
+        margin-right: 0;
+        margin-bottom:1em;
+        width : 30%;
+      }
     }
   }
 
@@ -103,7 +105,7 @@
     flex: 1;
 
     &:first-of-type {
-      padding-right: 11.219512195122%;
+      padding-right: 6.219512195122%;
 
       @media screen and (max-width: 700px) {
         padding-right: 0;
@@ -115,7 +117,7 @@
     margin-bottom: em(12);
 
     @media screen and (min-width: 700px) {
-      border-bottom: 1px solid #eceaea;
+      border-bottom: 1px solid $cui-greyscale--x-light;
     }
   }
 
@@ -124,6 +126,10 @@
     display: flex;
     height: 70px;
     padding: em(10) 0;
+    
+    @media screen and (min-width: 700px) {
+      border-bottom: 1px solid $cui-greyscale--x-light;
+    }
 
     @media screen and (max-width: 999px) {
       justify-content: space-between;
@@ -141,6 +147,7 @@
     flex-direction: column;
     justify-content: space-around;
     margin-left: em(35);
+    align-items:center;
 
     @media screen and (max-width: 700px) {
       margin-left: 0;
@@ -156,11 +163,13 @@
 
       & use {
         color: #9b9b9b;
+        fill: #9b9b9b;
       }
     }
 
     .cui-action__icon--active use {
-      color: #6a98a0;
+      color: $cui-primary-colors--dark;
+      fill: $cui-primary-colors--dark;
     }
 
     .cui-action__action-label {
@@ -169,7 +178,7 @@
     }
 
     .cui-action__icon--active + .cui-action__action-label {
-      color: #6a98a0;
+      color: $cui-primary-colors--dark;
     }
   }
 
@@ -196,3 +205,26 @@
     }
   }
 }
+
+.user-details__password-reset {
+  margin: 0 auto;
+  margin-top: 2em;
+  width: 50%;
+}
+@media screen and (max-width:700px){
+  .user-details__password-reset {
+    width: 100%;
+  }
+}
+
+.pwd-ie-faux-button {
+  height: 2.8em;
+  cursor: default;
+  left: 0;
+  position: absolute;
+  width: 10.66em; }
+  .pwd-ie-faux-button__container {
+    height: 2.8em;
+    position: relative;
+    overflow: hidden;
+    width: 10.66em; }

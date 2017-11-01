@@ -29,7 +29,8 @@
     </div>
 
     <!-- Requested Services -->
-    <div ng-if="personRequest.packages.length>0&&personRequest.request.request.approval==='approved'">
+    <div ng-if="personRequest.request.completePackageData.length>0 && personRequest.request.request.approval==='approved'">
+    <!-- <div ng-if="personRequest.packages.length>0"> -->
       <div class="">
         <div class="cui-flex-table__header cui-flex-table__header--multi cui-flex-table__header--borderless">
           <div class="cui-flex-table__th">
@@ -44,7 +45,7 @@
 
       <!-- Service Content -->
       <div>
-        <cui-expandable class="" transition-speed="100" ng-repeat="package in personRequest.packages">
+        <cui-expandable class="" transition-speed="100" ng-repeat="package in personRequest.request.completePackageData">
           <!-- Package To Approve/Deny -->
           <cui-expandable-title class="">
             <div class="cui-flex-table__tr">
@@ -89,27 +90,43 @@
                   </div>
                 </div>
               </div>
-              <!-- Package Claims -->
-              <!-- Claims currently hidden as this feature does not work yet -->
-              <div class="cui-expandable__body-col" ng-if="false">
+
+              <!-- Package Claims 2 -->
+              <div class="cui-expandable__body-col">
                 <div class="cui-expandable__body-header">{{'claims' | translate}}:</div>
-                <p ng-if="package.servicePackage.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
-                <div ng-if="package.servicePackage.claims.length>0" ng-repeat="claim in package.servicePackage.claims">
+                <p ng-if="package.claims.length===0">{{'cui-package-no-claims' | translate}}.</p>
+                <div ng-if="package.claims.length>0" ng-repeat="claim in package.claims">
                   <li class="cui-checkbox__container cui-checkbox__container--right">
-                    <input class="cui-checkbox" type="checkbox" id="option-{{$index}}-{{$parent.$parent.$index}}" ng-model="claim.accepted"/>
-                    <label class="cui-checkbox__label" for="option-{{$index}}-{{$parent.$parent.$index}}">{{claim.description | cuiI18n}}</label>
+                    <input class="cui-checkbox" type="checkbox" 
+                    id="option-{{$index}}-{{$parent.$parent.$index}}" 
+                    ng-model="claim.accepted"/>
+                    <label class="cui-checkbox__label" 
+                    for="option-{{$index}}-{{$parent.$parent.$index}}">
+                      {{claim.description | cuiI18n}}
+                    </label>
                   </li>
                 </div>
               </div>
             </div>
+            </div>
+
           </cui-expandable-body>
         </cui-expandable>
       </div>
     </div>
 
     <!-- Form Controls -->
-    <div class="cui-organization__submit-row">
+    <!-- <div class="cui-organization__submit-row">
       <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="personRequest.reviewApprovals()" style="margin:10px">{{'review-approvals' | translate}}</button>
+    </div> -->
+    <!-- Review Controls -->
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ui-sref="organization.requests.usersRegistrationRequests" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-if="!base.loader.for['personRequest.submitting'] && !personRequest.error" ng-click="personRequest.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['personRequest.submitting']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-if="!base.loader.for['personRequest.submitting'] && personRequest.error" ng-click="personRequest.submit()">{{'cui-error-try-again' | translate}}</button>
     </div>
 
   </div>

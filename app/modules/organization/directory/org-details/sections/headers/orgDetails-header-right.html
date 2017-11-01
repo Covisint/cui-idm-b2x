@@ -1,0 +1,45 @@
+<div class="cui-organization__profile-right-header cui-desktop-only">
+
+  <!-- Applications -->
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="orgDetails.appsHierarchySwitch='apps'">
+    <div ng-class="{ 'cui-action__icon--active':orgDetails.appsHierarchySwitch=='apps'}">
+      <cui-icon cui-svg-icon="cui:applications_v2"  svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 50" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'apps-upper' | translate}}</span>
+  </div>
+
+  <!-- Hierarchy -->
+  <div class="cui-organization__profile-header-item" id="applications-button" ng-click="orgDetails.appsHierarchySwitch='hierarchy'">
+    <div ng-class="{ 'cui-action__icon--active':orgDetails.appsHierarchySwitch=='hierarchy'}">
+      <cui-icon cui-svg-icon="cui:division" svg-class="cui-action__icon"  use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+    </div>
+    <span class="cui-action__action-label">{{'hierarchy-upper' | translate}}</span>
+  </div>
+  
+  <div class="cui-organization__profile-header-items--right" ng-if="false">
+    <!-- Sort -->
+    <div class="cui-organization__profile-header-item" id="sort-button" ng-click="orgDetails.sortClicked=!orgDetails.sortClicked" off-click="orgDetails.sortClicked=false" ng-if="orgDetails.appsHierarchySwitch">
+      <div>
+        <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </div>
+      <span class="cui-action__action-label">{{'sort' | translate}}</span>
+    </div>
+    <!-- Sort Popover -->
+    <div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetails.sortClicked">
+      <p ng-click="">{{'cui-alphabetically' | translate}}</p>
+      <p ng-click="">{{'cui-by-date-added' | translate}}</p>
+    </div>
+    
+    <!-- Categories -->
+    <div class="cui-organization__profile-header-item " id="categories-button" ng-click="orgDetails.categoriesClicked=!orgDetails.categoriesClicked" off-click="orgDetails.categoriesClicked=false" ng-if="orgDetails.appsHierarchySwitch">
+      <div>
+        <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </div>
+      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+    </div>
+    <!-- Categories Popover -->
+    <div class="cui-popover cui-popover--top cui-popover__categories-popover" tether target="#categories-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="orgDetails.categoriesClicked">
+      <p ng-click="">TODO!</p>
+    </div>
+  </div>
+</div>

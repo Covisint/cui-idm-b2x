@@ -1,0 +1,188 @@
+<!-- processHTML:remove -->
+<div class="code-info">Code for this page can be found <a class="cui-link" href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/modules/user/history" target="blank">here</a> and the layout styles <a href="https://github.com/Covisint/cui-idm-b2x/tree/master/app/scss/3-views/user" class="cui-link" target="blank">here</a></div>
+<!-- /processHTML -->
+<div class="cui-users__appHistory-container">
+    <!-- Title -->
+    <!--  
+    <div class="cui-action">
+      <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+          <li class="cui-breadcrumb__link">
+            <a ui-sref="user.profile">{{'cui-my-profile' | translate}}</a>
+          </li>
+          <li class="cui-breadcrumb__link ">
+            <a ui-sref="user.history">{{'cui-my-history' | translate}}</a>
+          </li>
+          <li class="cui-breadcrumb__link cui-breadcrumb__link--current">
+            <a ui-sref="user.history">{{'cui-app-history' | translate}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    -->
+    <div class="cui-users__main-container">
+
+		<!-- Page Loading -->
+		<!-- <div class="cui-loading__container" ng-if="base.loader.for['appGrantHistory.initHistory']">
+			<div class="cui-loading--center"><div class="cui-loading"></div></div>
+		</div> -->
+
+      	<!-- Error Messages -->
+		<p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['appGrantHistory.initHistory']"><b>{{'error-generic'|translate}}</b></p>
+        <!-- User info -->
+        <div class="cui-users__profile-media" ng-if="!appGrantHistory.loading">
+            <div class="cui-media">
+                <div class="cui-media__image-container">
+                    <!-- Profile Image: Currently displays users initials only -->
+                    <div class="cui-media__image" cui-avatar cui-avatar-email="appGrantHistory.user.email" cui-avatar-names="[appGrantHistory.user.name.given, appGrantHistory.user.name.surname]" cui-avatar-color-class-prefix="cui-avatar__color" cui-avatar-color-count="5"></div>
+                </div>
+                <div class="cui-media__body">
+                    <!-- User full name -->
+                    <h3 class="cui-media__title">{{appGrantHistory.user.name.given}} {{appGrantHistory.user.name.surname}}</h3>
+                    <!-- UserID -->
+                    <p class="cui-media__content--small" ng-if="appGrantHistory.registeredDate">{{'cui-registered' | translate}}: {{appGrantHistory.registeredDate | date:base.appConfig.dateFormat}}</p>
+                    <p class="cui-media__content--small">{{'cui-user-id' | translate}}: {{appGrantHistory.user.username}}</p>
+                    <p class="cui-media__content--small" ng-if="appGrantHistory.user.lastLoginDate">{{'cui-last-login' | translate}}: {{appGrantHistory.user.lastLoginDate | date:base.appConfig.dateFormat}}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div ng-include="'app/modules/user/sections/breadcrumb.html'" ng-init="activeApps=true"></div>
+        <hr>
+        <main class="cui-organization cui-organization-req-uers">
+		<!-- <h2 class="cui-sr-only">{{'org-req-apps-requests' | translate}}</h2> -->
+		<!-- Tabs -->
+		<div class="cui-tabs__main-container">
+		      <ul class="cui-tabs__nav">
+		        <li class="cui-tabs__tab-container" 
+		        ui-sref="user.appRequestHistory">
+		          <a class="cui-tabs__tab cui-tabs__tab">{{'cui-application-requested-history' | translate}}</a>
+		        </li>
+		        <li class="cui-tabs__tab-container" 
+		        ui-sref="user.appGrantHistory">
+		          <a class="cui-tabs__tab cui-tabs__tab--active">{{'cui-application-granted-history' | translate}}</a>
+		        </li>
+		      </ul>
+			</div>
+		    	<div class="cui-action">
+		    		    <div class="cui-action cui-action--alt">
+					      <div class="cui-radio cui-radio--basic-ltr">
+					          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="appGrantHistory.searchBy" value="name">
+					          <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'cui-name' | translate}}</label>
+					          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="appGrantHistory.searchBy" value="action">
+					          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'action' | translate}}</label>
+					      </div>&nbsp;
+					      <div class="cui-input-button cui-input-button--alt-bg">
+					          <input class="cui-input-button__input" ng-model="appGrantHistory.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)"/>
+					          <button class="cui-input-button__button" ng-click="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)">{{'search' | translate}}</button>
+					      </div>
+					</div>
+		      		<div class="cui-action__actions">
+					    <!-- Sort -->
+					    <div class="cui-action__action-container" ng-click="appGrantHistory.granted.sortClicked =! appGrantHistory.granted.sortClicked" id="sort-buttons" off-click="appGrantHistory.granted.sortClicked=false">
+					      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+					      <span class="cui-action__action-label">{{'sort' | translate}}</span>
+					      <!-- Sort Popover -->
+					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="appGrantHistory.granted.sortClicked" style="width:171px">
+					        <!-- Hiding Because API is not supporting
+					        <div class="cui-popover__row">
+					          <span ng-click="appGrantHistory..granted.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+					        </div> -->
+					        <div class="cui-popover__row">
+					          <span ng-click="appGrantHistory.updateSearch('eventdate','')">{{'cui-by-decision-date' | translate}}</span>
+					        </div>
+					        <div class="cui-popover__row">
+					           <span ng-click="appGrantHistory.updateSearch('eventType','')">{{'action' | translate}}</span>
+					        </div>
+					        <div class="cui-popover__row">
+					           <span ng-click="appGrantHistory.updateSearch('actorId','')">{{'evaluator' | translate}}</span>
+					        </div>
+					      </div>
+					    </div>
+
+					    <!-- Refine -->
+					    <div class="cui-action__action-container" ng-click="appGrantHistory.granted.refineClicked =! appGrantHistory.granted.refineClicked" id="refine-buttons" off-click="appGrantHistory.granted.refineClicked=false">
+					      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+					      <span class="cui-action__action-label">{{'refine' | translate}}</span>
+					      <!-- Refine Popover -->
+					      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-buttons" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="appGrantHistory.granted.refineClicked" style="width:214px">
+					        <div class="cui-popover__row cui-popover--row__flex">
+					          <span ng-click="appGrantHistory.updateSearch('status')">{{'all' | translate}}</span>
+					          <span>({{appGrantHistory.popupCount}})</span>
+					        </div>
+					        <div class="cui-popover__row cui-popover--row__flex">
+					          <span ng-click="appGrantHistory.updateSearch('status','active')">{{'active' | translate}}</span>
+					          <span>({{appGrantHistory.activeCount}})</span>
+					        </div>
+					        <div class="cui-popover__row cui-popover--row__flex">
+					          <span ng-click="appGrantHistory.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+					          <span>({{appGrantHistory.suspendedCount}})</span>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+		      	</div>
+		<!-- Content -->
+		<section class="cui-organization__main-container">
+		<h3 class="cui-sr-only">{{'users-requests' | translate}}</h3>
+
+		<!-- Loading -->
+		<div class="cui-loading__container" ng-if="base.loader.for['appGrantHistory.initHistory']">
+		  <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+		</div>
+
+		<cui-table-header 
+		  headers="['cui-name', 'status', 'action', 'cui-by-decision-date', 'evaluator']"
+		  sorting="appGrantHistory.sortBy"
+		  sorting-callbacks="appGrantHistory.sortingCallbacks">
+		  </cui-table-header>
+		  <!-- no history -->
+		  <div class="cui-media__content" ng-if="appGrantHistory.grantedHistory.length===0">{{'cui-no-details'|translate}}</div>
+		<cui-table-row ng-repeat="application in appGrantHistory.grantedHistory track by $index">
+		  <li class="cui-flex-table__tr cui-flex-table__tr--c">
+		    <div class="cui-flex-table__avatar-col">
+		      <div class="cui-profile__user-avatar" aria-hidden="true" 
+		        cui-avatar cui-avatar-names="application.name" 
+		        cui-avatar-color-class-prefix="cui-avatar__color" 
+		        cui-avatar-color-count="5" cui-avatar-cuii18n-filter cui-avatar="application.iconUrl"></div>
+		    </div>
+		    <div class="cui-flex-table__mobile-stack">
+		       <div class="cui-flex-table__left">
+		        <span class="cui-flex-table__title">{{application.name | cuiI18n|capitalize}}</span>
+		      </div>
+
+		      <div class="cui-flex-table__middle">
+		        <span class="">{{application.status}}</span>
+		      </div>
+
+		      <div class="cui-flex-table__middle">
+		        <span class="cui-media__content">{{ application.eventType }}</span>
+		      </div>
+
+		      <div class="cui-flex-table__middle">
+		        <span class="">{{application.eventDate}}</span>
+		      </div>
+		      <div class="cui-flex-table__right">
+		         <span class="cui-media__content" > {{application.actor.given}} {{application.actor.surname}}</span>
+		      </div>
+		    </div>
+		  </li>
+		</cui-table-row>
+
+		<!-- Pagination -->
+		<div class="cui-paginate__container" ng-if="!base.loader.for['appGrantHistory.initHistory']">
+		  <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+		  <results-per-page class="cui-paginate__select" 
+		  ng-model="appGrantHistory.search.pageSize"></results-per-page>
+		  <paginate class="cui-paginate" 
+		  results-per-page="appGrantHistory.search.pageSize" 
+		  count="appGrantHistory.count" 
+		  on-page-change="appGrantHistory.pageGrantedChange" 
+		  ng-model="appGrantHistory.search.page" 
+		  attach-rerender-to="appGrantHistory.reRenderPaginate"></paginate>
+		</div>
+		</section>
+
+		</main>
+    </div>
+</div>

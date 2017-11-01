@@ -44,4 +44,32 @@
       line-height: 1.4;
     }
   }
+
+  .cui-action {
+    @media screen and (max-width: 700px) {
+      flex-wrap: wrap;
+    }
+  }
+
+  .cui-input-button {
+    @media screen and (max-width: 700px) {
+      flex: 0 100%;
+      margin-top: em(25);
+      order: 3;
+    }
+  }
+
+  .cui-action {
+    .cui-action__title {
+      @media screen and (min-width: 701px) {
+        flex: 0.25;
+      }
+    }
+
+    .cui-input-button {
+      @media screen and (min-width: 701px) {
+        flex: 0.3;
+      }
+    }
+  }
 }

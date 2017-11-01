@@ -33,7 +33,7 @@
         <span class="cui-action__title" ng-if="applicationSearch.search.category"> {{applicationSearch.search.category}}</span>
         <div class="cui-input-button cui-input-button--alt-bg">
             <input class="cui-input-button__input" ng-model="applicationSearch.search.name" focus-if placeholder="{{'filter-list' | translate}}" on-enter="applicationSearch.updateSearch"/>
-            <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch()">{{'filter' | translate}}</button>
+            <button class="cui-input-button__button" ng-click="applicationSearch.updateSearch('name')">{{'filter' | translate}}</button>
         </div>
         <div class="cui-action__actions">
             <svg cui-icon id="cui-applications__requested-apps" ng-click="applicationSearch.requestPopover=!applicationSearch.requestPopover" off-click="applicationSearch.requestPopover=false" xmlns="http://www.w3.org/2000/svg" id="cui-applications__requested-apps" class="cui-icon--folder" ng-class="{'cui-action__icon--active': applicationSearch.numberOfRequests != 0}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 40 33">
@@ -57,10 +57,10 @@
         <div class="cui-loading__container" ng-if="!applicationSearch.doneReloading">
             <div class="cui-loading--center"><div class="cui-loading"></div></div>
         </div>
-
+        <p class="cui-users__password-success" style=" margin:20px; text-align:center" ng-if="applicationSearch.viewList.length===0">{{'no-apps-found' |translate}} <span ng-if="applicationSearch.search.name">{{'refine-search' |translate}}</span> </p>
         <!-- TODO @SHANE we need designs for no applications matching query -->
 
-        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.list track by application.id" ng-if="applicationSearch.doneReloading" transition-speed="150">
+        <cui-expandable class="cui-expandable" ng-repeat="application in applicationSearch.viewList track by application.id" ng-class="application.expanded?'expanded':''" ng-if="applicationSearch.doneReloading" transition-speed="150">
             <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
                 <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
                     <h3 class="cui-expandable__title-left">{{application.name | cuiI18n}}</h3>
@@ -71,15 +71,19 @@
                         <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[application.id]=!applicationSearch.appCheckbox[application.id]; applicationSearch.toggleRequest(application);applicationSearch.checkRelatedAndBundledApps(application)"></label>
                     </span>
                 </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+                <!-- <cui-icon cui-svg-icon="fa:chevron18" svg-class="cui-icon cui-icon--light-grey chevron" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))"></cui-icon> -->
             </cui-expandable-title>
-            <cui-expandable-body class="cui-expandable__body">
-                <div class="cui-expandable__body-pane">
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))">
                     <span class="cui-expandable__body-close" ng-click="collapse()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
                           <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
                         </svg>
                     </span>
-                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (!application.relatedApps || application.relatedApps.length===0)">{{'no-bundled-or-related' | translate}}</span>
+                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))">{{'no-bundled-or-related' | translate}}</span>
                     <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
                         <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
                         <div class="cui-expandable__pane-content">
@@ -88,14 +92,14 @@
                             </span>
                         </div>
                     </div>
-                    <div class="cui-expandable__pane-col" ng-if="application.relatedApps && application.relatedApps.length > 0">
+                    <div class="cui-expandable__pane-col" ng-if="!application.servicePackage.parent && application.relatedApps && application.relatedApps.length > 0">
                         <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
                         <div class="cui-expandable__pane-content">
                             <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
                                 <span class="cui-checkbox_label__flex">{{relatedApp.name | cuiI18n}} </span>  
                                 <span class="cui-checkbox__container">
                                     <input class="cui-checkbox" type="checkbox" ng-model="applicationSearch.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id];applicationSearch.checkRelatedAppsBody(relatedApp)"></label>
+                                    <label class="cui-checkbox__label" ng-click="applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id];applicationSearch.checkRelatedAppsBody(relatedApp,application)"></label>
                                 </span>
                             </span>
                         </div>
@@ -109,7 +113,7 @@
         <div class="cui-paginate__container" ng-if="applicationSearch.doneLoading">
                 <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
                 <results-per-page class="cui-paginate__select" ng-model="applicationSearch.search.pageSize"></results-per-page>
-                <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to=" applicationSearch.reRenderPaginate"></paginate>
+                <paginate class="cui-paginate" results-per-page="applicationSearch.search.pageSize" count="applicationSearch.count" on-page-change="applicationSearch.pageChange" ng-model="applicationSearch.search.page" attach-rerender-to="applicationSearch.reRenderPaginate"></paginate>
         </div>
 
         <!-- search button -->

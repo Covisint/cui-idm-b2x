@@ -1,9 +1,9 @@
 angular.module('applications')
-.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','localStorageService','$q','$pagination', function (API,$scope,$stateParams,$state,AppRequests,localStorage,$q,$pagination) {
+.controller('applicationSearchCtrl',['API','$scope','$stateParams','$state','AppRequests','DataStorage','$q','$pagination', function (API,$scope,$stateParams,$state,AppRequests,DataStorage,$q,$pagination) {
     let applicationSearch = this;
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) { // If there's nothing in app memory and there's something in local storage
-        AppRequests.set(localStorage.get('appsBeingRequested'));
+    if(Object.keys(AppRequests.get()).length===0 && DataStorage.getType('appsBeingRequested')) { // If there's nothing in app memory and there's something in local storage
+        AppRequests.set(DataStorage.getType('appsBeingRequested'));
     }
     applicationSearch.packageRequests = AppRequests.get();
     applicationSearch.appCheckbox = {};
@@ -17,6 +17,50 @@ angular.module('applications')
             applicationSearch.numberOfRequests -= 1;
         }
     };
+
+    const updateViewList = (list) => {
+        let deferred= $q.defer()
+        applicationSearch.viewList=[]
+        let qs=[]
+        let apiPromises = []
+        angular.forEach(list, (app,parentIndex) => {
+            // Child App and Parent app requested by user
+            if(app.servicePackage.parent&&app.relatedApps){
+                let flag=false
+                angular.forEach(app.relatedApps, (realtedApp,index) => {
+                    if (_.find(list,{id:realtedApp.id})) {
+                        flag=true
+                    }
+                    else{
+                        qs.push(['service.id',realtedApp.id])
+                    }
+                    if (index===app.relatedApps.length-1&&qs.length!==0) {
+                        apiPromises.push(API.cui.getPersonRequestableApps({personId:API.getUser(),qs:qs}))
+                        qs=[]
+                    }
+                })
+            }
+            else{
+                applicationSearch.viewList.push(app)
+            }
+        })
+        $q.all(apiPromises)
+        .then(res => {
+            angular.forEach(res, (app) => {
+                if (applicationSearch.search.name) {
+                    app[0].expanded=true
+                }
+                applicationSearch.viewList.push(...app)
+                applicationSearch.list.push(...app)
+            })
+            deferred.resolve()
+        })
+        .catch(err =>{
+            console.log("There was an error loading parent requestable apps")
+                deferred.reject(err)
+        })
+        return deferred.promise
+    }
 
     // HELPER FUNCTIONS END --------------------------------------------------------------------------
 
@@ -68,7 +112,11 @@ angular.module('applications')
         .then((res) => {
              applicationSearch.list = res[0];
              applicationSearch.count = res[1];
-             applicationSearch.doneReloading = applicationSearch.doneLoading = true;
+             applicationSearch.reRenderPaginate &&applicationSearch.reRenderPaginate()
+             updateViewList(res[0])
+             .then(() =>{
+                applicationSearch.doneReloading = applicationSearch.doneLoading = true;
+             })
         });
     };
     onLoad(false);
@@ -82,10 +130,8 @@ angular.module('applications')
     };
 
     applicationSearch.updateSearch = function(updateType,updateValue) {
-        switch (updateType){
-            case 'name':
-                applicationSearch.search.page = 1;
-                break;
+        if (updateType!=='page'){
+            applicationSearch.search.page = 1;
         }
 
         // doesn't change state, only updates the url
@@ -99,11 +145,12 @@ angular.module('applications')
         } else {
             delete applicationSearch.packageRequests[application.id];
         }
-        localStorage.set('appsBeingRequested',applicationSearch.packageRequests);
+        DataStorage.setType('appsBeingRequested',applicationSearch.packageRequests);
         processNumberOfRequestedApps(applicationSearch.packageRequests[application.id]);
     };
 
     applicationSearch.saveRequestsAndCheckout = function() {
+        let qs = []
         //needed to set a flag for related apps to display in review page
         angular.forEach(applicationSearch.packageRequests,(request)=>{
             if (request.relatedApps) {
@@ -118,50 +165,61 @@ angular.module('applications')
                     }
                 })
             }
-            //Need to delete the other bundled apps if selected to show in review page
-            if (request.bundledApps) {
-                request.bundledApps.forEach(bundledApp => {
-                    if (applicationSearch.packageRequests[bundledApp.id]) {
-                        delete applicationSearch.packageRequests[bundledApp.id]
-                    }                    
-                })
+            // If Selected Related app full details not available need to fetch it
+            if (!request.servicePackage) {
+                qs.push(['service.id',request.id])
             }
         })
-        AppRequests.set(applicationSearch.packageRequests);
-        $state.go('applications.reviewRequest');
+        if (qs.length!==0) {
+            API.cui.getPersonRequestableApps({personId:API.getUser(),qs:qs})
+            .then(res => {
+                res.forEach(app =>{
+                    applicationSearch.packageRequests[app.id] = app
+                })
+                AppRequests.set(applicationSearch.packageRequests);
+                $state.go('applications.reviewRequest');
+            })
+        }
+        else{
+            AppRequests.set(applicationSearch.packageRequests);
+            $state.go('applications.reviewRequest');
+        }
     };
 
-    //select parent if it is a child, deselect child if it is a parent
-    applicationSearch.checkRelatedAppsBody= function(relatedApp){
-        applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))   
-        applicationSearch.checkRelatedAndBundledApps(_.find(applicationSearch.list,{id:relatedApp.id}))
+    //Related apps will always appear inside body, So need to select parent if it is selected 
+    applicationSearch.checkRelatedAppsBody= function(relatedApp, parent){
+        if (_.find(applicationSearch.list,{id:relatedApp.id})) {
+            applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))
+        }
+        else{
+            applicationSearch.list.push(relatedApp)
+            applicationSearch.toggleRequest(relatedApp)
+        }           
+        applicationSearch.checkRelatedAndBundledApps(_.find(applicationSearch.list,{id:relatedApp.id}),parent)
     };
 
-    //deselect child if it is a parent, select parent if it is a child 
-    applicationSearch.checkRelatedAndBundledApps=function(application){
+    //Deselect Child apps If it has any and select parent if checked from parent body 
+    applicationSearch.checkRelatedAndBundledApps=function(application,parent){
         //if unchecked the checkbox
         if (!applicationSearch.packageRequests[application.id]) {
             //if it is a parent then then deselect childs
-            if (!application.servicePackage.parent) {
-                application.relatedApps.forEach((relatedApp)=>{
+            if (!parent) {
+                application.relatedApps&&application.relatedApps.forEach((relatedApp)=>{
                     if (applicationSearch.appCheckbox[relatedApp.id]) {
                         applicationSearch.appCheckbox[relatedApp.id]=!applicationSearch.appCheckbox[relatedApp.id]
                         applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:relatedApp.id}))
                     }
                 })
-            }
-            applicationSearch.checkBundledApps(application,false)           
+                applicationSearch.checkBundledApps(application,false)
+            }      
         }else{
-            if (application.servicePackage.parent) {
-                //Need to select the other parent(if it has any) If user clicks on expandabel title
-                applicationSearch.list.forEach(app=> {
-                    //if it is a parent and parent of selected app
-                    if (!app.servicePackage.parent&&app.servicePackage.id===application.servicePackage.parent.id&&!applicationSearch.appCheckbox[app.id]) {
-                       applicationSearch.appCheckbox[app.id]=!applicationSearch.appCheckbox[app.id]
-                       applicationSearch.toggleRequest(app)
-                    }
-                })
-            }
+            if (parent) {
+                if (!applicationSearch.appCheckbox[parent.id]) {
+                    applicationSearch.appCheckbox[parent.id]=true
+                    applicationSearch.toggleRequest(parent)
+                    applicationSearch.checkBundledApps(parent,true)
+                }
+            }else
             applicationSearch.checkBundledApps(application,true)
         }
     }
@@ -170,7 +228,8 @@ angular.module('applications')
         if (application.bundledApps) {
             application.bundledApps.forEach(bundledApp=>{
                 applicationSearch.appCheckbox[bundledApp.id]=check
-                applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:bundledApp.id}))
+                if (_.find(applicationSearch.list,{id:bundledApp.id}))
+                    applicationSearch.toggleRequest(_.find(applicationSearch.list,{id:bundledApp.id}))
             })
         }
     }

@@ -1,0 +1,28 @@
+<div class="cui-organization__main-container">
+
+	<!-- Body Header -->
+	<div>
+		<h3 class="cui-organization__approval-summary">{{'approval-summary' | translate}}</h3>
+	</div>
+	<!-- Approved Items -->
+	<h4 class="cui-organization__approved">{{'approved-items' | translate}}</h4>
+	<div class="cui-organization__approved-row">
+		<p ng-if="organizationAppRequestReview.approvedCount===0">{{'no-items-approved' | translate}}.</p>
+		<ul>
+			<li ng-if="organizationAppRequestReview.approvedCount>0" ng-repeat="package in organizationAppRequestReview.packageData track by package.id">
+				<span ng-if="package.approval==='approved'">{{package.details.name | cuiI18n}}</span>
+				<br ng-if="package.approval==='approved'" />
+			</li>
+		</ul>
+	</div>
+
+	<!-- Rejected Items -->
+	<h4 class="cui-organization__denied">{{'rejected-items' | translate}}</h4>
+	<div>
+		<p ng-if="organizationAppRequestReview.deniedCount===0">{{'no-items-rejected' | translate}}.</p>
+		<div class="cui-organization__rejected-row" ng-if="organizationAppRequestReview.deniedCount>0" ng-repeat="package in organizationAppRequestReview.packageData track by package.id">
+			<span ng-if="package.approval==='denied'">{{package.details.name | cuiI18n}}</span><br/>
+			<textarea class="cui-text-area" ng-if="package.approval==='denied'" ng-model="package.rejectReason" placeholder="rejection reason (optional)"></textarea>
+		</div>
+	</div>
+</div>

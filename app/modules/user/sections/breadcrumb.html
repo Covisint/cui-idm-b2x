@@ -1,0 +1,24 @@
+<div class="user-profile__breadcrumb" style=" margin:auto;  width:400px;">
+    <nav class="cui-breadcrumb">
+        <ul class="cui-breadcrumb__links">
+            <li ng-if="!activeProfile" class="user_profile_image" style="padding: 8px; margin-right:10px" ng-init="profilesrc='app/modules/user/user_icon/profile.png'" ng-mouseover="profilesrc='app/modules/user/user_icon/profile_current.png'" ng-mouseout="profilesrc='app/modules/user/user_icon/profile.png'"><a ui-sref="user.profile"><img ng-src="{{profilesrc}}" width="46px" height="44px"></a>
+            </li>
+            <li ng-if="activeProfile" class="user_profile_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.profile"><img ng-src="app/modules/user/user_icon/profile_current.png" width="46px" height="44px"></a>
+            </li>
+
+            <li ng-if="!activeRoles" class="user_roles_image" style="padding: 8px; margin-right:10px" ng-init="rolessrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolessrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolessrc='app/modules/user/user_icon/roles.png'"><a ui-sref="user.roles"><img ng-src="{{rolessrc}}" width="34px" height="45px"></a>
+            </li>
+            <li ng-if="activeRoles" class="user_roles_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.roles"><img ng-src="app/modules/user/user_icon/roles_mouseover.png" width="34px" height="45px"></a>
+            </li>
+
+            <li ng-if="!activeApps" class="user_apps_image" style="padding: 8px; margin-right:10px" ng-init="appsrc='app/modules/user/user_icon/app.png'" ng-mouseover="appsrc='app/modules/user/user_icon/app_mouseover.png'" ng-mouseout="appsrc='app/modules/user/user_icon/app.png'"><a ui-sref="user.appRequestHistory"><img ng-src="{{appsrc}}" width="29px" height="45px"></a>
+            </li>
+            <li ng-if="activeApps" class="user_apps_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.appRequestHistory"><img ng-src="app/modules/user/user_icon/app_mouseover.png" width="29px" height="45px"></a>
+            </li>
+
+            <li ng-if="!activeHistory" class="user_history_image" style="padding: 8px" ng-init="historysrc='app/modules/user/user_icon/history.png'" ng-mouseover="historysrc='app/modules/user/user_icon/history_mouseover.png'" ng-mouseout="historysrc='app/modules/user/user_icon/history.png'"><a ui-sref="user.history"><img ng-src="{{historysrc}}" width="49px" height="44px"></a>
+            <li ng-if="activeHistory" class="user_history_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.history"><img ng-src="app/modules/user/user_icon/history_mouseover.png" width="49px" height="44px"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
