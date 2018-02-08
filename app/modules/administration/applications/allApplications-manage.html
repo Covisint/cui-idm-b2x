@@ -1,0 +1,165 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/administation/applications" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-administration">
+	<!-- Action Header -->
+	<div class="cui-action">
+	  	<nav ng-include="'app/modules/administration/partials/breadcrumbs.html'"></nav>
+	    <nav ng-include="'app/modules/administration/partials/mobileNav.html'"></nav>
+	    <div class="cui-action__actions">
+		    <!-- Sort -->
+		    <div class="cui-action__action-container" ng-click="manageApplications.sortClicked =! manageApplications.sortClicked" id="sort-button" off-click="manageApplications.sortClicked=false">
+		      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+		      <span class="cui-action__action-label">{{'sort' | translate}}</span>
+		      <!-- Sort Popover -->
+		      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="manageApplications.sortClicked" style="width:171px">
+		        <div class="cui-popover__row">
+		          <span ng-click="manageApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+		        </div>
+		        <div class="cui-popover__row">
+		          <span ng-click="manageApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</span>
+		        </div>
+		      </div>
+		    </div>
+
+		    <!-- Refine -->
+		    <div class="cui-action__action-container" ng-click="manageApplications.refineClicked =! manageApplications.refineClicked" id="refine-button" off-click="manageApplications.refineClicked=false">
+		      <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		      <span class="cui-action__action-label">{{'refine' | translate}}</span>
+		      <!-- Refine Popover -->
+		      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.refineClicked" style="width:214px">
+		        <div class="cui-popover__row cui-popover--row__flex">
+		          <span ng-click="manageApplications.updateSearch('status')">{{'all' | translate}}</span>
+		          <span>({{manageApplications.popupCount}})</span>
+		        </div>
+		        <div class="cui-popover__row cui-popover--row__flex">
+		          <span ng-click="manageApplications.updateSearch('status','active')">{{'active' | translate}}</span>
+		          <span>({{manageApplications.activeCount}})</span>
+		        </div>
+		        <div class="cui-popover__row cui-popover--row__flex">
+		          <span ng-click="manageApplications.updateSearch('status','suspended')">{{'suspended' | translate}}</span>
+		          <span>({{manageApplications.suspendedCount}})</span>
+		        </div>
+		      </div>
+		    </div>
+
+		    <!-- Categories -->
+		    <div class="cui-action__action-container" ng-click="manageApplications.categoriesClicked =! manageApplications.categoriesClicked" id="categories-button" off-click="manageApplications.categoriesClicked=false">
+		      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+		      <!-- Categories Popover -->
+		      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageApplications.categoriesClicked" ng-click="manageApplications.categoriesClicked=false" style="width:214px">
+		        <div class="cui-popover__row cui-popover--row__flex">
+		          <span ng-click="manageApplications.updateSearch('category')">{{'all' | translate}}</span>
+		          <span>({{manageApplications.popupCount}})</span>
+		        </div>
+		        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in manageApplications.categories">
+		          <span ng-click="manageApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
+		          <span>({{category.count}})</span>
+		        </div>
+		      </div>
+		    </div>
+
+		    <!-- new icon -->
+		    <svg ui-sref="applications.newRequest" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+		      <defs>
+		        <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+		        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+		          <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+		          <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+		          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+		        </filter>
+		      </defs>
+		      <g id="new-with-shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		        <g id="New-2" transform="translate(3.000000, 1.000000)">
+		            <g id="Oval-73">
+		              <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+		              <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
+		            </g>
+		            <path d="M22.1371429,17.5349883 L22.1371429,11.8697421 C22.1371429,10.7562937 21.2419442,9.86229506 20.1376608,9.86229506 L19.8623392,9.86229506 C18.7484919,9.86229506 17.8628571,10.7610597 17.8628571,11.8697421 L17.8628571,17.5349883 L12.197611,17.5349883 C11.0841625,17.5349883 10.1901639,18.4301869 10.1901639,19.5344704 L10.1901639,19.8097919 C10.1901639,20.9236392 11.0889286,21.809274 12.197611,21.809274 L17.8628571,21.809274 L17.8628571,27.4745202 C17.8628571,28.5879686 18.7580558,29.4819672 19.8623392,29.4819672 L20.1376608,29.4819672 C21.2515081,29.4819672 22.1371429,28.5832026 22.1371429,27.4745202 L22.1371429,21.809274 L27.802389,21.809274 C28.9158375,21.809274 29.8098361,20.9140754 29.8098361,19.8097919 L29.8098361,19.5344704 C29.8098361,18.4206231 28.9110714,17.5349883 27.802389,17.5349883 L22.1371429,17.5349883 Z" id="Rectangle-352" fill="#FFFFFF" fill-rule="evenodd"></path>
+		        </g>
+		      </g>
+		    </svg>
+		</div>
+  	</div>
+  	<div class="cui-action" style="justify-content: space-between">
+  		<span class="cui-action__title">{{'manage-applications' | translate}}</span>
+
+  		<div class="cui-input-button cui-input-button--alt-bg">
+		    <input class="cui-input-button__input" ng-model="manageApplications.search['service.name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageApplications.updateSearchByName"/>
+		    <button class="cui-input-button__button" ng-click="manageApplications.updateSearchByName()">{{'search' | translate}}</button>
+		</div>
+  	</div>
+
+	<div class="cui-applications__main-container">
+		<cui-table-header headers="['cui-name', 'FederationConnection' , 'Category', 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
+      	</cui-table-header>
+
+    	<cui-table-row ng-repeat="application in manageAllApplications.viewList track by application.id" ng-click="usersRegistrationRequests.goToDetails(userRequest)">
+
+    	<cui-expandable class="cui-expandable" style="margin-bottom:0;padding-bottom:0;"ng-class="application.expanded?'expanded':''" ng-if="manageAllApplications.doneReloading" transition-speed="150">
+            <cui-expandable-title>
+                <li class="cui-flex-table__tr cui-flex-table__tr--c">
+            	<div class="cui-flex-table__avatar-col">
+		          <div class="cui-profile__user-avatar" aria-hidden="true" 
+		            cui-avatar cui-avatar-names="[application.name[0].text]" 
+		            cui-avatar-color-class-prefix="cui-avatar__color" 
+		            cui-avatar-color-count="5"></div>
+		        </div>
+		        <div class="cui-flex-table__mobile-stack">
+		        	<div class="cui-flex-table__left" ng-click="toggleExpand()">
+		                <span class="cui-flex-table__title">{{application.name | cuiI18n}}</span>
+		            </div>
+                <div class="cui-flex-table__middle">
+		            <span class="">{{application.realm}}</span>
+		        </div>
+		        <div class="cui-flex-table__middle">
+		            <span class="">{{application.realm}}</span>
+		        </div>
+		        <div class="cui-flex-table__right">
+		            <span class="">{{application.realm}}</span>
+		          </div>
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+                </svg>
+		        </div>
+		    </li>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))" style="margin-bottom:1em;">
+                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
+                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
+                        </svg>
+                    </span>
+                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))">{{'no-bundled-or-related' | translate}}</span>
+                    <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
+                                {{bundledApp.name | cuiI18n}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="cui-expandable__pane-col" ng-if="!application.servicePackage.parent && application.relatedApps && application.relatedApps.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
+                        <div class="cui-expandable__pane-content">
+                            <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
+                                <span class="cui-checkbox_label__flex">{{relatedApp.name | cuiI18n}} </span>  
+                                <span class="cui-checkbox__container">
+                                    <input class="cui-checkbox" type="checkbox" ng-model="manageAllApplications.appCheckbox[relatedApp.id]" />
+                                    <label class="cui-checkbox__label" ng-click="manageAllApplications.appCheckbox[relatedApp.id]=!manageAllApplications.appCheckbox[relatedApp.id];manageAllApplications.checkRelatedAppsBody(relatedApp,application)"></label>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable>
+
+    </cui-table-row>
+
+		
+	</div>
+</div>

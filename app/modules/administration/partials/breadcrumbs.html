@@ -1,0 +1,29 @@
+<nav class="cui-breadcrumb">
+  <ul class="cui-breadcrumb__links">
+    <li class="cui-breadcrumb__link" ng-if="base.accessToSecurityAndExchangeAdmins()">
+      <a ui-sref="administration.manageApplications" ui-sref-active-for="administration.manageApplications">
+        {{'cui-applications' | translate}}
+      </a>
+    </li>
+    <li class="cui-breadcrumb__link" ng-if="base.accessToSecurityAndExchangeAdmins()">
+      <a ui-sref="administration.manageApplications" ui-sref-active-for="">
+        {{'Policies' | translate}}
+      </a>
+    </li>
+<!--     <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+      <a ui-sref="organization.directory.userList({orgId:base.user.organization.id})" ui-sref-active-for="organization.directory">
+        {{'directory' | translate}}
+      </a>
+    </li>
+    <li class="cui-breadcrumb__link" ng-if="base.accessByAnyAdmin()">
+      <a ui-sref="organization.applications({orgId:base.user.organization.id})" ui-sref-active-for="organization.applications">
+        {{'cui-applications' | translate}}
+      </a>
+    </li> -->
+    <!-- <li class="cui-breadcrumb__link">
+      <a ui-sref="organization.roles({orgID:personRequestReview.user.organization.id})" ui-sref-active-for="organization.roles">
+        {{'roles' | translate}}
+      </a>
+    </li> -->
+  </ul>
+</nav>
