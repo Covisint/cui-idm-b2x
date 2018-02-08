@@ -1,2 +1,2 @@
 angular.element(document).ready(function () {
-	angular.module('app',['common','misc','registration','applications','organization','user','ngAnimate']);
+	angular.module('app',['common','misc','registration','applications','organization','user','administration','ngAnimate']);
