@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('manageAllApplicationsCtrl', function(){
+.controller('manageAllApplicationsCtrl', function($scope,$timeout){
 	const manageAllApplications=this
 
 
@@ -873,4 +873,19 @@ manageAllApplications.viewList=[
         }
     }
 ]
+
+// ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+	manageAllApplications.expandAll = () =>{
+		manageAllApplications.viewList.forEach( application => {
+			application.expanded=true;
+		})
+	}
+		
+
+	manageAllApplications.collapseAll = () => {
+		manageAllApplications.viewList.forEach( application => {
+			application.expanded=false;
+		})
+	}
+// ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
