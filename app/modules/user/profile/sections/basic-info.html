@@ -49,7 +49,7 @@
         <div class="cui-error" ng-messages="basicInfo.email.$error">
           <div ng-messages-include="app/common-templates/messages.html"></div>
         </div>
-        <input type="email" name="email" class="cui-input" ng-model="userProfile.tempUser.email" ng-required="true">
+        <input type="text" name="email" class="cui-input" ng-model="userProfile.tempUser.email" ng-required="true" custom-error="userProfile.customErrors.email">
 
         <!-- Address Edit Controls -->
         <div class="cui-users__address-submit">

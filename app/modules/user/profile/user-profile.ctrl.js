@@ -6,20 +6,19 @@ angular.module('user')
     //$cuiIconProvider.iconSet('cui','node_modules/@covisint/cui-icons/dist/icons/icons-out.svg','0 0 48 48')
     /* -------------------------------------------- HELPER FUNCTIONS START --------------------------------------------- */
 
-    //Error handler for email inline Edit tag
-    //Commenting out Inline Editing changes as they might not needed
-    // userProfile.email=function(value){
-    //     let EMAIL_REGXP=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/i
-    //     if (!angular.isDefined(value)) {
-    //         userProfile.emailError={};
-    //     }else{
-    //         userProfile.emailError={
-    //             required: value==="" || !value,
-    //             email:!EMAIL_REGXP.test(value)
-    //         }
-    //     }
-    //     userProfile.noSaveEmail= value==="" || !value || !EMAIL_REGXP.test(value)
-    // }
+    //Error handler for email 
+        userProfile.customErrors = {
+      email: {
+          email: function(){
+              var EMAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
+              if (userProfile.tempUser.email) {
+                  return EMAIL_REGEXP.test(userProfile.tempUser.email)
+              }else{
+                  return true;
+              }
+          }
+      }
+    }
     /* -------------------------------------------- HELPER FUNCTIONS END --------------------------------------------- */
     /* -------------------------------------------- ON LOAD START --------------------------------------------- */
 
