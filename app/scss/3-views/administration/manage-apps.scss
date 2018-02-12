@@ -16,5 +16,11 @@
 	.cui-expandable__body-pane{
 		margin-bottom:1em;
 	}
+	.cui-expandable.expanded {
+		.chevron {
+		    -ms-transform: rotate(90deg);
+		    transform: rotate(90deg);
+		}
+	} 
 
 }
