@@ -128,9 +128,9 @@
 		            <span class="">{{application.expanded}}</span>
 		        </div>
 		        <div class="cui-flex-table__right">
-		            <span class="">{{application.realm}}</span>
+		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 		          </div>
-                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="application.expanded=!application.expanded" style="cursor:pointer">
                   <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
                 </svg>
 		        </div>
