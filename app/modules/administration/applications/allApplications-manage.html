@@ -103,7 +103,7 @@
   	</div>
 
 	<div class="cui-applications__main-container">
-		<cui-table-header headers="['cui-name', 'FederationConnection' , 'Category', 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
+		<cui-table-header headers="['cui-name', 'FederationConnection' , 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
       	</cui-table-header>
 
     	<cui-table-row ng-repeat="application in manageAllApplications.viewList track by application.id" ng-click="usersRegistrationRequests.goToDetails(userRequest)">
@@ -124,9 +124,9 @@
                 <div class="cui-flex-table__middle">
 		            <span class="">{{application.realm}}</span>
 		        </div>
-		        <div class="cui-flex-table__middle">
+		        <!-- <div class="cui-flex-table__middle">
 		            <span class="">{{application.expanded}}</span>
-		        </div>
+		        </div> -->
 		        <div class="cui-flex-table__right">
 		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 		          </div>
@@ -138,32 +138,74 @@
             </cui-expandable-title>
             <cui-expandable-body class="cui-expandable__body" >
                 <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))" style="margin-bottom:1em;">
-                    <span class="cui-expandable__body-close" ng-click="collapse()">
+                    <!-- <span class="cui-expandable__body-close" ng-click="collapse()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
                           <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
                         </svg>
-                    </span>
-                    <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))">{{'no-bundled-or-related' | translate}}</span>
-                    <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
-                        <h4 class="cui-expandable__pane-title">{{'bundled-applications' | translate}}</h4>
+                    </span> -->
+                    <!-- <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))">{{'no-bundled-or-related' | translate}}</span> -->
+                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+                    <div class="cui-flex-table__avatar-col">
+		          <div class="cui-profile__user-avatar" aria-hidden="true" 
+		            cui-avatar cui-avatar-names="[application.name[0].text]" 
+		            cui-avatar-color-class-prefix="cui-avatar__color" 
+		            cui-avatar-color-count="5"></div>
+		            </div>
+		            <div class="cui-flex-table__mobile-stack">
+		            	<div class="cui-flex-table__left">
+		            		<span class="cui-flex-table__title">service1</span>
+		            	</div>
+		            	<div class="cui-flex-table__middle">
+		            		<span class="">Administration</span>
+		            	</div>
+		            	<div class="cui-flex-table__right">
+		            		<span class="link">test link</span>
+		            	</div>
+		            </div>
+		            
+		            </li>
+		            <li class="cui-flex-table__tr cui-flex-table__tr--c">
+		            	<div class="cui-flex-table__avatar-col">
+		          <div class="cui-profile__user-avatar" aria-hidden="true" 
+		            cui-avatar cui-avatar-names="[application.name[0].text]" 
+		            cui-avatar-color-class-prefix="cui-avatar__color" 
+		            cui-avatar-color-count="5"></div>
+		            </div>
+
+		            <div class="cui-flex-table__mobile-stack">
+		            	<div class="cui-flex-table__left">
+		            		<span class="cui-flex-table__title">service1</span>
+		            	</div>
+		            	<div class="cui-flex-table__middle">
+		            		<span class="">Administration</span>
+		            	</div>
+		            	<div class="cui-flex-table__right">
+		            		<span class="link">test link</span>
+		            	</div>
+		            </div>
+		            </li>
+		        
+                    <!-- <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
+                        <h4 class="cui-expandable__pane-title">{{'cui-name' | translate}}</h4>
                         <div class="cui-expandable__pane-content">
+
                             <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
                                 {{bundledApp.name | cuiI18n}}
                             </span>
                         </div>
-                    </div>
-                    <div class="cui-expandable__pane-col" ng-if="!application.servicePackage.parent && application.relatedApps && application.relatedApps.length > 0">
-                        <h4 class="cui-expandable__pane-title">{{'related-applications' | translate}}</h4>
+                    </div> -->
+           <!--          <div class="cui-expandable__pane-col">
                         <div class="cui-expandable__pane-content">
-                            <span class="cui-expandable__pane-content-item" ng-repeat="relatedApp in application.relatedApps">
-                                <span class="cui-checkbox_label__flex">{{relatedApp.name | cuiI18n}} </span>  
-                                <span class="cui-checkbox__container">
-                                    <input class="cui-checkbox" type="checkbox" ng-model="manageAllApplications.appCheckbox[relatedApp.id]" />
-                                    <label class="cui-checkbox__label" ng-click="manageAllApplications.appCheckbox[relatedApp.id]=!manageAllApplications.appCheckbox[relatedApp.id];manageAllApplications.checkRelatedAppsBody(relatedApp,application)"></label>
-                                </span>
-                            </span>
+                        	<span class="cui-expandable__pane-content-item">service1</span>
+                        	<span class="cui-expandable__pane-content-item">service2</span>
                         </div>
                     </div>
+                    <div class="cui-expandable__pane-col">
+                        <div class="cui-expandable__pane-content">
+                        	<span class="cui-expandable__pane-content-item">Administration</span>
+                        	<span class="cui-expandable__pane-content-item">Administration</span>
+                        </div>
+                    </div> -->
                 </div>
             </cui-expandable-body>
         </cui-expandable1>

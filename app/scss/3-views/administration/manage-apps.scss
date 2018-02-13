@@ -9,9 +9,10 @@
 			flex:0.5 auto;
 		}
 	}
-	.cui-axpandable{
+	.cui-expandable{
 		margin-bottom:0;
 		padding-bottom:0;
+		border-bottom:none;
 	}
 	.cui-expandable__body-pane{
 		margin-bottom:1em;
@@ -22,5 +23,13 @@
 		    transform: rotate(90deg);
 		}
 	} 
+	.cui-expandable__body-pane{
+		padding:0.75em 0.75em 0.75em 1.5em;
+		flex-direction:column;
+		background-color:#e8f0f3;
+		.cui-flex-table__tr, .cui-flex-table__th{
+			border-top:none;
+		}
+	}
 
 }
