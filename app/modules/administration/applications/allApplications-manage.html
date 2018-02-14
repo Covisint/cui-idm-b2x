@@ -101,111 +101,83 @@
 			
 		</div>
   	</div>
-
 	<div class="cui-applications__main-container">
+
+		<!-- Loading -->
+	    <div class="cui-loading__container" ng-if="base.loader.for['manageAllApplications.packages']">
+	      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+	    </div>
+	    <!-- No applications message -->
+  		<p ng-if="!base.apiError.for['manageAllApplications.packages']&&manageAllApplications.packages.length===0">{{'cui-no-applications' | translate}}</p>
+  		<!-- Error Message -->
+  		<p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['manageAllApplications.packages']">{{'error-generic'|translate}}</p>
 		<cui-table-header headers="['cui-name', 'FederationConnection' , 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
       	</cui-table-header>
 
-    	<cui-table-row ng-repeat="application in manageAllApplications.viewList track by application.id" ng-click="usersRegistrationRequests.goToDetails(userRequest)">
+    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id" ng-click="usersRegistrationRequests.goToDetails(userRequest)">
 
-    	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="application.expanded"ng-class="application.expanded?'expanded':''" ng-if="manageAllApplications.doneReloading" transition-speed="150">
+    	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="package.expanded"ng-class="package.expanded?'expanded':''" transition-speed="150">
             <cui-expandable-title>
                 <li class="cui-flex-table__tr cui-flex-table__tr--c">
-            	<div class="cui-flex-table__avatar-col">
-		          <div class="cui-profile__user-avatar" aria-hidden="true" 
-		            cui-avatar cui-avatar-names="[application.name[0].text]" 
-		            cui-avatar-color-class-prefix="cui-avatar__color" 
-		            cui-avatar-color-count="5"></div>
+            	<div class="cui-flex-table__avatar-col" ng-class="{'cui-hide__opacity':package.services.length===0}">
+            		<svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="package.expanded=!package.expanded">
+                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26" ng-if="!package.expanded"></use>
+                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#minus20" ng-if="package.expanded"></use>
+                	</svg>
 		        </div>
 		        <div class="cui-flex-table__mobile-stack">
-		        	<div class="cui-flex-table__left" ng-click="application.expanded=!application.expanded">
-		                <span class="cui-flex-table__title">{{application.name | cuiI18n}}</span>
+		        	<div class="cui-flex-table__left" >
+		                <span class="cui-flex-table__title">{{package.name | cuiI18n}}</span>
 		            </div>
                 <div class="cui-flex-table__middle">
-		            <span class="">{{application.realm}}</span>
+		            <span class="">{{package.realm}}</span>
 		        </div>
-		        <!-- <div class="cui-flex-table__middle">
-		            <span class="">{{application.expanded}}</span>
-		        </div> -->
+		        <div class="cui-flex-table__middle">
+		            <span class="">{{package.version |date}}</span>
+		        </div>
 		        <div class="cui-flex-table__right">
 		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 		          </div>
-                <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" ng-class="{'cui-hide__opacity': (!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="application.expanded=!application.expanded" style="cursor:pointer">
-                  <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
-                </svg>
 		        </div>
 		    </li>
             </cui-expandable-title>
             <cui-expandable-body class="cui-expandable__body" >
-                <div class="cui-expandable__body-pane" ng-if="(application.bundledApps && application.bundledApps.length!==0) || (!application.servicePackage.parent && (application.relatedApps && application.relatedApps.length!==0))" style="margin-bottom:1em;">
-                    <!-- <span class="cui-expandable__body-close" ng-click="collapse()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cui-icon" preserveAspectRatio="xMidYMid meet" viewBox="2 0 48 48">
-                          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/icons/icons-out.svg#close-no-fill"></use>
-                        </svg>
-                    </span> -->
-                    <!-- <span ng-if="(!application.bundledApps || application.bundledApps.length===0) && (application.servicePackage.parent || (!application.relatedApps || application.relatedApps.length===0))">{{'no-bundled-or-related' | translate}}</span> -->
-                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) " style="margin-bottom:1em;">
+                	<div class="cui-flex-table__th cui-flex-table__th--c">
+			            <div class="cui-flex-table__avatar-col"></div>
+
+			            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+			                <div class="cui-flex-table__left">Service Name</div>
+			                <div class="cui-flex-table__middle">
+			                    category
+					        </div>
+			                <div  class="cui-flex-table__right">
+			                    Launch
+			                </div>
+			            </div>
+        </div>
+                    <li class="cui-flex-table__tr cui-flex-table__tr--c" ng-repeat="service in package.services">
                     <div class="cui-flex-table__avatar-col">
 		          <div class="cui-profile__user-avatar" aria-hidden="true" 
-		            cui-avatar cui-avatar-names="[application.name[0].text]" 
+		            cui-avatar cui-avatar-names="[service.name[0].text]" 
 		            cui-avatar-color-class-prefix="cui-avatar__color" 
 		            cui-avatar-color-count="5"></div>
 		            </div>
 		            <div class="cui-flex-table__mobile-stack">
 		            	<div class="cui-flex-table__left">
-		            		<span class="cui-flex-table__title">service1</span>
+		            		<span class="cui-flex-table__title">{{service.name | cuiI18n}}</span>
 		            	</div>
 		            	<div class="cui-flex-table__middle">
-		            		<span class="">Administration</span>
+		            		<span class="">{{service.category | cuiI18n}}</span>
 		            	</div>
 		            	<div class="cui-flex-table__right">
-		            		<span class="link">test link</span>
+		            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
+		            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+		            		</a>
 		            	</div>
 		            </div>
 		            
 		            </li>
-		            <li class="cui-flex-table__tr cui-flex-table__tr--c">
-		            	<div class="cui-flex-table__avatar-col">
-		          <div class="cui-profile__user-avatar" aria-hidden="true" 
-		            cui-avatar cui-avatar-names="[application.name[0].text]" 
-		            cui-avatar-color-class-prefix="cui-avatar__color" 
-		            cui-avatar-color-count="5"></div>
-		            </div>
-
-		            <div class="cui-flex-table__mobile-stack">
-		            	<div class="cui-flex-table__left">
-		            		<span class="cui-flex-table__title">service1</span>
-		            	</div>
-		            	<div class="cui-flex-table__middle">
-		            		<span class="">Administration</span>
-		            	</div>
-		            	<div class="cui-flex-table__right">
-		            		<span class="link">test link</span>
-		            	</div>
-		            </div>
-		            </li>
-		        
-                    <!-- <div class="cui-expandable__pane-col" ng-if="application.bundledApps && application.bundledApps.length > 0">
-                        <h4 class="cui-expandable__pane-title">{{'cui-name' | translate}}</h4>
-                        <div class="cui-expandable__pane-content">
-
-                            <span class="cui-expandable__pane-content-item" ng-repeat="bundledApp in application.bundledApps">
-                                {{bundledApp.name | cuiI18n}}
-                            </span>
-                        </div>
-                    </div> -->
-           <!--          <div class="cui-expandable__pane-col">
-                        <div class="cui-expandable__pane-content">
-                        	<span class="cui-expandable__pane-content-item">service1</span>
-                        	<span class="cui-expandable__pane-content-item">service2</span>
-                        </div>
-                    </div>
-                    <div class="cui-expandable__pane-col">
-                        <div class="cui-expandable__pane-content">
-                        	<span class="cui-expandable__pane-content-item">Administration</span>
-                        	<span class="cui-expandable__pane-content-item">Administration</span>
-                        </div>
-                    </div> -->
                 </div>
             </cui-expandable-body>
         </cui-expandable1>
