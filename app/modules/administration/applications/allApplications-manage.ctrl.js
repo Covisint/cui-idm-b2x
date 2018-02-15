@@ -11,14 +11,40 @@ angular.module('administration')
 		}		
 		$scope.$digest()
 	}
+
+	const resetExpandedProperty = () => {
+		manageAllApplications.packages.forEach(packageData => {
+			packageData.expanded=false;
+		})
+	}
+
+	const switchBetween = (property, firstValue, secondValue) => {
+        // helper function to switch a property between two values or set to undefined if values not passed
+        if (!firstValue) {
+            manageAllApplications.search[property] = undefined
+            return
+        }
+        manageAllApplications.search[property] = manageAllApplications.search[property] === firstValue
+            ? secondValue
+            : firstValue
+    }
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
 	const onLoad = (updating) => {	
+		Loader.onFor(scopeName+'count')
 		if (updating) {
 			Loader.onFor(scopeName+'packages')
 		}
-		API.cui.getPackages()
+
+		let qs= APIHelpers.getQs(manageAllApplications.search)
+		API.cui.countPackages({qs:qs})
+		.then(count => {
+			manageAllApplications.count=count
+			Loader.offFor(scopeName+'count')
+			manageAllApplications.reRenderPaginate && manageAllApplications.reRenderPaginate()
+			return API.cui.getPackages({qs:qs})
+		})
 		.then(res => {
 			manageAllApplications.packages = res
 			res.forEach((packageData, index) => {
@@ -43,9 +69,14 @@ angular.module('administration')
 			finishLoading(updating)
 		})
 	}
+
+	manageAllApplications.search = Object.assign({}, $stateParams)
+	manageAllApplications.search.pageSize = manageAllApplications.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
+	manageAllApplications.search.page= manageAllApplications.search.page || 1
 	// Get Previously Loaded data from storage and do a lazy update
 	if (DataStorage.getType('manageAllApplications')) {
 		manageAllApplications.packages=DataStorage.getType('manageAllApplications')
+		resetExpandedProperty()
 		onLoad(false)
 	}else{
 		onLoad(true)
@@ -55,6 +86,39 @@ angular.module('administration')
 
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+	manageAllApplications.pageChange = (newpage) => {
+        manageAllApplications.updateSearch('page', newpage)
+    }
+
+    manageAllApplications.updateSearchByName = () => {
+        manageAllApplications.updateSearch('name',manageAllApplications.search['service.name'])
+    }
+    manageAllApplications.updateSearch = (updateType, updateValue) => {
+        switch (updateType) {
+            case 'alphabetic':
+                switchBetween('sortBy', '+service.name', '-service.name')
+                break
+            case 'date':
+                switchBetween('sortBy', '+grant.instant', '-grant.instant')
+                break
+            case 'status':
+                manageAllApplications.search.page = 1
+                manageAllApplications.search['grant.status'] = updateValue
+                break
+            case 'category':
+                manageAllApplications.search.page = 1
+                manageAllApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
+                break
+            case 'name':
+                manageAllApplications.search.page = 1
+                break
+        }
+
+        // doesn't change state, only updates the url
+        $state.transitionTo('administration.manageApplications', manageAllApplications.search, { notify:false })
+        onLoad(true)
+    }
+
 	manageAllApplications.expandAll = () =>{
 		manageAllApplications.packages.forEach( packageData => {
 			packageData.expanded=true;

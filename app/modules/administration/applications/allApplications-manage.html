@@ -184,6 +184,10 @@
 
     </cui-table-row>
 
-		
+		<div class="cui-paginate__container" ng-if="!base.loader.for['manageAllApplications.count']">
+    		<span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    		<results-per-page class="cui-paginate__select" ng-model="manageAllApplications.search.pageSize"></results-per-page>
+    		<paginate class="cui-paginate" results-per-page="manageAllApplications.search.pageSize" count="manageAllApplications.count" on-page-change="manageAllApplications.pageChange" ng-model="manageAllApplications.search.page" attach-rerender-to="manageAllApplications.reRenderPaginate"></paginate>
+  		</div>
 	</div>
 </div>
