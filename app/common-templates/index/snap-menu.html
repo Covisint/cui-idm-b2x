@@ -17,7 +17,7 @@
 </div>
 
 <!-- Administration actions -->
-<div class="cui-desktop-menu__option" ui-sref="administration.manageApplications" ui-sref-active-nested="active" ng-if="base.accessToSecurityAndExchangeAdmins()" ng-click="base.menu.desktop.close()">
+<div class="cui-desktop-menu__option" ui-sref="administration.applications.manageApplications" ui-sref-active-nested="active" ng-if="base.accessToSecurityAndExchangeAdmins()" ng-click="base.menu.desktop.close()">
   <!-- Adding Opacity as the word is longer and visible on menu collapse -->
   <span class="cui-desktop-menu__option-name" style="transition: opacity ease-in 0.2s;" ng-class="{'cui-hide__opacity':base.menu.desktop.state==='closed'}">{{'administration' | translate}}</span>
   <cui-icon cui-svg-icon="cui:setting-roll" svg-class="cui-desktop-menu__icon" preserveAspectRatio="xMidYMid meet" viewbox="0 0 48 48"></cui-icon>
