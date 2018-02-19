@@ -1,12 +1,12 @@
 <nav class="cui-breadcrumb">
   <ul class="cui-breadcrumb__links">
     <li class="cui-breadcrumb__link" ng-if="base.accessToSecurityAndExchangeAdmins()">
-      <a ui-sref="administration.manageApplications" ui-sref-active-for="administration.manageApplications">
+      <a ui-sref="administration.applications.manageApplications" ui-sref-active-for="administration.applications.manageApplications">
         {{'cui-applications' | translate}}
       </a>
     </li>
     <li class="cui-breadcrumb__link" ng-if="base.accessToSecurityAndExchangeAdmins()">
-      <a ui-sref="administration.manageApplications" ui-sref-active-for="">
+      <a ui-sref="administration.manageApplications" ui-sref-active-for="administration.manageApplications">
         {{'Policies' | translate}}
       </a>
     </li>
