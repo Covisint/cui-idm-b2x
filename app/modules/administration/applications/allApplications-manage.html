@@ -114,7 +114,7 @@
 		<cui-table-header headers="['cui-name', 'FederationConnection' , 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
       	</cui-table-header>
 
-    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id" ng-click="usersRegistrationRequests.goToDetails(userRequest)">
+    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id">
 
     	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="package.expanded"ng-class="package.expanded?'expanded':''" transition-speed="150">
             <cui-expandable-title>
@@ -127,7 +127,7 @@
 		        </div>
 		        <div class="cui-flex-table__mobile-stack">
 		        	<div class="cui-flex-table__left" >
-		                <span class="cui-flex-table__title">{{package.name | cuiI18n}}</span>
+		                <span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditPackage(package)">{{package.name | cuiI18n}}</span>
 		            </div>
                 <div class="cui-flex-table__middle">
 		            <span class="">{{package.realm}}</span>
@@ -147,7 +147,7 @@
 			            <div class="cui-flex-table__avatar-col"></div>
 
 			            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
-			                <div class="cui-flex-table__left">Service Name</div>
+			                <div class="cui-flex-table__left" >Service Name</div>
 			                <div class="cui-flex-table__middle">
 			                    category
 					        </div>
@@ -158,14 +158,14 @@
         </div>
                     <li class="cui-flex-table__tr cui-flex-table__tr--c" ng-repeat="service in package.services">
                     <div class="cui-flex-table__avatar-col">
-		          <div class="cui-profile__user-avatar" aria-hidden="true" 
-		            cui-avatar cui-avatar-names="[service.name[0].text]" 
-		            cui-avatar-color-class-prefix="cui-avatar__color" 
-		            cui-avatar-color-count="5"></div>
+		          		<div class="cui-profile__user-avatar" aria-hidden="true" 
+		            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
+		            	cui-avatar-color-class-prefix="cui-avatar__color" 
+		            	cui-avatar-color-count="5"></div>
 		            </div>
 		            <div class="cui-flex-table__mobile-stack">
 		            	<div class="cui-flex-table__left">
-		            		<span class="cui-flex-table__title">{{service.name | cuiI18n}}</span>
+		            		<span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditService(service)">{{service.name | cuiI18n}}</span>
 		            	</div>
 		            	<div class="cui-flex-table__middle">
 		            		<span class="">{{service.category | cuiI18n}}</span>

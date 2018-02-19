@@ -115,7 +115,7 @@ angular.module('administration')
         }
 
         // doesn't change state, only updates the url
-        $state.transitionTo('administration.manageApplications', manageAllApplications.search, { notify:false })
+        $state.transitionTo('administration.applications.manageApplications', manageAllApplications.search, { notify:false })
         onLoad(true)
     }
 
@@ -130,6 +130,16 @@ angular.module('administration')
 		manageAllApplications.packages.forEach( packageData => {
 			packageData.expanded=false;
 		})
+	}
+
+	manageAllApplications.goToEditPackage = (packageData) => {
+		DataStorage.setType('EditPackage',packageData)
+		$state.go("administration.applications.editPackage",{pkgId:packageData.id})
+	}
+
+	manageAllApplications.goToEditService = (serviceData) => {
+		DataStorage.setType('EditService',serviceData)
+		$state.go("administration.applications.editService",{serviceId:serviceData.id})
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
