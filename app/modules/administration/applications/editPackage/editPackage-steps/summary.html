@@ -1,0 +1,85 @@
+<ng-form name="summary" novalidate>
+
+  <!-- First row -->
+  <div class="cui-wizard__field-row">
+    <!-- First Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'name' | translate}}</label>
+      <div class="cui-error" ng-messages="summary.name.$error" ng-if="summary.name.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="editPackage.given"/>
+    </div>
+
+    <!-- Description -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'description' | translate}}</label>
+      <!-- <div class="cui-error" ng-messages="summary.description.$error" ng-if="summary.description.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div> -->
+      <input type="text" ng-model="editPackage.surname" name="description" class="cui-input"/>
+    </div>
+  </div>
+  
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <label>{{'is-requestable' | translate}}</label>
+      <div class="cui-switch">
+            <input class="cui-switch__input" ng-model="userWalkup.applications.processedSelected[$index].acceptedTos" name="application{{$index}}" id="application{{$index}}" type="checkbox" />
+            <label class="cui-switch__label" for="application{{$index}}">
+              <div class="cui-switch__container">
+                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
+                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
+              </div>
+            </label>
+          </div>
+          <label class="switch__info">{{'is-requestable-desc' | translate}}</label>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <label>{{'is-grantable' | translate}}</label>
+      <div class="cui-switch">
+            <input class="cui-switch__input" ng-model="userWalkup.applications.processedSelected[$index].acceptedTos" name="application{{$index}}" id="application{{$index}}" type="checkbox" />
+            <label class="cui-switch__label" for="application{{$index}}">
+              <div class="cui-switch__container">
+                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
+                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
+              </div>
+            </label>
+          </div>
+          <label class="switch__info">{{'is-grantable-desc' | translate}}</label>
+    </div>
+
+  </div>
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <label>{{'require' | translate}} {{'request-reason' | translate}}</label>
+      <div class="cui-switch">
+            <input class="cui-switch__input" ng-model="userWalkup.applications.processedSelected[$index].acceptedTos" name="application{{$index}}" id="application{{$index}}" type="checkbox" />
+            <label class="cui-switch__label" for="application{{$index}}">
+              <div class="cui-switch__container">
+                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
+                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
+              </div>
+            </label>
+          </div>
+          <label class="switch__info">{{'require-reason-desc' | translate}}</label>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <label>{{'is-displayable' | translate}}</label>
+      <div class="cui-switch">
+            <input class="cui-switch__input" ng-model="userWalkup.applications.processedSelected[$index].acceptedTos" name="application{{$index}}" id="application{{$index}}" type="checkbox" />
+            <label class="cui-switch__label" for="application{{$index}}">
+              <div class="cui-switch__container">
+                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
+                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
+              </div>
+            </label>
+          </div>
+          <label class="switch__info">{{'is-displayable-desc' | translate}}</label>
+    </div>
+
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(summary)" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+  </div>
+</ng-form>
