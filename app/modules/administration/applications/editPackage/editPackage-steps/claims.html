@@ -1,6 +1,37 @@
 <ng-form name="claims" novalidate>
   <!-- List Claims -->
+  <div class="cui-flex-table__th cui-flex-table__th--c">
+    <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
+    <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+      <div class="cui-flex-table__left" >{{'cui-id'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'cui-name'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'description'|translate}}</div>
+      <div  class="cui-flex-table__right">{{'cardinality-indicator'|translate}}</div>
+    </div>
+  </div>
+    <cui-table-row ng-repeat="claim in editPackage.claims">
+      <li class="cui-flex-table__tr cui-flex-table__tr--c">
+        <div class="cui-flex-table__avatar-col">
+          
+        </div>
+        <div class="cui-flex-table__mobile-stack">
+           <div class="cui-flex-table__left">
+            <span class="">{{claim.claimId}}</span>
+          </div>
+          <div class="cui-flex-table__middle">
+            <span class="">{{claim.name|cuiI18n}}</span>
+          </div>
 
+          <div class="cui-flex-table__middle">
+            <span class="">{{claim.description|cuiI18n}}</span>
+          </div>
+          <!-- Idicator field name need to be changed according to API as of now no support -->
+          <div class="cui-flex-table__right">
+            <span class="">{{claim.indicator}}</span>
+          </div>
+        </div>
+      </li>
+    </cui-table-row>
 
   <!-- Add Claims -->
   <div class="cui-wizard__field-row">
@@ -10,7 +41,7 @@
       <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="packageEdit.claims.name.given"/>
+      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="editPackage.tampClaim.claimId"/>
     </div>
 
     <!-- Name -->
@@ -19,7 +50,7 @@
       <div class="cui-error" ng-messages="claims.name.$error" ng-if="claims.name.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" ng-model="packageEdit.claims.name.surname" name="name" class="cui-input" ng-required="true"/>
+      <input type="text" ng-model="editPackage.tampClaim.name" name="name" class="cui-input" ng-required="true"/>
     </div>
   </div>
   
@@ -30,14 +61,14 @@
       <div class="cui-error" ng-messages="claims.description.$error" ng-if="claims.description.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" ng-model="packageEdit.claims.name.surname" name="description" class="cui-input" ng-required="true"/>
+      <input type="text" ng-model="editPackage.tempClaim.description" name="description" class="cui-input" ng-required="true"/>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label for="user-name-surname">{{'cardinality-indicators' | translate}}</label>
       <div class="cui-radio cui-radio--basic-ltr radio-form">
-          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="search.searchType" value="people" ng-change="search.searchNow(true)">
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="editPackage.tempClaim.indicator" value="one" ng-change="editPackage.indicatorChange('one')">
           <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'cui-one' | translate}}</label>
-          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="search.searchType" value="organizations" ng-change="search.searchNow(true)">
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="editPackage.tempClaim.indicator" value="many" ng-change="editPackage.indicatorChange('many')">
           <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'cui-many' | translate}}</label>
       </div>
     </div>
@@ -71,7 +102,7 @@
                   <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
                     <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
                   </div>
-                  <input type="text" name="id" class="cui-input" ng-required="true" ng-model="packageEdit.claims.name.given"/>
+                  <input type="text" name="id" class="cui-input" ng-required="true" ng-model="editPackage.claims.name.given"/>
                 </div>
 
                 <!-- Name -->
@@ -80,7 +111,7 @@
                   <div class="cui-error" ng-messages="claims.name.$error" ng-if="claims.name.$dirty">
                     <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
                   </div>
-                  <input type="text" ng-model="packageEdit.claims.name.surname" name="name" class="cui-input" ng-required="true"/>
+                  <input type="text" ng-model="editPackage.claims.name.surname" name="name" class="cui-input" ng-required="true"/>
                 </div>
               </div>
               <div class="cui-wizard__field-row">
@@ -90,7 +121,7 @@
                   <div class="cui-error" ng-messages="claims.description.$error" ng-if="claims.description.$dirty">
                     <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
                   </div>
-                  <input type="text" ng-model="packageEdit.claims.name.surname" name="description" class="cui-input" ng-required="true"/>
+                  <input type="text" ng-model="editPackage.claims.name.surname" name="description" class="cui-input" ng-required="true"/>
                 </div>
               </div>
               <div class="cui-wizard__controls cui-wizard__controls--clear">

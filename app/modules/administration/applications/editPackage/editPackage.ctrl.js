@@ -3,6 +3,9 @@ angular.module('administration')
 	const editPackage=this
 	const scopeName="editPackage."
 	editPackage.search= {}
+	editPackage.claims=[]
+	editPackage.tempClaim={}
+	editPackage.tempClaimValue={}
 
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 	const finishLoading = (updating) => {
@@ -11,6 +14,7 @@ angular.module('administration')
 		}		
 		$scope.$digest()
 	}
+
 
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
@@ -22,5 +26,12 @@ angular.module('administration')
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 
+	editPackage.addClaim = () => {
+		editPackage.claims.push(editPackage.tempClaim)
+	}
+
+	editPackage.addClaimValue = (claim) => {
+		claim.claimValues.push(editPackage.tempClaimValue)
+	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
