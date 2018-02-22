@@ -1,0 +1,41 @@
+<ng-form name="service" novalidate>
+	  <!-- First row -->
+  <div class="cui-wizard__field-row">
+    <!-- First Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'name' | translate}}</label>
+      <div class="cui-error" ng-messages="service.name.$error" ng-if="service.name.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="scope.serviceData.service.name[0].text"/>
+    </div>
+
+    <!-- Description -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'description' | translate}}</label>
+      <!-- <div class="cui-error" ng-messages="service.description.$error" ng-if="service.description.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div> -->
+      <input type="text" ng-model="scope.serviceData.service.description[0].text" name="description" class="cui-input"/>
+    </div>
+  </div>
+  
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'target-url' | translate}}</label>
+      <div class="cui-error" ng-messages="service.name.$error" ng-if="service.name.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="scope.serviceData.service.urls[0].value"/>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-language' | translate}}</label>
+        <cui-dropdown ng-model="scope.serviceData.service.category[0]" class="cui-dropdown" return-value="object" display-value="object.text" options="scope.serviceData.categories"></cui-dropdown>
+    </div>
+
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <a class="cui-link cui-form__cancel" href="" ng-click="scope.cancelEdit()">Cancel</a>
+    <button class="cui-button cui-button--error" ng-class="{ 'cui-button--error': !service.$valid }" ng-click="scope.saveService()">Save</button>
+  </div>
+</ng-form>
