@@ -7,6 +7,13 @@ angular.module('administration')
 	editPackage.claims=[]
 	editPackage.tempClaim={}
 	editPackage.tempClaimValue={}
+	editPackage.serviceData = {
+		categories : [
+			{lang:"en",text:"Administration"},
+			{lang:"en",text:"Application"},
+			{lang:"en",text:"Roles"}
+		]
+	}
 	// editPackage.packageData={
 	// 	displayable:true,
 	// 	requiredApprovals:['organizationAdmin']
@@ -38,10 +45,8 @@ angular.module('administration')
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
 	if (DataStorage.getType('EditPackage')) {
-		editPackage.storedData=DataStorage.getType('EditPackage')
+		editPackage.packageData=DataStorage.getType('EditPackage')
 	};
-	editPackage.packageData= editPackage.storedData
-	delete editPackage.packageData.services
 	updateApprovalFlags()
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
@@ -52,6 +57,27 @@ angular.module('administration')
 
 	editPackage.addClaimValue = (claim) => {
 		claim.claimValues.push(editPackage.tempClaimValue)
+	}
+
+	editPackage.showServiceForm = (service) => {
+		editPackage.serviceData.service={}
+		if (service) {
+			editPackage.tempServiceName=service.name
+			editPackage.serviceData.edit=true;
+			angular.copy(service,editPackage.serviceData.service)
+		};		
+		editPackage.showServiceFormFlag=true;
+	}
+
+	editPackage.submit = () => {
+
+	}
+	editPackage.cancelEdit = () => {
+		editPackage.showServiceFormFlag=false;
+	}
+
+	editPackage.saveService = () => {
+
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
