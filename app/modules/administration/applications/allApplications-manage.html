@@ -111,7 +111,7 @@
   		<p ng-if="!base.apiError.for['manageAllApplications.packages']&&manageAllApplications.packages.length===0">{{'cui-no-applications' | translate}}</p>
   		<!-- Error Message -->
   		<p class="cui-users__password-success" style="color:red; margin:20px; text-align:center" ng-if="base.apiError.for['manageAllApplications.packages']">{{'error-generic'|translate}}</p>
-		<cui-table-header headers="['cui-name', 'FederationConnection' , 'UpdatedDate', 'Remove']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
+		<cui-table-header headers="['cui-name', 'federation-conn' , 'updated-date', 'cui-delete']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
       	</cui-table-header>
 
     	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id">
@@ -147,12 +147,12 @@
 			            <div class="cui-flex-table__avatar-col"></div>
 
 			            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
-			                <div class="cui-flex-table__left" >Service Name</div>
+			                <div class="cui-flex-table__left" >{{'cui-service' |translate}} {{'cui-name' |translate}}</div>
 			                <div class="cui-flex-table__middle">
-			                    category
+			                    {{'cui-category' |translate}}
 					        </div>
 			                <div  class="cui-flex-table__right">
-			                    Launch
+			                    {{'launch' |translate}}
 			                </div>
 			            </div>
         </div>
