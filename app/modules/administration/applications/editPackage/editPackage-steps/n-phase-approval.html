@@ -4,8 +4,8 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
       <label>{{'require' | translate}} {{'company-admin' | translate}} {{'approval' | translate}}</label>
       <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="userWalkup.applications.acceptedTos" name="application2" id="application2" type="checkbox" />
-            <label class="cui-switch__label" for="application2">
+            <input class="cui-switch__input" ng-model="editPackage.requireCompanyAdmin" name="requireCompanyAdmin" id="requireCompanyAdmin" type="checkbox" />
+            <label class="cui-switch__label" for="requireCompanyAdmin">
               <div class="cui-switch__container">
                 <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
                 <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
@@ -20,8 +20,8 @@
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
       <label>{{'require' | translate}} {{'application-admin' | translate}} {{'approval' | translate}}</label>
       <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="userWalkup.applications.acceptedTos" name="application1" id="application1" type="checkbox" />
-            <label class="cui-switch__label" for="application1">
+            <input class="cui-switch__input" ng-model="editPackage.requireAppAdmin" name="requireAppAdmin" id="requireAppAdmin" type="checkbox" />
+            <label class="cui-switch__label" for="requireAppAdmin">
               <div class="cui-switch__container">
                 <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
                 <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
@@ -29,7 +29,7 @@
             </label>
           </div>
           <label class="switch__info">{{'application-admin-desc' | translate}}</label>
-          <button class="cui-button cui-button--inverted cui-button--small-rounded">{{'add-admins' |translate}}</button>
+          <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="editPackage.requireAppAdmin">{{'add-admins' |translate}}</button>
     </div>
 
   </div>
