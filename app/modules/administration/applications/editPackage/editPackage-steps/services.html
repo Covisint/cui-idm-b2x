@@ -37,7 +37,7 @@
   </li>
 </cui-table-row>
 
-  <div class="cui-form__body" style="border:1px solid #e8f0f3;" ng-if="editPackage.showServiceFormFlag">
+  <div class="cui-form__body cui-form__body--alt" ng-if="editPackage.showServiceFormFlag">
     <div class="cui-form__title">{{'cui-edit' | translate}} {{'cui-service' | translate}} -&gt; {{editPackage.tempServiceName | cuiI18n}}</div>
     <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=editPackage"></ng-include>
   </div>

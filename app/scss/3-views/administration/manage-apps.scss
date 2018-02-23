@@ -52,3 +52,11 @@
 .form-container__expandable{
 	width:100%
 }
+
+.cui-form__body--alt{
+	border:1px solid #e8f0f3 !important;
+	background-color: #d4e2e6 !important;
+	.cui-form__title{
+		background-color: #d4e2e6;
+	}
+}
