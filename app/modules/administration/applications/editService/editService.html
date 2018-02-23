@@ -1,0 +1,7 @@
+<div class="cui-action">
+  	<span class="cui-action__title">{{'cui-edit' | translate}} {{'cui-service' | translate}} -&gt; {{editService.tempServiceName | cuiI18n}}</span>
+</div>
+
+<div class="cui-applications__main-container">
+	<ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=editService"></ng-include>
+</div>
