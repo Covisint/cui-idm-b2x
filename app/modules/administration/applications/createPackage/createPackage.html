@@ -1,0 +1,37 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/administation/applications/createPackage" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-administration cui-edit-package">
+<!-- Loading: Getting required registration data -->
+<div class="cui-loading__container--organization-list" ng-if="userWalkup.initializing">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div class="cui-form--mobile-steps" ng-if="!userWalkup.initializing">
+  <div class="cui-form__title">{{'manage-applications' | translate}} -&gt; {{'edit-package' | translate}}</div>
+  <div class="cui-form__body">
+    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators dirty-validation>
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+
+      <ng-form name="createPackageForm" novalidate>
+        <step step-title="{{'app-summary' | translate}}" icon="cui:board-edit">
+          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-summary.html'"></div>
+        </step>
+
+        <step step-title="{{'n-phase' | translate}}" icon="cui:game-2">
+          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-n-phase.html'"></div>
+        </step>
+
+        <step step-title="{{'claims' | translate}}" icon="cui:login">
+          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>
+        </step>
+
+        <step step-title="{{'services' | translate}}" icon="cui:applications">
+          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-services.html'"></div>
+        </step>
+      </ng-form>
+    </cui-wizard>
+  </div>
+</div>
+</div>

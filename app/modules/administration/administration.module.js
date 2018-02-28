@@ -38,5 +38,11 @@ angular.module('administration',[])
             templateUrl: templateBase + 'applications/editService/editService.html',
             controller: returnCtrlAs('editService'),
             access:loginRequired
+        })
+        .state('administration.applications.createPackage', {
+            url: '/createPackage',
+            templateUrl: templateBase + 'applications/createPackage/createPackage.html',
+            controller: returnCtrlAs('createPackage'),
+            access:loginRequired
         });
 }]);
