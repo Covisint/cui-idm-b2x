@@ -1,25 +1,9 @@
 <ng-form name="summary" novalidate>
+  
+  <!-- <div ng-include="'app/modules/administration/partials/multi-language-field.html'" onload="name='name';form=summary;scope=createPackage;required=true;label='name'"></div> -->
 
-  <!-- First row -->
-  <div class="cui-wizard__field-row">
-    <!-- First Name -->
-    <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'name' | translate}}</label>
-      <div class="cui-error" ng-messages="summary.name.$error" ng-if="summary.name.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
-      </div>
-      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="createPackage.packageData.name[0].text"/>
-    </div>
-
-    <!-- Description -->
-    <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'description' | translate}}</label>
-      <!-- <div class="cui-error" ng-messages="summary.description.$error" ng-if="summary.description.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
-      </div> -->
-      <input type="text" ng-model="createPackage.packageData.description[0].text" name="description" class="cui-input"/>
-    </div>
-  </div>
+  <multi-language-field options="createPackage.name" name="'name'" form="summary"></multi-language-field>
+  <multi-language-field options="createPackage.description" name="'description'" form="summary"></multi-language-field>
   
   <div class="cui-wizard__field-row">
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
@@ -80,6 +64,6 @@
 
   </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear">
-    <button type="button" class="cui-wizard__next" ng-click="nextWithErrorChecking(summary)" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="nextWithErrorChecking(summary);createPackage.saveService()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
   </div>
 </ng-form>
