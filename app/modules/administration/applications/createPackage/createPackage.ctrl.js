@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage){
+.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage,Base){
 	const createPackage=this
 	const scopeName="createPackage."
 	// Initialization
@@ -9,9 +9,9 @@ angular.module('administration')
 	createPackage.tempClaimValue={}
 	createPackage.serviceData = {
 		categories : [
-			{lang:"en",text:"Administration"},
-			{lang:"en",text:"Application"},
-			{lang:"en",text:"Roles"}
+			{lang:"en",text:"administration"},
+			{lang:"en",text:"cui-applications"},
+			{lang:"en",text:"roles"}
 		]
 	}
 	// createPackage.packageData={
@@ -20,6 +20,32 @@ angular.module('administration')
 	// }
 	// createPackage.requireCompanyAdmin=true;
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
+
+	const initializeMultiLanguageFields = () => {
+		createPackage.name={ 
+			languages:[],
+			label:'cui-name',
+			required:true
+		}
+		createPackage.description={ 
+			languages:[],
+			label:'description',
+			required:false
+		}
+		
+	}
+
+	const initializeRadioOptions = () => {
+		createPackage.packageData={
+			requestable:false,
+	        grantable:false,
+	       	displayable:true,
+	        requestReasonRequired:false,
+		}
+		createPackage.requireCompanyAdmin=true
+		createPackage.requireAppAdmin=false
+	}
+
 	const finishLoading = (updating) => {
 		if (updating) {
 			Loader.offFor(scopeName+'packages')
@@ -44,6 +70,8 @@ angular.module('administration')
 
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
+	initializeMultiLanguageFields()
+	initializeRadioOptions()
 	if (DataStorage.getType('createPackage')) {
 		createPackage.packageData=DataStorage.getType('createPackage')
 		updateApprovalFlags()
@@ -56,7 +84,7 @@ angular.module('administration')
 		createPackage.claims.push(createPackage.tempClaim)
 	}
 
-	createPackage.addClaimValue = (claim) => {
+	createPackage.addClaimValue = () => {
 		claim.claimValues.push(createPackage.tempClaimValue)
 	}
 
