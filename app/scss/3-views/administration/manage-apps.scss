@@ -63,3 +63,10 @@
 .cui-wizard__field-container--button{
 	justify-content:center;
 }
+
+.cui-wizard__field-row{
+	.cui-flex-table__tr:hover .cui-flex-table__title {
+	    color: #343534;
+	    cursor: default;
+    }
+}
