@@ -80,5 +80,39 @@ angular.module('administration')
 	createPackage.saveService = () => {
 
 	}
+
+	createPackage.checkDuplicateLanguages = () => {
+		createPackage.duplicateLanguage=false
+		createPackage.name.languages.every( selectedLanguage => {
+			if(createPackage.name.languages.filter( language => selectedLanguage.lang===language.lang).length>1){
+				createPackage.duplicateLanguage=true
+				return false
+			}else{
+				return true
+			}
+		})
+		// No need to check next field if there is one with duplicate 
+		if (!createPackage.duplicateLanguage) {
+			createPackage.description.languages.every( selectedLanguage => {
+				if (selectedLanguage.text!=='') {
+					console.log(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length)
+					if(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length>1){
+						createPackage.duplicateLanguage=true
+						return false
+					}else{
+						return true
+					}
+				}
+				else{
+					return true
+				}
+				
+			})
+		}
+		$timeout(() => {
+			createPackage.duplicateLanguage=false
+		},5000)
+		return !createPackage.duplicateLanguage
+	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
