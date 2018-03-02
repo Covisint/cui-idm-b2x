@@ -5,7 +5,8 @@ angular.module('common')
 	scope:{
 		name: '=',
 		form: '=',
-		options:'='
+		options:'=',
+		labelClass:'='
 	},
 	link:(scope,elem, attrs,ctrl ) => {
 		// Get language Data for dropDown
@@ -21,11 +22,12 @@ angular.module('common')
 	        	scope.languages[index-1].name=language; 
 	        };
 	    })
+	    
 	},
 	template:`
 		<div class="cui-wizard__field-row">
 			<div class="cui-wizard__field-container cui-wizard__field-container--half">
-			  <label >{{options.label | translate}}</label>
+			  <label class="{{labelClass}}">{{options.label | translate}}</label>
 			  <div class="cui-error" ng-messages="form[name].$error" ng-if="form[name].$dirty">
 			    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
 			  </div>
