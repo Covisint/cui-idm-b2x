@@ -3,17 +3,17 @@
   <div class="cui-wizard__field-row">
 
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'name' | translate}}</label>
+      <label >{{'cui-name' | translate}}</label>
       <div class="cui-error" ng-messages="service.name.$error" ng-if="service.name.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="scope.serviceData.service.name[0].text"/>
+      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="serviceData.name[0].text"/>
     </div>
 
     <!-- Description -->
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label >{{'description' | translate}}</label>
-      <input type="text" ng-model="scope.serviceData.service.description[0].text" name="description" class="cui-input"/>
+      <input type="text" ng-model="serviceData.description[0].text" name="description" class="cui-input"/>
     </div>
   </div>
   <!-- Second row -->
@@ -23,12 +23,12 @@
       <div class="cui-error" ng-messages="service.targetURL.$error" ng-if="service.targetURL.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="targetURL" class="cui-input" ng-required="true" ng-model="scope.serviceData.service.urls[0].value"/>
+      <input type="text" name="targetURL" class="cui-input" ng-required="true" ng-model="serviceData.urls[0].value"/>
     </div>
 
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label>{{'cui-language' | translate}}</label>
-        <cui-dropdown ng-model="scope.serviceData.service.category[0]" class="cui-dropdown" return-value="object" display-value="object.text|translate" options="scope.serviceData.categories"></cui-dropdown>
+      <label>{{'cui-category' | translate}}</label>
+        <cui-dropdown ng-model="serviceData.category[0]" class="cui-dropdown" return-value="object" display-value="object.text|translate" options="scope.serviceData.categories"></cui-dropdown>
     </div>
   </div>
   <!-- Third row -->
@@ -38,12 +38,12 @@
       <div class="cui-error" ng-messages="service.remoteAppId.$error" ng-if="service.remoteAppId.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="remoteAppId" class="cui-input" ng-required="true" ng-model="scope.serviceData.service.remoteAppId"/>
+      <input type="text" name="remoteAppId" class="cui-input" ng-required="true" ng-model="serviceData.remoteAppId"/>
     </div>
 
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label >{{'mobile-app-id' | translate}}</label>
-      <input type="text" ng-model="scope.serviceData.service.mobileServiceId" name="description" class="cui-input"/>
+      <input type="text" ng-model="serviceData.mobileServiceId" name="description" class="cui-input"/>
     </div>
   </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear">
