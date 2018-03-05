@@ -155,29 +155,33 @@
 			                    {{'launch' |translate}}
 			                </div>
 			            </div>
-        </div>
-                    <li class="cui-flex-table__tr cui-flex-table__tr--c" ng-repeat="service in package.services">
-                    <div class="cui-flex-table__avatar-col">
-		          		<div class="cui-profile__user-avatar" aria-hidden="true" 
-		            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
-		            	cui-avatar-color-class-prefix="cui-avatar__color" 
-		            	cui-avatar-color-count="5"></div>
-		            </div>
-		            <div class="cui-flex-table__mobile-stack">
-		            	<div class="cui-flex-table__left">
-		            		<span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditService(service)">{{service.name | cuiI18n}}</span>
-		            	</div>
-		            	<div class="cui-flex-table__middle">
-		            		<span class="">{{service.category | cuiI18n}}</span>
-		            	</div>
-		            	<div class="cui-flex-table__right">
-		            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
-		            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-		            		</a>
-		            	</div>
-		            </div>
-		            
-		            </li>
+        			</div>
+        			<div ng-repeat="service in package.services">
+	                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+	                    <div class="cui-flex-table__avatar-col">
+			          		<div class="cui-profile__user-avatar" aria-hidden="true" 
+			            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
+			            	cui-avatar-color-class-prefix="cui-avatar__color" 
+			            	cui-avatar-color-count="5"></div>
+			            </div>
+			            <div class="cui-flex-table__mobile-stack">
+			            	<div class="cui-flex-table__left">
+			            		<span class="cui-flex-table__title" ng-click="manageAllApplications.toggleEditService(service, package)">{{service.name | cuiI18n}}</span>
+			            	</div>
+			            	<div class="cui-flex-table__middle">
+			            		<span class="">{{service.category | cuiI18n}}</span>
+			            	</div>
+			            	<div class="cui-flex-table__right">
+			            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
+			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+			            		</a>
+			            	</div>
+			            </div>		            
+			            </li>
+			            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
+			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications" ></ng-include>
+			        	</div>
+		        	</div>
                 </div>
             </cui-expandable-body>
         </cui-expandable1>

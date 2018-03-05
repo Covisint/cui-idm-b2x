@@ -141,5 +141,17 @@ angular.module('administration')
 		DataStorage.setType('EditService',serviceData)
 		$state.go("administration.applications.editService",{serviceId:serviceData.id})
 	}
+
+	manageAllApplications.toggleEditService = (serviceData,packageData) => {
+		manageAllApplications.tempServiceData={}
+		angular.copy(serviceData,manageAllApplications.tempServiceData)
+		console.log(manageAllApplications.tempServiceData)	
+		serviceData.editService=!serviceData.editService
+		packageData.services.forEach( service => {
+			if (service.id!==serviceData.id) {
+				service.editService=false
+			}
+		})
+	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
