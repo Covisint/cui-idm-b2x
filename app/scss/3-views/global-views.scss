@@ -199,3 +199,13 @@ Global layout styles
   max-width:350px;
 } 
 }
+
+.cui-info-msgs{
+  color:#47cbb4;
+  text-align:center;
+  padding: 5px 0 5px;
+}
+
+.cui-info-msgs__error{
+  color:red !important
+}
