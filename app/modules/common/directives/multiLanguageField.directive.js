@@ -11,7 +11,6 @@ angular.module('common')
 	link:(scope,elem, attrs,ctrl ) => {
 		// Get language Data for dropDown
 		scope.languages=[]
-		console.log(ctrl)
 		Object.keys(Base.languages).forEach(function(id,index){
 			if (id!='en') {
 				scope.languages.push({id:id})
