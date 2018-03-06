@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage,Base){
+.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,Base,EditAndCreateApps){
 	const createPackage=this
 	const scopeName="createPackage."
 	// Initialization
@@ -22,12 +22,12 @@ angular.module('administration')
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 	const initializeMultiLanguageFields = () => {
-		createPackage.name={ 
+		createPackage.packageViewData.name={ 
 			languages:[],
 			label:'cui-name',
 			required:true
 		}
-		createPackage.description={ 
+		createPackage.packageViewData.description={ 
 			languages:[],
 			label:'description',
 			required:false
@@ -36,14 +36,14 @@ angular.module('administration')
 	}
 
 	const initializeRadioOptions = () => {
-		createPackage.packageData={
+		createPackage.packageViewData={
 			requestable:false,
 	        grantable:false,
 	       	displayable:true,
 	        requestReasonRequired:false,
+	        requireCompanyAdmin:true,
+			requireAppAdmin:false
 		}
-		createPackage.requireCompanyAdmin=true
-		createPackage.requireAppAdmin=false
 	}
 
 	const finishLoading = (updating) => {
@@ -53,16 +53,16 @@ angular.module('administration')
 		$scope.$digest()
 	}
 
-	const updateApprovalFlags = () => {
-		createPackage.packageData.requiredApprovals.forEach(admin => {
-			if (admin==='organizationAdmin') {
-				createPackage.requireCompanyAdmin=true
-			}
-			else{
-				createPackage.requireAppAdmin=true
-			}
-		})
-	}
+	// const updateApprovalFlags = () => {
+	// 	createPackage.packageData.requiredApprovals.forEach(admin => {
+	// 		if (admin==='organizationAdmin') {
+	// 			createPackage.requireCompanyAdmin=true
+	// 		}
+	// 		else{
+	// 			createPackage.requireAppAdmin=true
+	// 		}
+	// 	})
+	// }
 
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
@@ -70,8 +70,8 @@ angular.module('administration')
 
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
-	initializeMultiLanguageFields()
 	initializeRadioOptions()
+	initializeMultiLanguageFields()	
 	if (DataStorage.getType('createPackage')) {
 		createPackage.packageData=DataStorage.getType('createPackage')
 		updateApprovalFlags()
@@ -110,37 +110,44 @@ angular.module('administration')
 	}
 
 	createPackage.checkDuplicateLanguages = () => {
-		createPackage.duplicateLanguage=false
-		createPackage.name.languages.every( selectedLanguage => {
-			if(createPackage.name.languages.filter( language => selectedLanguage.lang===language.lang).length>1){
-				createPackage.duplicateLanguage=true
-				return false
-			}else{
-				return true
-			}
-		})
-		// No need to check next field if there is one with duplicate 
+		createPackage.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(createPackage.packageViewData.name)
 		if (!createPackage.duplicateLanguage) {
-			createPackage.description.languages.every( selectedLanguage => {
-				if (selectedLanguage.text!=='') {
-					console.log(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length)
-					if(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length>1){
-						createPackage.duplicateLanguage=true
-						return false
-					}else{
-						return true
-					}
-				}
-				else{
-					return true
-				}
-				
-			})
+			createPackage.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(createPackage.packageViewData.description)
 		}
+		// createPackage.name.languages.every( selectedLanguage => {
+		// 	if(createPackage.name.languages.filter( language => selectedLanguage.lang===language.lang).length>1){
+		// 		createPackage.duplicateLanguage=true
+		// 		return false
+		// 	}else{
+		// 		return true
+		// 	}
+		// })
+		// No need to check next field if there is one with duplicate 
+		// if (!createPackage.duplicateLanguage) {
+		// 	createPackage.description.languages.every( selectedLanguage => {
+		// 		if (selectedLanguage.text!=='') {
+		// 			console.log(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length)
+		// 			if(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length>1){
+		// 				createPackage.duplicateLanguage=true
+		// 				return false
+		// 			}else{
+		// 				return true
+		// 			}
+		// 		}
+		// 		else{
+		// 			return true
+		// 		}
+				
+		// 	})
+		// }
 		$timeout(() => {
 			createPackage.duplicateLanguage=false
 		},5000)
 		return !createPackage.duplicateLanguage
+	}
+
+	createPackage.buildPackageData = () => {
+		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
