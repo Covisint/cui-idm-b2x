@@ -31,6 +31,44 @@ angular.module('administration')
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
+	const getCategoryDetails = () => {
+		API.cui.getCategories()
+		.then( res => {
+			manageAllApplications.categories=res
+			getCounts()
+		})
+		.fail( err => {
+			console.error(err)
+			APIError.onFor(scopeName+'categories')
+		})
+	}
+
+	const getCounts = () => {
+		// Need seperate call to show plain count without filters of the page
+		API.cui.countPackages()
+		.then(count => {
+			manageAllApplications.popupCount=count
+		})
+		.fail(err => {
+			console.error(err)
+		})
+		manageAllApplications.categories.forEach( (category,index) => {
+			API.cui.countPackages({qs:[['category',$filter('cuiI18n')(category.name)]]})
+			.then(count => {
+				category.count=count
+				if (index===manageAllApplications.categories.length-1) {
+					$scope.$digest
+				}
+			})
+			.fail(err => {
+				console.error(err)
+				if (index===manageAllApplications.categories.length-1) {
+					$scope.$digest
+				}
+			})
+		}) 
+	}
+
 	const onLoad = (updating) => {	
 		Loader.onFor(scopeName+'count')
 		if (updating) {
@@ -47,22 +85,28 @@ angular.module('administration')
 		})
 		.then(res => {
 			manageAllApplications.packages = res
-			res.forEach((packageData, index) => {
-				API.cui.getPackageServices({packageId:packageData.id})
-				.then(services => {
-					packageData.services=services
-					if (index === res.length-1) {
-						DataStorage.setType('manageAllApplications', manageAllApplications.packages)
-						finishLoading(updating)
-					};
+			if (res && res.length!==0) {
+				res.forEach((packageData, index) => {
+					API.cui.getPackageServices({packageId:packageData.id})
+					.then(services => {
+						packageData.services=services
+						if (index === res.length-1) {
+							DataStorage.setType('manageAllApplications', manageAllApplications.packages)
+							finishLoading(updating)
+						};
+					})
+					.fail(err=> {
+						APIError.onFor(scopeName + 'services')
+						if (index === res.length-1) {
+							finishLoading(updating)
+						};
+					})
 				})
-				.fail(err=> {
-					APIError.onFor(scopeName + 'services')
-					if (index === res.length-1) {
-						finishLoading(updating)
-					};
-				})
-			})
+			}
+			else{
+				DataStorage.setType('manageAllApplications', manageAllApplications.packages)
+				finishLoading(updating)
+			}		
 		})
 		.fail(err => {
 			APIError.onFor(scopeName +'packages')
@@ -77,6 +121,7 @@ angular.module('administration')
 	if (DataStorage.getType('manageAllApplications')) {
 		manageAllApplications.packages=DataStorage.getType('manageAllApplications')
 		resetExpandedProperty()
+		getCategoryDetails()
 		onLoad(false)
 	}else{
 		onLoad(true)
@@ -91,23 +136,23 @@ angular.module('administration')
     }
 
     manageAllApplications.updateSearchByName = () => {
-        manageAllApplications.updateSearch('name',manageAllApplications.search['service.name'])
+        manageAllApplications.updateSearch('name',manageAllApplications.search['name'])
     }
     manageAllApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {
             case 'alphabetic':
-                switchBetween('sortBy', '+service.name', '-service.name')
+                switchBetween('sortBy', '+creation', '-service.name')
                 break
             case 'date':
-                switchBetween('sortBy', '+grant.instant', '-grant.instant')
+                switchBetween('sortBy', '+creation', '-creation')
                 break
             case 'status':
                 manageAllApplications.search.page = 1
-                manageAllApplications.search['grant.status'] = updateValue
+                manageAllApplications.search['creation'] = updateValue
                 break
             case 'category':
                 manageAllApplications.search.page = 1
-                manageAllApplications.search['service.category'] = $filter('cuiI18n')(updateValue)
+                manageAllApplications.search['category'] = $filter('cuiI18n')(updateValue)
                 break
             case 'name':
                 manageAllApplications.search.page = 1
@@ -145,7 +190,6 @@ angular.module('administration')
 	manageAllApplications.toggleEditService = (serviceData,packageData) => {
 		manageAllApplications.tempServiceData={}
 		angular.copy(serviceData,manageAllApplications.tempServiceData)
-		console.log(manageAllApplications.tempServiceData)	
 		serviceData.editService=!serviceData.editService
 		packageData.services.forEach( service => {
 			if (service.id!==serviceData.id) {
