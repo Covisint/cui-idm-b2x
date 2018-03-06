@@ -22,7 +22,7 @@ angular.module('administration',[])
             abstract: true
         })
         .state('administration.applications.manageApplications', {
-            url: '?page&pageSize&service.category',
+            url: '?page&pageSize&category&name&sortBy',
             templateUrl: templateBase + 'applications/allApplications-manage.html',
             controller: returnCtrlAs('manageAllApplications'),
             access:loginRequired
