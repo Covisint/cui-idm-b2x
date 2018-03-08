@@ -1,3 +1,18 @@
+// Used to add multiple languages for a field
+/* ****** inputs *********
+ scope.name={ 
+			languages:[],
+			label:'cui-name',
+			required:true
+		}
+form -- actual form name in which the field is in for validation
+label-class -- for different styling of the field label
+name -- input name for validation
+// ******** usage ******
+/*
+<multi-language-field options="scope.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
+*/
+
 angular.module('common')
 .directive('multiLanguageField',(Base) => {
 	return{
