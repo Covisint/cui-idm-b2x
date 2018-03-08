@@ -14,6 +14,11 @@ angular.module('administration')
 			{lang:"en",text:"roles"}
 		]
 	}
+
+
+	createPackage.test1 = () => {
+			console.log("in controller")
+				}
 	// createPackage.packageData={
 	// 	displayable:true,
 	// 	requiredApprovals:['organizationAdmin']
@@ -146,7 +151,7 @@ angular.module('administration')
 		return !createPackage.duplicateLanguage
 	}
 
-	createPackage.buildPackageData = () => {
+	createPackage.createPackage = () => {
 		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------

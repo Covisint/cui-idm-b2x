@@ -1,8 +1,7 @@
 <ng-form name="summary" novalidate>
-  
-  <!-- <div ng-include="'app/modules/administration/partials/multi-language-field.html'" onload="name='name';form=summary;scope=createPackage;required=true;label='name'"></div> -->
 
   <multi-language-field options="createPackage.packageViewData.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
+
   <multi-language-field options="createPackage.packageViewData.description" name="'description'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
   
   <div class="cui-wizard__field-row">
@@ -11,22 +10,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'is-requestable' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-requestable-n" ng-value="false" ng-model="createPackage.packageViewData.requestable" required />
-              <label class="cui-radio__label" for="radio-choice-requestable-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-requestable-y" ng-value="true" ng-model="createPackage.packageViewData.requestable" required />
-              <label class="cui-radio__label" for="radio-choice-requestable-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.requestable" id="radio-choice-requestable">
+        </radio-group>
       </div>
       <div>{{'is-requestable-desc' | translate}}</div>
     </div>
@@ -35,22 +20,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'is-grantable' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-grantable-n" ng-value="false" ng-model="createPackage.packageViewData.grantable" required />
-              <label class="cui-radio__label" for="radio-choice-grantable-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-grantable-y" ng-value="true" ng-model="createPackage.packageViewData.grantable" required />
-              <label class="cui-radio__label" for="radio-choice-grantable-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.grantable" id="radio-choice-grantable">
+        </radio-group>
       </div>
       <div>{{'is-grantable-desc' | translate}}</div>
     </div>
@@ -63,22 +34,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'require' | translate}} {{'request-reason' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-require-n" ng-value="false" ng-model="createPackage.packageViewData.requestReasonRequired" required />
-              <label class="cui-radio__label" for="radio-choice-require-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-require-y" ng-value="true" ng-model="createPackage.packageViewData.requestReasonRequired" required />
-              <label class="cui-radio__label" for="radio-choice-require-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.requestReasonRequired" id="radio-choice-require">
+        </radio-group>
       </div>
       <div>{{'require-reason-desc' | translate}}</div>
     </div>
@@ -87,22 +44,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'is-displayable' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-displayable-n" ng-value="false" ng-model="createPackage.packageViewData.displayable" required />
-              <label class="cui-radio__label" for="radio-choice-displayable-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-displayable-y" ng-value="true" ng-model="createPackage.packageViewData.displayable" required />
-              <label class="cui-radio__label" for="radio-choice-displayable-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.displayable" id="radio-choice-displayable">
+        </radio-group>
       </div>
       <div>{{'is-displayable-desc' | translate}}</div>
     </div>
@@ -115,22 +58,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'require' | translate}} {{'company-admin' | translate}} {{'approval' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-company-admin-n" ng-value="false" ng-model="createPackage.packageViewData.requireCompanyAdmin" required />
-              <label class="cui-radio__label" for="radio-choice-company-admin-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-company-admin-y" ng-value="true" ng-model="createPackage.packageViewData.requireCompanyAdmin" required />
-              <label class="cui-radio__label" for="radio-choice-company-admin-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.requireCompanyAdmin" id="radio-choice-company-admin">
+        </radio-group>
       </div>
       <div>{{'company-admin-desc' | translate}}</div>
     </div>
@@ -139,22 +68,8 @@
         <div class="cui-flex-table__left">
           <span class="cui-flex-table__title">{{'require' | translate}} {{'application-admin' | translate}} {{'approval' | translate}}</span>
         </div>
-        <fieldset class="cui-flex-table__fieldset">
-          <div class="cui-flex-table__right cui-flex-table__multi">
-            <div class="cui-radio cui-radio--deny">
-              <input class="cui-radio__input cui-radio--deny" type="radio" id="radio-choice-app-admin-n" ng-value="false" ng-model="createPackage.packageViewData.requireAppAdmin" required />
-              <label class="cui-radio__label" for="radio-choice-app-admin-n">
-                <div class="cui-radio__outer-button"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-            <div class="cui-radio cui-radio--approve">
-              <input class="cui-radio__input" type="radio" id="radio-choice-app-admin-y" ng-value="true" ng-model="createPackage.packageViewData.requireAppAdmin" required />
-              <label class="cui-radio__label" for="radio-choice-app-admin-y">
-                <div class="cui-radio__outer-button" ng-click="expand()"><div class="cui-radio__inner-button"></div></div>
-              </label>
-            </div>
-          </div>
-        </fieldset>
+        <radio-group model="createPackage.packageViewData.requireAppAdmin" id="radio-choice-app-admin">
+        </radio-group>
       </div>
       <div>{{'application-admin-desc' | translate}}</div>
     </div>
@@ -169,40 +84,10 @@
       <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="createPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
     </div>
   </div>
-
-  <!-- <div class="cui-wizard__field-row">
-    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'require' | translate}} {{'request-reason' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="createPackage.packageViewData.requestReasonRequired" name="requestReasonRequired" id="requestReasonRequired" type="checkbox" />
-            <label class="cui-switch__label" for="requestReasonRequired">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'require-reason-desc' | translate}}</label>
-    </div>
-    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'is-displayable' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="createPackage.packageViewData.displayable" name="displayable" id="displayable" type="checkbox" />
-            <label class="cui-switch__label" for="displayable">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'is-displayable-desc' | translate}}</label>
-    </div>
-
-  </div> -->
   <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="createPackage.duplicateLanguage">
     <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
   </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear">
-    <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages()&&nextWithErrorChecking(summary);createPackage.buildPackageData()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages()&&nextWithErrorChecking(summary);createPackage.createPackage()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-save' | translate}} {{'cui-and' | translate}} {{'cui-continue' | translate}}</button>
   </div>
 </ng-form>
