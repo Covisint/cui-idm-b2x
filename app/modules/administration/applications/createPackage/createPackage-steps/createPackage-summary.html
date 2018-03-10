@@ -78,16 +78,16 @@
 
   <div class="cui-wizard__field-row" >
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <!-- <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="createPackage.addClaimsFlag=true">{{'add-claims' |translate}}</button> -->
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="createPackage.addClaimsFlag=true">{{'add-claims' |translate}}</button>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
       <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="createPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
     </div>
   </div>
-  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="createPackage.duplicateLanguage">
+  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="createPackage.packageViewData.duplicateLanguage">
     <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
   </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear">
-    <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages()&&nextWithErrorChecking(summary);createPackage.createPackage()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-save' | translate}} {{'cui-and' | translate}} {{'cui-continue' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages(createPackage.packageViewData)&&nextWithErrorChecking(summary);createPackage.next()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
   </div>
 </ng-form>
