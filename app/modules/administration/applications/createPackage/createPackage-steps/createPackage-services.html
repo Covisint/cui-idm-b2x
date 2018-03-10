@@ -1,19 +1,23 @@
 
 
 <!-- List services -->
-<div class="cui-flex-table__th cui-flex-table__th--c" style="font-weight:bold">
+<div class="cui-action cui-action__no-padding">
+  <span class="cui-action__title">{{'cui-create' | translate}} {{'cui-service' | translate}}</span>
+</div>
+
+<div class="cui-flex-table__th cui-flex-table__th--c" style="font-weight:bold" ng-if="createPackage.services &&createPackage.services.length!==0">
   <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
   <div class="cui-flex-table__avatar-col"></div>
   <div class="cui-flex-table__mobile-stack">
     <div class="cui-flex-table__left">{{'cui-name'|translate}}</div>
     <div class="cui-flex-table__middle">{{'cui-category' |translate}}</div>
-    <div  class="cui-flex-table__right">{{'cui-delete'|translate}}</div>
+    <div  class="cui-flex-table__right">{{'action'|translate}}</div>
   </div>
 </div>
-<cui-table-row ng-repeat="service in createPackage.packageData.services">
+<cui-table-row ng-repeat="service in createPackage.services track by service.id">
   <li class="cui-flex-table__tr cui-flex-table__tr--c">
     <div class="cui-flex-table__avatar-col" ng-click="">
-      <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="createPackage.showServiceForm(service)">
+      <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="createPackage.toggleEditServiceForm(service)">
           <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#edit" ></use>
       </svg>
     </div>
@@ -30,15 +34,27 @@
       <div class="cui-flex-table__middle">
         <span class="">{{service.category|cuiI18n}}</span>
       </div>
-      <div class="cui-flex-table__right">
-        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      <div class="cui-flex-table__right" ng-if="$index===0" ng-click="createPackage.updateAddServiceForm()">
+        <cui-icon cui-svg-icon="cui:new" svg-class="cui-action__icon  cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </div>
+      <div class="cui-flex-table__right" ng-if="$index!==0" ng-click="createPackage.deleteService($index)">
+        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
       </div>
     </div>
   </li>
+  <div class="cui-form__body cui-form__body--alt" ng-if="service.editService">
+    
+    <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=createPackage; serviceData=createPackage.serviceViewData; submitLabel='cui-update'"></ng-include>
+  </div>
 </cui-table-row>
 
-  <div class="cui-form__body cui-form__body--alt" ng-if="createPackage.showServiceFormFlag">
-    <div class="cui-form__title">{{'cui-edit' | translate}} {{'cui-service' | translate}} -&gt; {{createPackage.tempServiceName | cuiI18n}}</div>
-    <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=createPackage"></ng-include>
+  <div class="cui-form__body cui-form__body--alt" ng-if="createPackage.addServiceForm">
+    
+    <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=createPackage; serviceData=createPackage.serviceViewData; submitLabel='cui-add'"></ng-include>
+  </div>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear" style="margin-top:">
+    <button type="button" class="cui-wizard__previous"  ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="" ng-class="(createPackage.services.length===0)? 'cui-wizard__next--error' : ''">{{'cui-submit' | translate}}</button>
   </div>
   

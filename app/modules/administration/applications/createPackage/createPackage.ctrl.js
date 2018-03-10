@@ -7,23 +7,8 @@ angular.module('administration')
 	createPackage.claims=[]
 	createPackage.tempClaim={}
 	createPackage.tempClaimValue={}
-	createPackage.serviceData = {
-		categories : [
-			{lang:"en",text:"administration"},
-			{lang:"en",text:"cui-applications"},
-			{lang:"en",text:"roles"}
-		]
-	}
-
-
-	createPackage.test1 = () => {
-			console.log("in controller")
-				}
-	// createPackage.packageData={
-	// 	displayable:true,
-	// 	requiredApprovals:['organizationAdmin']
-	// }
-	// createPackage.requireCompanyAdmin=true;
+	createPackage.services =[]
+	createPackage.addServiceForm=true
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 	const initializeMultiLanguageFields = () => {
@@ -36,8 +21,9 @@ angular.module('administration')
 			languages:[],
 			label:'description',
 			required:false
-		}
-		
+		}		
+		createPackage.serviceViewData.name={}
+		createPackage.serviceViewData.description={}
 	}
 
 	const initializeRadioOptions = () => {
@@ -49,6 +35,7 @@ angular.module('administration')
 	        requireCompanyAdmin:true,
 			requireAppAdmin:false
 		}
+		createPackage.serviceViewData ={}
 	}
 
 	const finishLoading = (updating) => {
@@ -58,17 +45,6 @@ angular.module('administration')
 		$scope.$digest()
 	}
 
-	// const updateApprovalFlags = () => {
-	// 	createPackage.packageData.requiredApprovals.forEach(admin => {
-	// 		if (admin==='organizationAdmin') {
-	// 			createPackage.requireCompanyAdmin=true
-	// 		}
-	// 		else{
-	// 			createPackage.requireAppAdmin=true
-	// 		}
-	// 	})
-	// }
-
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
@@ -77,6 +53,7 @@ angular.module('administration')
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
 	initializeRadioOptions()
 	initializeMultiLanguageFields()	
+	EditAndCreateApps.initializeServiceTemplateData(createPackage)
 	if (DataStorage.getType('createPackage')) {
 		createPackage.packageData=DataStorage.getType('createPackage')
 		updateApprovalFlags()
@@ -93,66 +70,85 @@ angular.module('administration')
 		claim.claimValues.push(createPackage.tempClaimValue)
 	}
 
-	createPackage.showServiceForm = (service) => {
-		createPackage.serviceData.service={}
-		if (service) {
-			createPackage.tempServiceName=service.name
-			createPackage.serviceData.edit=true;
-			angular.copy(service,createPackage.serviceData.service)
-		};		
-		createPackage.showServiceFormFlag=true;
+	createPackage.toggleEditServiceForm = (selectedService) => {
+		selectedService.editService=!selectedService.editService
+		createPackage.serviceViewData = EditAndCreateApps.getDataForServiceTemplate(selectedService)
+		createPackage.services.forEach( service => {
+			if (service.id!==selectedService.id) {
+				service.editService=false
+			}
+		})	
+		createPackage.addServiceForm=false;
 	}
 
 	createPackage.submit = () => {
 
 	}
+	// On clicking edit service Cancel
 	createPackage.cancelEdit = () => {
-		createPackage.showServiceFormFlag=false;
+		if (createPackage.services.length!==0) {
+			createPackage.addServiceForm=false;
+		};		
 	}
-
+	// On clicking edit service Add/Update
 	createPackage.saveService = () => {
-
-	}
-
-	createPackage.checkDuplicateLanguages = () => {
-		createPackage.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(createPackage.packageViewData.name)
-		if (!createPackage.duplicateLanguage) {
-			createPackage.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(createPackage.packageViewData.description)
+		if(createPackage.checkDuplicateLanguages(createPackage.serviceViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedService=EditAndCreateApps.buildServiceData(createPackage.serviceViewData)
+			selectedService.editService=false
+			if (createPackage.serviceViewData.editService ) {
+				selectedService.id=createPackage.serviceViewData.id
+				 createPackage.services.forEach(service => {
+				 	if (service.id===selectedService.id) {
+				 		angular.copy(selectedService,service)
+				 	};
+				 })
+			}else{
+				createPackage.addServiceForm=false
+				selectedService.id=createPackage.services.length
+				createPackage.services.push(selectedService)
+			}
+			
 		}
-		// createPackage.name.languages.every( selectedLanguage => {
-		// 	if(createPackage.name.languages.filter( language => selectedLanguage.lang===language.lang).length>1){
-		// 		createPackage.duplicateLanguage=true
-		// 		return false
-		// 	}else{
-		// 		return true
-		// 	}
-		// })
-		// No need to check next field if there is one with duplicate 
-		// if (!createPackage.duplicateLanguage) {
-		// 	createPackage.description.languages.every( selectedLanguage => {
-		// 		if (selectedLanguage.text!=='') {
-		// 			console.log(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length)
-		// 			if(createPackage.description.languages.filter( language => selectedLanguage.lang===language.lang&&language.text!=='').length>1){
-		// 				createPackage.duplicateLanguage=true
-		// 				return false
-		// 			}else{
-		// 				return true
-		// 			}
-		// 		}
-		// 		else{
-		// 			return true
-		// 		}
-				
-		// 	})
-		// }
-		$timeout(() => {
-			createPackage.duplicateLanguage=false
-		},5000)
-		return !createPackage.duplicateLanguage
 	}
 
-	createPackage.createPackage = () => {
+	createPackage.checkDuplicateLanguages = (data) => {
+		data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.name)
+		if (!data.duplicateLanguage) {
+			data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.description)
+		}
+		$timeout(() => {
+			data.duplicateLanguage=false
+		},5000)
+		return !data.duplicateLanguage
+	}
+
+	createPackage.next = () => {
+		angular.copy(createPackage.packageViewData.name, createPackage.serviceViewData.name)
+		angular.copy(createPackage.packageViewData.description, createPackage.serviceViewData.description)
 		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
+	}
+
+	// called when trying to add new service
+	// reset the object whcih is being sent to service form template
+	createPackage.updateAddServiceForm = () => {
+		createPackage.addServiceForm=true
+		createPackage.serviceViewData={}
+		createPackage.serviceViewData.name={ 
+			languages:[],
+			label:'cui-name',
+			required:true
+		}
+		createPackage.serviceViewData.description={ 
+			languages:[],
+			label:'description',
+			required:false
+		}
+		createPackage.services.forEach( service => service.editService=false)
+	}
+
+	createPackage.deleteService =  (index) => {
+		createPackage.services.splice(index,1)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
