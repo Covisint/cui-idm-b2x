@@ -152,13 +152,13 @@
 			            	</div>
 			            	<div class="cui-flex-table__right">
 			            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
-			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 			            		</a>
 			            	</div>
 			            </div>		            
 			            </li>
 			            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
-			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications" ></ng-include>
+			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
 			        	</div>
 		        	</div>
                 </div>
