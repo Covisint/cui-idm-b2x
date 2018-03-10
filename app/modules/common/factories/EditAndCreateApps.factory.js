@@ -1,18 +1,14 @@
 angular.module('common')
 .factory('EditAndCreateApps', function(API, APIError, Loader, $filter, $q, $timeout,$window){
 	const EditAndCreateApps= {
-
-		createService: (service) => {
-			return API.cui.createService({data:service})
-		},
-
-		updateService: (service) => {
-			// API doesnot exist yet 2/23/2018
-			// return API.cui.updateService({data:service})
-		},
-
-		deleteService: (service) => {
-
+		initializeServiceTemplateData: (scope) => {
+			scope.serviceData = {
+				categories : [
+					{lang:"en",text:"Administration"},
+					{lang:"en",text:"Applications"},
+					{lang:"en",text:"Roles"}
+				]
+			}
 		},
 
 		handleEditAndNewService: (service, EditFlag) => {
@@ -78,6 +74,66 @@ angular.module('common')
 			};
 			console.log(data)
 			return data
+		},
+
+		buildServiceData: (viewData) => {
+			// assign access options and default Data
+			let data={
+				urls: [{type:'default',value:viewData.targetUrl}],
+		        category: viewData.category,
+		       	remoteAppId:viewData.remoteAppId,
+		        mobileServiceId:viewData.mobileServiceId
+			}
+			// setup internationalized name and description Data
+			data.name=[{
+				lang:'en',
+				text:viewData.name.english
+			}]
+			data.name=data.name.concat(viewData.name.languages)
+			// Description is not a required field so need to check
+			data.description=[]
+			if (viewData.description.english) {
+				data.description.push({
+					lang:'en',
+					text:viewData.description.english
+				})
+			};
+			data.description=data.description.concat(viewData.description.languages)
+
+			console.log(data)
+			return data
+		},
+
+		// Manipulates the service Data to display properly in service Template form
+		getDataForServiceTemplate: (service) => {
+			let serviceViewData={}
+			angular.copy(service,serviceViewData)
+			serviceViewData.name={ 
+				english:serviceViewData.name.splice(0,1)[0].text,
+				languages:serviceViewData.name,
+				label:'cui-name',
+				required:true
+			}
+			if (serviceViewData.description&&serviceViewData.description.length>0) {
+				serviceViewData.description={
+					english: serviceViewData.description.splice(0,1)[0].text,
+					languages:serviceViewData.description || [],
+					label:'description',
+					required:false
+				}
+			}
+			else{
+				serviceViewData.description={ 
+					languages:[],
+					label:'description',
+					required:false
+				}
+			}
+			
+			
+
+			serviceViewData.targetUrl=service.urls&&service.urls[0].value
+			return serviceViewData
 		}
 	}
 
