@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('manageAllApplicationsCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage){
+.controller('manageAllApplicationsCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,EditAndCreateApps){
 	const manageAllApplications=this
 	const scopeName="manageAllApplications."
 	manageAllApplications.search= {}
@@ -113,7 +113,7 @@ angular.module('administration')
 			finishLoading(updating)
 		})
 	}
-
+	EditAndCreateApps.initializeServiceTemplateData(manageAllApplications)
 	manageAllApplications.search = Object.assign({}, $stateParams)
 	manageAllApplications.search.pageSize = manageAllApplications.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
 	manageAllApplications.search.page= manageAllApplications.search.page || 1
@@ -188,8 +188,7 @@ angular.module('administration')
 	}
 
 	manageAllApplications.toggleEditService = (serviceData,packageData) => {
-		manageAllApplications.tempServiceData={}
-		angular.copy(serviceData,manageAllApplications.tempServiceData)
+		manageAllApplications.tempServiceData = EditAndCreateApps.getDataForServiceTemplate(serviceData)
 		serviceData.editService=!serviceData.editService
 		packageData.services.forEach( service => {
 			if (service.id!==serviceData.id) {
