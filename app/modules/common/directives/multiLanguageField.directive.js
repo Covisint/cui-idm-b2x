@@ -51,7 +51,7 @@ angular.module('common')
 			    <button class="cui-button" ng-click="options.languages.push({text:'',lang:''})">{{'cui-add' |translate}} {{'more-languages' |translate}}</button>
 			</div>
 		</div>
-		<div class="cui-wizard__field-row" ng-repeat="language in options.languages">
+		<div class="cui-wizard__field-row" ng-repeat="language in options.languages track by $index">
 			<div class="cui-wizard__field-container cui-wizard__field-container--half">
 			  <div class="cui-error" ng-messages="form[name+$index].$error" ng-if="form[name+$index].$dirty">
 			    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
