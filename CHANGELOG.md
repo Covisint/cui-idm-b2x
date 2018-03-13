@@ -1,5 +1,31 @@
 # Changelog for the IDM B2X Accelerator
 
+## [v1.3.1] - 
+
+### Changed - In Progress
+* New main menu called Administration
+* Manage apps page includes create/delete/update a package and service
+
+## [v1.3.0] - 2017-11-02
+
+### Changed
+* cui-i18n v1.0.39
+* Included Social Login functionality in user profile
+* View Organization details when from org-hierarchy and search org page
+* Approval(user/app) flow changes wrt to review page
+* Global search for Org and users
+* New design for Org hierarchy - expandable and collapsable
+* View Roles/History in user profile
+* Add/remove apps to org
+* Suspend/unsuspend/unlock user
+* Suspend/unsuspend org
+* Suspend/unsuspend app from user and org
+* Grant new app to org and user
+* Redesign of my applications and included Manage apps 
+
+
+
+
 ## [v1.2.4] - 2017-2-28
 
 ### Changed
