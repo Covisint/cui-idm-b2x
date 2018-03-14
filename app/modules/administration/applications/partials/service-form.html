@@ -4,22 +4,7 @@
   <multi-language-field options="serviceData.name" name="'name'" form="service" label-class=""></multi-language-field>
 
   <multi-language-field options="serviceData.description" name="'description'" form="service" label-class=""></multi-language-field>
-  <!-- <div class="cui-wizard__field-row">
 
-    <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'cui-name' | translate}}</label>
-      <div class="cui-error" ng-messages="service.name.$error" ng-if="service.name.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
-      </div>
-      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="serviceData.name[0].text"/>
-    </div> -->
-
-    <!-- Description -->
-    <!-- <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'description' | translate}}</label>
-      <input type="text" ng-model="serviceData.description[0].text" name="description" class="cui-input"/>
-    </div>
-  </div> -->
   <!-- Second row -->
   <div class="cui-wizard__field-row">
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
@@ -32,7 +17,7 @@
 
     <div class="cui-wizard__field-container cui-wizard__field-container--half">
       <label>{{'cui-category' | translate}}</label>
-        <cui-dropdown ng-model="serviceData.category[0].text" class="cui-dropdown" return-value="object.text" display-value="object.text" options="scope.serviceData.categories"></cui-dropdown>
+        <cui-dropdown ng-model="serviceData.category" class="cui-dropdown" return-value="object.text" display-value="object.text" options="scope.serviceData.categories"></cui-dropdown>
     </div>
   </div>
   <!-- Third row -->

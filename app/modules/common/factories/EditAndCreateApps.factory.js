@@ -72,7 +72,6 @@ angular.module('common')
 			if (viewData.requireAppAdmin) {
 				data.requiredApprovals.push('applicationAdmin')
 			};
-			console.log(data)
 			return data
 		},
 
@@ -80,7 +79,7 @@ angular.module('common')
 			// assign access options and default Data
 			let data={
 				urls: [{type:'default',value:viewData.targetUrl}],
-		        category: viewData.category,
+		        category: [{lang:'en',text:viewData.category}],
 		       	remoteAppId:viewData.remoteAppId,
 		        mobileServiceId:viewData.mobileServiceId
 			}
@@ -130,7 +129,7 @@ angular.module('common')
 				}
 			}
 			
-			
+			serviceViewData.category=service.category&&service.category[0].text
 
 			serviceViewData.targetUrl=service.urls&&service.urls[0].value
 			return serviceViewData
