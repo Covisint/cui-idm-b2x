@@ -38,10 +38,8 @@ angular.module('administration')
 		createPackage.serviceViewData ={}
 	}
 
-	const finishLoading = (updating) => {
-		if (updating) {
-			Loader.offFor(scopeName+'packages')
-		}		
+	const finishSubmitting = () => {
+		Loader.offFor(scopeName+'submitting')		
 		$scope.$digest()
 	}
 
@@ -82,14 +80,52 @@ angular.module('administration')
 	}
 
 	createPackage.submit = () => {
-
+		Loader.onFor(scopeName+'submitting')
+		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
+		// First service will be created from package Data, need to assign few values
+		createPackage.packageSubmitData.category=createPackage.services[0].category
+		createPackage.packageSubmitData.targetUrl= createPackage.services[0].urls[0].value
+		console.log(createPackage.packageSubmitData)
+		API.cui.createPackage({data:createPackage.packageSubmitData})
+		.then(packageresult => {
+			let apiPromises=[]
+			createPackage.services.forEach((service,index) => {
+				// first service will be created when package created we need to update first one
+				if (index!==0) {
+					apiPromises.push(API.cui.createService({data:service}))
+				}
+				else{
+					// once update api ready need to push to promises array
+				}
+			})
+			$q.all(apiPromises)
+			.then(servicesResult => {
+				let qs=[['packageId',packageresult.id]]
+				servicesResult.forEach(service =>qs.push(['serviceId',service.id]))
+				// associate each service to package
+				API.cui.assignService({qs:qs})
+				.then(res => {
+					finishSubmitting()
+				})
+			})
+			
+		})
+		.fail(err => {
+			console.error("Error when creating package", err)
+			APIError.onFor(scopeName+'submitting')
+			finishSubmitting()
+		})
 	}
 	// On clicking edit service Cancel
 	createPackage.cancelEdit = () => {
+		// set add service form to false
 		if (createPackage.services.length!==0) {
 			createPackage.addServiceForm=false;
-		};		
+		}
+		// set editservice flag to false for services
+		createPackage.services.forEach( service => service.editService=false)
 	}
+
 	// On clicking edit service Add/Update
 	createPackage.saveService = () => {
 		if(createPackage.checkDuplicateLanguages(createPackage.serviceViewData)){
@@ -126,7 +162,6 @@ angular.module('administration')
 	createPackage.next = () => {
 		angular.copy(createPackage.packageViewData.name, createPackage.serviceViewData.name)
 		angular.copy(createPackage.packageViewData.description, createPackage.serviceViewData.description)
-		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
 	}
 
 	// called when trying to add new service
