@@ -53,8 +53,12 @@
     <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=createPackage; serviceData=createPackage.serviceViewData; submitLabel='cui-add'"></ng-include>
   </div>
 
-  <div class="cui-wizard__controls cui-wizard__controls--clear" style="margin-top:">
+  <div class="cui-wizard__controls cui-wizard__controls--clear" style="margin-top:1em">
     <button type="button" class="cui-wizard__previous"  ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
-    <button type="button" class="cui-wizard__next" ng-click="" ng-class="(createPackage.services.length===0)? 'cui-wizard__next--error' : ''">{{'cui-submit' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="!base.loader.for['createPackage.submitting']&&createPackage.submit()" ng-class="(createPackage.services.length===0)? 'cui-wizard__next--error' : ''">
+      <span ng-if="!base.apiError.for['createPackage.submitting']&& !base.loader.for['createPackage.submitting']">{{'cui-submit' | translate}}</span>
+      <div ng-if="base.loader.for['createPackage.submitting']" ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      <span ng-if="base.apiError.for['createPackage.submitting']&& !base.loader.for['createPackage.submitting']">{{'cui-error-try-again' | translate}}</span>
+    </button>
   </div>
   
