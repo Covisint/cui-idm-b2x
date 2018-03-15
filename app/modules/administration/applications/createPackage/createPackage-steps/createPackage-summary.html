@@ -1,4 +1,4 @@
-<ng-form name="summary" novalidate>
+<ng-form name="summary" novalidate ng-if="createPackage.step===1">
 
   <multi-language-field options="createPackage.packageViewData.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
 
@@ -78,7 +78,7 @@
 
   <div class="cui-wizard__field-row" >
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="createPackage.addClaimsFlag=true">{{'add-claims' |translate}}</button>
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="createPackage.step=2">{{'add-claims' |translate}}</button>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
       <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="createPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
@@ -91,3 +91,5 @@
     <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages(createPackage.packageViewData)&&nextWithErrorChecking(summary);createPackage.next()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
   </div>
 </ng-form>
+
+<div ng-if="createPackage.step===2" ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>
