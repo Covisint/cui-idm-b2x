@@ -114,14 +114,14 @@
 		        <div class="cui-flex-table__middle">
 		            <span class="">{{package.version |date}}</span>
 		        </div>
-		        <div class="cui-flex-table__right">
-		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+		        <div class="cui-flex-table__right" title="Delete Package">
+		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 		          </div>
 		        </div>
 		    </li>
             </cui-expandable-title>
             <cui-expandable-body class="cui-expandable__body" >
-                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) " style="margin-bottom:1em;">
+                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) && !manageAllApplications.addServiceForm" style="margin-bottom:1em;">
                 	<div class="cui-flex-table__th cui-flex-table__th--c">
 			            <div class="cui-flex-table__avatar-col"></div>
 
@@ -130,8 +130,11 @@
 			                <div class="cui-flex-table__middle">
 			                    {{'cui-category' |translate}}
 					        </div>
-			                <div  class="cui-flex-table__right">
+			                <div  class="cui-flex-table__middle">
 			                    {{'launch' |translate}}
+			                </div>
+			                <div  class="cui-flex-table__right">
+			                    {{'action' |translate}}
 			                </div>
 			            </div>
         			</div>
@@ -150,17 +153,26 @@
 			            	<div class="cui-flex-table__middle">
 			            		<span class="">{{service.category | cuiI18n}}</span>
 			            	</div>
-			            	<div class="cui-flex-table__right">
+			            	<div class="cui-flex-table__middle">
 			            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
 			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
 			            		</a>
 			            	</div>
+			            	<div class="cui-flex-table__right" ng-if="$index===0" ng-click="manageAllApplications.updateAddServiceForm(package)" title="Add Service">
+						        <cui-icon cui-svg-icon="cui:new" svg-class="cui-action__icon  cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+						      </div>
+						      <div class="cui-flex-table__right" ng-if="$index!==0" ng-click="manageAllApplications.deleteService(package,$index)" title="Delete Service">
+						        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+						      </div>
 			            </div>		            
 			            </li>
 			            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
 			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
 			        	</div>
 		        	</div>
+                </div>
+                <div class="cui-expandable__body-pane" ng-if="manageAllApplications.addServiceForm">
+                	<ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
                 </div>
             </cui-expandable-body>
         </cui-expandable1>

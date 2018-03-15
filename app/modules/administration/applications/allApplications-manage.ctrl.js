@@ -189,12 +189,60 @@ angular.module('administration')
 
 	manageAllApplications.toggleEditService = (serviceData,packageData) => {
 		manageAllApplications.tempServiceData = EditAndCreateApps.getDataForServiceTemplate(serviceData)
+		manageAllApplications.selectedServiceData=serviceData
 		serviceData.editService=!serviceData.editService
 		packageData.services.forEach( service => {
 			if (service.id!==serviceData.id) {
 				service.editService=false
 			}
 		})
+	}
+
+	manageAllApplications.cancelEdit = () => {
+		if (manageAllApplications.addServiceForm) {
+			manageAllApplications.addServiceForm=false
+		}else{
+			manageAllApplications.selectedServiceData.editService=false
+		}
+		
+	}
+
+	manageAllApplications.saveService = () => {
+		// ToDo-- Actual API call have to be made to update service once API is ready
+		if(EditAndCreateApps.checkDuplicateLanguagesForServiceForm(manageAllApplications.tempServiceData)){
+			let data=EditAndCreateApps.buildServiceData(manageAllApplications.tempServiceData)
+			if (manageAllApplications.addServiceForm) {
+				manageAllApplications.selectedPackageData.services.push(data)
+				manageAllApplications.addServiceForm=false
+			}else{
+				angular.copy(data,manageAllApplications.selectedServiceData)
+				manageAllApplications.selectedServiceData.editService=false
+			}
+		}
+	}
+
+	// called when trying to add new service
+	// reset the object whcih is being sent to service form template
+	manageAllApplications.updateAddServiceForm = (packageData) => {
+		manageAllApplications.addServiceForm=true
+		manageAllApplications.tempServiceData={}
+		// need package details when adding service
+		manageAllApplications.selectedPackageData=packageData
+		manageAllApplications.tempServiceData.name={ 
+			languages:[],
+			label:'cui-name',
+			required:true
+		}
+		manageAllApplications.tempServiceData.description={ 
+			languages:[],
+			label:'description',
+			required:false
+		}
+		packageData.services.forEach( service => service.editService=false)
+	}
+
+	manageAllApplications.deleteService =  (packageData,index) => {
+		packageData.services.splice(index,1)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
