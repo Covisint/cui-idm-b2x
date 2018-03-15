@@ -9,6 +9,8 @@ angular.module('administration')
 	createPackage.tempClaimValue={}
 	createPackage.services =[]
 	createPackage.addServiceForm=true
+	createPackage.addClaimsForm =true
+	createPackage.step=1
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 	const initializeMultiLanguageFields = () => {
@@ -22,8 +24,22 @@ angular.module('administration')
 			label:'description',
 			required:false
 		}		
+		createPackage.serviceViewData ={}
 		createPackage.serviceViewData.name={}
 		createPackage.serviceViewData.description={}
+
+		createPackage.claimViewData={}
+		createPackage.claimViewData.name={ 
+			languages:[],
+			label:'cui-name',
+			required:true
+		}
+		createPackage.claimViewData.description={ 
+			languages:[],
+			label:'description',
+			required:true
+		}
+		createPackage.claimViewData.indicator='many'
 	}
 
 	const initializeRadioOptions = () => {
@@ -35,7 +51,6 @@ angular.module('administration')
 	        requireCompanyAdmin:true,
 			requireAppAdmin:false
 		}
-		createPackage.serviceViewData ={}
 	}
 
 	const finishSubmitting = () => {
