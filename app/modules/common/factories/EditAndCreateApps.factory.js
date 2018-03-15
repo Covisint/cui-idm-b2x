@@ -20,6 +20,17 @@ angular.module('common')
 			}
 		},
 
+		checkDuplicateLanguagesForServiceForm: (data) => {
+			data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.name)
+			if (!data.duplicateLanguage) {
+				data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.description)
+			}
+			$timeout(() => {
+				data.duplicateLanguage=false
+			},5000)
+			return !data.duplicateLanguage
+		},
+
 		// Check for duplicate language selection in adding multiple languages to a field
 		checkDuplicateLanguages: (field) => {
 			let duplicateLanguage=false

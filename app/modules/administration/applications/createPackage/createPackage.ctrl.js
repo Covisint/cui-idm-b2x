@@ -128,7 +128,7 @@ angular.module('administration')
 
 	// On clicking edit service Add/Update
 	createPackage.saveService = () => {
-		if(createPackage.checkDuplicateLanguages(createPackage.serviceViewData)){
+		if(EditAndCreateApps.checkDuplicateLanguagesForServiceForm(createPackage.serviceViewData)){
 			// toggleServiceFormFlags(editFlag)
 			let selectedService=EditAndCreateApps.buildServiceData(createPackage.serviceViewData)
 			selectedService.editService=false
@@ -149,14 +149,7 @@ angular.module('administration')
 	}
 
 	createPackage.checkDuplicateLanguages = (data) => {
-		data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.name)
-		if (!data.duplicateLanguage) {
-			data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.description)
-		}
-		$timeout(() => {
-			data.duplicateLanguage=false
-		},5000)
-		return !data.duplicateLanguage
+		return EditAndCreateApps.checkDuplicateLanguagesForServiceForm(data)
 	}
 
 	createPackage.next = () => {
