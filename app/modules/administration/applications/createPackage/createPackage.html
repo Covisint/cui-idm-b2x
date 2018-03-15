@@ -15,23 +15,33 @@
       <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
 
       <ng-form name="createPackageForm" novalidate>
-        <step step-title="{{'app-summary' | translate}}" icon="cui:board-edit">
-          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-summary.html'"></div>
-        </step>
+          <step step-title="{{'app-summary' | translate}}" icon="cui:board-edit">
+            <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-summary.html'"></div>
+          </step>
 
-<!--         <step step-title="{{'n-phase' | translate}}" icon="cui:game-2">
-          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-n-phase.html'"></div>
-        </step> -->
-
-        <step step-title="{{'claims' | translate}}" icon="cui:login" ng-if="createPackage.addClaimsFlag">
-          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>
-        </step>
-
-        <step step-title="{{'services' | translate}}" icon="cui:applications">
-          <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-services.html'"></div>
-        </step>
+          <step step-title="{{'services' | translate}}" icon="cui:applications">
+            <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-services.html'"></div>
+          </step>
       </ng-form>
     </cui-wizard>
+   <!--  <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100"  dirty-validation ng-if="createPackage.addClaimsFlag">
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+
+      <ng-form name="createPackageForm" novalidate>
+          <step step-title="{{'app-summary' | translate}}" icon="cui:board-edit">
+            <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-summary.html'"></div>
+          </step>
+
+          <step step-title="{{'claims' | translate}}" icon="cui:login">
+            <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>
+          </step>
+
+          <step step-title="{{'services' | translate}}" icon="cui:applications">
+            <div ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-services.html'"></div>
+          </step>
+      </ng-form>
+    </cui-wizard> -->
+
   </div>
 </div>
 </div>
