@@ -12,7 +12,10 @@
       <div class="cui-error" ng-messages="service.targetURL.$error" ng-if="service.targetURL.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="targetURL" class="cui-input" ng-required="true" ng-model="serviceData.targetUrl"/>
+      <div class="cui-error" ng-if="service.targetURL.$error.url && service.targetURL.$dirty">
+        <div class="cui-error__message">{{'invalid-url' | translate}}</div>
+      </div>
+      <input type="text" name="targetURL" class="cui-input" ng-required="true" ng-model="serviceData.targetUrl" custom-error="scope.customErrors.url"/>
     </div>
 
     <div class="cui-wizard__field-container cui-wizard__field-container--half">

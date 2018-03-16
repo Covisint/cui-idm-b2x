@@ -194,4 +194,20 @@ angular.module('administration')
 		createPackage.services.splice(index,1)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
+
+// ERROR HANDLING FUNCTIONS START-------------------------------------------------------------------
+	createPackage.customErrors = {
+        url: {
+            url: function(){
+                var URL_REGEXP = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+                if (createPackage.serviceViewData.targetUrl) {
+                    return URL_REGEXP.test(createPackage.serviceViewData.targetUrl)
+                }else{
+                    return true;
+                }
+            }
+        }
+    }
+
+// ERROR HANDLING FUNCTIONS END-------------------------------------------------------------------
 })

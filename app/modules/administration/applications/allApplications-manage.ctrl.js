@@ -245,4 +245,20 @@ angular.module('administration')
 		packageData.services.splice(index,1)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
+
+// ERROR HANDLING FUNCTIONS START-------------------------------------------------------------------
+	manageAllApplications.customErrors = {
+        url: {
+            url: function(){
+                var URL_REGEXP = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+                if (manageAllApplications.tempServiceData.targetUrl) {
+                    return URL_REGEXP.test(manageAllApplications.tempServiceData.targetUrl)
+                }else{
+                    return true;
+                }
+            }
+        }
+    }
+
+// ERROR HANDLING FUNCTIONS END-------------------------------------------------------------------
 })
