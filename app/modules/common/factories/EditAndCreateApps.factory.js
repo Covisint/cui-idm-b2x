@@ -1,6 +1,7 @@
 angular.module('common')
 .factory('EditAndCreateApps', function(API, APIError, Loader, $filter, $q, $timeout,$window){
 	const EditAndCreateApps= {
+		// This data is needed for showing categories in service form
 		initializeServiceTemplateData: (scope) => {
 			scope.serviceData = {
 				categories : [
@@ -10,16 +11,22 @@ angular.module('common')
 				]
 			}
 		},
-
-		handleEditAndNewService: (service, EditFlag) => {
-			if (EditFlag) {
-				return EditAndCreateApps.updateService(service)
+		// common function for initializing both name and description for multi language
+		initializeMultilanguageData: (nameRequired,descriptionRequired) => {
+			let data={}
+			data.name={ 
+				languages:[],
+				label:'cui-name',
+				required:nameRequired
 			}
-			else {
-				return EditAndCreateApps.createService(service)
+			data.description={ 
+				languages:[],
+				label:'description',
+				required:descriptionRequired
 			}
+			return data
 		},
-
+		// check for both name and description and error handling
 		checkDuplicateLanguagesForServiceForm: (data) => {
 			data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.name)
 			if (!data.duplicateLanguage) {
@@ -52,6 +59,7 @@ angular.module('common')
 			return duplicateLanguage
 		},
 
+		// build package data for submit
 		buildPackageData: (viewData) => {
 			// assign access options and default Data
 			let data={
@@ -86,6 +94,7 @@ angular.module('common')
 			return data
 		},
 
+		// build service data for showing in tables and for submit
 		buildServiceData: (viewData) => {
 			// assign access options and default Data
 			let data={

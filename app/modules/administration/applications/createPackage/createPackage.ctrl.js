@@ -3,10 +3,7 @@ angular.module('administration')
 	const createPackage=this
 	const scopeName="createPackage."
 	// Initialization
-	createPackage.search= {}
 	createPackage.claims=[]
-	createPackage.tempClaim={}
-	createPackage.tempClaimValue={}
 	createPackage.services =[]
 	createPackage.addServiceForm=true
 	createPackage.addClaimsForm =true
@@ -14,31 +11,11 @@ angular.module('administration')
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 	const initializeMultiLanguageFields = () => {
-		createPackage.packageViewData.name={ 
-			languages:[],
-			label:'cui-name',
-			required:true
-		}
-		createPackage.packageViewData.description={ 
-			languages:[],
-			label:'description',
-			required:false
-		}		
-		createPackage.serviceViewData ={}
-		createPackage.serviceViewData.name={}
-		createPackage.serviceViewData.description={}
+		angular.merge(createPackage.packageViewData,EditAndCreateApps.initializeMultilanguageData(true,false))
+		
+		createPackage.serviceViewData =EditAndCreateApps.initializeMultilanguageData(true,false)
 
-		createPackage.claimViewData={}
-		createPackage.claimViewData.name={ 
-			languages:[],
-			label:'cui-name',
-			required:true
-		}
-		createPackage.claimViewData.description={ 
-			languages:[],
-			label:'description',
-			required:true
-		}
+		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		createPackage.claimViewData.indicator='many'
 	}
 
@@ -176,17 +153,7 @@ angular.module('administration')
 	// reset the object whcih is being sent to service form template
 	createPackage.updateAddServiceForm = () => {
 		createPackage.addServiceForm=true
-		createPackage.serviceViewData={}
-		createPackage.serviceViewData.name={ 
-			languages:[],
-			label:'cui-name',
-			required:true
-		}
-		createPackage.serviceViewData.description={ 
-			languages:[],
-			label:'description',
-			required:false
-		}
+		createPackage.serviceViewData=EditAndCreateApps.initializeMultilanguageData(true,false)
 		createPackage.services.forEach( service => service.editService=false)
 	}
 
