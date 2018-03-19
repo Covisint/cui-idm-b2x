@@ -12,18 +12,45 @@ angular.module('common')
 			}
 		},
 		// common function for initializing both name and description for multi language
-		initializeMultilanguageData: (nameRequired,descriptionRequired) => {
-			let data={}
-			data.name={ 
-				languages:[],
-				label:'cui-name',
-				required:nameRequired
+		initializeMultilanguageData: (nameRequired,descriptionRequired,initialData) => {
+			let data= {}
+			if (!initialData) {
+				data.name={
+					languages:[],
+					label:'cui-name',
+					required:nameRequired
+				}
+				data.description={ 
+					languages:[],
+					label:'description',
+					required:descriptionRequired
+				}
 			}
-			data.description={ 
-				languages:[],
-				label:'description',
-				required:descriptionRequired
+			else{
+				data=initialData
+				data.name={ 
+					english:initialData.name.splice(0,1)[0].text,
+					languages:initialData.name,
+					label:'cui-name',
+					required:nameRequired
+				}
+				if (initialData.description&&initialData.description.length>0) {
+					data.description={
+						english: initialData.description.splice(0,1)[0].text,
+						languages:initialData.description || [],
+						label:'description',
+						required:descriptionRequired
+					}
+				}
+				else{
+					data.description={ 
+						languages:[],
+						label:'description',
+						required:descriptionRequired
+					}
+				}
 			}
+			
 			return data
 		},
 		// check for both name and description and error handling
@@ -68,22 +95,7 @@ angular.module('common')
 		       	displayable:viewData.displayable,
 		        requestReasonRequired:viewData.requestReasonRequired
 			}
-			// setup internationalized name and description Data
-			data.name=[{
-				lang:'en',
-				text:viewData.name.english
-			}]
-			data.name=data.name.concat(viewData.name.languages)
-			// Description is not a required field so need to check
-			data.description=[]
-			if (viewData.description.english) {
-				data.description.push({
-					lang:'en',
-					text:viewData.name.english
-				})
-			};
-			data.description=data.description.concat(viewData.description.languages)
-
+			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
 			data.requiredApprovals=[]
 			if(viewData.requireCompanyAdmin){
 				data.requiredApprovals.push('organizationAdmin')
@@ -94,15 +106,9 @@ angular.module('common')
 			return data
 		},
 
-		// build service data for showing in tables and for submit
-		buildServiceData: (viewData) => {
-			// assign access options and default Data
-			let data={
-				urls: [{type:'default',value:viewData.targetUrl}],
-		        category: [{lang:'en',text:viewData.category}],
-		       	remoteAppId:viewData.remoteAppId,
-		        mobileServiceId:viewData.mobileServiceId
-			}
+		// build submit data from multilanguage data of name and description
+
+		buildSubmitDataFromMultilangFields: (data,viewData) => {
 			// setup internationalized name and description Data
 			data.name=[{
 				lang:'en',
@@ -118,7 +124,20 @@ angular.module('common')
 				})
 			};
 			data.description=data.description.concat(viewData.description.languages)
+			return data
+		},
 
+
+		// build service data for showing in tables and for submit
+		buildServiceData: (viewData) => {
+			// assign access options and default Data
+			let data={
+				urls: [{type:'default',value:viewData.targetUrl}],
+		        category: [{lang:'en',text:viewData.category}],
+		       	remoteAppId:viewData.remoteAppId,
+		        mobileServiceId:viewData.mobileServiceId
+			}
+			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
 			console.log(data)
 			return data
 		},
@@ -127,27 +146,7 @@ angular.module('common')
 		getDataForServiceTemplate: (service) => {
 			let serviceViewData={}
 			angular.copy(service,serviceViewData)
-			serviceViewData.name={ 
-				english:serviceViewData.name.splice(0,1)[0].text,
-				languages:serviceViewData.name,
-				label:'cui-name',
-				required:true
-			}
-			if (serviceViewData.description&&serviceViewData.description.length>0) {
-				serviceViewData.description={
-					english: serviceViewData.description.splice(0,1)[0].text,
-					languages:serviceViewData.description || [],
-					label:'description',
-					required:false
-				}
-			}
-			else{
-				serviceViewData.description={ 
-					languages:[],
-					label:'description',
-					required:false
-				}
-			}
+			serviceViewData=EditAndCreateApps.initializeMultilanguageData(true,false,serviceViewData)
 			
 			serviceViewData.category=service.category&&service.category[0].text
 
