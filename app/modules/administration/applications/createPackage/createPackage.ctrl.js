@@ -60,17 +60,6 @@ angular.module('administration')
 		claim.claimValues.push(createPackage.tempClaimValue)
 	}
 
-	createPackage.toggleEditServiceForm = (selectedService) => {
-		selectedService.editService=!selectedService.editService
-		createPackage.serviceViewData = EditAndCreateApps.getDataForServiceTemplate(selectedService)
-		createPackage.services.forEach( service => {
-			if (service.id!==selectedService.id) {
-				service.editService=false
-			}
-		})	
-		createPackage.addServiceForm=false;
-	}
-
 	createPackage.submit = () => {
 		Loader.onFor(scopeName+'submitting')
 		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
@@ -108,6 +97,27 @@ angular.module('administration')
 			finishSubmitting()
 		})
 	}
+
+	createPackage.checkDuplicateLanguages = (data) => {
+		return EditAndCreateApps.checkDuplicateLanguagesForServiceForm(data)
+	}
+
+	createPackage.next = () => {
+		angular.copy(createPackage.packageViewData.name, createPackage.serviceViewData.name)
+		angular.copy(createPackage.packageViewData.description, createPackage.serviceViewData.description)
+	}
+
+	// ******************Related to Service***********************
+	createPackage.toggleEditServiceForm = (selectedService) => {
+		selectedService.editService=!selectedService.editService
+		createPackage.serviceViewData = EditAndCreateApps.getDataForServiceTemplate(selectedService)
+		createPackage.services.forEach( service => {
+			if (service.id!==selectedService.id) {
+				service.editService=false
+			}
+		})	
+		createPackage.addServiceForm=false;
+	}
 	// On clicking edit service Cancel
 	createPackage.cancelEdit = () => {
 		// set add service form to false
@@ -140,15 +150,6 @@ angular.module('administration')
 		}
 	}
 
-	createPackage.checkDuplicateLanguages = (data) => {
-		return EditAndCreateApps.checkDuplicateLanguagesForServiceForm(data)
-	}
-
-	createPackage.next = () => {
-		angular.copy(createPackage.packageViewData.name, createPackage.serviceViewData.name)
-		angular.copy(createPackage.packageViewData.description, createPackage.serviceViewData.description)
-	}
-
 	// called when trying to add new service
 	// reset the object whcih is being sent to service form template
 	createPackage.updateAddServiceForm = () => {
@@ -159,6 +160,15 @@ angular.module('administration')
 
 	createPackage.deleteService =  (index) => {
 		createPackage.services.splice(index,1)
+	}
+
+	// **************************Claims Related**********************
+	createPackage.updateAddClaimForm = () => {
+		createPackage.addClaimsForm=true
+	}
+
+	createPackage.updateAddClaimValueForm = () => {
+
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
