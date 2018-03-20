@@ -152,6 +152,28 @@ angular.module('common')
 
 			serviceViewData.targetUrl=service.urls&&service.urls[0].value
 			return serviceViewData
+		},
+
+		// ***************Claims related functions******************
+		buildClaimData: (viewData,id) => {
+			// assign access options and default Data
+			let data={
+				claimId:viewData.claimId,
+				indicator:viewData.indicator
+			}
+			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
+			console.log(data)
+			return data
+		},
+
+		// Manipulates the service Data to display properly in service Template form
+		getClaimViewData: (data) => {
+			let viewData={}
+			angular.copy(data,viewData)
+			viewData=EditAndCreateApps.initializeMultilanguageData(true,true,viewData)
+			viewData.claimId=data.claimId
+			viewData.indicator=data.indicator
+			return viewData
 		}
 	}
 

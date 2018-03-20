@@ -52,14 +52,6 @@ angular.module('administration')
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 
-	createPackage.addClaim = () => {
-		createPackage.claims.push(createPackage.tempClaim)
-	}
-
-	createPackage.addClaimValue = () => {
-		claim.claimValues.push(createPackage.tempClaimValue)
-	}
-
 	createPackage.submit = () => {
 		Loader.onFor(scopeName+'submitting')
 		createPackage.packageSubmitData = EditAndCreateApps.buildPackageData(createPackage.packageViewData)
@@ -163,12 +155,64 @@ angular.module('administration')
 	}
 
 	// **************************Claims Related**********************
+
+	createPackage.toggleEditClaimForm = (selectedClaim) => {
+		selectedClaim.edit=!selectedClaim.edit
+		createPackage.claimViewData = EditAndCreateApps.getClaimViewData(selectedClaim)
+		createPackage.claims.forEach( claim => {
+			if (claim.id!==selectedClaim.id) {
+				claim.edit=false
+			}
+		})	
+		createPackage.addClaimsForm=false;
+	}
+	// On clicking edit service Cancel
+	createPackage.cancelClaimEdit = () => {
+		// set add service form to false
+		if (createPackage.claims.length!==0) {
+			createPackage.addClaimsForm=false;
+		}
+		// set editservice flag to false for services
+		createPackage.claims.forEach( claim => claim.edit=false)
+	}
+
+	// On clicking edit service Add/Update
+	createPackage.saveClaim = () => {
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(createPackage.claimViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedClaim=EditAndCreateApps.buildClaimData(createPackage.claimViewData)
+			selectedClaim.edit=false
+			if (createPackage.claimViewData.edit ) {
+				selectedClaim.id=createPackage.claimViewData.id
+				 createPackage.claims.forEach(claim => {
+				 	if (claim.id===selectedClaim.id) {
+				 		angular.copy(selectedClaim,claim)
+				 	};
+				 })
+			}else{
+				createPackage.addClaimsForm=false
+				selectedClaim.id=createPackage.claims.length
+				createPackage.claims.push(selectedClaim)
+			}
+			
+		}
+	}
+
 	createPackage.updateAddClaimForm = () => {
 		createPackage.addClaimsForm=true
+		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
+		createPackage.claimViewData.indicator="many"
+		createPackage.claims.forEach( claim => claim.edit=false)
 	}
 
 	createPackage.updateAddClaimValueForm = () => {
-
+		createPackage.claimViewData.showClaimValue=true
+		createPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
+		createPackage.claims.forEach( claim => {
+			if (claim.values) {
+				claim.values.forEach(value => value.edit=false)
+			};
+		})
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
