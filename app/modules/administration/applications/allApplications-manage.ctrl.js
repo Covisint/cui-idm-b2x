@@ -209,7 +209,7 @@ angular.module('administration')
 
 	manageAllApplications.saveService = () => {
 		// ToDo-- Actual API call have to be made to update service once API is ready
-		if(EditAndCreateApps.checkDuplicateLanguagesForServiceForm(manageAllApplications.tempServiceData)){
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(manageAllApplications.tempServiceData)){
 			let data=EditAndCreateApps.buildServiceData(manageAllApplications.tempServiceData)
 			if (manageAllApplications.addServiceForm) {
 				manageAllApplications.selectedPackageData.services.push(data)

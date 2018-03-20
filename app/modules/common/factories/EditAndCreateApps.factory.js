@@ -54,7 +54,7 @@ angular.module('common')
 			return data
 		},
 		// check for both name and description and error handling
-		checkDuplicateLanguagesForServiceForm: (data) => {
+		checkDuplicateLanguagesForNameAndDesc: (data) => {
 			data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.name)
 			if (!data.duplicateLanguage) {
 				data.duplicateLanguage=EditAndCreateApps.checkDuplicateLanguages(data.description)
