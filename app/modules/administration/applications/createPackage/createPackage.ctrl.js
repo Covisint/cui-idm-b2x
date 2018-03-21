@@ -205,6 +205,10 @@ angular.module('administration')
 		createPackage.claims.forEach( claim => claim.edit=false)
 	}
 
+	createPackage.deleteClaim =  (index) => {
+		createPackage.claims.splice(index,1)
+	}
+
 	createPackage.updateAddClaimValueForm = () => {
 		createPackage.claimViewData.showClaimValue=true
 		createPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
@@ -214,6 +218,11 @@ angular.module('administration')
 			};
 		})
 	}
+
+	createPackage.deleteClaimValue =  (index) => {
+		createPackage.claimViewData.values.splice(index,1)
+	}
+
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
 // ERROR HANDLING FUNCTIONS START-------------------------------------------------------------------
