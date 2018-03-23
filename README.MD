@@ -11,9 +11,8 @@ By following the guide below, you will be set up with a Reference B2X implementa
   - User Profile
   - Application Directory
   - Application Search/Request/Approval Workflow
-  - Organization Profile
-  - Organization Directory
-  - Organization Hierarchy
+  - Organization Profile/Directory/Hierarchy/Applications
+  - Global search for users and organization
 
 
 ## Starting Your Own Project

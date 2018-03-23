@@ -49,7 +49,7 @@
 		<!-- Granted -->
 		<p class="org-Application--text">Granted: {{orgApplicationDetails.application.creation | date:base.appConfig.dateFormat}}</p>
 	  <!-- Status: Active -->
-	  	<p class="org-application--text cui-media__content" ng-if="orgApplicationDetails.application.grant.status==='active'">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
+	  	<p class="org-application--text cui-media__content">{{orgApplicationDetails.application.grant.status|lowercase|translate}}
 		  	<svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
 		  		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#unlock3"></use>
 		  	</svg>
@@ -66,15 +66,18 @@
         <p class="cui-error" ng-if="orgApplicationDetails.suspendError"><b>{{'cui-error-try-again' | translate}}</b></p>
 		<div class="org-Application--controls">
 		  	<!-- Suspend Button -->
-		  	<button ng-class="(orgApplicationDetails.showPopup==true)? 'cui-button cui-button--small':'cui-button cui-button--inverted'" ng-click="orgApplicationDetails.showPopup=true">{{'suspend-app' | translate}}</button>
+		  	<button ng-if="orgApplicationDetails.application.grant.status==='active'" ng-class="(orgApplicationDetails.dropDown.suspend==true)? 'cui-button cui-button--small':'cui-button cui-button--inverted'" ng-click="orgApplicationDetails.dropDown.suspend=true">{{'suspend-app' | translate}}</button>
+		  	<button ng-if="orgApplicationDetails.application.grant.status==='suspended'" ng-class="(orgApplicationDetails.dropDown.unsuspend==true)? 'cui-button cui-button--small':'cui-button cui-button--inverted'" ng-click="orgApplicationDetails.dropDown.unsuspend=true">{{'unsuspend-app' | translate}}</button>
 		  	<!-- New Grants Button -->
 		  	<button class="cui-button cui-button--inverted" ng-click="orgApplicationDetails.newGrants()">{{'new-grants' | translate}}</button>
 	  	</div>
 	  	<!-- <cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="orgApplicationDetails.showPopup">
 	  	</cui-expandable-body> -->
 	  </br>
-     
+	 
     </cui-expandable-body>
+    <div ng-include="'app/modules/organization/applications/applicationDetails/suspend-body.html'"></div>
+      <div ng-include="'app/modules/organization/applications/applicationDetails/unsuspend-body.html'"></div>
 	  	<cui-expandable-body class="cui-expandable__body cui-expandable__body--alt-bg-org-suspend" ng-if="orgApplicationDetails.showPopup">
             <!-- 
                  <span style="cui-expandable__body-close" ng-click="collapse()">
@@ -119,14 +122,18 @@
 				    <tr style="">
 				      <td scope="row"><div class="cui-button cui-button--small" ng-click="orgApplicationDetails.showPopup=false">{{'cui-cancel' | translate}}
 		        	 	</div></td>
-				      <td ><div class="cui-button cui-button--small" ng-click="orgApplicationDetails.suspendApplication()">{{'yes'|translate}}, {{'suspend'|translate}}</div></td>
+				      <td ng-if="orgApplicationDetails.application.grant.status==='active'"><div class="cui-button cui-button--small" ng-click="orgApplicationDetails.suspendApplication()">{{'yes'|translate}}, {{'suspend'|translate}}</div></td>
+				      <td ng-if="orgApplicationDetails.application.grant.status==='suspended'"><div class="cui-button cui-button--small" ng-click="orgApplicationDetails.unsuspendApplication()">{{'yes'|translate}}, {{'unsuspend-app'|translate}}</div></td>
 				    </tr>
 				  </tbody>
 				</table>
 			 </div>
         </cui-expandable-body>
+
+     
 	</div>
 </div>
+
 
 <!-- Bundled/Related Apps -- DESKTOP -->
 <!-- <div class="org-Application--bundled-related desktop"> -->
@@ -135,7 +142,7 @@
 			<h3 class="cui-tile__title">{{'bundled-applications' | translate}}</h3>
 			<div class="cui-tile__body">
 				<p class="cui-tile__text" ng-repeat="application in orgApplicationDetails.application.bundledApps">
-					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status}}</span>
+					<span>{{application.name | cuiI18n}} {{orgApplicationDetails.application.grant.status | lowercase | translate}}</span>
 					<span class="active">{{'active' | translate}}</span>
 				</p>
 			</div>

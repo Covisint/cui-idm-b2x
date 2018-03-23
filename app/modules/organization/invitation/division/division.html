@@ -63,7 +63,7 @@
     <div class="cui-error" ng-if="!division.userSelectedOrg">
         <div class="cui-error__message">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-     <div auto-complete input-name="country" pause="100" placeholder="{{'cui-invite-user-select' | translate}}" selected-object="division.userSelectedOrg" local-data="division.organizationList" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="division.userSelectedOrg"></div>
+     <div auto-complete input-name="country" pause="100" placeholder="{{'cui-invite-user-select' | translate}}" selected-object="division.userSelectedOrg" remote-api-handler="division.searchOrgs" search-fields="name" title-field="name" input-class="cui-input" match-class="highlight" auto-match="true" field-required="division.userSelectedOrg"></div>
   </div>
   <div class="cui-users__info-block">
     <span class="cui-field-val__field">{{'cui-email'|translate}} {{'cui-subject'|translate}}* <input type="text" name="emailSubject" placeholder="{{'cui-division-sub'|translate}} {{division.userSelectedOrg.originalObject.name}}" class="cui-input" ng-disabled="true" ></span>

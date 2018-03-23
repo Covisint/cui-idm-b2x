@@ -1,0 +1,15 @@
+<div class="cui-users__address-container user-details__password-reset show-address">
+  {{'remove-confirm' | translate}}*
+
+  <textarea class="cui-text-area jlr-text-area--black-text" ng-required="true" style="margin: 20px" ng-model="userDetails.user.removeReason" placeholder="{{'request-reason' | translate}}"></textarea>
+
+<div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="userDetails.remove.cancel()" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : userDetails.user.removeReason.length==0}" ng-click="userDetails.user.removeReason.length>0&&userDetails.remove.confirm()" style="margin:5px">
+        <span ng-if="!base.loader.for['userDetails.remove'] && !base.apiError.for['userDetails.remove'] && !userDetails.remove.success">{{'yes' | translate}}</span>
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ng-if="base.loader.for['userDetails.remove']"></div>
+        <span ng-if="!base.loader.for['userDetails.remove'] && base.apiError.for['userDetails.remove'] && !userDetails.remove.success ">{{'cui-error-try-again' | translate}}</span>
+        <span ng-if="!base.loader.for['userDetails.remove'] && !base.apiError.for['userDetails.remove'] && userDetails.remove.success">{{'cui-success' | translate}}</span>
+      </button>
+    </div>
+</div>

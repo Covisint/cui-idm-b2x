@@ -1,0 +1,82 @@
+.cui-manage-apps{
+	.cui-button--inverted{
+		font-size:0.8em;
+		width:82px;
+	}
+
+	@media screen and (min-width: 701px){
+		.cui-action__title {
+			flex:0.5 auto;
+		}
+	}
+	.cui-expandable{
+		margin-bottom:0;
+		padding-bottom:0;
+		border-bottom:none;
+	}
+	.cui-expandable__body-pane{
+		margin-bottom:1em;
+	}
+	.cui-expandable.expanded {
+		.chevron {
+		    -ms-transform: rotate(90deg);
+		    transform: rotate(90deg);
+		}
+	} 
+	.cui-expandable__body-pane{
+		padding:0.75em 0.75em 0.75em 1.5em;
+		flex-direction:column;
+		background-color:#e8f0f3;
+		.cui-flex-table__tr, .cui-flex-table__th{
+			border-top:none;
+		}
+	}
+
+}
+.switch__form {
+	margin-bottom:20px;
+	.cui-switch{
+		margin: 0.5em 0 0.5em 0;
+	}
+	.cui-button--small-rounded{
+		width:150px;
+		margin-top:0.5em;
+	}
+}
+.switch__info {
+	color:#cdcdcd;
+}
+.radio-form {
+	margin:0.2em 0 1.3em 0;
+}
+.form-container__expandable{
+	width:100%
+}
+
+.cui-form__body--alt{
+	border:1px solid #e8f0f3 !important;
+	background-color: #d4e2e6 !important;
+	margin:1em 0 1em 0 !important;
+	.cui-form__title{
+		background-color: #d4e2e6;
+	}
+}
+.cui-wizard__field-container--button{
+	justify-content:center;
+}
+
+.cui-wizard__field-row{
+	.cui-flex-table__tr:hover .cui-flex-table__title {
+	    color: #343534;
+	    cursor: default;
+    }
+}
+
+.cui-action__no-padding{
+	padding:0;
+}
+.cui-flex-table__right{
+	.cui-action__icons__space {
+	fill:white;
+	}
+}

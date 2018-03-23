@@ -14,7 +14,7 @@ angular.module('misc', [])
                 templateUrl: templateBase + 'welcome/welcome.html'
             })
             .state('search', {
-                url: '/search?page&pageSize',
+                url: '/search?page&pageSize&sortBy',
                 templateUrl: templateBase + 'search/search.html',
                 controller: returnCtrlAs('search'),
                 access: {

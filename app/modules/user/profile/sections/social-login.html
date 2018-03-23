@@ -1,0 +1,84 @@
+<ng-form name="socialLogin" disable-animate>
+  <div class="cui-users__field">
+    <div class="cui-users__address-container" class-toggle toggled-class="show-address">
+      <div class="cui-users__field">
+        <div class="cui-field-val__field">{{'social-login'|translate}}</div>
+        <!-- <span disable-animate class="cui-link" href="" ng-if="!toggled" ng-click="userProfile.toggleAllOff();toggleOn()">{{'cui-edit' | translate}}</span> -->
+        <!-- Close Icon -->
+        <!-- <div disable-animate ng-if="toggled" ng-click="toggleOff()">
+          <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        </div> -->
+      </div>
+
+      <!-- Phone/Fax -->
+      <div ng-if="!toggled" ng-repeat="socialLoginAccount in userProfile.socialLoginAccounts">
+          <!-- <span class="cui-field-val__val">{{socialLoginAccount.socialName|capitalize}} -  -->
+            <!-- <div ng-switch on="socialLoginAccount.linked"> -->
+
+              <div ng-if="socialLoginAccount.linked" style="margin-bottom:1em">  
+                  <button class="cui-button cui-button cui-button__social cui-button__social_{{socialLoginAccount.socialName}}" ng-click="userProfile.unlinkSocialAccount(base.user.id,socialLoginAccount)" disable-animate>
+                    <span class="social-icon" >
+                      <cui-icon cui-svg-icon="fa:{{socialLoginAccount.iconName}}" svg-class="cui-action__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+                    </span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'unlink' | translate}} {{socialLoginAccount.socialName|translate}}</span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
+                    <span class= "social-label" ng-if="socialLoginAccount.unlinking">{{'cui-button-loading-text' | translate}}</span>
+                  </button>
+              </div>
+
+              <div ng-if="!socialLoginAccount.linked" style="margin-bottom:1em">  
+                  <button class="cui-button cui-button__social cui-button__social_{{socialLoginAccount.socialName}}" ng-click="userProfile.updateSocialLogin(socialLoginAccount, toggleOff)"disable-animate>
+                    <span class="social-icon">
+                      <cui-icon cui-svg-icon="fa:{{socialLoginAccount.iconName}}" svg-class="cui-action__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+                    </span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.linking&&!socialLoginAccount.error">{{'link' | translate}} {{socialLoginAccount.socialName|translate}}</span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.linking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
+                    <span class= "social-label" ng-if="socialLoginAccount.linking">{{'cui-button-loading-text' | translate}}</span>
+                  </button>
+              </div>
+              <!-- <div ng-switch-when="false">Not Linked</div> -->
+            <!-- <span class="cui-field-val__val">{{socialLoginAccount.linkedDate}}</span> -->
+            <!-- </div>  -->
+          <!-- </span> -->
+      </div>
+      <div ng-if="toggled">
+          <div class="cui-error" ng-messages="socialLogin.telephone.$error">
+            <div ng-messages-include="app/common-templates/messages.html"></div>
+          </div>
+          <div class="cui-radio cui-radio--basic-ltr">
+            <div ng-repeat="config in userProfile.linkableSocialAccounts">
+              <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="userProfile.socialLogin" value="{{config.socialName}}" ng-required="!userProfile.socialLogin">
+              <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{config.socialName}}</label>
+            </div>
+          <!-- <label>
+            <input type="radio" ng-model="userProfile.socialLogin" value="Facebook">
+            Facebook
+          </label><br/>
+
+          <label>
+            <input type="radio" ng-model="userProfile.socialLogin" value="Twitter">
+            Twitter
+          </label><br/>  -->
+          
+          <!--  <label>
+            <input type="radio" ng-model="userProfile.socialLogin" value="Google">
+            Google
+          </label><br/>-->
+
+          <!-- Social login Edit Controls -->
+          <div class="cui-users__address-submit" disable-animate>
+            <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+            <cui-button
+              loading-if="userProfile.socialLoginSubmitting"
+              loading-message="{{'cui-button-loading-text' | translate}}"
+              button-click="socialLogin.$valid&&userProfile.updateSocialLogin('socialLogin', toggleOff)"
+            >
+              <button class="cui-button" ng-class="{ 'cui-button--error': !socialLogin.$valid }">
+                <span ng-if="!userProfile.socialLogin.submitting">{{'cui-update' | translate}}</span>
+              </button>
+            </cui-button>
+          </div>
+      </div>
+    </div>
+  </div>
+</ng-form>

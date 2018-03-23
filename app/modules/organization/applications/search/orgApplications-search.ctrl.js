@@ -4,6 +4,7 @@ angular.module('organization')
     const orgAppSearch = this;
     const loaderName = 'orgAppSearch.loading';
     orgAppSearch.stateParamsOrgId=User.user.organization.id;
+    orgAppSearch.loadingError=false
 
     orgAppSearch.packageRequests = DataStorage.getType('orgAppsBeingRequested', User.user.id) || {};
     orgAppSearch.appCheckbox = {};
@@ -64,7 +65,7 @@ angular.module('organization')
 
     const onLoad = (previouslyLoaded) => {
         if (previouslyLoaded) {
-            Loader.onFor(loaderName);
+            // Loader.offFor(loaderName);
         }
         else { 
             Loader.onFor(loaderName);
@@ -115,6 +116,11 @@ angular.module('organization')
                 Loader.offFor(loaderName);
              })
              
+        })
+        .catch(err =>{
+            console.log("There was an error loading parent requestable apps")
+            Loader.offFor(loaderName)
+            orgAppSearch.loadingError=true
         });
     };
 
@@ -132,6 +138,7 @@ angular.module('organization')
         if (updateType!=='page') {
             orgAppSearch.search.page = 1
         }
+        Loader.onFor(loaderName);
         orgAppSearch.search.orgId=orgAppSearch.stateParamsOrgId
         // Update current URL without changing the state
         $state.transitionTo('organization.search', orgAppSearch.search, {notify:false});

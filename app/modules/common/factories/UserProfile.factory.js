@@ -1,5 +1,5 @@
 angular.module('common')
-.factory('UserProfile', function(API, APIError, LocaleService, Timezones, $filter, $q, $timeout) {
+.factory('UserProfile', function(API, APIError, LocaleService, Timezones, $filter, $q, $timeout,$window) {
 
     const errorName = 'userProfileFactory.'
 
@@ -205,11 +205,47 @@ angular.module('common')
             return defer.promise
         },
 
+        initSocialLogin: function(userId) {
+            let defer = $q.defer()
+            let socialLogin = {}
+
+            $q.all([API.cui.getlinkableSocialAccounts(),API.cui.getSocialLoginAccounts({ personId: userId })])
+            .then(res => {
+                socialLogin.linkableSocialAccounts=res[0]
+                socialLogin.socialLoginAccounts=res[1]
+                socialLogin.socialLoginAccounts.forEach(account => {
+                    account.unlinking=false
+                    account.error=false
+                    account.linking=false
+                    switch (account.socialName) {
+                        case 'facebook': account.iconName='facebook25'
+                            break
+                        case 'twitter': account.iconName='twitter16'
+                            break
+                        case 'linkedin': account.iconName='linkedin10'
+                            break
+                        case 'google': account.iconName='google26'
+                            break
+                    }
+                })
+                defer.resolve(socialLogin)
+            })
+            .catch(err => {
+                console.error('Failed getting SocialLoginAccounts information', err)
+                APIError.onFor(errorName + 'initSocialLogin')
+                $timeout(() => {
+                    APIError.offFor(errorName + 'initSocialLogin')
+                }, 5000)
+                defer.reject(err)
+            })
+            return defer.promise
+        },
+
         initUserProfile: function(userId, organizationId) {
             let defer = $q.defer()
             let profile = {}
             let callsCompleted = 0
-            const callsToComplete = 4
+            const callsToComplete = 5
 
             UserProfile.initUser(userId)
             .then(res => {
@@ -241,6 +277,15 @@ angular.module('common')
             UserProfile.initRegisteredDate(userId)
             .then(res => {
                 profile['registeredDate'] = res
+            })
+            .finally(() => {
+                callsCompleted += 1
+                if (callsCompleted === callsToComplete) defer.resolve(profile)
+            })
+
+            UserProfile.initSocialLogin(userId)
+            .then(res => {
+                angular.merge(profile,res)
             })
             .finally(() => {
                 callsCompleted += 1
@@ -490,6 +535,50 @@ angular.module('common')
                         formObject[input].$setValidity(input, false)
                         $scope.$digest()
                     }
+                })
+                .fail(err => {
+                    console.log("There was an error in validating password against rules",err)
+                    validSwitch(input, false, 'disallowed')
+                    validSwitch(input, false, 'history')
+                    formObject[input].$setValidity(input, false)
+                })
+            }
+
+            profile.updateSocialLogin = (config, toggleOff) => {
+                if (config) {
+                    config.linking=true
+                    // profile[section] = { submitting: true }
+                    var socialLoingUrl=appConfig.serviceUrl;
+                    var sid=localStorage.getItem("cui.sii");
+                    let xt= localStorage.getItem("cui.xt");
+                    // API.cui.facebookLinkCallback({personId:profile.user.id})
+                    // .then((res) => {
+                        
+                    // })
+                    // .fail(err =>{
+                        
+                    // })
+                    //socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
+                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+config.socialName+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                    $window.location.href=encodeURI(socialLoingUrl)
+                }
+
+            }
+            profile.unlinkSocialAccount = (userId,config) => {
+                config.unlinking=true
+                API.cui.unlinkSocialLoginAccount({personId:userId,configId:config.socialName})
+                .then(res=>{
+                    config.linked=false
+                    $scope.$digest()
+                })
+                .fail(err => {
+                    config.unlinking=false
+                    console.log('There was an error in umlinking social account'+err)
+                    config.error=true 
+                    $timeout(() => {
+                        config.error=false
+                    },5000)
+                    $scope.$digest()
                 })
             }
         }

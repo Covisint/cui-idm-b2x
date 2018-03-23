@@ -60,6 +60,14 @@
   </div>
 </span>
 
+<!-- Administration actions -->
+<span class="snap-menu--option" snap-close ui-sref="administration.applications.manageApplications" ng-if="base.accessToSecurityAndExchangeAdmins()">
+  <span class="snap-menu__option-name">{{'administration' | translate}}</span>
+  <div>
+    <cui-icon cui-svg-icon="cui:organization" svg-class="snap-menu__icon" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+  </div>
+</span>
+
 <!-- Pending Requests -->
 <span class="snap-menu--option" snap-close ui-sref="pendingAppRequests" ng-if="base.user.id">
   <span class="snap-menu__option-name">{{'cui-my-app-requests' | translate}}</span>

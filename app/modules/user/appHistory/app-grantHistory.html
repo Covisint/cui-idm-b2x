@@ -47,19 +47,7 @@
             </div>
         </div>
         <!-- Tabs -->
-        <div class="" style=" margin:auto;  width:400px;">
-            <nav class="cui-breadcrumb">
-                <ul class="cui-breadcrumb__links">
-                    <li class="user_profile_image" style="padding: 8px; margin-right:10px" ng-init="profilesrc='app/modules/user/user_icon/profile.png'" ng-mouseover="profilesrc='app/modules/user/user_icon/profile_current.png'" ng-mouseout="profilesrc='app/modules/user/user_icon/profile.png'"><a ui-sref="user.profile"><img ng-src="{{profilesrc}}" width="46px" height="44px"></a>
-                        </li>
-                        <li class="user_roles_image" style="padding: 8px; margin-right:10px" ng-init="rolesrc='app/modules/user/user_icon/roles.png'" ng-mouseover="rolesrc='app/modules/user/user_icon/roles_mouseover.png'" ng-mouseout="rolesrc='app/modules/user/user_icon/roles.png'"><a ui-sref="user.roles"><img ng-src="{{rolesrc}}" width="34px" height="45px"></a>
-                        </li>
-                        <li class="user_apps_image" style="padding: 8px; margin-right:10px"><a ui-sref="user.appRequestHistory"><img src="app/modules/user/user_icon/app_mouseover.png" width="29px" height="45px"></a>
-                        </li>
-                        <li class="user_history_image" style="padding: 8px" ng-init="historysrc='app/modules/user/user_icon/history.png'" ng-mouseover="historysrc='app/modules/user/user_icon/history_mouseover.png'" ng-mouseout="historysrc='app/modules/user/user_icon/history.png'"><a ui-sref="user.history"><img ng-src="{{historysrc}}" width="49px" height="44px"></a>
-                </ul>
-            </nav>
-        </div>
+        <div ng-include="'app/modules/user/sections/breadcrumb.html'" ng-init="activeApps=true"></div>
         <hr>
         <main class="cui-organization cui-organization-req-uers">
 		<!-- <h2 class="cui-sr-only">{{'org-req-apps-requests' | translate}}</h2> -->
@@ -84,7 +72,7 @@
 					          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="appGrantHistory.searchBy" value="action">
 					          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'action' | translate}}</label>
 					      </div>&nbsp;
-					      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+					      <div class="cui-input-button cui-input-button--alt-bg">
 					          <input class="cui-input-button__input" ng-model="appGrantHistory.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)"/>
 					          <button class="cui-input-button__button" ng-click="appGrantHistory.updateSearch('search',appGrantHistory.searchValue)">{{'search' | translate}}</button>
 					      </div>

@@ -115,4 +115,16 @@ angular.module('organization')
      division.goToOrg = () => {
         
     }
+
+    division.searchOrgs = (str,promise) => {
+      let deferred=$q.defer()
+      API.cui.getOrganizations({qs:[['name',str]]})
+      .then(res => {
+        deferred.resolve(res)
+      })
+      .fail(err => {
+        deferred.reject(err)
+      })
+      return deferred.promise
+    }
 })

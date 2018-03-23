@@ -94,7 +94,7 @@
     </div> -->
     <div class="cui-organization__submit-row" disable-animate>
       <span ui-sref="organization.requests.usersAppRequests" style="margin:5px">{{'cui-cancel' | translate}}</span>
-      <button class="cui-button" ng-if="!pendingRequests.submitting" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
+      <button class="cui-button" ng-if="!pendingRequests.submitting&&!pendingRequests.error" ng-disabled="pendingRequestsApproval.$invalid" ng-class="{'cui-button--error':pendingRequestsApproval.$invalid}" ng-click="pendingRequests.submit()" style="margin:5px">{{'submit-approvals' | translate}}</button>
       <button class="cui-button" ng-if="pendingRequests.submitting">
         <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
       </button>

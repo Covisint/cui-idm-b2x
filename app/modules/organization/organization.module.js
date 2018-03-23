@@ -55,6 +55,10 @@ angular.module('organization', [])
                 'history@organization.directory.userDetails': {
                     templateUrl: templateBase + 'directory/user-details/sections/history/userDetails-history.html',
                     controller: returnCtrlAs('userDetailsHistory')
+                },
+                'appHistory@organization.directory.userDetails': {
+                    templateUrl: templateBase + 'directory/user-details/sections/appHistory/userDetails-appHistory.html',
+                    controller: returnCtrlAs('userDetailsAppsHistory')
                 }
             },
             access: {
@@ -123,6 +127,32 @@ angular.module('organization', [])
                 permittedLogic:appConfig.accessByAnyAdmin
             }
         })
+        // History----------------------------------------------
+        .state('organization.statusHistory', {
+            url: '/statusHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/status/organization-status.html',
+            controller: returnCtrlAs('organizationStatusHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        .state('organization.appGrantHistory', {
+            url: '/appGrantHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/app-grant/organization-appGrant.html',
+            controller: returnCtrlAs('organizationAppGrantHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        .state('organization.appRequestHistory', {
+            url: '/appRequestHistory/:orgId?page&pageSize&sortBy',
+            templateUrl: templateBase + 'history/app-request/organization-appRequest.html',
+            controller: returnCtrlAs('organizationAppRequestHistory'),
+            access: {
+                permittedLogic:appConfig.accessToSecurityAndExchangeAdmins
+            }
+        })
+        
         .state('organization.newRequest', {
             url: '/request',
             templateUrl: templateBase + 'applications/appRequest/newRequest/appRequest-newRequest.html',
@@ -245,7 +275,7 @@ angular.module('organization', [])
             }
         })
         .state('organization.requests.organizationAppRequestReview', {
-            url: '/organization-app-request-review?orgId',
+            url: '/organization-app-request-review?orgId&userId',
             templateUrl: templateBase + 'requests/organizationAppRequests/requests-organizationReview.html',
             controller: returnCtrlAs('organizationAppRequestReview'),
             access: {
@@ -334,7 +364,7 @@ angular.module('organization', [])
             }
         })
         .state('organization.requests.orgAppRequests', {
-            url:'/orgApplicationRequests?pageSize&page',
+            url:'/orgApplicationRequests?pageSize&page&organizationName',
             templateUrl: templateBase + 'requests/orgRequests/orgAppRequests/requests-AppRequests.html',
             controller: returnCtrlAs('orgAppRequests'),
             access: {

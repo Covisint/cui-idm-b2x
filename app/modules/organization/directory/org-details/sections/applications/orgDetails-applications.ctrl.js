@@ -148,7 +148,12 @@ angular.module('organization')
     // ON LOAD END --------------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
-
+    orgDetailsApps.activeAppsTab=true
+    orgDetailsApps.activeRequestTab=false
+    orgDetailsApps.activeGrantTab=false
+    orgDetailsApps.sortClicked = false
+    orgDetailsApps.onLoadFirst = true 
+    
     orgDetailsApps.pageChange = (newpage) => {
         orgDetailsApps.updateSearch('page', newpage);
     };
@@ -186,9 +191,198 @@ angular.module('organization')
     orgDetailsApps.goToDetails = (application) => {
         const opts = {
             appId: application.id,
-            orgId: application.owningOrganization.id
+            orgId: $stateParams.orgId
         };
         $state.go('organization.applicationDetails', opts);
     };
     // ON CLICK FUNCTIONS END ------------------------------------------------------------------------
+    orgDetailsApps.searchApp = {orgId:orgDetailsApps.stateParamsOrgId};
+    orgDetailsApps.searchApp.page = orgDetailsApps.searchApp.page || 1;
+    orgDetailsApps.searchApp.pageSize = 200;
+    orgDetailsApps.searchBy='name'
+    const getCountsOfStatus=(qsValue)=>{
+        let opts = {
+             organizationId:orgDetailsApps.stateParamsOrgId
+        }
+        //Assign query strings if any value passed 
+        //otherwise it will get full count
+        if (qsValue) {
+            opts.qs = [['status',qsValue]]
+        }
+        API.cui.getOrgAppsGrantHistory(opts)
+        .then(res=>{
+            if (!qsValue) {
+                orgDetailsApps.popupCount=res.length;
+            }else if (qsValue==="active") {
+                orgDetailsApps.activeCount=res.length;
+            }
+            else{
+                orgDetailsApps.suspendedCount=res.length;
+            }
+            $scope.$digest();
+        })
+        .fail(err=>{
+
+        })
+    }
+
+    const getPersonRequestedApps = (opts) => {
+        orgDetailsApps.requestedHistory = [];
+         API.cui.getOrgAppsRequestHistory(opts)
+         .then(res => {
+            orgDetailsApps.requestedHistory=res
+            Loader.offFor('orgDetailsApps.init')
+            $scope.$digest()
+            /*As of now No API available for Org apps request count*/ 
+            /*API.cui.getPersonApplicationsRequestHistoryCount(opts)
+            .then(res =>{
+                orgDetailsApps.requestedHistoryCount=res
+                orgDetailsApps.loading = false
+                $scope.$digest()
+            })
+            .fail(err =>{
+                orgDetailsApps.loading = false
+                console.log(err)
+                $scope.$digest()
+            })*/
+
+         })
+         .fail(err =>{
+            Loader.offFor('orgDetailsApps.init')
+            console.log(err)
+         })
+    }
+
+    const getPersonGrantedApps = (opts) => {
+        orgDetailsApps.grantedHistory = [];
+         API.cui.getOrgAppsGrantHistory(opts)
+         .then(res => {
+           orgDetailsApps.grantedHistory=res
+          /* if(orgDetailsApps.grantedHistory.length>0&&orgDetailsApps.onLoadFirst){
+                getCountsOfStatus("active")
+                getCountsOfStatus("suspended")
+                //To getFull count
+                getCountsOfStatus(undefined)
+                orgDetailsApps.onLoadFirst=false
+            }*/
+            Loader.offFor('orgDetailsApps.init')
+            $scope.$digest()
+            /*As of now No API available for Org apps grant count*/ 
+            /*API.cui.getPersonApplicationsGrantHistoryCount(opts)
+            .then(res =>{
+                orgDetailsApps.grantedHistoryCount=res
+                orgDetailsApps.loading = false
+                $scope.$digest()
+            })
+            .fail(err =>{
+                orgDetailsApps.loading = false
+                console.log(err)
+                $scope.$digest()
+            })*/
+         })
+         .fail(err =>{
+            Loader.offFor('orgDetailsApps.init')
+            console.log(err)
+         })
+    }
+
+    orgDetailsApps.pagesChange = (newpage) => {
+        orgDetailsApps.updatesSearch('page', newpage, 'request')
+    }
+
+    orgDetailsApps.pageGrantedChange = (newpage) => {
+        orgDetailsApps.updatesSearch('page', newpage, 'grant')
+    }
+
+    orgDetailsApps.updatesSearch = (updateType, updateValue, updatePage) => {
+        Loader.onFor('orgDetailsApps.init')
+        switch (updateType) {
+            case 'requesteddate':
+                switchsBetween('sortBy', '+requestedDate', '-requestedDate')
+                break
+            case 'decisiondate':
+                switchsBetween('sortBy', '+evaluationDate', '-evaluationDate')
+                break
+            case 'status':
+                orgDetailsApps.searchApp.page = 1
+                orgDetailsApps.searchApp['status'] = updateValue
+                break
+            case 'eventdate':
+                switchsBetween('sortBy', '+eventDate', '-eventDate')
+                break
+            case 'eventType':
+                switchsBetween('sortBy', '+eventType', '-eventType')
+                break
+            case 'actorId':
+                switchsBetween('sortBy', '+actorId', '-actorId')
+                break
+            case 'search':
+                orgDetailsApps.searchApp.page = 1
+                if(orgDetailsApps.searchBy==='name'){
+                    orgDetailsApps.searchApp['name'] = updateValue
+                    orgDetailsApps.searchApp['eventType'] = undefined}
+                else{
+                    orgDetailsApps.searchApp['name'] = undefined
+                    orgDetailsApps.searchApp['eventType'] = updateValue}
+                break
+        }
+
+        if(orgDetailsApps.searchApp.page==0){
+          orgDetailsApps.searchApp.page=1  
+        }
+        let queryParams = [['page', String(orgDetailsApps.searchApp.page)], ['pageSize', '200']];
+        if(orgDetailsApps.searchApp.sortBy)
+            queryParams.push(['sortBy',orgDetailsApps.searchApp['sortBy']])
+        if(orgDetailsApps.searchApp.status)
+            queryParams.push(['status',orgDetailsApps.searchApp['status']])
+        if(orgDetailsApps.searchApp.name)
+            queryParams.push(['name',orgDetailsApps.searchApp['name']])
+        if(orgDetailsApps.searchApp.eventType)
+            queryParams.push(['eventType',orgDetailsApps.searchApp['eventType']])
+        const opts = {
+            organizationId:orgDetailsApps.stateParamsOrgId,
+            qs: queryParams
+        };
+        orgDetailsApps.searchApp.orgId=orgDetailsApps.stateParamsOrgId
+
+        // doesn't change state, only updates the url
+        $state.transitionTo('organization.directory.orgDetails', orgDetailsApps.searchApp, { notify:false })
+             if(updatePage=='request'){
+                getPersonRequestedApps(opts)
+             }
+             else{
+                getPersonGrantedApps(opts)
+             } 
+    }
+
+    const switchsBetween = (property, firstValue, secondValue) => {
+        // helper function to switch a property between two values or set to undefined if values not passed
+        if (!firstValue) {
+            orgDetailsApps.searchApp[property] = undefined
+            return
+        }
+        orgDetailsApps.searchApp[property] = orgDetailsApps.searchApp[property] === firstValue
+            ? secondValue
+            : firstValue
+    }
+    $scope.$watch("orgDetailsApps.activeRequestTab", function(n) {
+            orgDetailsApps.searchApp = undefined
+            orgDetailsApps.searchApp = Object.assign({}, {})
+            orgDetailsApps.searchApp.page = 1
+            let value=(orgDetailsApps.activeRequestTab)?'request':'grant'
+            orgDetailsApps.searchApp.pageSize = orgDetailsApps.searchApp.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+            if(orgDetailsApps.activeRequestTab){
+               orgDetailsApps.updatesSearch('','',value)
+           }
+    }, true);
+    $scope.$watch("orgDetailsApps.activeGrantTab", function(n) {
+           orgDetailsApps.searchApp = undefined  
+           orgDetailsApps.searchApp = Object.assign({}, {})
+           orgDetailsApps.searchApp.page = 1
+           orgDetailsApps.searchApp.pageSize = orgDetailsApps.searchApp.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0];
+           let value=(orgDetailsApps.activeGrantTab)?'grant':'request'
+           if(orgDetailsApps.activeGrantTab){
+            orgDetailsApps.updatesSearch('','',value)
+           } 
+    }, true);
 });

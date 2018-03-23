@@ -1,0 +1,48 @@
+<ng-form name="service" novalidate>
+	  <!-- First row -->
+
+  <multi-language-field options="serviceData.name" name="'name'" form="service" label-class=""></multi-language-field>
+
+  <multi-language-field options="serviceData.description" name="'description'" form="service" label-class=""></multi-language-field>
+
+  <!-- Second row -->
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'target-url' | translate}}</label>
+      <div class="cui-error" ng-messages="service.targetURL.$error" ng-if="service.targetURL.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <div class="cui-error" ng-if="service.targetURL.$error.url && service.targetURL.$dirty">
+        <div class="cui-error__message">{{'invalid-url' | translate}}</div>
+      </div>
+      <input type="text" name="targetURL" class="cui-input" ng-required="true" ng-model="serviceData.targetUrl" custom-error="scope.customErrors.url"/>
+    </div>
+
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label>{{'cui-category' | translate}}</label>
+        <cui-dropdown ng-model="serviceData.category" class="cui-dropdown" return-value="object.text" display-value="object.text" options="scope.serviceData.categories"></cui-dropdown>
+    </div>
+  </div>
+  <!-- Third row -->
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'remote-app-id' | translate}}</label>
+      <div class="cui-error" ng-messages="service.remoteAppId.$error" ng-if="service.remoteAppId.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="remoteAppId" class="cui-input" ng-required="true" ng-model="serviceData.remoteAppId"/>
+    </div>
+
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label >{{'mobile-app-id' | translate}}</label>
+      <input type="text" ng-model="serviceData.mobileAppId" name="mobileAppId" class="cui-input"/>
+    </div>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="serviceData.duplicateLanguage">
+    <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <a class="cui-link cui-form__cancel" href="" ng-click="scope.cancelEdit()">{{'cui-cancel' | translate}}</a>
+    <button class="cui-button" ng-class="{ 'cui-button--error': !service.$valid }" ng-click="service.$valid&&scope.saveService(serviceData.editService)">{{submitLabel |translate}}</button>
+  </div>
+</ng-form>

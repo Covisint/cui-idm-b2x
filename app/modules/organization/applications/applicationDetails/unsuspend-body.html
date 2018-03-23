@@ -1,0 +1,18 @@
+<div class="cui-expandable__body cui-expandable__body--alt-bg" ng-if="orgApplicationDetails.dropDown.unsuspend" style="width:130%">
+  <ng-form name="unsuspendApp" novalidate>
+    <p>{{'cui-unsuspend-confirm' |translate}}</p>
+    <div class="cui-applications__review-text-input" >
+      <p class="cui-error h6" ng-if="unsuspendApp.reason.$error.required&&unsuspendApp.reason.$dirty">{{'cui-this-field-is-required' | translate}}</p>
+      <textarea name="reason" class="cui-text-area" ng-required="true" ng-model="orgApplicationDetails.unsuspendReason" placeholder="{{'reason'|translate}}({{'required'|translate}})"></textarea>
+    </div>
+    <div class="cui-organization__submit-row" disable-animate >
+      <span ng-click="orgApplicationDetails.dropDown.unsuspend=false" class="cursor__pointer" style="margin:5px">{{'cui-cancel' | translate}}</span>
+      <button class="cui-button" ng-class="{'cui-button--error' : !unsuspendApp.$valid}" ng-if="!base.loader.for['orgApplicationDetails.unsuspend'] && !base.apiError.for['orgApplicationDetails.unsuspend'] &&!orgApplicationDetails.unsuspendAppSuccess" ng-click="unsuspendApp.$valid&&orgApplicationDetails.unsuspendApplication()" style="margin:5px">{{'unsuspend' | translate}}</button>
+      <button class="cui-button" ng-if="base.loader.for['orgApplicationDetails.unsuspend']">
+        <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+      </button>
+      <button  class="cui-button" ng-class="{'cui-button--error' : !unsuspendApp.$valid}" ng-if="!base.loader.for['orgApplicationDetails.unsuspend'] && base.apiError.for['orgApplicationDetails.unsuspend']" ng-click="unsuspendApp.$valid&&orgApplicationDetails.unsuspendApplication()">{{'cui-error-try-again' | translate}}</button>
+      <button  class="cui-button" ng-if="!base.loader.for['orgApplicationDetails.unsuspend'] && orgApplicationDetails.unsuspendAppSuccess">{{'cui-success' | translate}}</button>
+    </div>
+  </ng-form>
+</div>

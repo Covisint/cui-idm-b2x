@@ -3,61 +3,50 @@
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
-<div ng-if="!userDetailsHistory.loading">
-	<!-- Status History -->
-	<div>
-		<!-- Status History: Title -->
-		<div>
-			<h3>{{'cui-user-status-history'|translate}}</h3>
-		</div>
-		<!-- Status History: List -->
-		<p ng-if="userDetailsHistory.personStatusHistory.length===0">{{'cui-no-status-history'|translate}}</p>
-		<div ng-repeat="status in userDetailsHistory.personStatusHistory">
-			<p>{{status}}</p>
-		</div>
-	<div>
-
-	<!-- Application History -->
-	<div>
-		<!-- Action Header -->
-		<div class="cui-action">
-		<span class="cui-action__title">{{'cui-app-history'|translate}}</span>
-  		<div class="cui-action__actions">
-    		<!-- Sort -->
-    		<div class="cui-action__action-container" id="sort-button" ng-click="userDetailsHistory.sortClicked=!userDetailsHistory.sortClicked" off-click="userDetailsHistory.sortClicked=false">
-          <div>
-            <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-          </div>
-      		<!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
-      		</svg-->
-      		<span class="cui-action__action-label">{{'sort'|translate}}</span>
-      		<!-- Sort Popover -->
-      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#sort-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetailsHistory.sortClicked">
-        		<p>{{'cui-alphabetically' | translate}}</p>
-        		<p>{{'cui-by-date-added' | translate}}</p>
-      		</div>
-    		</div>
-    		<!-- Refine -->
-    		<div class="cui-action__action-container" id="refine-button" ng-click="userDetailsHistory.refineClicked=!userDetailsHistory.refineClicked" off-click="userDetailsHistory.refineClicked=false">
-                    
-          <div>
-            <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-card__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-          </div>
-					<!--svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
-        		<use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#filter10"></use>
-      		</svg-->
-      		<span class="cui-action__action-label">{{'refine'|translate}}</span>
-      		<!-- Refine Popover -->
-      		<div class="cui-popover cui-popover--top cui-popover__sort-popover" tether target="#refine-button" attachment="top middle" target-attachment="bottom middle" offset="-10px 0" ng-if="userDetailsHistory.refineClicked">
-        		<p>TODO: REFINE</p>
-      		</div>
-    		</div>
-  		</div>
-		</div>
-		<!-- Applicatiom History: List -->
-		<div>
-			<p>API Blocker: Application History List</p>
-		</div>
-	</div>
+<div class="cui-users__history-container" ng-if="!userDetailsHistory.loading">
+        <!-- Error Messages -->
+        <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userHistoryFactory.initStatusHistory']">{{'cui-userstatus-history-error' | translate}} {{'cui-try-again'|translate}}</p>
+        <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['userHistoryFactory.initPasswordChangeHistory']">{{'cui-password-change-log-error' | translate}} {{'cui-try-again'|translate}}</p>
+        <!-- History Info -->
+        <div class="cui-users__profile cui-users__history">
+            <!-- Left Block -->
+            <div class="cui-users__profile-info">
+                <div class="cui-action">
+                    <div class="cui-action__title">{{'cui-status-history'|translate}}</div>
+                </div>
+                <div class="cui-users__info-block">
+                    <div class="cui-users__last-login">{{'cui-last-login' | translate}}: {{userDetails.user.lastLoginDate | date:base.appConfig.dateFormat}}</div>
+                </div>
+                <div class="cui-users__info-block">
+                    <div ng-repeat="status in userDetailsHistory.statusHistory">
+                        <span class="cui-field-val__field">{{status.status|lowercase}}</span>
+                        <span class="cui-field-val__val">: {{status.lastUpdatedDate}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Block -->
+            <!-- Admin cannot see users password change log -->
+            <!-- <div class="cui-users__profile-info">
+                <div class="cui-action">
+                    <div class="cui-action__title">{{'cui-password-change-log'|translate}}</div>
+                </div>
+                <p class="cui-users__password-success" style="color:#4a4a4a">{{'cui-no-details' | translate}}</p>
+                <table class="cui-table-alt" ng-if="userDetailsHistory.passwordChangeHistory&&userDetailsHistory.passwordChangeHistory.length!=0">
+                    <thead>
+                        <th>{{'cui-date'|translate}}</th>
+                        <th>{{'cui-event-type'|translate}}</th>
+                        <th>{{'cui-action-by'|translate}}</th>
+                        <th>{{'cui-notes'|translate}}</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="pwdChangeHistory in userDetailsHistory.passwordChangeHistory">
+                            <td>{{pwdChangeHistory.creation|date:base.appConfig.dateFormat}}</td>
+                            <td>{{pwdChangeHistory.eventType|lowercase}}</td>
+                            <td><span ng-if="pwdChangeHistory.passwordUpdatedUserId">{{userHistory.userName.given}} {{userHistory.userName.surname}}</span></td>
+                            <td>{{pwdChangeHistory.reason}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+        </div>
 </div>

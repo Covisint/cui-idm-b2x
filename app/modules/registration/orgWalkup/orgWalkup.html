@@ -1,0 +1,43 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to create this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/registration/orgWalkup" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<!-- Loading: Getting required registration data -->
+<div class="cui-loading__container--organization-list" ng-if="orgWalkup.initializing">
+  <div class="cui-loading--center"><div class="cui-loading"></div></div>
+</div>
+
+<div class="cui-form--mobile-steps" ng-if="!orgWalkup.initializing">
+  <div class="cui-form__title">{{'create-account' | translate}}</div>
+  <div class="cui-form__body">
+    <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators dirty-validation>
+      <indicator-container class="indicator-container indicator-container--icons"></indicator-container>
+
+      <ng-form name="orgWalkupRegForm" novalidate>
+        <step step-title="{{'cui-org-profile' | translate}}" icon="cui:list">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-orgProfile.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-user-profile' | translate}}" icon="cui:user">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-userProfile.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-org' | translate}}" icon="cui:skyscraper">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-organization.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-login' | translate}}" icon="cui:login">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-login.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-applications' | translate}}" icon="cui:applications">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-applications.html'"></div>
+        </step>
+
+        <step step-title="{{'cui-review' | translate}}" icon="cui:review">
+          <div ng-include="'app/modules/registration/orgWalkup/orgWalkup-steps/orgWalkup-review.html'"></div>
+        </step>
+      </ng-form>
+    </cui-wizard>
+  </div>
+</div>

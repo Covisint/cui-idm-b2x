@@ -24,7 +24,7 @@
       <!-- Status: Active -->
       <div class="cui-media__content">
         <span class="cui-media__content--dark">{{'status' | translate}}:</span>
-        <span class="cui-status" ng-class=" 'cui-status--'+orgDetails.organization.status ">{{orgDetails.organization.status}}</span>
+        <span class="cui-status" ng-class=" 'cui-status--'+orgDetails.organization.status ">{{orgDetails.organization.status | lowercase | translate}}</span>
       </div>
     </div>
   </div>
@@ -44,25 +44,7 @@
             user-entitlements="base.user.entitlements">
             {{'suspend' | translate}}
     </button> -->
-
-
-    <!-- unlock user -->
-
-      <!--   <cui-button 
-        disable-animate 
-        ng-if="orgDetails.passwordAccount.locked&&(orgDetails.user.status==='active'||orgDetails.user.status==='locked')"
-        loading-if="base.loader.for['orgDetails.unlockUser']"
-        success-if="orgDetails.unlockUserSuccess"
-        error-if="base.apiError.for['orgDetails.unlockUser']"
-        button-click="orgDetails.unlockUser()"
-        loading-message="{{'cui-button-loading-text'|translate}}"
-        error-message="{{'cui-error-try-again'|translate}}"
-      >
-        <button class="cui-button cui-button--inverted"
-        >
-          {{'cui-unlock' | translate}}
-        </button>
-      </cui-button> -->
+    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status=='active'" ng-click="orgDetails.toggleDropDown('suspend')">{{'suspend' | translate}}</button>
 
     <!-- Unsuspend -->
     <!--   <button class="cui-button cui-button--inverted" 
@@ -72,6 +54,10 @@
             user-entitlements="base.user.entitlements">
             {{'unsuspend' | translate}}
     </button> -->
+    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status==='suspended'" ng-click="orgDetails.toggleDropDown('unsuspend')">{{'unsuspend' | translate}}</button>
+    
+    <!-- Remove -->
+    <button class="cui-button cui-button--inverted" ng-if="base.accessToSecurityAndExchangeAdmins()&&orgDetails.organization.status==='suspended'" ng-click="orgDetails.toggleDropDown('remove')">{{'remove' | translate}}</button>
 
     <!-- New Grants -->
      <button class="cui-button cui-button--inverted" ng-if="base.canGrantAppToOrg()" ng-disabled="orgDetails.organization.status!=='active'" ui-sref="organization.requests.newOrgGrant({orgId:orgId})" ng-class="(orgDetails.organization.status!=='active')?'cui-button--error':''">{{'new-grants' | translate}}</button>
@@ -80,12 +66,17 @@
 </div>
 
 <!-- Suspend Partial -->
-<ng-include ng-if="orgDetails.suspend.begun"
-  src="'app/modules/organization/directory/org-details/sections/headers/partials/suspend-user.html'">
+<ng-include 
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/suspend-body.html'">
 </ng-include>
 
 <!-- Unsuspend Partial -->
-<ng-include ng-if="orgDetails.unsuspend.begun"
-  src="'app/modules/organization/directory/org-details/sections/headers/partials/unsuspend-user.html'">
+<ng-include 
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/unsuspend-body.html'">
+</ng-include>
+
+<!-- Remove Partial -->
+<ng-include 
+  src="'app/modules/organization/directory/org-details/sections/headers/partials/remove-body.html'">
 </ng-include>
 <br/>

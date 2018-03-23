@@ -919,5 +919,62 @@
     "accepts": "application/vnd.com.covisint.platform.password.v1+json",
     "contentType":" application/vnd.com.covisint.platform.password.v1+json",
     "call": "/authn/v4/passwords/tasks/unlock"
+  },
+  {
+    "cmd": "retriveOrgPendingAppsCount",
+    "cmdType": "secured",
+    "call": "/service/v3/organizations/requests/count",
+    "type": "GET",
+    "accepts": "text/plain"
+  },
+  {
+    "cmd": "removePersonRoles",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/remove/roles",
+    "type": "POST",
+    "accepts": "application/vnd.com.covisint.platform.person.remove.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.person.remove.v1+json"
+  },
+  {
+    "cmd": "suspendOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/suspend",
+    "type": "POST"
+  },
+  {
+    "cmd": "unsuspendOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/unsuspend",
+    "type": "POST"
+  },
+  {
+    "cmd": "removeOrg",
+    "cmdType": "secured",
+    "call": "/organization/v3/organizations/tasks/remove",
+    "type": "POST"
+  },
+  {
+    "cmd": "getOrgAppsGrantHistory",
+    "call": "/service/v3/applications/organizations/{organizationId}/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.grant.history.v1+json"
+  },
+  {
+    "cmd": "getOrgAppsRequestHistory",
+    "call": "/service/v3/organizations/{organizationId}/applications/requests/history",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.service.application.request.history.v1+json"
+  },
+  {
+    "cmd": "getOrgstatusHistory",
+    "call": "/organization/v3/organizations/statusHistory",
+    "type": "GET",
+    "accepts": "application/vnd.com.covisint.platform.organization.status.history.v1+json"
+  },
+  {
+    "cmd": "removePerson",
+    "cmdType": "secured",
+    "call": "/person/v3/persons/{personId}",
+    "type": "DELETE"
   }
 ]

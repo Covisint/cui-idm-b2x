@@ -47,7 +47,7 @@
         
         <!-- Admins -->
         <h4 class="cui-field-val__field" ng-if="orgDetailsProfile.securityAdmins&&orgDetailsProfile.securityAdmins.length!==0">{{'cui-security-admin' | translate}}</h4>
-        <div class="cui-organization__admin-block" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
+        <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-repeat="admin in orgDetailsProfile.securityAdmins track by admin.id">
           <!-- Name -->
           <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-name' | translate}}: </span>
@@ -72,6 +72,49 @@
           <div class="cui-field-val">
             <span class="cui-field-val__field">{{'cui-email' | translate}}: </span>
             <span class="cui-field-val__val"><a class="cui-link" href="mailto:{{admin.email}}">{{admin.email}}</a></span>
+          </div>
+        </div>
+
+        <!-- Status History -->
+        <div class="cui-organization__admin-block cui-organization__admin-block__right" ng-if="orgDetailsProfile.statusHistory">
+          <div class="cui-action">
+            <h3 class="cui-action__title ">{{'status-history' | translate}}:</h3>
+            <div class="cui-action__actions">
+                <!-- Refine -->
+                <div class="cui-action__action-container" ng-click="orgDetailsProfile.refineClicked =! orgDetailsProfile.refineClicked" id="refine-button" off-click="orgDetailsProfile.refineClicked=false">
+                  <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+                  <span class="cui-action__action-label">{{'refine' | translate}}</span>
+                  <!-- Refine Popover -->
+                  <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="orgDetailsProfile.refineClicked" style="width:214px">
+                    <div class="cui-popover__row">
+                      <span ng-click="orgDetailsProfile.updateSearch()">{{'all' | translate}}</span>
+                    </div>
+                    <div class="cui-popover__row">
+                      <span ng-click="orgDetailsProfile.updateSearch('active')">{{'active' | translate}}</span>
+                    </div>
+                    <div class="cui-popover__row">
+                      <span ng-click="orgDetailsProfile.updateSearch('suspended')">{{'suspended' | translate}}</span>
+                    </div>
+                    <div class="cui-popover__row">
+                      <span ng-click="orgDetailsProfile.updateSearch('inactive')">{{'inactive' | translate}}</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="custom-loading__container">
+            <!-- status loading -->
+            <div class="cui-loading__container" ng-if="base.loader.for['orgDetailsProfile.status']">
+              <div class="cui-loading--center"><div class="cui-loading"></div></div>
+            </div>
+            <!-- status error -->
+            <p class="cui-users__password-success" style="color:red" ng-if="base.apiError.for['orgDetailsProfile.status']">{{'error-generic' | translate}}</p>
+            <!-- status content -->
+            <p class="cui-users__password-success" ng-if="orgDetailsProfile.statusHistory.length===0">{{'no-records' | translate}}</p>
+            <div class="cui-field-val" ng-repeat=" status in orgDetailsProfile.statusHistory">
+              <span class="cui-field-val__field">{{status.status|lowercase}}: </span>
+              <span class="cui-field-val__val">{{status.creation |date:base.appConfig.dateFormat}}</span>
+            </div>
           </div>
         </div>
       </div>

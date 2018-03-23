@@ -1,10 +1,10 @@
 angular.module('applications')
-.controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout','$state','$q','localStorageService',function($scope,API,AppRequests,$timeout,$state,$q,localStorage) {
+.controller('applicationReviewCtrl',['$scope','API','AppRequests','$timeout','$state','$q','DataStorage',function($scope,API,AppRequests,$timeout,$state,$q,DataStorage) {
 
     let applicationReview=this;
 
-    if(Object.keys(AppRequests.get()).length===0 && localStorage.get('appsBeingRequested')) {
-        AppRequests.set(localStorage.get('appsBeingRequested'));
+    if(Object.keys(AppRequests.get()).length===0 && DataStorage.getType('appsBeingRequested')) {
+        AppRequests.set(DataStorage.getType('appsBeingRequested'));
     }
 
     let appRequests=angular.copy(AppRequests.get());
@@ -106,7 +106,7 @@ angular.module('applications')
             applicationReview.attempting = false;
             applicationReview.success = true;
             AppRequests.clear(); // clears app requests if the request goes through
-            localStorage.set('appsBeingRequested',{});
+            DataStorage.deleteType('appsBeingRequested');
             $timeout(() => {
                 $state.go('applications.myApplications');
             }, 3000);

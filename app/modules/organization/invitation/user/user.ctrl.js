@@ -60,7 +60,7 @@ angular.module('organization')
     user.customErrors = {
       email: {
           email: function(){
-              var EMAIL_REGEXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i;
+              var EMAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
               if (user.email) {
                   return EMAIL_REGEXP.test(user.email)
               }else{
@@ -75,7 +75,7 @@ angular.module('organization')
       const validEmails=[]
       user.emailAddressError=false
       user.sendInvitationError=false
-      var EMAIL_REGEXP = /^[a-z0-9!#$%&*?_.-]+@[a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+[.][a-z0-9!#$%&*?_.-][a-z0-9!#$%&*?_.-]+/i;
+      var EMAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       user.emailArray=new Array()
       user.emailArray=user.emailAddress.split(',')      
       angular.forEach(user.emailArray,function(email){
@@ -125,6 +125,18 @@ angular.module('organization')
         user.userSelectedOrg.originalObject.id=org.id
         user.selectOrgFromList=false
         $scope.$digest()
+    }
+
+    user.searchOrgs = (str,promise) => {
+      let deferred=$q.defer()
+      API.cui.getOrganizations({qs:[['name',str]]})
+      .then(res => {
+        deferred.resolve(res)
+      })
+      .fail(err => {
+        deferred.reject(err)
+      })
+      return deferred.promise
     }
 
 })

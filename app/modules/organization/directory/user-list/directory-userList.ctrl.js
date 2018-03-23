@@ -109,8 +109,8 @@ angular.module('organization')
             case 'name':
                 switchBetween('sortBy', '+name.given', '-name.given')
                 break
-            case 'username':
-                switchBetween('sortBy', '+person.username', '-person.username')
+            case 'activated':
+                switchBetween('sortBy', '+activatedDate', '-activatedDate')
                 break
             case 'status':
                 switchBetween('sortBy', '+person.status', '-person.status')

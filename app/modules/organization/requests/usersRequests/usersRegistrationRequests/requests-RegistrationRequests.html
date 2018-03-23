@@ -27,19 +27,20 @@
     <div class="cui-loading__container" ng-if="base.loader.for['usersRegistrationRequests.data']">
       <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
     </div>
-
-    <div class="cui-action cui-action--alt">
-      <div class="cui-radio cui-radio--basic-ltr">
-          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="usersRegistrationRequests.searchBy" value="person">
-          <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'people' | translate}}</label>
-          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="usersRegistrationRequests.searchBy" value="org">
-          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'organizations' | translate}}</label>
-      </div>&nbsp;
-      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
-          <input class="cui-input-button__input" ng-model="usersRegistrationRequests.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="usersRegistrationRequests.updateSearchByName"/>
-          <button class="cui-input-button__button" ng-click="usersRegistrationRequests.updateSearchByName()">{{'search' | translate}}</button>
+    <div class="global-search">
+      <div class="cui-action cui-action--alt">
+        <div class="cui-radio cui-radio--basic-ltr">
+            <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="usersRegistrationRequests.searchBy" value="person">
+            <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'people' | translate}}</label>
+            <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="usersRegistrationRequests.searchBy" value="org">
+            <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'organizations' | translate}}</label>
+        </div>&nbsp;
+        <div class="cui-input-button cui-input-button--alt-bg">
+            <input class="cui-input-button__input" ng-model="usersRegistrationRequests.searchValue" focus-if placeholder="{{'search' | translate}}" on-enter="usersRegistrationRequests.updateSearchByName"/>
+            <button class="cui-input-button__button" ng-click="usersRegistrationRequests.updateSearchByName()">{{'search' | translate}}</button>
+        </div>
       </div>
-</div>
+    </div>
 
     <cui-table-header 
       headers="['cui-name', 'submitted', 'application', 'division']"

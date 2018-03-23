@@ -1,0 +1,188 @@
+<!-- processHTML:remove -->
+<div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/administation/applications" target="blank">here</a>.</div>
+<!-- /processHTML -->
+
+<div class="cui-administration cui-manage-apps">
+	<!-- Action Header -->
+	<div class="cui-action">
+	  	<nav ng-include="'app/modules/administration/partials/breadcrumbs.html'"></nav>
+	    <nav ng-include="'app/modules/administration/partials/mobileNav.html'"></nav>
+	    <div class="cui-action__actions">
+		    <!-- Sort -->
+		    <div class="cui-action__action-container" ng-click="manageAllApplications.sortClicked =! manageAllApplications.sortClicked" id="sort-button" off-click="manageAllApplications.sortClicked=false">
+		      <cui-icon cui-svg-icon="fa:sort14" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+		      <span class="cui-action__action-label">{{'sort' | translate}}</span>
+		      <!-- Sort Popover -->
+		      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" attachment="top middle" target-attachment="bottom middle" ng-if="manageAllApplications.sortClicked" style="width:171px">
+		        <!-- <div class="cui-popover__row">
+		          <span ng-click="manageAllApplications.updateSearch('alphabetic')">{{'cui-alphabetically' | translate}}</span>
+		        </div> -->
+		        <div class="cui-popover__row">
+		          <span ng-click="manageAllApplications.updateSearch('date')">{{'cui-by-date-added' | translate}}</span>
+		        </div>
+		      </div>
+		    </div>
+
+		    <!-- Categories -->
+		    <div class="cui-action__action-container" ng-click="manageAllApplications.categoriesClicked =! manageAllApplications.categoriesClicked" id="categories-button" off-click="manageAllApplications.categoriesClicked=false">
+		      <cui-icon cui-svg-icon="cui:categories" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet"></cui-icon>
+		      <span class="cui-action__action-label">{{'categories' | translate}}</span>
+		      <!-- Categories Popover -->
+		      <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#categories-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="manageAllApplications.categoriesClicked" ng-click="manageAllApplications.categoriesClicked=false" style="width:214px">
+		        <div class="cui-popover__row cui-popover--row__flex">
+		          <span ng-click="manageAllApplications.updateSearch('category')">{{'all' | translate}}</span>
+		          <span>({{manageAllApplications.popupCount}})</span>
+		        </div>
+		        <div class="cui-popover__row cui-popover--row__flex" ng-repeat="category in manageAllApplications.categories">
+		          <span ng-click="manageAllApplications.updateSearch('category', category.name)">{{category.name | cuiI18n}}</span>
+		          <span>({{category.count}})</span>
+		        </div>
+		      </div>
+		    </div>
+
+		    <!-- new icon -->
+		    <svg ui-sref="administration.applications.createPackage" xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icon--new" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+		      <defs>
+		        <ellipse id="path-1" cx="20" cy="19.672" rx="20" ry="19.672"/>
+		        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+		          <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>
+		          <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+		          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.27 0" in="shadowBlurOuter1"/>
+		        </filter>
+		      </defs>
+		      <g id="new-with-shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		        <g id="New-2" transform="translate(3.000000, 1.000000)">
+		            <g id="Oval-73">
+		              <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+		              <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
+		            </g>
+		            <path d="M22.1371429,17.5349883 L22.1371429,11.8697421 C22.1371429,10.7562937 21.2419442,9.86229506 20.1376608,9.86229506 L19.8623392,9.86229506 C18.7484919,9.86229506 17.8628571,10.7610597 17.8628571,11.8697421 L17.8628571,17.5349883 L12.197611,17.5349883 C11.0841625,17.5349883 10.1901639,18.4301869 10.1901639,19.5344704 L10.1901639,19.8097919 C10.1901639,20.9236392 11.0889286,21.809274 12.197611,21.809274 L17.8628571,21.809274 L17.8628571,27.4745202 C17.8628571,28.5879686 18.7580558,29.4819672 19.8623392,29.4819672 L20.1376608,29.4819672 C21.2515081,29.4819672 22.1371429,28.5832026 22.1371429,27.4745202 L22.1371429,21.809274 L27.802389,21.809274 C28.9158375,21.809274 29.8098361,20.9140754 29.8098361,19.8097919 L29.8098361,19.5344704 C29.8098361,18.4206231 28.9110714,17.5349883 27.802389,17.5349883 L22.1371429,17.5349883 Z" id="Rectangle-352" fill="#FFFFFF" fill-rule="evenodd"></path>
+		        </g>
+		      </g>
+		    </svg>
+		</div>
+  	</div>
+  	<div class="cui-action" style="justify-content: space-between">
+  		<span class="cui-action__title">{{'manage-applications' | translate}}</span>
+
+  		<div class="cui-input-button cui-input-button--alt-bg">
+		    <input class="cui-input-button__input" ng-model="manageAllApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageAllApplications.updateSearchByName"/>
+		    <button class="cui-input-button__button" ng-click="manageAllApplications.updateSearchByName()">{{'search' | translate}}</button>
+		</div>
+		<div class="cui-action__actions">
+			<div class="cui-action__action-container">
+				<button class="cui-button cui-button--small-rounded cui-button--inverted" ng-click="manageAllApplications.expandAll()">Expand All</button>
+			</div>
+			<div class="cui-action__action-container">	
+				<button class="cui-button cui-button--small-rounded cui-button--inverted" ng-click="manageAllApplications.collapseAll()">Collapse All</button>
+			</div>
+			
+			
+		</div>
+  	</div>
+	<div class="cui-applications__main-container">
+
+		<!-- Loading -->
+	    <div class="cui-loading__container" ng-if="base.loader.for['manageAllApplications.packages']">
+	      <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
+	    </div>
+	    <!-- No applications message -->
+  		<p ng-if="!base.apiError.for['manageAllApplications.packages']&&manageAllApplications.packages.length===0" class="cui-info-msgs">{{'no-apps-found' | translate}} {{'refine-search' | translate}}</p>
+  		<!-- Error Message -->
+  		<p class="cui-info-msgs cui-info-msgs__error" ng-if="base.apiError.for['manageAllApplications.packages']">{{'error-generic'|translate}}</p>
+		<cui-table-header ng-if="manageAllApplications.packages.length!==0" headers="['cui-name', 'federation-conn' , 'updated-date', 'cui-delete']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
+      	</cui-table-header>
+
+    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id">
+
+    	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="package.expanded"ng-class="package.expanded?'expanded':''" transition-speed="150">
+            <cui-expandable-title>
+                <li class="cui-flex-table__tr cui-flex-table__tr--c">
+            	<div class="cui-flex-table__avatar-col" ng-class="{'cui-hide__opacity':package.services.length===0}">
+            		<svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="package.expanded=!package.expanded">
+                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26" ng-if="!package.expanded"></use>
+                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#minus20" ng-if="package.expanded"></use>
+                	</svg>
+		        </div>
+		        <div class="cui-flex-table__mobile-stack">
+		        	<div class="cui-flex-table__left" >
+		                <span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditPackage(package)">{{package.name | cuiI18n}}</span>
+		            </div>
+                <div class="cui-flex-table__middle">
+		            <span class="">{{package.realm}}</span>
+		        </div>
+		        <div class="cui-flex-table__middle">
+		            <span class="">{{package.version |date}}</span>
+		        </div>
+		        <div class="cui-flex-table__right" title="Delete Package">
+		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+		          </div>
+		        </div>
+		    </li>
+            </cui-expandable-title>
+            <cui-expandable-body class="cui-expandable__body" >
+                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) && !manageAllApplications.addServiceForm" style="margin-bottom:1em;">
+                	<div class="cui-flex-table__th cui-flex-table__th--c">
+			            <div class="cui-flex-table__avatar-col"></div>
+
+			            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+			                <div class="cui-flex-table__left" >{{'cui-service' |translate}} {{'cui-name' |translate}}</div>
+			                <div class="cui-flex-table__middle">
+			                    {{'cui-category' |translate}}
+					        </div>
+			                <div  class="cui-flex-table__middle">
+			                    {{'launch' |translate}}
+			                </div>
+			                <div  class="cui-flex-table__right">
+			                    {{'action' |translate}}
+			                </div>
+			            </div>
+        			</div>
+        			<div ng-repeat="service in package.services">
+	                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+	                    <div class="cui-flex-table__avatar-col">
+			          		<div class="cui-profile__user-avatar" aria-hidden="true" 
+			            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
+			            	cui-avatar-color-class-prefix="cui-avatar__color" 
+			            	cui-avatar-color-count="5"></div>
+			            </div>
+			            <div class="cui-flex-table__mobile-stack">
+			            	<div class="cui-flex-table__left">
+			            		<span class="cui-flex-table__title" ng-click="manageAllApplications.toggleEditService(service, package)">{{service.name | cuiI18n}}</span>
+			            	</div>
+			            	<div class="cui-flex-table__middle">
+			            		<span class="">{{service.category | cuiI18n}}</span>
+			            	</div>
+			            	<div class="cui-flex-table__middle">
+			            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
+			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+			            		</a>
+			            	</div>
+			            	<div class="cui-flex-table__right" ng-if="$index===0" ng-click="manageAllApplications.updateAddServiceForm(package)" title="Add Service">
+						        <cui-icon cui-svg-icon="cui:new" svg-class="cui-action__icon  cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+						      </div>
+						      <div class="cui-flex-table__right" ng-if="$index!==0" ng-click="manageAllApplications.deleteService(package,$index)" title="Delete Service">
+						        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+						      </div>
+			            </div>		            
+			            </li>
+			            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
+			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
+			        	</div>
+		        	</div>
+                </div>
+                <div class="cui-expandable__body-pane" ng-if="manageAllApplications.addServiceForm">
+                	<ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
+                </div>
+            </cui-expandable-body>
+        </cui-expandable1>
+
+    </cui-table-row>
+
+		<div class="cui-paginate__container" ng-if="!base.loader.for['manageAllApplications.count']">
+    		<span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+    		<results-per-page class="cui-paginate__select" ng-model="manageAllApplications.search.pageSize"></results-per-page>
+    		<paginate class="cui-paginate" results-per-page="manageAllApplications.search.pageSize" count="manageAllApplications.count" on-page-change="manageAllApplications.pageChange" ng-model="manageAllApplications.search.page" attach-rerender-to="manageAllApplications.reRenderPaginate"></paginate>
+  		</div>
+	</div>
+</div>

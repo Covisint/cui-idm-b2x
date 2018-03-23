@@ -1,6 +1,6 @@
 <cui-mobile-nav show-if="base.orgMobileNav" links="{
 		'organization.profile':{stateParams:{orgId:orgId},label:('cui-org-profile' | translate)},
-		'organization.hierarchy':{stateParams:{orgId:orgId},label:('cui-org-hierarchy' | translate)},
+		'organization.hierarchy':{stateParams:{orgId:orgId},label:('cui-org-hierarchy' | translate),access:base.accessToSecurityAndExchangeAdmins},
 		'organization.directory.userList':{stateParams:{orgId:orgId},label:('directory' | translate)},
 		'organization.applications':{stateParams:{orgId:orgId},label:('cui-applications' | translate)}
 	}" label="label|translate">

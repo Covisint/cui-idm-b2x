@@ -9,6 +9,51 @@
 <main class="global-search">
     <section class="cui-action">
     <div class="cui-action__title">{{'search' | translate}}</div>
+    <div class="cui-action__actions" ng-if="search.searchType==='people'">
+      <!-- Refine -->
+      <!-- <div class="cui-action__action-container" ng-click="search.refineClicked=!search.refineClicked" id="refine-button" off-click="search.refineClicked=false">
+        <cui-icon cui-svg-icon="fa:filter10" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
+        <span class="cui-action__action-label">{{'refine' | translate}}</span> -->
+        <!-- Refine Popover -->
+        <!-- <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#refine-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-70px'}, 'any']" ng-if="search.refineClicked" style="width:214px">
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('all')">{{'all' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('active')">{{'active' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('pending')">{{'pending' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('locked')">{{'locked' | translate}}</span>
+          </div>
+          <div class="cui-popover__row cui-popover--row__flex">
+            <span ng-click="search.actionCallbacks.refine('suspended')">{{'suspended' | translate}}</span>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Sort -->
+      <div ng-show="1==1" class="cui-action__action-container" ng-click="search.sortClicked=!search.sortClicked" id="sort-button" off-click="search.sortClicked=false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="cui-action__icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146">
+          <use xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#sort14"></use>
+        </svg>
+        <span class="cui-action__action-label">{{'sort' | translate}}</span>
+        <!-- Sort Popover -->
+        <div cui-popover class="cui-popover cui-popover--menu cui-popover--positionless" target="#sort-button" pointer-height="13" pointer-width="10" popover-positions="[{position:'bottom',contentOffset:'-40px'}, 'any']" ng-if="search.sortClicked" style="width:171px">
+          <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('name')">{{'cui-alphabetically' | translate}}</span>
+          </div>
+          <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('activated')">{{'cui-by-date-added' | translate}}</span>  
+          </div>
+          <!-- <div class="cui-popover__row">
+            <span ng-click="search.actionCallbacks.sort('status')">{{'status' | translate}}</span>
+          </div> -->
+        </div>
+      </div>
+    </div>
     </section>
     <!-- <section class="cui-action"> -->
     <div class="cui-action cui-action--alt">
@@ -18,7 +63,7 @@
           <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="search.searchType" value="organizations" ng-change="search.searchNow(true)">
           <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'organizations' | translate}}</label>
       </div>&nbsp;
-      <div class="cui-input-button cui-input-button--alt-bg" style="width:350px">
+      <div class="cui-input-button cui-input-button--alt-bg">
           <input class="cui-input-button__input" ng-model="search.searchterms" focus-if placeholder="{{'search' | translate}}" on-enter="search.searchNow"/>
           <button class="cui-input-button__button" ng-click="search.searchNow(true)">{{'search' | translate}}</button>
       </div>
@@ -29,7 +74,7 @@
           <div class="cui-loader cui-loader--content" ng-include="'app/common-templates/partials/loader-content.html'"></div>
         </div>
         <!-- No Results -->
-        <p class="cui-users__password-success" ng-if="search.noRecords">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
+        <p class="cui-users__password-success" ng-if="search.noRecords&&!search.pageError">{{'no-records'|translate}} {{'refine-search' | translate}}</p>
         <!-- Error Message -->
         <p class="cui-users__password-success" style="color:red" ng-if="search.pageError">{{'error-generic' | translate}}</p>
         <div ng-if="!base.loader.for['search.loading'] && !search.pageError && !search.noRecords" >
@@ -140,7 +185,7 @@
                             <!-- Status -->
                             <div class="cui-flex-table__right ">
                                 <span class="cui-mobile-only ">{{'apps' | translate}} ({{org.appCount}}) &nbsp;</span>
-                                <span ng-class=" 'cui-status--'+user.status ">{{org.status}}</span>
+                                <span ng-class=" 'cui-status--'+org.status ">{{org.status}}</span>
                             </div>
                         </div>
                     </li>

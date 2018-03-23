@@ -20,6 +20,7 @@ angular.module('organization')
             orgDetailsProfile.securityAdmins = res.admins
             orgDetailsProfile.passwordPolicy = res.passwordPolicy
             orgDetailsProfile.authenticationPolicy=res.authenticationPolicy
+            orgDetailsProfile.statusHistory=res.statusHistory
             Loader.offFor('orgDetailsProfile.init')
         })
         .catch(err => {
@@ -35,5 +36,22 @@ angular.module('organization')
     })
 
     /* --------------------------------------------- ON LOAD END ---------------------------------------------- */
+    /* --------------------------------------------- ON CLICK START ---------------------------------------------- */
+
+    orgDetailsProfile.updateSearch = (status) => {
+        Loader.onFor('orgDetailsProfile.status')
+        Organization.getOrganizationStatusHistory(orgDetailsProfile.organization.id,status)
+        .then(res => {
+            orgDetailsProfile.statusHistory=res
+        })
+        .catch(err => {
+            APIError.onFor('orgDetailsProfile.status')
+        })
+        .finally(() =>{
+            Loader.offFor('orgDetailsProfile.status')
+        })
+    }
+
+    /* --------------------------------------------- ON CLICK END ---------------------------------------------- */
 
 })

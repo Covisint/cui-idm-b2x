@@ -1,0 +1,142 @@
+<ng-form name="claims" novalidate>
+  <!-- List Claims -->
+  <div class="cui-flex-table__th cui-flex-table__th--c">
+    <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
+    <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+      <div class="cui-flex-table__left" >{{'cui-id'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'cui-name'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'description'|translate}}</div>
+      <div  class="cui-flex-table__right">{{'cardinality-indicator'|translate}}</div>
+    </div>
+  </div>
+    <cui-table-row ng-repeat="claim in editPackage.claims">
+      <li class="cui-flex-table__tr cui-flex-table__tr--c">
+        <div class="cui-flex-table__avatar-col">
+          
+        </div>
+        <div class="cui-flex-table__mobile-stack">
+           <div class="cui-flex-table__left">
+            <span class="">{{claim.claimId}}</span>
+          </div>
+          <div class="cui-flex-table__middle">
+            <span class="">{{claim.name|cuiI18n}}</span>
+          </div>
+
+          <div class="cui-flex-table__middle">
+            <span class="">{{claim.description|cuiI18n}}</span>
+          </div>
+          <!-- Idicator field name need to be changed according to API as of now no support -->
+          <div class="cui-flex-table__right">
+            <span class="">{{claim.indicator}}</span>
+          </div>
+        </div>
+      </li>
+    </cui-table-row>
+
+  <!-- Add Claims -->
+  <div class="cui-wizard__field-row">
+    <!-- Id -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-given">{{'id' | translate}}</label>
+      <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="editPackage.tampClaim.claimId"/>
+    </div>
+
+    <!-- Name -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cui-name' | translate}}</label>
+      <div class="cui-error" ng-messages="claims.name.$error" ng-if="claims.name.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="editPackage.tampClaim.name" name="name" class="cui-input" ng-required="true"/>
+    </div>
+  </div>
+  
+  <div class="cui-wizard__field-row">
+    <!-- claim Description -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'description' | translate}}</label>
+      <div class="cui-error" ng-messages="claims.description.$error" ng-if="claims.description.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" ng-model="editPackage.tempClaim.description" name="description" class="cui-input" ng-required="true"/>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cardinality-indicators' | translate}}</label>
+      <div class="cui-radio cui-radio--basic-ltr radio-form">
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="editPackage.tempClaim.indicator" value="one" ng-change="editPackage.indicatorChange('one')">
+          <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'cui-one' | translate}}</label>
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="editPackage.tempClaim.indicator" value="many" ng-change="editPackage.indicatorChange('many')">
+          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'cui-many' | translate}}</label>
+      </div>
+    </div>
+  </div>
+  <!-- List Claims Values-->
+
+  <!-- Add Claims Values -->
+  <cui-expandable class="cui-expandable" ng-class="application.expanded?'expanded':''" transition-speed="150">
+    <cui-expandable-title class="cui-expandable__title cui-expandable__title--flex" >
+        <div class="cui-applications__expandable-info" ng-click="toggleExpand()">
+            <h3 class="cui-expandable__title-left"> {{'cui-add' | translate}} {{'claim-values' | translate}}</h3>
+        </div>
+        <div class="cui-expandable__title-end">
+
+        </div>
+        <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-icon cui-icon--light-grey chevron" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="toggleExpand()">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#chevron18"></use>
+        </svg>
+    </cui-expandable-title>
+    <cui-expandable-body class="cui-expandable__body" >
+        <div class="cui-expandable__body-pane">
+            <span class="cui-expandable__body-close" ng-click="collapse()">
+                <cui-icon cui-svg-icon="cui:close-no-fill" svg-class="cui-action__icon" viewbox="0 0 48 53" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+            </span>
+            <div class="form-container__expandable">
+
+              <div class="cui-wizard__field-row">
+                <!-- Id -->
+                <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                  <label for="user-name-given">{{'id' | translate}}</label>
+                  <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
+                    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+                  </div>
+                  <input type="text" name="id" class="cui-input" ng-required="true" ng-model="editPackage.claims.name.given"/>
+                </div>
+
+                <!-- Name -->
+                <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                  <label for="user-name-surname">{{'cui-name' | translate}}</label>
+                  <div class="cui-error" ng-messages="claims.name.$error" ng-if="claims.name.$dirty">
+                    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+                  </div>
+                  <input type="text" ng-model="editPackage.claims.name.surname" name="name" class="cui-input" ng-required="true"/>
+                </div>
+              </div>
+              <div class="cui-wizard__field-row">
+                <!-- Description -->
+                <div class="cui-wizard__field-container cui-wizard__field-container--half">
+                  <label for="user-name-surname">{{'description' | translate}}</label>
+                  <div class="cui-error" ng-messages="claims.description.$error" ng-if="claims.description.$dirty">
+                    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+                  </div>
+                  <input type="text" ng-model="editPackage.claims.name.surname" name="description" class="cui-input" ng-required="true"/>
+                </div>
+              </div>
+              <div class="cui-wizard__controls cui-wizard__controls--clear">
+                <a class="cui-link cui-form__cancel" href="" ng-click="toggleOff()">{{'cui-cancel' | translate}}</a>
+                <button class="cui-button" ng-class="{ 'cui-button--error': !basicInfo.$valid }">{{'cui-save' | translate}}</button>
+              </div>
+            </div>
+        </div>
+    </cui-expandable-body>
+  </cui-expandable>
+
+  <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-add' | translate}} {{'cui-claim' | translate}}</button>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__previous" ng-if="!wizardFinished" ng-click="previous()">&#60;&#60; {{'cui-previous' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="next()">{{'cui-next' | translate}}</button>
+  </div>
+</div>

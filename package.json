@@ -1,6 +1,6 @@
 {
   "name": "@covisint/cui-idm-b2x",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "Covisint IDM B2X Solution Accelerator",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
@@ -53,11 +53,11 @@
   },
   "dependencies": {
     "@covisint/cui-api-interceptor": "1.0.5",
-    "@covisint/cui-ng": "^2.0.1",
-    "@covisint/cui-i18n": "1.0.34",
+    "@covisint/cui-ng": "^2.0.2",
+    "@covisint/cui-i18n": "1.0.42",
     "@covisint/cui-icons": "1.4.2",
     "@covisint/cui-styleguide": "3.0.4",
-    "@covisint/cui.js": "2.2.3",
+    "@covisint/cui.js": "2.2.4",
     "angular-animate": "1.5.9",
     "angular-local-storage": "^0.2.7",
     "angular-messages": "1.5.9",

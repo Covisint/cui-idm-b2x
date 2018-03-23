@@ -1,7 +1,9 @@
 /*
 Global layout styles
 */
-
+.snap-content{
+  overflow:inherit;
+}
 .cui-breadcrumb__link {
   .cui-breadcrumb__route {
     font-size: 0.75em !important;
@@ -186,4 +188,24 @@ Global layout styles
     margin-left: auto;
     display:flex;
   }
+}
+@media screen and (min-width:701px){
+  .cui-input-button--alt-bg{
+    width:350px;
+  }
+}
+@media screen and (max-width:700px){
+ .cui-input-button--alt-bg{
+  max-width:350px;
+} 
+}
+
+.cui-info-msgs{
+  color:#47cbb4;
+  text-align:center;
+  padding: 5px 0 5px;
+}
+
+.cui-info-msgs__error{
+  color:red !important
 }

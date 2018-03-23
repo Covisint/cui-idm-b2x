@@ -31,17 +31,17 @@
     <p class="cui-media__content">{{'cui-registered' | translate}}: {{pendingRequestsReview.user.creation | date:base.appConfig.dateFormat}}</p>
     <!-- status -->
     <div class="cui-media__content">
-      <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{pendingRequestsReview.user.status}}</a>
+      <span class="cui-media__content--dark">{{'status' | translate}}:</span><a href="" class="cui-media__link">{{pendingRequestsReview.user.status | lowercase | translate}}</a>
       <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="pendingRequestsReview.user.status==='active'"></cui-icon>
       <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ng-if="pendingRequestsReview.user.status==='locked'"></cui-icon>
     </div>
     <!-- Status: Active -->
     <!-- <p class="cui-media__content cui-status" ng-class="{'cui-status--active' : pendingRequestsReview.user.status==='active'}">
-      {{'status'|translate}}: {{pendingRequestsReview.user.status}}
+      {{'status'|translate}}: {{pendingRequestsReview.user.status | lowercase | translate}}
       <cui-icon cui-svg-icon="fa:unlock3" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
     </p> -->
     <!-- Status: Locked -->
-    <!-- <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='locked'">{{'status'|translate}}: {{pendingRequestsReview.user.status}}
+    <!-- <p class="cui-media__content" ng-if="pendingRequestsReview.user.status==='locked'">{{'status'|translate}}: {{pendingRequestsReview.user.status | lowercase | translate}}
       <cui-icon cui-svg-icon="fa:lock24" svg-class="cui-action__icon" use-class="" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet"></cui-icon>
     </p> -->
   </div>

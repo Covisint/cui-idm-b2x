@@ -2,7 +2,6 @@
     display:flex;
     color:$cui-font-color2;
     justify-content:flex-start;
-    word-break:break-word;
     flex-wrap: wrap;
     .cui-tile{
         border:1px solid $cui-primary-colors--medium;
@@ -61,7 +60,9 @@
         font-size: 1em;
         letter-spacing: 1.4px;
         padding-top: 0.5em;
-        word-break:break-all;
+        max-width:100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .cui-tile__footer{
         @extend %flex-row;

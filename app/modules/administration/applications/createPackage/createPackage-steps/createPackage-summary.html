@@ -1,0 +1,95 @@
+<ng-form name="summary" novalidate ng-if="createPackage.step===1" disable-animate>
+
+  <multi-language-field options="createPackage.packageViewData.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
+
+  <multi-language-field options="createPackage.packageViewData.description" name="'description'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
+  
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-requestable' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.requestable" id="radio-choice-requestable">
+        </radio-group>
+      </div>
+      <div>{{'is-requestable-desc' | translate}}</div>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-grantable' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.grantable" id="radio-choice-grantable">
+        </radio-group>
+      </div>
+      <div>{{'is-grantable-desc' | translate}}</div>
+    </div>
+
+  </div>
+
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'request-reason' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.requestReasonRequired" id="radio-choice-require">
+        </radio-group>
+      </div>
+      <div>{{'require-reason-desc' | translate}}</div>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-displayable' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.displayable" id="radio-choice-displayable">
+        </radio-group>
+      </div>
+      <div>{{'is-displayable-desc' | translate}}</div>
+    </div>
+
+  </div>
+
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'company-admin' | translate}} {{'approval' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.requireCompanyAdmin" id="radio-choice-company-admin">
+        </radio-group>
+      </div>
+      <div>{{'company-admin-desc' | translate}}</div>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'application-admin' | translate}} {{'approval' | translate}}</span>
+        </div>
+        <radio-group model="createPackage.packageViewData.requireAppAdmin" id="radio-choice-app-admin">
+        </radio-group>
+      </div>
+      <div>{{'application-admin-desc' | translate}}</div>
+    </div>
+
+  </div>
+
+  <div class="cui-wizard__field-row" >
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="createPackage.step=2">{{'add-claims' |translate}}</button>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="createPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
+    </div>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="createPackage.packageViewData.duplicateLanguage">
+    <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+    <button type="button" class="cui-wizard__next" ng-click="createPackage.checkDuplicateLanguages(createPackage.packageViewData)&&nextWithErrorChecking(summary);createPackage.next()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+  </div>
+</ng-form>
+
+<div ng-if="createPackage.step===2" ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>

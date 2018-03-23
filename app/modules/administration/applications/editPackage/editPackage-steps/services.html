@@ -1,0 +1,44 @@
+
+
+<!-- List services -->
+<div class="cui-flex-table__th cui-flex-table__th--c" style="font-weight:bold">
+  <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
+  <div class="cui-flex-table__avatar-col"></div>
+  <div class="cui-flex-table__mobile-stack">
+    <div class="cui-flex-table__left">{{'cui-name'|translate}}</div>
+    <div class="cui-flex-table__middle">{{'cui-category' |translate}}</div>
+    <div  class="cui-flex-table__right">{{'cui-delete'|translate}}</div>
+  </div>
+</div>
+<cui-table-row ng-repeat="service in editPackage.packageData.services">
+  <li class="cui-flex-table__tr cui-flex-table__tr--c">
+    <div class="cui-flex-table__avatar-col" ng-click="">
+      <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="editPackage.showServiceForm(service)">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#edit" ></use>
+      </svg>
+    </div>
+    <div class="cui-flex-table__avatar-col">
+                  <div class="cui-profile__user-avatar" aria-hidden="true" 
+                  cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
+                  cui-avatar-color-class-prefix="cui-avatar__color" 
+                  cui-avatar-color-count="5"></div>
+                </div>
+    <div class="cui-flex-table__mobile-stack">
+       <div class="cui-flex-table__left">
+        <span class="">{{service.name|cuiI18n}}</span>
+      </div>
+      <div class="cui-flex-table__middle">
+        <span class="">{{service.category|cuiI18n}}</span>
+      </div>
+      <div class="cui-flex-table__right">
+        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+      </div>
+    </div>
+  </li>
+</cui-table-row>
+
+  <div class="cui-form__body cui-form__body--alt" ng-if="editPackage.showServiceFormFlag">
+    <div class="cui-form__title">{{'cui-edit' | translate}} {{'cui-service' | translate}} -&gt; {{editPackage.tempServiceName | cuiI18n}}</div>
+    <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="scope=editPackage"></ng-include>
+  </div>
+  
