@@ -209,14 +209,54 @@ angular.module('administration')
 		createPackage.claims.splice(index,1)
 	}
 
+	// ******************* Value related *****************
+	createPackage.toggleEditValueForm = (selectedValue) => {
+		selectedValue.edit=!selectedValue.edit
+		createPackage.claimViewData.valueViewData = EditAndCreateApps.getValueViewData(selectedValue)
+		createPackage.claimViewData.values.forEach( value => {
+			if (value.id!==selectedValue.id) {
+				value.edit=false
+			}
+		})	
+		createPackage.claimViewData.addValueForm=false;
+	}
+	// On clicking edit value Cancel
+	createPackage.cancelValueEdit = () => {
+		createPackage.claimViewData.addValueForm=false;
+		// set editservice flag to false for services
+		createPackage.claimViewData.values&&createPackage.claimViewData.values.forEach( value => value.edit=false)
+	}
+
+	// On clicking edit service Add/Update
+	createPackage.saveValue = () => {
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(createPackage.claimViewData.valueViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedValue=EditAndCreateApps.buildValueData(createPackage.claimViewData.valueViewData)
+			selectedValue.edit=false
+			if (createPackage.claimViewData.valueViewData.edit) {
+				selectedValue.id=createPackage.claimViewData.valueViewData.id
+				 createPackage.claimViewData.values.forEach(value => {
+				 	if (value.id===selectedValue.id) {
+				 		angular.copy(selectedValue,value)
+				 	};
+				 })
+			}else{
+				createPackage.claimViewData.addValueForm=false
+				if (!createPackage.claimViewData.values) {
+					createPackage.claimViewData.values=[]
+				};
+				selectedValue.id=createPackage.claimViewData.values.length
+				createPackage.claimViewData.values.push(selectedValue)
+			}
+			
+		}
+	}
 	createPackage.updateAddClaimValueForm = () => {
-		createPackage.claimViewData.showClaimValue=true
+		createPackage.claimViewData.addValueForm=true
 		createPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
-		createPackage.claims.forEach( claim => {
-			if (claim.values) {
-				claim.values.forEach(value => value.edit=false)
-			};
-		})
+		if (createPackage.claimViewData.values) {
+			createPackage.claimViewData.values.forEach(value => value.edit=false)
+		};
 	}
 
 	createPackage.deleteClaimValue =  (index) => {
