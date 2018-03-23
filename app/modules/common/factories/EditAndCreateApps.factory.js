@@ -159,7 +159,8 @@ angular.module('common')
 			// assign access options and default Data
 			let data={
 				claimId:viewData.claimId,
-				indicator:viewData.indicator
+				indicator:viewData.indicator,
+				values:viewData.values
 			}
 			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
 			console.log(data)
@@ -173,6 +174,27 @@ angular.module('common')
 			viewData=EditAndCreateApps.initializeMultilanguageData(true,true,viewData)
 			viewData.claimId=data.claimId
 			viewData.indicator=data.indicator
+			viewData.values=data.values
+			return viewData
+		},
+
+		// ***************Claims related functions******************
+		buildValueData: (viewData,id) => {
+			// assign access options and default Data
+			let data={
+				claimValueId:viewData.claimValueId
+			}
+			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
+			console.log(data)
+			return data
+		},
+
+		// Manipulates the service Data to display properly in service Template form
+		getValueViewData: (data) => {
+			let viewData={}
+			angular.copy(data,viewData)
+			viewData=EditAndCreateApps.initializeMultilanguageData(true,true,viewData)
+			viewData.claimValueId=data.claimValueId
 			return viewData
 		}
 	}
