@@ -1,0 +1,25 @@
+<div class="cui-form__body cui-form__body--alt">
+  <ng-form name="value" no-validate>
+    <div class="cui-wizard__field-row">
+      <!-- Id -->
+      <div class="cui-wizard__field-container cui-wizard__field-container--half">
+        <label for="valueid">{{'id' | translate}}</label>
+        <div class="cui-error" ng-messages="value.valueid.$error" ng-if="value.valueid.$dirty">
+          <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+        </div>
+        <input type="text" name="valueid" class="cui-input" ng-required="true" ng-model="claimViewData.valueViewData.claimValueId"/>
+      </div>
+    </div>
+    <multi-language-field options="claimViewData.valueViewData.name" name="'valueName'" form="value"></multi-language-field>
+
+    <multi-language-field options="claimViewData.valueViewData.description" name="'valueDescription'" form="value"></multi-language-field>
+
+    <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="claimViewData.valueViewData.duplicateLanguage">
+      <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
+    </div>
+    <div class="cui-wizard__controls cui-wizard__controls--clear">
+      <a class="cui-link cui-form__cancel" href="" ng-click="cancelValue()">{{'cui-cancel' | translate}}</a>
+      <button class="cui-button" ng-class="{ 'cui-button--error': !value.$valid }" ng-click="value.$valid&&saveValue()">{{'cui-save' |translate}}{{scope}}</button>
+    </div>
+  </ng-form>
+</div>
