@@ -45,7 +45,7 @@ angular.module('common')
 			  <div class="cui-error" ng-messages="form[name].$error" ng-if="form[name].$dirty">
 			    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
 			  </div>
-			  <input type="text" name="{{name}}" class="cui-input" ng-required="{{options.required}}" ng-model="options.english"/>
+			  <input type="text" name="{{name}}" class="cui-input" ng-required="options.required" ng-model="options.english"/>
 			</div>
 			<div class="cui-wizard__field-container cui-wizard__field-container--half cui-wizard__field-container--button">
 			    <button class="cui-button" ng-click="options.languages.push({text:'',lang:''})">{{'cui-add' |translate}} {{'more-languages' |translate}}</button>
@@ -56,7 +56,7 @@ angular.module('common')
 			  <div class="cui-error" ng-messages="form[name+$index].$error" ng-if="form[name+$index].$dirty">
 			    <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
 			  </div>
-			  <input type="text" name="{{name+$index}}" class="cui-input" ng-required="{{options.required}}" ng-model="language.text"/>
+			  <input type="text" name="{{name+$index}}" class="cui-input" ng-required="options.required" ng-model="language.text"/>
 			</div>
 			<div class="cui-wizard__field-container cui-wizard__field-container--half cui-wizard__field-container--button">
 			    <cui-dropdown ng-model="language.lang" class="cui-dropdown" return-value="object.id" display-value="object.name" options="languages"></cui-dropdown>
