@@ -99,6 +99,14 @@ angular.module('administration')
 		angular.copy(createPackage.packageViewData.description, createPackage.serviceViewData.description)
 	}
 
+	createPackage.indicatorChange = ( indicator ) => {
+		if (indicator==="one"&&createPackage.claimViewData.values && createPackage.claimViewData.values.length>1) {
+			createPackage.indicatorError=true
+		}else{
+			createPackage.indicatorError=false
+			createPackage.indicatorErrorAddValue=false
+		}
+	}
 	// ******************Related to Service***********************
 	createPackage.toggleEditServiceForm = (selectedService) => {
 		selectedService.editService=!selectedService.editService
@@ -252,6 +260,16 @@ angular.module('administration')
 		}
 	}
 	createPackage.updateAddClaimValueForm = () => {
+		if (createPackage.claimViewData.indicator==="one"&&createPackage.claimViewData.values&&createPackage.claimViewData.values.length===1) {
+			createPackage.indicatorErrorAddValue=true
+			$timeout(() => {
+				createPackage.indicatorErrorAddValue=false
+			},3000)
+			return
+		}
+		else{
+			createPackage.indicatorErrorAddValue=false
+		}
 		createPackage.claimViewData.addValueForm=true
 		createPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		if (createPackage.claimViewData.values) {
