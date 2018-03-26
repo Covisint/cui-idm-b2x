@@ -7,7 +7,10 @@
         <div class="cui-error" ng-messages="value.valueid.$error" ng-if="value.valueid.$dirty">
           <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
         </div>
-        <input type="text" name="valueid" class="cui-input" ng-required="true" ng-model="claimViewData.valueViewData.claimValueId"/>
+        <div class="cui-error" ng-if="value.valueid.$error.duplicateValue && value.valueid.$dirty">
+        <div class="cui-error__message">{{'value-id-exists' | translate}}</div>
+      </div>
+        <input type="text" name="valueid" class="cui-input" ng-required="true" ng-model="claimViewData.valueViewData.claimValueId" custom-error="customErrors.duplicateValue"/>
       </div>
     </div>
     <multi-language-field options="claimViewData.valueViewData.name" name="'valueName'" form="value"></multi-language-field>

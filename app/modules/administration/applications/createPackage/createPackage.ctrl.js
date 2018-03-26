@@ -279,12 +279,30 @@ angular.module('administration')
 
 	createPackage.deleteClaimValue =  (index) => {
 		createPackage.claimViewData.values.splice(index,1)
+		if (createPackage.indicatorError&&createPackage.claimViewData.values.length<2) {
+			createPackage.indicatorError=false
+		};
+	}
+
+	createPackage.checkForValueDuplicates = () => {
+		createPackage.claimViewData.values.forEach
 	}
 
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
 // ERROR HANDLING FUNCTIONS START-------------------------------------------------------------------
 	createPackage.customErrors = {
+		duplicateValue:{
+			duplicateValue:function(){
+				return createPackage.claimViewData.values.every( value => {
+					if (createPackage.claimViewData.valueViewData.id!==value.id) {
+						return value.claimValueId!==createPackage.claimViewData.valueViewData.claimValueId
+					}else{
+						return true
+					}
+				})
+			}
+		},
         url: {
             url: function(){
                 var URL_REGEXP = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
