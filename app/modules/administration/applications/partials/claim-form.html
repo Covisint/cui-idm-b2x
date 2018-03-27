@@ -1,0 +1,87 @@
+<ng-form name="claims" novalidate>
+  <div class="cui-wizard__field-row">
+    <!-- Id -->
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="id">{{'id' | translate}}</label>
+      <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
+        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
+      </div>
+      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="scope.claimViewData.claimId"/>
+    </div>
+  </div>
+
+  <multi-language-field options="scope.claimViewData.name" name="'name'" form="claims"></multi-language-field>
+
+  <multi-language-field options="scope.claimViewData.description" name="'description'" form="claims"></multi-language-field>
+
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <label for="user-name-surname">{{'cardinality-indicator' | translate}}</label>
+      <div class="cui-error" ng-if="scope.indicatorError">
+        <div class="cui-error__message">{{'cardinality-indicator-error' | translate}}</div>
+      </div>
+      <div class="cui-radio cui-radio--basic-ltr radio-form">
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-yes" ng-model="scope.claimViewData.indicator" value="one" ng-change="scope.indicatorChange('one')">
+          <label class="cui-radio__label" for="radio-choice-basic-yes"><span></span>{{'cui-one' | translate}}</label>
+          <input class="cui-radio__input" type="radio" name="radio-choice-basic-yes" id="radio-choice-basic-no" ng-model="scope.claimViewData.indicator" value="many" ng-change="scope.indicatorChange('many')">
+          <label class="cui-radio__label" for="radio-choice-basic-no"><span></span>{{'cui-many' | translate}}</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- List Claims Values-->
+  <div class="cui-action cui-action__no-padding" ng-if="scope.claimViewData.values&&scope.claimViewData.values.length!==0">
+    <span class="cui-action__title"> {{'claim-values' | translate}}</span>
+  </div>
+  <div class="cui-flex-table__th cui-flex-table__th--c" ng-if="scope.claimViewData.values&&scope.claimViewData.values.length!==0">
+    <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
+    <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+      <div class="cui-flex-table__left" >{{'id'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'cui-name'|translate}}</div>
+      <div class="cui-flex-table__middle">{{'description'|translate}}</div>
+      <div  class="cui-flex-table__right">{{'action'|translate}}</div>
+    </div>
+  </div>
+  <cui-table-row ng-repeat="value in scope.claimViewData.values">
+    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+      <div class="cui-flex-table__avatar-col">
+        <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="scope.toggleEditValueForm(value)">
+          <use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#edit" ></use>
+        </svg>
+      </div>
+      <div class="cui-flex-table__mobile-stack">
+         <div class="cui-flex-table__left">{{value.claimValueId}}</div>
+        <div class="cui-flex-table__middle">{{value.name|cuiI18n}}</div>
+
+        <div class="cui-flex-table__middle">{{value.description|cuiI18n}}</div>
+        <div class="cui-flex-table__right" ng-click="scope.deleteClaimValue($index)">
+          <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+        </div>
+      </div>
+    </li>
+    <ng-include src="'app/modules/administration/applications/partials/claim-value-form.html'"  onload="claimViewData=scope.claimViewData;saveValue=scope.saveValue;cancelValue=scope.cancelValueEdit;customErrors=scope.customErrors;submitLabel='cui-save'" ng-if="value.edit"></ng-include>
+  </cui-table-row>
+
+  <!-- Add Claims Values -->
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half">
+      <div class="cui-error" ng-if="scope.indicatorErrorAddValue">
+        <div class="cui-error__message">{{'cardinality-indicator-error' | translate}}</div>
+      </div>
+      <button class="cui-button" ng-click="scope.updateAddClaimValueForm()">{{'cui-add' | translate}} {{'claim-values' | translate}}</button>
+    </div>
+  </div>
+  <ng-include src="'app/modules/administration/applications/partials/claim-value-form.html'"  onload="claimViewData=scope.claimViewData;saveValue=scope.saveValue;cancelValue=scope.cancelValueEdit;customErrors=scope.customErrors;submitLabel='cui-save'" ng-if="scope.claimViewData.addValueForm"></ng-include>
+
+  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="scope.claimViewData.duplicateLanguage">
+    <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear">
+      <a class="cui-link cui-form__cancel" href="" ng-click="scope.cancelClaimEdit()">{{'cui-cancel' | translate}}</a>
+      <button class="cui-button" ng-class="(claims.$invalid||scope.indicatorError||scope.indicatorAddValue)? 'cui-wizard__next--error' : ''" ng-click="claims.$valid&& !scope.indicatorError && !scope.indicatorAddValue&&scope.saveClaim()">
+        <span ng-if="scope.addClaimsForm">{{'cui-save' |translate}}</span>
+        <span ng-if="!scope.addClaimsForm">{{'cui-update' |translate}}</span>
+      </button>
+    </div>
+</ng-form>
