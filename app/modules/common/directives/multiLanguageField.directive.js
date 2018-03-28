@@ -36,6 +36,12 @@ angular.module('common')
 	        	scope.languages[index-1].name=language; 
 	        };
 	    })
+
+	    scope.addLanguage = () => {
+	    	if (scope.languages.length>scope.options.languages.length) {
+	    		scope.options.languages.push({text:'',lang:''})
+	    	};
+	    }
 	    
 	},
 	template:`
@@ -48,7 +54,7 @@ angular.module('common')
 			  <input type="text" name="{{name}}" class="cui-input" ng-required="options.required" ng-model="options.english"/>
 			</div>
 			<div class="cui-wizard__field-container cui-wizard__field-container--half cui-wizard__field-container--button">
-			    <button class="cui-button" ng-click="options.languages.push({text:'',lang:''})">{{'cui-add' |translate}} {{'more-languages' |translate}}</button>
+			    <button class="cui-button" ng-click="addLanguage()">{{'cui-add' |translate}} {{'more-languages' |translate}}</button>
 			</div>
 		</div>
 		<div class="cui-wizard__field-row" ng-repeat="language in options.languages track by $index">
