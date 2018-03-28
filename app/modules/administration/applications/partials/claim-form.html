@@ -6,7 +6,10 @@
       <div class="cui-error" ng-messages="claims.id.$error" ng-if="claims.id.$dirty">
         <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
       </div>
-      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="scope.claimViewData.claimId"/>
+      <div class="cui-error" ng-if="claims.id.$error.duplicateClaim && claims.id.$dirty">
+        <div class="cui-error__message">{{'claim-id-exists' | translate}}</div>
+      </div>
+      <input type="text" name="id" class="cui-input" ng-required="true" ng-model="scope.claimViewData.claimId" custom-error="scope.customErrors.duplicateClaim"/>
     </div>
   </div>
 
@@ -60,7 +63,7 @@
         </div>
       </div>
     </li>
-    <ng-include src="'app/modules/administration/applications/partials/claim-value-form.html'"  onload="claimViewData=scope.claimViewData;saveValue=scope.saveValue;cancelValue=scope.cancelValueEdit;customErrors=scope.customErrors;submitLabel='cui-save'" ng-if="value.edit"></ng-include>
+    <ng-include src="'app/modules/administration/applications/partials/claim-value-form.html'"  onload="claimViewData=scope.claimViewData;saveValue=scope.saveValue;cancelValue=scope.cancelValueEdit;customErrors=scope.customErrors;submitLabel='cui-update'" ng-if="value.edit"></ng-include>
   </cui-table-row>
 
   <!-- Add Claims Values -->

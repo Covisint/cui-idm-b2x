@@ -303,6 +303,17 @@ angular.module('administration')
 				})
 			}
 		},
+		duplicateClaim:{
+			duplicateClaim:function(){
+				return createPackage.claims.every( claim => {
+					if (createPackage.claimViewData.id!==claim.id) {
+						return claim.claimId!==createPackage.claimViewData.claimId
+					}else{
+						return true
+					}
+				})
+			}
+		},
         url: {
             url: function(){
                 var URL_REGEXP = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
