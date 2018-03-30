@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,Base,EditAndCreateApps){
+.controller('createPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,Base,EditAndCreateApps,$q){
 	const createPackage=this
 	const scopeName="createPackage."
 	// Initialization
@@ -35,6 +35,12 @@ angular.module('administration')
 		$scope.$digest()
 	}
 
+	const handleError = (err) =>{
+		console.error("Error when creating services", err)
+		APIError.onFor(scopeName+'submitting')
+		finishSubmitting()
+	}
+
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
@@ -51,6 +57,67 @@ angular.module('administration')
 	
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
+	
+	createPackage.firstSubmitStep = () =>{
+		API.cui.createPackage({data:createPackage.packageSubmitData})
+		.then( packageresult => {
+			createPackage.packageresult=packageresult
+			createPackage.submitStep=2
+			createPackage.secondSubmitStep()
+		})
+		.fail(handleError)
+	}
+
+	createPackage.secondSubmitStep = () =>{
+		let apiPromises=[]
+		createPackage.services.forEach((service,index) => {
+			// first service will be created when package created we need to update first one
+			if (index!==0) {
+				let data= angular.copy(service)
+				delete data.id
+				apiPromises.push(API.cui.createService({data:data}))
+			}
+			else{
+				// once update api ready need to push to promises array
+			}
+		})
+		$q.all(apiPromises)
+		.then(servicesResult => {
+			createPackage.submitStep=3
+			createPackage.servicesResult=servicesResult
+			createPackage.thirdSubmitStep()
+		})
+		.catch(err => {
+			console.error("Error when creating services", err)
+			APIError.onFor(scopeName+'submitting')
+			Loader.offFor(scopeName+'submitting')
+		})
+	}
+
+	createPackage.thirdSubmitStep = () =>{
+		let qs=[['packageId',createPackage.packageresult.id]]
+		createPackage.servicesResult.forEach(service =>qs.push(['serviceId',service.id]))
+		// associate each service to package
+		if (createPackage.servicesResult.length!==0) {
+			API.cui.assignService({qs:qs})
+			.then(res => {
+				createPackage.success=true
+				$timeout( () => {
+					$state.go('administration.applications.manageApplications')
+				},3000)
+				finishSubmitting()
+			})
+			.fail(handleError)	
+		}else{
+			createPackage.success=true
+			$timeout( () => {
+				$state.go('administration.applications.manageApplications')
+			},3000)
+			Loader.offFor(scopeName+'submitting')	
+		}
+	}
+
+	createPackage.submitStep=1
 
 	createPackage.submit = () => {
 		Loader.onFor(scopeName+'submitting')
@@ -58,36 +125,11 @@ angular.module('administration')
 		// First service will be created from package Data, need to assign few values
 		createPackage.packageSubmitData.category=createPackage.services[0].category
 		createPackage.packageSubmitData.targetUrl= createPackage.services[0].urls[0].value
-		console.log(createPackage.packageSubmitData)
-		API.cui.createPackage({data:createPackage.packageSubmitData})
-		.then(packageresult => {
-			let apiPromises=[]
-			createPackage.services.forEach((service,index) => {
-				// first service will be created when package created we need to update first one
-				if (index!==0) {
-					apiPromises.push(API.cui.createService({data:service}))
-				}
-				else{
-					// once update api ready need to push to promises array
-				}
-			})
-			$q.all(apiPromises)
-			.then(servicesResult => {
-				let qs=[['packageId',packageresult.id]]
-				servicesResult.forEach(service =>qs.push(['serviceId',service.id]))
-				// associate each service to package
-				API.cui.assignService({qs:qs})
-				.then(res => {
-					finishSubmitting()
-				})
-			})
-			
-		})
-		.fail(err => {
-			console.error("Error when creating package", err)
-			APIError.onFor(scopeName+'submitting')
-			finishSubmitting()
-		})
+		switch(createPackage.submitStep){
+			case 1:createPackage.firstSubmitStep();break;
+			case 2:createPackage.secondSubmitStep();break;
+			case 3:createPackage.thirdSubmitStep();break;
+		}		
 	}
 
 	createPackage.checkDuplicateLanguages = (data) => {
