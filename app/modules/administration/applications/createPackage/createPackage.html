@@ -2,6 +2,16 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/administation/applications/createPackage" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
+<div class="class-toggle cui-modal" ng-if="createPackage.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'package-success-content' | translate}}</span>
+    </div>
+</div>
+
 <div class="cui-administration cui-edit-package">
 <!-- Loading: Getting required registration data -->
 <div class="cui-loading__container--organization-list" ng-if="createPackage.initializing">
