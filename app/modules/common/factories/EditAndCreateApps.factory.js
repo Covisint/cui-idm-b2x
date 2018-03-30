@@ -103,6 +103,10 @@ angular.module('common')
 			if (viewData.requireAppAdmin) {
 				data.requiredApprovals.push('applicationAdmin')
 			};
+			data.owningOrganization={
+				id:API.user.organization.id,
+				type:"organization"
+			}
 			return data
 		},
 
@@ -135,7 +139,11 @@ angular.module('common')
 				urls: [{type:'default',value:viewData.targetUrl}],
 		        category: [{lang:'en',text:viewData.category}],
 		       	remoteAppId:viewData.remoteAppId,
-		        mobileServiceId:viewData.mobileServiceId
+		        mobileServiceId:viewData.mobileServiceId,
+		        owningOrganization:{
+		        	id:API.user.organization.id,
+		        	type:"organization"
+		        }
 			}
 			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
 			console.log(data)
