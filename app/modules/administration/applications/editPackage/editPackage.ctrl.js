@@ -1,25 +1,44 @@
 angular.module('administration')
-.controller('editPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage){
+.controller('editPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage,EditAndCreateApps,$q){
 	const editPackage=this
 	const scopeName="editPackage."
 	// Initialization
-	editPackage.search= {}
 	editPackage.claims=[]
-	editPackage.tempClaim={}
-	editPackage.tempClaimValue={}
-	editPackage.serviceData = {
-		categories : [
-			{lang:"en",text:"Administration"},
-			{lang:"en",text:"Application"},
-			{lang:"en",text:"Roles"}
-		]
-	}
-	// editPackage.packageData={
-	// 	displayable:true,
-	// 	requiredApprovals:['organizationAdmin']
-	// }
-	// editPackage.requireCompanyAdmin=true;
+	editPackage.services =[]
+	editPackage.addServiceForm=true
+	editPackage.addClaimsForm =true
+	editPackage.step=1
+
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
+	const initializeMultiLanguageFields = () => {
+		angular.merge(editPackage.packageViewData,EditAndCreateApps.initializeMultilanguageData(true,false, editPackage.packageData))
+		
+		editPackage.serviceViewData =EditAndCreateApps.initializeMultilanguageData(true,false)
+
+		editPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
+		editPackage.claimViewData.indicator='many'
+	}
+
+	const initializeRadioOptions = () => {
+		editPackage.packageViewData={
+			requestable:editPackage.packageData.requestable,
+	        grantable:editPackage.packageData.grantable,
+	       	displayable:editPackage.packageData.displayable,
+	        requestReasonRequired:editPackage.packageData.requestReasonRequired,
+	        requireCompanyAdmin:false,
+	        requireAppAdmin:false
+		}
+
+		editPackage.packageData.requiredApprovals.forEach(admin => {
+			if (admin==='organizationAdmin') {
+				editPackage.packageViewData.requireCompanyAdmin=true
+			}
+			else{
+				editPackage.packageViewData.requireAppAdmin=true
+			}
+		})
+	}
+
 	const finishLoading = (updating) => {
 		if (updating) {
 			Loader.offFor(scopeName+'packages')
@@ -27,15 +46,10 @@ angular.module('administration')
 		$scope.$digest()
 	}
 
-	const updateApprovalFlags = () => {
-		editPackage.packageData.requiredApprovals.forEach(admin => {
-			if (admin==='organizationAdmin') {
-				editPackage.requireCompanyAdmin=true
-			}
-			else{
-				editPackage.requireAppAdmin=true
-			}
-		})
+	const handleError = (err) =>{
+		console.error("Error when creating services", err)
+		APIError.onFor(scopeName+'submitting')
+		finishSubmitting()
 	}
 
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
@@ -44,10 +58,12 @@ angular.module('administration')
 
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
+	EditAndCreateApps.initializeServiceTemplateData(editPackage)
 	if (DataStorage.getType('EditPackage')) {
 		editPackage.packageData=DataStorage.getType('EditPackage')
 	};
-	updateApprovalFlags()
+	initializeRadioOptions()
+	initializeMultiLanguageFields()
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 
