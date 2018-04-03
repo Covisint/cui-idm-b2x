@@ -2,13 +2,24 @@
 <div class="code-info">The markup and javascript used to build this page can be found <a class="cui-link" href="https://github.com/covisint/cui-idm-b2x/tree/master/app/modules/administation/applications/editPackage" target="blank">here</a>.</div>
 <!-- /processHTML -->
 
+<div class="class-toggle cui-modal" ng-if="editPackage.success" toggled-class="cui-modal--hide" ng-click="toggleClass()">
+    <div class="cui-modal__pane">
+        <div class="cui-modal__icon">
+            <cui-icon cui-svg-icon="cui:check-with-border" class="cui-modal__icon"></cui-icon>
+        </div>
+        <span class="cui-modal__primary-message">{{'cui-success' | translate}}</span>
+        <span class="cui-modal__secondary-message">{{'package-success-content' | translate}}</span>
+    </div>
+</div>
+
+
 <div class="cui-administration cui-edit-package">
 <!-- Loading: Getting required registration data -->
-<div class="cui-loading__container--organization-list" ng-if="userWalkup.initializing">
+<div class="cui-loading__container--organization-list" ng-if="editPackage.initializing">
   <div class="cui-loading--center"><div class="cui-loading"></div></div>
 </div>
 
-<div class="cui-form--mobile-steps" ng-if="!userWalkup.initializing">
+<div class="cui-form--mobile-steps" ng-if="!editPackage.initializing">
   <div class="cui-form__title">{{'manage-applications' | translate}} -&gt; {{'edit-package' | translate}}</div>
   <div class="cui-form__body">
     <cui-wizard bar mobile-stack="700" class="cui-wizard" step="1" minimum-padding="100" clickable-indicators dirty-validation>
@@ -17,14 +28,6 @@
       <ng-form name="editPackageForm" novalidate>
         <step step-title="{{'app-summary' | translate}}" icon="cui:board-edit">
           <div ng-include="'app/modules/administration/applications/editPackage/editPackage-steps/summary.html'"></div>
-        </step>
-
-        <step step-title="{{'n-phase' | translate}}" icon="cui:game-2">
-          <div ng-include="'app/modules/administration/applications/editPackage/editPackage-steps/n-phase-approval.html'"></div>
-        </step>
-
-        <step step-title="{{'claims' | translate}}" icon="cui:login">
-          <div ng-include="'app/modules/administration/applications/editPackage/editPackage-steps/claims.html'"></div>
         </step>
 
         <step step-title="{{'services' | translate}}" icon="cui:applications">
