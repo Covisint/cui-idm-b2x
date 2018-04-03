@@ -1,85 +1,95 @@
-<ng-form name="summary" novalidate>
+<ng-form name="summary" novalidate ng-if="editPackage.step===1" disable-animate>
 
-  <!-- First row -->
-  <div class="cui-wizard__field-row">
-    <!-- First Name -->
-    <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'name' | translate}}</label>
-      <div class="cui-error" ng-messages="summary.name.$error" ng-if="summary.name.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
-      </div>
-      <input type="text" name="name" class="cui-input" ng-required="true" ng-model="editPackage.packageData.name[0].text"/>
-    </div>
+  <multi-language-field options="editPackage.packageViewData.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
 
-    <!-- Description -->
-    <div class="cui-wizard__field-container cui-wizard__field-container--half">
-      <label >{{'description' | translate}}</label>
-      <!-- <div class="cui-error" ng-messages="summary.description.$error" ng-if="summary.description.$dirty">
-        <div class="cui-error__message" ng-message="required">{{'cui-this-field-is-required' | translate}}</div>
-      </div> -->
-      <input type="text" ng-model="editPackage.packageData.description[0].text" name="description" class="cui-input"/>
-    </div>
-  </div>
+  <multi-language-field options="editPackage.packageViewData.description" name="'description'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
   
   <div class="cui-wizard__field-row">
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'is-requestable' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="editPackage.packageData.requestable" name="requestable" id="requestable" type="checkbox" />
-            <label class="cui-switch__label" for="requestable">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'is-requestable-desc' | translate}}</label>
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-requestable' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.requestable" id="radio-choice-requestable">
+        </radio-group>
+      </div>
+      <div>{{'is-requestable-desc' | translate}}</div>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'is-grantable' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="editPackage.packageData.grantable" name="grantable" id="grantable" type="checkbox" />
-            <label class="cui-switch__label" for="grantable">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'is-grantable-desc' | translate}}</label>
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-grantable' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.grantable" id="radio-choice-grantable">
+        </radio-group>
+      </div>
+      <div>{{'is-grantable-desc' | translate}}</div>
     </div>
 
   </div>
+
   <div class="cui-wizard__field-row">
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'require' | translate}} {{'request-reason' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="editPackage.packageData.requestReasonRequired" name="requestReasonRequired" id="requestReasonRequired" type="checkbox" />
-            <label class="cui-switch__label" for="requestReasonRequired">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'require-reason-desc' | translate}}</label>
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'request-reason' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.requestReasonRequired" id="radio-choice-require">
+        </radio-group>
+      </div>
+      <div>{{'require-reason-desc' | translate}}</div>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <label>{{'is-displayable' | translate}}</label>
-      <div class="cui-switch">
-            <input class="cui-switch__input" ng-model="editPackage.packageData.displayable" name="displayable" id="displayable" type="checkbox" />
-            <label class="cui-switch__label" for="displayable">
-              <div class="cui-switch__container">
-                <span class="cui-switch__checked-message">{{'yes' | translate}}</span>
-                <span class="cui-switch__unchecked-message">{{'cui-no' | translate}}</span>
-              </div>
-            </label>
-          </div>
-          <label class="switch__info">{{'is-displayable-desc' | translate}}</label>
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'is-displayable' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.displayable" id="radio-choice-displayable">
+        </radio-group>
+      </div>
+      <div>{{'is-displayable-desc' | translate}}</div>
     </div>
 
   </div>
+
+  <div class="cui-wizard__field-row">
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'company-admin' | translate}} {{'approval' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.requireCompanyAdmin" id="radio-choice-company-admin">
+        </radio-group>
+      </div>
+      <div>{{'company-admin-desc' | translate}}</div>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <div class="cui-flex-table__tr">
+        <div class="cui-flex-table__left">
+          <span class="cui-flex-table__title">{{'require' | translate}} {{'application-admin' | translate}} {{'approval' | translate}}</span>
+        </div>
+        <radio-group model="editPackage.packageViewData.requireAppAdmin" id="radio-choice-app-admin">
+        </radio-group>
+      </div>
+      <div>{{'application-admin-desc' | translate}}</div>
+    </div>
+
+  </div>
+
+  <div class="cui-wizard__field-row" >
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="editPackage.step=2">{{'add-claims' |translate}}</button>
+    </div>
+    <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="editPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
+    </div>
+  </div>
+  <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="editPackage.packageViewData.duplicateLanguage">
+    <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
+  </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear">
-    <button type="button" class="cui-wizard__next" ng-if="!wizardFinished" ng-click="nextWithErrorChecking(summary)" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
+    <button type="button" class="cui-wizard__next" ng-click="editPackage.checkDuplicateLanguages(editPackage.packageViewData)&&nextWithErrorChecking(summary);editPackage.next()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
   </div>
 </ng-form>
+
+<div ng-if="editPackage.step===2" ng-include="'app/modules/administration/applications/createPackage/createPackage-steps/createPackage-claims.html'"></div>
