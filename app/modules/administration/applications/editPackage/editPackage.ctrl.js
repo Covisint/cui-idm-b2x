@@ -5,7 +5,6 @@ angular.module('administration')
 	// Initialization
 	editPackage.claims=[]
 	editPackage.services =[]
-	editPackage.addServiceForm=true
 	editPackage.addClaimsForm =true
 	editPackage.step=1
 
@@ -61,39 +60,69 @@ angular.module('administration')
 	EditAndCreateApps.initializeServiceTemplateData(editPackage)
 	if (DataStorage.getType('EditPackage')) {
 		editPackage.packageData=DataStorage.getType('EditPackage')
+		editPackage.services=editPackage.packageData.services
 	};
 	initializeRadioOptions()
 	initializeMultiLanguageFields()
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
-
-	editPackage.addClaim = () => {
-		editPackage.claims.push(editPackage.tempClaim)
+	editPackage.checkDuplicateLanguages = (data) => {
+		return EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(data)
 	}
 
-	editPackage.addClaimValue = (claim) => {
-		claim.claimValues.push(editPackage.tempClaimValue)
+		// ******************Related to Service***********************
+	editPackage.toggleEditServiceForm = (selectedService) => {
+		selectedService.editService=!selectedService.editService
+		editPackage.serviceViewData = EditAndCreateApps.getDataForServiceTemplate(selectedService)
+		editPackage.services.forEach( service => {
+			if (service.id!==selectedService.id) {
+				service.editService=false
+			}
+		})	
+		editPackage.addServiceForm=false;
 	}
-
-	editPackage.showServiceForm = (service) => {
-		editPackage.serviceData.service={}
-		if (service) {
-			editPackage.tempServiceName=service.name
-			editPackage.serviceData.edit=true;
-			angular.copy(service,editPackage.serviceData.service)
-		};		
-		editPackage.showServiceFormFlag=true;
-	}
-
-	editPackage.submit = () => {
-
-	}
+	// On clicking edit service Cancel
 	editPackage.cancelEdit = () => {
-		editPackage.showServiceFormFlag=false;
+		// set add service form to false
+		if (editPackage.services.length!==0) {
+			editPackage.addServiceForm=false;
+		}
+		// set editservice flag to false for services
+		editPackage.services.forEach( service => service.editService=false)
 	}
 
+	// On clicking edit service Add/Update
 	editPackage.saveService = () => {
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(editPackage.serviceViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedService=EditAndCreateApps.buildServiceData(editPackage.serviceViewData)
+			selectedService.editService=false
+			if (editPackage.serviceViewData.editService ) {
+				selectedService.id=editPackage.serviceViewData.id
+				 editPackage.services.forEach(service => {
+				 	if (service.id===selectedService.id) {
+				 		angular.copy(selectedService,service)
+				 	};
+				 })
+			}else{
+				editPackage.addServiceForm=false
+				selectedService.id=editPackage.services.length
+				editPackage.services.push(selectedService)
+			}
+			
+		}
+	}
 
+	// called when trying to add new service
+	// reset the object whcih is being sent to service form template
+	editPackage.updateAddServiceForm = () => {
+		editPackage.addServiceForm=true
+		editPackage.serviceViewData=EditAndCreateApps.initializeMultilanguageData(true,false)
+		editPackage.services.forEach( service => service.editService=false)
+	}
+
+	editPackage.deleteService =  (index) => {
+		editPackage.services.splice(index,1)
 	}
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
