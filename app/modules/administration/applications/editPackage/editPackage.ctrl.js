@@ -124,5 +124,132 @@ angular.module('administration')
 	editPackage.deleteService =  (index) => {
 		editPackage.services.splice(index,1)
 	}
+
+		// **************************Claims Related**********************
+
+	editPackage.toggleEditClaimForm = (selectedClaim) => {
+		selectedClaim.edit=!selectedClaim.edit
+		editPackage.claimViewData = EditAndCreateApps.getClaimViewData(selectedClaim)
+		editPackage.claims.forEach( claim => {
+			if (claim.id!==selectedClaim.id) {
+				claim.edit=false
+			}
+		})	
+		editPackage.addClaimsForm=false;
+	}
+	// On clicking edit service Cancel
+	editPackage.cancelClaimEdit = () => {
+		// set add service form to false
+		if (editPackage.claims.length!==0) {
+			editPackage.addClaimsForm=false;
+		}
+		// set editservice flag to false for services
+		editPackage.claims.forEach( claim => claim.edit=false)
+	}
+
+	// On clicking edit service Add/Update
+	editPackage.saveClaim = () => {
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(editPackage.claimViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedClaim=EditAndCreateApps.buildClaimData(editPackage.claimViewData)
+			selectedClaim.edit=false
+			if (editPackage.claimViewData.edit ) {
+				selectedClaim.id=editPackage.claimViewData.id
+				 editPackage.claims.forEach(claim => {
+				 	if (claim.id===selectedClaim.id) {
+				 		angular.copy(selectedClaim,claim)
+				 	};
+				 })
+			}else{
+				editPackage.addClaimsForm=false
+				selectedClaim.id=editPackage.claims.length
+				editPackage.claims.push(selectedClaim)
+			}
+			
+		}
+	}
+
+	editPackage.updateAddClaimForm = () => {
+		editPackage.addClaimsForm=true
+		editPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
+		editPackage.claimViewData.indicator="many"
+		editPackage.claims.forEach( claim => claim.edit=false)
+	}
+
+	editPackage.deleteClaim =  (index) => {
+		editPackage.claims.splice(index,1)
+	}
+
+	// ******************* Value related *****************
+	editPackage.toggleEditValueForm = (selectedValue) => {
+		selectedValue.edit=!selectedValue.edit
+		editPackage.claimViewData.valueViewData = EditAndCreateApps.getValueViewData(selectedValue)
+		editPackage.claimViewData.values.forEach( value => {
+			if (value.id!==selectedValue.id) {
+				value.edit=false
+			}
+		})	
+		editPackage.claimViewData.addValueForm=false;
+	}
+	// On clicking edit value Cancel
+	editPackage.cancelValueEdit = () => {
+		editPackage.claimViewData.addValueForm=false;
+		// set editservice flag to false for services
+		editPackage.claimViewData.values&&editPackage.claimViewData.values.forEach( value => value.edit=false)
+	}
+
+	// On clicking edit service Add/Update
+	editPackage.saveValue = () => {
+		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(editPackage.claimViewData.valueViewData)){
+			// toggleServiceFormFlags(editFlag)
+			let selectedValue=EditAndCreateApps.buildValueData(editPackage.claimViewData.valueViewData)
+			selectedValue.edit=false
+			if (editPackage.claimViewData.valueViewData.edit) {
+				selectedValue.id=editPackage.claimViewData.valueViewData.id
+				 editPackage.claimViewData.values.forEach(value => {
+				 	if (value.id===selectedValue.id) {
+				 		angular.copy(selectedValue,value)
+				 	};
+				 })
+			}else{
+				editPackage.claimViewData.addValueForm=false
+				if (!editPackage.claimViewData.values) {
+					editPackage.claimViewData.values=[]
+				};
+				selectedValue.id=editPackage.claimViewData.values.length
+				editPackage.claimViewData.values.push(selectedValue)
+			}
+			
+		}
+	}
+	editPackage.updateAddClaimValueForm = () => {
+		if (editPackage.claimViewData.indicator==="one"&&editPackage.claimViewData.values&&editPackage.claimViewData.values.length===1) {
+			editPackage.indicatorErrorAddValue=true
+			$timeout(() => {
+				editPackage.indicatorErrorAddValue=false
+			},3000)
+			return
+		}
+		else{
+			editPackage.indicatorErrorAddValue=false
+		}
+		editPackage.claimViewData.addValueForm=true
+		editPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
+		if (editPackage.claimViewData.values) {
+			editPackage.claimViewData.values.forEach(value => value.edit=false)
+		};
+	}
+
+	editPackage.deleteClaimValue =  (index) => {
+		editPackage.claimViewData.values.splice(index,1)
+		if (editPackage.indicatorError&&editPackage.claimViewData.values.length<2) {
+			editPackage.indicatorError=false
+		};
+	}
+
+	editPackage.checkForValueDuplicates = () => {
+		editPackage.claimViewData.values.forEach
+	}
+
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 })
