@@ -254,4 +254,42 @@ angular.module('administration')
 	}
 
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
+
+// ERROR HANDLING FUNCTIONS START-------------------------------------------------------------------
+	editPackage.customErrors = {
+		duplicateValue:{
+			duplicateValue:function(){
+				return editPackage.claimViewData.values.every( value => {
+					if (editPackage.claimViewData.valueViewData.id!==value.id) {
+						return value.claimValueId!==editPackage.claimViewData.valueViewData.claimValueId
+					}else{
+						return true
+					}
+				})
+			}
+		},
+		duplicateClaim:{
+			duplicateClaim:function(){
+				return editPackage.claims.every( claim => {
+					if (editPackage.claimViewData.id!==claim.id) {
+						return claim.claimId!==editPackage.claimViewData.claimId
+					}else{
+						return true
+					}
+				})
+			}
+		},
+        url: {
+            url: function(){
+                var URL_REGEXP = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+                if (editPackage.serviceViewData.targetUrl) {
+                    return URL_REGEXP.test(editPackage.serviceViewData.targetUrl)
+                }else{
+                    return true;
+                }
+            }
+        }
+    }
+
+// ERROR HANDLING FUNCTIONS END-------------------------------------------------------------------
 })
