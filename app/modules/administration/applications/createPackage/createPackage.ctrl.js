@@ -17,6 +17,7 @@ angular.module('administration')
 
 		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		createPackage.claimViewData.indicator='many'
+		createPackage.claimViewData.values=[]
 	}
 
 	const initializeRadioOptions = () => {
@@ -252,6 +253,7 @@ angular.module('administration')
 		createPackage.addClaimsForm=true
 		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		createPackage.claimViewData.indicator="many"
+		createPackage.claimViewData.values=[]
 		createPackage.claims.forEach( claim => claim.edit=false)
 	}
 
