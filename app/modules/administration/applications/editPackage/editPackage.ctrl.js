@@ -59,7 +59,7 @@ angular.module('administration')
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
 	EditAndCreateApps.initializeServiceTemplateData(editPackage)
 	if (DataStorage.getType('EditPackage')) {
-		editPackage.packageData=DataStorage.getType('EditPackage')
+		editPackage.packageData=angular.copy(DataStorage.getType('EditPackage'))
 		editPackage.services=editPackage.packageData.services
 	};
 	initializeRadioOptions()
