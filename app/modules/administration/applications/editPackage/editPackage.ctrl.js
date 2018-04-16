@@ -39,6 +39,21 @@ angular.module('administration')
 		})
 	}
 
+	const getClaimsDetails = () => {
+		API.cui.getPackageClaims({qs:[['packageId',editPackage.packageData.id]]})
+		.then(res => {
+			editPackage.claims=res
+			// Loader.offFor(scopeName+'claims')
+			$scope.$digest()
+		})
+		.fail(err => {
+			console.error('There was an error fetching claims', err)
+			APIError.onFor(scopeName+'claims')
+			// Loader.offFor(scopeName+'claims')
+			$scope.$digest()
+		})
+	}
+
 	const finishLoading = (updating) => {
 		if (updating) {
 			Loader.offFor(scopeName+'packages')
