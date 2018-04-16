@@ -34,10 +34,10 @@
 
 
   <!-- List Claims Values-->
-  <div class="cui-action cui-action__no-padding" ng-if="scope.claimViewData.values&&scope.claimViewData.values.length!==0">
+  <div class="cui-action cui-action__no-padding" ng-if="scope.claimViewData.claimValues&&scope.claimViewData.claimValues.length!==0">
     <span class="cui-action__title"> {{'claim-values' | translate}}</span>
   </div>
-  <div class="cui-flex-table__th cui-flex-table__th--c" ng-if="scope.claimViewData.values&&scope.claimViewData.values.length!==0">
+  <div class="cui-flex-table__th cui-flex-table__th--c" ng-if="scope.claimViewData.claimValues&&scope.claimViewData.claimValues.length!==0">
     <div class="cui-flex-table__avatar-col">{{'cui-edit'|translate}}/{{'cui-view'|translate}}</div>
     <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
       <div class="cui-flex-table__left" >{{'id'|translate}}</div>
@@ -46,7 +46,7 @@
       <div  class="cui-flex-table__right">{{'action'|translate}}</div>
     </div>
   </div>
-  <cui-table-row ng-repeat="value in scope.claimViewData.values">
+  <cui-table-row ng-repeat="value in scope.claimViewData.claimValues">
     <li class="cui-flex-table__tr cui-flex-table__tr--c">
       <div class="cui-flex-table__avatar-col">
         <svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="scope.toggleEditValueForm(value)">

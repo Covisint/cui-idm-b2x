@@ -168,7 +168,7 @@ angular.module('common')
 			let data={
 				claimId:viewData.claimId,
 				indicator:viewData.indicator,
-				values:viewData.values
+				claimValues:viewData.claimValues
 			}
 			data= EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
 			console.log(data)
@@ -182,7 +182,7 @@ angular.module('common')
 			viewData=EditAndCreateApps.initializeMultilanguageData(true,true,viewData)
 			viewData.claimId=data.claimId
 			viewData.indicator=data.indicator
-			viewData.values=data.values
+			viewData.claimValues=data.claimValues
 			return viewData
 		},
 

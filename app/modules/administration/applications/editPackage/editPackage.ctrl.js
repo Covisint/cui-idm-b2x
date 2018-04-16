@@ -16,7 +16,7 @@ angular.module('administration')
 
 		editPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		editPackage.claimViewData.indicator='many'
-		editPackage.claimViewData.values=[]
+		editPackage.claimViewData.claimValues=[]
 	}
 
 	const initializeRadioOptions = () => {
@@ -55,9 +55,6 @@ angular.module('administration')
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
-
-
-// ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
 	EditAndCreateApps.initializeServiceTemplateData(editPackage)
 	if (DataStorage.getType('EditPackage')) {
 		editPackage.packageData=angular.copy(DataStorage.getType('EditPackage'))
@@ -65,13 +62,17 @@ angular.module('administration')
 	};
 	initializeRadioOptions()
 	initializeMultiLanguageFields()
+	getClaimsDetails()
+
+// ON LOAD FUNCTIONS END -------------------------------------------------------------------------------
+
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
 	editPackage.checkDuplicateLanguages = (data) => {
 		return EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(data)
 	}
 
-		// ******************Related to Service***********************
+// ******************Related to Service***********************
 	editPackage.toggleEditServiceForm = (selectedService) => {
 		selectedService.editService=!selectedService.editService
 		editPackage.serviceViewData = EditAndCreateApps.getDataForServiceTemplate(selectedService)
@@ -125,8 +126,12 @@ angular.module('administration')
 	editPackage.deleteService =  (index) => {
 		editPackage.services.splice(index,1)
 	}
+// ******************Related to Service End***********************
 
 		// **************************Claims Related**********************
+	editPackage.goToClaims = () => {
+		editPackage.step=2			
+	}
 
 	editPackage.toggleEditClaimForm = (selectedClaim) => {
 		selectedClaim.edit=!selectedClaim.edit
@@ -174,7 +179,7 @@ angular.module('administration')
 		editPackage.addClaimsForm=true
 		editPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		editPackage.claimViewData.indicator="many"
-		editPackage.claimViewData.values=[]
+		editPackage.claimViewData.claimValues=[]
 		editPackage.claims.forEach( claim => claim.edit=false)
 	}
 
@@ -186,7 +191,7 @@ angular.module('administration')
 	editPackage.toggleEditValueForm = (selectedValue) => {
 		selectedValue.edit=!selectedValue.edit
 		editPackage.claimViewData.valueViewData = EditAndCreateApps.getValueViewData(selectedValue)
-		editPackage.claimViewData.values.forEach( value => {
+		editPackage.claimViewData.claimValues.forEach( value => {
 			if (value.id!==selectedValue.id) {
 				value.edit=false
 			}
@@ -197,7 +202,7 @@ angular.module('administration')
 	editPackage.cancelValueEdit = () => {
 		editPackage.claimViewData.addValueForm=false;
 		// set editservice flag to false for services
-		editPackage.claimViewData.values&&editPackage.claimViewData.values.forEach( value => value.edit=false)
+		editPackage.claimViewData.claimValues&&editPackage.claimViewData.claimValues.forEach( value => value.edit=false)
 	}
 
 	// On clicking edit service Add/Update
@@ -208,24 +213,24 @@ angular.module('administration')
 			selectedValue.edit=false
 			if (editPackage.claimViewData.valueViewData.edit) {
 				selectedValue.id=editPackage.claimViewData.valueViewData.id
-				 editPackage.claimViewData.values.forEach(value => {
+				 editPackage.claimViewData.claimValues.forEach(value => {
 				 	if (value.id===selectedValue.id) {
 				 		angular.copy(selectedValue,value)
 				 	};
 				 })
 			}else{
 				editPackage.claimViewData.addValueForm=false
-				if (!editPackage.claimViewData.values) {
-					editPackage.claimViewData.values=[]
+				if (!editPackage.claimViewData.claimValues) {
+					editPackage.claimViewData.claimValues=[]
 				};
-				selectedValue.id=editPackage.claimViewData.values.length
-				editPackage.claimViewData.values.push(selectedValue)
+				selectedValue.id=editPackage.claimViewData.claimValues.length
+				editPackage.claimViewData.claimValues.push(selectedValue)
 			}
 			
 		}
 	}
 	editPackage.updateAddClaimValueForm = () => {
-		if (editPackage.claimViewData.indicator==="one"&&editPackage.claimViewData.values&&editPackage.claimViewData.values.length===1) {
+		if (editPackage.claimViewData.indicator==="one"&&editPackage.claimViewData.claimValues&&editPackage.claimViewData.claimValues.length===1) {
 			editPackage.indicatorErrorAddValue=true
 			$timeout(() => {
 				editPackage.indicatorErrorAddValue=false
@@ -237,21 +242,18 @@ angular.module('administration')
 		}
 		editPackage.claimViewData.addValueForm=true
 		editPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
-		if (editPackage.claimViewData.values) {
-			editPackage.claimViewData.values.forEach(value => value.edit=false)
+		if (editPackage.claimViewData.claimValues) {
+			editPackage.claimViewData.claimValues.forEach(value => value.edit=false)
 		};
 	}
 
 	editPackage.deleteClaimValue =  (index) => {
-		editPackage.claimViewData.values.splice(index,1)
-		if (editPackage.indicatorError&&editPackage.claimViewData.values.length<2) {
+		editPackage.claimViewData.claimValues.splice(index,1)
+		if (editPackage.indicatorError&&editPackage.claimViewData.claimValues.length<2) {
 			editPackage.indicatorError=false
 		};
 	}
 
-	editPackage.checkForValueDuplicates = () => {
-		editPackage.claimViewData.values.forEach
-	}
 
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
@@ -259,7 +261,7 @@ angular.module('administration')
 	editPackage.customErrors = {
 		duplicateValue:{
 			duplicateValue:function(){
-				return editPackage.claimViewData.values.every( value => {
+				return editPackage.claimViewData.claimValues.every( value => {
 					if (editPackage.claimViewData.valueViewData.id!==value.id) {
 						return value.claimValueId!==editPackage.claimViewData.valueViewData.claimValueId
 					}else{

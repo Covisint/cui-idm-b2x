@@ -17,7 +17,7 @@ angular.module('administration')
 
 		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		createPackage.claimViewData.indicator='many'
-		createPackage.claimViewData.values=[]
+		createPackage.claimViewData.claimValues=[]
 	}
 
 	const initializeRadioOptions = () => {
@@ -143,7 +143,7 @@ angular.module('administration')
 	}
 
 	createPackage.indicatorChange = ( indicator ) => {
-		if (indicator==="one"&&createPackage.claimViewData.values && createPackage.claimViewData.values.length>1) {
+		if (indicator==="one"&&createPackage.claimViewData.claimValues && createPackage.claimViewData.claimValues.length>1) {
 			createPackage.indicatorError=true
 		}else{
 			createPackage.indicatorError=false
@@ -253,7 +253,7 @@ angular.module('administration')
 		createPackage.addClaimsForm=true
 		createPackage.claimViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
 		createPackage.claimViewData.indicator="many"
-		createPackage.claimViewData.values=[]
+		createPackage.claimViewData.claimValues=[]
 		createPackage.claims.forEach( claim => claim.edit=false)
 	}
 
@@ -265,7 +265,7 @@ angular.module('administration')
 	createPackage.toggleEditValueForm = (selectedValue) => {
 		selectedValue.edit=!selectedValue.edit
 		createPackage.claimViewData.valueViewData = EditAndCreateApps.getValueViewData(selectedValue)
-		createPackage.claimViewData.values.forEach( value => {
+		createPackage.claimViewData.claimValues.forEach( value => {
 			if (value.id!==selectedValue.id) {
 				value.edit=false
 			}
@@ -276,7 +276,7 @@ angular.module('administration')
 	createPackage.cancelValueEdit = () => {
 		createPackage.claimViewData.addValueForm=false;
 		// set editservice flag to false for services
-		createPackage.claimViewData.values&&createPackage.claimViewData.values.forEach( value => value.edit=false)
+		createPackage.claimViewData.claimValues&&createPackage.claimViewData.claimValues.forEach( value => value.edit=false)
 	}
 
 	// On clicking edit service Add/Update
@@ -287,24 +287,24 @@ angular.module('administration')
 			selectedValue.edit=false
 			if (createPackage.claimViewData.valueViewData.edit) {
 				selectedValue.id=createPackage.claimViewData.valueViewData.id
-				 createPackage.claimViewData.values.forEach(value => {
+				 createPackage.claimViewData.claimValues.forEach(value => {
 				 	if (value.id===selectedValue.id) {
 				 		angular.copy(selectedValue,value)
 				 	};
 				 })
 			}else{
 				createPackage.claimViewData.addValueForm=false
-				if (!createPackage.claimViewData.values) {
-					createPackage.claimViewData.values=[]
+				if (!createPackage.claimViewData.claimValues) {
+					createPackage.claimViewData.claimValues=[]
 				};
-				selectedValue.id=createPackage.claimViewData.values.length
-				createPackage.claimViewData.values.push(selectedValue)
+				selectedValue.id=createPackage.claimViewData.claimValues.length
+				createPackage.claimViewData.claimValues.push(selectedValue)
 			}
 			
 		}
 	}
 	createPackage.updateAddClaimValueForm = () => {
-		if (createPackage.claimViewData.indicator==="one"&&createPackage.claimViewData.values&&createPackage.claimViewData.values.length===1) {
+		if (createPackage.claimViewData.indicator==="one"&&createPackage.claimViewData.claimValues&&createPackage.claimViewData.claimValues.length===1) {
 			createPackage.indicatorErrorAddValue=true
 			$timeout(() => {
 				createPackage.indicatorErrorAddValue=false
@@ -316,21 +316,18 @@ angular.module('administration')
 		}
 		createPackage.claimViewData.addValueForm=true
 		createPackage.claimViewData.valueViewData=EditAndCreateApps.initializeMultilanguageData(true,true)
-		if (createPackage.claimViewData.values) {
-			createPackage.claimViewData.values.forEach(value => value.edit=false)
+		if (createPackage.claimViewData.claimValues) {
+			createPackage.claimViewData.claimValues.forEach(value => value.edit=false)
 		};
 	}
 
 	createPackage.deleteClaimValue =  (index) => {
-		createPackage.claimViewData.values.splice(index,1)
-		if (createPackage.indicatorError&&createPackage.claimViewData.values.length<2) {
+		createPackage.claimViewData.claimValues.splice(index,1)
+		if (createPackage.indicatorError&&createPackage.claimViewData.claimValues.length<2) {
 			createPackage.indicatorError=false
 		};
 	}
 
-	createPackage.checkForValueDuplicates = () => {
-		createPackage.claimViewData.values.forEach
-	}
 
 // ON CLICK FUNCTIONS END -------------------------------------------------------------------------------
 
@@ -338,7 +335,7 @@ angular.module('administration')
 	createPackage.customErrors = {
 		duplicateValue:{
 			duplicateValue:function(){
-				return createPackage.claimViewData.values.every( value => {
+				return createPackage.claimViewData.claimValues.every( value => {
 					if (createPackage.claimViewData.valueViewData.id!==value.id) {
 						return value.claimValueId!==createPackage.claimViewData.valueViewData.claimValueId
 					}else{
