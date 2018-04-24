@@ -93,91 +93,91 @@
 		<cui-table-header ng-if="manageAllApplications.packages.length!==0" headers="['cui-name', 'federation-conn' , 'updated-date', 'cui-delete']" sorting="usersRegistrationRequests.sortBy" sorting-callbacks="usersRegistrationRequests.sortingCallbacks" style="font-weight:bold;">
       	</cui-table-header>
 
-    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id">
+    	<cui-table-row ng-repeat="package in manageAllApplications.packages track by package.id" ng-if="!base.loader.for['manageAllApplications.packages']">
 
-    	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="package.expanded"ng-class="package.expanded?'expanded':''" transition-speed="150">
-            <cui-expandable-title>
-                <li class="cui-flex-table__tr cui-flex-table__tr--c">
-            	<div class="cui-flex-table__avatar-col" ng-class="{'cui-hide__opacity':package.services.length===0}">
-            		<svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="package.expanded=!package.expanded">
-                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26" ng-if="!package.expanded"></use>
-                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#minus20" ng-if="package.expanded"></use>
-                	</svg>
-		        </div>
-		        <div class="cui-flex-table__mobile-stack">
-		        	<div class="cui-flex-table__left" >
-		                <span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditPackage(package)">{{package.name | cuiI18n}}</span>
-		            </div>
-                <div class="cui-flex-table__middle">
-		            <span class="">{{package.realm}}</span>
-		        </div>
-		        <div class="cui-flex-table__middle">
-		            <span class="">{{package.version |date}}</span>
-		        </div>
-		        <div class="cui-flex-table__right" title="Delete Package">
-		            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-		          </div>
-		        </div>
-		    </li>
-            </cui-expandable-title>
-            <cui-expandable-body class="cui-expandable__body" >
-                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) && !manageAllApplications.addServiceForm" style="margin-bottom:1em;">
-                	<div class="cui-flex-table__th cui-flex-table__th--c">
-			            <div class="cui-flex-table__avatar-col"></div>
+	    	<cui-expandable1 class="cui-expandable" style="margin-bottom:0;padding-bottom:0;" expanded="package.expanded"ng-class="package.expanded?'expanded':''" transition-speed="150">
+	            <cui-expandable-title>
+	                <li class="cui-flex-table__tr cui-flex-table__tr--c">
+	            	<div class="cui-flex-table__avatar-col" ng-class="{'cui-hide__opacity':package.services.length===0}">
+	            		<svg cui-icon xmlns="http://www.w3.org/2000/svg" class="cui-action__icon cui-action__icons__space" preserveAspectRatio="xMidYMid meet" viewBox="0 0 216 146" ng-click="package.expanded=!package.expanded">
+	                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#plus26" ng-if="!package.expanded"></use>
+	                  		<use class="cui-icon__ref" xlink:href="node_modules/@covisint/cui-icons/dist/font-awesome/font-awesome-out.svg#minus20" ng-if="package.expanded"></use>
+	                	</svg>
+			        </div>
+			        <div class="cui-flex-table__mobile-stack">
+			        	<div class="cui-flex-table__left" >
+			                <span class="cui-flex-table__title" ng-click="manageAllApplications.goToEditPackage(package)">{{package.name | cuiI18n}}</span>
+			            </div>
+	                <div class="cui-flex-table__middle">
+			            <span class="">{{package.realm}}</span>
+			        </div>
+			        <div class="cui-flex-table__middle">
+			            <span class="">{{package.version |date}}</span>
+			        </div>
+			        <div class="cui-flex-table__right" title="Delete Package">
+			            <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+			          </div>
+			        </div>
+			    </li>
+	            </cui-expandable-title>
+	            <cui-expandable-body class="cui-expandable__body" >
+	                <div class="cui-expandable__body-pane" ng-if="(package.services && package.services.length!==0) && !manageAllApplications.addServiceForm" style="margin-bottom:1em;">
+	                	<div class="cui-flex-table__th cui-flex-table__th--c">
+				            <div class="cui-flex-table__avatar-col"></div>
 
-			            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
-			                <div class="cui-flex-table__left" >{{'cui-service' |translate}} {{'cui-name' |translate}}</div>
-			                <div class="cui-flex-table__middle">
-			                    {{'cui-category' |translate}}
-					        </div>
-			                <div  class="cui-flex-table__middle">
-			                    {{'launch' |translate}}
-			                </div>
-			                <div  class="cui-flex-table__right">
-			                    {{'action' |translate}}
-			                </div>
-			            </div>
-        			</div>
-        			<div ng-repeat="service in package.services">
-	                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
-	                    <div class="cui-flex-table__avatar-col">
-			          		<div class="cui-profile__user-avatar" aria-hidden="true" 
-			            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
-			            	cui-avatar-color-class-prefix="cui-avatar__color" 
-			            	cui-avatar-color-count="5"></div>
-			            </div>
-			            <div class="cui-flex-table__mobile-stack">
-			            	<div class="cui-flex-table__left">
-			            		<span class="cui-flex-table__title" ng-click="manageAllApplications.toggleEditService(service, package)">{{service.name | cuiI18n}}</span>
-			            	</div>
-			            	<div class="cui-flex-table__middle">
-			            		<span class="">{{service.category | cuiI18n}}</span>
-			            	</div>
-			            	<div class="cui-flex-table__middle">
-			            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
-			            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-			            		</a>
-			            	</div>
-			            	<div class="cui-flex-table__right" ng-if="$index===0" ng-click="manageAllApplications.updateAddServiceForm(package)" title="Add Service">
-						        <cui-icon cui-svg-icon="cui:new" svg-class="cui-action__icon  cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-						      </div>
-						      <div class="cui-flex-table__right" ng-if="$index!==0" ng-click="manageAllApplications.deleteService(package,$index)" title="Delete Service">
-						        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
-						      </div>
-			            </div>		            
-			            </li>
-			            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
-			            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
+				            <div class="cui-flex-table__mobile-stack" style="font-weight:bold">
+				                <div class="cui-flex-table__left" >{{'cui-service' |translate}} {{'cui-name' |translate}}</div>
+				                <div class="cui-flex-table__middle">
+				                    {{'cui-category' |translate}}
+						        </div>
+				                <div  class="cui-flex-table__middle">
+				                    {{'launch' |translate}}
+				                </div>
+				                <div  class="cui-flex-table__right">
+				                    {{'action' |translate}}
+				                </div>
+				            </div>
+	        			</div>
+	        			<div ng-repeat="service in package.services">
+		                    <li class="cui-flex-table__tr cui-flex-table__tr--c">
+		                    <div class="cui-flex-table__avatar-col">
+				          		<div class="cui-profile__user-avatar" aria-hidden="true" 
+				            	cui-avatar="service.iconUrl" cui-avatar-names="service.name" cui-avatar-cuii18n-filter
+				            	cui-avatar-color-class-prefix="cui-avatar__color" 
+				            	cui-avatar-color-count="5"></div>
+				            </div>
+				            <div class="cui-flex-table__mobile-stack">
+				            	<div class="cui-flex-table__left">
+				            		<span class="cui-flex-table__title" ng-click="manageAllApplications.toggleEditService(service, package)">{{service.name | cuiI18n}}</span>
+				            	</div>
+				            	<div class="cui-flex-table__middle">
+				            		<span class="">{{service.category | cuiI18n}}</span>
+				            	</div>
+				            	<div class="cui-flex-table__middle">
+				            		<a title="launch application" ng-href="{{service.urls[0].value}}" target="_blank">
+				            			<cui-icon cui-svg-icon="cui:launch" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 35 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+				            		</a>
+				            	</div>
+				            	<div class="cui-flex-table__right" ng-if="$index===0" ng-click="manageAllApplications.updateAddServiceForm(package)" title="Add Service">
+							        <cui-icon cui-svg-icon="cui:new" svg-class="cui-action__icon  cui-action__icons__space" use-class="cui-icon__ref" viewbox="0 0 48 48" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+							      </div>
+							      <div class="cui-flex-table__right" ng-if="$index!==0" ng-click="manageAllApplications.deleteService(package,$index)" title="Delete Service">
+							        <cui-icon cui-svg-icon="fa:trash29" svg-class="cui-action__icon" use-class="cui-icon__ref" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
+							      </div>
+				            </div>		            
+				            </li>
+				            <div style="margin: 0 2em 0 2em;" ng-if="service.editService">
+				            <ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
+				        	</div>
 			        	</div>
-		        	</div>
-                </div>
-                <div class="cui-expandable__body-pane" ng-if="manageAllApplications.addServiceForm">
-                	<ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
-                </div>
-            </cui-expandable-body>
-        </cui-expandable1>
+	                </div>
+	                <div class="cui-expandable__body-pane" ng-if="manageAllApplications.addServiceForm">
+	                	<ng-include src="'app/modules/administration/applications/partials/service-form.html'"  onload="serviceData=manageAllApplications.tempServiceData;scope=manageAllApplications; submitLabel='cui-update'" ></ng-include>
+	                </div>
+	            </cui-expandable-body>
+	        </cui-expandable1>
 
-    </cui-table-row>
+	    </cui-table-row>
 
 		<div class="cui-paginate__container" ng-if="!base.loader.for['manageAllApplications.count']">
     		<span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
