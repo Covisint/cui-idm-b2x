@@ -89,9 +89,7 @@ angular.module('common')
         Loader.onFor('wholeApp','custom-api-loading')
         cui.api({
             retryUnseured: true,
-            envDefs: ['https://cuijs.run.covisintrnd.com/defs/env.json'],
             dataCallDefs: [
-                'https://cuijs.run.covisintrnd.com/defs/auth.json',
                 'app/json/idm-call-defs.json',
                 CustomAPI
             ]
