@@ -87,6 +87,14 @@ angular.module('administration')
 		return EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(data)
 	}
 
+	editPackage.indicatorChange = ( indicator ) => {
+		if (indicator==="one"&&editPackage.claimViewData.claimValues && editPackage.claimViewData.claimValues.length>1) {
+			editPackage.indicatorError=true
+		}else{
+			editPackage.indicatorError=false
+			editPackage.indicatorErrorAddValue=false
+		}
+	}
 // ******************Related to Service***********************
 	editPackage.toggleEditServiceForm = (selectedService) => {
 		selectedService.editService=!selectedService.editService
