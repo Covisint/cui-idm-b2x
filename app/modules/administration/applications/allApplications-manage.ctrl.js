@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('manageAllApplicationsCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,EditAndCreateApps){
+.controller('manageAllApplicationsCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,$scope,DataStorage,EditAndCreateApps,$q){
 	const manageAllApplications=this
 	const scopeName="manageAllApplications."
 	manageAllApplications.search= {}
@@ -206,15 +206,42 @@ angular.module('administration')
 		}
 		
 	}
+	manageAllApplications.addService = (data) => {
+		let deferred=$q.defer()
+		let apiPromises=[]
+
+		API.cui.createService({data:data})
+		.then(res => {
+			return API.cui.assignService({qs:[['packageId',manageAllApplications.selectedPackageData.id],['serviceId',res.id]]})
+		})
+		.then(res => {
+			deferred.resolve(res)
+		})
+		.fail(err =>{
+			deferred.reject(err)
+		})
+		return deferred.promise			
+	}
 
 	manageAllApplications.saveService = () => {
+		manageAllApplications.saveServiceLoading=true
 		// ToDo-- Actual API call have to be made to update service once API is ready
 		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(manageAllApplications.tempServiceData)){
 			let data=EditAndCreateApps.buildServiceData(manageAllApplications.tempServiceData)
 			if (manageAllApplications.addServiceForm) {
-				manageAllApplications.selectedPackageData.services.push(data)
-				manageAllApplications.addServiceForm=false
+				manageAllApplications.addService(data)
+				.then(res => {
+					manageAllApplications.selectedPackageData.services.push(data)
+					manageAllApplications.saveServiceLoading=false
+					manageAllApplications.addServiceForm=false
+				})
+				.catch(err => {
+					manageAllApplications.saveServiceLoading=false
+					manageAllApplications.saveServiceError=true
+				})
+				
 			}else{
+				manageAllApplications.saveServiceLoading=false
 				angular.copy(data,manageAllApplications.selectedServiceData)
 				manageAllApplications.selectedServiceData.editService=false
 			}
@@ -225,6 +252,7 @@ angular.module('administration')
 	// reset the object whcih is being sent to service form template
 	manageAllApplications.updateAddServiceForm = (packageData) => {
 		manageAllApplications.addServiceForm=true
+		manageAllApplications.addServiceFormError=false
 		manageAllApplications.tempServiceData={}
 		// need package details when adding service
 		manageAllApplications.selectedPackageData=packageData
