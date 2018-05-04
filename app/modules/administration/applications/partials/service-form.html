@@ -41,8 +41,14 @@
   <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="serviceData.duplicateLanguage">
     <label class="cui-error__message">{{'duplicate-language-error' | translate }}</label>
   </div>
-  <div class="cui-wizard__controls cui-wizard__controls--clear">
+  <div class="cui-wizard__controls cui-wizard__controls--clear" disable-animate>
     <a class="cui-link cui-form__cancel" href="" ng-click="scope.cancelEdit()">{{'cui-cancel' | translate}}</a>
-    <button class="cui-button" ng-class="{ 'cui-button--error': !service.$valid }" ng-click="service.$valid&&scope.saveService(serviceData.editService)">{{submitLabel |translate}}</button>
+    <button class="cui-button" ng-class="{ 'cui-button--error': !service.$valid }" ng-if="!scope.saveServiceLoading && !scope.saveServiceError" ng-click="service.$valid&&scope.saveService(serviceData.editService)">{{submitLabel |translate}}</button>
+
+    <button class="cui-button" ng-if="scope.saveServiceLoading">
+      <div ng-include="'app/common-templates/partials/loader-updating.html'" ></div>
+    </button>
+
+    <button class="cui-button" ng-class="{'cui-button--error':!service.$valid}" ng-if="!scope.saveServiceLoading && scope.saveServiceError" ng-click="service.$valid&&scope.saveService(serviceData.editService)">{{'cui-error-try-again' | translate}}</button>
   </div>
 </ng-form>
