@@ -26,14 +26,14 @@ angular.module('organization')
                 ['userId', userId], 
                 ['startDate','01-Jan-2016'],
                 ['lastDate',qsLastDate]
-            ]})/*,
-         API.cui.getPasswordCangeHistory({personId:userId})*/
+            ]}),
+         API.cui.getPasswordCangeHistory({personId:userId})
     );
 
     $q.all(apiPromises)
     .then((res) => {
         userDetailsHistory.statusHistory = res[0]
-        /*userDetailsHistory.passwordChangeHistory = res[1]*/
+        userDetailsHistory.passwordChangeHistory = res[1]
     	userDetailsHistory.loading = false;
     })
     .catch((error) => {
