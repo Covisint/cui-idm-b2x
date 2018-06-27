@@ -559,8 +559,14 @@ angular.module('common')
                         
                     // })
                     //socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/authorize/facebook?solutionInstanceId='+sid+'&type=link'
-                    socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+config.socialName+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
-                    $window.location.href=encodeURI(socialLoingUrl)
+                    if(!config.socialName.startsWith('oauth2')){
+                        socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/'+config.socialName+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                    }else{
+                        let socialName = config.socialName.split("oauth2_")[1];
+                        socialLoingUrl= socialLoingUrl+'/social-accounts/v1/social/link/oauth2/'+socialName+'?solutionInstanceId='+sid+'&type=link&xsrfToken='+xt
+                        localStorage.setItem("cui.oauth2Provider", socialName);
+                    }
+                    $window.location.href=encodeURI(socialLoingUrl);
                 }
 
             }
