@@ -217,12 +217,17 @@ angular.module('common')
                     account.unlinking=false
                     account.error=false
                     account.linking=false
+                    if(account.displayColor != undefined && account.displayColor != "")
+                        account.displayColor = account.displayColor.split(",")
+                    if(!account.displayName)
+                        account.displayName = account.socialName;
+
                     switch (account.socialName) {
-                        case 'facebook': account.iconName='facebook25'
+                        case 'facebook': account.iconName='facebook25'                        
                             break
-                        case 'twitter': account.iconName='twitter16'
+                        case 'twitter': account.iconName='twitter16'          
                             break
-                        case 'linkedin': account.iconName='linkedin10'
+                        case 'linkedin': account.iconName='linkedin10'          
                             break
                         case 'google': account.iconName='google26'
                             break
@@ -542,6 +547,11 @@ angular.module('common')
                     validSwitch(input, false, 'history')
                     formObject[input].$setValidity(input, false)
                 })
+            }
+
+            profile.chageColor= (element , color)=>{
+                element.currentTarget.style.backgroundColor = color;
+                console.log(color);
             }
 
             profile.updateSocialLogin = (config, toggleOff) => {

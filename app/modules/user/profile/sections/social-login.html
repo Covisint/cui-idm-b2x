@@ -16,22 +16,29 @@
             <!-- <div ng-switch on="socialLoginAccount.linked"> -->
 
               <div ng-if="socialLoginAccount.linked" style="margin-bottom:1em">  
-                  <button class="cui-button cui-button cui-button__social cui-button__social_{{socialLoginAccount.socialName}}" ng-click="userProfile.unlinkSocialAccount(base.user.id,socialLoginAccount)" disable-animate>
+                  <button class="cui-button cui-button cui-button__social"
+                  style ="background-color: {{socialLoginAccount.displayColor[0]}};"
+                   ng-mouseenter ="userProfile.chageColor($event,socialLoginAccount.displayColor[1])" 
+                   ng-mouseleave ="userProfile.chageColor($event,socialLoginAccount.displayColor[0])"
+                   ng-click="userProfile.unlinkSocialAccount(base.user.id,socialLoginAccount)" disable-animate>
                     <span class="social-icon" >
                       <cui-icon cui-svg-icon="fa:{{socialLoginAccount.iconName}}" svg-class="cui-action__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                     </span>
-                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'unlink' | translate}} {{socialLoginAccount.socialName|translate}}</span>
+                    <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&!socialLoginAccount.error">{{'unlink' | translate}} {{socialLoginAccount.displayName | translate}}</span>
                     <span class= "social-label" ng-if="!socialLoginAccount.unlinking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
                     <span class= "social-label" ng-if="socialLoginAccount.unlinking">{{'cui-button-loading-text' | translate}}</span>
                   </button>
               </div>
 
               <div ng-if="!socialLoginAccount.linked" style="margin-bottom:1em">  
-                  <button class="cui-button cui-button__social cui-button__social_{{socialLoginAccount.socialName}}" ng-click="userProfile.updateSocialLogin(socialLoginAccount, toggleOff)"disable-animate>
+                  <button class="cui-button cui-button__social" style ="background-color: {{socialLoginAccount.displayColor[0]}};"
+                   ng-mouseenter ="userProfile.chageColor($event,socialLoginAccount.displayColor[1])" 
+                   ng-mouseleave ="userProfile.chageColor($event,socialLoginAccount.displayColor[0])"
+                    ng-click="userProfile.updateSocialLogin(socialLoginAccount, toggleOff)" disable-animate>
                     <span class="social-icon">
                       <cui-icon cui-svg-icon="fa:{{socialLoginAccount.iconName}}" svg-class="cui-action__icon" viewbox="0 0 216 146" preserveAspectRatio="xMidYMid meet" ></cui-icon>
                     </span>
-                    <span class= "social-label" ng-if="!socialLoginAccount.linking&&!socialLoginAccount.error">{{'link' | translate}} {{socialLoginAccount.socialName|translate}}</span>
+                    <span  class= "social-label" ng-if="!socialLoginAccount.linking&&!socialLoginAccount.error">{{'link' | translate}} {{socialLoginAccount.displayName | translate}}</span>
                     <span class= "social-label" ng-if="!socialLoginAccount.linking&&socialLoginAccount.error">{{'cui-error-try-again' | translate}}</span>
                     <span class= "social-label" ng-if="socialLoginAccount.linking">{{'cui-button-loading-text' | translate}}</span>
                   </button>
