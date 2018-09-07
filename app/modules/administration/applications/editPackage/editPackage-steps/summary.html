@@ -1,4 +1,4 @@
-<ng-form name="summary" novalidate ng-if="editPackage.step===1" disable-animate>
+<ng-form name="summary" novalidate ng-if="editPackage.step===1 && editPackage.showAdminPage ===false" disable-animate>
 
   <multi-language-field options="editPackage.packageViewData.name" name="'name'" form="summary" label-class="'cui-flex-table__title'"></multi-language-field>
 
@@ -81,7 +81,7 @@
       <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-click="editPackage.goToClaims()">{{'add-claims' |translate}}</button>
     </div>
     <div class="cui-wizard__field-container cui-wizard__field-container--half switch__form">
-      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="editPackage.packageViewData.requireAppAdmin" >{{'add-admins' |translate}}</button>
+      <button class="cui-button cui-button--inverted cui-button--small-rounded" ng-if="editPackage.packageViewData.requireAppAdmin"  ng-click="editPackage.loadAddAdminPage()" >{{'add-admins' |translate}}</button>
     </div>
   </div>
   <div class="cui-wizard__controls cui-wizard__controls--clear cui-error" ng-if="editPackage.packageViewData.duplicateLanguage">
@@ -91,5 +91,6 @@
     <button type="button" class="cui-wizard__next" ng-click="editPackage.checkDuplicateLanguages(editPackage.packageViewData)&&nextWithErrorChecking(summary);editPackage.next()" ng-class="(summary.$invalid)? 'cui-wizard__next--error' : ''">{{'cui-next' | translate}}</button>
   </div>
 </ng-form>
+<div ng-if="editPackage.showAdminPage" ng-include="'app/modules/administration/applications/addAdmin/addAdmin.html'"></div>
 
 <div ng-if="editPackage.step===2" ng-include="'app/modules/administration/applications/editPackage/editPackage-steps/claims.html'"></div>

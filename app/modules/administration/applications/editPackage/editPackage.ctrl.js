@@ -1,5 +1,5 @@
 angular.module('administration')
-.controller('editPackageCtrl', function($timeout,$filter,$pagination,$state,$stateParams,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage,EditAndCreateApps,$q){
+.controller('editPackageCtrl', function($timeout,$filter,UserList,$pagination,$state,$stateParams,$http,API,APIError,APIHelpers,CuiMobileNavFactory,Loader,User,$scope,DataStorage,EditAndCreateApps,$q){
 	const editPackage=this
 	const scopeName="editPackage."
 	// Initialization
@@ -8,6 +8,97 @@ angular.module('administration')
 	editPackage.addClaimsForm =true
 	editPackage.step=1
 
+	editPackage.tempClaim={}
+	editPackage.tempClaimValue={}
+	editPackage.serviceData = {
+		categories : [
+			{lang:"en",text:"Administration"},
+			{lang:"en",text:"Application"},
+			{lang:"en",text:"Roles"}
+		]
+	}
+
+	editPackage.userList =[];
+
+    editPackage.selectedUserIds =[];
+
+    editPackage.search ={};
+
+	editPackage.search.page = parseInt($stateParams.page || 1)
+	//editPackage.pageSize = parseInt($stateParams.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions[0])
+
+    editPackage.pageSize = 	10;
+
+
+	//--------------------------------------------Add Admin START
+
+  $scope.$watch('editPackage.searchValue', function(newValue, oldValue) {
+  if(oldValue){
+    if(!newValue){
+      editPackage.clearSearchParams();
+      editPackage.intiateAdminPage();
+    }
+  }
+});
+
+  editPackage.clearSearchParams=()=>{
+
+    for(let option of editPackage.options){
+      delete editPackage.search[option.attributeName];
+    }
+  }
+ const populateAvailableUsers = ({ page, pageSize} = {}) => {
+        editPackage.availableUserList = _.drop(editPackage.availableUsers, (page -1) * pageSize).slice(0, pageSize)
+      
+    }
+
+
+   const updateStateParams = ({ page, pageSize } = {}) => {
+        if (page && pageSize) {
+            editPackage.page = page
+            editPackage.pageSize = pageSize
+        }
+       // $state.transitionTo('cuiTable', editPackage.sortBy, { notify: false })
+    }
+
+   editPackage.sortBy = {}
+
+	editPackage.cuiTableOptions = {
+	paginate: true,
+	recordCount: 0,
+    pageSize: editPackage.pageSize,
+    initialPage: editPackage.page,
+	onPageChange: (page, pageSize) => {
+	   updateStateParams({ page, pageSize })
+	   populateAvailableUsers({ page, pageSize })
+	}
+}
+
+editPackage.userCheckbox={};
+editPackage.availableUserCheckbox={};
+editPackage.selectedAdminUsers =[];
+
+
+//To externalize  the values
+	editPackage.options =[{"attributeName":"fullName" ,"attributeValue":"firstname ,lastname","key":1},
+  {"attributeName":"id","attributeValue":"user id","key":2},{"attributeName":"number","attributeValue":"phone number","key":3},
+  {"attributeName":"email","attributeValue":"email address","key":4}];
+  editPackage.criterias = [{"criteriaName" :"beginsWith","criteriaValue": "begins with","key":1},
+     {"criteriaName" :"contains","criteriaValue": "contains","key":2}];
+
+	editPackage.showAdminPage=false
+	editPackage.search.pageSize= 10;
+	// editPackage.packageData={
+	// 	displayable:true,
+	// 	requiredApprovals:['organizationAdmin']
+	// }
+	// editPackage.requireCompanyAdmin=true;
+	//-------------------------------------------------------Add Admin End
+
+  editPackage.loadAddAdminPage =()=>{
+  	editPackage.showAdminPage = true;
+  	editPackage.intiateAdminPage();
+  }
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 	const initializeMultiLanguageFields = () => {
 		angular.merge(editPackage.packageViewData,EditAndCreateApps.initializeMultilanguageData(true,false, editPackage.packageData))
@@ -28,7 +119,11 @@ angular.module('administration')
 	        requireCompanyAdmin:false,
 	        requireAppAdmin:false
 		}
+  }
 
+
+
+	const updateApprovalFlags = () => {
 		editPackage.packageData.requiredApprovals.forEach(admin => {
 			if (admin==='organizationAdmin') {
 				editPackage.packageViewData.requireCompanyAdmin=true
@@ -115,7 +210,6 @@ angular.module('administration')
 		// set editservice flag to false for services
 		editPackage.services.forEach( service => service.editService=false)
 	}
-
 	// On clicking edit service Add/Update
 	editPackage.saveService = () => {
 		if(EditAndCreateApps.checkDuplicateLanguagesForNameAndDesc(editPackage.serviceViewData)){
@@ -136,6 +230,137 @@ angular.module('administration')
 			}
 			
 		}
+}
+editPackage.select=()=>{
+	console.log("ABDDDDDDDD");
+	editPackage.userCheckbox;
+}
+
+
+editPackage.addUserAsAdmin =(user)=>{
+  editPackage.selectedAdminUsers.push(user); 
+  editPackage.selectedUserIds.push(user.id);
+
+}
+ editPackage.submitSelectedAdmin =()=>{
+    //May use loop here to maintain order
+    //Call The Api ..in Sucess Call back
+      editPackage.userList=  editPackage.userList.concat(editPackage.selectedAdminUsers)
+      editPackage.filterSelectedUsers(editPackage.availableUserList);
+      editPackage.selectedAdminUsers.length = 0;
+      editPackage.availableUserList.length = 0;
+       delete editPackage.userCount;
+      editPackage.showAdminPage = false;
+
+ }
+
+ editPackage.filterSelectedUsers=(availableUsers)=>{
+  if(editPackage.selectedUserIds.length != 0){
+    availableUsers = availableUsers.filter(function(availableUser){
+    return editPackage.selectedUserIds.indexOf(availableUser.id) == -1;
+  });
+  }
+  editPackage.availableUserList = availableUsers;
+ 
+ }
+
+ editPackage.callLocalApi=(apiPath)=>{
+  $state.params;
+  $stateParams.creationDate;
+  $stateParams.pkgId;
+  let  config = {headers:  {
+        'Accept': 'application/vnd.com.covisint.platform.person.v1+json',
+        'Content-Type':'application/vnd.com.covisint.platform.person.v1+json',
+        'x-realm':'Q-IDMBLR-INST1',
+        'x-requestor':'q-idmblr-inst1_admin',
+        'x-requestor-app':'Superuser (Q-IDMBLR-INST1)',
+        'Access-Control-Request-Headers': 'Origin, Content-Type, Accept',
+        'Access-Control-Allow-Origin':'*'
+    }
+};
+  let localUrl ='http://localhost:9090'
+ // $httpProvider.defaults.useXDomain = true
+  $http.get(localUrl+apiPath,config)
+    .then(function(response) {
+        //First function handles success
+       //$ed.content = response.data;
+       editPackage.userList= response.data;
+    }, function(response) {
+        //Second function handles error
+       // $scope.content = "Something went wrong";
+    });
+ }
+
+editPackage.deleteSelectedAdmins =()=>{
+  if(editPackage.userCheckbox.length >0){
+    //remove
+  } else{
+    alert("Please select  a user");
+  }
+}
+editPackage.intiateAdminPage = () => {
+
+    editPackage.search['organization.id'] =  User.user.organization.id
+    editPackage.search.pageSize  = editPackage.search.pageSize || $pagination.getUserValue() || $pagination.getPaginationOptions()[0]
+
+   // Add another call yo get the Admin List for an organization
+   editPackage.callLocalApi('/persons/admins/PQ-IDMBLR-INST13284177980');
+
+        let apiCalls = [
+             UserList.getUserCount({ qs: [['organization.id', editPackage.search['organization.id']]] }),
+            UserList.getUsers({ qs: APIHelpers.getQs(editPackage.search) }),
+       
+           
+        ]
+
+        $q.all(apiCalls)
+        .then(([ userCount,users]) => {
+        	//susers = users.concat(editPackage.userList);
+           editPackage.filterSelectedUsers(users);
+           //editPackage.userCount = editPackage.availableUserList.length;
+           editPackage.userCount= 40;
+           editPackage.reRenderPagination && editPackage.reRenderPagination()
+          // editPackage.cuiTableOptions.onPageChange(editPackage.page, editPackage.pageSize)
+        })
+        .catch(error => {
+            APIError.onFor(scopeName + 'userList')
+        })
+        .finally(() => {
+            Loader.offFor(scopeName + 'userList')
+        })
+        
+        
+    }
+
+
+  editPackage.updateSearchParams = (page) => {
+        if (page) editPackage.search.page = page 
+        //$state.transitionTo('organization.directory.orgDetails', orgDetailsUsers.search, {notify: false})
+        editPackage.intiateAdminPage();
+    }
+
+
+editPackage.searchUsers =()=>{
+  let partialSearchValue=  editPackage.searchValue;
+  if(editPackage.searchValue){
+    if(!angular.equals(editPackage.selectedFilter.attributeName ,"fullName")){
+        if(editPackage.selectedCriteria.key ==1){
+          partialSearchValue = "%"+editPackage.searchValue;
+        }  else{
+             partialSearchValue = "%"+editPackage.searchValue+"%";
+        }
+    }
+      editPackage.search[editPackage.selectedFilter.attributeName]=partialSearchValue;
+     editPackage.intiateAdminPage();
+  }
+//else  message saying to give some input in search field
+}
+
+
+
+
+	editPackage.addClaimValue = (claim) => {
+		claim.claimValues.push(editPackage.tempClaimValue)
 	}
 
 	// called when trying to add new service

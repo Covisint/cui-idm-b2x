@@ -1,0 +1,145 @@
+
+<div id ="message">
+  <span ng-show="editPackage.showAddAdminSuccess" class="cui-modal__success-message">{{'cui-add-admin-success' | translate}}</span>
+  <span ng-show="editPackage.showRemoveAdminSuccess" class="cui-modal__success-message">{{'cui-remove-admin-success' | translate}}</span>
+</div> 
+
+
+
+<div class="cui-action  cui-action__no-padding ">
+  <span class="cui-action__title">Administrators</span>
+
+</div>
+
+<cui-table>
+  <div ng-if="editPackage.userList.length!=0">
+    <cui-table-header 
+    headers="['Select', 'FirstName', 'LastName', 'UserId', 'UserEmail']">
+  </cui-table-header>
+</div>
+<p class="cui-modal__secondary-message" ng-if="editPackage.noRecordFlagForUser==true">{{'no-records' | translate}}</p>
+
+<p class="cui-modal__secondary-message" ng-if="editPackage.noRecordFlag==true">{{'no-records-delete' | translate}}</p>
+<cui-table-row ng-repeat="user in editPackage.userList track by user.id">
+
+  <li class="cui-flex-table__tr cui-flex-table__tr--c">
+   <div class="cui-flex-table__avatar-col">
+    <div class="cui-profile__user-avatar" aria-hidden="true" 
+    cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" 
+    cui-avatar-color-class-prefix="cui-avatar__color" 
+    cui-avatar-color-count="5">
+  </div>
+</div>
+<div class="cui-flex-table__mobile-stack">
+  <div class="cui-flex-table__left">
+   <span class="cui-checkbox__container">
+     <input class="cui-checkbox" type="checkbox" ng-model="editPackage.userCheckbox[user.id]"  />
+     <label class="cui-checkbox__label"  ng-click="editPackage.userCheckbox[user.id]=!editPackage.userCheckbox[user.id];editPackage.deleteSelectedUser(user)">
+     </label>
+   </span>
+ </div>
+ <div class="cui-flex-table__middle cui-flex-table__middle" >
+   <span class="">{{user.name.given}}</span>
+ </div>
+ <div class="cui-flex-table__middle cui-flex-table__middle">
+   <span class="">{{user.name.surname}}</span>
+ </div>
+ <div class="cui-flex-table__middle cui-flex-table__middle">
+  <span style ="width:50%;word-wrap:break-word">{{user.id}}</span>
+</div>
+<div class="cui-flex-table__right">
+ <span class="">{{user.email}}</span>
+</div>
+</div>
+</li>
+
+
+</cui-table-row>
+</cui-table>
+
+<div class="cui-wizard__controls cui-wizard__controls--clear" ng-if="editPackage.userList.length!=0">
+  
+  <!----><button type="button" class="cui-button cui-button--small-rounded"   
+  ng-click="editPackage.deleteSelectedAdmins()">Delete</button><!---->
+</div>
+
+<div class="cui-wizard__field-container cui-wizard__field-container cui-wizard__field-container--button" >
+
+  <div class="cui-wizard__field-row">
+
+   <cui-dropdown  options="editPackage.options" target-attachment="middle left" return-value="object" display-value="object.attributeValue" ng-model="editPackage.selectedFilter"></cui-dropdown>
+
+   <cui-dropdown class ="cui-dropdown" options="editPackage.criterias" target-attachment="middle left" return-value="object" display-value="object.criteriaValue" ng-model="editPackage.selectedCriteria"></cui-dropdown>
+
+   <div class="cui-input-button cui-input-button--alt-bg">
+     <input class="cui-input-button__input ng-pristine ng-valid ng-empty ng-touched" ng-model="editPackage.searchValue" focus-if="" placeholder="Search" on-enter="manageAllApplications.searchUsers" style="">
+     <button class="cui-input-button__button" ng-disabled="!editPackage.searchValue" ng-click="editPackage.searchUsers()">Search</button>
+   </div>
+
+ </div>
+</div>
+<div class="cui-action  cui-action__no-padding ">
+  <span class="cui-action__title">Available Users</span>
+  <p ng-if="!base.apiError.for['editPackage.availableUserList']&& editPackage.availableUserList.length===0" class="cui-info-msgs">{{'no-apps-found' | translate}} {{'refine-search' | translate}}</p>
+  <!-- Error Message -->
+  <p class="cui-info-msgs cui-info-msgs__error" ng-if="base.apiError.for['manageAllApplications.packages']">{{'error-generic'|translate}}</p>
+
+</div>
+
+
+<cui-table>
+  <cui-table-header 
+  headers="['Select', 'FirstName', 'LastName', 'UserId', 'UserEmail']">
+</cui-table-header>
+
+<cui-table-row ng-repeat="user in editPackage.availableUserList track by user.id">
+
+  <li class="cui-flex-table__tr cui-flex-table__tr--c">
+   <div class="cui-flex-table__avatar-col">
+    <div class="cui-profile__user-avatar" aria-hidden="true" 
+    cui-avatar cui-avatar-names="[user.name.given, user.name.surname]" 
+    cui-avatar-color-class-prefix="cui-avatar__color" 
+    cui-avatar-color-count="5">
+  </div>
+</div>
+<div class="cui-flex-table__mobile-stack">
+  <div class="cui-flex-table__left">
+    <span class="cui-checkbox__container" ng-show= "user.isAdmin==false">
+      <input class="cui-checkbox" type="checkbox" ng-model="editPackage.availableUserCheckbox[user.id]"  />
+      <label class="cui-checkbox__label"  ng-click="editPackage.availableUserCheckbox[user.id]=!editPackage.availableUserCheckbox[user.id];editPackage.addUserAsAdmin(user)">
+      </label>
+    </span>
+  </div>
+  <div class="cui-flex-table__middle cui-flex-table__middle" >
+   <span class="">{{user.name.given}}</span>
+ </div>
+ <div class="cui-flex-table__middle cui-flex-table__middle">
+   <span class="">{{user.name.surname}}</span>
+ </div>
+ <div class="cui-flex-table__middle cui-flex-table__middle">
+  <span style ="width:50%;word-wrap:break-word">{{user.id}}</span>
+</div>
+<div class="cui-flex-table__right">
+ <span class="">{{user.email}}</span>
+</div>
+</div>
+</li>
+
+
+</cui-table-row>
+
+</cui-table>
+
+
+
+<div class="cui-paginate__container" ng-if="!base.loader.for['editPackage.userCount']">
+ <span class="cui-paginate__results-label">{{'cui-num-results-page' | translate}}</span>
+ <results-per-page class="cui-paginate__select" ng-model="editPackage.search.pageSize"></results-per-page>
+ <paginate class="cui-paginate" results-per-page="editPackage.search.pageSize" count="editPackage.userCount" on-page-change="editPackage.updateSearchParams" ng-model="editPackage.search.page" attach-rerender-to="editPackage.reRenderPagination"></paginate>
+</div>
+
+
+<div class="cui-wizard__controls cui-wizard__controls--clear">
+  <!----><button type="button" class="cui-button cui-button--small-rounded" ng-click="previous()">&lt;&lt; BACK</button><!---->
+  <!----><button type="button" class="cui-button cui-button--small-rounded"    ng-click="editPackage.submitSelectedAdmin()">SUBMIT</button><!---->
+</div>
