@@ -50,6 +50,7 @@
                 </ul>
               </div>
               <span ng-if="applicationSearch.numberOfRequests > 0" class="cui-action__popover-button" ui-sref="applications.reviewRequest">{{'submit-request' | translate}}</span>
+              <a ng-if="applicationSearch.numberOfRequests > 0" class="" href="" ng-click="applicationSearch.clear()">Clear All</a>
             </div>
         </div>
     </div>

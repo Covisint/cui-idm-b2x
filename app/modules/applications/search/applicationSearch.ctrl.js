@@ -124,7 +124,17 @@ angular.module('applications')
     // ON LOAD END ------------------------------------------------------------------------------------
 
     // ON CLICK FUNCTIONS START -----------------------------------------------------------------------
-
+    applicationSearch.clear=()=>{
+        
+        let tempPack=applicationSearch.packageRequests;
+        applicationSearch.numberOfRequests=0;
+        applicationSearch.appCheckbox={};
+        for(let i in tempPack){
+            delete applicationSearch.packageRequests[i];
+            DataStorage.setType('appsBeingRequested',applicationSearch.packageRequests);
+        }
+     
+    };
     applicationSearch.pageChange = (newpage) => {
         applicationSearch.updateSearch('page',newpage);
     };
