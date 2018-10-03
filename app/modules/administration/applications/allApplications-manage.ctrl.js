@@ -74,7 +74,9 @@ angular.module('administration')
 		if (updating) {
 			Loader.onFor(scopeName+'packages')
 		}
-
+		if(manageAllApplications.applicationSearchValue != undefined && manageAllApplications.applicationSearchValue != ""){
+			manageAllApplications.search['name'] = '*'+manageAllApplications.applicationSearchValue+'*'
+		}
 		let qs= APIHelpers.getQs(manageAllApplications.search)
 		API.cui.countPackages({qs:qs})
 		.then(count => {
@@ -85,6 +87,7 @@ angular.module('administration')
 		})
 		.then(res => {
 			manageAllApplications.packages = res
+			manageAllApplications.search['name']= undefined;
 			if (res && res.length!==0) {
 				res.forEach((packageData, index) => {
 					API.cui.getPackageServices({packageId:packageData.id})
@@ -128,6 +131,14 @@ angular.module('administration')
 	}	
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
+  $scope.$watch('manageAllApplications.applicationSearchValue', function(newValue, oldValue) {
+     if(oldValue){
+       if(!newValue){
+       	manageAllApplications.updateSearchByName();
+         onLoad(true);
+        }
+     }
+  });
 
 
 // ON CLICK FUNCTIONS START -------------------------------------------------------------------------------
@@ -136,7 +147,7 @@ angular.module('administration')
     }
 
     manageAllApplications.updateSearchByName = () => {
-        manageAllApplications.updateSearch('name',manageAllApplications.search['name'])
+        manageAllApplications.updateSearch('name',manageAllApplications.applicationSearchValue)
     }
     manageAllApplications.updateSearch = (updateType, updateValue) => {
         switch (updateType) {

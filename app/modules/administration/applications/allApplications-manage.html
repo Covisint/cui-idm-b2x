@@ -66,7 +66,7 @@
   		<span class="cui-action__title">{{'manage-applications' | translate}}</span>
 
   		<div class="cui-input-button cui-input-button--alt-bg">
-		    <input class="cui-input-button__input" ng-model="manageAllApplications.search['name']" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageAllApplications.updateSearchByName"/>
+		    <input class="cui-input-button__input" ng-model="manageAllApplications.applicationSearchValue" focus-if placeholder="{{'search-by-app-name' | translate}}" on-enter="manageAllApplications.updateSearchByName"/>
 		    <button class="cui-input-button__button" ng-click="manageAllApplications.updateSearchByName()">{{'search' | translate}}</button>
 		</div>
 		<div class="cui-action__actions">
