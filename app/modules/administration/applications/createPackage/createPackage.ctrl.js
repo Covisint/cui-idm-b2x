@@ -75,6 +75,9 @@ angular.module('administration')
 			// first service will be created when package created we need to update first one
 			if (index!==0) {
 				let data= angular.copy(service)
+				data.parentService={};
+				data.parentService.id = createPackage.packageresult.parentService.id;
+				data.parentService.type = createPackage.packageresult.parentService.type;
 				delete data.id
 				apiPromises.push(API.cui.createService({data:data}))
 			}
