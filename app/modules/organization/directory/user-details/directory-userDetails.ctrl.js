@@ -1,5 +1,5 @@
 angular.module('organization')
-.controller('userDetailsCtrl', function(API, Loader, $scope, $stateParams,APIError,APIHelpers,$timeout,$q) {
+.controller('userDetailsCtrl', function(API, Loader, $scope, $stateParams,APIError,APIHelpers,$timeout,$q,$state) {
 
     const userDetails = this
     const scopeName = 'userDetails.'
@@ -197,6 +197,7 @@ angular.module('organization')
                 res => {
                     APIError.offFor(name)
                     userDetails.remove.success = true
+                    userDetails.user.status = 'inactive'
                     $scope.$digest()
                     $timeout(()=>{
                 $state.go('organization.directory',{orgId:API.user.organization.id})
