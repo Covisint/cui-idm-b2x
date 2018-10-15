@@ -162,6 +162,11 @@ editPackage.selectedAdminUsers =[];
 		finishSubmitting()
 	}
 
+	const finishSubmitting = () => {
+		Loader.offFor(scopeName+'submitting')		
+		$scope.$digest()
+	}
+
 // HELPER FUNCTIONS START -------------------------------------------------------------------------------
 
 // ON LOAD FUNCTIONS START -------------------------------------------------------------------------------
@@ -500,6 +505,19 @@ editPackage.searchUsers =()=>{
 		if (editPackage.indicatorError&&editPackage.claimViewData.claimValues.length<2) {
 			editPackage.indicatorError=false
 		};
+	}
+
+	editPackage.submit = () => {
+		Loader.onFor(scopeName+'submitting')
+		editPackage.packageSubmitData = EditAndCreateApps.buildPackageDataForUpdate(editPackage.packageViewData,editPackage.packageData)
+		API.cui.updatePackage({packageId:$stateParams.pkgId,data:editPackage.packageSubmitData})
+		.then( packageresult => {
+			$timeout( () => {
+				$state.go('administration.applications.manageApplications')
+			},3000)
+			Loader.offFor(scopeName+'submitting')
+		})
+		.fail(handleError)
 	}
 
 

@@ -324,6 +324,13 @@
     "contentType": "application/vnd.com.covisint.platform.package.v1+json"
   },
   {
+    "cmd": "updatePackage",
+    "call": "/service/v3/packages/{packageId}",
+    "type": "PUT",
+    "accepts": "application/vnd.com.covisint.platform.package.v1+json",
+    "contentType": "application/vnd.com.covisint.platform.package.v1+json"
+  },
+  {
     "cmd": "countPackages",
     "call": "/service/v3/packages/count",
     "type": "GET",

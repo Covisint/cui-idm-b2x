@@ -204,6 +204,25 @@ angular.module('common')
 			viewData=EditAndCreateApps.initializeMultilanguageData(true,true,viewData)
 			viewData.claimValueId=data.claimValueId
 			return viewData
+		},
+
+		// build package data for update
+		buildPackageDataForUpdate: (viewData,package) => {
+			let data = _.merge({},package)
+			data.requestable = viewData.requestable
+			data.grantable = viewData.grantable
+			data.displayable = viewData.displayable
+			data.requestReasonRequired = viewData.requestReasonRequired
+
+			data = EditAndCreateApps.buildSubmitDataFromMultilangFields(data,viewData)
+			data.requiredApprovals=[]
+			if(viewData.requireCompanyAdmin){
+				data.requiredApprovals.push('organizationAdmin')
+			}
+			if (viewData.requireAppAdmin) {
+				data.requiredApprovals.push('applicationAdmin')
+			};
+			return data
 		}
 	}
 
